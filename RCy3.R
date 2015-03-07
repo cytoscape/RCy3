@@ -380,32 +380,32 @@ CytoscapeWindow = function (title, graph = new('graphNEL', edgemode = 'directed'
 } # CytsoscapeWindow
 #------------------------------------------------------------------------------------------------------------------------
 # the 'existing window' class constructor, defined as a simple function, with no formal link to the class
-existing.CytoscapeWindow = function (title, host='localhost', port=9000, copy.graph.from.cytoscape.to.R=FALSE)
+existing.CytoscapeWindow = function (title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE)
 {
-    #  host = res$host
-    #  port = res$port
-    #  
-    #  uri = sprintf ('http://%s:%s', host, port)
-    #
-    #  cy.tmp = CytoscapeConnection (host, port)     # create this (inexpensively) just to gain access tothe window list
-    #  check.cytoscape.plugin.version (cy.tmp)
-    #
-    #  existing.window.id = getWindowID (cy.tmp, title)
-    #
-    #  if (is.na (existing.window.id)) {
-    #    write (sprintf ('There is no window in Cytoscape named "%s".  Please choose from the following titles:.', title), stderr ())
-    #    write (as.character (getWindowList (cy.tmp)), stderr ())
-    #    return (NA)
-    #    }
-    #
-    #  cw = new ('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
-    #
-    #  if (copy.graph.from.cytoscape.to.R) {
-    #    g.cy = getGraphFromCyWindow (cw, title)
-    #    cw = setGraph (cw, g.cy)
-    #    }
-    #
-    #  return (cw)
+    #The constructor for the CytoscapeWindowClass, used when Cytoscape already contains and displays a network.
+    
+    uri <- sprintf ('http://%s:%s', host, port)
+    cy.tmp <- CytoscapeConnection (host, port)     # create this (inexpensively) just to gain access to the window list
+    check.cytoscape.plugin.version (cy.tmp)
+    
+    #TODO delete this statement 2 below and out comment the other
+    #existing.window.id <- getWindowID (cy.tmp, title)
+    existing.window.id <- "482"
+    #TODO delete this statement 2 below and out comment the other END
+    
+    # alert the user if the desired window does not exist
+    if (is.na (existing.window.id)) {
+        write (sprintf ('There is no window in Cytoscape named "%s".  Please choose from the following titles:.', title), stderr ())
+        write (as.character (getWindowList (cy.tmp)), stderr ())
+        return (NA)
+    }
+    # get graph from Cytoscape
+    cw <- new ('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
+    if (copy.graph.from.cytoscape.to.R) {
+        g.cy <- getGraphFromCyWindow (cw, title)
+        cw <- setGraph (cw, g.cy)
+    }
+    return (cw)
     
 } # existing.CytsoscapeWindow
 #------------------------------------------------------------------------------------------------------------------------
@@ -499,20 +499,32 @@ setMethod ('createWindow', 'CytoscapeWindowClass',
            })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('createWindowFromSelection', 'CytoscapeWindowClass',
-           
+           # All selected nodes, their connecting edges, and associated attributes are copied into
+           # a new CytoscapeWindow, with the supplied title
+           # CREATE A SUBNETWORK FROM SELECTED NODES AND EDGES
            function (obj, new.windowTitle, return.graph=FALSE) {
-               #    if (getSelectedNodeCount (obj) == 0) {
-               #      write (noquote ('RCytoscape::createWindowFromSelection error:  no nodes are selected'), stderr ())
-               #      return (NA)
-               #      }
-               #    if (new.windowTitle %in% as.character (getWindowList (obj))) {
-               #      msg = sprintf ('RCytoscape::createWindowFromSelection error:  window "%s" already exists', new.windowTitle)
-               #      write (noquote (msg), stderr ())
-               #      return (NA)
-               #      }
-               #      
-               #    window.id = xml.rpc (obj@uri, 'Cytoscape.createNetworkFromSelection', obj@window.id, new.windowTitle)
-               #    return (existing.CytoscapeWindow (new.windowTitle, copy.graph.from.cytoscape.to.R = return.graph))
+               # alert user if no nodes were selected
+               #TODO: uncomment this as soon as getSelectedNodeCount works
+#                if (getSelectedNodeCount (obj) == 0) {
+#                   write (noquote ('RCytoscape::createWindowFromSelection error:  no nodes are selected'), stderr ())
+#                   return (NA)
+#               }
+               # alert the user if he/she wants to use a title that already exists
+               if (new.windowTitle %in% as.character (getWindowList (obj))) {
+                   msg = sprintf ('RCytoscape::createWindowFromSelection error:  window "%s" already exists', new.windowTitle)
+                   write (noquote (msg), stderr ())
+                   return (NA)
+               }
+               # create a new network from the selection
+               #TODO: pass the title along to Cytoscape
+               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), sep="/")
+               window.id <- POST(api.str)
+               window.id  <- unname(fromJSON(rawToChar(window.id$content)))
+               #TODO: implement getGraphFromCyWindow and dependencies and then uncomment also remove last return statement
+               #return (existing.CytoscapeWindow (new.windowTitle, copy.graph.from.cytoscape.to.R = return.graph))
+               #TODO: implement getGraphFromCyWindow and dependencies and then uncomment end
+               return (window.id)
+               
            }) # createWindowFromSelection
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -614,9 +626,9 @@ setMethod ('getDirectlyModifiableVisualProperties', 'CytoscapeConnectionClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getAttributeClassNames', 'CytoscapeConnectionClass',
-           
+           # retrieve the names of the recognized and supported names for the class of any node or edge attribute.
            function (obj) {
-               #     return (c ('floating|numeric|double', 'integer|int', 'string|char|character'))
+               return (c ('floating|numeric|double', 'integer|int', 'string|char|character'))
            })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -693,7 +705,7 @@ setMethod ('setGraph', 'CytoscapeWindowClass',
            # assign the supplied graph object to the appropriate slot in the specified CytoscapeWindow object
            function (obj, graph) {
                # remove redundancies in undirected graph
-               if (edgemode (graph) == 'undirected'){
+               if (edgemode(graph) == 'undirected'){
                    graph = remove.redundancies.in.undirected.graph (graph)
                }
                # save the new graph to the graph object
@@ -831,13 +843,32 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'CytoscapeConnectionClass',
 setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
            
            function (obj,  window.title) {
-               #    window.id = getWindowID (obj, window.title)
-               #    stopifnot (!is.na (window.id))
-               #  
-               #    node.count = xml.rpc (obj@uri, "Cytoscape.countNodes", window.id)
-               #    if (node.count == 0)
-               #      return (new ('graphNEL', edgemode='directed'))
-               #      
+               # check if the network is non-empty and get its id
+               
+               #TODO renable this once getwindowid is working
+               #window.id = getWindowID (obj, window.title)
+               window.id = 428
+               #TODO renable this once getwindowid is working
+               
+               stopifnot (!is.na (window.id))
+               node.count = getNodeCount(obj)
+               if (node.count == 0){
+                   return (new ('graphNEL', edgemode='directed'))
+               }
+               # GET NETWORKS IN CYTOSCAPE.JS JSON FORMAT
+               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), sep="/")
+               result <- GET(api.str)
+               print(unname(fromJSON(rawToChar(result$content))))
+               
+
+               # alternatively one could have done this:
+               # GET NETWORKS IN CYTOSCAPE.JS JSON FORMAT
+               #api.str <- paste(obj@uri, pluginVersion(obj), "networks.json", sep="/")
+               #result <- GET(api.str)
+               #print(unname(fromJSON(rawToChar(result$content))))
+               
+               
+               #TODO delete from here to the bottom of this function      
                #    all.node.names = xml.rpc (obj@uri, "Cytoscape.getNodes", window.id)
                #    write (sprintf ('received %d nodes from %s', length (all.node.names), window.title), stderr ())
                #    g = new ("graphNEL", edgemode='directed')
@@ -914,14 +945,21 @@ setMethod ('sendNodes', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('.addNodes', signature (obj='CytoscapeWindowClass'),
-           
+           # add new nodes to an existing network in Cytoscape
            function (obj, other.graph) {
-               #     if (length (nodes (other.graph)) == 0) {
-               #       write ('CytoscapeWindow.sendNodes, no nodes in other.graph.  returning', stderr ())
-               #       return ()
-               #       }
-               #     new.nodes = setdiff (nodes (other.graph), nodes (obj@graph))
-               #     invisible (xml.rpc (obj@uri, 'Cytoscape.createNodes', as.character (obj@window.id), new.nodes))
+               if (length (nodes (other.graph)) == 0) {
+                   write ('CytoscapeWindow.sendNodes, no nodes in other.graph.  returning', stderr ())
+                   return ()
+               }
+               
+               new.nodes = setdiff (nodes (other.graph), nodes (obj@graph))
+               
+               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "nodes", sep="/")
+               
+               #convert nodes to JSON format and send to Cytoscape
+               network.nodes.json <- toJSON(new.nodes)
+               result <- POST(url = api.str, body = network.nodes.json, encode = "json")
+               invisible(result)
            })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -1693,10 +1731,13 @@ setMethod ('showGraphicsDetails', 'CytoscapeConnectionClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('fitContent', 'CytoscapeWindowClass',
-           
+           # using all of the available window (the Cytoscape drawing canvas) display the current graph.
+           # fit an existing network view to current window
            function (obj) {
-               #     invisible (xml.rpc (obj@uri, 'Cytoscape.fitContent', obj@window.id))
-           })
+               api.str <- paste(obj@uri, pluginVersion(obj), "apply/fit", as.character(obj@window.id), sep="/")
+               result <- GET(api.str)
+               invisible(result)
+           }) # fitContent
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('fitSelectedContent', 'CytoscapeWindowClass',
@@ -3045,18 +3086,24 @@ setMethod ('setEdgeLabelWidthDirect', 'CytoscapeWindowClass',
            })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getNodeCount', 'CytoscapeWindowClass',
+           # get number of nodes in the network
+           # report the number of nodes in the current graph
            function (obj) {
-               #     id = as.character (obj@window.id)
-               #     count = xml.rpc (obj@uri, "Cytoscape.countNodes", id)
-               #     return (count)
-           })
+               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "nodes/count", sep="/")
+               result <- GET(api.str)
+               count <- unname(fromJSON(rawToChar(result$content)))
+               return (count)
+           }) # getNodeCount
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getEdgeCount', 'CytoscapeWindowClass',
+           # get number of edges in the network
+           # report the number of edges in the current graph
            function (obj) {
-               #     id = as.character (obj@window.id)
-               #     count = xml.rpc (obj@uri, "Cytoscape.countEdges", id)
-               #     return (count)
-           })
+               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "edges/count", sep="/")
+               result <- GET(api.str)
+               count <- unname(fromJSON(rawToChar(result$content)))
+               return (count)
+           }) # getEdgeCount
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getNodeAttribute', 'CytoscapeConnectionClass',
            
