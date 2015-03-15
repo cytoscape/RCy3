@@ -3254,9 +3254,15 @@ setMethod ('deleteNodeAttribute', 'CytoscapeConnectionClass',
            #NEWLY IMPLEMENTED
            # delete node attribute by deleting its column in the node table
            function (obj, attribute.name) {
-               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultnode/columns", as.character(attribute.name), sep="/")
-               result <- DELETE(url= api.str)
-               invisible(result)
+               if (attribute.name %in% getNodeAttributeNames(obj)){
+                   api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultnode/columns", as.character(attribute.name), sep="/")
+                   result <- DELETE(url= api.str)
+                   invisible(result)
+               } else{
+                   msg = paste (attribute.name, 'does not exist and thus could not be deleted.')
+                   write (msg, stderr ())
+               }
+               
            })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3264,9 +3270,14 @@ setMethod ('deleteEdgeAttribute', 'CytoscapeConnectionClass',
            #NEWLY IMPLEMENTED
            # delete edge attribute by deleting its column in the edge table
            function (obj, attribute.name) {
-               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns", as.character(attribute.name), sep="/")
-               result <- DELETE(url= api.str)
-               invisible(result)
+               if (attribute.name %in% getEdgeAttributeNames(obj)){
+                   api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns", as.character(attribute.name), sep="/")
+                   result <- DELETE(url= api.str)
+                   invisible(result)
+               } else{
+                   msg = paste (attribute.name, 'does not exist and thus could not be deleted.')
+                   write (msg, stderr ())
+               }
            })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3390,22 +3401,34 @@ setMethod ('getSelectedNodes', 'CytoscapeWindowClass',
                    result <- GET(url=api.str)
                    selected.true.false.vector <- fromJSON(rawToChar(result$content))
                    selected.true.false.vector <- selected.true.false.vector$values
-                   print(selected.true.false.vector)
                    
-                   # get the suids for the selected nodes
-                   selected.nodes <- suids[selected.true.false.vector]
                    
-                   # for each selected node get its name
-                   #TODO this might be able to be done via Georgi's dictionary
-                   result <- c()
-                   for (primaryKey in selected.nodes){
-                       #TODO looks like an API error
-                       api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultnode/rows", as.character(primaryKey), "name", sep="/")
-                       res <- GET(url = api.str)
-                       res <- fromJSON(rawToChar(res$content))
-                       result <- c(result, res)
+                   # if else statement to pull either a vector for all names or do individual calls.
+                   if (length(selected.true.false.vector[selected.true.false.vector==TRUE]) <= 10){
+                       # get the suids for the selected nodes
+                       selected.nodes <- suids[selected.true.false.vector]
+                       
+                       # for each selected node get its name
+                       #TODO this might be able to be done via Georgi's dictionary
+                       result <- c()
+                       for (primaryKey in selected.nodes){
+                           #TODO looks like an API error
+                           api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultnode/rows", as.character(primaryKey), "name", sep="/")
+                           res <- GET(url = api.str)
+                           res <- fromJSON(rawToChar(res$content))
+                           result <- c(result, res)
+                       }
+                       return (result)
+                   } else{
+                       #TODO not working properly. Names column has douplicated values. Kei.
+                       # get name table
+                       api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultnode/columns/name", sep="/")
+                       result <- GET(url=api.str)
+                       node.names <- fromJSON(rawToChar(result$content))
+                       node.names <- node.names$values
+                       selected.nodes <- node.names[selected.true.false.vector]
+                       return (selected.nodes)
                    }
-                   return (result)
                }
            }) # getSelectedNodes
 
@@ -3441,20 +3464,24 @@ setMethod ('invertNodeSelection', 'CytoscapeWindowClass',
            #UPDATE DOCUMENTATION
            # select all nodes that were not selected and deselect all nodes that were selected
            function (obj) {
+               pluginVersion <- pluginVersion(obj)
+               uri <- obj@uri
+               window.id <- as.character(obj@window.id)
+               
                # get suids
-               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "nodes", sep="/")
+               api.str <- paste(uri, pluginVersion, "networks", window.id, "nodes", sep="/")
                result <- GET(url=api.str)
                suids <- fromJSON(rawToChar(result$content))
                
                # get selected table as true false vector
-               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultnode/columns/selected", sep="/")
+               api.str <- paste(uri, pluginVersion, "networks", window.id, "tables/defaultnode/columns/selected", sep="/")
                result <- GET(url=api.str)
                selected.true.false.vector <- fromJSON(rawToChar(result$content))
                selected.true.false.vector <- selected.true.false.vector$values
                
                # invert all values in the selected column
                node.selection.inversion <- mapply(function(x,y) list(SUID = x, value=!y), suids, selected.true.false.vector, SIMPLIFY = FALSE)
-               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultnode/columns/selected", sep="/")
+               api.str <- paste(uri, pluginVersion, "networks", window.id, "tables/defaultnode/columns/selected", sep="/")
                node.selection.inversion.json <- toJSON(node.selection.inversion)
                result <- PUT(url = api.str, body = node.selection.inversion.json, encode = "json")
                
