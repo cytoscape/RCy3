@@ -3468,12 +3468,32 @@ setMethod ('deleteSelectedNodes', 'CytoscapeWindowClass',
            # In Cytoscape, delete all the selected nodes. Edges originating or terminating in
            # these nodes will be deleted also. The nodes will still exist in the corresponding
            # R graph until you explicitly delete them there as well.
+           # DELETE A NODE IN THE NETWORK
+           #TODO wait for Kei, to see if this function ideally deletes the rows in the tables as well
            function (obj) {
-               #get the nodes ids
-               #GEThttp://example.com/v1/networks/networkId/tables/tableType/rows/primaryKey
-               #     invisible (xml.rpc (obj@uri, 'Cytoscape.removeSelectedNodes', id, delete.from.root.graph.also, .convert=TRUE))
-               #and delete them
-               #DELETEhttp://example.com/v1/networks/networkId/nodes/nodeId
+               # get suids
+               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "nodes", sep="/")
+               result <- GET(url=api.str)
+               suids <- fromJSON(rawToChar(result$content))
+               #TODO remove this line when the the suids are not reversely sorted anymore
+               suids <- rev(suids)
+               #TODO remove this line when the the suids are not reversely sorted anymore END
+               
+               # get selected table as true false vector
+               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultnode/columns/selected", sep="/")
+               result <- GET(url=api.str)
+               selected.true.false.vector <- fromJSON(rawToChar(result$content))
+               selected.true.false.vector <- selected.true.false.vector$values
+               
+               # get the suids for the selected nodes
+               selected.nodes <- suids[selected.true.false.vector]
+               
+               #delete each selected node
+               for (nodeId in selected.nodes){
+                   api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "nodes", as.character(nodeId), sep="/")
+                   result <- DELETE(url= api.str)
+               }
+               invisible(result)
            }) # deleteSelectedNodes
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3520,11 +3540,33 @@ setMethod ('invertEdgeSelection', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('deleteSelectedEdges', 'CytoscapeWindowClass',
+           # In Cytoscape, remove all selected edges. These edges will still exist in the corresponding R graph until you delete them there as well.
            
            function (obj) {
-               #     id = as.character (obj@window.id)
-               #     delete.from.root.graph.also = TRUE
-               #     invisible (xml.rpc (obj@uri, 'Cytoscape.removeSelectedEdges', id, delete.from.root.graph.also, .convert=TRUE))
+               # get suids
+               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "edges", sep="/")
+               result <- GET(url=api.str)
+               suids <- fromJSON(rawToChar(result$content))
+               #TODO remove this line when the the suids are not reversely sorted anymore
+               suids <- rev(suids)
+               print(suids)
+               #TODO remove this line when the the suids are not reversely sorted anymore END
+               
+               # get selected table as true false vector
+               api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns/selected", sep="/")
+               result <- GET(url=api.str)
+               selected.true.false.vector <- fromJSON(rawToChar(result$content))
+               selected.true.false.vector <- selected.true.false.vector$values
+               
+               # get the suids for the selected nodes
+               selected.edges <- suids[selected.true.false.vector]
+               print(selected.edges)
+               #delete each selected node
+               for (edgeId in selected.edges){
+                   api.str <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "edges", as.character(edgeId), sep="/")
+                   result <- DELETE(url= api.str)
+               }
+               invisible(result)
            }) # deleteSelectedEdges
 
 #------------------------------------------------------------------------------------------------------------------------
