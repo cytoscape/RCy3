@@ -1256,7 +1256,6 @@ setMethod ('getNodePosition', 'CytoscapeWindowClass',
       }
       
       coordinates.list <- list()
-      cb <- c()
       # get node position for each node
       for (node.name in node.names){
           # convert node name into node SUID
@@ -1279,7 +1278,7 @@ setMethod ('getNodePosition', 'CytoscapeWindowClass',
           coordinates.list[[node.name]] <- list(x= node.x.position, y=node.y.position)
       }
       return(coordinates.list)
-    }) # cy.getNodePosition
+    }) # getNodePosition
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getNodeSize', 'CytoscapeWindowClass',
@@ -4057,13 +4056,14 @@ setMethod('setDefaultNodeSelectionColor', 'CytoscapeConnectionClass',
 setMethod ('getDefaultNodeReverseSelectionColor',  'CytoscapeConnectionClass',
 
    function (obj, vizmap.style.name='default') {
-#      return (xml.rpc (obj@uri, 'Cytoscape.getDefaultNodeReverseSelectionColor', vizmap.style.name))
+       return(getVisualProperty(obj, vizmap.style.name, 'NODE_PAINT'))
       })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setDefaultNodeReverseSelectionColor',  'CytoscapeConnectionClass',
 
    function (obj, new.color,vizmap.style.name='default') {
-#      invisible (xml.rpc (obj@uri, 'Cytoscape.setDefaultNodeReverseSelectionColor', vizmap.style.name, new.color))
+       style = list(visualProperty = "NODE_PAINT", value = new.color) 
+       setVisualProperty(obj, style, vizmap.style.name)
       })
 
 # ------------------------------------------------------------------------------
