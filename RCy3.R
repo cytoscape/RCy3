@@ -3569,13 +3569,33 @@ setMethod ('unhideAll', 'CytoscapeWindowClass',
 setMethod ('getFirstNeighbors', 'CytoscapeWindowClass',
 
    function (obj, node.names) {
-#       if (length (node.names) == 0)
-#         invisible ()
-#       if (length (node.names) == 1)
-#         neighbors = xml.rpc (obj@uri, 'Cytoscape.getNodeNeighbors', node.names)
-#       else
-#         neighbors = xml.rpc (obj@uri, 'Cytoscape.getNodesNeighbors', node.names)
-#      return (neighbors)
+      if (length (node.names) == 0){
+         return()
+      }else{
+         # map node names to node SUIDs
+         dict.indices = which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.names)
+         node.SUIDs = sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
+         
+         # network ID and cyREST API version
+         net.suid = as.character(obj@window.id)
+         version = pluginVersion(obj)
+         
+         # get first neighbors
+         # TODO at some later point it might be nice to return the first neighbors as nested lists
+         neighbor.names <- c()
+         
+         for (node.SUID in node.SUIDs){
+            # get first neighbors for each node
+            resource.uri <- paste(obj@uri, version, "networks", net.suid, "nodes", as.character(node.SUID), "neighbors", sep="/")
+            request.res <- GET(resource.uri)
+            first.neighbors.SUIDs <- fromJSON(rawToChar(request.res$content))
+            
+            # map node SUIDs to node names
+            dict.indices <- which(sapply(obj@suid.name.dict, function(s) { s$SUID }) %in% first.neighbors.SUIDs)
+            neighbor.names <- c(neighbor.names, sapply(obj@suid.name.dict[dict.indices], function(i) {i$name}))
+         }
+         return (neighbor.names)
+      }
       })  # getFirstNeighbors
 
 #------------------------------------------------------------------------------------------
