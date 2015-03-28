@@ -67,7 +67,7 @@ setGeneric ('getLineStyles',
 setGeneric ('getNodeShapes', 
   signature='obj', function(obj) standardGeneric ('getNodeShapes'))
 setGeneric ('getDirectlyModifiableVisualProperties', 
-  signature='obj', function(obj) standardGeneric ('getDirectlyModifiableVisualProperties'))
+  signature='obj', function(obj, vizmap.style.name="default") standardGeneric ('getDirectlyModifiableVisualProperties'))
 setGeneric ('getAttributeClassNames',	
   signature='obj', function(obj) standardGeneric ('getAttributeClassNames'))
 setGeneric ('setGraph', 
@@ -631,8 +631,12 @@ setMethod ('getNodeShapes', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getDirectlyModifiableVisualProperties', 'CytoscapeConnectionClass',
 
-  function (obj) {
-#     return (xml.rpc (obj@uri, 'Cytoscape.getVisualStyleModifiables'))
+  function (obj, vizmap.style.name="default") {
+        resource.uri = paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
+        request.res = GET(url=resource.uri)
+        visual.properties <- unname(fromJSON(rawToChar(request.res$content))[[1]])
+        visual.properties <- sapply(visual.properties, '[[', 1)
+        return(visual.properties)
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -2812,6 +2816,15 @@ set.node.or.edge.properties = function (host.uri, property.name, names, values)
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
+      net.SUID = as.character(obj@window.id)
+      version = pluginVersion(obj)
+      
+      edge.SUID <- 104
+      resource.uri = paste(obj@uri, version, "networks", net.SUID, "edges", as.character(edge.SUID), sep="/")
+      # request result
+      request.res = GET(resource.uri)
+      edge <- unname(fromJSON(rawToChar(request.res$content)))
+      print(edge)
 #     id = as.character (obj@window.id)
 #     for (edge.name in edge.names)
 #       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Color', as.character (new.value))
