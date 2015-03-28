@@ -615,10 +615,11 @@ setMethod('deleteWindow', 'CytoscapeConnectionClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('deleteAllWindows',  'CytoscapeConnectionClass',
-
-  function (obj) {
-#    ids = names (getWindowList (obj))
-#    invisible (sapply (ids, function (id)  xml.rpc (obj@uri, 'Cytoscape.destroyNetwork', id)))
+           # deletes all networks and associated windows in Cytoscape
+           function (obj) {
+              api.str = paste(obj@uri, pluginVersion(obj), "networks", sep="/")
+              result <- DELETE(api.str)
+              invisible(result)
     })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -641,9 +642,9 @@ setMethod ('getDirectlyModifiableVisualProperties', 'CytoscapeConnectionClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getAttributeClassNames', 'CytoscapeConnectionClass',
-
+# retrieve the names of the recognized and supported names for the class of any node or edge attribute.
   function (obj) {
-#     return (c ('floating|numeric|double', 'integer|int', 'string|char|character'))
+     return (c ('floating|numeric|double', 'integer|int', 'string|char|character'))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -1288,6 +1289,8 @@ setMethod ('getNodePosition', 'CytoscapeWindowClass',
 setMethod ('getNodeSize', 'CytoscapeWindowClass',
 
   function (obj, node.names) {
+     NODE_HEIGHT
+     NODE_WIDTH
 
 #    count = length (node.names)
 #    if (count == 1)
@@ -2416,17 +2419,37 @@ setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.color) {
-#     id = as.character (obj@window.id)
-#     if (length (node.names) == 1)
-#       node.names = rep (node.names, 2)
-#     converted.color = hexColorToInt (new.color)
-#     if (length (converted.color) == 1 && is.na (converted.color)) {
-#       write (sprintf ('illegal color string "%s" in RCytoscape::setNodeColorDirect'), stderr ())
-#       return ()
-#       }
-#     result = xml.rpc (obj@uri, "Cytoscape.setNodeFillColor", id, node.names,
-#                       converted.color$red, converted.color$green, converted.color$blue, FALSE)
-#     invisible (result)
+      # get network ID and version
+      net.SUID = as.character(obj@window.id)
+      version = pluginVersion(obj)
+      # get the views for the given network model
+      resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", sep="/")
+      request.res <- GET(resource.uri)
+      net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
+      view.SUID <- as.character(net.views.SUIDs[[1]])
+      
+      for (pos in seq(node.names)){
+         node.name <- node.names[pos]
+         current.color <- new.color[pos]
+         # map node name to node SUID
+         dict.indices = which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
+         node.SUID = sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
+         
+         # ensure the color is formated in correct hexadecimal style
+         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeColorDirect. It needs to be in hexadecimal.', new.color), stderr ())
+            return ()
+         }
+         
+         # request 
+         resource.uri = paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
+         node.SUID.JSON <- toJSON(list(list(visualProperty="NODE_FILL_COLOR", value=current.color)))
+         
+         # request result
+         request.res = PUT(resource.uri, body=node.SUID.JSON, encode="json")
+         } # end for (node.name in node.names)
+      
+      invisible(request.res)
      })
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are locked (that is, tied together).  see lockNodeDimensions (T/F)
@@ -2607,7 +2630,7 @@ setMethod ('setNodeBorderColorDirect', 'CytoscapeWindowClass',
 #     id = as.character (obj@window.id)
 #     if (length (node.names) == 1)
 #       node.names = rep (node.names, 2)
-#     converted.color = hexColorToInt (new.color)
+#     converted.color = ToInt (new.color)
 #     if (length (converted.color) == 1 && is.na (converted.color)) {
 #       write (sprintf ('illegal color string "%s" in RCytoscape::setNodeBorderColorDirect'), stderr ())
 #       return ()
@@ -2816,15 +2839,9 @@ set.node.or.edge.properties = function (host.uri, property.name, names, values)
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
-      net.SUID = as.character(obj@window.id)
-      version = pluginVersion(obj)
-      
-      edge.SUID <- 104
-      resource.uri = paste(obj@uri, version, "networks", net.SUID, "edges", as.character(edge.SUID), sep="/")
-      # request result
-      request.res = GET(resource.uri)
-      edge <- unname(fromJSON(rawToChar(request.res$content)))
-      print(edge)
+
+      #edge <- unname(fromJSON(rawToChar(request.res$content)))
+      #print(edge)
 #     id = as.character (obj@window.id)
 #     for (edge.name in edge.names)
 #       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Color', as.character (new.value))
@@ -3893,8 +3910,8 @@ initEdgeAttribute = function (graph, attribute.name, attribute.type, default.val
 #------------------------------------------------------------------------------------------------------------------------
 .cleanup = function (libpath)
 {
-#  cw.closer = CytoscapeWindow ('closer', create.window=FALSE)
-#  deleteAllWindows (cw.closer)
+   cw.closer = CytoscapeWindow ('closer', create.window=FALSE)
+   deleteAllWindows (cw.closer)
   
 } # .onUnload
 #------------------------------------------------------------------------------------------------------------------------
@@ -4142,23 +4159,23 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 hexColorToInt = function (hex.string)
 {
-#  if (substr (hex.string, 1, 1) == '#') {
-#    base.index = 2
-#    if (nchar (hex.string) != 7)
-#      return (NA)
-#    }
-#  else {
-#    base.index = 1
-#    if (nchar (hex.string) != 6)
-#      return (NA)
-#    }
-#
-#  red =   strtoi (substr (hex.string, base.index, base.index+1),   base=16)
-#  green = strtoi (substr (hex.string, base.index+2, base.index+3), base=16)
-#  blue =  strtoi (substr (hex.string, base.index+4, base.index+5), base=16)
-#
-#  return (list (red=red, green=green, blue=blue))
-
+   if (substr (hex.string, 1, 1) == '#') {
+      base.index = 2
+      if (nchar (hex.string) != 7)
+         return (NA)
+   }
+   else {
+      base.index = 1
+      if (nchar (hex.string) != 6)
+         return (NA)
+   }
+   
+   red =   strtoi (substr (hex.string, base.index, base.index+1),   base=16)
+   green = strtoi (substr (hex.string, base.index+2, base.index+3), base=16)
+   blue =  strtoi (substr (hex.string, base.index+4, base.index+5), base=16)
+   
+   return (list (red=red, green=green, blue=blue))
+   
 } # hexColorToInt
 #-----------------------------------------------------------------------------------------------------------------------
 .classicGraphToNodePairTable = function (g)
