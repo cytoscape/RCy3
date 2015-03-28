@@ -2106,6 +2106,7 @@ setMethod('setDefaultEdgeLineWidth', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultEdgeColor', 'CytoscapeConnectionClass', 
   function(obj, new.color, vizmap.style.name='default') {
+     # TO DO Tanja maybe change to EDGE_SELECTED_PAINT
     style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
     setVisualProperty(obj, style, vizmap.style.name)
 })
@@ -4083,13 +4084,14 @@ setMethod('setDefaultEdgeSelectionColor', 'CytoscapeConnectionClass',
 setMethod ('getDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 
    function (obj, vizmap.style.name='default') {
-#      return (xml.rpc (obj@uri, 'Cytoscape.getDefaultEdgeReverseSelectionColor', vizmap.style.name))
+      return(getVisualProperty(obj, vizmap.style.name, 'EDGE_PAINT'))
       })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 
    function (obj, new.color, vizmap.style.name='default') {
-#      invisible (xml.rpc (obj@uri, 'Cytoscape.setDefaultEdgeReverseSelectionColor', vizmap.style.name, new.color))
+      style = list(visualProperty = "EDGE_PAINT", value = new.color) 
+      setVisualProperty(obj, style, vizmap.style.name)
       })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('saveImage', 'CytoscapeWindowClass',
