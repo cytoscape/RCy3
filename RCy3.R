@@ -3118,8 +3118,21 @@ setMethod('getEdgeCount', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('getNodeAttribute', 'CytoscapeConnectionClass', 
   function (obj, node.name, attribute.name) {
-    
-    # return (xml.rpc (obj@uri, "Cytoscape.getNodeAttribute", node.name, attribute.name))
+     # map node names to node SUIDs
+     dict.indices = which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
+     node.SUID = sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
+     
+     # network ID and cyREST API version
+     net.suid = as.character(obj@window.id)
+     version = pluginVersion(obj)
+     
+     # get the node attribute in the nodes table
+     resource.uri <- paste(obj@uri, version, "networks", net.suid, "tables/defaultnode/rows", as.character(node.SUID), attribute.name, sep="/")
+     request.res <- GET(resource.uri)
+     
+     node.attribute.value <- unname(rawToChar(request.res$content))
+
+     return(node.attribute.value)
 })
 
 # ------------------------------------------------------------------------------
