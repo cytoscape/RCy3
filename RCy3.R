@@ -416,6 +416,7 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 # the 'existing window' class constructor, defined as a simple function, with no formal link to the class
 existing.CytoscapeWindow = function (title, host='localhost', port=9000, copy.graph.from.cytoscape.to.R=FALSE)
 {
+    
 #  host = res$host
 #  port = res$port
 #  
@@ -567,7 +568,7 @@ setMethod('getWindowID', 'CytoscapeConnectionClass',
     
     window.entry = which(as.character(current.window.list) == window.title)
     window.id = as.character(names(current.window.list)[window.entry])
-    
+
     return(window.id)
 })
 
@@ -1239,34 +1240,45 @@ setMethod ('setNodePosition', 'CytoscapeWindowClass',
 setMethod ('getNodePosition', 'CytoscapeWindowClass',
 
   function (obj, node.names) {
-
-#    count = length (node.names)
-#    if (count == 1)
-#      node.names = rep (node.names, 2)   # work around R's distinction between scalar and list of strings
-#    node.name.delimiter = ':-:'
-#    xy.delimiter = ';;'
-#    raw.result = xml.rpc (obj@uri, 'Cytoscape._rGetNodesPositions', obj@window.id, node.names, node.name.delimiter, xy.delimiter)
-#    #raw.result = xml.rpc (obj@uri, 'Cytoscape._rGetNodesPositions', obj@window.id, node.names)
-#     # sample raw result (16 dec 2010): "2022:417.0,122.0" "659:156.0,0.0"   
-#     # now parse this list of strings into directly usable values, a named list (using node ID's) with x,y pair values
-#
-#    #printf ('raw.result: %s', raw.result)
-#    tokens = strsplit (raw.result, node.name.delimiter)
-#    result = list ()
-#    for (token in tokens) {
-#      #printf ('token: %s', list.to.string (token))
-#      name = token [1]
-#      #printf ('name: %s', name)
-#      xy.tokens = strsplit (token [2], xy.delimiter)
-#      #printf ('xy.tokens: %s', list.to.string (xy.tokens))
-#      x = as.integer (xy.tokens[[1]][1])
-#      y = as.integer (xy.tokens[[1]][2])
-#      #printf ('x: %d', x)
-#      #printf ('y: %d', y)
-#      result [[name]] = list (x=x, y=y)
-#      } # for token
-#
-#    return (result)
+      net.suid = as.character(obj@window.id)
+      # cyREST API version
+      version = pluginVersion(obj)
+      # get the views for the given network model
+      resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", sep="/")
+      request.res <- GET(resource.uri)
+      net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
+      
+      view.SUID <- as.character(net.views.SUIDs[[1]])
+      
+      # if multiple views are found, inform the user about it
+      if(length(net.views.SUIDs) > 1) {
+          write(sprintf("RCy3::getNodePosition() - %d views found... getting node coordinates of the first one", length(net.views.SUIDs)), stderr())
+      }
+      
+      coordinates.list <- list()
+      cb <- c()
+      # get node position for each node
+      for (node.name in node.names){
+          # convert node name into node SUID
+          dict.indices = which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
+          query.node = sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
+          
+          # get node x coordinate
+          resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_X_LOCATION", sep="/")
+          request.res <- GET(resource.uri)
+          node.x.position <- fromJSON(rawToChar(request.res$content))
+          node.x.position <- node.x.position[[2]]
+          
+          # get node y coordinate
+          resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_Y_LOCATION", sep="/")
+          request.res <- GET(resource.uri)
+          node.y.position <- fromJSON(rawToChar(request.res$content))
+          node.y.position <- node.y.position[[2]]
+          
+          # add x and y coordinates to the coordinates list
+          coordinates.list[[node.name]] <- list(x= node.x.position, y=node.y.position)
+      }
+      return(coordinates.list)
     }) # cy.getNodePosition
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -1657,16 +1669,40 @@ setMethod('getCenter', 'CytoscapeWindowClass',
     resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
     request.res <- GET(resource.uri)
     y.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
-    
     return(list(x = x.coordinate, y = y.coordinate))
 })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setCenter', 'CytoscapeWindowClass',
-
+    # This method can be used to pan and scroll the Cytoscape canvas, which is adjusted (moved) so that the specified
+    # x and y coordinates are at the center of the visible window.
    function (obj, x, y) {
-#     tmp = xml.rpc (obj@uri, 'Cytoscape.setCenter', obj@window.id, as.numeric (x), as.numeric (y))
-#     invisible (tmp)
+       net.suid = as.character(obj@window.id)
+       # cyREST API version
+       version = pluginVersion(obj)
+       # get the views for the given network model
+       resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", sep="/")
+       request.res <- GET(resource.uri)
+       net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
+       
+       view.SUID <- as.character(net.views.SUIDs[[1]])
+       
+       # if multiple views are found, inform the user about it
+       if(length(net.views.SUIDs) > 1) {
+           write(sprintf("RCy3::setCenter() - %d views found... setting coordinates of the first one", length(net.views.SUIDs)), stderr())
+       }
+       
+       # set the X-coordinate
+       resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/")
+       new.x.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_X_LOCATION", value=x)))
+       request.res <- PUT(resource.uri, body=new.x.coordinate.JSON, encode="json")
+       #x.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
+       # set the Y-coordinate
+       resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
+       new.y.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_Y_LOCATION", value=y)))
+       request.res <- PUT(resource.uri, body=new.y.coordinate.JSON, encode="json")
+       invisible(request.res)
+       #y.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]       
      })
 
 # ------------------------------------------------------------------------------
