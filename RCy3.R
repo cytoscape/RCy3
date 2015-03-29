@@ -201,7 +201,7 @@ setGeneric ('setNodeWidthDirect',         signature='obj', function (obj, node.n
 setGeneric ('setNodeHeightDirect',        signature='obj', function (obj, node.names, new.heights) standardGeneric ('setNodeHeightDirect'))
 setGeneric ('setNodeShapeDirect',         signature='obj', function (obj, node.names, new.shapes) standardGeneric ('setNodeShapeDirect'))
 setGeneric ('setNodeImageDirect',         signature='obj', function (obj, node.names, image.urls) standardGeneric ('setNodeImageDirect'))
-setGeneric ('setNodeColorDirect',         signature='obj', function (obj, node.names, new.color) standardGeneric ('setNodeColorDirect'))
+setGeneric ('setNodeColorDirect',         signature='obj', function (obj, node.names, new.colors) standardGeneric ('setNodeColorDirect'))
 setGeneric ('setNodeBorderWidthDirect',   signature='obj', function (obj, node.names, new.sizes) standardGeneric ('setNodeBorderWidthDirect'))
 setGeneric ('setNodeBorderColorDirect',   signature='obj', function (obj, node.names, new.color) standardGeneric ('setNodeBorderColorDirect'))
 
@@ -2418,38 +2418,16 @@ setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.color) {
-      # get network ID and version
-      net.SUID = as.character(obj@window.id)
-      version = pluginVersion(obj)
-      # get the views for the given network model
-      resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", sep="/")
-      request.res <- GET(resource.uri)
-      net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
-      view.SUID <- as.character(net.views.SUIDs[[1]])
-      
-      for (pos in seq(node.names)){
-         node.name <- node.names[pos]
-         current.color <- new.color[pos]
-         # map node name to node SUID
-         dict.indices = which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
-         node.SUID = sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
-         
+   function (obj, node.names, new.colors) {
+      for (current.color in new.colors){
          # ensure the color is formated in correct hexadecimal style
          if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
             write (sprintf ('illegal color string "%s" in RCytoscape::setNodeColorDirect. It needs to be in hexadecimal.', new.color), stderr ())
             return ()
          }
-         
-         # request 
-         resource.uri = paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
-         node.SUID.JSON <- toJSON(list(list(visualProperty="NODE_FILL_COLOR", value=current.color)))
-         
-         # request result
-         request.res = PUT(resource.uri, body=node.SUID.JSON, encode="json")
-         } # end for (node.name in node.names)
-      
-      invisible(request.res)
+      }
+      #set the node color direct
+      return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_FILL_COLOR"))
      })
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are locked (that is, tied together).  see lockNodeDimensions (T/F)
@@ -3147,8 +3125,6 @@ setMethod('getAllNodeAttributes', 'CytoscapeWindowClass',
       }
       nodes.of.interest = getSelectedNodes(obj)
     }
-    
-    
 
 })
 
@@ -4358,4 +4334,33 @@ setVisualProperty <- function(obj, style.string, vizmap.style.name='default') {
 # obtain every other value for vector : used to resolve CyREST bug with returning column values
 obtainEveryOtherValue <- function(v) {
   return(v[c(TRUE, FALSE)])
+}
+#
+setNodePropertyDirect <- function(obj, node.names, new.value, visual.property){
+   # get network ID and version
+   net.SUID = as.character(obj@window.id)
+   version = pluginVersion(obj)
+   
+   # get the views for the given network model
+   resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", sep="/")
+   request.res <- GET(resource.uri)
+   net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
+   view.SUID <- as.character(net.views.SUIDs[[1]])
+   
+   for (pos in seq(node.names)){
+      node.name <- node.names[pos]
+      current.value <- new.value[pos]
+      # map node name to node SUID
+      dict.indices = which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
+      node.SUID = sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
+      
+      # request 
+      resource.uri = paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
+      node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
+      
+      # request result
+      request.res = PUT(resource.uri, body=node.SUID.JSON, encode="json")
+   } # end for (node.name in node.names)
+   
+   invisible(request.res)
 }
