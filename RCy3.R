@@ -219,7 +219,7 @@ setGeneric ('setEdgeOpacityDirect',         signature='obj', function (obj, edge
 
 setGeneric ('setEdgeColorDirect', signature='obj', function (obj, edge.names, new.value) standardGeneric ('setEdgeColorDirect'))
 setGeneric ('setEdgeLabelDirect', signature='obj', function (obj, edge.names, new.value) standardGeneric ('setEdgeLabelDirect'))
-#setGeneric ('setEdgeFontFaceDirect', signature='obj', function (obj, edge.names, new.value) standardGeneric ('setEdgeFontFaceDirect'))
+setGeneric ('setEdgeFontFaceDirect', signature='obj', function (obj, edge.names, new.value) standardGeneric ('setEdgeFontFaceDirect'))
 setGeneric ('setEdgeFontSizeDirect', signature='obj', function (obj, edge.names, new.value) standardGeneric ('setEdgeFontSizeDirect'))
 setGeneric ('setEdgeLabelColorDirect', signature='obj', function (obj, edge.names, new.value) standardGeneric ('setEdgeLabelColorDirect'))
 setGeneric ('setEdgeTooltipDirect', signature='obj', function (obj, edge.names, new.values) standardGeneric ('setEdgeTooltipDirect'))
@@ -2436,7 +2436,7 @@ setMethod ('setNodeSizeDirect', 'CytoscapeWindowClass',
       for (current.size in new.sizes){
          # ensure the sizes are numbers
          if (!is.double(current.size)) {
-            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeSizeDirect. It needs to be a number.', current.size), stderr ())
+            write (sprintf ('illegal size string "%s" in RCytoscape::setNodeSizeDirect. It needs to be a number.', current.size), stderr ())
             return ()
          }
       }
@@ -2452,7 +2452,7 @@ setMethod ('setNodeWidthDirect', 'CytoscapeWindowClass',
       for (current.width in new.widths){
          # ensure the sizes are numbers
          if (!is.double(current.width)) {
-            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeWidthDirect. It needs to be a number.', current.width), stderr ())
+            write (sprintf ('illegal size string "%s" in RCytoscape::setNodeWidthDirect. It needs to be a number.', current.width), stderr ())
             return ()
          }
       }
@@ -2467,7 +2467,7 @@ setMethod ('setNodeHeightDirect', 'CytoscapeWindowClass',
       for (current.height in new.heights){
          # ensure the sizes are numbers
          if (!is.double(current.height)) {
-            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeHeightDirect. It needs to be a number.', current.height), stderr ())
+            write (sprintf ('illegal size string "%s" in RCytoscape::setNodeHeightDirect. It needs to be a number.', current.height), stderr ())
             return ()
          }
       }
@@ -2488,7 +2488,7 @@ setMethod ('setNodeFontSizeDirect', 'CytoscapeWindowClass',
       for (current.size in new.sizes){
          # ensure the sizes are numbers
          if (!is.double(current.size)) {
-            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeFontSizeDirect. It needs to be a number.', current.size), stderr ())
+            write (sprintf ('illegal size string "%s" in RCytoscape::setNodeFontSizeDirect. It needs to be a number.', current.size), stderr ())
             return ()
          }
       }
@@ -2547,7 +2547,7 @@ setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
       for (current.size in new.sizes){
          # ensure the sizes are numbers
          if (!is.double(current.size)) {
-            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeBorderWidthDirect. It needs to be a number.', current.size), stderr ())
+            write (sprintf ('illegal size string "%s" in RCytoscape::setNodeBorderWidthDirect. It needs to be a number.', current.size), stderr ())
             return ()
          }
       }
@@ -2631,10 +2631,18 @@ setMethod ('setNodeLabelOpacityDirect', 'CytoscapeWindowClass',
 setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
 
    function (obj, edge.names, new.values) {
-#     property.names = c ('Edge Opacity',  'Edge Source Arrow Opacity', 'Edge Target Arrow Opacity')
-#     host.uri = obj@uri
-#     for (property.name in property.names)
-#       set.node.or.edge.properties (host.uri, property.name, edge.names, new.values)
+      for (current.value in new.values){
+         # ensure the opacity value is a double and between 0 and 255
+         if (! is.double(current.value) || current.value < 0  || current.value > 255) {
+            write (sprintf ('illegal opacity string "%s" in RCytoscape::setEdgeLabelOpacityDirect. It needs to be between 0 and 255.', current.value), stderr ())
+            return ()
+         }
+      }
+      # set the node property direct
+      #     property.names = c ('Edge Opacity',  'Edge Source Arrow Opacity', 'Edge Target Arrow Opacity')
+      #res <- setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LABEL_TRANSPARENCY")
+      res <- setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TRANSPARENCY")
+      invisible(res)
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -2672,34 +2680,7 @@ set.node.or.edge.properties = function (host.uri, property.name, names, values)
     } # else: 
 
 } # set.node.or.edge.properties
-#------------------------------------------------------------------------------------------------------------------------
-#setMethod ('setNodeFillOpacitiesDirect', 'CytoscapeWindowClass',
-#   function (obj, node.names, new.values) {
-#     id = as.character (obj@window.id)
-#     if (length (new.values) == 1)
-#       new.values = rep (new.values, length (node.names))
-#     properties = rep ('Node Opacity', length (node.names))
-#     result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.values))
-#     invisible (result)
-#     })
-#------------------------------------------------------------------------------------------------------------------------
-#setMethod ('setNodeLabelOpacityDirect', 'CytoscapeWindowClass',
-#   function (obj, node.names, new.value) {
-#     id = as.character (obj@window.id)
-#     for (node.name in node.names)
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.name, 'Node Label Opacity', as.character (new.value))
-#     invisible (result)
-#     })
-#------------------------------------------------------------------------------------------------------------------------
-#setMethod ('setNodeLabelOpacitiesDirect', 'CytoscapeWindowClass',
-#   function (obj, node.names, new.values) {
-#     id = as.character (obj@window.id)
-#     if (length (new.values) == 1)
-#       new.values = rep (new.values, length (node.names))
-#     properties = rep ('Node Label Opacity', length (node.names))
-#     result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.values))
-#     invisible (result)
-#     })
+
 #------------------------------------------------------------------------------------------------------------------------
 #setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
 #
@@ -2726,21 +2707,6 @@ set.node.or.edge.properties = function (host.uri, property.name, names, values)
 #       } # multiple edges
 #     })
 #------------------------------------------------------------------------------------------------------------------------
-#setMethod ('setEdgeOpacitiesDirect', 'CytoscapeWindowClass',
-#   function (obj, edge.names, new.values) {
-#     id = as.character (obj@window.id)
-#     if (length (new.values) == 1)
-#       new.values = rep (new.values, length (edge.names))
-#     properties = rep ('Edge Opacity', length (edge.names))
-#     print ('--- setEdgeOpacitiesDirect')
-#     print (edge.names)
-#     print (properties)
-#     print (as.character (new.values))
-#     result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperties", edge.names, properties, as.character (new.values))
-#     print ('--- back from xml.rpc')
-#     invisible (result)
-#     })
-#------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
       for (current.color in new.value){
@@ -2757,26 +2723,23 @@ setMethod ('setEdgeColorDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
-#     id = as.character (obj@window.id)
-#     for (edge.name in edge.names)
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Label', as.character (new.value))
-#     invisible (result)
+      # set the edge color direct
+      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL"))
      })
 #------------------------------------------------------------------------------------------------------------------------
-#setMethod ('setEdgeFontFaceDirect', 'CytoscapeWindowClass',
-#   function (obj, edge.names, new.value) {
-#     id = as.character (obj@window.id)
-#     for (edge.name in edge.names)
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Font Face', as.character (new.value))
-#     invisible (result)
-#     })
+setMethod ('setEdgeFontFaceDirect', 'CytoscapeWindowClass',
+   function (obj, edge.names, new.value) {
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_FONT_FACE"))
+
+     })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeFontSizeDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
       for (current.size in new.value){
          # ensure the sizes are numbers
          if (!is.double(current.size)) {
-            write (sprintf ('illegal color string "%s" in RCytoscape::setEdgeFontSizeDirect. It needs to be a number.', current.size), stderr ())
+            write (sprintf ('illegal font string "%s" in RCytoscape::setEdgeFontSizeDirect. It needs to be a number.', current.size), stderr ())
             return ()
          }
       }
@@ -2819,31 +2782,29 @@ setMethod ('setEdgeTooltipDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLineWidthDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
-#     id = as.character (obj@window.id)
-#     for (edge.name in edge.names)
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Line Width', as.character (new.value))
-#     invisible (result)
+      for (current.size in new.value){
+         # ensure the sizes are numbers
+         if (!is.double(current.size)) {
+            write (sprintf ('illegal size string "%s" in RCytoscape::setEdgeLineWidthDirect. It needs to be a number.', current.size), stderr ())
+            return ()
+         }
+      }
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_WIDTH"))
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
-
    function (obj, edge.names, new.values) {
-#     id = as.character (obj@window.id)
-#
-#     if (length (new.values) == 1)
-#       new.values = rep (new.values, length (edge.names))
-#     
-#     if (length (edge.names) != length (new.values)) {
-#       msg = sprintf ('error in RCytoscape::setEdgeLineStyleDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-#                      length (new.values), length (edge.names))
-#       write (msg, stderr ())
-#       return ()
-#       }
-#
-#     for (i in 1:length (edge.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.names [i], 'Edge Line Style', as.character (new.values [i]))
-# 
-#    invisible (result)
+      # TODO this if statement should be implemented for all node/edge direct functions
+      #     if (length (edge.names) != length (new.values)) {
+      #       msg = sprintf ('error in RCytoscape::setEdgeLineStyleDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+      #                      length (new.values), length (edge.names))
+      #       write (msg, stderr ())
+      #       return ()
+      #       }
+      
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LINE_TYPE"))
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
@@ -2939,10 +2900,15 @@ setMethod ('setEdgeTargetArrowColorDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelOpacityDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
-#     id = as.character (obj@window.id)
-#     for (edge.name in edge.names)
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Label Opacity', as.character (new.value))
-#     invisible (result)
+      for (current.value in new.value){
+         # ensure the opacity value is a double and between 0 and 255
+         if (! is.double(current.value) || current.value < 0  || current.value > 255) {
+            write (sprintf ('illegal opacity string "%s" in RCytoscape::setEdgeLabelOpacityDirect. It needs to be between 0 and 255.', current.value), stderr ())
+            return ()
+         }
+      }
+      # set the node property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_TRANSPARENCY"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3002,6 +2968,7 @@ setMethod ('setEdgeTargetArrowOpacityDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelWidthDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
+      EDGE_LABEL_TRANSPARENCY
 #     id = as.character (obj@window.id)
 #     for (edge.name in edge.names)
 #       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Label Width', as.character (new.value))
