@@ -203,7 +203,7 @@ setGeneric ('setNodeShapeDirect',         signature='obj', function (obj, node.n
 setGeneric ('setNodeImageDirect',         signature='obj', function (obj, node.names, image.urls) standardGeneric ('setNodeImageDirect'))
 setGeneric ('setNodeColorDirect',         signature='obj', function (obj, node.names, new.colors) standardGeneric ('setNodeColorDirect'))
 setGeneric ('setNodeBorderWidthDirect',   signature='obj', function (obj, node.names, new.sizes) standardGeneric ('setNodeBorderWidthDirect'))
-setGeneric ('setNodeBorderColorDirect',   signature='obj', function (obj, node.names, new.color) standardGeneric ('setNodeBorderColorDirect'))
+setGeneric ('setNodeBorderColorDirect',   signature='obj', function (obj, node.names, new.colors) standardGeneric ('setNodeBorderColorDirect'))
 
 setGeneric ('setNodeOpacityDirect',       signature='obj', function (obj, node.names, new.values) standardGeneric ('setNodeOpacityDirect'))
 setGeneric ('setNodeFillOpacityDirect',   signature='obj', function (obj, node.names, new.values) standardGeneric ('setNodeFillOpacityDirect'))
@@ -2422,7 +2422,7 @@ setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
       for (current.color in new.colors){
          # ensure the color is formated in correct hexadecimal style
          if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeColorDirect. It needs to be in hexadecimal.', new.color), stderr ())
+            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
             return ()
          }
       }
@@ -2603,84 +2603,74 @@ setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeBorderColorDirect', 'CytoscapeWindowClass',
-
-   function (obj, node.names, new.color) {
-#     id = as.character (obj@window.id)
-#     if (length (node.names) == 1)
-#       node.names = rep (node.names, 2)
-#     converted.color = ToInt (new.color)
-#     if (length (converted.color) == 1 && is.na (converted.color)) {
-#       write (sprintf ('illegal color string "%s" in RCytoscape::setNodeBorderColorDirect'), stderr ())
-#       return ()
-#       }
-#     result = xml.rpc (obj@uri, "Cytoscape.setNodeBorderColor", id, node.names,
-#                       converted.color$red, converted.color$green, converted.color$blue, FALSE)
-#     invisible (result)
+   function (obj, node.names, new.colors) {
+      for (current.color in new.colors){
+         # ensure the color is formated in correct hexadecimal style
+         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeBorderColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
+            return ()
+         }
+      }
+      #set the node border color direct
+      return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_BORDER_PAINT"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeOpacityDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.values) {
-     
-#  if (length (node.names) == 1) {
-#    names = rep (node.names [1], 3)
-#    values = rep (new.values [1], 3)
-#    properties = c ('Node Opacity', 'Node Border Opacity', 'Node Label Opacity') 
-#    target.function = "Cytoscape.setNodeProperties"
-#    result = xml.rpc (obj@uri, target.function, names, properties, as.character (values))
-#    invisible (result)
-#    } # 1 name only
-#  else {
-#    count = length (node.names)
-#    if (length (new.values) == 1)  # apply this one value to all nodes or edges
-#      values = rep (new.values, 3 * count)
-#    else 
-#      values = c (rep (new.values, 3))
-#    properties = c (rep ('Node Opacity', count), rep ('Node Border Opacity', count), rep ('Node Label Opacity', count))
-#    names = rep (node.names, 3)
-#    #print (names)
-#    #print (properties)
-#    #print (as.character (values))
-#    target.function = "Cytoscape.setNodeProperties"
-#    result = xml.rpc (obj@uri, target.function, names, properties, as.character (values))
-#    #print ('--- back from xml.rpc')
-#    invisible (result)
-#    } # else: 
+      for (current.value in new.values){
+         # ensure the opacity value is a double and between 0 and 255
+         if (! is.double(current.value) || current.value < 0  || current.value > 255) {
+            write (sprintf ('illegal opacity string "%s" in RCytoscape::setNodeOpacityDirect. It needs to be between 0 and 255.', current.value), stderr ())
+            return ()
+         }
+      }
+      res <- setNodePropertyDirect(obj, node.names, new.values, "NODE_TRANSPARENCY")
+      res <- setNodePropertyDirect(obj, node.names, new.values, "NODE_BORDER_TRANSPARENCY")
+      res <- setNodePropertyDirect(obj, node.names, new.values, "NODE_LABEL_TRANSPARENCY")
+      invisible(res)
     })
 #------------------------------------------------------------------------------------------------------------------------
-#setMethod ('setNodeOpacitiesDirect', 'CytoscapeWindowClass',
-#   function (obj, node.names, new.values) {
-#     id = as.character (obj@window.id)
-#     result = setNodeFillOpacitiesDirect (obj, node.names, new.values)
-#     result = setNodeLabelOpacitiesDirect (obj, node.names, new.values)
-#     result = setNodeBorderOpacitiesDirect (obj, node.names, new.values)
-#     invisible (result)
-#     })
-#------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeFillOpacityDirect', 'CytoscapeWindowClass',
-
    function (obj, node.names, new.values) {
-#     property.name = 'Node Opacity'
-#     host.uri = obj@uri
-#     set.node.or.edge.properties (host.uri, property.name, node.names, new.values)
+      for (current.value in new.values){
+         # ensure the opacity value is between 0 and 255
+         if (!is.double(current.value) || current.value < 0  || current.value > 255) {
+            write (sprintf ('illegal opacity string "%s" in RCytoscape::setNodeFillOpacityDirect. It needs to be a double and between 0 and 255.', current.value), stderr ())
+            return ()
+         }
+      }
+      #set the node border color direct
+      return(setNodePropertyDirect(obj, node.names, new.values, "NODE_TRANSPARENCY"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeBorderOpacityDirect', 'CytoscapeWindowClass',
-
    function (obj, node.names, new.values) {
-#     property.name = 'Node Border Opacity'
-#     host.uri = obj@uri
-#     set.node.or.edge.properties (host.uri, property.name, node.names, new.values)
+      for (current.value in new.values){
+         # ensure the opacity value is a double and between 0 and 255
+         if (! is.double(current.value) || current.value < 0  || current.value > 255) {
+            write (sprintf ('illegal opacity string "%s" in RCytoscape::setNodeBorderOpacityDirect. It needs to be between 0 and 255.', current.value), stderr ())
+            return ()
+         }
+      }
+      #set the node property direct
+      return(setNodePropertyDirect(obj, node.names, new.values, "NODE_BORDER_TRANSPARENCY"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeLabelOpacityDirect', 'CytoscapeWindowClass',
 
    function (obj, node.names, new.values) {
-#     property.name = 'Node Label Opacity'
-#     host.uri = obj@uri
-#     set.node.or.edge.properties (host.uri, property.name, node.names, new.values)
+      for (current.value in new.values){
+         # ensure the opacity value is a double and between 0 and 255
+         if (! is.double(current.value) || current.value < 0  || current.value > 255) {
+            write (sprintf ('illegal opacity string "%s" in RCytoscape::setNodeLabelOpacityDirect. It needs to be between 0 and 255.', current.value), stderr ())
+            return ()
+         }
+      }
+      #set the node property direct
+      return(setNodePropertyDirect(obj, node.names, new.values, "NODE_LABEL_TRANSPARENCY"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -2735,24 +2725,6 @@ set.node.or.edge.properties = function (host.uri, property.name, names, values)
 #     if (length (new.values) == 1)
 #       new.values = rep (new.values, length (node.names))
 #     properties = rep ('Node Opacity', length (node.names))
-#     result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.values))
-#     invisible (result)
-#     })
-#------------------------------------------------------------------------------------------------------------------------
-#setMethod ('setNodeBorderOpacityDirect', 'CytoscapeWindowClass',
-#   function (obj, node.names, new.value) {
-#     id = as.character (obj@window.id)
-#     for (node.name in node.names)
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.name, 'Node Border Opacity', as.character (new.value))
-#     invisible (result)
-#     })
-#------------------------------------------------------------------------------------------------------------------------
-#setMethod ('setNodeBorderOpacitiesDirect', 'CytoscapeWindowClass',
-#   function (obj, node.names, new.values) {
-#     id = as.character (obj@window.id)
-#     if (length (new.values) == 1)
-#       new.values = rep (new.values, length (node.names))
-#     properties = rep ('Node Border Opacity', length (node.names))
 #     result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.values))
 #     invisible (result)
 #     })
@@ -4336,7 +4308,7 @@ obtainEveryOtherValue <- function(v) {
   return(v[c(TRUE, FALSE)])
 }
 #
-setNodePropertyDirect <- function(obj, node.names, new.value, visual.property){
+setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
    # get network ID and version
    net.SUID = as.character(obj@window.id)
    version = pluginVersion(obj)
@@ -4349,7 +4321,7 @@ setNodePropertyDirect <- function(obj, node.names, new.value, visual.property){
    
    for (pos in seq(node.names)){
       node.name <- node.names[pos]
-      current.value <- new.value[pos]
+      current.value <- new.values[pos]
       # map node name to node SUID
       dict.indices = which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
       node.SUID = sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
