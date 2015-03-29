@@ -2638,9 +2638,9 @@ setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      # set the node property direct
+      # set the edge property direct
       #     property.names = c ('Edge Opacity',  'Edge Source Arrow Opacity', 'Edge Target Arrow Opacity')
-      #res <- setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LABEL_TRANSPARENCY")
+      res <- setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LABEL_TRANSPARENCY")
       res <- setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TRANSPARENCY")
       invisible(res)
      })
@@ -2796,12 +2796,12 @@ setMethod ('setEdgeLineWidthDirect', 'CytoscapeWindowClass',
 setMethod ('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.values) {
       # TODO this if statement should be implemented for all node/edge direct functions
-      #     if (length (edge.names) != length (new.values)) {
-      #       msg = sprintf ('error in RCytoscape::setEdgeLineStyleDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-      #                      length (new.values), length (edge.names))
-      #       write (msg, stderr ())
-      #       return ()
-      #       }
+      if (length (edge.names) != length (new.values)) {
+         msg = sprintf ('error in RCytoscape::setEdgeLineStyleDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+                        length (new.values), length (edge.names))
+         write (msg, stderr ())
+         return ()
+      }
       
       # set the edge property direct
       return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LINE_TYPE"))
@@ -2810,90 +2810,76 @@ setMethod ('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
 setMethod ('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
 
    function (obj, edge.names, new.values) {
-#     id = as.character (obj@window.id)
-#
-#     if (length (new.values) == 1)
-#       new.values = rep (new.values, length (edge.names))
-#     
-#     if (length (edge.names) != length (new.values)) {
-#       msg = sprintf ('error in RCytoscape::setEdgeSourceArrowShapeDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-#                      length (new.values), length (edge.names))
-#       write (msg, stderr ())
-#       return ()
-#       }
-#
-#     for (i in 1:length (edge.names)) 
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.names [i], 'Edge Source Arrow Shape', as.character (new.values [i]))
-#
-#     invisible (result)
+      if (length (edge.names) != length (new.values)) {
+         msg = sprintf ('error in RCytoscape::setEdgeSourceArrowShapeDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+                        length (new.values), length (edge.names))
+         write (msg, stderr ())
+         return ()
+      }
+      
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_SOURCE_ARROW_SHAPE"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTargetArrowShapeDirect', 'CytoscapeWindowClass',
 
    function (obj, edge.names, new.values) {
-#     id = as.character (obj@window.id)
-#
-#     if (length (new.values) == 1)
-#       new.values = rep (new.values, length (edge.names))
-#     
-#     if (length (edge.names) != length (new.values)) {
-#       msg = sprintf ('error in RCytoscape::setEdgeTargetArrowShapeDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-#                      length (new.values), length (edge.names))
-#       write (msg, stderr ())
-#       return ()
-#       }
-#
-#     for (i in 1:length (edge.names)) 
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.names [i], 'Edge Target Arrow Shape', as.character (new.values [i]))
-#
-#     invisible (result)
+      if (length (edge.names) != length (new.values)) {
+         msg = sprintf ('error in RCytoscape::setEdgeTargetArrowShapeDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+                        length (new.values), length (edge.names))
+         write (msg, stderr ())
+         return ()
+      }
+      
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TARGET_ARROW_SHAPE"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeSourceArrowColorDirect', 'CytoscapeWindowClass',
 
    function (obj, edge.names, new.colors) {
-
-#     id = as.character (obj@window.id)
-#
-#     if (length (new.colors) == 1)
-#       new.colors = rep (new.colors, length (edge.names))
-#
-#     if (length (edge.names) != length (new.colors)) {
-#       msg = sprintf ('error in RCytoscape::setEdgeSourceArrowColorDirect.  new.colors count (%d) is neither 1 nor same as edge.names count (%d)',
-#                      length (new.colors), length (edge.names))
-#       write (msg, stderr ())
-#       return ()
-#       }
-#
-#     for (i in 1:length (edge.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.names [i], 'Edge Source Arrow Color', as.character (new.colors [i]))
-#
-#     invisible (result)
+      if (length (edge.names) != length (new.colors)) {
+         msg = sprintf ('error in RCytoscape::setEdgeSourceArrowColorDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+                        length (new.colors), length (edge.names))
+         write (msg, stderr ())
+         return ()
+      }
+      
+      for (current.color in new.colors){
+         # ensure the color is formated in correct hexadecimal style
+         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setEdgeSourceArrowColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
+            return ()
+         }
+      }
+      
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.colors, "EDGE_SOURCE_ARROW_UNSELECTED_PAINT"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTargetArrowColorDirect', 'CytoscapeWindowClass',
 
    function (obj, edge.names, new.colors) {
-
-#     id = as.character (obj@window.id)
-#
-#     if (length (new.colors) == 1)
-#       new.colors = rep (new.colors, length (edge.names))
-#
-#     if (length (edge.names) != length (new.colors)) {
-#       msg = sprintf ('error in RCytoscape::setEdgeTargetArrowColorDirect.  new.colors count (%d) is neither 1 nor same as edge.names count (%d)',
-#                      length (new.colors), length (edge.names))
-#       write (msg, stderr ())
-#       return ()
-#       }
-#
-#     for (i in 1:length (edge.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.names [i], 'Edge Target Arrow Color', as.character (new.colors [i]))
-#
-#     invisible (result)
+      if (length (edge.names) != length (new.colors)) {
+         msg = sprintf ('error in RCytoscape::setEdgeTargetArrowColorDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+                        length (new.colors), length (edge.names))
+         write (msg, stderr ())
+         return ()
+      }
+      
+      for (current.color in new.colors){
+         # ensure the color is formated in correct hexadecimal style
+         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setEdgeTargetArrowColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
+            return ()
+         }
+      }
+      
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.colors, "EDGE_TARGET_ARROW_UNSELECTED_PAINT"))
      })
 
 
