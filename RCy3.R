@@ -2432,19 +2432,18 @@ setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are locked (that is, tied together).  see lockNodeDimensions (T/F)
 setMethod ('setNodeSizeDirect', 'CytoscapeWindowClass',
-
    function (obj, node.names, new.sizes) {
-#     id = as.character (obj@window.id)
-#     property.name = 'Node Size'
-#     if (length (node.names) == 1)
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names, property.name, as.character (new.sizes [1]))
-#     else {
-#       properties = rep (property.name, length (node.names))
-#       if (length (new.sizes) == 1)
-#         new.sizes = rep (new.sizes, length (node.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.sizes))
-#       } # else: multiple nodes
-#     invisible (result)
+      for (current.size in new.sizes){
+         # ensure the sizes are numbers
+         if (!is.double(current.size)) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeSizeDirect. It needs to be a number.', current.size), stderr ())
+            return ()
+         }
+      }
+      # set the node properties direct
+      res <- setNodePropertyDirect(obj, node.names, new.sizes, "NODE_WIDTH")
+      res <- setNodePropertyDirect(obj, node.names, new.sizes, "NODE_HEIGHT")
+      invisible(res)
      })
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is, tied together).  see lockNodeDimensions (T/F)
@@ -2457,7 +2456,7 @@ setMethod ('setNodeWidthDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      #set the node property direct
+      # set the node property direct
       return(setNodePropertyDirect(obj, node.names, new.widths, "NODE_WIDTH"))
      })
 
@@ -2472,30 +2471,16 @@ setMethod ('setNodeHeightDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      #set the node property direct
+      # set the node property direct
       return(setNodePropertyDirect(obj, node.names, new.heights, "NODE_HEIGHT"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeLabelDirect', 'CytoscapeWindowClass',
-
    function (obj, node.names, new.labels) {
-
-#     id = as.character (obj@window.id)
-#
-#     property.name = 'Node Label'
-#
-#     if (length (node.names) == 1)
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names, property.name, as.character (new.labels [1]))
-#     else {
-#       properties = rep (property.name, length (node.names))
-#       if (length (new.labels) == 1)
-#         new.labels = rep (new.labels, length (node.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.labels))
-#       } # else: multiple nodes
-#     invisible (result)
+      # set the node property direct
+      return(setNodePropertyDirect(obj, node.names, new.labels, "NODE_LABEL"))
      })
-
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeFontSizeDirect', 'CytoscapeWindowClass',
@@ -2507,43 +2492,29 @@ setMethod ('setNodeFontSizeDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      #set the node property direct
+      # set the node property direct
       return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_LABEL_FONT_SIZE"))
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
-
    function (obj, node.names, new.colors) {
-
-#     id = as.character (obj@window.id)
-#     property.name = 'Node Label Color'
-#
-#     if (length (node.names) == 1)
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names, property.name, as.character (new.colors [1]))
-#     else {
-#       properties = rep (property.name, length (node.names))
-#       if (length (new.colors) == 1)
-#         new.colors = rep (new.colors, length (node.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.colors))
-#       } # else: multiple nodes
-#     invisible (result)
+      for (current.color in new.colors){
+         # ensure the color is formated in correct hexadecimal style
+         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeLabelColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
+            return ()
+         }
+      }
+      # set the node property direct
+      return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_LABEL_COLOR"))
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.shapes) {
-#     id = as.character (obj@window.id)
-#
-#     property.name = 'Node Shape'
-#
-#     if (length (node.names) == 1)
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names, property.name, as.character (new.shapes [1]))
-#     else {
-#       properties = rep (property.name, length (node.names))
-#       if (length (new.shapes) == 1)
-#         new.shapes = rep (new.shapes, length (node.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.shapes))
-#       } # else: multiple nodes
-#     invisible (result)
+      # TODO we could check here if the new shape is a possible shape
+      
+      # set the node property direct
+      return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE")) 
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -2580,7 +2551,7 @@ setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      #set the node property direct
+      # set the node property direct
       return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_BORDER_WIDTH"))
      })
 
@@ -2594,7 +2565,7 @@ setMethod ('setNodeBorderColorDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      #set the node border color direct
+      # set the node border color direct
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_BORDER_PAINT"))
      })
 
@@ -2623,7 +2594,7 @@ setMethod ('setNodeFillOpacityDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      #set the node border color direct
+      # set the node border color direct
       return(setNodePropertyDirect(obj, node.names, new.values, "NODE_TRANSPARENCY"))
      })
 
@@ -2637,7 +2608,7 @@ setMethod ('setNodeBorderOpacityDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      #set the node property direct
+      # set the node property direct
       return(setNodePropertyDirect(obj, node.names, new.values, "NODE_BORDER_TRANSPARENCY"))
      })
 
@@ -2652,7 +2623,7 @@ setMethod ('setNodeLabelOpacityDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      #set the node property direct
+      # set the node property direct
       return(setNodePropertyDirect(obj, node.names, new.values, "NODE_LABEL_TRANSPARENCY"))
      })
 
