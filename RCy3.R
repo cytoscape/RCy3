@@ -2743,13 +2743,16 @@ set.node.or.edge.properties = function (host.uri, property.name, names, values)
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
-
-      #edge <- unname(fromJSON(rawToChar(request.res$content)))
-      #print(edge)
-#     id = as.character (obj@window.id)
-#     for (edge.name in edge.names)
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Color', as.character (new.value))
-#     invisible (result)
+      for (current.color in new.value){
+         # ensure the color is formated in correct hexadecimal style
+         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setEdgeColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
+            return ()
+         }
+      }
+      # set the edge color direct
+      # TODO maybe this should be EDGE_PAINT
+      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_STROKE_UNSELECTED_PAINT"))
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelDirect', 'CytoscapeWindowClass',
@@ -2770,18 +2773,28 @@ setMethod ('setEdgeLabelDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeFontSizeDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
-#     id = as.character (obj@window.id)
-#     for (edge.name in edge.names)
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Font Size', as.character (new.value))
-#     invisible (result)
+      for (current.size in new.value){
+         # ensure the sizes are numbers
+         if (!is.double(current.size)) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setEdgeFontSizeDirect. It needs to be a number.', current.size), stderr ())
+            return ()
+         }
+      }
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_FONT_SIZE"))
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
-#     id = as.character (obj@window.id)
-#     for (edge.name in edge.names)
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Label Color', as.character (new.value))
-#     invisible (result)
+      for (current.color in new.value){
+         # ensure the color is formated in correct hexadecimal style
+         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setEdgeLabelColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
+            return ()
+         }
+      }
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_COLOR"))
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTooltipDirect', 'CytoscapeWindowClass',
