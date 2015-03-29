@@ -4261,7 +4261,7 @@ setVisualProperty <- function(obj, style.string, vizmap.style.name='default') {
 obtainEveryOtherValue <- function(v) {
   return(v[c(TRUE, FALSE)])
 }
-#
+# ------------------------------------------------------------------------------
 setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
    # get network ID and version
    net.SUID = as.character(obj@window.id)
@@ -4287,6 +4287,42 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
       # request result
       request.res = PUT(resource.uri, body=node.SUID.JSON, encode="json")
    } # end for (node.name in node.names)
+   
+   invisible(request.res)
+}
+# ------------------------------------------------------------------------------
+setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property){
+   # get network ID and version
+   net.SUID = as.character(obj@window.id)
+   version = pluginVersion(obj)
+   
+   # get the views for the given network model
+   resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", sep="/")
+   request.res <- GET(resource.uri)
+   net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
+   view.SUID <- as.character(net.views.SUIDs[[1]])
+   
+   for (pos in seq(edge.names)){
+      edge.name <- edge.names[pos]
+      current.value <- new.values[pos]
+      
+      # map edge name to edge SUID
+      # TODO start
+      #currently only works with the first edge
+      resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge", sep="/")
+      request.res = GET(url=resource.uri)
+      request.res = fromJSON(rawToChar(request.res$content))
+      edge.tbl <- sapply(request.res, '[[', 1)
+      edge.SUID <- edge.tbl$rows$SUID
+      # TODO end
+      
+      # request 
+      resource.uri = paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "edges", as.character(edge.SUID), sep="/")
+      node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
+      
+      # request result
+      request.res = PUT(resource.uri, body=node.SUID.JSON, encode="json")
+   } # end for (edge.name in edge.names)
    
    invisible(request.res)
 }
