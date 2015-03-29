@@ -1207,43 +1207,43 @@ setMethod ('restoreLayout', 'CytoscapeWindowClass',
 setMethod ('setNodePosition', 'CytoscapeWindowClass',
 
   function (obj, node.names, x.coords, y.coords) {
+     unknown.nodes <- setdiff (node.names, getAllNodes (obj))
+     recognized.nodes <- intersect(node.names, getAllNodes(obj))
+     if (length (unknown.nodes) > 0) {
+        node.names = intersect (node.names, nodes (obj@graph))
+        write (sprintf ("Error!  unknown nodes in RCytoscape::setNodePosition"), stderr ())
+        for (i in 1:length (unknown.nodes)){
+           write (sprintf ("     %s", unknown.nodes [i]), stderr ())
+        } # end for
+        return ()
+      } # end if 
+     
+     indices <- match(recognized.nodes, node.names)
+     node.names <- recognized.nodes
+     
+     x.coords <- x.coords[indices]
+     y.coords <- y.coords[indices]
+     count = length (node.names)
+     #stopifnot (length (x.coords) == count)
+     #stopifnot (length (y.coords) == count)
 
-#    unknown.nodes <- setdiff (node.names, getAllNodes (obj))
-#
-#    recognized.nodes <- intersect(node.names, getAllNodes(obj))
-#
-#    if (length (unknown.nodes) > 0) {
-#      node.names = intersect (node.names, nodes (obj@graph))
-#      write (sprintf ("Error!  unknown nodes in RCytoscape::setNodePosition"), stderr ())
-#      for (i in 1:length (unknown.nodes))
-#        write (sprintf ("     %s", unknown.nodes [i]), stderr ())
-#      return ()
-#      } # if 
-#
-#    indices <- match(recognized.nodes, node.names)
-#    node.names <- recognized.nodes
-#    
-#    x.coords <- x.coords[indices]
-#    y.coords <- y.coords[indices]
-#    count = length (node.names)
-#    #stopifnot (length (x.coords) == count)
-#    #stopifnot (length (y.coords) == count)
-#
-#    if (count == 0)
-#      return ()
-#
-#    id = as.character (obj@window.id)
-#
-#    if (count == 1)
-#      invisible (xml.rpc (obj@uri, 'Cytoscape.setNodePosition', id, node.names, as.numeric (x.coords), as.numeric (y.coords)))
-#    else 
-#      invisible (xml.rpc (obj@uri, 'Cytoscape.setNodesPositions', id, node.names, as.numeric (x.coords), as.numeric (y.coords)))
+     if (count == 0){
+        return ()
+     }
+     
+     # TODO we might want to check if the coordinates are valid numbers
+     
+     # set x position
+     res <- setNodePropertyDirect(obj, node.names, x.coords, "NODE_X_LOCATION")
+     
+     # set y position
+     res <- setNodePropertyDirect(obj, node.names, y.coords, "NODE_Y_LOCATION")
 
-    }) # cy.setNodePosition
+     invisible(res)
+    }) # setNodePosition
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getNodePosition', 'CytoscapeWindowClass',
-
   function (obj, node.names) {
       net.suid = as.character(obj@window.id)
       # cyREST API version
@@ -2426,7 +2426,7 @@ setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      #set the node color direct
+      # set the node color direct
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_FILL_COLOR"))
      })
 #------------------------------------------------------------------------------------------------------------------------
