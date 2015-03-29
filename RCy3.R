@@ -2113,7 +2113,7 @@ setMethod('setDefaultEdgeLineWidth', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultEdgeColor', 'CytoscapeConnectionClass', 
   function(obj, new.color, vizmap.style.name='default') {
-     # TO DO Tanja maybe change to EDGE_SELECTED_PAINT
+     # TODO Comment Tanja: maybe change to EDGE_UNSELECTED_PAINT
     style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
     setVisualProperty(obj, style, vizmap.style.name)
 })
@@ -2648,6 +2648,9 @@ setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 set.node.or.edge.properties = function (host.uri, property.name, names, values)
 {
+   # TODO this function can be deleted as we set node and edge properties via
+   # setEdgePropertyDirect() and setNodePropertyDirect()
+   
   if (length (names) == 1) {
 #    name = names [1]
 #    value = values [1]
@@ -2680,32 +2683,6 @@ set.node.or.edge.properties = function (host.uri, property.name, names, values)
     } # else: 
 
 } # set.node.or.edge.properties
-
-#------------------------------------------------------------------------------------------------------------------------
-#setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
-#
-#   function (obj, edge.names, new.values) {
-#
-#     id = as.character (obj@window.id)
-#     if (length (edge.names) == 1) {
-#       edge.name = edge.names [1]
-#       new.value = new.values [1]
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Opacity', as.character (new.value))
-#       invisible (result)
-#       } # 1 edge.name only
-#     else {
-#       if (length (new.values) == 1)
-#         new.values = rep (new.values, length (edge.names))
-#       properties = rep ('Edge Opacity', length (edge.names))
-#       print ('--- setEdgeOpacitiesDirect')
-#       print (edge.names)
-#       print (properties)
-#       print (as.character (new.values))
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperties", edge.names, properties, as.character (new.values))
-#       print ('--- back from xml.rpc')
-#       invisible (result)
-#       } # multiple edges
-#     })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
@@ -2762,22 +2739,15 @@ setMethod ('setEdgeLabelColorDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTooltipDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.values) {
-#     id = as.character (obj@window.id)
-#
-#     if (length (new.values) == 1)
-#       new.values = rep (new.values, length (edge.names))
-#     
-#     if (length (edge.names) != length (new.values)) {
-#       msg = sprintf ('error in RCytoscape::setEdgeTooltipDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-#                      length (new.values), length (edge.names))
-#       write (msg, stderr ())
-#       return ()
-#       }
-#
-#     for (i in 1:length (edge.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.names [i], 'Edge Tooltip', as.character (new.values [i]))
-# 
-#     invisible (result)
+      if (length (edge.names) != length (new.values)) {
+         msg = sprintf ('error in RCytoscape::setEdgeTooltipDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+                        length (new.values), length (edge.names))
+         write (msg, stderr ())
+         return ()
+      }
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TOOLTIP"))
+
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLineWidthDirect', 'CytoscapeWindowClass',
@@ -2802,7 +2772,6 @@ setMethod ('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
-      
       # set the edge property direct
       return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LINE_TYPE"))
      })
@@ -2816,7 +2785,6 @@ setMethod ('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
-      
       # set the edge property direct
       return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_SOURCE_ARROW_SHAPE"))
      })
@@ -2881,7 +2849,6 @@ setMethod ('setEdgeTargetArrowColorDirect', 'CytoscapeWindowClass',
       # set the edge property direct
       return(setEdgePropertyDirect(obj, edge.names, new.colors, "EDGE_TARGET_ARROW_UNSELECTED_PAINT"))
      })
-
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelOpacityDirect', 'CytoscapeWindowClass',
@@ -2954,7 +2921,7 @@ setMethod ('setEdgeTargetArrowOpacityDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelWidthDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
-      EDGE_LABEL_TRANSPARENCY
+
 #     id = as.character (obj@window.id)
 #     for (edge.name in edge.names)
 #       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Label Width', as.character (new.value))
