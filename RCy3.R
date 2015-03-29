@@ -2449,40 +2449,31 @@ setMethod ('setNodeSizeDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is, tied together).  see lockNodeDimensions (T/F)
 setMethod ('setNodeWidthDirect', 'CytoscapeWindowClass',
-
    function (obj, node.names, new.widths) {
-
-#     id = as.character (obj@window.id)
-#
-#     property.name = 'Node Width'
-#     if (length (node.names) == 1)
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names, property.name, as.character (new.widths [1]))
-#     else {
-#       properties = rep (property.name, length (node.names))
-#       if (length (new.widths) == 1)
-#         new.widths = rep (new.widths, length (node.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.widths))
-#       } # else: multiple nodes
-#     invisible (result)
+      for (current.width in new.widths){
+         # ensure the sizes are numbers
+         if (!is.double(current.width)) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeWidthDirect. It needs to be a number.', current.width), stderr ())
+            return ()
+         }
+      }
+      #set the node property direct
+      return(setNodePropertyDirect(obj, node.names, new.widths, "NODE_WIDTH"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is, tied together).  see lockNodeDimensions (T/F)
 setMethod ('setNodeHeightDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.heights) {
-
-     id = as.character (obj@window.id)
-#
-#     property.name = 'Node Height'
-#     if (length (node.names) == 1)
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names, property.name, as.character (new.heights [1]))
-#     else {
-#       properties = rep (property.name, length (node.names))
-#       if (length (new.heights) == 1)
-#         new.heights = rep (new.heights, length (node.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.heights))
-#       } # else: multiple nodes
-#     invisible (result)
+      for (current.height in new.heights){
+         # ensure the sizes are numbers
+         if (!is.double(current.height)) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeHeightDirect. It needs to be a number.', current.height), stderr ())
+            return ()
+         }
+      }
+      #set the node property direct
+      return(setNodePropertyDirect(obj, node.names, new.heights, "NODE_HEIGHT"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -2508,21 +2499,16 @@ setMethod ('setNodeLabelDirect', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeFontSizeDirect', 'CytoscapeWindowClass',
-
    function (obj, node.names, new.sizes) {
-#     id = as.character (obj@window.id)
-#
-#     property.name = 'Node Font Size'
-#
-#     if (length (node.names) == 1)
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names, property.name, as.character (new.sizes [1]))
-#     else {
-#       properties = rep (property.name, length (node.names))
-#       if (length (new.sizes) == 1)
-#         new.sizes = rep (new.sizes, length (node.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.sizes))
-#       } # else: multiple nodes
-#     invisible (result)
+      for (current.size in new.sizes){
+         # ensure the sizes are numbers
+         if (!is.double(current.size)) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeFontSizeDirect. It needs to be a number.', current.size), stderr ())
+            return ()
+         }
+      }
+      #set the node property direct
+      return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_LABEL_FONT_SIZE"))
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
@@ -2586,19 +2572,16 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
-
    function (obj, node.names, new.sizes) {
-
-#     id = as.character (obj@window.id)
-#     if (length (node.names) == 1)
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names, 'Node Line Width', as.character (new.sizes [1]))
-#     else {
-#       properties = rep ('Node Line Width', length (node.names))
-#       if (length (new.sizes) == 1)
-#         new.sizes = rep (new.sizes, length (node.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperties", node.names, properties, as.character (new.sizes))
-#       } # else: multiple nodes
-#     invisible (result)
+      for (current.size in new.sizes){
+         # ensure the sizes are numbers
+         if (!is.double(current.size)) {
+            write (sprintf ('illegal color string "%s" in RCytoscape::setNodeBorderWidthDirect. It needs to be a number.', current.size), stderr ())
+            return ()
+         }
+      }
+      #set the node property direct
+      return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_BORDER_WIDTH"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
