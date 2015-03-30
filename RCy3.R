@@ -4235,19 +4235,20 @@ setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property){
    net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
    view.SUID <- as.character(net.views.SUIDs[[1]])
    
+   # map edge names to edge SUIDs
+   resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge", sep="/")
+   request.res = GET(url=resource.uri)
+   request.res = fromJSON(rawToChar(request.res$content))
+   # get the row information from the edge table
+   row.lst <- request.res[[6]]
+   suids <- sapply(row.lst, '[[', "SUID")
+   names <- sapply(row.lst, '[[', "name")
+   edge.dict <- as.data.frame(cbind(names, suids))
+   
    for (pos in seq(edge.names)){
       edge.name <- edge.names[pos]
       current.value <- new.values[pos]
-      
-      # map edge name to edge SUID
-      # TODO start
-      #currently only works with the first edge
-      resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge", sep="/")
-      request.res = GET(url=resource.uri)
-      request.res = fromJSON(rawToChar(request.res$content))
-      edge.tbl <- sapply(request.res, '[[', 1)
-      edge.SUID <- edge.tbl$rows$SUID
-      # TODO end
+      edge.SUID <- edge.dict$suids[which(names==edge.name)]
       
       # request 
       resource.uri = paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "edges", as.character(edge.SUID), sep="/")
