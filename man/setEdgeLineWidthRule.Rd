@@ -31,7 +31,7 @@ None.
 \author{Paul Shannon}
 
 \examples{
-  cw <- new.CytoscapeWindow ('setEdgeLineWidthRule.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setEdgeLineWidthRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw, 'jgraph-spring')
   redraw (cw)
