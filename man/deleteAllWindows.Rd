@@ -21,8 +21,8 @@ Nothing.
 
 \examples{
   cy <- CytoscapeConnection ()
-  cw1 = new.CytoscapeWindow ('cw1')
-  cw2 = new.CytoscapeWindow ('cw2')
+  cw1 = CytoscapeWindow ('cw1')
+  cw2 = CytoscapeWindow ('cw2')
   deleteAllWindows (cy)
 }
 
