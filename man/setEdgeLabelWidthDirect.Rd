@@ -44,7 +44,7 @@ None.
  }
 
 \examples{
-  cw <- new.CytoscapeWindow ('setEdgeLabelWidthDirect.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setEdgeLabelWidthDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'jgraph-spring')
