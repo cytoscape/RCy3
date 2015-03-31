@@ -31,7 +31,7 @@ None.
 
 \examples{
   window.title = 'setWindowSize demo'
-  cw <- new.CytoscapeWindow (window.title, graph=makeSimpleGraph())
+  cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'jgraph-spring')
