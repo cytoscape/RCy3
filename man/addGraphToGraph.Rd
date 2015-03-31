@@ -25,7 +25,7 @@ None.
 
 \examples{
   window.name <- 'demo addGraphToGraph'
-  cw3 <- new.CytoscapeWindow (window.name, graph=makeSimpleGraph ())
+  cw3 <- CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw3)
   redraw (cw3)
   layoutNetwork(cw3)
