@@ -23,7 +23,7 @@ None.
 \author{Paul Shannon}
 
 \examples{
-  cw <- new.CytoscapeWindow ('setNodeTooltipRule.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setNodeTooltipRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw, 'jgraph-spring')
   redraw (cw)
