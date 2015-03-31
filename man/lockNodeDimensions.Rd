@@ -27,7 +27,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('lockNodeDimensions demo', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('lockNodeDimensions demo', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw)
   redraw (cw)
