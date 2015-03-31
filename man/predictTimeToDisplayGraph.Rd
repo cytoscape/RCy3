@@ -24,7 +24,7 @@ Time in seconds.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('predictTimeToDisplayGraph.test', graph=makeSimpleGraph(), 
+  cw <- CytoscapeWindow ('predictTimeToDisplayGraph.test', graph=makeSimpleGraph(), 
                              collectTimings=TRUE)
   message (paste ('estimated time: ', predictTimeToDisplayGraph (cw)))
   displayGraph (cw)
