@@ -18,7 +18,7 @@ An integer.
 \author{Paul Shannon}
 
 \examples{
-  cw <- new.CytoscapeWindow ('getSelectedEdgeCount.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('getSelectedEdgeCount.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw, 'jgraph-spring')
   redraw (cw)
