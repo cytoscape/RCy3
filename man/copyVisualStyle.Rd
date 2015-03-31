@@ -47,7 +47,7 @@ Nothing.
     # File menu)
 
   window.name = 'demo.copyVisualStyle'
-  cw = new.CytoscapeWindow (window.name, graph=makeSimpleGraph ())
+  cw = CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   setDefaultEdgeLineWidth (cw, 5);
   displayGraph (cw)
   redraw (cw)
