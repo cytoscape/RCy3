@@ -12,6 +12,7 @@ setDefaultEdgeFontSize(obj, new.size, vizmap.style.name = "default")
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
   \item{new.size}{an \code{integer}.}
+  \item{vizmap.style.name}{a visual style.}
 }
 
 \value{
