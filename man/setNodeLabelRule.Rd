@@ -23,7 +23,7 @@ None.
 \author{Paul Shannon}
 
 \examples{
-  cw <- new.CytoscapeWindow ('setNodeLabelRule.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setNodeLabelRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw, 'jgraph-spring')
   setNodeLabelRule (cw, 'label')
