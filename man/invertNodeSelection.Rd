@@ -24,7 +24,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('invertNodeSelection demo', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('invertNodeSelection demo', graph=makeSimpleGraph())
      # all nodes should be selected, since none were before
   selectNodes (cw, 'A')
   invertNodeSelection (cw)
