@@ -18,7 +18,7 @@ A list of character strings.
 \author{Paul Shannon}
 
 \examples{
-  cw <- new.CytoscapeWindow ('getSelectedEdges.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('getSelectedEdges.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw, 'jgraph-spring')
   redraw (cw)
