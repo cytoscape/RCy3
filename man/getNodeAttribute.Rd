@@ -45,7 +45,7 @@ The attribute in question, which may be of any scalar type.
 \examples{
 
   window.name = 'demo.getNodeAttribute'
-  cw = new.CytoscapeWindow (window.name, graph=makeSimpleGraph ())
+  cw = CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw)
