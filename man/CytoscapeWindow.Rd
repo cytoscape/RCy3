@@ -8,7 +8,7 @@ The constructor for the CytoscapeWindowClass
 }
 \usage{
 CytoscapeWindow(title, graph = new("graphNEL", edgemode='directed'),
-                 host = "localhost", rpcPort = 9000, 
+                 host = "localhost", port = 1234, 
                  create.window = TRUE, overwriteWindow=FALSE, collectTimings=FALSE)
 }
 
@@ -22,11 +22,11 @@ CytoscapeWindow(title, graph = new("graphNEL", edgemode='directed'),
 }
   \item{host}{
     Defaults to 'localhost', this is the domain name of a machine which
-    is running Cytoscape with the appropriate XMLRPC server plugin.
+    is running Cytoscape with the appropriate CyREST plugin.
 }
   \item{rpcPort}{
-    Defaults to 9000, this may be any port to which the CytoscapeRPC
-    server is listening.
+    Defaults to 1234, this may be any port to which CyREST
+     is listening.
 }
   \item{create.window}{
      Defaults to TRUE, but if you want a CytoscapeWindow just to call
