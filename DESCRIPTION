@@ -1,0 +1,14 @@
+Package: RCy3
+Type: Package
+Title: Display and manipulate graphs in Cytoscape >= 3.1
+Version: 0.99.0
+Date: 2015-03-31
+Author: Paul Shannon
+Maintainer: Paul Shannon <pshannon@fhcrc.org>, Tanja Muetze <tanja.muetze14@imperial.ac.uk>, Georgi Kolishovski
+Depends: R (>= 3.1.0), graph (>= 1.31.0)
+Imports: methods, BiocGenerics
+Suggests: RUnit
+Description: Interactvive viewing and exploration of graphs, connecting R to Cytoscape >= 3.1
+License: GPL-2
+LazyLoad: yes
+biocViews: Visualization, GraphAndNetwork, ThirdPartyClient

@@ -1,0 +1,2 @@
+(fset 'rel
+   "q('no')\C-m\C-[xR\C-m\C-msource ('test_cytoscape.R');\C-m")
