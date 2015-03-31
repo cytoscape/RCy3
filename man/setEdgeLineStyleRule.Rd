@@ -32,7 +32,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('setEdgeLineStyleRule.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setEdgeLineStyleRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   line.styles     <- c ('SINEWAVE',       'DOT',              'PARALLEL_LINES')
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
