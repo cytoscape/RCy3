@@ -4,7 +4,7 @@ Title: Display and manipulate graphs in Cytoscape >= 3.1
 Version: 0.99.0
 Date: 2015-03-31
 Author: Paul Shannon, Tanja Muetze, Georgi Kolishovski
-Maintainer: Paul Shannon <pshannon@fhcrc.org>, Tanja Muetze <tanja.muetze14@imperial.ac.uk>, Georgi Kolishovski <g_kolishv@yahoo.com
+Maintainer: Paul Shannon <pshannon@fhcrc.org>, Tanja Muetze <tanja.muetze14@imperial.ac.uk>, Georgi Kolishovski <g_kolishv@yahoo.com>
 Depends: R (>= 3.1.0), graph (>= 1.31.0)
 Imports: methods, BiocGenerics, httr, graph, RJSONIO
 Suggests: RUnit
