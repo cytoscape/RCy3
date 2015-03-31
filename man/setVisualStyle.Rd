@@ -35,7 +35,7 @@ Nothing.
 \examples{
 
   window.name = 'demo.setVisualStyle'
-  cw = new.CytoscapeWindow (window.name, graph=makeSimpleGraph ())
+  cw = CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw)
