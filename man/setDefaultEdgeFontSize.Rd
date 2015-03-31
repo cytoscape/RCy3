@@ -7,7 +7,7 @@ In the specified CytoscapeConnection, stipulate the color for all edges
 other than those mentioned in a edge color rule.
 }
 \usage{
-setDefaultEdgeFontSize(obj, new.size)
+setDefaultEdgeFontSize(obj, new.size, vizmap.style.name = "default")
 }
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
@@ -33,7 +33,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('test setDefaultEdgeFontSize', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('test setDefaultEdgeFontSize', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'jgraph-spring')
