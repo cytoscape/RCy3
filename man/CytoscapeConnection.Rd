@@ -12,7 +12,7 @@ particular:  getWindowList, getWindowCount, deleteWindow,
 getNodeShapes, etc.
 }
 \usage{
-CytoscapeConnection (host = "localhost", rpcPort = 9000)
+CytoscapeConnection (host = "localhost", port = 1234)
 }
 
 \arguments{
@@ -20,7 +20,7 @@ CytoscapeConnection (host = "localhost", rpcPort = 9000)
     Defaults to 'localhost', this is the domain name of a machine which
     is running Cytoscape with the appropriate CyREST plugin.
 }
-  \item{rpcPort}{
+  \item{port}{
     Defaults to 1234, this may be any port to which CyREST
     is listening.
 }
