@@ -36,7 +36,7 @@ None.
  }
 
 \examples{
-  cw <- new.CytoscapeWindow ('setDefaultNodeSize.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setDefaultNodeSize.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'jgraph-spring')
