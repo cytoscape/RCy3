@@ -25,7 +25,7 @@ A list of node names.
  }
 
 \examples{
-  cw <- new.CytoscapeWindow ('getFirstNeighbors.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('getFirstNeighbors.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'jgraph-spring')
