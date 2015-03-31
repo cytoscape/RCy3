@@ -11,7 +11,7 @@ setNodeBorderColorDirect(obj, node.names, new.colors)
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{node.names}{one or more \code{String} objects.}
-  \item{new.color}{a \code{String} object, in standard hex notation.}
+  \item{new.colors}{a \code{String} object, in standard hex notation.}
 }
 
 \value{
