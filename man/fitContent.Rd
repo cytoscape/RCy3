@@ -24,7 +24,7 @@ None.
  }
 
 \examples{
-  cw <- new.CytoscapeWindow ('fitContent.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('fitContent.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'jgraph-spring')
