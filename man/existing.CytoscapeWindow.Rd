@@ -8,7 +8,7 @@ The constructor for the CytoscapeWindowClass, used when Cytoscape
 already contains and displays a network.
 }
 \usage{
-existing.CytoscapeWindow (title, host='localhost', rpcPort=9000, copy.graph.from.cytoscape.to.R=FALSE)
+existing.CytoscapeWindow (title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE)
 }
 
 \arguments{
@@ -19,11 +19,11 @@ existing.CytoscapeWindow (title, host='localhost', rpcPort=9000, copy.graph.from
 }
   \item{host}{
     Defaults to 'localhost', this is the domain name of a machine which
-    is running Cytoscape with the appropriate XMLRPC server plugin.
+    is running Cytoscape with the appropriate CyREST plugin.
 }
   \item{rpcPort}{
-    Defaults to 9000, this may be any port to which the CytoscapeRPC
-    server is listening.
+    Defaults to 1234, this may be any port to which CyREST
+    is listening.
 }
   \item{copy.graph.from.cytoscape.to.R}{
      Defaults to FALSE, but you may want a copy in R, for further exploration.
@@ -39,7 +39,7 @@ existing.CytoscapeWindow (title, host='localhost', rpcPort=9000, copy.graph.from
 
 \examples{
   cy <- CytoscapeConnection ()
-  cw <- new.CytoscapeWindow ('demo.existing', graph=makeSimpleGraph ())
+  cw <- CytoscapeWindow ('demo.existing', graph=makeSimpleGraph ())
   displayGraph (cw)
   cw2 <- existing.CytoscapeWindow ('demo.existing',  copy.graph.from.cytoscape.to.R=TRUE)
 
