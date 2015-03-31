@@ -40,30 +40,32 @@
 
 \emph{Cytoscape} is a well-known bioinformatics tool for displaying and exploring biological networks.
 \emph{\textbf{R}} is a powerful programming language and environment for statistical and exploratory data analysis.
-\emph{RCytoscape} uses XMLRPC to communicate between \emph{\textbf{R}} and Cytoscape, allowing Bioconductor graphs to be
+\emph{RCyr} uses CyREST to communicate between \emph{\textbf{R}} and Cytoscape, allowing Bioconductor graphs to be
 viewed, explored and manipulated with the Cytoscape point-and-click visual interface.  Thus these two quite different,
 quite useful bioinformatics software environments are connected, mutually enhancing each other, providing new
 possibilities for exploring biological data.
 
 \section{Prerequisites}
-In addition to this package (RCytoscape), you will need:
+In addition to this package (RCy3), you will need:
 
 \begin{itemize}
-  \item XMLRPC, an \emph{\textbf{R}} package which provides the communication layer for your \emph{\textbf{R}} session.  It can be downloaded from 
-      \url{http://www.omegahat.org/XMLRPC/}
-  \item Cytoscape version 2.8.1, which can be downloaded from 
+  \item Java SE 7. Cytoscape and CyREST currently do not support Java SE 6 or Java SE 8 anymore/yet. It can be can downloaded from Oracle here:
+     \url{http://www.oracle.com/technetwork/java/javase/downloads/jre7-downloads-1880261.html}.
+  \item Cytoscape version 3.1.1+, which can be downloaded from 
      \url{http://cytoscape.org}.
-  \item CytoscapeRPC, version 1.7 or later, a Cytoscape plugin which provides the Cytoscape end of the communication layer, can be downloaded from the Cytoscape plugins website:
-     \url{http://cytoscape.org/plugins.html}.
+  \item CyREST, version 0.9.13 or later, a Cytoscape plugin which provides the Cytoscape end of the communication layer, can be downloaded from the Cytoscape plugins website:
+     \url{http://apps.cytoscape.org/apps/cyrest}.
 \end{itemize}
+
 
 \section{Getting Started}
 
-Install the CytoscapeRPC plugin.  This process is explained at\\
+First install Java, then Cytoscape and follow the instructions on the screen. To install CyREST, you can either open Cytoscape, click on "Apps" in the menubar and select "App Manager". In the App Manager on the "Install Apps" tab, type "CyREST" in the search bar and click on cyREST when it appears and then click on "Install".
+Alternatively you can download the CyREST plugin 0.9.13+ as .jar file from Cytoscape's app store here: \\
 
- \url{http://cytoscape.org/manual/Cytoscape2_8Manual.html#Plugins and the Plugin Manager}\newline\newline
+ \url{http://apps.cytoscape.org/apps/cyrest}\newline\newline
+. Then, open Cytoscape, click on "Apps" in the menubar and select "App Manager". In the App Manager on the "Install Apps" tab, click on "Install from File...", choose the .jar file that you just downloaded, then click "Open" and then "Install". You are all set!
 
-but briefly (and, for many readers, more simply), installation consists of copying the plugin's jar file to the 'Plugins' directory of your installed Cytoscape application, and then restarting Cytoscape.  You should see \textbf{CytoscapeRPC} in Cytoscape's \textbf{Plugins} menu; click to activate the plugin, which starts the XMLRPC server, and which listens for commands from \emph{\textbf{R}} (or elsewhere).  The default and usual choice is to communicate over port 9000 on localhost.  You can choose a different port from the Plugins->CytoscapeRPC activate menu item.  If you choose a different port, be sure to use that port number when you call the RCytoscape constructor -- the default value on in the constructor argument list is also 9000.  You probably want to set 'Auto Start' on for the plugin, which can be done from its 'Settings' menu.
 
 \section{A minimal example}
 
@@ -411,6 +413,10 @@ Finally, delete all the windows from this vignette:
 
 
 \begin{itemize}
+
+\item Keiichiro Ono for generously providing CyREST as well as help and support for new functionalities and changes.
+
+\item Paul Shannon for advice and help for transforming this package from using XMLRPC and CytoscapeRPC to using CyREST.
 
 \item RCytoscape would not be possible without the generosity and skill of Jan Bot, whose Cytoscape plugin 'CytoscapeRPC' is the indispensable link in commuication between R and Cytoscape.
 
