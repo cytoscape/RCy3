@@ -62,7 +62,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('setNodeBorderColorRule.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setNodeBorderColorRule.test', graph=makeSimpleGraph())
   control.points <- c (-3.0, 0.0, 3.0)   # typical range of log-fold-change ratio values
     # paint negative values shades of green, positive values shades of
     # red, out-of-range low values are dark green; out-of-range high
