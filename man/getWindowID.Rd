@@ -28,7 +28,7 @@ identifer appears to be an integer.
 
 \examples{
   cy <- CytoscapeConnection ()
-  cw <- new.CytoscapeWindow ('getWindowID.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('getWindowID.test', graph=makeSimpleGraph())
   displayGraph (cw)
   getWindowID (cy, 'getWindowID.test')
 }
