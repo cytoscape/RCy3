@@ -23,7 +23,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('invertEdgeSelection demo', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('invertEdgeSelection demo', graph=makeSimpleGraph())
      # all edges should be selected, since none were before
   invertEdgeSelection (cw)
 }
