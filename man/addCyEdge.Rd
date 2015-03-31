@@ -32,7 +32,7 @@ None.
 
 \examples{
   window.name <- 'demo addCyEdge'
-  cw <- new.CytoscapeWindow (window.name, graph=makeSimpleGraph ())
+  cw <- CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)
   directed = TRUE
   addCyEdge (cw, 'A', 'B', 'synthetic rescue', directed)
