@@ -414,7 +414,7 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 
 #------------------------------------------------------------------------------------------------------------------------
 # the 'existing window' class constructor, defined as a simple function, with no formal link to the class
-existing.CytoscapeWindow = function (title, host='localhost', port=9000, copy.graph.from.cytoscape.to.R=FALSE)
+existing.CytoscapeWindow = function (title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE)
 {
    #The constructor for the CytoscapeWindowClass, used when Cytoscape already contains and displays a network.
    
