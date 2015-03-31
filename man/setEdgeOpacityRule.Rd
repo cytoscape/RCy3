@@ -29,7 +29,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('setEdgeOpacityRule.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setEdgeOpacityRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork (cw, 'jgraph-spring')
 
