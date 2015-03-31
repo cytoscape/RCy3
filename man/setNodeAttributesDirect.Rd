@@ -42,7 +42,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('setNodeAttributesDirect.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setNodeAttributesDirect.test', graph=makeSimpleGraph())
   stopifnot ('count' \%in\% noa.names (cw@graph))
   result = setNodeAttributesDirect (cw, 'count', 'int', c ('A', 'B', 'C'), c (4, 8, 12))
 }
