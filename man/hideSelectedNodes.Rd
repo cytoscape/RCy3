@@ -24,7 +24,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('hideSelectedNodes.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('hideSelectedNodes.test', graph=makeSimpleGraph())
   # saveLayout (cw, 'layout.tmp.RData')
   selectNodes (cw, c ('A', 'B'))
   hideSelectedNodes (cw)
