@@ -34,7 +34,7 @@ Nothing.
   redraw (cw)
   layoutNetwork(cw)
   deleteWindow (cw)
-  cw2 <- new.CytoscapeWindow ('demo 2')
+  cw2 <- CytoscapeWindow ('demo 2')
   cy = CytoscapeConnection ()
   deleteWindow (cy, 'demo 2')
 }
