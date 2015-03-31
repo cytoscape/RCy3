@@ -45,7 +45,7 @@ The attribute in question, which may be of any scalar type.
 \examples{
 
   window.name = 'demo.getEdgeAttribute'
-  cw = new.CytoscapeWindow (window.name, graph=makeSimpleGraph ())
+  cw = CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   setDefaultEdgeLineWidth (cw, 5);
   displayGraph (cw)
   redraw (cw)
