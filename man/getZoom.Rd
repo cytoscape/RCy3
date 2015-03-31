@@ -29,7 +29,7 @@ A names list, x and y.
 
 \examples{
   window.title = 'getZoom demo'
-  cw <- new.CytoscapeWindow (window.title, graph=makeSimpleGraph())
+  cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'jgraph-spring')
