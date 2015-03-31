@@ -327,7 +327,7 @@ CytoscapeConnection = function (host='localhost', rpcPort=9000)
 } # CytoscapeConnection
 #------------------------------------------------------------------------------------------------------------------------
 # the 'new window' class constructor, defined as a simple function, with no formal link to the class
-new.CytoscapeWindow = function (title, graph=new('graphNEL', edgemode='directed'), host='localhost', rpcPort=9000, create.window=TRUE)
+CytoscapeWindow = function (title, graph=new('graphNEL', edgemode='directed'), host='localhost', port=1234, create.window=TRUE)
 {
   
   res <- .BBSOverride(host, rpcPort)
@@ -369,7 +369,7 @@ new.CytoscapeWindow = function (title, graph=new('graphNEL', edgemode='directed'
 CytoscapeWindow = new.CytoscapeWindow
 #------------------------------------------------------------------------------------------------------------------------
 # the 'existing window' class constructor, defined as a simple function, with no formal link to the class
-existing.CytoscapeWindow = function (title, host='localhost', rpcPort=9000, copy.graph.from.cytoscape.to.R=FALSE)
+existing.CytoscapeWindow = function (title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE)
 {
   
   res <- .BBSOverride(host, rpcPort)
