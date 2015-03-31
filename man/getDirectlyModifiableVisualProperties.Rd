@@ -7,7 +7,7 @@ Retrieve the names of those visual attributes which can be set directly,
 bypassing vizmap rules.
 }
 \usage{
-getDirectlyModifiableVisualProperties(obj)
+getDirectlyModifiableVisualProperties(obj, vizmap.style.name = "default")
 }
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
