@@ -36,7 +36,7 @@ nothing
 \examples{
 
   window.name = 'demo.deleteNodeAttribute'
-  cw = new.CytoscapeWindow (window.name, graph=makeSimpleGraph ())
+  cw = CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw)
