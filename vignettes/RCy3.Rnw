@@ -72,7 +72,7 @@ Alternatively you can download the CyREST plugin 0.9.13+ as .jar file from Cytos
 Here we create a 3-node graph in R, send it to Cytoscape for display and layout.  For the sake of simplicity, no node attributes, no edges, and no vizmapping is included; those topics are covered in subsequent examples.
 
 <<g0>>=
-  library(RCytoscape)
+  library(RCy3)
   g <- new ('graphNEL', edgemode='directed')
   g <- graph::addNode ('A', g)
   g <- graph::addNode ('B', g)
@@ -296,7 +296,7 @@ Despite its simplicity, RCytoscape's \emph{\textbf{setNodePosition}} method prov
 
 <<position>>=
   cwe <- CytoscapeWindow ('vignette.setNodePosition',
-                              graph=RCytoscape::makeSimpleGraph ())
+                              graph=RCy3::makeSimpleGraph ())
   displayGraph (cwe)
   layoutNetwork (cwe, 'jgraph-spring')
   redraw (cwe)
@@ -323,7 +323,7 @@ Timecourse microarray expression experiments are commonplace in molecular biolog
 We begin with the small sample graph just like that created in the 'setNodePosition' example above.  We add some made-up statistical signficicance data into a new node attribute, 'pval'.
 
 <<moviePrep>>=
-  g <- RCytoscape::makeSimpleGraph ()
+  g <- RCy3::makeSimpleGraph ()
   g <- initNodeAttribute (g, 'pval', 'numeric', 1.0)
 
   cwm <- CytoscapeWindow ('movie', graph =g)
