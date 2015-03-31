@@ -38,7 +38,7 @@ A data frame, with a column for each attribute, a row for each edge.
 \examples{
 
   window.name = 'demo.getAllEdgeAttributes'
-  cw = new.CytoscapeWindow (window.name, graph=makeSimpleGraph ())
+  cw = CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw)
