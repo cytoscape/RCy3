@@ -6,12 +6,12 @@
 Layout the current graph according to the specified algorithm.
 }
 \usage{
-layoutNetwork(obj, layout.name='jgraph-spring')
+layoutNetwork(obj, layout.name='grid')
 }
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{layout.name}{a \code{string}, one of the values returned by
-    \code{getLayoutNames}, 'jgraph-spring' by default. }
+    \code{getLayoutNames}, 'grid' by default. }
 }
 
 \value{
@@ -24,7 +24,7 @@ Nothing.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('layout.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('layout.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork (cw, 'jgraph-spring')
   redraw (cw)  # applies default vizmap (rendering) rules, plus any you
