@@ -28,7 +28,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('selectEdges.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('selectEdges.test', graph=makeSimpleGraph())
   displayGraph (cw); layoutNetwork(cw); redraw (cw)
   clearSelection (cw)
   selectEdges (cw, c ("A (phosphorylates) B", "B (synthetic lethal) C"))
