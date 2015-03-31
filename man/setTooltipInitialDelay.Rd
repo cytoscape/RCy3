@@ -30,7 +30,7 @@ None.
 
 \examples{
   window.title = 'setTooltipInitialDelay demo'
-  cw <- new.CytoscapeWindow (window.title, graph=makeSimpleGraph())
+  cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
     # use node type as the tooltip
   setNodeTooltipRule (cw, 'type')
     # and edgeType
