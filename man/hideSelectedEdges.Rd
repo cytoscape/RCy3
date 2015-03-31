@@ -23,7 +23,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('hideSelectedEdges.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('hideSelectedEdges.test', graph=makeSimpleGraph())
   # selectEdges (cw, 'B (synthetic lethal) C')
   hideSelectedEdges (cw)
   unhideAll (cw)
