@@ -7,7 +7,7 @@
 \description{
 Expand the selection by adding the first neighbors, in the Cytosape network, of
 the nodes currently selected (again, in the Cytoscape network).  The R
-graph is unchanged
+graph is unchanged.
 }
 \usage{
 selectFirstNeighborsOfSelectedNodes (obj)
@@ -30,7 +30,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('selectFirstNeighborsOfSelecteNodes.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('selectFirstNeighborsOfSelecteNodes.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw)
   clearSelection (cw)
