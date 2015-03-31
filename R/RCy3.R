@@ -3913,10 +3913,21 @@ setMethod('getVisualStyleNames', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('copyVisualStyle', 'CytoscapeConnectionClass', 
   function (obj, from.style, to.style) {
-#    current.names = getVisualStyleNames (obj)
-#    if (! from.style %in% current.names)
-#      stop (sprintf ('Cannot copy from a non-existent visual style (%s)', from.style))
-#    xml.rpc (obj@uri, 'Cytoscape.copyVisualStyle', from.style, to.style)
+     current.names = getVisualStyleNames (obj)
+     if (! from.style %in% current.names){
+        stop (sprintf ('Cannot copy from a non-existent visual style (%s)', from.style))
+     }
+     # get the current style from Cytoscape
+     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", from.style, sep="/")
+     from.style.JSON <- GET(url=resource.uri)
+     from.style <- fromJSON(rawToChar(from.style.JSON$content))
+     from.style[1] <- as.character(to.style)
+     
+     # and send it to Cytoscape as a new style with a new name
+     to.style.JSON <- toJSON(from.style)
+     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", sep="/")
+     request.res <- POST(url = resource.uri, body = to.style.JSON, encode = "json")
+     invisible(request.res)
 })
 
 # ------------------------------------------------------------------------------
