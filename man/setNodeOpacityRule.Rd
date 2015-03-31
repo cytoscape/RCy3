@@ -60,7 +60,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('setNodeOpacityRule.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setNodeOpacityRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   control.points <- c (-3.0, 0.0, 3.0)   # typical range of log-fold-change ratio values
   opacities <- c (128, 80, 255)  
