@@ -29,7 +29,7 @@ None.
 
 \examples{
   window.name <- 'demo addCyNode'
-  cw <- new.CytoscapeWindow (window.name, graph=makeSimpleGraph ())
+  cw <- CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)
   addCyNode (cw, 'A NEW NODE')
   redraw (cw)
