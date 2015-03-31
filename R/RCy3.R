@@ -3627,7 +3627,7 @@ demoSimpleGraph = function ()
 #    deleteWindow (cy, window.title)
 #
 #  g.simple = RCytoscape::makeSimpleGraph ()
-#  cws = new.CytoscapeWindow (window.title, g.simple)
+#  cws = CytoscapeWindow (window.title, g.simple)
 #
 #  displayGraph (cws)
 #  layoutNetwork (cws, 'default')
