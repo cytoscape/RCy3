@@ -1,7 +1,7 @@
-%\VignetteIndexEntry{RCytoscape Overview}
+%\VignetteIndexEntry{RCy3 Overview}
 %\VignetteKeywords{Graph}
-%\VignetteDepends{RCytoscape}
-%\VignettePackage{RCytoscape}
+%\VignetteDepends{RCy3}
+%\VignettePackage{RCy3}
 
 \documentclass[12pt]{article}
 
@@ -31,7 +31,7 @@
 \bibliographystyle{plainnat}
 
 
-\title{RCytoscape}
+\title{RCy3}
 \author{Paul Shannon}
 
 \begin{document}
@@ -118,14 +118,14 @@ You can, however, examine these attributes in Cytoscape, using Cytoscape's the '
 
 You will encounter one obscurity in the code chunk just below: the explicit initialization of node (and edge) attributes
 for a graph.  This is similar to, but goes a bit further than, calls to \emph{nodeDataDefaults} required for
-Bioconductor graph objects.  In fact, such calls are executed within the RCytocape initNodeAttribute and
+Bioconductor graph objects.  In fact, such calls are executed within the RCy3 initNodeAttribute and
 initEdgeAttribute methods.  An additional bit of information is required here: the 'class' or data type of the attribute
 you are initializing.  It can be 'char', 'integer' or 'numeric'.
 
 For instance, the node attribute 'moleculeType' has values which are character strings.  The node attribute
 'lfc' (log fold change) is declared to be numeric.  This extra fuss is unavoidable: if you do not stipulate the
-class of each node and edge attribute, as is demonstrated below, then RCytoscape will report an error.  We require this
-because it is only by way of such explicit assignment that RCytoscape can resolve the difference between integer and
+class of each node and edge attribute, as is demonstrated below, then RCy3 will report an error.  We require this
+because it is only by way of such explicit assignment that RCy3 can resolve the difference between integer and
 floating point values -- necessary in the statically typed Java language (in which Cytoscape is written) though not in
 R.
 
@@ -157,8 +157,8 @@ You can now explore these simple node attribute values in Cytoscape, selecting n
 
 \section{Modifying the display:  default values and mapping rules}
 
-By default, Cytoscape displays nodes as pale red circles circles, and edges as blue undecorated lines.  RCytoscape
-provides an easy way to change these defaults.  More interestingly, RCytoscape provides easy programmatic access to the
+By default, Cytoscape displays nodes as pale red circles circles, and edges as blue undecorated lines.  RCy3
+provides an easy way to change these defaults.  More interestingly, RCy3 provides easy programmatic access to the
 \emph{\textbf{vizmapper}}, by means of which the size, shape and color of nodes and edges is determined by the data attributes you have attached to those nodes and edges. 
 
 First, let's change the the defaults.  Note that 'redraw' must be called on the CytoscapeWindow to force an update of
@@ -216,7 +216,7 @@ Note that there \emph{five} colors, but only three control.points.  The two addi
                     mode='interpolate')
 @ 
 
-in which case RCytoscape will resuse the first and last values (green and red) for out-of-bounds values, and issue a warning to the console.
+in which case RCy3 will resuse the first and last values (green and red) for out-of-bounds values, and issue a warning to the console.
 
 Now, add a node size rule, using 'lfc' again as the controlling node attribute.
 
@@ -292,7 +292,7 @@ You will see that all three nodes are now selected.  Get their identifers back t
 
 \section{Positioning nodes (and possibilities for data-driven graph layout)}
 
-Despite its simplicity, RCytoscape's \emph{\textbf{setNodePosition}} method provides the means to create custom layout algorithms and animations.  Here is a rather nonsensical example, in which the 'A' node orbits around a fixed center, with the 'B' and 'C' nodes left unchanged.
+Despite its simplicity, RCy3's \emph{\textbf{setNodePosition}} method provides the means to create custom layout algorithms and animations.  Here is a rather nonsensical example, in which the 'A' node orbits around a fixed center, with the 'B' and 'C' nodes left unchanged.
 
 <<position>>=
   cwe <- CytoscapeWindow ('vignette.setNodePosition',
@@ -318,7 +318,7 @@ Despite its simplicity, RCytoscape's \emph{\textbf{setNodePosition}} method prov
 
 \section{Movies:  explore time course data by animating node color and size}
 
-Timecourse microarray expression experiments are commonplace in molecular biology research.  Once reduced, the expression data is often summarized as a lfc (log fold change, experiment vs control) and a p-value for each gene at each time point.  Many Bioconductor packages can be used to find biologically interesting patterns in such data, but visualization -- as one aspect of exploratory data analysis -- should not be overlooked.  Here is a toy problem, a small example illustrating how this can be accomplished with RCytoscape.
+Timecourse microarray expression experiments are commonplace in molecular biology research.  Once reduced, the expression data is often summarized as a lfc (log fold change, experiment vs control) and a p-value for each gene at each time point.  Many Bioconductor packages can be used to find biologically interesting patterns in such data, but visualization -- as one aspect of exploratory data analysis -- should not be overlooked.  Here is a toy problem, a small example illustrating how this can be accomplished with RCy3.
 
 We begin with the small sample graph just like that created in the 'setNodePosition' example above.  We add some made-up statistical signficicance data into a new node attribute, 'pval'.
 
