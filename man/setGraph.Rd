@@ -20,7 +20,7 @@ The modified CytoscapeWindow object.
 \author{Paul Shannon}
 
 \examples{
-  cw <- new.CytoscapeWindow ('setGraph.test')  # an empty graph is created by default
+  cw <- CytoscapeWindow ('setGraph.test')  # an empty graph is created by default
   graph <- makeSimpleGraph ()
   setGraph (cw, graph)
   print (length (nodes (getGraph (cw))))
