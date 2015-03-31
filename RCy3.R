@@ -4022,26 +4022,24 @@ setMethod ('setDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 setMethod ('saveImage', 'CytoscapeWindowClass',
 
    function (obj, file.name, image.type, scale=1.0) {
-#     image.type = tolower (image.type)
-#     stopifnot (image.type %in% c ('png', 'pdf', 'svg'))
-#     id = as.character (obj@window.id)
-#     result = NA
-#     if (image.type == 'png')
-#        result = xml.rpc (obj@uri, 'Cytoscape.exportView', id, file.name, image.type, scale)
-#     else if (image.type == 'pdf') {
-#       if (length (grep ('1.8', pluginVersion (obj))) == 1)
-#         result = xml.rpc (obj@uri, 'Cytoscape.exportViewToPDF', id, file.name)
-#       else
-#         write ('saveImage to format pdf requires CytoscapeRPC.jar version 1.8, which is still being tested', stderr ())
-#       }
-#     else if (image.type == 'svg') {
-#       if (length (grep ('1.8', pluginVersion (obj))) == 1)
-#         result = xml.rpc (obj@uri, 'Cytoscape.exportViewToSVG', id, file.name)
-#       else
-#         write ('saveImage to format svg requires CytoscapeRPC.jar version 1.8, which is still being tested', stderr ())
-#       }
-#     invisible (result)
-     })
+      image.type = tolower (image.type)
+      stopifnot (image.type %in% c ('png', 'pdf', 'svg'))
+      id = as.character (obj@window.id)
+
+      # get the view image from Cytoscape in PNG
+      if (image.type == 'png'){
+         resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", cw@window.id,"views/first.png", sep="/")
+      }
+      request.res <- GET(resource.uri)
+      dateString = format (Sys.time (), "%a.%b.%d.%Y-%H.%M.%S")
+      stem = strsplit (file.name, '\\.RData')[[1]]
+      filename = sprintf ('%s.%s.RData', stem, dateString)
+      # TODO remove this sentence when you can save to file
+      write (sprintf ('Saving to file currently does not work yet but you can view your image in your browser here: %s', resource.uri), stderr ())
+
+      #write (sprintf ('saving image to %s\n', filename), stderr ())
+      #save (request.res, file=filename)
+     }) # saveImage
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('saveNetwork', 'CytoscapeWindowClass',
 
