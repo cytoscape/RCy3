@@ -20,7 +20,7 @@ Time in seconds.
 \author{Paul Shannon}
 
 \seealso{
-  new.CytoscapeWindow
+  CytoscapeWindow
 }
 
 \examples{
