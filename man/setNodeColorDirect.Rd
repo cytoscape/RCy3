@@ -14,7 +14,7 @@ setNodeColorDirect(obj, node.names, new.colors)
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{node.names}{a \code{String} list object.}
-  \item{new.color}{an \code{String} object, using the standard
+  \item{new.colors}{an \code{String} object, using the standard
     hexadecimal form, eg, '#FF88AA'}
 }
 
