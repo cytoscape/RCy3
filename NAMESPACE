@@ -213,8 +213,8 @@ importMethodsFrom(graph, edgeData, "edgeData<-", edgeDataDefaults,
 
 importFrom(methods, new)
 
-importFrom(RJSONIO, new)
-importFrom(httr, new)
+importFrom(RJSONIO)
+importFrom(httr)
 
 
 
