@@ -3,8 +3,7 @@
 \alias{unhideAll,CytoscapeWindowClass-method}
 \title{unhideAll}
 \description{
-Currently (in Cytoscape 2.7) broken.  The redisplay of hidden nodes and
-edges does not alwasy work...
+Currently not implemented yet
 }
 \usage{
 unhideAll(obj)
@@ -24,7 +23,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('unhideAll.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('unhideAll.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw, 'jgraph-spring')
   redraw (cw)
