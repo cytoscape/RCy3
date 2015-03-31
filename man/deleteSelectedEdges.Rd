@@ -25,7 +25,7 @@ None.
  }
 
 \examples{
-  cw <- new.CytoscapeWindow ('deleteSelectedEdges.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('deleteSelectedEdges.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'jgraph-spring') 
