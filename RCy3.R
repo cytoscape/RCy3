@@ -416,32 +416,27 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 # the 'existing window' class constructor, defined as a simple function, with no formal link to the class
 existing.CytoscapeWindow = function (title, host='localhost', port=9000, copy.graph.from.cytoscape.to.R=FALSE)
 {
-    
-#  host = res$host
-#  port = res$port
-#  
-#  uri = sprintf ('http://%s:%s', host, port)
-#
-#  cy.tmp = CytoscapeConnection (host, port)     # create this (inexpensively) just to gain access tothe window list
-#  check.cytoscape.plugin.version (cy.tmp)
-#
-#  existing.window.id = getWindowID (cy.tmp, title)
-#
-#  if (is.na (existing.window.id)) {
-#    write (sprintf ('There is no window in Cytoscape named "%s".  Please choose from the following titles:.', title), stderr ())
-#    write (as.character (getWindowList (cy.tmp)), stderr ())
-#    return (NA)
-#    }
-#
-#  cw = new ('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
-#
-#  if (copy.graph.from.cytoscape.to.R) {
-#    g.cy = getGraphFromCyWindow (cw, title)
-#    cw = setGraph (cw, g.cy)
-#    }
-#
-#  return (cw)
-
+   #The constructor for the CytoscapeWindowClass, used when Cytoscape already contains and displays a network.
+   
+   uri <- sprintf ('http://%s:%s', host, port)
+   cy.tmp <- CytoscapeConnection (host, port)     # create this (inexpensively) just to gain access to the window list
+   check.cytoscape.plugin.version (cy.tmp)
+   
+   existing.window.id <- getWindowID (cy.tmp, title)
+   
+   # alert the user if the desired window does not exist
+   if (is.na (existing.window.id)) {
+      write (sprintf ('There is no window in Cytoscape named "%s".  Please choose from the following titles:.', title), stderr ())
+      write (as.character (getWindowList (cy.tmp)), stderr ())
+      return (NA)
+   }
+   # get graph from Cytoscape
+   cw <- new ('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
+   if (copy.graph.from.cytoscape.to.R) {
+      g.cy <- getGraphFromCyWindow (cw, title)
+      cw <- setGraph (cw, g.cy)
+   }
+   return (cw)
 } # existing.CytsoscapeWindow
 
 # ------------------------------------------------------------------------------
@@ -559,16 +554,29 @@ setMethod('getWindowCount', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('getWindowID', 'CytoscapeConnectionClass', 
   function(obj, window.title) {
-    current.window.list = getWindowList(obj)
+    # get all window suids and associates names
+    resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", sep="/")
+    request.res <- GET(resource.uri)
+    # SUIDs list of the existing Cytoscape networks  
+    cy.networks.SUIDs <- fromJSON(rawToChar(request.res$content))
+    # names list of the existing Cytoscape networks
+    cy.networks.names = c()
     
-    if(!window.title %in% as.character(current.window.list)) {
+    for(net.SUID in cy.networks.SUIDs)  {
+       res.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(net.SUID), sep="/")
+       result <- GET(res.uri)
+       net.name <- fromJSON(rawToChar(result$content))$data$name
+       cy.networks.names <- c(cy.networks.names, net.name)
+    }
+
+    if(!window.title %in% as.character(cy.networks.names)) {
       write(sprintf("No existing Cytoscape window named '%s'", window.title), stderr())
       return (NA)
     } # if unrecognized window.title
     
-    window.entry = which(as.character(current.window.list) == window.title)
-    window.id = as.character(names(current.window.list)[window.entry])
-
+    window.entry = which(as.character(cy.networks.names) == window.title)
+    window.id = as.character(cy.networks.SUIDs[window.entry])
+    
     return(window.id)
 })
 
@@ -669,7 +677,7 @@ setMethod('getLayoutNames', 'CytoscapeConnectionClass',
     available.layouts = unname(fromJSON(rawToChar(request.res$content)))
     
     return(available.layouts)
-})
+}) # getLayoutNames
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod('getLayoutNameMapping', 'CytoscapeConnectionClass', 
@@ -1181,26 +1189,27 @@ setMethod('layoutNetwork', 'CytoscapeWindowClass',
 setMethod ('saveLayout', 'CytoscapeWindowClass',
 
   function (obj, filename, timestamp.in.filename=FALSE) {
-#    custom.layout = getNodePosition (obj,  getAllNodes (obj))
-#    if (timestamp.in.filename) {
-#      dateString = format (Sys.time (), "%a.%b.%d.%Y-%H.%M.%S")
-#      stem = strsplit (filename, '\\.RData')[[1]]
-#      filename = sprintf ('%s.%s.RData', stem, dateString)
-#      write (sprintf ('saving layout to %s\n', filename), stderr ())
-#      }
-#    save (custom.layout, file=filename)
+
+     custom.layout = getNodePosition (obj,  getAllNodes (obj))
+     if (timestamp.in.filename) {
+        dateString = format (Sys.time (), "%a.%b.%d.%Y-%H.%M.%S")
+        stem = strsplit (filename, '\\.RData')[[1]]
+        filename = sprintf ('%s.%s.RData', stem, dateString)
+        write (sprintf ('saving layout to %s\n', filename), stderr ())
+     }
+     save (custom.layout, file=filename)
     }) # save.layout
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('restoreLayout', 'CytoscapeWindowClass',
 
   function (obj, filename) {
-#    load (filename)
-#    node.names = names (custom.layout)
-#    node.names.filtered = intersect (node.names, getAllNodes (obj))
-#    x = as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$x)))
-#    y = as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$y)))
-#    setNodePosition (obj, node.names.filtered, x, y)
+     load (filename)
+     node.names = names (custom.layout)
+     node.names.filtered = intersect (node.names, getAllNodes (obj))
+     x = as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$x)))
+     y = as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$y)))
+     setNodePosition (obj, node.names.filtered, x, y)
     }) # restoreLayout
 
 #------------------------------------------------------------------------------------------------------------------------
