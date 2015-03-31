@@ -32,7 +32,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('setDefaultEdgeLineWidth.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setDefaultEdgeLineWidth.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'jgraph-spring')
