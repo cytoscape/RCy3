@@ -36,7 +36,7 @@ None.
  }
 
 \examples{
-  cw <- new.CytoscapeWindow ('setDefaultNodeBorderColor.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setDefaultNodeBorderColor.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'jgraph-spring')
