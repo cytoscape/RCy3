@@ -1298,23 +1298,41 @@ setMethod ('getNodePosition', 'CytoscapeWindowClass',
 setMethod ('getNodeSize', 'CytoscapeWindowClass',
 
   function (obj, node.names) {
-     NODE_HEIGHT
-     NODE_WIDTH
-
-#    count = length (node.names)
-#    if (count == 1)
-#      node.names = rep (node.names, 2)   # work around R's distinction between scalar and list of strings
-#
-#    widths  = as.integer (round (xml.rpc (obj@uri, 'Cytoscape.getNodesWidth',  node.names)))
-#    heights = as.integer (round (xml.rpc (obj@uri, 'Cytoscape.getNodesHeight', node.names)))
-#
-#    if (count == 1) {
-#      widths = widths [1]
-#      heights = heights [1]
-#      }
-#
-#    return (list (width=widths, height=heights))
-    }) # cy.getNodeSize
+     # get network ID and version
+     net.SUID = as.character(obj@window.id)
+     version = pluginVersion(obj)
+     
+     # get the views for the given network model
+     resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", sep="/")
+     request.res <- GET(resource.uri)
+     net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
+     view.SUID <- as.character(net.views.SUIDs[[1]])
+     
+     widths <- c()
+     heights <- c()
+     
+     for (pos in seq(node.names)){
+        node.name <- node.names[pos]
+        
+        # map node name to node SUID
+        dict.indices <- which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
+        node.SUID <- sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
+        
+        # request 
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
+    
+        # request result
+        request.res <- GET(resource.uri)
+        request.res <- fromJSON(rawToChar(request.res$content))
+        visual.properties <- sapply(request.res, '[[', "visualProperty")
+        visual.values <- sapply(request.res, '[[', "value")
+        widths <- c(widths, as.integer(visual.values[which(visual.properties =="NODE_WIDTH")]))
+        heights <- c(heights, as.integer(visual.values[which(visual.properties =="NODE_HEIGHT")]))         
+     } # end for (node.name in node.names)
+     
+     invisible(request.res)
+     return (list (width=widths, height=heights))
+    }) # getNodeSize
 
 #------------------------------------------------------------------------------------------------------------------------
 properlyInitializedNodeAttribute = function (graph, attribute.name) {
@@ -3191,7 +3209,7 @@ setMethod('clearSelection', 'CytoscapeWindowClass',
     
     redraw(obj)
     invisible(request.res)
-})
+}) # clearSelection
    
 # ------------------------------------------------------------------------------
 setMethod('selectNodes', 'CytoscapeWindowClass', 
@@ -3233,7 +3251,7 @@ setMethod('selectNodes', 'CytoscapeWindowClass',
     
     redraw(obj)
     invisible(select.nodes.req.res)
-})
+}) # selectNodes
    
 # ------------------------------------------------------------------------------
 setMethod('getSelectedNodeCount', 'CytoscapeWindowClass', 
@@ -3245,7 +3263,7 @@ setMethod('getSelectedNodeCount', 'CytoscapeWindowClass',
     
     num.selected.nodes = length(fromJSON(rawToChar(request.res$content)))
     return(num.selected.nodes)
-})
+}) # getSelectedNodeCount
    
 # ------------------------------------------------------------------------------
 setMethod('getSelectedNodes', 'CytoscapeWindowClass', 
@@ -3267,7 +3285,7 @@ setMethod('getSelectedNodes', 'CytoscapeWindowClass',
       selected.nodes.names = sapply(obj@suid.name.dict[dict.indices], function(i) {i$name})
       return(selected.nodes.names)
     }
-})
+}) # getSelectedNodes
    
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('hideSelectedNodes', 'CytoscapeWindowClass',
@@ -3317,7 +3335,7 @@ setMethod('invertNodeSelection', 'CytoscapeWindowClass', function(obj) {
   
   # another better option: call selectNodes() 
   # selectNodes(obj, c('A', 'C'), FALSE)
-})
+}) # invertNodeSelection
  
 # ------------------------------------------------------------------------------
 setMethod('deleteSelectedNodes', 'CytoscapeWindowClass', 
@@ -3332,7 +3350,7 @@ setMethod('deleteSelectedNodes', 'CytoscapeWindowClass',
     selected.node.SUIDs = unname(fromJSON(rawToChar(request.res$content)))
     
     print(selected.node.SUIDs)
-})
+}) # deleteSelectedNodes
    
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('selectEdges', 'CytoscapeWindowClass',
@@ -3369,7 +3387,7 @@ setMethod ('invertEdgeSelection', 'CytoscapeWindowClass',
     resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/selected", sep="/")
     request.res = PUT(url=resource.uri, body=to.be.selected.edges.JSON, encode="json")
     invisible(request.res)
-})
+}) # invertEdgeSelection
  
 # ------------------------------------------------------------------------------
 setMethod('deleteSelectedEdges', 'CytoscapeWindowClass', 
@@ -3377,7 +3395,7 @@ setMethod('deleteSelectedEdges', 'CytoscapeWindowClass',
     net.SUID = as.character(obj@window.id)
     delete.from.root.graph.also = TRUE
     
-})
+}) # deleteSelectedEdges
    
 # ------------------------------------------------------------------------------
 setMethod('getSelectedEdgeCount', 'CytoscapeWindowClass', 
@@ -3389,7 +3407,7 @@ setMethod('getSelectedEdgeCount', 'CytoscapeWindowClass',
     
     num.selected.edges = length(fromJSON(rawToChar(request.res$content)))
     return(num.selected.edges)
-})
+}) # getSelectedEdgeCount
    
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getSelectedEdges', 'CytoscapeWindowClass',
@@ -4185,16 +4203,16 @@ simpleCap <- function(x) {
 
 # ------------------------------------------------------------------------------
 getVisualProperty <- function(obj, vizmap.style.name, property) {
-  resource.uri = paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", property, sep="/")
-  request.res = GET(url=resource.uri)
+  resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", property, sep="/")
+  request.res <- GET(url=resource.uri)
   return(fromJSON(rawToChar(request.res$content))[[2]])
 }
 
 # ------------------------------------------------------------------------------
 setVisualProperty <- function(obj, style.string, vizmap.style.name='default') {
-  resource.uri = paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
-  style.JSON = toJSON(list(style.string))
-  request.res = PUT(url=resource.uri, body=style.JSON, encode="json")
+  resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
+  style.JSON <- toJSON(list(style.string))
+  request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
   redraw(obj)
 }
 
@@ -4206,8 +4224,8 @@ obtainEveryOtherValue <- function(v) {
 # ------------------------------------------------------------------------------
 setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
    # get network ID and version
-   net.SUID = as.character(obj@window.id)
-   version = pluginVersion(obj)
+   net.SUID <- as.character(obj@window.id)
+   version <- pluginVersion(obj)
    
    # get the views for the given network model
    resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", sep="/")
@@ -4219,15 +4237,15 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
       node.name <- node.names[pos]
       current.value <- new.values[pos]
       # map node name to node SUID
-      dict.indices = which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
-      node.SUID = sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
+      dict.indices <- which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
+      node.SUID <- sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
       
       # request 
-      resource.uri = paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
+      resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
       node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
       
       # request result
-      request.res = PUT(resource.uri, body=node.SUID.JSON, encode="json")
+      request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
    } # end for (node.name in node.names)
    
    invisible(request.res)
@@ -4235,8 +4253,8 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
 # ------------------------------------------------------------------------------
 setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property){
    # get network ID and version
-   net.SUID = as.character(obj@window.id)
-   version = pluginVersion(obj)
+   net.SUID <- as.character(obj@window.id)
+   version <- pluginVersion(obj)
    
    # get the views for the given network model
    resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", sep="/")
@@ -4245,9 +4263,9 @@ setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property){
    view.SUID <- as.character(net.views.SUIDs[[1]])
    
    # map edge names to edge SUIDs
-   resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge", sep="/")
-   request.res = GET(url=resource.uri)
-   request.res = fromJSON(rawToChar(request.res$content))
+   resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge", sep="/")
+   request.res <- GET(url=resource.uri)
+   request.res <- fromJSON(rawToChar(request.res$content))
    # get the row information from the edge table
    row.lst <- request.res[[6]]
    suids <- sapply(row.lst, '[[', "SUID")
@@ -4260,11 +4278,11 @@ setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property){
       edge.SUID <- edge.dict$suids[which(names==edge.name)]
       
       # request 
-      resource.uri = paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "edges", as.character(edge.SUID), sep="/")
+      resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "edges", as.character(edge.SUID), sep="/")
       node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
       
       # request result
-      request.res = PUT(resource.uri, body=node.SUID.JSON, encode="json")
+      request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
    } # end for (edge.name in edge.names)
    
    invisible(request.res)
