@@ -27,7 +27,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('selectNodes.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('selectNodes.test', graph=makeSimpleGraph())
   clearSelection (cw)
   selectNodes (cw, c ('A', 'B'))
   getSelectedNodes (cw)
