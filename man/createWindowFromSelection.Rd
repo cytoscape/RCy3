@@ -30,7 +30,7 @@ an empty graph.
   cy <- CytoscapeConnection ()
   title <- 'createWindowFromSelection demo'
 
-  cw <-  new.CytoscapeWindow (title, makeSimpleGraph ())
+  cw <- CytoscapeWindow (title, makeSimpleGraph ())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw)
