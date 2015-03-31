@@ -29,7 +29,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('saveNetwork.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('saveNetwork.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw, 'jgraph-spring')
   redraw (cw)
