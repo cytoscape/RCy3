@@ -24,7 +24,7 @@ None.
 }
 
 \examples{
-  cw <- new.CytoscapeWindow ('sendNodes.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('sendNodes.test', graph=makeSimpleGraph())
   sendNodes (cw)
 }
 
