@@ -33,8 +33,8 @@ A list of names.
 
 \examples{
 
-  cy = CytoscapeConnection ()
-  print (getEdgeAttributeNames (cy))
+  cyt = CytoscapeConnection ()
+  print (getEdgeAttributeNames (cyt))
 
 }
 
