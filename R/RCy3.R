@@ -876,7 +876,7 @@ setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
      # get nodes
      all.nodes <- request.res$elements$nodes
      all.nodes <- sapply(all.nodes, '[[', 1)
-     print(all.nodes)
+     #print(all.nodes)
      
      # get node names and add them to the R graph
      all.node.names <- unlist(all.nodes["name",])
@@ -1138,6 +1138,7 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
       write(sprintf(' *** create node pair table: %f secs', difftime(Sys.time(), start.time, units='secs')), stderr())
     }
     
+    #TODO check if nodes were already sent. If not, stop. (TanjaM April 2015)
     #todo: if there is only one edge, Cytoscape.createEdges does not resolve, 
     #todo: since arrays are expected, and 1-element arrays are treated as scalars 
     #todo: in the trip from R to the java virutal machine. (pshannon, 5 apr 2011)
@@ -1153,13 +1154,11 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
     
     get.name.column.url <- paste(base.url, "tables", "defaultnode", "columns", "name", sep="/")
     res.name <- GET(get.name.column.url)
-    # remove 'unique' below if CyREST duplication issue is fixed (gkolishovski, 19 jun 2015)
-    nodes.name.vec <- unique(fromJSON(rawToChar(res.name$content))$values)
-    
+    nodes.name.vec <- fromJSON(rawToChar(res.name$content))$values
+
     get.suid.column.url <- paste(base.url, "tables", "defaultnode", "columns", "SUID", sep="/")
     res.suid <- GET(get.suid.column.url)
-    # remove 'unique' below if CyREST duplication issue is fixed (gkolishovski, 19 jun 2015)
-    nodes.suid.vec <- unique(fromJSON(rawToChar(res.suid$content))$values)
+    nodes.suid.vec <- fromJSON(rawToChar(res.suid$content))$values
     
     # check both vectors 'NAME' and 'SUID' have equal lengths
     # if not - stop execution
@@ -1172,14 +1171,14 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
     edges.list <- list()
     
     for(i in 1:nrow(tbl.edges)) {
-      source.suid <- nodes.df[grep(tbl.edges[i,'source'], nodes.df[,1]), 2]
-      target.suid <- nodes.df[grep(tbl.edges[i,'target'], nodes.df[,1]), 2]
-      
-      directed = FALSE
-      
-      if(tbl.edges[i,'edgeType'] == "directed") {
-        directed = TRUE
-      }
+       source.suid <- nodes.df[grep(tbl.edges[i,'source'], nodes.df[,1]), 2]
+       target.suid <- nodes.df[grep(tbl.edges[i,'target'], nodes.df[,1]), 2]
+       
+       directed = FALSE
+       
+       if(tbl.edges[i,'edgeType'] == "directed") {
+          directed = TRUE
+       }
       
       # create new edge list
       new.edge <- list(source=source.suid, target=target.suid, directed=directed, interaction=edge.type[i])
