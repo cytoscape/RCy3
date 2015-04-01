@@ -414,9 +414,11 @@ Finally, delete all the windows from this vignette:
 
 \begin{itemize}
 
-\item Keiichiro Ono for generously providing CyREST as well as help and support for new functionalities and changes.
+\item Paul Shannon's generous advice and mentorship was very important for transforming this package from using XMLRPC and CytoscapeRPC to using CyREST.
 
-\item Paul Shannon for advice and help for transforming this package from using XMLRPC and CytoscapeRPC to using CyREST.
+\item Keiichiro Ono kindly provided CyREST as well as help and support for new functionalities and changes.
+
+\item Mark Grimes kindly provided helpful user feedback.
 
 \item RCytoscape would not be possible without the generosity and skill of Jan Bot, whose Cytoscape plugin 'CytoscapeRPC' is the indispensable link in commuication between R and Cytoscape.
 
