@@ -20,8 +20,10 @@ Nothing.
 \author{Paul Shannon}
 
 \examples{
-  cy <- CytoscapeConnection ()
-  print (setDefaultEdgeSelectionColor (cy, '#FF0000'))
+  cw = CytoscapeWindow ("demo.setDefaultEdgeSelectionColor", graph=makeSimpleGraph ())
+  displayGraph (cw)
+  print (setDefaultEdgeSelectionColor (cw, '#FF0000'))
+  redraw (cw)
 }
 
 \keyword{graph}
