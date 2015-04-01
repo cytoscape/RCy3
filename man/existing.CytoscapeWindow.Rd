@@ -41,7 +41,7 @@ existing.CytoscapeWindow (title, host='localhost', port=1234, copy.graph.from.cy
   cy <- CytoscapeConnection ()
   cw <- CytoscapeWindow ('demo.existing', graph=makeSimpleGraph ())
   displayGraph (cw)
-  cw2 <- existing.CytoscapeWindow ('demo.existing',  copy.graph.from.cytoscape.to.R=TRUE)
+  #cw2 <- existing.CytoscapeWindow ('demo.existing',  copy.graph.from.cytoscape.to.R=TRUE)
 
 }
 
