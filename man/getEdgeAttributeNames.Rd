@@ -33,7 +33,7 @@ A list of names.
 
 \examples{
 
-  cw = CytoscapeConnection ('demo.getEdgeAttributeNames', graph=makeSimpleGraph())
+  cw = CytoscapeWindow ('demo.getEdgeAttributeNames', graph=makeSimpleGraph())
   print (getEdgeAttributeNames (cw))
 
 }
