@@ -40,12 +40,12 @@ an empty graph.
   if (new.window.title \%in\% as.character (getWindowList (cy)))
     deleteWindow (cy, new.window.title)
 
-  c2 <- createWindowFromSelection (cw, new.window.title, TRUE)
-  redraw (c2)
-  layoutNetwork(c2)
+  #c2 <- createWindowFromSelection (cw, new.window.title, TRUE)
+  #redraw (c2)
+  #layoutNetwork(c2)
 
-  clearSelection (c2)
-  selectNodes (c2, 'C')
-  print (getSelectedNodeCount (c2))  # should be 1
+  #clearSelection (c2)
+  #selectNodes (c2, 'C')
+  #print (getSelectedNodeCount (c2))  # should be 1
 }
 \keyword{graph}
