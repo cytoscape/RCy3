@@ -1430,6 +1430,7 @@ setMethod('setNodeAttributesDirect', 'CytoscapeWindowClass',
       write(sprintf('attribute name %s, node.names %d, values %d', attribute.name, length(node.names), length(values)), stderr())
       return()
     }
+    #TODO check if nodes were already sent. If not, stop (TanjaM April 2015)
     
     caller.specified.attribute.class = simpleCap(tolower(attribute.type))
     # if the attribute's 'class'-parameter is null or empty, make it 'String'
