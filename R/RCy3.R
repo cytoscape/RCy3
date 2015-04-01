@@ -1650,9 +1650,10 @@ setMethod('redraw', 'CytoscapeWindowClass',
     id = as.character(obj@window.id)
     
     api.str = paste(obj@uri, pluginVersion(obj), "apply/styles", "default", id, sep = "/")
-    res <- GET(api.str)
-    res.msg <- fromJSON(rawToChar(res$content))
-    invisible(res.msg)
+    invisible(api.str)
+    #res <- GET(api.str)
+    #res.msg <- fromJSON(rawToChar(res$content))
+    #invisible(res.msg)
   }) # redraw
 
 #------------------------------------------------------------------------------------------------------------------------
