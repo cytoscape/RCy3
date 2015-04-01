@@ -21,8 +21,10 @@ Nothing.
 \author{Paul Shannon}
 
 \examples{
-  cy <- CytoscapeConnection ()
-  print (setDefaultNodeReverseSelectionColor (cy, '#FF0000'))
+  cw = CytoscapeWindow ("demo.setDefaultNodeReverseSelectionColor", graph=makeSimpleGraph ())
+  displayGraph (cw)
+  print (setDefaultNodeReverseSelectionColor (cw, '#FF0000'))
+  redraw (cw)
 }
 
 \keyword{graph}
