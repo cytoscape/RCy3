@@ -215,6 +215,7 @@ importFrom(methods, new)
 
 importFrom(RJSONIO)
 importFrom(httr)
+importFrom(BiocGenerics)
 
 
 
