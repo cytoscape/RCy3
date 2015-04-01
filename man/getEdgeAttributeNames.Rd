@@ -34,6 +34,7 @@ A list of names.
 \examples{
 
   cw = CytoscapeWindow ('demo.getEdgeAttributeNames', graph=makeSimpleGraph())
+  displayGraph (cw)
   print (getEdgeAttributeNames (cw))
 
 }
