@@ -22,8 +22,8 @@ A list of character strings group, e.g., "floating|numeric|double",
 \author{Paul Shannon}
 
 \examples{
-  cy <- CytoscapeConnection ()
-  getAttributeClassNames (cy)
+  cyw <- CytoscapeConnection ()
+  getAttributeClassNames (cyw)
    # [1] "floating|numeric|double" "integer|int"             "string|char|character"  
 }
 
