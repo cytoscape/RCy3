@@ -33,8 +33,9 @@ A list of names.
 
 \examples{
 
-  cy = CytoscapeConnection ()
-  print (getNodeAttributeNames (cy))
+  cw = CytoscapeWindow ('demo.getNodeAttributeNames', graph=makeSimpleGraph())
+  displayGraph (cw)
+  print (getNodeAttributeNames (cw))
 
 }
 
