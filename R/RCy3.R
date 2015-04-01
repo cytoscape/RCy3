@@ -890,7 +890,7 @@ setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
      # get node attributes and add them to the R graph
      node.attribute.names = getNodeAttributeNames (obj)
      g = initNodeAttribute (g, 'edgeType', 'char', 'assoc')
-     print(node.attribute.names)
+     
      #for each attribute:
      #g = initNodeAttribute (g, 'type', 'char', 'undefined')
      #for each value
@@ -1558,7 +1558,7 @@ setMethod ('setEdgeAttributesDirect', 'CytoscapeWindowClass',
       attribute.values.to.send.JSON <- toJSON(attribute.values.to.send)
       
       request.res <- PUT(url=resource.uri, body=attribute.values.to.send.JSON, encode="json")
-      print(request.res)
+
       invisible (request.res)
      }) # setEdgeAttributesDirect
 
