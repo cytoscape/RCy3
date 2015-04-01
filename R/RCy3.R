@@ -3181,17 +3181,15 @@ setMethod('deleteNodeAttribute', 'CytoscapeConnectionClass',
 # delete edge attribute by deleting its column in the edge table
 setMethod('deleteEdgeAttribute', 'CytoscapeConnectionClass', 
   function(obj, attribute.name) {
-    net.SUID = as.character(obj@window.id)
-    if(attribute.name %in% getEdgeAttributeNames(obj)) {
-      resource.uri = paste(obj@uri, pluginVersion(obj), "networks", net.SUID, "tables/defaultedge/columns", as.character(attribute.name), sep="/")
-      # request result
-      request.res = DELETE(url= api.str)
-      write(sprintf('Attribute "%s" has been deleted...', attr.name), stderr())
-      invisible(request.res)
-    } else {
-      msg = paste(attribute.name, ' does not exist and thus could not be deleted.')
-      write(msg, stderr())
-    }
+     if (attribute.name %in% getEdgeAttributeNames(obj)){
+        resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns", as.character(attribute.name), sep="/")
+        request.res <- DELETE(url= resource.uri)
+        write(sprintf('Attribute "%s" has been deleted...', attribute.name), stderr())
+        invisible(request.res)
+     } else{
+        msg = paste (attribute.name, 'does not exist and thus could not be deleted.')
+        write (msg, stderr ())
+     }
 })
 
 # ------------------------------------------------------------------------------
