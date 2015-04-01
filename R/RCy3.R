@@ -1180,15 +1180,14 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
       if(tbl.edges[i,'edgeType'] == "directed") {
         directed = TRUE
       }
+      
       # create new edge list
-      new.edge <- list(source=source.suid, target=target.suid, directed=directed)
+      new.edge <- list(source=source.suid, target=target.suid, directed=directed, interaction=edge.type[i])
       # add the newly created edge list to the list of all edge sub-lists
       edges.list[[length(edges.list)+1]] <- new.edge
     }
     send.edges.url <- paste(base.url, "edges", sep="/")
-    
     send.edges.res <- POST(url=send.edges.url, body=toJSON(edges.list), encode="json")
-    
     invisible(send.edges.res)
   }) # sendEdges
 
@@ -1536,36 +1535,30 @@ setMethod ('setEdgeAttributesDirect', 'CytoscapeWindowClass',
          attributes.to.send <- list(name=toString(attribute.name), type="String")
       }
 
-      
       # map edge names to edge SUIDs
       resource.uri = paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge", sep="/")
       request.res = GET(url=resource.uri)
       request.res = fromJSON(rawToChar(request.res$content))
-      print(request.res)
+
       # get the row information from the edge table
       row.lst <- request.res[[6]]
       suids <- sapply(row.lst, '[[', "SUID")
       names <- sapply(row.lst, '[[', "name")
       edge.dict <- as.data.frame(cbind(names, suids))
-      print(edge.dict)
       
       # send edge attributes as column names
       resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns", sep="/")
       edge.attributes.JSON <- toJSON(list(attributes.to.send))
       request.res <- POST(url=resource.uri, body=edge.attributes.JSON, encode="json")
       
-
-      
       # populate columns with attribute values
-      resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultnode", as.character(attribute.name), sep="/")
-      attribute.values.to.send <- list(values)
+      resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns", as.character(attribute.name), sep="/")
+      df <- cbind(suids, values)
+      attribute.values.to.send <- apply(df, 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
+      attribute.values.to.send.JSON <- toJSON(attribute.values.to.send)
       
-      print(attribute.values.to.send)
-      #sapply( list(SUID=..., value=attribute.values.to.send))
-      edge.attribute.values.json <- toJSON(attribute.values.to.send)
-      
-      request.res <- PUT(url=resource.uri, body=edge.attribute.values.json, encode="json")
-      #print(request.res)
+      request.res <- PUT(url=resource.uri, body=attribute.values.to.send.JSON, encode="json")
+      print(request.res)
       invisible (request.res)
      }) # setEdgeAttributesDirect
 
