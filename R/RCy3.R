@@ -860,26 +860,48 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'CytoscapeConnectionClass',
 setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
 
   function (obj,  window.title) {
-#    window.id = getWindowID (obj, window.title)
-#    stopifnot (!is.na (window.id))
-#  
-#    node.count = xml.rpc (obj@uri, "Cytoscape.countNodes", window.id)
-#    if (node.count == 0)
-#      return (new ('graphNEL', edgemode='directed'))
-#      
-#    all.node.names = xml.rpc (obj@uri, "Cytoscape.getNodes", window.id)
-#    write (sprintf ('received %d nodes from %s', length (all.node.names), window.title), stderr ())
-#    g = new ("graphNEL", edgemode='directed')
-#    write (sprintf ('adding %d nodes to local graph', length (all.node.names)), stderr ())
-#    g = graph::addNode (all.node.names, g)
-#    
-#    node.attribute.names = getNodeAttributeNames (obj)
-#    #node.attribute.names = xml.rpc (obj@uri, 'Cytoscape.getNodeAttributeNames', .convert=T)
-#    g = initEdgeAttribute (g, 'edgeType', 'char', 'assoc')
-#
-#    edge.count = xml.rpc (obj@uri, "Cytoscape.countEdges", window.id)
-#  
-#    if (edge.count > 0) {
+     # check if the network is non-empty and get its id
+     window.id = getWindowID (obj, window.title)
+     stopifnot (!is.na (window.id))
+     node.count = getNodeCount(obj)
+     if (node.count == 0){
+        return (new ('graphNEL', edgemode='directed'))
+     }
+     
+     # get the entire graph
+     resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), sep="/")
+     request.res <- GET(resource.uri)
+     request.res <- fromJSON(rawToChar(request.res$content))
+     
+     # get nodes
+     all.nodes <- request.res$elements$nodes
+     all.nodes <- sapply(all.nodes, '[[', 1)
+     print(all.nodes)
+     
+     # get node names and add them to the R graph
+     all.node.names <- unlist(all.nodes["name",])
+     write (sprintf ('received %d nodes from %s', length (all.node.names), window.title), stderr ())
+     g = new ("graphNEL", edgemode='directed')
+     write (sprintf ('adding %d nodes to local graph', length (all.node.names)), stderr ())
+     for(node in all.node.names){
+        g = graph::addNode (node, g)
+     }
+     
+     # get node attributes and add them to the R graph
+     node.attribute.names = getNodeAttributeNames (obj)
+     g = initNodeAttribute (g, 'edgeType', 'char', 'assoc')
+     print(node.attribute.names)
+     #for each attribute:
+     #g = initNodeAttribute (g, 'type', 'char', 'undefined')
+     #for each value
+     #nodeData (g, 'C', 'label') = 'Gene C'
+     
+     #g = initEdgeAttribute (g, 'edgeType', 'char', 'assoc')
+
+     # get edges
+     edge.count = getEdgeCount(obj)
+     
+     if (edge.count > 0) {
 #      regex = ' *[\\(|\\)] *'
 #      all.edge.names = xml.rpc (obj@uri, "Cytoscape.getEdges", window.id)
 #      write (sprintf ('received %d edges from %s', length (all.edge.names), window.title), stderr ())
@@ -892,9 +914,9 @@ setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
 #      edgeData (g, source.nodes, target.nodes, 'edgeType') = edge.types
 #      g = copyNodeAttributesFromCyGraph (obj, window.id, g)
 #      g = copyEdgeAttributesFromCyGraph (obj, window.id, g)
-#      } # if edgeCount > 0
-#  
-#    return (g)
+      } # if edgeCount > 0
+  
+    return (g)
     })
 
 # ------------------------------------------------------------------------------
@@ -1390,7 +1412,6 @@ properlyInitializedEdgeAttribute = function (graph, attribute.name) {
 # ------------------------------------------------------------------------------
 setMethod('setNodeAttributes', 'CytoscapeWindowClass', function(obj, attribute.name) { 
   if(length(nodes(obj@graph)) == 0) {
-    
     return()
   }
   suid.name.pairs = obj@suid.name.dict
@@ -1429,7 +1450,6 @@ setMethod('setNodeAttributesDirect', 'CytoscapeWindowClass',
     existing.attribute.names <- getNodeAttributeNames(obj)
     
     if(!attribute.name %in% existing.attribute.names) {
-      print(paste(attribute.name, " doesn't exists", sep=""))
       # creates new 'Node Table' attribute (column) in Cytoscape
       # TO DO: [GIK] maybe put in seperate function
       new.cynode.tbl.col <- list(name=attribute.name, type=caller.specified.attribute.class)
@@ -1458,81 +1478,95 @@ setMethod('setNodeAttributesDirect', 'CytoscapeWindowClass',
 setMethod ('setEdgeAttributes', 'CytoscapeWindowClass',
 
    function (obj, attribute.name) {
-
-#     if (length (edgeNames (obj@graph)) == 0)
-#       return ()
-#     
-#     caller.specified.attribute.class = attr (edgeDataDefaults (obj@graph, attribute.name), 'class')
-#
-#     edge.names = as.character (cy2.edge.names (obj@graph))
-#     edge.names.tilde = names (cy2.edge.names (obj@graph))
-#     edge.names.with.bars = gsub ('~', '|', edge.names.tilde)
-#     values = eda (obj@graph, attribute.name) [edge.names.with.bars]
-#     #print (values)
-#
-#     result = setEdgeAttributesDirect (obj, attribute.name, caller.specified.attribute.class, edge.names, values)
-#     invisible (result)
+      if (length (edgeNames (obj@graph)) == 0){
+         return ()
+      }
+      
+      # get edge names and types
+      caller.specified.attribute.class = attr (edgeDataDefaults (obj@graph, attribute.name), 'class')
+      
+      edge.names = as.character (cy2.edge.names (obj@graph))
+      edge.names.tilde = names (cy2.edge.names (obj@graph))
+      edge.names.with.bars = gsub ('~', '|', edge.names.tilde)
+      values = unname(eda (obj@graph, attribute.name) [edge.names.with.bars])
+      result = setEdgeAttributesDirect (obj, attribute.name, caller.specified.attribute.class, edge.names, values)
+      invisible (result)
      }) # setEdgeAttributes
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeAttributesDirect', 'CytoscapeWindowClass',
 
    function (obj, attribute.name, attribute.type, edge.names, values) {
-#
-#     write (sprintf ('entering setEdgeAttributesDirect, %s, with %d names and %d values',
-#                     attribute.name, length (edge.names), length (values)), stderr ())
-#
-#     if (length (edge.names) == 0)
-#       return ()
-#
-#     if (length (values) == 2 * length (edge.names))
-#       values = values [1:length (edge.names)]
-#
-#        # in sending arguments to CytoscapeRPC, lists of length one become scalars, and so fail to match
-#        # java methods that expect lists.  to sidestep that problem, duplicate edge.name and value, 
-#        # creating silly but effective lists of length 2
-#
-#     if (length (edge.names) == 1) {
-#       edge.names = rep (edge.names, 2)
-#       values = rep (values, 2)
-#       }
-#
-#     #write (sprintf ('edge.names: %s', list.to.string (edge.names)), stderr ())
-#     #write (sprintf ('    values: %s', list.to.string (values)), stderr ())
-#
-#     caller.specified.attribute.class = tolower (attribute.type)
-#
-#     if (is.null (caller.specified.attribute.class) || length (caller.specified.attribute.class) == 0)   # NULL, or non-null but empty
-#       caller.specified.attribute.class = 'string'
-#
-#     result = ''
-#
-#     if (length (edge.names) != length (values)) {
-#       write (sprintf ('RCytoscape::setEdgeAttributesDirect ERROR....'), stderr ())
-#       write (sprintf ('attribute name %s, edge.names %d, values %d', attribute.name, length (edge.names), length (values)), stderr ())
-#       return ();
-#       }
-#
-#     if (caller.specified.attribute.class %in% c ('floating', 'numeric', 'double')) {
-#       timing.info <<- system.time ((result = xml.rpc (obj@uri, 'Cytoscape.addDoubleEdgeAttributes', attribute.name, edge.names, as.numeric (values), .convert=TRUE)))
-#       write (timing.info, stderr ())                                   
-#       #write (sprintf ('result of addDoubleEdgeAttributes: %s', result), stderr ())
-#       #write (result, stderr ())
-#       }
-#     else if (caller.specified.attribute.class %in% c ('integer', 'int')) {
-#       result = xml.rpc (obj@uri, 'Cytoscape.addIntegerEdgeAttributes', attribute.name, edge.names, as.integer (values), .convert=TRUE)
-#       #write (sprintf ('result of addIntegerEdgeAttributes: %s', result), stderr ())
-#       #write (result, stderr ())
-#       }
-#     else if (caller.specified.attribute.class %in% c ('string', 'char', 'character')) {
-#       if (length (edge.names) == 1)
-#         result = xml.rpc (obj@uri, 'Cytoscape.addStringEdgeAttribute', attribute.name, edge.names, as.character (values), .convert=TRUE)
-#       else
-#         result = xml.rpc (obj@uri, 'Cytoscape.addStringEdgeAttributes', attribute.name, edge.names, as.character (values), .convert=TRUE)
-#       #write (sprintf ('result of addStringEdgeAttribute/s: %s', result), stderr ())
-#       #write (result, stderr ())
-#       }
-#     invisible (result)
+      write (sprintf ('entering setEdgeAttributesDirect, %s, with %d names and %d values',
+                      attribute.name, length (edge.names), length (values)), stderr ())
+      
+      # return if no edge attributes
+      if (length (edge.names) == 0){
+         return ()
+      }
+      
+      #write (sprintf ('edge.names: %s', unlist (edge.names)), stderr ())
+      #write (sprintf ('    values: %s', unlist (values)), stderr ())
+      
+      caller.specified.attribute.class = tolower (attribute.type)
+      
+      if (is.null (caller.specified.attribute.class) || length (caller.specified.attribute.class) == 0){
+         # NULL, or non-null but empty
+         caller.specified.attribute.class = 'string'
+      }
+      
+      result = ''
+      # alert user if number of edges is not the same as number of edges with associated values
+      if (length (edge.names) != length (values)) {
+         write (sprintf ('RCytoscape::setEdgeAttributesDirect ERROR....'), stderr ())
+         write (sprintf ('attribute name %s, edge.names %d, values %d', attribute.name, length (edge.names), length (values)), stderr ())
+         return ();
+      }
+
+      # create table column for the attribute based on type
+      if (caller.specified.attribute.class %in% c ('float', 'floating', 'numeric', 'double')) {
+         attributes.to.send <- list(name=attribute.name, type="Double")
+      } else if (caller.specified.attribute.class %in% c ('integer', 'int')) {
+         attributes.to.send <- list(name=attribute.name, type="Integer")
+      } else if (caller.specified.attribute.class %in% c ('string', 'char', 'character', 'STRING')) {
+         attributes.to.send <- list(name=attribute.name, type="String")
+      } else if (caller.specified.attribute.class %in% c ('logical', 'bool', 'boolean')) {
+         attributes.to.send <- list(name=attribute.name, type="Boolean")
+      } else{
+         attributes.to.send <- list(name=toString(attribute.name), type="String")
+      }
+
+      
+      # map edge names to edge SUIDs
+      resource.uri = paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge", sep="/")
+      request.res = GET(url=resource.uri)
+      request.res = fromJSON(rawToChar(request.res$content))
+      print(request.res)
+      # get the row information from the edge table
+      row.lst <- request.res[[6]]
+      suids <- sapply(row.lst, '[[', "SUID")
+      names <- sapply(row.lst, '[[', "name")
+      edge.dict <- as.data.frame(cbind(names, suids))
+      print(edge.dict)
+      
+      # send edge attributes as column names
+      resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns", sep="/")
+      edge.attributes.JSON <- toJSON(list(attributes.to.send))
+      request.res <- POST(url=resource.uri, body=edge.attributes.JSON, encode="json")
+      
+
+      
+      # populate columns with attribute values
+      resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultnode", as.character(attribute.name), sep="/")
+      attribute.values.to.send <- list(values)
+      
+      print(attribute.values.to.send)
+      #sapply( list(SUID=..., value=attribute.values.to.send))
+      edge.attribute.values.json <- toJSON(attribute.values.to.send)
+      
+      request.res <- PUT(url=resource.uri, body=edge.attribute.values.json, encode="json")
+      #print(request.res)
+      invisible (request.res)
      }) # setEdgeAttributesDirect
 
 # ------------------------------------------------------------------------------
@@ -1559,8 +1593,7 @@ setMethod('displayGraph', 'CytoscapeWindowClass', function(obj) {
   }
     
   write(sprintf('estimated displayGraph time: %8.1f seconds', estimated.time), stderr())
-  # REMOVE below line
-  # write(sprintf('adding %d nodes...', length(nodes(obj@graph))), stderr())
+  write(sprintf('adding %d nodes...', length(nodes(obj@graph))), stderr())
   
   sendNodes(loc.obj)
     
@@ -1571,13 +1604,38 @@ setMethod('displayGraph', 'CytoscapeWindowClass', function(obj) {
     stepwise.start.time = Sys.time()
   }
   
-  write('adding node attributes...', stderr())
+  # sends edges to Cytoscape
+  write (sprintf ('adding %d edges...', length (edgeNames (loc.obj@graph))), stderr ())
+  sendEdges (loc.obj)
   
-  sapply(noa.names(loc.obj@graph), function(name) {
-    # prints the attribute name; removed
-    # print(name) 
-    setNodeAttributes(loc.obj, name)
-  })
+  if (obj@collectTimings) {
+     write (sprintf (' *** sendEdges: %f secs', difftime (Sys.time (), stepwise.start.time, units='secs')), stderr ())
+     stepwise.start.time = Sys.time ()
+  }
+  
+  # sending node attributes
+  write ('adding node attributes...', stderr ())
+  
+  # send node attributes from R to Cytoscape
+  sapply (noa.names (loc.obj@graph), function (name) {print (name); setNodeAttributes (loc.obj, name)})
+  
+  if (obj@collectTimings) {
+     write (sprintf (' *** send node attributes: %f secs', difftime (Sys.time (), stepwise.start.time, units='secs')), stderr ())
+     stepwise.start.time = Sys.time ()
+  }
+  
+  # send edge attributes
+  write ('adding edge attributes...', stderr ())
+  edgeAttributeNames = eda.names (loc.obj@graph)
+  sapply (eda.names (loc.obj@graph), function (name) {print (name); setEdgeAttributes (loc.obj, name)})
+  
+  if (obj@collectTimings) {
+     write (sprintf (' *** send edge attributes: %f secs', difftime (Sys.time (), stepwise.start.time, units='secs')), stderr ())
+     stepwise.start.time = Sys.time ()
+     actual.time = difftime (Sys.time (), method.start.time, units='secs')
+     write (sprintf (' *** leaving displayGraph, predicted duration %f secs,  actual %f secs', as.integer (round (estimated.time)),
+                     as.integer (round (actual.time))), stderr ())
+  } # if collectTimings
     
   # pseudo R 'pass-by-reference': cw now contains the [node suid,node name] pairs
   eval.parent(substitute(obj <- loc.obj))
@@ -3525,32 +3583,33 @@ eda = function(graph, edge.attribute.name)
 # if there is no edge attribute named 'edgeType', then create edges(uninterestingly) named 'A (edge) B'
 cy2.edge.names = function(graph, R.edge.names=NA)
 {
-  printf('running new version of cy2.edge.names')
-  if(length(edges(graph)) == 0) {
-    return(NA)
-  }
-  
-  edgeType.attribute.present = TRUE 
-  edge.type = 'unspecified'
-  if('edgeType' %in% names(edgeDataDefaults(graph))) {
-    edge.type = as.character(eda(graph, 'edgeType'))
-  }
-  print(edge.type)
-  tokens = strsplit(.rcyEdgeNames(graph), '~')
-#  a = sapply (tokens, function (tok) tok [1])
-#  b = sapply (tokens, function (tok) tok [2])
-#  edge.type = paste (' (', edge.type, ') ', sep='')
-#  edge.names = paste (a, edge.type, b, sep='')
-#
-#  names (edge.names) = .rcyEdgeNames (graph)
-#
-#  if (!(length (R.edge.names) == 1 && is.na (R.edge.names))) {  # we were given some subset of all edges to extract and get cy2 names for.  do that here
-#    new.edgeNames.tilde = gsub ('\\|', '~', R.edge.names)
-#    if (length (intersect (names (edge.names), new.edgeNames.tilde)) > 0)
-#      edge.names = edge.names [new.edgeNames.tilde]
-#    }
-#
-#  return (edge.names)
+   #printf('running new version of cy2.edge.names')
+   if(length(edges(graph)) == 0) {
+      return(NA)
+   }
+   
+   edgeType.attribute.present = TRUE
+   edge.type = 'unspecified'
+   if('edgeType' %in% names(edgeDataDefaults(graph))) {
+      edge.type = as.character(eda(graph, 'edgeType'))
+   }
+   
+   tokens = strsplit(.rcyEdgeNames(graph), '~')
+   a = sapply (tokens, function (tok) tok [1])
+   b = sapply (tokens, function (tok) tok [2])
+   edge.type = paste (' (', edge.type, ') ', sep='')
+   edge.names = paste (a, edge.type, b, sep='')
+   
+   names (edge.names) = .rcyEdgeNames (graph)
+   
+   if (!(length (R.edge.names) == 1 && is.na (R.edge.names))) {  # we were given some subset of all edges to extract and get cy2 names for.  do that here
+      new.edgeNames.tilde = gsub ('\\|', '~', R.edge.names)
+      if (length (intersect (names (edge.names), new.edgeNames.tilde)) > 0){
+         edge.names = edge.names [new.edgeNames.tilde]
+      }
+   }
+   
+   return (edge.names)
 
 } # cy2.edge.names
 #------------------------------------------------------------------------------------------------------------------------
@@ -4131,51 +4190,51 @@ hexColorToInt = function (hex.string)
 # this is fixed here
 .rcyEdgeNames = function(g) 
 {
-  nodes.list = edges(g)
-  result = c()
-  for(source.node in names(nodes.list)) {
-    target.nodes = nodes.list[[source.node]]
+   nodes.list = edges(g)
+   result = c()
+   for(source.node in names(nodes.list)) {
+      target.nodes = nodes.list[[source.node]]
     
-    if(length(target.nodes) == 0) {
+   if(length(target.nodes) == 0) {
       next;
-    }    
-    for(target.node in target.nodes) {
+   }
+   for(target.node in target.nodes) {
       tilde.edge.name = sprintf('%s~%s', source.node, target.node) 
-      result = c(result, tilde.edge.name) 
-    } # for target.node
-  } # for source.node
-  
-  return(result)
+      result = c(result, tilde.edge.name)
+      } # for target.node
+   } # for source.node
+   
+   return(result)
 }
 
 #------------------------------------------------------------------------------------------------------------------------
 .getNovelEdges = function (g.old, g.new)
 {
-  if (length (edges (g.old)) == 0)
-    gOld.edgeCount = 0
-  else
-    gOld.edgeCount = length (edgeNames (g.old))
+   if (length (edges (g.old)) == 0){
+      gOld.edgeCount = 0
+   } else {
+      gOld.edgeCount = length (edgeNames (g.old))
+   }
 
-  if (length (edges (g.new)) == 0)
-    gNew.edgeCount = 0
-  else
-    gNew.edgeCount = length (edgeNames (g.new))
+   if (length (edges (g.new)) == 0){
+      gNew.edgeCount = 0
+   } else{
+      gNew.edgeCount = length (edgeNames (g.new))
+   }
+   
+   if (gNew.edgeCount == 0){
+      return (NA)
+   }
+   if (gOld.edgeCount == 0){
+      return (cy2.edge.names (g.new))
+   }
 
-  #printf ('g.old: %d edges', gOld.edgeCount)
-  #printf ('g.new: %d edges', gNew.edgeCount)
+   old.edges = cy2.edge.names (g.old)
+   new.edges = cy2.edge.names (g.new)
+   novel.edges = setdiff (new.edges, old.edges)
+   novel.edges.indices = match (novel.edges, as.character (new.edges))
+   return (new.edges [novel.edges.indices])
 
-  if (gNew.edgeCount == 0)
-    return (NA)
-
-  if (gOld.edgeCount == 0)
-    return (cy2.edge.names (g.new))
-
-  old.edges = cy2.edge.names (g.old)
-  new.edges = cy2.edge.names (g.new)
-  novel.edges = setdiff (new.edges, old.edges)
-  novel.edges.indices = match (novel.edges, as.character (new.edges))
-  return (new.edges [novel.edges.indices])
-  
 
 } # .getNovelEdges
 
