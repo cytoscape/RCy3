@@ -213,9 +213,9 @@ importMethodsFrom(graph, edgeData, "edgeData<-", edgeDataDefaults,
 
 importFrom(methods, new)
 
-importMethodsFrom(RJSONIO, fromJSON, toJSON)
-importMethodsFrom(httr, GET, PUT, POST, DELETE)
-importMethodsFrom(RCurl, url.exists)
+importFrom(RJSONIO, fromJSON, toJSON)
+importFrom(httr, GET, PUT, POST, DELETE)
+importFrom(RCurl, url.exists)
 
 
 
