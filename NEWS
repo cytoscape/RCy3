@@ -1,0 +1,9 @@
+NEW RELEASE VERSION 0.99.0
+-------------------------
+
+NEW FEATURES
+
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o removed new.CystoscapeWindow. CytoscapeWindow does the job now.
