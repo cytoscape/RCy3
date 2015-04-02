@@ -1199,11 +1199,11 @@ setMethod ('saveLayout', 'CytoscapeWindowClass',
 
   function (obj, filename, timestamp.in.filename=FALSE) {
 
-     custom.layout = getNodePosition (obj,  getAllNodes (obj))
+     custom.layout <- getNodePosition (obj,  getAllNodes (obj))
      if (timestamp.in.filename) {
-        dateString = format (Sys.time (), "%a.%b.%d.%Y-%H.%M.%S")
-        stem = strsplit (filename, '\\.RData')[[1]]
-        filename = sprintf ('%s.%s.RData', stem, dateString)
+        dateString <- format (Sys.time (), "%a.%b.%d.%Y-%H.%M.%S")
+        stem <- strsplit (filename, '\\.RData')[[1]]
+        filename <- sprintf ('%s.%s.RData', stem, dateString)
         write (sprintf ('saving layout to %s\n', filename), stderr ())
      }
      save (custom.layout, file=filename)
@@ -1214,10 +1214,10 @@ setMethod ('restoreLayout', 'CytoscapeWindowClass',
 
   function (obj, filename) {
      load (filename)
-     node.names = names (custom.layout)
-     node.names.filtered = intersect (node.names, getAllNodes (obj))
-     x = as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$x)))
-     y = as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$y)))
+     node.names <- names (custom.layout)
+     node.names.filtered <- intersect (node.names, getAllNodes (obj))
+     x <- as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$x)))
+     y <- as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$y)))
      setNodePosition (obj, node.names.filtered, x, y)
     }) # restoreLayout
 
@@ -4125,7 +4125,7 @@ setMethod ('saveImage', 'CytoscapeWindowClass',
 
       # get the view image from Cytoscape in PNG
       if (image.type == 'png'){
-         resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", cw@window.id,"views/first.png", sep="/")
+         resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,"views/first.png", sep="/")
       }
       request.res <- GET(resource.uri)
       dateString = format (Sys.time (), "%a.%b.%d.%Y-%H.%M.%S")
