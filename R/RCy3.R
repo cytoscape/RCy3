@@ -335,6 +335,10 @@ setValidity("CytoscapeWindowClass", function(object) {
 CytoscapeConnection = function(host='localhost', port=1234) {
   uri = sprintf('http://%s:%s', host, port)
   cc = new('CytoscapeConnectionClass', uri = uri)
+  if (!url.exists(uri)){
+      write(sprintf('Connection failed. Please ensure that you have Cytoscape open and CyREST installed.'), stderr())
+      return()
+  }
   return(cc)
 }
 
