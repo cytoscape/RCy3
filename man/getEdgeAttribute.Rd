@@ -13,7 +13,7 @@ deleting and edge attribute.
 
 Note that edge (and node) attibutes are defined, not just for a specific, single
 CytoscapeWindow, but for an entire Cytoscape application session.  Thus if you
-have two nodes (or edges) with the same ID (the same name) in two
+have two nodes (or edges) with the same ID in two
 different windows, adding a node attribute results in both nodes having
 that attribute.
 
