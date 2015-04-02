@@ -43,7 +43,7 @@ A data frame, with a column for each attribute, a row for each edge.
   redraw (cw)
   layoutNetwork(cw)
     # get all attributes for all edges
-  tbl.noa = getAllEdgeAttributes (cw, onlySelectedEdges=FALSE)
+  tbl.eda = getAllEdgeAttributes (cw, onlySelectedEdges=FALSE)
 
 }
 
