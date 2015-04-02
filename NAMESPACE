@@ -208,11 +208,11 @@ importMethodsFrom(graph, edgeData, "edgeData<-", edgeDataDefaults,
                  "edgeDataDefaults<-", edgeNames, edges, inEdges,
                  nodeData, "nodeData<-", nodeDataDefaults,
                  "nodeDataDefaults<-", nodes,
-                 edgemode, "edgemode<-", randomGraph,
+                 edgemode, "edgemode<-",
                  addNode, addEdge, edgeSets)
 
 importFrom(methods, new)
-
+importFrom(graph, randomGraph)
 importFrom(RJSONIO, fromJSON, toJSON)
 importFrom(httr, GET, PUT, POST, DELETE)
 importFrom(RCurl, url.exists)
