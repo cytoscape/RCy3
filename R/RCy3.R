@@ -1185,6 +1185,7 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
       # add the newly created edge list to the list of all edge sub-lists
       edges.list[[length(edges.list)+1]] <- new.edge
     }
+    print(edges.list)
     send.edges.url <- paste(base.url, "edges", sep="/")
     send.edges.res <- POST(url=send.edges.url, body=toJSON(edges.list), encode="json")
     invisible(send.edges.res)
@@ -3070,7 +3071,22 @@ setMethod('getAllNodeAttributes', 'CytoscapeWindowClass',
 setMethod ('getEdgeAttribute', 'CytoscapeConnectionClass',
 
    function (obj, edge.name, attribute.name) {
-#     return (xml.rpc (obj@uri, "Cytoscape.getEdgeAttribute", edge.name, attribute.name))
+       # get edge.name - edge.SUID table
+       edge.name.suid.tbl <- getEdgeNamesAndSUIDS(obj)
+       # TODO check if edge exists (TanjaM April 2015)
+       edge.SUID <- edge.name.suid.tbl$suids[which(edge.name.suid.tbl$names == edge.name)]
+       
+       # network ID and cyREST API version
+       net.suid = as.character(obj@window.id)
+       version = pluginVersion(obj)
+       
+       # get the node attribute in the nodes table
+       resource.uri <- paste(obj@uri, version, "networks", net.suid, "tables/defaultedge/rows", as.character(edge.SUID), attribute.name, sep="/")
+       request.res <- GET(resource.uri)
+       
+       edge.attribute.value <- unname(rawToChar(request.res$content))
+       
+       return(edge.attribute.value)
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3238,13 +3254,17 @@ setMethod('getAllNodes', 'CytoscapeWindowClass', function(obj) {
 setMethod ('getAllEdges', 'CytoscapeWindowClass',
 
    function (obj) {
-#     id = as.character (obj@window.id)
-#     count = xml.rpc (obj@uri, "Cytoscape.countEdges", id)
-#     if (count == 0)
-#       return ()
-#     result = xml.rpc (obj@uri, "Cytoscape.getEdges", id, .convert=TRUE)
-#     #result = xml.rpc (obj@uri, "Cytoscape.getAllEdges", .convert=TRUE)
-#     return (result)
+       id = as.character (obj@window.id)
+       count = getEdgeCount(obj)
+       if (count == 0){
+           return ()
+       }
+       # get edge name column and return its values
+       resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns/name", sep="/")
+       request.res <- GET(url=resource.uri)
+       request.res <- fromJSON(rawToChar(request.res$content))
+       names <- request.res$values
+       return(names)
      }) # getAllEdges
 
 # ------------------------------------------------------------------------------
@@ -3797,7 +3817,7 @@ remove.redundancies.in.undirected.graph = function(gu)
   allNodes <- nodes(gu)
 
   noa.name <- invisible(lapply(noa.names(gu), function(noa.name) {
-      nodeData(g, allNodes, noa.name) <<- nodeData(gu, allNodes, noa.name)
+      nodeData(g, allNodes, noa.name) <- nodeData(gu, allNodes, noa.name)
   }))
 
   if (length(edgeNames(gu)) == 0) 
@@ -4345,4 +4365,17 @@ setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property){
    } # end for (edge.name in edge.names)
    
    invisible(request.res)
+}
+
+getEdgeNamesAndSUIDS <- function(obj){
+    # map edge names to edge SUIDs
+    resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge", sep="/")
+    request.res <- GET(url=resource.uri)
+    request.res <- fromJSON(rawToChar(request.res$content))
+    # get the row information from the edge table
+    row.lst <- request.res[[6]]
+    suids <- sapply(row.lst, '[[', "SUID")
+    names <- sapply(row.lst, '[[', "name")
+    edge.dict <- as.data.frame(cbind(names, suids))
+    return (edge.dict)
 }
