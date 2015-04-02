@@ -208,14 +208,14 @@ importMethodsFrom(graph, edgeData, "edgeData<-", edgeDataDefaults,
                  "edgeDataDefaults<-", edgeNames, edges, inEdges,
                  nodeData, "nodeData<-", nodeDataDefaults,
                  "nodeDataDefaults<-", nodes,
-                 edgemode, "edgemode<-",
-                 addNode, addEdge)
+                 edgemode, "edgemode<-", randomGraph,
+                 addNode, addEdge, edgeSets)
 
 importFrom(methods, new)
 
-importFrom(RJSONIO)
-importFrom(httr)
-importFrom(BiocGenerics)
+importMethodsFrom(RJSONIO, fromJSON, toJSON)
+importMethodsFrom(httr, GET, PUT, POST, DELETE)
+importMethodsFrom(RCurl, url.exists)
 
 
 
