@@ -3038,17 +3038,42 @@ setMethod('getNodeAttribute', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod('getAllNodeAttributes', 'CytoscapeWindowClass', 
-  function(obj, onlySelectedNodes = FALSE) {
-    g = obj@graph
-    attribute.names = names(nodeDataDefaults(g))
-    nodes.of.interest = nodes(g)
-    if(onlySelectedNodes) {
-      if(getSelectedNodeCount(obj) == 0) {
-        return(NA)
-      }
-      nodes.of.interest = getSelectedNodes(obj)
-    }
+          function(obj, onlySelectedNodes = FALSE) {
+              g = obj@graph
+              attribute.names = names(nodeDataDefaults(g))
+              nodes.of.interest = nodes(g)
+              if(onlySelectedNodes) {
+                  if(getSelectedNodeCount(obj) == 0) {
+                      return(NA)
+                  }
+                  nodes.of.interest = getSelectedNodes(obj)
+              }
+              result = cbind (unlist (nodeData (g, nodes.of.interest, attr=attribute.names [1])))
+              if (length (attribute.names) > 1) {
+                  for (name in attribute.names [2:length (attribute.names)]) {
+                      new.column = unlist (nodeData (g, nodes.of.interest, attr=name))
+                      if (is.null (new.column)){
+                          new.column = rep ('NULL', nrow (result))
+                      }
+                      result = cbind (result, new.column)
+                      } # for name
+                  } # if length > 1
 
+              colnames (result) = attribute.names
+              result = as.data.frame (result, stringsAsFactors=FALSE)
+              
+              for (name in attribute.names) {
+                  attribute.class = attr (nodeDataDefaults (obj@graph, name), 'class')
+                  if (attribute.class == 'FLOATING'){
+                      result [, name] = as.numeric (result [, name])
+                  }else if (attribute.class == 'STRING'){
+                      result [, name] = as.character (result [, name])
+                  }else if (attribute.class == 'INTEGER'){
+                      result [, name] = as.integer (result [, name])
+                  }
+                  } # for name
+
+              return (result)
 })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3078,57 +3103,60 @@ setMethod ('getAllEdgeAttributes', 'CytoscapeWindowClass',
 
   function (obj, onlySelectedEdges=FALSE) {
 
-#    g = obj@graph
-#    attribute.names = names (edgeDataDefaults (g))
-#    edges.of.interest = edgeNames (g)
-#    if (onlySelectedEdges) {
-#      if (getSelectedEdgeCount (obj) == 0)
-#        return (NA)
-#      edges.of.interest = getSelectedEdges (obj)
-#      } # if onlySelectedEdges
-#
-#    source.and.target.nodes = unlist (strsplit (edges.of.interest, '~'))
-#    node.count = length (source.and.target.nodes)
-#    source = source.and.target.nodes [seq (1, node.count, 2)]
-#    target = source.and.target.nodes [seq (2, node.count, 2)]
-#
-#    #printf ('source nodes: %s', list.to.string (source))
-#    #printf ('target nodes: %s', list.to.string (target))
-#    #printf ('attribute names: %s', list.to.string (attribute.names))
-#
-#    result = cbind (unlist (edgeData (g, source, target, attr=attribute.names [1])))
-#    result = cbind (result, source)
-#    result = cbind (result, target)
-#
-#    if (length (attribute.names) > 1) {
-#      for (name in attribute.names [2:length (attribute.names)]) {
-#        new.column = unlist (edgeData (g, source, target, attr=name))
-#        result = cbind (result, new.column)
-#        } # for name
-#      } # if > 1
-#    
-#    column.names = c (attribute.names [1], 'source', 'target')
-#    if (length (attribute.names) > 1)
-#      column.names = c (column.names, attribute.names [2:length(attribute.names)])
-#
-#    colnames (result) = column.names
-#    result = as.data.frame (result, stringsAsFactors=FALSE)
-#    
-#       # we had a matrix of character strings, now a data.frame of character strings
-#       # use the embedded type information (created by initEdgeAttribute) to correct to the proper types
-#       # must be a more direct way to do this in the calls to cbind on a data.frame.
-#    
-#    for (name in attribute.names) {
-#      attribute.class = attr (edgeDataDefaults (obj@graph, name), 'class')
-#      if (attribute.class == 'FLOATING')
-#        result [, name] = as.numeric (result [, name])
-#      else if (attribute.class == 'STRING')
-#        result [, name] = as.character (result [, name])
-#      else if (attribute.class == 'INTEGER')
-#        result [, name] = as.integer (result [, name])
-#      } # for name
-#    
-#    return (result)
+   g = obj@graph
+   attribute.names = names (edgeDataDefaults (g))
+   edges.of.interest = edgeNames (g)
+   if (onlySelectedEdges) {
+     if (getSelectedEdgeCount (obj) == 0){
+       return (NA)
+     }
+     edges.of.interest = getSelectedEdges (obj)
+     } # if onlySelectedEdges
+
+   source.and.target.nodes = unlist (strsplit (edges.of.interest, '~'))
+   node.count = length (source.and.target.nodes)
+   source = source.and.target.nodes [seq (1, node.count, 2)]
+   target = source.and.target.nodes [seq (2, node.count, 2)]
+
+   #printf ('source nodes: %s', list.to.string (source))
+   #printf ('target nodes: %s', list.to.string (target))
+   #printf ('attribute names: %s', list.to.string (attribute.names))
+
+   result = cbind (unlist (edgeData (g, source, target, attr=attribute.names [1])))
+   result = cbind (result, source)
+   result = cbind (result, target)
+
+   if (length (attribute.names) > 1) {
+     for (name in attribute.names [2:length (attribute.names)]) {
+       new.column = unlist (edgeData (g, source, target, attr=name))
+       result = cbind (result, new.column)
+       } # for name
+     } # if > 1
+   
+   column.names = c (attribute.names [1], 'source', 'target')
+   if (length (attribute.names) > 1){
+     column.names = c (column.names, attribute.names [2:length(attribute.names)])
+   }
+
+   colnames (result) = column.names
+   result = as.data.frame (result, stringsAsFactors=FALSE)
+   
+      # we had a matrix of character strings, now a data.frame of character strings
+      # use the embedded type information (created by initEdgeAttribute) to correct to the proper types
+      # must be a more direct way to do this in the calls to cbind on a data.frame.
+   
+   for (name in attribute.names) {
+     attribute.class = attr (edgeDataDefaults (obj@graph, name), 'class')
+     if (attribute.class == 'FLOATING'){
+       result [, name] = as.numeric (result [, name])
+     } else if (attribute.class == 'STRING'){
+       result [, name] = as.character (result [, name])
+     } else if (attribute.class == 'INTEGER'){
+       result [, name] = as.integer (result [, name])
+     }
+     } # for name
+   
+   return (result)
     })
 
 # ------------------------------------------------------------------------------
