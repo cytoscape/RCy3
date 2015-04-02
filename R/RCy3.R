@@ -1120,75 +1120,59 @@ setMethod ('addGraphToGraph', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod('sendEdges', 'CytoscapeWindowClass',
   function(obj) {
-    if(length(edgeNames(obj@graph)) == 0) {
-      write('CytoscapeWindow.sendEdges, no edges in graph. returning', stderr())
-      return()
-    }
-    write(sprintf('transforming (%d) graph edges to nodePairTable', length(edgeNames(obj@graph))), stderr())
-    if(obj@collectTimings) {
-      start.time = Sys.time()
-    }
-    if(is.classic.graph(obj@graph)) {
-      tbl.edges = .classicGraphToNodePairTable(obj@graph)
-    }
-    else if(is.multiGraph(obj@graph)) {
-      tbl.edges = .multiGraphToNodePairTable(obj@graph)
-    }
-    if(obj@collectTimings) {
-      write(sprintf(' *** create node pair table: %f secs', difftime(Sys.time(), start.time, units='secs')), stderr())
-    }
-    
-    #TODO check if nodes were already sent. If not, stop. (TanjaM April 2015)
-    #todo: if there is only one edge, Cytoscape.createEdges does not resolve, 
-    #todo: since arrays are expected, and 1-element arrays are treated as scalars 
-    #todo: in the trip from R to the java virutal machine. (pshannon, 5 apr 2011)
-    write(sprintf('sending %d edges', nrow(tbl.edges)), stderr())
-    a = tbl.edges$source
-    b = tbl.edges$target
-    edge.type = tbl.edges$edgeType
-    directed = rep(TRUE, length(a))
-    # below setting could be set in RCytoscape, but cannot be set in RCy3
-    # forgive.if.node.is.missing = TRUE
-    
-    base.url <- paste(obj@uri, pluginVersion(obj), "networks", obj@window.id, sep="/")
-    
-    get.name.column.url <- paste(base.url, "tables", "defaultnode", "columns", "name", sep="/")
-    res.name <- GET(get.name.column.url)
-    nodes.name.vec <- fromJSON(rawToChar(res.name$content))$values
-
-    get.suid.column.url <- paste(base.url, "tables", "defaultnode", "columns", "SUID", sep="/")
-    res.suid <- GET(get.suid.column.url)
-    nodes.suid.vec <- fromJSON(rawToChar(res.suid$content))$values
-    
-    # check both vectors 'NAME' and 'SUID' have equal lengths
-    # if not - stop execution
-    if(length(nodes.name.vec) != length(nodes.suid.vec)) {
-      stop('error with sending edges... incorrect number of nodes')
-    }
-    
-    nodes.df <- data.frame(nodes.name.vec, nodes.suid.vec)
-    
-    edges.list <- list()
-    
-    for(i in 1:nrow(tbl.edges)) {
-       source.suid <- nodes.df[grep(tbl.edges[i,'source'], nodes.df[,1]), 2]
-       target.suid <- nodes.df[grep(tbl.edges[i,'target'], nodes.df[,1]), 2]
-       
-       directed = FALSE
-       
-       if(tbl.edges[i,'edgeType'] == "directed") {
-          directed = TRUE
-       }
+      net.SUID = as.character(obj@window.id)
+      # check that there exist graph edges
+      if(length(edgeNames(obj@graph)) == 0) {
+          write('CyR3::sendEdges, no edges in graph. returning', stderr())
+          return()
+      }
       
-      # create new edge list
-      new.edge <- list(source=source.suid, target=target.suid, directed=directed, interaction=edge.type[i])
-      # add the newly created edge list to the list of all edge sub-lists
-      edges.list[[length(edges.list)+1]] <- new.edge
-    }
-    print(edges.list)
-    send.edges.url <- paste(base.url, "edges", sep="/")
-    send.edges.res <- POST(url=send.edges.url, body=toJSON(edges.list), encode="json")
-    invisible(send.edges.res)
+      write(sprintf('transforming (%d) graph edges to nodePairTable', length(edgeNames(obj@graph))), stderr())
+      
+      if(obj@collectTimings) {
+          start.time = Sys.time()
+      }
+      if(is.classic.graph(obj@graph)) {
+          tbl.edges = .classicGraphToNodePairTable(obj@graph)
+      }
+      else if(is.multiGraph(obj@graph)) {
+          tbl.edges = .multiGraphToNodePairTable(obj@graph)
+      }
+      if(obj@collectTimings) {
+          write(sprintf(' *** create node pair table: %f secs', difftime(Sys.time(), start.time, units='secs')), stderr())
+      }
+      
+      write(sprintf('sending %d edges', nrow(tbl.edges)), stderr())
+      
+      # source nodes vector
+      source.nodes = tbl.edges$source
+      # target nodes vector
+      target.nodes = tbl.edges$target
+      # edge types vector
+      edge.type = tbl.edges$edgeType
+      directed = rep(TRUE, length(source.nodes))
+      
+      # below setting could be set in RCytoscape, but does not exist in RCy3
+      # forgive.if.node.is.missing = TRUE
+      
+      suid.name.dict.df = 
+          data.frame(matrix(unlist(obj@suid.name.dict), nrow=length(obj@suid.name.dict), byrow=T), stringsAsFactors=FALSE)
+      colnames(suid.name.dict.df) <- c("name", "SUID")
+      
+      source.node.SUIDs = 
+          unname(sapply(source.nodes, function(n) {subset(suid.name.dict.df, name==n)$SUID}))
+      
+      target.node.SUIDs = 
+          unname(sapply(target.nodes, function(n) {subset(suid.name.dict.df, name==n)$SUID}))
+      
+      edge.records = 
+          apply(cbind(source.node.SUIDs, target.node.SUIDs, directed, edge.type), MARGIN=1, 
+                FUN=function(r) {list(source=unname(r[[1]]), target=unname(r[[2]]), directed=unname(r[[3]]), interaction=unname(r[[4]]), name="test")})
+      edge.records.JSON = toJSON(edge.records)
+      
+      resource.uri = paste(obj@uri, pluginVersion(obj), "networks", net.SUID, "edges", sep="/")
+      request.res = POST(url=resource.uri, body=edge.records.JSON, encode="json")
+      invisible(request.res)
   }) # sendEdges
 
 #------------------------------------------------------------------------------------------------------------------------
