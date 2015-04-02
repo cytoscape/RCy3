@@ -1171,7 +1171,7 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
       
       edge.records = 
           apply(cbind(source.node.SUIDs, target.node.SUIDs, directed, edge.type), MARGIN=1, 
-                FUN=function(r) {list(source=unname(r[[1]]), target=unname(r[[2]]), directed=unname(r[[3]]), interaction=unname(r[[4]]), name="test")})
+                FUN=function(r) {list(source=unname(r[[1]]), target=unname(r[[2]]), directed=unname(r[[3]]), interaction=unname(r[[4]]))})
       edge.records.JSON = toJSON(edge.records)
       
       resource.uri = paste(obj@uri, pluginVersion(obj), "networks", net.SUID, "edges", sep="/")
