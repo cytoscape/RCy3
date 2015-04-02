@@ -41,6 +41,8 @@ None.
 
 \examples{
   cw <- CytoscapeWindow ('setEdgeAttributesDirect.test', graph=makeSimpleGraph())
+  sendNodes(cw)
+  sendEdges(cw)
   edge.names = as.character (cy2.edge.names (cw@graph))
   stopifnot (length (edge.names) == 3)
   edge.values = c ('alligator', 'hedgehog', 'anteater')
