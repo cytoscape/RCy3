@@ -51,7 +51,7 @@ The attribute in question, which may be of any scalar type.
   redraw (cw)
   layoutNetwork(cw)
 
-  score.bc = getEdgeAttribute (cw, "B (synthetic lethal) C", 'score')
+  score.bc = getEdgeAttribute (cw, "B (synthetic lethal) A", 'score')
   print (paste ("should be -12: ", score.bc))
 
 }
