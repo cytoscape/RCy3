@@ -6,7 +6,7 @@ Date: 2015-04-02
 Author: Paul Shannon, Tanja Muetze, Georgi Kolishovski
 Maintainer: Paul Shannon <pshannon@fhcrc.org>, Tanja Muetze <tanja.muetze14@imperial.ac.uk>, Georgi Kolishovski <g_kolishv@yahoo.com>
 Depends: R (>= 3.1.0), graph (>= 1.31.0), httr, RJSONIO, RCurl
-Imports: methods, BiocGenerics
+Imports: methods
 Suggests: RUnit
 Description: Interactvive viewing and exploration of graphs, connecting R to Cytoscape >= 3.1
 License: GPL-2
