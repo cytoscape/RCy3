@@ -1,1 +1,1 @@
-Sweave ('RCytoscape.Rnw')
+Sweave ('RCy3.Rnw')
