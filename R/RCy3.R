@@ -3,6 +3,7 @@ library(httr)
 library(graph)
 library(methods)
 library(RJSONIO)
+library(RCurl)
 # ------------------------------------------------------------------------------
 printf = function (...) print (noquote (sprintf (...)))
 # ------------------------------------------------------------------------------
@@ -629,16 +630,22 @@ setMethod('deleteWindow', 'CytoscapeConnectionClass',
 setMethod ('deleteAllWindows',  'CytoscapeConnectionClass',
            # deletes all networks and associated windows in Cytoscape
            function (obj) {
-              api.str = paste(obj@uri, pluginVersion(obj), "networks", sep="/")
-              result <- DELETE(api.str)
-              invisible(result)
+              write(sprintf('RCy::deleteAllWindows error. You must provide a valid 
+                    CytoscapeWindow object, or a CytoscapeConnection object and 
+                    a window title'), stderr())
+              resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", sep="/")
+              request.res <- DELETE(resource.uri)
+              invisible(request.res)
     })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getNodeShapes', 'CytoscapeConnectionClass',
 
   function (obj) {
-#     return (xml.rpc (obj@uri, 'Cytoscape.getNodeShapeNames'))
+      resource.uri <- paste(obj@uri, pluginVersion(obj), "styles/visualproperties/NODE_SHAPE/values", sep="/")
+      request.res <- GET(resource.uri)
+      request.res <- fromJSON(rawToChar(request.res$content))
+      return(request.res$values)
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -663,14 +670,21 @@ setMethod ('getAttributeClassNames', 'CytoscapeConnectionClass',
 setMethod ('getLineStyles', 'CytoscapeConnectionClass',
 
   function (obj) {
-#    return (xml.rpc (obj@uri, 'Cytoscape.getLineStyleNames'))
+      resource.uri <- paste(obj@uri, pluginVersion(obj), "styles/visualproperties/EDGE_LINE_TYPE/values", sep="/")
+      request.res <- GET(resource.uri)
+      request.res <- fromJSON(rawToChar(request.res$content))
+      return(request.res$values)
     })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getArrowShapes', 'CytoscapeConnectionClass',
 
    function (obj) {
-#     return (xml.rpc (obj@uri, 'Cytoscape.getArrowShapeNames'))
+       resource.uri <- paste(obj@uri, pluginVersion(obj), "styles/visualproperties/EDGE_TARGET_ARROW_SHAPE/values", sep="/")
+       #Comment TanjaM: EDGE_SOURCE_ARROW_SHAPE rather than TARGET returns the same results as of April 2015
+       request.res <- GET(resource.uri)
+       request.res <- fromJSON(rawToChar(request.res$content))
+       return(request.res$values)
      })
 
 # ------------------------------------------------------------------------------
