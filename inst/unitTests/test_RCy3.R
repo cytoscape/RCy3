@@ -37,10 +37,10 @@ run.tests = function ()
   test.deleteAllWindows ()
   test.getWindowID ()
   test.getWindowList ()
-  #test.getNodeShapes ()
+  test.getNodeShapes ()
   test.getAttributeClassNames ()
-  #test.getArrowShapes ()
-  #test.getLineStyles ()
+  test.getArrowShapes ()
+  test.getLineStyles ()
   test.getLayoutNames ()
   #test.getLayoutNameMapping ()
   #test.getLayoutPropertyNames ()
@@ -308,11 +308,11 @@ test.getNodeShapes = function ()
 
   cy = CytoscapeConnection ()
   shapes = getNodeShapes (cy)
-  checkTrue (length (shapes) > 10)
+  checkTrue (length (shapes) > 8)
   msg (cy, title)
 
    # pick a few specific shapes to test
- checkTrue (all (sapply (c ('trapezoid', 'ellipse', 'triangle'), function (s) s %in% shapes)))
+ checkTrue (all (sapply (c ('HEXAGON', 'ELLIPSE', 'TRIANGLE'), function (s) s %in% shapes)))
 
 } # test.getNodeShapes
 #------------------------------------------------------------------------------------------------------------------------
