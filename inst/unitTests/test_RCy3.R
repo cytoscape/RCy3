@@ -339,7 +339,7 @@ test.getArrowShapes = function ()
 
    # pick a few specific shapes to test
   msg (cy, 'getArrowShapes')
-  checkTrue (all (sapply (c ('Diamond', 'T', 'Circle'), function (s) s %in% shapes)))
+  checkTrue (all (sapply (c ('DIAMOND', 'T', 'CIRCLE'), function (s) s %in% shapes)))
 
 } # test.getArrowShapes
 #------------------------------------------------------------------------------------------------------------------------
