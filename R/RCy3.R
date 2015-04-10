@@ -4136,28 +4136,36 @@ setMethod ('saveImage', 'CytoscapeWindowClass',
       image.type = tolower (image.type)
       stopifnot (image.type %in% c ('png', 'pdf', 'svg'))
       id = as.character (obj@window.id)
-
-      # get the view image from Cytoscape in PNG
-      if (image.type == 'png'){
-         resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,"views/first.png", sep="/")
+      
+      if (!file.exists(file.name)){
+          # TODO Comment TanjaM - scaling not possible with the new version -- remove?
+          
+          # get the view image from Cytoscape in PNG
+          if (image.type == 'png'){
+             resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,"views/first.png", sep="/")
+          } else{
+              write (sprintf ('Only png is currently supported.'), stderr ())
+          }
+          request.res <- GET(resource.uri, write_disk(file.name))
+          
+          write (sprintf ('saving image to %s', file.name), stderr ())
+          
+          # TODO add the other file types once CyREST allows for them, using else if statements
+      }else{
+          write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
       }
-      request.res <- GET(resource.uri)
-      dateString = format (Sys.time (), "%a.%b.%d.%Y-%H.%M.%S")
-      stem = strsplit (file.name, '\\.RData')[[1]]
-      filename = sprintf ('%s.%s.RData', stem, dateString)
-      # TODO remove this sentence when you can save to file
-      write (sprintf ('Saving to file currently does not work yet but you can view your image in your browser here: %s', resource.uri), stderr ())
-
-      #write (sprintf ('saving image to %s\n', filename), stderr ())
-      #save (request.res, file=filename)
      }) # saveImage
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('saveNetwork', 'CytoscapeWindowClass',
 
-   function (obj, file.name, format='gml') {
-#     id = as.character (obj@window.id)
-#     result = xml.rpc (obj@uri, 'Cytoscape.saveNetwork', id, file.name)
-#     invisible (result)
+   function (obj, file.name, format='cys') {
+       if (!file.exists(file.name)){
+           # TODO currently only saves as cys, enable to save also to other formats incl. glm
+           resource.uri <- paste(obj@uri, pluginVersion(obj), "session", sep="/")
+           request.res <- POST(url=resource.uri, body=NULL, write_disk(file.name))
+           write (sprintf ('saving network to file %s', file.name), stderr ())
+           invisible(request.res)
+       }
      })
 
 #------------------------------------------------------------------------------------------------------------------------
