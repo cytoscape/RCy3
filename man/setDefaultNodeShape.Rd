@@ -39,10 +39,10 @@ None.
   cw <- CytoscapeWindow ('setDefaultNodeShape.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'grid')
   legal.shapes <- getNodeShapes (cw)
-  # stopifnot ('diamond' %in% legal.shapes)
-  setDefaultNodeShape (cw, 'diamond')
+  # stopifnot ('DIAMOND' %in% legal.shapes)
+  setDefaultNodeShape (cw, 'DIAMOND')
   redraw (cw)
 }
 
