@@ -28,9 +28,9 @@ None.
   cw <- CytoscapeWindow ('setNodeShapeDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'grid')
   getNodeShapes(cw)
-  setNodeShapeDirect (cw, 'A', 'triangle')
+  setNodeShapeDirect (cw, 'A', 'TRIANGLE')
   redraw (cw)
 }
 
