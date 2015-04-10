@@ -551,7 +551,7 @@ test.sendEdges = function ()
   cwe = CytoscapeWindow (title, graph=g)
   sendNodes (cwe)
   sendEdges (cwe)
-  layoutNetwork (cwe, 'jgraph-circle')
+  layoutNetwork (cwe, 'grid')
   redraw (cwe)
   msg (cwe, 'sendEdges')
 
