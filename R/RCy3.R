@@ -2139,8 +2139,12 @@ setMethod ('setNodeBorderWidthRule', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeShape', 'CytoscapeConnectionClass', 
   function(obj, new.shape, vizmap.style.name='default') {
-    style = list(visualProperty = "NODE_SHAPE", value = new.shape)
-    setVisualProperty(obj, style, vizmap.style.name)
+      if (new.shape %in% getNodeShapes(obj)){
+          style = list(visualProperty = "NODE_SHAPE", value = new.shape)
+          setVisualProperty(obj, style, vizmap.style.name)
+      }else{
+          write (sprintf ('%s is not a valid shape. Get valid shapes using getNodeShapes', new.shape), stderr ())
+      }
 })
 
 # ------------------------------------------------------------------------------
@@ -2593,10 +2597,12 @@ setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.shapes) {
-      # TODO we could check here if the new shape is a possible shape
-      
-      # set the node property direct
-      return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE")) 
+       if (new.shapes %in% getNodeShapes(obj)){
+           # set the node property direct
+           return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE"))
+       }else{
+           write (sprintf ('%s is not a valid shape. Get valid shapes using getNodeShapes', new.shapes), stderr ())
+       }
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -2854,8 +2860,13 @@ setMethod ('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LINE_TYPE"))
+      if (new.values %in% getLineStyles(obj)){
+          # set the edge property direct
+          return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LINE_TYPE"))
+      }else{
+          write (sprintf ('%s is not a valid line style. Get valid types using getLineStyles', new.values), stderr ())
+          return ()
+      }
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
@@ -2867,8 +2878,13 @@ setMethod ('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_SOURCE_ARROW_SHAPE"))
+      if (new.values %in% getArrowShapes(obj)){
+          # set the edge property direct
+          return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_SOURCE_ARROW_SHAPE"))
+      }else{
+          write (sprintf ('%s is not a valid shape. Get valid shapes using getArrowShapes', new.values), stderr ())
+          return ()
+      }
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -2881,9 +2897,13 @@ setMethod ('setEdgeTargetArrowShapeDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
-      
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TARGET_ARROW_SHAPE"))
+      if (new.values %in% getArrowShapes(obj)){
+          # set the edge property direct
+          return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TARGET_ARROW_SHAPE"))
+      }else{
+          write (sprintf ('%s is not a valid shape. Get valid shapes using getArrowShapes', new.values), stderr ())
+          return ()
+      }
      })
 
 #------------------------------------------------------------------------------------------------------------------------
