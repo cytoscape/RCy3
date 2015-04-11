@@ -630,9 +630,6 @@ setMethod('deleteWindow', 'CytoscapeConnectionClass',
 setMethod ('deleteAllWindows',  'CytoscapeConnectionClass',
            # deletes all networks and associated windows in Cytoscape
            function (obj) {
-              write(sprintf('RCy::deleteAllWindows error. You must provide a valid 
-                    CytoscapeWindow object, or a CytoscapeConnection object and 
-                    a window title'), stderr())
               resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", sep="/")
               request.res <- DELETE(resource.uri)
               invisible(request.res)
@@ -1932,51 +1929,60 @@ setMethod ('setEdgeLabelRule', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
+           
+           function (obj, node.attribute.name, control.points, colors, mode, default.color='#FFFFFF') {
+               version <- pluginVersion(obj)
+               
+               if (!mode %in% c ('interpolate', 'lookup')) {
+                   write ("Error! RCytoscape:setNodeColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+                   return ()
+               }
+               setDefaultNodeColor (obj, default.color)
+               if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points 
+                   if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
+                       colors = c (colors [1], colors, colors [length (colors)])
+                       write ("RCytoscape::setNodeColorRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
+                } #
+                good.args = length (control.points) == (length (colors) - 2)
+                if (!good.args) {
+                    write (sprintf ('cp: %d', length (control.points)), stderr ())
+                    write (sprintf ('co: %d', length (colors)), stderr ())
+                    write ("Error! RCytoscape:setNodeColorRule, interpolate mode.", stderr ())
+                    write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
+                    return ()
+                }
+                
+                #TODO insert cyrest command for continuous
+                
+                #xml.rpc (obj@uri, 'Cytoscape.createContinuousNodeVisualStyle', node.attribute.name, 'Node Color', control.points, colors, FALSE)
+                invisible (request.res)
+                } # if mode==interpolate
+                else { # use a discrete rule, with no interpolation
+                   good.args = length (control.points) == length (colors)
+                   if (!good.args) {
+                       write (sprintf ('control points: %d', length (control.points)), stderr ())
+                       write (sprintf ('colors: %d', length (colors)), stderr ())
+                       write ("Error! RCytoscape:setNodeColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
+                       return ()
+                   }
+                   
+                #TODO we should give the user the option to choose the style as an input parameter which defaults to default.
+                default.style = 'default'
+                
+                mapped.content <- apply(cbind(control.points, colors), MARGIN=1,
+                                        FUN=function(s) {list(key=unname(s[[1]]), value=unname(s[[2]]))})
+                
+                #TODO we should implement a detection if the destination column is string or sth else, currently only working for String
+                discrete.mapping <- list(mappingType = "discrete", mappingColumn = node.attribute.name,
+                                    mappingColumnType = "String", visualProperty= "NODE_FILL_COLOR",
+                                    map = mapped.content)
+                discrete.mapping.json <-toJSON(list(discrete.mapping))
+                print(discrete.mapping.json)
+                resource.uri <- paste(obj@uri, version, "styles", default.style, "mappings", sep="/")
+                request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
 
-   function (obj, node.attribute.name, control.points, colors, mode, default.color='#FFFFFF') {
-
-#     if (!mode %in% c ('interpolate', 'lookup')) {
-#       write ("Error! RCytoscape:setNodeColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
-#       return ()
-#       }
-#
-#     setDefaultNodeColor (obj, default.color)
-#     if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points 
-#       if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
-#         colors = c (colors [1], colors, colors [length (colors)])
-#         #write ("RCytoscape::setNodeColorRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
-#         } # 
-#
-#       good.args = length (control.points) == (length (colors) - 2)
-#       if (!good.args) {
-#         write (sprintf ('cp: %d', length (control.points)), stderr ())
-#         write (sprintf ('co: %d', length (colors)), stderr ())
-#         write ("Error! RCytoscape:setNodeColorRule, interpolate mode.", stderr ())
-#         write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
-#         return ()
-#         }
-#       result = xml.rpc (obj@uri, 'Cytoscape.createContinuousNodeVisualStyle', node.attribute.name, 'Node Color', control.points, colors, FALSE)
-#       invisible (result)
-#       } # if mode==interpolate
-#
-#     else { # use a discrete rule, with no interpolation
-#       good.args = length (control.points) == length (colors)
-#       if (!good.args) {
-#         write (sprintf ('cp: %d', length (control.points)), stderr ())
-#         write (sprintf ('co: %d', length (colors)), stderr ())
-#         write ("Error! RCytoscape:setNodeColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
-#         return ()
-#         }
-#
-#       default.style = 'default'
-#       if (length (control.points) == 1) {   # code around the requirement that one-element lists are turned into scalars
-#         control.points = rep (control.points, 2)
-#         colors = rep (colors, 2)
-#         } 
-#       result = xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', default.style, 
-#                         node.attribute.name, 'Node Color', default.color, control.points, colors)
-#       invisible (result)
-#       } # else: !interpolate
+                invisible (request.res)
+                } # else: !interpolate
      }) # setNodeColorRule
 
 
