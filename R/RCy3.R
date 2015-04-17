@@ -1357,53 +1357,53 @@ setMethod ('getNodeSize', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 properlyInitializedNodeAttribute = function (graph, attribute.name) {
 
-#  if (length (nodes (graph)) == 0)
-#    return (TRUE)
-#
-#  caller.specified.attribute.class = attr (nodeDataDefaults (graph, attribute.name), 'class')
-#
-#  if (is.null (caller.specified.attribute.class)) {
-#     msg1 = sprintf ('Error!  Node attribute not initialized "%s"', attribute.name)
-#     msg2 = sprintf ('        You should call:')
-#     msg3 = sprintf ('        initNodeAttribute (graph, attribute.name, attribute.type, default.value)')
-#     msg4 = sprintf ('        where attribute type is one of "char", "integer", or "numeric".')
-#     msg5 = sprintf ('        example:  g <- initNodeAttribute (g, "nodeType", "char", "molecule")')
-#     msg6 = sprintf ('             or:  g <- initNodeAttribute (g, "pValue", "numeric", 1.0)')
-#     write (msg1, stderr ())
-#     write (msg2, stderr ())
-#     write (msg3, stderr ())
-#     write (msg4, stderr ())
-#     write (msg5, stderr ())
-#     write (msg6, stderr ())
-#     return (FALSE)
-#     }
-#   return (TRUE)
+ if (length (nodes (graph)) == 0)
+   return (TRUE)
+
+ caller.specified.attribute.class = attr (nodeDataDefaults (graph, attribute.name), 'class')
+
+ if (is.null (caller.specified.attribute.class)) {
+    msg1 = sprintf ('Error!  Node attribute not initialized "%s"', attribute.name)
+    msg2 = sprintf ('        You should call:')
+    msg3 = sprintf ('        initNodeAttribute (graph, attribute.name, attribute.type, default.value)')
+    msg4 = sprintf ('        where attribute type is one of "char", "integer", or "numeric".')
+    msg5 = sprintf ('        example:  g <- initNodeAttribute (g, "nodeType", "char", "molecule")')
+    msg6 = sprintf ('             or:  g <- initNodeAttribute (g, "pValue", "numeric", 1.0)')
+    write (msg1, stderr ())
+    write (msg2, stderr ())
+    write (msg3, stderr ())
+    write (msg4, stderr ())
+    write (msg5, stderr ())
+    write (msg6, stderr ())
+    return (FALSE)
+    }
+  return (TRUE)
 
 } # properlyInitializedNodeAttribute
 #------------------------------------------------------------------------------------------------------------------------
 properlyInitializedEdgeAttribute = function (graph, attribute.name) {
 
-#  if (length (edgeNames (graph)) == 0)
-#    return (TRUE)
-#
-#  caller.specified.attribute.class = attr (edgeDataDefaults (graph, attribute.name), 'class')
-#
-#  if (is.null (caller.specified.attribute.class)) {
-#     msg1 = sprintf ('Error!  "%s" edge attribute not initialized.', attribute.name)
-#     msg2 = sprintf ('        You should call:')
-#     msg3 = sprintf ('        initEdgeAttribute (graph, attribute.name, attribute.type, default.value)')
-#     msg4 = sprintf ('        where attribute type is one of "char", "integer", or "numeric".')
-#     msg5 = sprintf ('        example:  g <- initEdgeAttribute (g, "edgeType", "char", "molecule")')
-#     msg6 = sprintf ('             or:  g <- initEdgeAttribute (g, "pValue", "numeric", 1.0)')
-#     write (msg1, stderr ())
-#     write (msg2, stderr ())
-#     write (msg3, stderr ())
-#     write (msg4, stderr ())
-#     write (msg5, stderr ())
-#     write (msg6, stderr ())
-#     return (FALSE)
-#     }
-#   return (TRUE)
+ if (length (edgeNames (graph)) == 0)
+   return (TRUE)
+
+ caller.specified.attribute.class = attr (edgeDataDefaults (graph, attribute.name), 'class')
+
+ if (is.null (caller.specified.attribute.class)) {
+    msg1 = sprintf ('Error!  "%s" edge attribute not initialized.', attribute.name)
+    msg2 = sprintf ('        You should call:')
+    msg3 = sprintf ('        initEdgeAttribute (graph, attribute.name, attribute.type, default.value)')
+    msg4 = sprintf ('        where attribute type is one of "char", "integer", or "numeric".')
+    msg5 = sprintf ('        example:  g <- initEdgeAttribute (g, "edgeType", "char", "molecule")')
+    msg6 = sprintf ('             or:  g <- initEdgeAttribute (g, "pValue", "numeric", 1.0)')
+    write (msg1, stderr ())
+    write (msg2, stderr ())
+    write (msg3, stderr ())
+    write (msg4, stderr ())
+    write (msg5, stderr ())
+    write (msg6, stderr ())
+    return (FALSE)
+    }
+  return (TRUE)
 
 } # properlyInitializedEdgeAttribute
 
@@ -1955,9 +1955,9 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                 #TODO insert cyrest command for continuous
                 
                 #xml.rpc (obj@uri, 'Cytoscape.createContinuousNodeVisualStyle', node.attribute.name, 'Node Color', control.points, colors, FALSE)
-                invisible (request.res)
+                #invisible (request.res)
                 } # if mode==interpolate
-                else { # use a discrete rule, with no interpolation
+                else { # use a discrete rule, with no interpolation, mode lookup
                    good.args = length (control.points) == length (colors)
                    if (!good.args) {
                        write (sprintf ('control points: %d', length (control.points)), stderr ())
@@ -1982,7 +1982,7 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                 request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
 
                 invisible (request.res)
-                } # else: !interpolate
+                } # else: !interpolate, aka lookup
      }) # setNodeColorRule
 
 
@@ -4172,9 +4172,9 @@ setMethod ('saveImage', 'CytoscapeWindowClass',
           } else{
               write (sprintf ('Only png is currently supported.'), stderr ())
           }
-          request.res <- GET(resource.uri, write_disk(file.name))
+          request.res <- GET(resource.uri, write_disk(paste0(file.name,".png")))
           
-          write (sprintf ('saving image to %s', file.name), stderr ())
+          write (sprintf ('saving image to %s.png', file.name), stderr ())
           
           # TODO add the other file types once CyREST allows for them, using else if statements
       }else{
@@ -4188,8 +4188,8 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
        if (!file.exists(file.name)){
            # TODO currently only saves as cys, enable to save also to other formats incl. glm
            resource.uri <- paste(obj@uri, pluginVersion(obj), "session", sep="/")
-           request.res <- POST(url=resource.uri, body=NULL, write_disk(file.name))
-           write (sprintf ('saving network to file %s', file.name), stderr ())
+           request.res <- POST(url=resource.uri, body=NULL, write_disk(paste0(file.name, ".cys")))
+           write (sprintf ('saving network to file %s.cys', file.name), stderr ())
            invisible(request.res)
        }
      })
