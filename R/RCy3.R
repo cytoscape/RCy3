@@ -1937,7 +1937,16 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                    write ("Error! RCytoscape:setNodeColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
                    return ()
                }
+               
                setDefaultNodeColor (obj, default.color)
+               
+               #TODO we should give the user the option to choose the style as an input parameter which defaults to default.
+               default.style = 'default'
+
+               # define the column type
+               columnType <- findColumnType(typeof(control.points[1]))
+               
+               # interpolate
                if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points 
                    if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
                        colors = c (colors [1], colors, colors [length (colors)])
@@ -1952,12 +1961,28 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                     return ()
                 }
                 
-                #TODO insert cyrest command for continuous
+                # continuous mapping
+                mapped.content <- apply(cbind(control.points, colors[3:length(colors)-1]), MARGIN=1,
+                                        FUN=function(s) {list(value=unname(s[[1]]),
+                                                              lesser=unname(s[[2]]),
+                                                              equal=unname(s[[2]]),
+                                                              greater= unname(s[[2]]))})
+                # change the attributes values below the minimum and above the maximum
+                mapped.content[[1]]$lesser <- colors[1]
+                mapped.content[[length(mapped.content)]]$greater <- colors[length(colors)]
                 
-                #xml.rpc (obj@uri, 'Cytoscape.createContinuousNodeVisualStyle', node.attribute.name, 'Node Color', control.points, colors, FALSE)
-                #invisible (request.res)
+                continuous.mapping <- list(mappingType = "continuous", mappingColumn = node.attribute.name,
+                                         mappingColumnType = columnType, visualProperty= "NODE_FILL_COLOR",
+                                         points = mapped.content)
+                continuous.mapping.json <- toJSON(list(continuous.mapping))
+
+                resource.uri <- paste(obj@uri, version, "styles", default.style, "mappings", sep="/")
+                request.res <- POST(url=resource.uri, body=continuous.mapping.json, encode="json")
+                
+                invisible (request.res)
+                
                 } # if mode==interpolate
-                else { # use a discrete rule, with no interpolation, mode lookup
+                else { # use a discrete rule, with no interpolation, mode==lookup
                    good.args = length (control.points) == length (colors)
                    if (!good.args) {
                        write (sprintf ('control points: %d', length (control.points)), stderr ())
@@ -1966,18 +1991,15 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                        return ()
                    }
                    
-                #TODO we should give the user the option to choose the style as an input parameter which defaults to default.
-                default.style = 'default'
+
                 
                 mapped.content <- apply(cbind(control.points, colors), MARGIN=1,
                                         FUN=function(s) {list(key=unname(s[[1]]), value=unname(s[[2]]))})
                 
-                #TODO we should implement a detection if the destination column is string or sth else, currently only working for String
                 discrete.mapping <- list(mappingType = "discrete", mappingColumn = node.attribute.name,
-                                    mappingColumnType = "String", visualProperty= "NODE_FILL_COLOR",
+                                    mappingColumnType = columnType, visualProperty= "NODE_FILL_COLOR",
                                     map = mapped.content)
                 discrete.mapping.json <-toJSON(list(discrete.mapping))
-                print(discrete.mapping.json)
                 resource.uri <- paste(obj@uri, version, "styles", default.style, "mappings", sep="/")
                 request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
 
@@ -1985,6 +2007,17 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                 } # else: !interpolate, aka lookup
      }) # setNodeColorRule
 
+findColumnType <- function(columnType){
+     if (columnType=="double"){
+         return("Double")
+     } else if (columnType == "integer"){
+         return("Integer")
+     } else if (columnType == "logical"){
+         return("Boolean")
+     } else{
+         return("String")
+     }
+ }
 
 #------------------------------------------------------------------------------------------------------------------------
 # Cytoscape distinguishes between Node Opacity, Node Border Opacity, and Node Label Opacity.  we call this 'aspect' here.
