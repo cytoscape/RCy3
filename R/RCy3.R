@@ -1881,50 +1881,100 @@ setMethod ('floatPanel', 'CytoscapeConnectionClass',
 setMethod ('setNodeTooltipRule', 'CytoscapeWindowClass',
 
       # todo:  prevent the obligatory redraw
-           
-  function (obj, node.attribute.name) {
-#    id = as.character (obj@window.id)
-#    viz.style.name = 'default'
-#    if (!node.attribute.name %in% noa.names (obj@graph)) {
-#      write (sprintf ('warning!  setNodeTooltipRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
-#      return ()
-#      }
-#    attribute.values = as.character (noa (obj@graph, node.attribute.name))
-#    tooltips = attribute.values   # an identity mapping: if you see node attribute x, then display x.  odd but true.
-#    default.tooltip = ''
-#    xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', viz.style.name, node.attribute.name, 'Node Tooltip', default.tooltip,
-#             attribute.values, tooltips)
-    })  # setNodeTooltipRule
+      # Comment TanjaM: the comment above was there already
+
+      function (obj, node.attribute.name) {
+          id = as.character (obj@window.id)
+          viz.style.name = 'default'
+          if (!node.attribute.name %in% noa.names (obj@graph)) {
+              write (sprintf ('warning!  setNodeTooltipRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
+              return ()
+          }
+          attribute.values = as.character (noa (obj@graph, node.attribute.name))
+          
+          # set default tooltip
+          default.tooltip <- list(visualProperty = "NODE_TOOLTIP", value = "")
+          setVisualProperty(obj, default.tooltip, viz.style.name)
+          
+          # define the column type
+          columnType <- findColumnType(typeof(attribute.values[1]))
+          
+          # discrete mapping
+          discreteMapping(obj, node.attribute.name, attribute.values, attribute.values,
+                          visual.property="NODE_TOOLTIP", columnType=columnType, style=viz.style.name)
+          
+    })  # END setNodeTooltipRule
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTooltipRule', 'CytoscapeWindowClass',
 
-  function (obj, edge.attribute.name) {
-#    id = as.character (obj@window.id)
-#    viz.style.name = 'default'
-#    attribute.values = as.character (eda (obj@graph, edge.attribute.name))
-#    tooltips = attribute.values  # identity mapping: when eda has value x, tooltip is x.  odd but true.
-#    default.tooltip = ''
-#    xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', viz.style.name, edge.attribute.name, 'Edge Tooltip', default.tooltip,
-#             attribute.values, tooltips)
+    function (obj, edge.attribute.name) {
+        id = as.character (obj@window.id)
+        viz.style.name = 'default'
+        if (!edge.attribute.name %in% eda.names (obj@graph)) {
+            write (sprintf ('warning!  setEdgeTooltipRule passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
+            return ()
+        }
+        attribute.values = as.character (eda (obj@graph, edge.attribute.name))
+        
+        # set default tooltip
+        default.tooltip <- list(visualProperty = "EDGE_TOOLTIP", value = "")
+        setVisualProperty(obj, default.tooltip, viz.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(attribute.values[1]))
+        
+        # discrete mapping
+        discreteMapping(obj, edge.attribute.name, attribute.values, attribute.values,
+                        visual.property="EDGE_TOOLTIP", columnType=columnType, style=viz.style.name)
+
     })  # setEdgeTooltipRule
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeLabelRule', 'CytoscapeWindowClass',
-
-  function (obj, node.attribute.name) {
-#    id = as.character (obj@window.id)
-#    xml.rpc (obj@uri, 'Cytoscape.setNodeLabel', id, node.attribute.name, 'label', 'default'); 
+    function (obj, node.attribute.name) {
+        id = as.character (obj@window.id)
+        viz.style.name = 'default'
+        if (!node.attribute.name %in% noa.names (obj@graph)) {
+            write (sprintf ('warning!  setNodeLabelRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
+            return ()
+        }
+        attribute.values = as.character (noa (obj@graph, node.attribute.name))
+        
+        # set default label
+        default.label <- list(visualProperty = "NODE_LABEL", value = "")
+        setVisualProperty(obj, default.label, viz.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(attribute.values[1]))
+        
+        # discrete mapping
+        discreteMapping(obj, node.attribute.name, attribute.values, attribute.values,
+                        visual.property="NODE_LABEL", columnType=columnType, style=viz.style.name)
     })  # setNodeLabelRule
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelRule', 'CytoscapeWindowClass',
 
-  function (obj, edge.attribute.name) {
-#    id = as.character (obj@window.id)
-#    default.value = ''
-#    result = xml.rpc (obj@uri, 'Cytoscape.edgePassthroughMapper', edge.attribute.name, 'Edge Label', default.value)
-#    invisible (result)
+    function (obj, edge.attribute.name) {
+        id = as.character (obj@window.id)
+        viz.style.name = 'default'
+        if (!edge.attribute.name %in% eda.names (obj@graph)) {
+            write (sprintf ('warning!  setEdgeLabelRule passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
+            return ()
+        }
+        attribute.values = as.character (eda (obj@graph, edge.attribute.name))
+        
+        # set default label
+        default.label <- list(visualProperty = "EDGE_LABEL", value = "")
+        setVisualProperty(obj, default.label, viz.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(attribute.values[1]))
+        
+        # discrete mapping
+        discreteMapping(obj, edge.attribute.name, attribute.values, attribute.values,
+                        visual.property="EDGE_LABEL", columnType=columnType, style=viz.style.name)
     })  # setEdgeLabelRule
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -1936,6 +1986,7 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                    return ()
                }
                
+               #set default
                setDefaultNodeColor (obj, default.color)
                
                #TODO Comment TanjaM we should give the user the option to choose the style as an input parameter which defaults to default.
@@ -1977,17 +2028,24 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
      }) # setNodeColorRule
 
 
-discreteMapping <- function(obj, node.attribute.name, control.points, colors, visual.property, columnType, style){
+discreteMapping <- function(obj, attribute.name, control.points, colors, visual.property, columnType, style){
     mapped.content <- apply(cbind(control.points, colors), MARGIN=1,
                             FUN=function(s) {list(key=unname(s[[1]]), value=unname(s[[2]]))})
     
-    discrete.mapping <- list(mappingType = "discrete", mappingColumn = node.attribute.name,
+    discrete.mapping <- list(mappingType = "discrete", mappingColumn = attribute.name,
                              mappingColumnType = columnType, visualProperty=visual.property,
                              map = mapped.content)
     discrete.mapping.json <-toJSON(list(discrete.mapping))
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
     
+    # inform the user if the request was a success of failure
+    if (request.res$status == 201){
+        return(TRUE)
+    }else{
+        write (sprintf ('Error. Could not set rule...'), stderr ())
+    }
+
     invisible (request.res)
 } # END discreteMapping
 
