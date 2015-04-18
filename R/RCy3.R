@@ -2036,9 +2036,10 @@ discreteMapping <- function(obj, attribute.name, control.points, colors, visual.
                              mappingColumnType = columnType, visualProperty=visual.property,
                              map = mapped.content)
     discrete.mapping.json <-toJSON(list(discrete.mapping))
+    #print(discrete.mapping.json)
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
-
+    #print(request.res)
     # inform the user if the request was a success of failure
     if (request.res$status == 201){
         return(TRUE)
@@ -2531,64 +2532,105 @@ setMethod ('setEdgeOpacityRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLineStyleRule', 'CytoscapeWindowClass',
 
-   function (obj, edge.attribute.name, attribute.values, line.styles, default.style='SOLID') {
-#     if (length (attribute.values) == 1) {  # hack: list of length 1 treated as scalar, failing method match -- double into a list
-#       attribute.values = rep (attribute.values, 2)
-#       line.styles = rep (line.styles, 2)
-#       }
-#     id = as.character (obj@window.id)
-#     result = xml.rpc (obj@uri, "Cytoscape.setEdgeLineStyleRule", id, edge.attribute.name, default.style, 
-#                       attribute.values, line.styles, .convert=TRUE)
-#     invisible (result)
-     }) # set.edge.line.style.rule
+    function (obj, edge.attribute.name, attribute.values, line.styles, default.style='SOLID') {
+        id = as.character (obj@window.id)
+        #TODO the style should be passed as a parameter
+        vizmap.style.name = 'default'
+        
+        if (!edge.attribute.name %in% eda.names (obj@graph)) {
+            write (sprintf ('warning!  setEdgeLineStyleRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+            return ()
+        }
+        
+        # set default
+        default.style.list <- list(visualProperty = "EDGE_LINE_TYPE", value = default.style)
+        setVisualProperty(obj, default.style.list, vizmap.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(line.styles[1]))
+        
+        # discrete mapping
+        discreteMapping (obj, edge.attribute.name, attribute.values, line.styles,
+                         visual.property="EDGE_LINE_TYPE", columnType=columnType, style=vizmap.style.name)
+     }) # setEdgeLineStyleRule
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
 
-   function (obj, edge.attribute.name, attribute.values, line.widths, default.width=1) {
-#     if (length (attribute.values) == 1) {  # hack: list of length 1 treated as scalar, failing method match -- double into a list
-#       attribute.values = rep (attribute.values, 2)
-#       line.widths = rep (line.widths, 2)
-#       }
-#     id = as.character (obj@window.id)
-#     visual.property.type.name = 'Edge Line Width'  # see class cytoscape.visual.VisualPropertyType
-#
-#     if (length (attribute.values) == 1) {   # code around the requirement that one-element lists are turned into scalars
-#       attribute.values = rep (attribute.values, 2)
-#       line.widths = rep (line.widths, 2)
-#       } 
-#     result = xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', 'default', edge.attribute.name, 
-#                       'Edge Line Width', as.character (default.width), attribute.values, as.character (line.widths))
-#     invisible (result)
+    function (obj, edge.attribute.name, attribute.values, line.widths, default.width=1) {
+        id = as.character (obj@window.id)
+        #TODO the style should be passed as a parameter
+        vizmap.style.name = 'default'
+        
+        if (!edge.attribute.name %in% eda.names (obj@graph)) {
+            write (sprintf ('warning!  setEdgeLineWidthRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+            return ()
+        }
+        
+        # set default
+        default.width.list <- list(visualProperty = "EDGE_WIDTH", value = default.width)
+        setVisualProperty(obj, default.width.list, vizmap.style.name)
+        
+        # define the column type
+        # TODO there seems to be an error in Cytoscape. It requires a String rather than a Double.
+        # if we don't say columnType = String, an error occurs or the user has to input the numbers as strings
+        #columnType <- findColumnType(typeof(line.widths[1]))
+        columnType <- "String"
+        
+        # discrete mapping
+        discreteMapping (obj, edge.attribute.name, attribute.values, line.widths,
+                         visual.property="EDGE_WIDTH", columnType=columnType, style=vizmap.style.name)
      })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTargetArrowRule', 'CytoscapeWindowClass', 
 
-   function (obj, edge.attribute.name, attribute.values, arrows, default='Arrow') {
-#     # write (sprintf ('before -- attribute.values: %d   arrows: %d', length (attribute.values), length (arrows)), stderr ())
-#     if (length (attribute.values) == 1) {  # hack: list of length 1 treated as scalar, failing method match -- double into a list
-#       attribute.values = rep (attribute.values, 2)
-#       arrows = rep (arrows, 2)
-#       }
-#     #write (sprintf ('after -- attribute.values: %d   arrows: %d', length (attribute.values), length (arrows)), stderr ())
-#     id = as.character (obj@window.id)
-#     result = xml.rpc (obj@uri, "Cytoscape.setEdgeTargetArrowRule", id, edge.attribute.name, default, attribute.values, arrows, .convert=TRUE)
-#     invisible (result)
+    function (obj, edge.attribute.name, attribute.values, arrows, default='Arrow') {
+        id = as.character (obj@window.id)
+        #TODO the style should be passed as a parameter
+        vizmap.style.name = 'default'
+        
+        if (!edge.attribute.name %in% eda.names (obj@graph)) {
+            write (sprintf ('warning!  setEdgeTargetArrowRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+            return ()
+        }
+        
+        # set default
+        default.style.list <- list(visualProperty = "EDGE_TARGET_ARROW_SHAPE", value = default)
+        setVisualProperty(obj, default.style.list, vizmap.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(arrows[1]))
+        
+        # discrete mapping
+        discreteMapping (obj, edge.attribute.name, attribute.values, arrows,
+                         visual.property="EDGE_TARGET_ARROW_SHAPE", columnType=columnType, style=vizmap.style.name)
      }) # setTargetArrowRule
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeSourceArrowRule', 'CytoscapeWindowClass', 
 
-   function (obj, edge.attribute.name, attribute.values, arrows, default='Arrow') {
-#     if (length (attribute.values) == 1) {  # hack: list of length 1 treated as scalar, failing method match -- double into a list
-#       attribute.values = rep (attribute.values, 2)
-#       arrows = rep (arrows, 2)
-#       }
-#     id = as.character (obj@window.id)
-#     result = xml.rpc (obj@uri, "Cytoscape.setEdgeSourceArrowRule", id, edge.attribute.name, default, attribute.values, arrows, .convert=TRUE)
-#     invisible (result)
-     }) # setTargetArrowRule
+    function (obj, edge.attribute.name, attribute.values, arrows, default='Arrow') {
+        id = as.character (obj@window.id)
+        #TODO the style should be passed as a parameter
+        vizmap.style.name = 'default'
+        
+        if (!edge.attribute.name %in% eda.names (obj@graph)) {
+            write (sprintf ('warning!  setEdgeSourceArrowRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+            return ()
+        }
+        
+        # set default
+        default.style.list <- list(visualProperty = "EDGE_SOURCE_ARROW_SHAPE", value = default)
+        setVisualProperty(obj, default.style.list, vizmap.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(arrows[1]))
+        
+        # discrete mapping
+        discreteMapping (obj, edge.attribute.name, attribute.values, arrows,
+                         visual.property="EDGE_SOURCE_ARROW_SHAPE", columnType=columnType, style=vizmap.style.name)
+    }) # setTargetArrowRule
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass', 
