@@ -1934,7 +1934,7 @@ setMethod ('setEdgeTooltipRule', 'CytoscapeWindowClass',
 setMethod ('setNodeLabelRule', 'CytoscapeWindowClass',
     function (obj, node.attribute.name) {
         id = as.character (obj@window.id)
-        viz.style.name = 'default'
+        vizmap.style.name = 'default'
         if (!node.attribute.name %in% noa.names (obj@graph)) {
             write (sprintf ('warning!  setNodeLabelRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
             return ()
@@ -1943,14 +1943,14 @@ setMethod ('setNodeLabelRule', 'CytoscapeWindowClass',
         
         # set default label
         default.label <- list(visualProperty = "NODE_LABEL", value = "")
-        setVisualProperty(obj, default.label, viz.style.name)
+        setVisualProperty(obj, default.label, vizmap.style.name)
         
         # define the column type
         columnType <- findColumnType(typeof(attribute.values[1]))
         
         # discrete mapping
         discreteMapping(obj, node.attribute.name, attribute.values, attribute.values,
-                        visual.property="NODE_LABEL", columnType=columnType, style=viz.style.name)
+                        visual.property="NODE_LABEL", columnType=columnType, style=vizmap.style.name)
     })  # setNodeLabelRule
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -1958,7 +1958,7 @@ setMethod ('setEdgeLabelRule', 'CytoscapeWindowClass',
 
     function (obj, edge.attribute.name) {
         id = as.character (obj@window.id)
-        viz.style.name = 'default'
+        vizmap.style.name = 'default'
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
             write (sprintf ('warning!  setEdgeLabelRule passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
             return ()
@@ -1967,14 +1967,14 @@ setMethod ('setEdgeLabelRule', 'CytoscapeWindowClass',
         
         # set default label
         default.label <- list(visualProperty = "EDGE_LABEL", value = "")
-        setVisualProperty(obj, default.label, viz.style.name)
+        setVisualProperty(obj, default.label, vizmap.style.name)
         
         # define the column type
         columnType <- findColumnType(typeof(attribute.values[1]))
         
         # discrete mapping
         discreteMapping(obj, edge.attribute.name, attribute.values, attribute.values,
-                        visual.property="EDGE_LABEL", columnType=columnType, style=viz.style.name)
+                        visual.property="EDGE_LABEL", columnType=columnType, style=vizmap.style.name)
     })  # setEdgeLabelRule
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -1986,12 +1986,12 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                    return ()
                }
                
-               #set default
-               setDefaultNodeColor (obj, default.color)
-               
                #TODO Comment TanjaM we should give the user the option to choose the style as an input parameter which defaults to default.
-               style = 'default'
-
+               vizmap.style.name = 'default'
+               
+               #set default
+               setDefaultNodeColor (obj, default.color, vizmap.style.name)
+               
                # define the column type
                columnType <- findColumnType(typeof(control.points[1]))
 
@@ -2010,7 +2010,7 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                     return ()
                 }
                 
-                continuousMapping (obj, node.attribute.name, control.points, colors, visual.property="NODE_FILL_COLOR", columnType=columnType, style=style)
+                continuousMapping (obj, node.attribute.name, control.points, colors, visual.property="NODE_FILL_COLOR", columnType=columnType, style=vizmap.style.name)
                  
                 } # if mode==interpolate
                 else { # use a discrete rule, with no interpolation, mode==lookup
@@ -2022,7 +2022,7 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                        return ()
                 }
                    
-                discreteMapping(obj, node.attribute.name, control.points, colors, visual.property="NODE_FILL_COLOR", columnType=columnType, style=style)    
+                discreteMapping(obj, node.attribute.name, control.points, colors, visual.property="NODE_FILL_COLOR", columnType=columnType, style=vizmap.style.name)    
               
                 } # else: !interpolate, aka lookup
      }) # setNodeColorRule
@@ -2030,7 +2030,7 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
 
 discreteMapping <- function(obj, attribute.name, control.points, colors, visual.property, columnType, style){
     mapped.content <- apply(cbind(control.points, colors), MARGIN=1,
-                            FUN=function(s) {list(key=unname(s[[1]]), value=unname(s[[2]]))})
+                            FUN=function(s) {list(key=as.character(unname(s[[1]])), value=as.character(unname(s[[2]])))})
     
     discrete.mapping <- list(mappingType = "discrete", mappingColumn = attribute.name,
                              mappingColumnType = columnType, visualProperty=visual.property,
@@ -2038,7 +2038,7 @@ discreteMapping <- function(obj, attribute.name, control.points, colors, visual.
     discrete.mapping.json <-toJSON(list(discrete.mapping))
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
-    
+
     # inform the user if the request was a success of failure
     if (request.res$status == 201){
         return(TRUE)
@@ -2052,10 +2052,10 @@ discreteMapping <- function(obj, attribute.name, control.points, colors, visual.
 continuousMapping <- function(obj, node.attribute.name, control.points, colors, visual.property, columnType, style){
     # continuous mapping
     mapped.content <- apply(cbind(control.points, colors[3:length(colors)-1]), MARGIN=1,
-                            FUN=function(s) {list(value=unname(s[[1]]),
-                                                  lesser=unname(s[[2]]),
-                                                  equal=unname(s[[2]]),
-                                                  greater=unname(s[[2]]))})
+                            FUN=function(s) {list(value=as.character(unname(s[[1]])),
+                                                  lesser=as.character(unname(s[[2]])),
+                                                  equal=as.character(unname(s[[2]])),
+                                                  greater=as.character(unname(s[[2]])))})
     
     # change the attributes values below the minimum and above the maximum
     mapped.content[[1]]$lesser <- colors[1]
@@ -2174,70 +2174,79 @@ setMethod ('setNodeOpacityRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeBorderColorRule', 'CytoscapeWindowClass',
 
-   function (obj, node.attribute.name, control.points, colors, mode, default.color='#000000') {
+    function (obj, node.attribute.name, control.points, colors, mode, default.color='#000000') {
+        if (!mode %in% c ('interpolate', 'lookup')) {
+            write ("Error! RCytoscape:setNodeBorderColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+            return ()
+        }
+        
+        #TODO Comment TanjaM we should give the user the option to choose the style as an input parameter which defaults to default.
+        vizmap.style.name = 'default'
+        
+        # set default
+        setDefaultNodeBorderColor (obj, default.color, vizmap.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(control.points[1]))
+        
+        # mode==interpolate
+        if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points 
+            if (length (control.points) == length (colors)){  # caller did not supply 'below' and 'above' values; manufacture them
+                colors = c (default.color, colors, default.color)
+            }
+            good.args = length (control.points) == (length (colors) - 2)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (colors)), stderr ())
+                write ("Error! RCytoscape:setNodeBorderColorRule, interpolate mode.", stderr ())
+                write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
+                return ()
+            }
+            # continous mapping
+            continuousMapping (obj, node.attribute.name, control.points, colors, visual.property="NODE_BORDER_PAINT", columnType=columnType, style=vizmap.style.name)
 
-#     if (!mode %in% c ('interpolate', 'lookup')) {
-#       write ("Error! RCytoscape:setNodeBorderColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
-#       return ()
-#       }
-#
-#     setDefaultNodeBorderColor (obj, default.color)
-#     
-#     if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points 
-#       if (length (control.points) == length (colors))  # caller did not supply 'below' and 'above' values; manufacture them
-#         colors = c (default.color, colors, default.color)
-#
-#       good.args = length (control.points) == (length (colors) - 2)
-#       if (!good.args) {
-#         write (sprintf ('cp: %d', length (control.points)), stderr ())
-#         write (sprintf ('co: %d', length (colors)), stderr ())
-#         write ("Error! RCytoscape:setNodeBorderColorRule, interpolate mode.", stderr ())
-#         write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
-#         return ()
-#         }
-#       result = xml.rpc (obj@uri, 'Cytoscape.createContinuousNodeVisualStyle', node.attribute.name, 'Node Border Color', control.points, colors, FALSE)
-#       invisible (result)
-#       } # if mode==interpolate
-#
-#     else { # use a discrete rule, with no interpolation
-#       good.args = length (control.points) == length (colors)
-#       if (!good.args) {
-#         write (sprintf ('cp: %d', length (control.points)), stderr ())
-#         write (sprintf ('co: %d', length (colors)), stderr ())
-#         write ("Error! RCytoscape:setNodeBorderColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
-#         return ()
-#         }
-#
-#       default.style = 'default'
-#       if (length (control.points) == 1) {   # code around the requirement that one-element lists are turned into scalars
-#         control.points = rep (control.points, 2)
-#         colors = rep (colors, 2)
-#         } 
-#       result = xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', default.style, node.attribute.name,
-#                          'Node Border Color', default.color, control.points, colors)
-#       invisible (result)
-#       } # else: !interpolate
+        } # if mode==interpolate
+        else { # use a discrete rule, with no interpolation
+            good.args = length (control.points) == length (colors)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (colors)), stderr ())
+                write ("Error! RCytoscape:setNodeBorderColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
+                return ()
+            }
+            discreteMapping(obj, node.attribute.name, control.points, colors, visual.property="NODE_BORDER_PAINT", columnType=columnType, style=vizmap.style.name)
+        } # else: !interpolate
      }) # setNodeBorderColorRule
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeBorderWidthRule', 'CytoscapeWindowClass',
 
    function (obj, node.attribute.name, attribute.values, line.widths, default.width=1) {
+       id = as.character (obj@window.id)
+       #TODO the style should be passed as a parameter
+       vizmap.style.name = 'default'
+       #TODO we should add interpolate as mode in the function
+       mode = "lookup"
+       if (!node.attribute.name %in% noa.names (obj@graph)) {
+           write (sprintf ('warning!  setNodeBorderWidthRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
+           return ()
+       }
+       
+       # set default
+       setDefaultNodeBorderWidth(obj, default.width, vizmap.style.name)
+       
+       # define the column type
+       columnType <- findColumnType(typeof(line.widths[1]))
 
-#     if (length (attribute.values) == 1) {  # hack: list of length 1 treated as scalar, failing method match -- double into a list
-#       attribute.values = rep (attribute.values, 2)
-#       line.widths = rep (line.widths, 2)
-#       }
-#     id = as.character (obj@window.id)
-#     visual.property.type.name = 'Node Line Width'  # see class cytoscape.visual.VisualPropertyType
-#
-#     if (length (attribute.values) == 1) {   # code around the requirement that one-element lists are turned into scalars
-#       attribute.values = rep (attribute.values, 2)
-#       line.widths = rep (line.widths, 2)
-#       } 
-#     result = xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', 'default', node.attribute.name, 
-#                       'Node Line Width', as.character (default.width), attribute.values, as.character (line.widths))
-#     invisible (result)
+       # discrete mapping
+       if (mode=="lookup"){
+           discreteMapping (obj, node.attribute.name, attribute.values, line.widths,
+                       visual.property="NODE_BORDER_WIDTH", columnType=columnType, style=vizmap.style.name)
+       } else{
+           # continuous mapping
+           # TODO need to check here if 2 more values were passed in for width
+           continuousMapping (obj, node.attribute.name, attribute.values, line.widths, visual.property="NODE_BORDER_WIDTH", columnType=columnType, style=vizmap.style.name)
+       }
      })
 
 # ------------------------------------------------------------------------------
@@ -2318,16 +2327,25 @@ setMethod('setDefaultEdgeFontSize', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeShapeRule', 'CytoscapeWindowClass',
 
-   function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ellipse') {
-#     if (length (attribute.values) == 1) {  # hack: list of length 1 treated as scalar, failing method match -- double into a list
-#       attribute.values = rep (attribute.values, 2)
-#       node.shapes = rep (node.shapes, 2)
-#       }
-#     setDefaultNodeShape (obj, default.shape)
-#     id = as.character (obj@window.id)
-#     result = xml.rpc (obj@uri, "Cytoscape.setNodeShapeRule", id, node.attribute.name, default.shape, 
-#                      attribute.values, node.shapes, .convert=TRUE)
-#     invisible (result)
+    function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ellipse') {
+        id = as.character (obj@window.id)
+        #TODO the style should be passed as a parameter
+        vizmap.style.name = 'default'
+
+        if (!node.attribute.name %in% noa.names (obj@graph)) {
+            write (sprintf ('warning!  setNodeShapeRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
+            return ()
+        }
+        
+        # set default
+        setDefaultNodeShape (obj, default.shape, vizmap.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(node.shapes[1]))
+        
+        # discrete mapping
+        discreteMapping (obj, node.attribute.name, attribute.values, node.shapes,
+                             visual.property="NODE_SHAPE", columnType=columnType, style=vizmap.style.name)
      }) # setNodeShapeRule
 
 #------------------------------------------------------------------------------------------------------------------------
