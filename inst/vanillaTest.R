@@ -1,6 +1,0 @@
-rm (list=ls())
-library (RCytoscape)
-sessionInfo ()
-base::source ('unitTests/test_cytoscape.R')
-run.tests ()
-#RCytoscape:::.test ()
