@@ -6,4 +6,4 @@ NEW FEATURES
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o removed new.CystoscapeWindow. CytoscapeWindow does the job now.
+    o removed new.CystoscapeWindow. CytoscapeWindow does the same job now.
