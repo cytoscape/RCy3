@@ -413,6 +413,10 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
     cw@window.id = createWindow(cw)
   }
   cw@collectTimings = collectTimings
+  
+  # let user know that a new window was created
+  write(sprintf('New window named "%s" was created in Cytoscape.', title), stderr())
+  
   return (cw)
 
 } # CytsoscapeWindow
@@ -575,7 +579,7 @@ setMethod('getWindowID', 'CytoscapeConnectionClass',
     }
 
     if(!window.title %in% as.character(cy.networks.names)) {
-      write(sprintf("No existing Cytoscape window named '%s'", window.title), stderr())
+      write(sprintf("Cytoscape window named '%s' does not exist yet", window.title), stderr())
       return (NA)
     } # if unrecognized window.title
     
@@ -2664,7 +2668,7 @@ setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass',
 #     result = xml.rpc (obj@uri, "Cytoscape.createDiscreteMapper", style.name, edge.attribute.name,
 #                      'Edge Source Arrow Color', default.color, attribute.values, colors, .convert=TRUE)
 #     invisible (result)
-     }) # setTargetArrowRule
+     }) # setEdgeSourceArrowColorRule
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
@@ -3905,30 +3909,30 @@ makeSimpleGraph = function ()
 # create, display and render the 3-node, 3-edge simple graph
 demoSimpleGraph = function ()
 {
-#  window.title = 'demo.simpleGraph'
-#  cy = CytoscapeConnection ()
-#  if (window.title %in% as.character (getWindowList (cy)))
-#    deleteWindow (cy, window.title)
-#
-#  g.simple = RCytoscape::makeSimpleGraph ()
-#  cws = CytoscapeWindow (window.title, g.simple)
-#
-#  displayGraph (cws)
-#  layoutNetwork (cws, 'default')
-#  setNodeLabelRule (cws, 'label')
-#
-#  node.attribute.values = c ("kinase",  "transcription factor")
-#  colors =                c ('#A0AA00', '#FF0000')
-#  setDefaultNodeBorderWidth (cws, 5)
-#  setNodeBorderColorRule (cws, 'type', node.attribute.values, colors, mode='lookup', default.color='#88FF22')
-#  count.control.points = c (2, 30, 100)
-#  sizes                = c (20, 50, 100)
-#  setNodeSizeRule (cws, 'count', count.control.points, sizes, mode='interpolate')
-#  setNodeColorRule (cws, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
-#
-#  #redraw (cws)
-#
-#  invisible (cws)
+    window.title = 'demo.simpleGraph'
+    cy = CytoscapeConnection ()
+    if (window.title %in% as.character (getWindowList (cy)))
+    deleteWindow (cy, window.title)
+    
+    g.simple = RCytoscape::makeSimpleGraph ()
+    cws = CytoscapeWindow (window.title, g.simple)
+    
+    displayGraph (cws)
+    layoutNetwork (cws, 'default')
+    setNodeLabelRule (cws, 'label')
+    
+    node.attribute.values = c ("kinase",  "transcription factor")
+    colors =                c ('#A0AA00', '#FF0000')
+    setDefaultNodeBorderWidth (cws, 5)
+    setNodeBorderColorRule (cws, 'type', node.attribute.values, colors, mode='lookup', default.color='#88FF22')
+    count.control.points = c (2, 30, 100)
+    sizes                = c (20, 50, 100)
+    setNodeSizeRule (cws, 'count', count.control.points, sizes, mode='interpolate')
+    setNodeColorRule (cws, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
+    
+    redraw (cws)
+    
+    invisible (cws)
 
 } # demoSimpleGraph
 
