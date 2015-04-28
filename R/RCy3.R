@@ -426,26 +426,27 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 existing.CytoscapeWindow = function (title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE)
 {
    #The constructor for the CytoscapeWindowClass, used when Cytoscape already contains and displays a network.
-   
-   uri <- sprintf ('http://%s:%s', host, port)
-   cy.tmp <- CytoscapeConnection (host, port)     # create this (inexpensively) just to gain access to the window list
-   check.cytoscape.plugin.version (cy.tmp)
-   
-   existing.window.id <- getWindowID (cy.tmp, title)
-   
-   # alert the user if the desired window does not exist
-   if (is.na (existing.window.id)) {
-      write (sprintf ('There is no window in Cytoscape named "%s".  Please choose from the following titles:.', title), stderr ())
-      write (as.character (getWindowList (cy.tmp)), stderr ())
-      return (NA)
-   }
-   # get graph from Cytoscape
-   cw <- new ('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
-   if (copy.graph.from.cytoscape.to.R) {
-      g.cy <- getGraphFromCyWindow (cw, title)
-      cw <- setGraph (cw, g.cy)
-   }
-   return (cw)
+    uri <- sprintf('http://%s:%s', host, port)
+    # create this (inexpensively) just to gain access to the window list
+    cy.tmp <- CytoscapeConnection(host, port)
+    check.cytoscape.plugin.version(cy.tmp)
+    
+    existing.window.id <- getWindowID(cy.tmp, title)
+    
+    # alert the user if the desired window does not exist
+    if(is.na(existing.window.id)) {
+        write(sprintf('There is no window in Cytoscape named "%s". Please choose from the following titles:.', title), stderr())
+        write(as.character(getWindowList(cy.tmp)), stderr())
+        return(NA)
+    }
+    
+    # get graph from Cytoscape
+    cw <- new('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
+    if(copy.graph.from.cytoscape.to.R) {
+        g.cy <- getGraphFromCyWindow(cw, title)
+        cw <- setGraph(cw, g.cy)
+    }
+    return(cw)
 } # existing.CytsoscapeWindow
 
 # ------------------------------------------------------------------------------
@@ -940,51 +941,40 @@ setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod('sendNodes', 'CytoscapeWindowClass', function(obj) {
-  loc.obj <- obj
-  # returns the nodes currently stored in the graph object
-  graph.network.nodes <- nodes(loc.obj@graph)
-  # returns the nodes currently displayed in Cytoscape
-  current.cytoscape.nodes <- sapply(loc.obj@suid.name.dict, function(x) x$name)
-  
-  node.suid.name.dict <- (0)
-  
-  diff.nodes <- setdiff(graph.network.nodes, current.cytoscape.nodes)
-  # if there is difference b/n the nodes in the graph object and Cytoscape
-  if(length(diff.nodes) > 0) {
-    if(length(graph.network.nodes) == 0) {
-      write('CytoscapeWindow.sendNodes, no nodes in graph, returning', stderr())
-      ### TO DO: delete all existing nodes in Cytoscape
-      print('delete all existing nodes in Cytoscape')
-      return()
-    } else if(length(current.cytoscape.nodes) > length(graph.network.nodes)) {
-      ### TO DO: delete extra Cytoscape nodes
-      print('delete extra Cytoscape nodes')
-      return()
-    } else { # send the new nodes to Cytoscape
-      net.suid <- as.character(loc.obj@window.id)
-      v <- pluginVersion(loc.obj)
-      resource.uri <- paste(loc.obj@uri, v, "networks", net.suid, "nodes", sep="/")
-      
-      new.network.nodes.JSON <- toJSON(diff.nodes)
-      
-      write(sprintf('sending %d node(s)', length(diff.nodes)), stderr())
-      
-      res <- POST(url=resource.uri, body=new.network.nodes.JSON, encode="json")
-      
-      node.suid.name.dict <- unname(fromJSON(rawToChar(res$content)))
-      
-      for(i in 1:length(node.suid.name.dict)) {
-        loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict)+1]] <- node.suid.name.dict[[i]]
-      }
+    loc.obj <- obj
+    # returns the nodes currently stored in the graph object
+    graph.network.nodes = nodes(loc.obj@graph)
+    # returns the nodes currently displayed in Cytoscape
+    current.cytoscape.nodes = sapply(loc.obj@suid.name.dict, function(n) n$name)
+    
+    node.suid.name.dict <- (0)
+    
+    diff.nodes = setdiff(graph.network.nodes, current.cytoscape.nodes)
+    # if new nodes need to be added
+    if(length(diff.nodes) > 0) {
+        net.SUID = as.character(loc.obj@window.id)
+        version = pluginVersion(loc.obj)
+        
+        resource.uri = paste(loc.obj@uri, version, "networks", net.SUID, "nodes", sep="/")
+        diff.nodes.JSON = toJSON(diff.nodes)
+        
+        write(sprintf('sending %d node(s)', length(diff.nodes)), stderr())
+        
+        request.res = POST(url=resource.uri, body=diff.nodes.JSON, encode="json")
+        new.node.SUIDs = unname(fromJSON(rawToChar(request.res$content)))
+        
+        for(i in 1:length(new.node.SUIDs)) {
+            loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict)+1]] = new.node.SUIDs[[i]]
+        }
+    } else {
+        write('CytoscapeWindow.sendNodes(), no new nodes to send, returning', stderr())
+        return()
     }
-  } else {
-    write('CytoscapeWindow.sendNodes, nothing new to send, returning', stderr())  
-    return()
-  }
-  write('ending sendNodes', stderr())
-  
-  eval.parent(substitute(obj <- loc.obj))
-})
+    
+    write('ending sendNodes', stderr())
+    # needed for 'pass-by-reference' R functionality 
+    eval.parent(substitute(obj <- loc.obj))
+    })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('.addNodes', signature (obj='CytoscapeWindowClass'),
@@ -2776,7 +2766,8 @@ setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
 
-  function (obj, node.names, image.urls) {
+    function (obj, node.names, image.urls) {
+        return(setNodePropertyDirect(obj, node.names, paste0("org.cytoscape.ding.customgraphics.bitmap.URLImageCustomGraphics,14,bundle:", image.urls, ",bitmap image"), "NODE_CUSTOMGRAPHICS_1"))
 
 #     if (length (image.urls) == 1)
 #       image.urls = rep (image.urls, length (node.names))
@@ -4548,9 +4539,9 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
       # request 
       resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
       node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
-      
       # request result
       request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
+      print(request.res)
    } # end for (node.name in node.names)
    
    invisible(request.res)
