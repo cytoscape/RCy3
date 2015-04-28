@@ -7,3 +7,6 @@ NEW FEATURES
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o removed new.CystoscapeWindow. CytoscapeWindow does the same job now.
+    o removed setEdgeLabelWidthDirect.
+    
+    
