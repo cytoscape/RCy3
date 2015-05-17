@@ -1,13 +1,13 @@
-\name{setDefaultEdgeColor}
-\alias{setDefaultEdgeColor}
-\alias{setDefaultEdgeColor,CytoscapeConnectionClass-method}
-\title{setDefaultEdgeColor}
+\name{setDefaultEdgeTargetArrowColor}
+\alias{setDefaultEdgeTargetArrowColor}
+\alias{setDefaultEdgeTargetArrowColor,CytoscapeConnectionClass-method}
+\title{setDefaultEdgeTargetArrowColor}
 \description{
-In the specified CytoscapeConnection, stipulate the color for all edges
-other than those mentioned in a edge color rule.
+In the specified CytoscapeConnection, stipulate the color for all edge target arrows
+other than those mentioned in an edge target arrow color rule.
 }
 \usage{
-setDefaultEdgeColor(obj, new.color, vizmap.style.name = "default")
+setDefaultEdgeTargetArrowColor(obj, new.color, vizmap.style.name = "default")
 }
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
@@ -19,7 +19,7 @@ setDefaultEdgeColor(obj, new.color, vizmap.style.name = "default")
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze}
 
 \seealso{
    setDefaultNodeShape
@@ -36,11 +36,11 @@ None.
 }
 
 \examples{
-  cw <- CytoscapeWindow ('setDefaultEdgeColor test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('setDefaultEdgeTargetArrowColor test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
-  setDefaultEdgeColor (cw, '#FFFFFF') # white edges
+  layoutNetwork(cw, 'grid')
+  setDefaultEdgeTargetArrowColor (cw, '#FFFFFF') # white edges
   redraw (cw)
 }
 
