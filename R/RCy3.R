@@ -245,9 +245,9 @@ setGeneric ('setEdgeSourceArrowRule',   signature='obj',
     function (obj, edge.attribute.name, attribute.values, arrows, default='Arrow') standardGeneric ('setEdgeSourceArrowRule'))
 
 setGeneric ('setEdgeTargetArrowColorRule',   signature='obj', 
-    function (obj, edge.attribute.name, attribute.values, colors, default.color='#000000') standardGeneric ('setEdgeTargetArrowColorRule'))
+    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000') standardGeneric ('setEdgeTargetArrowColorRule'))
 setGeneric ('setEdgeSourceArrowColorRule',   signature='obj', 
-    function (obj, edge.attribute.name, attribute.values, colors, default.color='#000000') standardGeneric ('setEdgeSourceArrowColorRule'))
+    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000') standardGeneric ('setEdgeSourceArrowColorRule'))
 
 setGeneric ('setEdgeColorRule',         signature='obj',
     function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#FFFFFF') standardGeneric ('setEdgeColorRule'))
@@ -2567,7 +2567,7 @@ setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass',
        vizmap.style.name = 'default'
        
        #set default
-       setDefaultEdgeArrowColor (obj, default.color, vizmap.style.name)
+       setDefaultEdgeTargetArrowColor (obj, default.color, vizmap.style.name)
        
        # define the column type
        columnType <- findColumnType(typeof(control.points[1]))
@@ -2588,7 +2588,7 @@ setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass',
            }
            
            continuousMapping (obj, edge.attribute.name, control.points, colors,
-                              visual.property="EDGE_STROKE_UNSELECTED_PAINT",
+                              visual.property="EDGE_TARGET_ARROW_UNSELECTED_PAINT",
                               columnType=columnType, style=vizmap.style.name)
        } # if mode==interpolate
        else { # use a discrete rule, with no interpolation, mode==lookup
@@ -2601,7 +2601,7 @@ setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass',
            }
            
            discreteMapping(obj, edge.attribute.name, control.points, colors,
-                           visual.property="EDGE_STROKE_UNSELECTED_PAINT",
+                           visual.property="EDGE_TARGET_ARROW_UNSELECTED_PAINT",
                            columnType=columnType, style=vizmap.style.name)
        } # else: !interpolate, aka lookup
     }) # setTargetArrowRule
@@ -2609,15 +2609,55 @@ setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass', 
 
-    function (obj, edge.attribute.name, attribute.values, colors, default.color='#000000') {
-        
-#     id = as.character (obj@window.id)
-#     style.name = 'default'
+    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000') {
 
-#
-#     result = xml.rpc (obj@uri, "Cytoscape.createDiscreteMapper", style.name, edge.attribute.name,
-#                      'Edge Source Arrow Color', default.color, attribute.values, colors, .convert=TRUE)
-#     invisible (result)
+        if (!mode %in% c ('interpolate', 'lookup')) {
+            write ("Error! RCytoscape:setEdgeSourceArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+            return ()
+        }
+        #TODO Comment TanjaM we should give the user the option to choose the style 
+        # as an input parameter which defaults to default.
+        vizmap.style.name = 'default'
+        
+        #set default
+        setDefaultEdgeSourceArrowColor (obj, default.color, vizmap.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(control.points[1]))
+        
+        
+        if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
+            if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
+                colors = c (colors [1], colors, colors [length (colors)])
+                write ("RCytoscape::setEdgeSourceArrowColorRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
+            } 
+            good.args = length (control.points) == (length (colors) - 2)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (colors)), stderr ())
+                write ("Error! RCytoscape:setEdgeSourceArrowColorRule, interpolate mode.", stderr ())
+                write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
+                return ()
+            }
+            
+            continuousMapping (obj, edge.attribute.name, control.points, colors,
+                               visual.property="EDGE_SOURCE_ARROW_UNSELECTED_PAINT",
+                               columnType=columnType, style=vizmap.style.name)
+        } # if mode==interpolate
+        else { # use a discrete rule, with no interpolation, mode==lookup
+            good.args = length (control.points) == length (colors)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (colors)), stderr ())
+                write ("Error! RCytoscape:setEdgeSourceArrowColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
+                return ()
+            }
+            
+            discreteMapping(obj, edge.attribute.name, control.points, colors,
+                            visual.property="EDGE_SOURCE_ARROW_UNSELECTED_PAINT",
+                            columnType=columnType, style=vizmap.style.name)
+        } # else: !interpolate, aka lookup
+        
      }) # setEdgeSourceArrowColorRule
 
 #------------------------------------------------------------------------------------------------------------------------
