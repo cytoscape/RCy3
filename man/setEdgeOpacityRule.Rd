@@ -31,7 +31,7 @@ None.
 \examples{
   cw <- CytoscapeWindow ('setEdgeOpacityRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork (cw, 'jgraph-spring')
+  layoutNetwork (cw, 'grid')
 
   edgeType.values <- c ("phosphorylates", "synthetic lethal", "undefined")
 
