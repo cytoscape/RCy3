@@ -60,7 +60,7 @@ None.
     # look to see that the third type, glycoprotein, gets the tiny default.size of 5
 
   molecule.types <- c ('kinase', 'transcription factor')
-  node.sizes     <- c (60,        80)
+  node.sizes     <- c (60, 80)
   setNodeSizeRule (cw, 'type', molecule.types,  node.sizes, default.size= 5, mode='lookup')
   redraw (cw)
 
