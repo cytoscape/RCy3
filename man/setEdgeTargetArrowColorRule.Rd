@@ -8,7 +8,7 @@ attribute -- control the color of the target arrow, found at the end of an edge,
   target node.}
 
 \usage{
-setEdgeTargetArrowColorRule(obj, edge.attribute.name, attribute.values, colors, default.color='#000000')
+setEdgeTargetArrowColorRule(obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000')
 }
 
 \arguments{
@@ -19,8 +19,9 @@ ColorRule is applied, determine the color of the target arrow of each edge.}
   instance, interaction types:  'phosphorylates', 'ubiquinates',
   'represses', 'activates' }
 \item{colors}{A color for each of the attribute.values}
+\item{mode}{either 'interpolate' or 'lookup'.}
 \item{default.color}{The color to use when an explicit mapping is not
-  provided.  (Note: this is broken in Cytoscape 2.7)}
+  provided.)}
 
 }
 
