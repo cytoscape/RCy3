@@ -32,6 +32,7 @@ None.
 
 \examples{
   cw <- CytoscapeWindow ('setEdgeColorRule.test', graph=makeSimpleGraph())
+  displayGraph(cw)
   edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
   colors = c ('#FF0000', '#FFFF00', '#00FF00')
   setEdgeColorRule (cw, 'edgeType',  edgeType.values, colors, mode='lookup')
