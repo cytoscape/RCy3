@@ -11,6 +11,7 @@ getFirstNeighbors(obj, node.names)
 }
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
+  \item{as.nested.list}{ a \code{Boolean} object of if a nested list or a concatenated list should be returned}
   \item{node.names}{a \code{String} list object.}
 }
 
@@ -28,7 +29,7 @@ A list of node names.
   cw <- CytoscapeWindow ('getFirstNeighbors.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'grid')
   print (getFirstNeighbors (cw, 'A'))
   selectNodes (cw, getFirstNeighbors (cw, 'A'))  # note that A is not selected
 }
