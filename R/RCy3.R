@@ -2014,86 +2014,107 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
 
 setMethod ('setNodeOpacityRule', 'CytoscapeWindowClass',
 
-   function (obj, node.attribute.name, control.points, opacities, mode, aspect='all') {
+    function (obj, node.attribute.name, control.points, opacities, mode, aspect='all') {
+        if (!mode %in% c ('interpolate', 'lookup')) {
+            write ("Error! RCytoscape:setNodeOpacityRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+            return ()
+        }
+        
+        #TODO Comment TanjaM we should give the user the option to choose the style 
+        # as an input parameter which defaults to default.
+        vizmap.style.name = 'default'
 
-#     if (!mode %in% c ('interpolate', 'lookup')) {
-#       write ("Error! RCytoscape:setNodeOpacityRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
-#       return ()
-#       }
-#
-#     aspect.all = length (grep ('all', aspect))  > 0
-#     aspect.fill = length (grep ('fill', aspect)) > 0
-#     aspect.border = length (grep ('border', aspect)) > 0
-#     aspect.label = length (grep ('label', aspect)) > 0
-#
-#     if (aspect.all) {
-#       aspect.fill = TRUE
-#       aspect.border = TRUE
-#       aspect.label = TRUE
-#       }
-#
-#     if (aspect.fill == FALSE && aspect.border == FALSE && aspect.label == FALSE) {
-#       specific.options = 'fill, border, label'
-#       msg.1 = "Error! RCytoscape:setNodeOpacityRule.  apect must be 'all' (the default) "
-#       msg.2 = sprintf ("or some combination, in any order, of %s", specific.options)
-#       write (msg.1, stderr ())
-#       write (msg.2, stderr ())
-#       return ()
-#       }
-#
-#     if (mode=='interpolate') {  # need a 'below' opacity and an 'above' opacity.  so there should be two more opacities than control.points 
-#       if (length (control.points) == length (opacities)) { # caller did not supply 'below' and 'above' values; manufacture them
-#         opacities = c (opacities [1], opacities, opacities [length (opacities)])
-#         #write ("RCytoscape::setNodeOpacityRule, no 'below' or 'above' opacities specified.  Inferred from supplied opacities.", stderr ());
-#         } # 
-#
-#       good.args = length (control.points) == (length (opacities) - 2)
-#       if (!good.args) {
-#         write (sprintf ('cp: %d', length (control.points)), stderr ())
-#         write (sprintf ('co: %d', length (opacities)), stderr ())
-#         write ("Error! RCytoscape:setNodeOpacityRule, interpolate mode.", stderr ())
-#         write ("Expecting 1 opacity for each control.point, one for 'above' opacity, one for 'below' opacity.", stderr ())
-#         return ()
-#         }
-#       
-#       if (aspect.fill)
-#         result = xml.rpc (obj@uri, 'Cytoscape.createContinuousNodeVisualStyle', node.attribute.name, 'Node Opacity', control.points, opacities, FALSE)
-#       if (aspect.border) 
-#         result = xml.rpc (obj@uri, 'Cytoscape.createContinuousNodeVisualStyle', node.attribute.name, 'Node Border Opacity', control.points, 
-#                           opacities, FALSE)
-#       if (aspect.label) 
-#         result = xml.rpc (obj@uri, 'Cytoscape.createContinuousNodeVisualStyle', node.attribute.name, 'Node Label Opacity', control.points, 
-#                           opacities, FALSE)
-#       invisible (result)
-#       } # if mode==interpolate
-#
-#     else { # mode==lookup, use a discrete rule, with no interpolation
-#       good.args = length (control.points) == length (opacities)
-#       if (!good.args) {
-#         write (sprintf ('cp: %d', length (control.points)), stderr ())
-#         write (sprintf ('co: %d', length (opacities)), stderr ())
-#         write ("Error! RCytoscape:setNodeOpacityRule.  Expecting exactly as many opacities as control.points in lookup mode.", stderr ())
-#         return ()
-#         }
-#
-#       default.style = 'default'
-#       default.opacity = 255;
-#       if (length (control.points) == 1) {   # code around the requirement that one-element lists are turned into scalars
-#         control.points = rep (control.points, 2)
-#         opacities = rep (opacities, 2)
-#         } 
-#
-#       if (aspect.fill)
-#         result = xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', default.style, 
-#                           node.attribute.name, 'Node Opacity', as.character (default.opacity), control.points, as.character (opacities))
-#       if (aspect.border) 
-#         result = xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', default.style, 
-#                           node.attribute.name, 'Node Border Opacity', as.character (default.opacity), control.points, as.character (opacities))
-#       if (aspect.label) 
-#         result = xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', default.style, 
-#                           node.attribute.name, 'Node Label Opacity', as.character (default.opacity), control.points, as.character (opacities))
-#       invisible (result)
-#       } # else: !interpolate
+        # define the column type
+        columnType <- findColumnType(typeof(control.points[1]))
+        
+        # set default # Comment TanjaM: Current version does not set default
+        #setDefaultNodeOpacity (obj, default.opacity, vizmap.style.name)
+        
+        aspect.all = length (grep ('all', aspect))  > 0
+        aspect.fill = length (grep ('fill', aspect)) > 0
+        aspect.border = length (grep ('border', aspect)) > 0
+        aspect.label = length (grep ('label', aspect)) > 0
+        
+        if (aspect.all) {
+            aspect.fill = TRUE
+            aspect.border = TRUE
+            aspect.label = TRUE
+        }
+        
+        if (aspect.fill == FALSE && aspect.border == FALSE && aspect.label == FALSE) {
+            specific.options = 'fill, border, label'
+            msg.1 = "Error! RCytoscape:setNodeOpacityRule.  apect must be 'all' (the default) "
+            msg.2 = sprintf ("or some combination, in any order, of %s", specific.options)
+            write (msg.1, stderr ())
+            write (msg.2, stderr ())
+            return ()
+        }
+
+        if (mode=='interpolate') {  # need a 'below' opacity and an 'above' opacity.  so there should be two more opacities than control.points 
+            if (length (control.points) == length (opacities)) { # caller did not supply 'below' and 'above' values; manufacture them
+                opacities = c (opacities [1], opacities, opacities [length (opacities)])
+                write ("RCytoscape::setNodeOpacityRule, no 'below' or 'above' opacities specified.  Inferred from supplied opacities.", stderr ());
+            }
+            
+            good.args = length (control.points) == (length (opacities) - 2)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (opacities)), stderr ())
+                write ("Error! RCytoscape:setNodeOpacityRule, interpolate mode.", stderr ())
+                write ("Expecting 1 opacity for each control.point, one for 'above' opacity, one for 'below' opacity.", stderr ())
+                return ()
+            }
+            
+            if (aspect.fill){
+                continuousMapping (obj, node.attribute.name, control.points, opacities,
+                                   visual.property="NODE_TRANSPARENCY",
+                                   columnType=columnType, style=vizmap.style.name)
+            }
+            if (aspect.border){
+                continuousMapping (obj, node.attribute.name, control.points, opacities,
+                                   visual.property="NODE_BORDER_TRANSPARENCY",
+                                   columnType=columnType, style=vizmap.style.name)
+            }
+            if (aspect.label){
+                continuousMapping (obj, node.attribute.name, control.points, opacities,
+                                   visual.property="NODE_LABEL_TRANSPARENCY",
+                                   columnType=columnType, style=vizmap.style.name)
+            }
+        } # if mode==interpolate
+        
+        else { # mode==lookup, use a discrete rule, with no interpolation
+            good.args = length (control.points) == length (opacities)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (opacities)), stderr ())
+                write ("Error! RCytoscape:setNodeOpacityRule.  Expecting exactly as many opacities as control.points in lookup mode.", stderr ())
+                return ()
+            }
+            
+            default.opacity = 255;
+            if (length (control.points) == 1) {   # code around the requirement that one-element lists are turned into scalars
+                control.points = rep (control.points, 2)
+                opacities = rep (opacities, 2)
+            }
+            
+            if (aspect.fill){
+                discreteMapping(obj, node.attribute.name, control.points, opacities,
+                                visual.property="NODE_TRANSPARENCY",
+                                columnType=columnType, style=vizmap.style.name)
+            }
+            
+            if (aspect.border){
+                discreteMapping(obj, node.attribute.name, control.points, opacities,
+                                visual.property="NODE_BORDER_TRANSPARENCY",
+                                columnType=columnType, style=vizmap.style.name)
+            }
+            
+            if (aspect.label){
+                discreteMapping(obj, node.attribute.name, control.points, opacities,
+                                visual.property="NODE_LABEL_TRANSPARENCY",
+                                columnType=columnType, style=vizmap.style.name)
+            }
+        } # else: !interpolate
      }) # setNodeOpacityRule
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -2364,7 +2385,6 @@ setMethod ('setEdgeColorRule', 'CytoscapeWindowClass',
         # define the column type
         columnType <- findColumnType(typeof(control.points[1]))
         
-        
         if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
             if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
                 colors = c (colors [1], colors, colors [length (colors)])
@@ -2401,54 +2421,54 @@ setMethod ('setEdgeColorRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeOpacityRule', 'CytoscapeWindowClass',
 
-   function (obj, edge.attribute.name, control.points, opacities, mode) {
+    function (obj, edge.attribute.name, control.points, opacities, mode) {
+        if (!mode %in% c ('interpolate', 'lookup')) {
+            write ("Error! RCytoscape:setEdgeOpacityRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+            return ()
+        }
+        
+        #TODO Comment TanjaM we should give the user the option to choose the style 
+        # as an input parameter which defaults to default.
+        vizmap.style.name = 'default'
+        
+        # set default # Comment TanjaM: Current version does not set default
+        #setDefaultEdgeOpacity (obj, default.opacity, vizmap.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(control.points[1]))
+        
+        # in a previous Cytoscape version the three elements were set seperately
+        #aspects = c ('Edge Opacity', 'Edge Target Arrow Opacity', 'Edge Source Arrow Opacity')
 
-#     if (!mode %in% c ('interpolate', 'lookup')) {
-#       write ("Error! RCytoscape:setEdgeOpacityRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
-#       return ()
-#       }
-# 
-#     aspects = c ('Edge Opacity', 'Edge Target Arrow Opacity', 'Edge Source Arrow Opacity')
-#
-#     if (mode=='interpolate') {  # need a 'below' opacity and an 'above' opacity.  so there should be two more opacities than control.points 
-#       if (length (control.points) == length (opacities)) { # caller did not supply 'below' and 'above' values; manufacture them
-#         opacities = c (opacities [1], opacities, opacities [length (opacities)])
-#         } # 
-#
-#       good.args = length (control.points) == (length (opacities) - 2)
-#       if (!good.args) {
-#         write (sprintf ('cp: %d', length (control.points)), stderr ())
-#         write (sprintf ('co: %d', length (opacities)), stderr ())
-#         write ("Error! RCytoscape:setEdgeOpacityRule, interpolate mode.", stderr ())
-#         write ("Expecting 1 opacity value for each control.point, one for 'above' opacity, one for 'below' opacity.", stderr ())
-#         return ()
-#         }
-#       for (aspect in aspects)
-#         result = xml.rpc (obj@uri, 'Cytoscape.createContinuousEdgeVisualStyle', edge.attribute.name, aspect, control.points, opacities, FALSE)
-#       invisible (result)
-#       } # if mode==interpolate
-#
-#     else { # use a discrete rule, with no interpolation
-#       good.args = length (control.points) == length (opacities)
-#       if (!good.args) {
-#         write (sprintf ('cp: %d', length (control.points)), stderr ())
-#         write (sprintf ('co: %d', length (opacities)), stderr ())
-#         write ("Error! RCytoscape:setEdgeColorRule.  Expecting exactly as many opacities as control.points in lookup mode.", stderr ())
-#         return ()
-#         }
-#
-#       default.style = 'default'
-#       if (length (control.points) == 1) {   # code around the requirement that one-element lists are turned into scalars
-#         control.points = rep (control.points, 2)
-#         opacities = rep (opacities, 2)
-#         } 
-#       opacities = as.character (opacities)
-#       for (aspect in aspects) {
-#         result = xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', default.style, edge.attribute.name, aspect, '255', control.points, opacities)
-#         }
-#
-#       invisible (result)
-#       } # else: !interpolate
+        if (mode=='interpolate') {  # need a 'below' opacity and an 'above' opacity.  so there should be two more opacities than control.points 
+            if (length (control.points) == length (opacities)) { # caller did not supply 'below' and 'above' values; manufacture them
+                opacities = c (opacities [1], opacities, opacities [length (opacities)])
+                write ("RCytoscape::setEdgeOpacityRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
+            } 
+            good.args = length (control.points) == (length (opacities) - 2)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (opacities)), stderr ())
+                write ("Error! RCytoscape:setEdgeOpacityRule, interpolate mode.", stderr ())
+                write ("Expecting 1 opacity value for each control.point, one for 'above' opacity, one for 'below' opacity.", stderr ())
+                return ()
+            }
+            continuousMapping (obj, edge.attribute.name, control.points, opacities,
+                                   visual.property="EDGE_TRANSPARENCY",
+                                   columnType=columnType, style=vizmap.style.name)
+        } # if mode==interpolate
+        else { # use a discrete rule, with no interpolation
+            good.args = length (control.points) == length (opacities)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (opacities)), stderr ())
+                write ("Error! RCytoscape:setEdgeColorRule.  Expecting exactly as many opacities as control.points in lookup mode.", stderr ())
+                return ()
+            }
+            discreteMapping(obj, edge.attribute.name, control.points, opacities,
+                            visual.property="EDGE_TRANSPARENCY",
+                            columnType=columnType, style=vizmap.style.name)
+        } # else: !interpolate
      }) # setEdgeColorRule
 
 #------------------------------------------------------------------------------------------------------------------------
