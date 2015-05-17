@@ -41,7 +41,7 @@ None.
 \examples{
   cw <- CytoscapeWindow ('setNodeSizeRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'grid')
   redraw (cw)
   control.points <- c (10, 30, 80)
   node.sizes  <- c (20, 50, 80)
