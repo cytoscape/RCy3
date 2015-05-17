@@ -4,7 +4,7 @@
 \title{setDefaultEdgeColor}
 \description{
 In the specified CytoscapeConnection, stipulate the color for all edges
-other than those mentioned in a edge color rule.
+other than those mentioned in an edge color rule.
 }
 \usage{
 setDefaultEdgeColor(obj, new.color, vizmap.style.name = "default")
