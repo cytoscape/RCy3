@@ -14,5 +14,5 @@ SIGNIFICANT USER-VISIBLE CHANGES
     o removed setEdgeLabelWidthDirect.
     o removed setEdgeSourceArrowOpacityDirect.
     o removed setEdgeTargetArrowOpacityDirect
-    
+    o removed set.node.or.edge.properties
     
