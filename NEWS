@@ -2,8 +2,12 @@ NEW RELEASE VERSION 0.99.0
 -------------------------
 
 NEW FEATURES
-
-
+    o added setDefaultEdgeSourceArrowColor to set the default arrow color
+    o added setDefaultEdgeTargetArrowColor to set the default target arrow color
+    o added two modes (interpolate and lookup) to setEdgeSourceArrowColorRule
+    o added two modes (interpolate and lookup) to setEdgeTargetArrowColorRule
+    
+    
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o removed new.CystoscapeWindow. CytoscapeWindow does the same job now.
