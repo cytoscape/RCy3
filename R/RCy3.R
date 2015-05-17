@@ -2286,6 +2286,7 @@ setMethod ('setNodeShapeRule', 'CytoscapeWindowClass',
 
     function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ellipse') {
         id = as.character (obj@window.id)
+        
         #TODO the style should be passed as a parameter
         vizmap.style.name = 'default'
 
@@ -2308,64 +2309,56 @@ setMethod ('setNodeShapeRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
 
-#   function (obj, node.attribute.name, attribute.values, node.sizes) {
-#     id = as.character (obj@window.id)
-#        # take the first and last node size, prepend and append them respectively, so that there are 2 more
-#        # visual attribute values (in this case, node size in pixels) than there are node data attribute values
-#     adjusted.node.sizes = c (node.sizes [1], node.sizes, c (node.sizes [length (node.sizes)]))
-#     result = xml.rpc (obj@uri, 'Cytoscape.createContinuousNodeVisualStyle', node.attribute.name, 'Node Size', 
-#                       attribute.values, adjusted.node.sizes, FALSE)
-#     return (result)
-#     }) # setNodeSizeRule
+    function (obj, node.attribute.name, control.points, node.sizes, mode, default.size=40) {
+        if (!mode %in% c ('interpolate', 'lookup')) {
+            write ("Error! RCytoscape:setNodeSizeRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+            return ()
+        }
 
-   function (obj, node.attribute.name, control.points, node.sizes, mode, default.size=40) {
+        #TODO Comment TanjaM we should give the user the option to choose the style 
+        # as an input parameter which defaults to default.
+        vizmap.style.name = 'default'
+        
+        # define the column type
+        columnType <- findColumnType(typeof(control.points[1]))
+        
+        # set default
+        setDefaultNodeSize (obj, default.size, vizmap.style.name)
+        
+        if (mode=='interpolate') {  # need a 'below' size and an 'above' size.  so there should be two more colors than control.points
+            if (length (control.points) == length (node.sizes)) { # caller did not supply 'below' and 'above' values; manufacture them
+                node.sizes = c (node.sizes [1], node.sizes, node.sizes [length (node.sizes)])
+                write ("RCytoscape::setNodeSizeRule, no 'below' or 'above' sizes specified.  Inferred from node.sizes.", stderr ())
+            }
 
-#     if (!mode %in% c ('interpolate', 'lookup')) {
-#       write ("Error! RCytoscape:setNodeSizeRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
-#       return ()
-#       }
-#
-#     setDefaultNodeSize (obj, default.size)
-#
-#     if (mode=='interpolate') {  # need a 'below' size and an 'above' size.  so there should be two more colors than control.points 
-#       if (length (control.points) == length (node.sizes)) { # caller did not supply 'below' and 'above' values; manufacture them
-#         node.sizes = c (node.sizes [1], node.sizes, node.sizes [length (node.sizes)])
-#         write ("RCytoscape::setNodeSizeRule, no 'below' or 'above' sizes specified.  Inferred from node.sizes.", stderr ())
-#         } # 
-#
-#       good.args = length (control.points) == (length (node.sizes) - 2)
-#       if (!good.args) {
-#         write (sprintf ('cp: %d', length (control.points)), stderr ())
-#         write (sprintf ('co: %d', length (node.sizes)), stderr ())
-#         write ("Error! RCytoscape:setNodeSizeRule, interpolate mode.", stderr ())
-#         write ("Expecting 1 node.size for each control.point, one for 'above' size, one for 'below' size.", stderr ())
-#         return ()
-#         }
-#       result = xml.rpc (obj@uri, 'Cytoscape.createContinuousNodeVisualStyle', node.attribute.name, 'Node Size', control.points, node.sizes, FALSE)
-#       invisible (result)
-#       } # if mode==interpolate
-#
-#     else { # use a discrete rule, with no interpolation
-#       good.args = length (control.points) == length (node.sizes)
-#       if (!good.args) {
-#         write (sprintf ('cp: %d', length (control.points)), stderr ())
-#         write (sprintf ('co: %d', length (node.sizes)), stderr ())
-#         write ("Error! RCytoscape:setNodeSizeRule.  Expecting exactly as many node.sizes as control.points in lookup mode.", stderr ())
-#         return ()
-#         }
-#
-#       default.style = 'default'
-#       if (length (control.points) == 1) {   # code around the requirement that one-element lists are turned into scalars
-#         control.points = rep (control.points, 2)
-#         node.sizes = rep (node.sizes, 2)
-#         } 
-#
-#       result = xml.rpc (obj@uri, 'Cytoscape.createDiscreteMapper', default.style, 
-#                         node.attribute.name, 'Node Size', as.character (default.size), 
-#                         as.character (control.points), as.character (node.sizes))
-#       invisible (result)
-#       } # else: !interpolate
-     }) # setNodeSizeRule
+            good.args = length (control.points) == (length (node.sizes) - 2)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (node.sizes)), stderr ())
+                write ("Error! RCytoscape:setNodeSizeRule, interpolate mode.", stderr ())
+                write ("Expecting 1 node.size for each control.point, one for 'above' size, one for 'below' size.", stderr ())
+                return ()
+            }
+            continuousMapping (obj, node.attribute.name, control.points, node.sizes,
+                               visual.property="NODE_SIZE",
+                               columnType=columnType, style=vizmap.style.name)
+            
+        } # if mode==interpolate
+
+        else { # use a discrete rule, with no interpolation
+            good.args = length (control.points) == length (node.sizes)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (node.sizes)), stderr ())
+                write ("Error! RCytoscape:setNodeSizeRule.  Expecting exactly as many node.sizes as control.points in lookup mode.", stderr ())
+                return ()
+            }
+            discreteMapping(obj, node.attribute.name, control.points, node.sizes,
+                            visual.property="NODE_SIZE",
+                            columnType=columnType, style=vizmap.style.name)    
+            
+        } # else: !interpolate, aka lookup
+    }) # setNodeSizeRule
 #
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeColorRule', 'CytoscapeWindowClass',
