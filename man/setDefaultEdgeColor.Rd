@@ -39,7 +39,7 @@ None.
   cw <- CytoscapeWindow ('setDefaultEdgeColor test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'grid')
   setDefaultEdgeColor (cw, '#FFFFFF') # white edges
   redraw (cw)
 }
