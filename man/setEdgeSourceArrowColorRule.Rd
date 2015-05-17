@@ -20,7 +20,7 @@ ColorRule is applied, determine the color of the source arrow for each edge.}
   'represses', 'activates' }
 \item{colors}{A color for each of the attribute.values}
 \item{default.color}{The color to use when an explicit mapping is not
-  provided.  (Note: this is broken in Cytoscape 2.7)}
+  provided.)}
 
 }
 
