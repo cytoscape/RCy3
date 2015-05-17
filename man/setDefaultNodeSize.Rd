@@ -39,7 +39,7 @@ None.
   cw <- CytoscapeWindow ('setDefaultNodeSize.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'grid')
   setDefaultNodeSize (cw, 60) # an intermediate value
   redraw (cw)
 }
