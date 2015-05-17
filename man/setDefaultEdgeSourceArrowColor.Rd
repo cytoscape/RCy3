@@ -19,7 +19,7 @@ setDefaultEdgeSourceArrowColor(obj, new.color, vizmap.style.name = "default")
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja}
 
 \seealso{
    setDefaultNodeShape
