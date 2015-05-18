@@ -4107,20 +4107,20 @@ cy2.edge.names = function(graph, R.edge.names=NA)
 #------------------------------------------------------------------------------------------------------------------------
 getAdjacentEdgeNames = function (graph, node.names) 
 {
-#  all.edge.names = cy2.edge.names (graph) 
-#  all.edge.names.cyStyle = as.character (all.edge.names) 
-#  indices.of.edges.with.nodes = c () 
-#
-#  for (node in node.names) { 
-#    node.regex.nodeA = sprintf ('^%s ', node)
-#    node.regex.nodeB = sprintf (' %s$', node)
-#    indices.A = grep (node.regex.nodeA, all.edge.names.cyStyle) 
-#    indices.B = grep (node.regex.nodeB, all.edge.names.cyStyle) 
-#    indices.of.edges.with.nodes = c (indices.of.edges.with.nodes, indices.A, indices.B) 
-#    } # for node
-#
-#  return (unique (as.character (all.edge.names) [indices.of.edges.with.nodes]))
+    all.edge.names = cy2.edge.names (graph) 
+    all.edge.names.cyStyle = as.character (all.edge.names) 
+    indices.of.edges.with.nodes = c () 
+    
+    for (node in node.names) { 
+        node.regex.nodeA = sprintf ('^%s ', node)
+        node.regex.nodeB = sprintf (' %s$', node)
+        indices.A = grep (node.regex.nodeA, all.edge.names.cyStyle) 
+        indices.B = grep (node.regex.nodeB, all.edge.names.cyStyle) 
+        indices.of.edges.with.nodes = c (indices.of.edges.with.nodes, indices.A, indices.B) 
+    } # for node
 
+    return (unique (as.character (all.edge.names) [indices.of.edges.with.nodes]))
+    
 } # getAdjacentEdgeNames
 #------------------------------------------------------------------------------------------------------------------------
 makeSimpleGraph = function ()
