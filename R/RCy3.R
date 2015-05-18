@@ -536,12 +536,14 @@ setMethod('getServerStatus', 'CytoscapeConnectionClass',
           }) # END getServerStatus
 
 # ------------------------------------------------------------------------------
-setMethod('msg', 'CytoscapeConnectionClass', function (obj, string) { 
+setMethod('msg', 'CytoscapeConnectionClass', function (obj, string) {
+    message("not yet implemented")
 	### invisible (xml.rpc (obj@uri, 'Cytoscape.setStatusBarMessage', string))
 }) # END msg
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('clearMsg', 'CytoscapeConnectionClass', function (obj) { 
+setMethod ('clearMsg', 'CytoscapeConnectionClass', function (obj) {
+    message("not yet implemented")
 #		invisible (xml.rpc (obj@uri, 'Cytoscape.clearStatusBarMessage'))
 		})
 
@@ -722,6 +724,7 @@ setMethod('getLayoutNames', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod('getLayoutNameMapping', 'CytoscapeConnectionClass', 
    function(obj) {
+       message("not yet implemented")
 #   return (xml.rpc (obj@uri, 'Cytoscape.getLayoutNamesMapping'))
      }) # getLayoutNameMapping
 
@@ -729,6 +732,7 @@ setMethod('getLayoutNameMapping', 'CytoscapeConnectionClass',
 setMethod ('getLayoutPropertyNames', 'CytoscapeConnectionClass', 
 
    function (obj, layout.name) {
+       message("not yet implemented")
 #     return (xml.rpc (obj@uri, 'Cytoscape.getLayoutProperties', layout.name))
      }) # getLayoutProperties
 
@@ -736,6 +740,7 @@ setMethod ('getLayoutPropertyNames', 'CytoscapeConnectionClass',
 setMethod ('getLayoutPropertyType', 'CytoscapeConnectionClass', 
 
    function (obj, layout.name, property.name) {
+       message("not yet implemented")
 #     return (xml.rpc (obj@uri, 'Cytoscape.getLayoutPropertyType', layout.name, property.name))
      }) # getLayoutPropertyType
 
@@ -743,6 +748,7 @@ setMethod ('getLayoutPropertyType', 'CytoscapeConnectionClass',
 setMethod ('getLayoutPropertyValue', 'CytoscapeConnectionClass', 
 
    function (obj, layout.name, property.name) {
+       message("not yet implemented")
 #     return (xml.rpc (obj@uri, 'Cytoscape.getLayoutPropertyValue', layout.name, property.name))
      }) # getLayoutPropertyValue
 
@@ -750,6 +756,7 @@ setMethod ('getLayoutPropertyValue', 'CytoscapeConnectionClass',
 setMethod ('setLayoutProperties', 'CytoscapeConnectionClass', 
 
    function (obj, layout.name, properties.list) {
+       message("not yet implemented")
 #     all.possible.props = getLayoutPropertyNames (obj, layout.name)   # will throw error if there are no modifiable properties
 #     for (prop in names (properties.list)) {
 #       if (!prop %in% all.possible.props)
@@ -1919,6 +1926,7 @@ setMethod('redraw', 'CytoscapeWindowClass',
 setMethod ('setWindowSize', 'CytoscapeWindowClass',
 
    function (obj, width, height) {
+       message("not yet implemented")
 #     id = as.character (obj@window.id)
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.resizeNetworkView', id, as.integer (width), as.integer (height)))
      }) # redraw
@@ -1927,6 +1935,7 @@ setMethod ('setWindowSize', 'CytoscapeWindowClass',
 setMethod ('setTooltipInitialDelay', 'CytoscapeConnectionClass',
 
    function (obj, msecs) {
+       message("not yet implemented")
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.setToolTipInitialDelay', as.integer (msecs)))
      })
 
@@ -1934,12 +1943,14 @@ setMethod ('setTooltipInitialDelay', 'CytoscapeConnectionClass',
 setMethod ('setTooltipDismissDelay', 'CytoscapeConnectionClass',
 
    function (obj, msecs) {
+       message("not yet implemented")
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.setToolTipDismissDelay', as.integer (msecs)))
      })
 
 # ------------------------------------------------------------------------------
 setMethod('raiseWindow', 'CytoscapeConnectionClass', 
   function(obj, window.title = NA) {
+      message("not yet implemented")
     if(is.na(window.title)) {
       if(class(obj) == 'CytoscapeWindowClass') {
         window.id = obj@window.id
@@ -1965,6 +1976,7 @@ setMethod('raiseWindow', 'CytoscapeConnectionClass',
 setMethod ('showGraphicsDetails', 'CytoscapeConnectionClass',
 
   function (obj, new.value) {
+      message("not yet implemented")
 #    invisible (xml.rpc (obj@uri, 'Cytoscape.setShowGraphicsDetails', new.value))
 #    if (class (obj) == 'CytoscapeWindowClass')
 #      redraw (obj)
@@ -1984,6 +1996,7 @@ setMethod('fitContent', 'CytoscapeWindowClass',
 setMethod ('fitSelectedContent', 'CytoscapeWindowClass',
 
    function (obj) {
+       message("not yet implemented")
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.fitSelectedContent', obj@window.id))
      })
 
@@ -2104,6 +2117,7 @@ setMethod('setZoom', 'CytoscapeWindowClass',
 setMethod ('getViewCoordinates', 'CytoscapeWindowClass',
 
    function (obj) {
+       message("not yet implemented")
 #     tmp = xml.rpc (obj@uri, 'Cytoscape.getViewCoordinates', obj@window.id)
 #     return (list (top.x=tmp[1], top.y=tmp[2], bottom.x=tmp[3], bottom.y=tmp[4]))
      })
@@ -2112,6 +2126,7 @@ setMethod ('getViewCoordinates', 'CytoscapeWindowClass',
 setMethod ('hidePanel', 'CytoscapeConnectionClass',
 
    function (obj, panelName) {
+       message("not yet implemented")
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.hidePanel', panelName))
      })
 
@@ -2119,13 +2134,15 @@ setMethod ('hidePanel', 'CytoscapeConnectionClass',
 setMethod ('hideAllPanels', 'CytoscapeConnectionClass',
 
   function (obj) {
+      message("not yet implemented")
 #    invisible (sapply (tolower (LETTERS), function (letter) hidePanel (obj, letter)))
     })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('dockPanel', 'CytoscapeConnectionClass',
 
-   function (obj, panelName) {
+    function (obj, panelName) {
+        message("not yet implemented")
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.dockPanel', panelName))
      })
 
@@ -2133,6 +2150,7 @@ setMethod ('dockPanel', 'CytoscapeConnectionClass',
 setMethod ('floatPanel', 'CytoscapeConnectionClass',
 
    function (obj, panelName) {
+       message("not yet implemented")
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.floatPanel', panelName))
      })
 
@@ -3812,6 +3830,7 @@ setMethod('getSelectedNodes', 'CytoscapeWindowClass',
 setMethod ('hideSelectedNodes', 'CytoscapeWindowClass',
 
    function (obj) {
+       message("not yet implemented")
 #     id = as.character (obj@window.id)
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.hideSelectedNodes', id, .convert=TRUE))
      }) # hideSelectedNodes
@@ -3820,6 +3839,7 @@ setMethod ('hideSelectedNodes', 'CytoscapeWindowClass',
 setMethod ('hideNodes', 'CytoscapeWindowClass',
 
    function (obj, node.names) {
+       message("not yet implemented")
 #     id = as.character (obj@window.id)
 #     for (node in node.names)
 #       invisible (xml.rpc (obj@uri, 'Cytoscape.hideNode', id, node, .convert=TRUE))
@@ -4025,6 +4045,7 @@ setMethod ('getFirstNeighbors', 'CytoscapeWindowClass',
 setMethod ('selectFirstNeighborsOfSelectedNodes', 'CytoscapeWindowClass',
 
    function (obj) {
+       message("not yet implemented")
 #     if (getSelectedNodeCount (obj) > 0) {
 #       currently.selected = getSelectedNodes (obj)
 #       if (length (currently.selected) == 0)
