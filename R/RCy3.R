@@ -371,6 +371,9 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 	
     # new 'CytoscapeConnectionClass' object
 	cy.conn = CytoscapeConnection(host, port)
+	if (is.null(cy.conn)){
+	    return()
+	}
 	check.cytoscape.plugin.version(cy.conn)
 	# if the user has specified, delete already existing window(s) with the same title
 	if(overwriteWindow) {
@@ -450,6 +453,10 @@ existing.CytoscapeWindow = function (title, host='localhost', port=1234, copy.gr
 		uri <- sprintf('http://%s:%s', host, port)
 		# create this (inexpensively) just to gain access to the window list
 		cy.conn <- CytoscapeConnection(host, port)
+        
+        if (is.null(cy.conn)){
+            return()
+        }
 		check.cytoscape.plugin.version(cy.conn)
 		
 		existing.window.id = as.character(getWindowID(cy.conn, title))
