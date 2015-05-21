@@ -456,16 +456,16 @@ existing.CytoscapeWindow = function (title, host='localhost', port=1234, copy.gr
 		
 		# inform the user if the desired window does not exist
 		if(is.na(existing.window.id)) {
-			write(sprintf('RCy3::existing.CytoscapeWindow: There is no window in Cytoscape named "%s". Please choose from the following titles:.', title), stderr())
+			write(sprintf('RCy3::existing.CytoscapeWindow: There is no window in Cytoscape named "%s". Please choose from the following titles:', title), stderr())
 			write(as.character(getWindowList(cy.conn)), stderr())
 			return(NA)
 		}
 		
 		# get graph from Cytoscape
-    cy.window<- new('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
-    if(copy.graph.from.cytoscape.to.R) {
-        g.cy <- getGraphFromCyWindow(cy.window, title)
-        cy.window<- setGraph(cw, g.cy)
+        cy.window<- new('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
+        if(copy.graph.from.cytoscape.to.R) {
+            g.cy <- getGraphFromCyWindow(cy.window, title)
+            cy.window<- setGraph(cw, g.cy)
     }
     return(cy.window)
 } # END existing.CytsoscapeWindow
@@ -1669,7 +1669,7 @@ properlyInitializedEdgeAttribute = function (graph, attribute.name) {
 setMethod('setNodeAttributes', 'CytoscapeWindowClass', function(obj, attribute.name) { 
     # it might be the case that 'obj@graph' contains nodes that do NOT exist in Cytoscape
     # the below line identifies the indices of those graph nodes, which DO exist in Cytoscape
-    node.indices = which(nodes(obj@graph) %in% getAllNodes(cw))
+    node.indices = which(nodes(obj@graph) %in% getAllNodes(obj))
     
     if(length(node.indices) > 0) {
         node.names = nodes(obj@graph)[node.indices]
