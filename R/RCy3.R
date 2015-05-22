@@ -3341,6 +3341,7 @@ setMethod ('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
+      
       new.values <- toupper(new.values)
       if (new.values %in% getArrowShapes(obj)){
           # set the edge property direct
