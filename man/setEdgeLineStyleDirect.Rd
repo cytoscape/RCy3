@@ -49,7 +49,7 @@ None.
   cw <- CytoscapeWindow ('setEdgeLineStyleDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'grid')
   edges.of.interest <- as.character (cy2.edge.names (cw@graph))
   supported.styles <- getLineStyles (cw)
 
