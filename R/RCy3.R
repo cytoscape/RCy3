@@ -245,9 +245,9 @@ setGeneric ('setEdgeLineWidthRule', signature='obj',
     function (obj, edge.attribute.name, attribute.values, line.widths, default.width='1') standardGeneric ('setEdgeLineWidthRule'))
 
 setGeneric ('setEdgeTargetArrowRule',   signature='obj', 
-    function (obj, edge.attribute.name, attribute.values, arrows, default='Arrow') standardGeneric ('setEdgeTargetArrowRule'))
+    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW') standardGeneric ('setEdgeTargetArrowRule'))
 setGeneric ('setEdgeSourceArrowRule',   signature='obj', 
-    function (obj, edge.attribute.name, attribute.values, arrows, default='Arrow') standardGeneric ('setEdgeSourceArrowRule'))
+    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW') standardGeneric ('setEdgeSourceArrowRule'))
 
 setGeneric ('setEdgeTargetArrowColorRule',   signature='obj', 
     function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000') standardGeneric ('setEdgeTargetArrowColorRule'))
@@ -472,7 +472,7 @@ existing.CytoscapeWindow = function (title, host='localhost', port=1234, copy.gr
         cy.window<- new('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
         if(copy.graph.from.cytoscape.to.R) {
             g.cy <- getGraphFromCyWindow(cy.window, title)
-            cy.window<- setGraph(cw, g.cy)
+            cy.window<- setGraph(cy.window, g.cy)
     }
     return(cy.window)
 } # END existing.CytsoscapeWindow
@@ -2500,6 +2500,7 @@ setMethod ('setNodeBorderWidthRule', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeShape', 'CytoscapeConnectionClass', 
   function(obj, new.shape, vizmap.style.name='default') {
+      new.shape <- toupper(new.shape)
       if (new.shape %in% getNodeShapes(obj)){
           style = list(visualProperty = "NODE_SHAPE", value = new.shape)
           setVisualProperty(obj, style, vizmap.style.name)
@@ -2822,10 +2823,12 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTargetArrowRule', 'CytoscapeWindowClass', 
 
-    function (obj, edge.attribute.name, attribute.values, arrows, default='Arrow') {
+    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW') {
         id = as.character (obj@window.id)
         #TODO the style should be passed as a parameter
         vizmap.style.name = 'default'
+        
+        
         
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
             write (sprintf ('warning!  setEdgeTargetArrowRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
@@ -2847,7 +2850,7 @@ setMethod ('setEdgeTargetArrowRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeSourceArrowRule', 'CytoscapeWindowClass', 
 
-    function (obj, edge.attribute.name, attribute.values, arrows, default='Arrow') {
+    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW') {
         id = as.character (obj@window.id)
         #TODO the style should be passed as a parameter
         vizmap.style.name = 'default'
@@ -3070,6 +3073,13 @@ setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.shapes) {
+       if (length (node.names) != length (new.shapes)) {
+           msg = sprintf ('error in RCy3::setNodeShapeDirect.  new.shapes count (%d) is neither 1 nor same as node.names count (%d)',
+                          length (new.shapes), length (node.names))
+           write (msg, stderr ())
+           return ()
+       }
+       new.shapes <- toupper(new.shapes)
        if (new.shapes %in% getNodeShapes(obj)){
            # set the node property direct
            return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE"))
@@ -3296,6 +3306,7 @@ setMethod ('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
+      new.values <- toupper(new.values)
       if (new.values %in% getLineStyles(obj)){
           # set the edge property direct
           return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LINE_TYPE"))
@@ -3314,6 +3325,7 @@ setMethod ('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
+      new.values <- toupper(new.values)
       if (new.values %in% getArrowShapes(obj)){
           # set the edge property direct
           return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_SOURCE_ARROW_SHAPE"))
@@ -3333,6 +3345,7 @@ setMethod ('setEdgeTargetArrowShapeDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
+      new.values <- toupper(new.values)
       if (new.values %in% getArrowShapes(obj)){
           # set the edge property direct
           return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TARGET_ARROW_SHAPE"))
@@ -3502,6 +3515,25 @@ setMethod('getNodeAttribute', 'CytoscapeConnectionClass',
 })
 
 # ------------------------------------------------------------------------------
+setMethod('getNodeAttributeType', 'CytoscapeWindowClass', 
+          function(obj, attribute.name) {
+              net.SUID = as.character(obj@window.id)
+              version = pluginVersion(obj)
+              
+              if(attribute.name %in% getNodeAttributeNames(obj)) {
+                  resource.uri = 
+                      paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
+                  request.res = GET(url=resource.uri)
+                  
+                  node.attributes.info = fromJSON(rawToChar(request.res$content))
+                  
+                  return(node.attributes.info[[which(lapply(node.attributes.info, function(a) {a$name}) %in% attribute.name)]]$type)
+              } else {
+                  write(sprintf("RCy3::getNodeAttributeType error: '%s' is not a recognized node attribute name", attribute.name), stderr())
+              }
+          }) # END getNodeAttributeType
+
+# ------------------------------------------------------------------------------
 setMethod('getAllNodeAttributes', 'CytoscapeWindowClass', 
           function(obj, onlySelectedNodes = FALSE) {
               g = obj@graph
@@ -3562,6 +3594,25 @@ setMethod ('getEdgeAttribute', 'CytoscapeConnectionClass',
        
        return(edge.attribute.value)
      })
+
+#------------------------------------------------------------------------------------------------------------------------
+setMethod('getEdgeAttributeType', 'CytoscapeWindowClass',
+          function(obj, attribute.name) {
+              net.SUID = as.character(obj@window.id)
+              version = pluginVersion(obj)
+              
+              if(attribute.name %in% getEdgeAttributeNames(obj)) {
+                  resource.uri = 
+                      paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
+                  request.res = GET(url=resource.uri)
+                  
+                  edge.attributes.info = fromJSON(rawToChar(request.res$content))
+                  
+                  return(edge.attributes.info[[which(lapply(edge.attributes.info, function(a) {a$name}) %in% attribute.name)]]$type)
+              } else {
+                  write(sprintf("RCy3::getEdgeAttributeType: '%s' is not a recognized edge attribute name", attribute.name), stderr())
+              }
+          }) # END getEdgeAttributeType
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getAllEdgeAttributes', 'CytoscapeWindowClass',
