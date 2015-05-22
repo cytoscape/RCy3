@@ -193,7 +193,7 @@ setGeneric ('setNodeBorderWidthRule',   signature='obj',
     function (obj, node.attribute.name, attribute.values, line.widths, default.width=1) standardGeneric ('setNodeBorderWidthRule'))
 
 setGeneric ('setNodeShapeRule',         signature='obj', 
-    function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ellipse') standardGeneric ('setNodeShapeRule'))
+    function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ELLIPSE') standardGeneric ('setNodeShapeRule'))
 setGeneric ('setNodeSizeRule',          signature='obj', 
     function (obj, node.attribute.name, control.points, node.sizes, mode, default.size=40) standardGeneric ('setNodeSizeRule'))
 
@@ -2587,7 +2587,7 @@ setMethod('setDefaultEdgeFontSize', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeShapeRule', 'CytoscapeWindowClass',
 
-    function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ellipse') {
+    function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ELLIPSE') {
         id = as.character (obj@window.id)
         
         #TODO the style should be passed as a parameter
@@ -3948,13 +3948,14 @@ setMethod('deleteSelectedNodes', 'CytoscapeWindowClass',
     request.res = GET(url=resource.uri)
     selected.node.SUIDs = unname(fromJSON(rawToChar(request.res$content)))
     
-    print(selected.node.SUIDs)
+    #print(selected.node.SUIDs)
 }) # deleteSelectedNodes
    
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('selectEdges', 'CytoscapeWindowClass',
 
    function (obj, edge.names, preserve.current.selection=TRUE) {
+       message("not implemented")
 #     id = as.character (obj@window.id)
 #     if (preserve.current.selection)
 #       edge.names = unique (c (getSelectedEdges (obj), edge.names))
@@ -4552,6 +4553,7 @@ setMethod('setVisualStyle', 'CytoscapeConnectionClass',
 setMethod ('lockNodeDimensions', 'CytoscapeConnectionClass',
 
    function (obj, new.state, visual.style.name='default') {
+       message("not implemented yet")
 #     if (! visual.style.name %in% getVisualStyleNames (obj)) {
 #       write (sprintf ('Error in RCy3::lockNodeDimensions.  No visual style named "%s"', visual.style.name), stderr ())
 #       return ()
@@ -4837,7 +4839,7 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
       node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
       # request result
       request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
-      print(request.res)
+      #print(request.res)
    } # end for (node.name in node.names)
    
    invisible(request.res)
