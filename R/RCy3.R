@@ -2598,11 +2598,15 @@ setMethod ('setNodeShapeRule', 'CytoscapeWindowClass',
             return ()
         }
         
-        # ensure correct
-        if (!(unique(node.shapes) %in% getNodeShapes(obj))){
-            write (sprintf('ERROR in RCy3::setNodeShapeRule. '), stderr())
+        # ensure correct node shapes
+        node.shapes <- toupper(node.shapes)
+        unique.node.shapes <- unique(node.shapes)
+        wrong.node.shape <- sapply(unique.node.shapes, function(x) !(x %in% getNodeShapes(obj)))
+        if (any(wrong.node.shape)){
+            write (sprintf('ERROR in RCy3::setNodeShapeRule. You tried to use invalid node shapes. For valid ones use getNodeShapes'), stderr())
+            return(NA)
         }
-        
+
         # set default
         setDefaultNodeShape (obj, default.shape, vizmap.style.name)
         
@@ -3083,7 +3087,16 @@ setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
            write (msg, stderr ())
            return ()
        }
+       
+       # ensure correct node shapes
        new.shapes <- toupper(new.shapes)
+       unique.node.shapes <- unique(new.shapes)
+       wrong.node.shape <- sapply(unique.node.shapes, function(x) !(x %in% getNodeShapes(obj)))
+       if (any(wrong.node.shape)){
+           write (sprintf('ERROR in RCy3::setNodeShapeDirect. You tried to use invalid node shapes. For valid ones use getNodeShapes'), stderr())
+           return(NA)
+       }
+       
        if (new.shapes %in% getNodeShapes(obj)){
            # set the node property direct
            return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE"))
