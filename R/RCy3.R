@@ -4,8 +4,6 @@ library(graph)
 library(methods)
 library(RJSONIO)
 library(RCurl)
-# Georgi Change
-
 # ------------------------------------------------------------------------------
 printf = function (...) print (noquote (sprintf (...)))
 # ------------------------------------------------------------------------------
@@ -1530,10 +1528,10 @@ setMethod ('setNodePosition', 'CytoscapeWindowClass',
      # TODO we might want to check if the coordinates are valid numbers
      
      # set x position
-     res <- setNodePropertyDirect(obj, node.names, x.coords, "NODE_X_LOCATION")
+     setNodePropertyDirect(obj, node.names, x.coords, "NODE_X_LOCATION")
      
      # set y position
-     res <- setNodePropertyDirect(obj, node.names, y.coords, "NODE_Y_LOCATION")
+     setNodePropertyDirect(obj, node.names, y.coords, "NODE_Y_LOCATION")
 
      invisible(res)
     }) # setNodePosition
@@ -2596,8 +2594,13 @@ setMethod ('setNodeShapeRule', 'CytoscapeWindowClass',
         vizmap.style.name = 'default'
 
         if (!node.attribute.name %in% noa.names (obj@graph)) {
-            write (sprintf ('warning!  setNodeShapeRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
+            write (sprintf ('Error in RCy3::setNodeShapeRule. Passed non-existent node attribute: %s', node.attribute.name), stderr ())
             return ()
+        }
+        
+        # ensure correct
+        if (!(unique(node.shapes) %in% getNodeShapes(obj))){
+            write (sprintf('ERROR in RCy3::setNodeShapeRule. '), stderr())
         }
         
         # set default
@@ -3005,9 +3008,8 @@ setMethod ('setNodeSizeDirect', 'CytoscapeWindowClass',
          }
       }
       # set the node properties direct
-      res <- setNodePropertyDirect(obj, node.names, new.sizes, "NODE_WIDTH")
-      res <- setNodePropertyDirect(obj, node.names, new.sizes, "NODE_HEIGHT")
-      invisible(res)
+      setNodePropertyDirect(obj, node.names, new.sizes, "NODE_WIDTH")
+      setNodePropertyDirect(obj, node.names, new.sizes, "NODE_HEIGHT")
      })
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is, tied together).  see lockNodeDimensions (T/F)
@@ -3153,10 +3155,9 @@ setMethod ('setNodeOpacityDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
-      res <- setNodePropertyDirect(obj, node.names, new.values, "NODE_TRANSPARENCY")
-      res <- setNodePropertyDirect(obj, node.names, new.values, "NODE_BORDER_TRANSPARENCY")
-      res <- setNodePropertyDirect(obj, node.names, new.values, "NODE_LABEL_TRANSPARENCY")
-      invisible(res)
+      setNodePropertyDirect(obj, node.names, new.values, "NODE_TRANSPARENCY")
+      setNodePropertyDirect(obj, node.names, new.values, "NODE_BORDER_TRANSPARENCY")
+      setNodePropertyDirect(obj, node.names, new.values, "NODE_LABEL_TRANSPARENCY")
     })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeFillOpacityDirect', 'CytoscapeWindowClass',
