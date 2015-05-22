@@ -16,4 +16,15 @@ SIGNIFICANT USER-VISIBLE CHANGES
     o removed setEdgeTargetArrowOpacityDirect
     o removed set.node.or.edge.properties
     o removed getViewCoordinates
+    o new names for features:
+    
+> getNodeShapes(cy)
+[1] "DIAMOND"         "HEXAGON"         "OCTAGON"         "VEE"            
+[5] "TRIANGLE"        "PARALLELOGRAM"   "ELLIPSE"         "RECTANGLE"      
+[9] "ROUND_RECTANGLE"
+> getLayoutNames(cy)
+ [1] "attribute-circle"      "stacked-node-layout"   "degree-circle"        
+ [4] "circular"              "attributes-layout"     "kamada-kawai"         
+ [7] "force-directed"        "grid"                  "hierarchical"         
+[10] "fruchterman-rheingold" "isom"  
     
