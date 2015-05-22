@@ -32,7 +32,7 @@ None.
 \examples{
   cw <- CytoscapeWindow ('setEdgeSourceArrowShapeDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'grid')
   redraw (cw)
 
   edges.of.interest = as.character (cy2.edge.names (cw@graph))
@@ -57,7 +57,7 @@ None.
     }
 
     # restore the default
-  setEdgeSourceArrowShapeDirect (cw, edges.of.interest, 'No Arrow')
+  setEdgeSourceArrowShapeDirect (cw, edges.of.interest, 'NONE')
   redraw (cw)
 
 
