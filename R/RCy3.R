@@ -2789,6 +2789,15 @@ setMethod ('setEdgeLineStyleRule', 'CytoscapeWindowClass',
             return ()
         }
         
+        # ensure correct values
+        line.styles <- toupper(line.styles)
+        unique.values <- unique(line.styles)
+        wrong.values <- sapply(unique.values, function(x) !(x %in% getLineStyles(obj)))
+        if (any(wrong.values)){
+            write (sprintf ('ERROR in RCy3::setEdgeLineStyleRule. Invalid value. For valid values use getLineStyles'), stderr ())
+            return(NA)
+        }
+        
         # set default
         default.style.list <- list(visualProperty = "EDGE_LINE_TYPE", value = default.style)
         setVisualProperty(obj, default.style.list, vizmap.style.name)
@@ -3093,16 +3102,12 @@ setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
        unique.node.shapes <- unique(new.shapes)
        wrong.node.shape <- sapply(unique.node.shapes, function(x) !(x %in% getNodeShapes(obj)))
        if (any(wrong.node.shape)){
-           write (sprintf('ERROR in RCy3::setNodeShapeDirect. You tried to use invalid node shapes. For valid ones use getNodeShapes'), stderr())
+           write (sprintf ('ERROR in RCy3::setNodeShapeDirect. %s is not a valid shape. For valid ones use getNodeShapes', new.shapes), stderr ())
            return(NA)
        }
        
-       if (new.shapes %in% getNodeShapes(obj)){
-           # set the node property direct
-           return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE"))
-       }else{
-           write (sprintf ('%s is not a valid shape. Get valid shapes using getNodeShapes', new.shapes), stderr ())
-       }
+       # set the node property direct
+       return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3322,14 +3327,18 @@ setMethod ('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
+      
+      # ensure correct values
       new.values <- toupper(new.values)
-      if (new.values %in% getLineStyles(obj)){
-          # set the edge property direct
-          return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LINE_TYPE"))
-      }else{
-          write (sprintf ('%s is not a valid line style. Get valid types using getLineStyles', new.values), stderr ())
-          return ()
+      unique.values <- unique(new.values)
+      wrong.values <- sapply(unique.values, function(x) !(x %in% getLineStyles(obj)))
+      if (any(wrong.values)){
+          write (sprintf ('ERROR in RCy3::setEdgeLineStyleDirect. Invalid value. For valid values use getLineStyles'), stderr ())
+          return(NA)
       }
+      
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LINE_TYPE"))
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
@@ -3342,14 +3351,17 @@ setMethod ('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
          return ()
       }
       
+      # ensure correct values
       new.values <- toupper(new.values)
-      if (new.values %in% getArrowShapes(obj)){
-          # set the edge property direct
-          return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_SOURCE_ARROW_SHAPE"))
-      }else{
-          write (sprintf ('%s is not a valid shape. Get valid shapes using getArrowShapes', new.values), stderr ())
-          return ()
+      unique.values <- unique(new.values)
+      wrong.values <- sapply(unique.values, function(x) !(x %in% getArrowShapes(obj)))
+      if (any(wrong.values)){
+          write (sprintf ('ERROR in RCy3::setEdgeSourceArrowShapeDirect. Invalid value. For valid values use getArrowShapes'), stderr ())
+          return(NA)
       }
+      
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_SOURCE_ARROW_SHAPE"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3362,14 +3374,18 @@ setMethod ('setEdgeTargetArrowShapeDirect', 'CytoscapeWindowClass',
          write (msg, stderr ())
          return ()
       }
+      
+      # ensure correct values
       new.values <- toupper(new.values)
-      if (new.values %in% getArrowShapes(obj)){
-          # set the edge property direct
-          return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TARGET_ARROW_SHAPE"))
-      }else{
-          write (sprintf ('%s is not a valid shape. Get valid shapes using getArrowShapes', new.values), stderr ())
-          return ()
+      unique.values <- unique(new.values)
+      wrong.values <- sapply(unique.values, function(x) !(x %in% getArrowShapes(obj)))
+      if (any(wrong.values)){
+          write (sprintf ('ERROR in RCy3::setEdgeTargetArrowShapeDirect. Invalid value. For valid values use getArrowShapes'), stderr ())
+          return(NA)
       }
+      
+      # set the edge property direct
+      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TARGET_ARROW_SHAPE"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
