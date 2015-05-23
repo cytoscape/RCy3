@@ -4855,35 +4855,44 @@ setVisualProperty <- function(obj, style.string, vizmap.style.name='default') {
 obtainEveryOtherValue <- function(v) {
   return(v[c(TRUE, FALSE)])
 }
+
 # ------------------------------------------------------------------------------
 setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
-   # get network ID and version
-   net.SUID <- as.character(obj@window.id)
-   version <- pluginVersion(obj)
-   
-   # get the views for the given network model
-   resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", sep="/")
-   request.res <- GET(resource.uri)
-   net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
-   view.SUID <- as.character(net.views.SUIDs[[1]])
-   
-   for (pos in seq(node.names)){
-      node.name <- node.names[pos]
-      current.value <- new.values[pos]
-      # map node name to node SUID
-      dict.indices <- which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
-      node.SUID <- sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
-      
-      # request 
-      resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
-      node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
-      # request result
-      request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
-      #print(request.res)
-   } # end for (node.name in node.names)
-   
-   invisible(request.res)
+    # get network ID and version
+    net.SUID <- as.character(obj@window.id)
+    version <- pluginVersion(obj)
+    
+    # cyREST allows for multiple views per network
+    # get all views that associate with this network and select the first one
+    net.views.SUIDs <- .getNetworkViews(obj)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    
+    node.SUIDs <- .nodeNameToNodeSUID(obj, node.names)
+    
+    # 'node.names' and 'new.values' must have the same length
+    if(length(new.values) == 1) {
+        new.values <- rep(new.values, length(node.names))
+    }
+    if(length(new.values) != length(node.names)) {
+        write(sprintf("ERROR in setNodePropertyDirect():\n\t number of node.names [%d] and new.values [%d] are not the same >> node(s) attribute could not be set", 
+                      length(node.names), length(new.values)), stderr())
+    } else {
+        request.res <- c()
+        
+        for(i in seq(node.SUIDs)) {
+            node.SUID <- as.character(node.SUIDs[i])
+            current.value <- new.values[i]
+            
+            resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", node.SUID, sep="/")
+            node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
+            
+            request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
+        } # end for (node.SUID in node.SUIDs)
+        invisible(request.res)
+    }
 }
+## END setNodePropertyDirect
+
 # ------------------------------------------------------------------------------
 setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property){
    # get network ID and version
