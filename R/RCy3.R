@@ -4006,26 +4006,25 @@ setMethod('selectEdges', 'CytoscapeWindowClass',
 ## END selectEdges
  
 # ------------------------------------------------------------------------------
-setMethod ('invertEdgeSelection', 'CytoscapeWindowClass', 
-  function (obj) {
-    net.SUID = as.character(obj@window.id)
-    version = pluginVersion(obj)
-    
-    resource.uri = paste(obj@uri, version, "networks", net.SUID, "edges?column=selected&query=false", sep="/")
-    request.res = GET(url=resource.uri)
-    unselected.edges.SUIDs = fromJSON(rawToChar(request.res$content))
-    # if any edges are selected, unselect them (nodes have clearSelection function) 
-    resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/selected?default=false", sep="/")
-    request.res <- PUT(url=resource.uri, body=FALSE)
-    
-    to.be.selected.edges = lapply(unselected.edges.SUIDs, function(s) {list('SUID' = s, 'value' = TRUE)})
-    to.be.selected.edges.JSON = toJSON(to.be.selected.edges)
-    
-    # better option: use selectEdges() function
-    resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/selected", sep="/")
-    request.res = PUT(url=resource.uri, body=to.be.selected.edges.JSON, encode="json")
-    invisible(request.res)
-}) # invertEdgeSelection
+setMethod('invertEdgeSelection', 'CytoscapeWindowClass', 
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "edges?column=selected&query=false", sep="/")
+        request.res <- GET(url=resource.uri)
+        unselected.edges.SUIDs <- fromJSON(rawToChar(request.res$content))
+        # if any edges are selected, unselect them (nodes have clearSelection function) 
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/selected?default=false", sep="/")
+        request.res <- PUT(url=resource.uri, body=FALSE)
+        
+        to.be.selected.edges <- lapply(unselected.edges.SUIDs, function(s) {list('SUID'=s, 'value'=TRUE)})
+        to.be.selected.edges.JSON <- toJSON(to.be.selected.edges)
+        
+        unselected.edges.names <- .edgeSUIDToEdgeName(obj, unselected.edges.SUIDs)
+        selectEdges(obj, unselected.edges.names, FALSE)
+}) 
+## END invertEdgeSelection
  
 # ------------------------------------------------------------------------------
 setMethod('deleteSelectedEdges', 'CytoscapeWindowClass', 
