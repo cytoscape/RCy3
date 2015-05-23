@@ -4857,7 +4857,7 @@ obtainEveryOtherValue <- function(v) {
 }
 
 # ------------------------------------------------------------------------------
-setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
+setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) {
     # get network ID and version
     net.SUID <- as.character(obj@window.id)
     version <- pluginVersion(obj)
@@ -4894,42 +4894,40 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property){
 ## END setNodePropertyDirect
 
 # ------------------------------------------------------------------------------
-setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property){
+setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property) {
    # get network ID and version
    net.SUID <- as.character(obj@window.id)
    version <- pluginVersion(obj)
    
-   # get the views for the given network model
-   resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", sep="/")
-   request.res <- GET(resource.uri)
-   net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
+   # cyREST allows for multiple views per network
+   # get all views that exist for this network and select the first one
+   net.views.SUIDs <- .getNetworkViews(obj)
    view.SUID <- as.character(net.views.SUIDs[[1]])
    
-   # map edge names to edge SUIDs
-   resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge", sep="/")
-   request.res <- GET(url=resource.uri)
-   request.res <- fromJSON(rawToChar(request.res$content))
-   # get the row information from the edge table
-   row.lst <- request.res[[6]]
-   suids <- sapply(row.lst, '[[', "SUID")
-   names <- sapply(row.lst, '[[', "name")
-   edge.dict <- as.data.frame(cbind(names, suids))
+   edge.SUIDs <- .edgeNameToEdgeSUID(obj, edge.names)
    
-   for (pos in seq(edge.names)){
-      edge.name <- edge.names[pos]
-      current.value <- new.values[pos]
-      edge.SUID <- edge.dict$suids[which(names==edge.name)]
-      
-      # request 
-      resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "edges", as.character(edge.SUID), sep="/")
-      node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
-      
-      # request result
-      request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
-   } # end for (edge.name in edge.names)
-   
-   invisible(request.res)
+   # 'edge.names' and 'new.values' must have the same length
+   if(length(new.values) == 1) {
+       new.values <- rep(new.values, length(edge.names))
+   }
+   if(length(new.values) != length(edge.names)) {
+       write(sprintf("ERROR in setEdgePropertyDirect():\n\t number of edge.names [%d] and new.values [%d] are not the same >> edge(s) attribute could not be set", 
+                     length(edge.names), length(new.values)), stderr())
+   } else {
+       request.res <- c()
+       for(i in seq(edge.SUIDs)) { 
+           edge.SUID <- as.character(edge.SUIDs[i])
+           current.value <- new.values[i]
+           
+           resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "edges", edge.SUID, sep="/")
+           edge.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
+           request.res <- PUT(url=resource.uri, body=edge.SUID.JSON, encode="json")
+       }
+       
+       invisible(request.res)
+   }
 }
+## END setEdgePropertyDirect
 
 # ------------------------------------------------------------------------------
 getEdgeNamesAndSUIDS <- function(obj){
