@@ -9,7 +9,7 @@ printf = function (...) print (noquote (sprintf (...)))
 # ------------------------------------------------------------------------------
 setClass("CytoscapeConnectionClass", 
 	representation = representation (uri="character"), 
-	prototype = prototype (uri="http://localhost:1234/v1")
+	prototype = prototype(uri="http://localhost:1234/v1")
 )
 
 # ------------------------------------------------------------------------------
@@ -3984,21 +3984,26 @@ setMethod('deleteSelectedNodes', 'CytoscapeWindowClass',
     #print(selected.node.SUIDs)
 }) # deleteSelectedNodes
    
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('selectEdges', 'CytoscapeWindowClass',
-
-   function (obj, edge.names, preserve.current.selection=TRUE) {
-       message("not implemented")
-#     id = as.character (obj@window.id)
-#     if (preserve.current.selection)
-#       edge.names = unique (c (getSelectedEdges (obj), edge.names))
-#     if (length (edge.names) == 1)
-#       result = xml.rpc (obj@uri, 'Cytoscape.selectEdge', id, edge.names, .convert=TRUE)
-#     else
-#       result = xml.rpc (obj@uri, 'Cytoscape.selectEdges', id, edge.names, .convert=TRUE)
-#     redraw (obj)
-#     invisible (result)
-     }) # selectEdges
+# ------------------------------------------------------------------------------
+setMethod('selectEdges', 'CytoscapeWindowClass', 
+    function(obj, edge.names, preserve.current.selection=TRUE) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        # keep the currently selected edges
+        if(preserve.current.selection) {
+            edge.names <- unique(c(getSelectedEdges(obj), edge.names))
+        }
+        
+        edge.SUIDs <- .edgeNameToEdgeSUID(obj, edge.names)
+        SUID.value.pairs <- lapply(edge.SUIDs, function(s) {list('SUID'=s, 'value'=TRUE)})
+        SUID.value.pairs.JSON <- toJSON(SUID.value.pairs)
+        
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/selected", sep="/")
+        request.res <- PUT(url=resource.uri, body=SUID.value.pairs.JSON, encode="json")
+        
+        invisible(request.res)
+}) 
+## END selectEdges
  
 # ------------------------------------------------------------------------------
 setMethod ('invertEdgeSelection', 'CytoscapeWindowClass', 
