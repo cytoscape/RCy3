@@ -4050,19 +4050,22 @@ setMethod('deleteSelectedEdges', 'CytoscapeWindowClass',
         }
         
         eval.parent(substitute(obj <- loc.obj))
-}) # deleteSelectedEdges
+}) 
+## END deleteSelectedEdges
    
 # ------------------------------------------------------------------------------
 setMethod('getSelectedEdgeCount', 'CytoscapeWindowClass', 
-  function(obj) {
-    net.SUID = as.character(obj@window.id)
-    version = pluginVersion(obj)
-    resource.uri = paste(obj@uri, version, "networks", net.SUID, "edges?column=selected&query=true", sep="/")
-    request.res = GET(url=resource.uri)
-    
-    num.selected.edges = length(fromJSON(rawToChar(request.res$content)))
-    return(num.selected.edges)
-}) # getSelectedEdgeCount
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "edges?column=selected&query=true", sep="/")
+        request.res <- GET(url=resource.uri)
+        
+        num.selected.edges <- length(fromJSON(rawToChar(request.res$content)))
+        return(num.selected.edges)
+})
+## END getSelectedEdgeCount
    
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getSelectedEdges', 'CytoscapeWindowClass',
