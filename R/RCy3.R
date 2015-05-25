@@ -3811,22 +3811,27 @@ setMethod('getAllNodes', 'CytoscapeWindowClass', function(obj) {
   return(node.names)
 }) # getAllNodes
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('getAllEdges', 'CytoscapeWindowClass',
+# ------------------------------------------------------------------------------
+setMethod('getAllEdges', 'CytoscapeWindowClass', 
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        count <- getEdgeCount(obj)
+        if(count == 0) {
+            return()
+        }
+        
+        # get edge name column and return its values
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/name", sep="/")
+        request.res <- GET(url=resource.uri)
+        request.res <- fromJSON(rawToChar(request.res$content))
+        names <- request.res$values
+        return(names)
+}) 
+## END getAllEdges
 
-   function (obj) {
-       id = as.character (obj@window.id)
-       count = getEdgeCount(obj)
-       if (count == 0){
-           return ()
-       }
-       # get edge name column and return its values
-       resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns/name", sep="/")
-       request.res <- GET(url=resource.uri)
-       request.res <- fromJSON(rawToChar(request.res$content))
-       names <- request.res$values
-       return(names)
-     }) # getAllEdges
+
 
 # ------------------------------------------------------------------------------
 setMethod('clearSelection', 'CytoscapeWindowClass', 
