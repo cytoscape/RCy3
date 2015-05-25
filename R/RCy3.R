@@ -3848,7 +3848,7 @@ setMethod('selectNodes', 'CytoscapeWindowClass',
     
     if(preserve.current.selection) {
       if(getSelectedNodeCount(obj) > 0) {
-        node.names = unique(c(getSelectedNodes(), node.names))
+        node.names = unique(c(getSelectedNodes(obj), node.names))
       }
     }
     
@@ -3948,41 +3948,28 @@ setMethod ('hideNodes', 'CytoscapeWindowClass',
 
 # ------------------------------------------------------------------------------
 # select all nodes that were not selected and deselect all nodes that were selected
-setMethod('invertNodeSelection', 'CytoscapeWindowClass', function(obj) {
-  net.SUID = as.character(obj@window.id)
-  version = pluginVersion(obj)
-  
-  resource.uri = paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=false", sep="/")
-  request.res = GET(url=resource.uri)
-  unselected.nodes.SUIDs = fromJSON(rawToChar(request.res$content))
-  # clear the selection
-  clearSelection(obj)
-  
-  to.be.selected.nodes = lapply(unselected.nodes.SUIDs, function(s) {list('SUID' = s, 'value' = TRUE)})
-  to.be.selected.nodes.JSON = toJSON(to.be.selected.nodes)
-  
-  resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns/selected", sep="/")
-  request.res = PUT(url=resource.uri, body=to.be.selected.nodes.JSON, encode="json")
-  invisible(request.res)
-  
-  # another better option: call selectNodes() 
-  # selectNodes(obj, c('A', 'C'), FALSE)
-}) # invertNodeSelection
+setMethod('invertNodeSelection', 'CytoscapeWindowClass', 
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=false", sep="/")
+        request.res <- GET(url=resource.uri)
+        unselected.node.SUIDs <- fromJSON(rawToChar(request.res$content))
+        
+        # clear selection
+        clearSelection(obj)
+        
+        selectNodes(obj, .nodeSUIDToNodeName(obj, unselected.node.SUIDs), FALSE)
+}) 
+## END invertNodeSelection
  
 # ------------------------------------------------------------------------------
 setMethod('deleteSelectedNodes', 'CytoscapeWindowClass', 
-  function(obj) {
-    loc.obj <- obj
-    
-    net.SUID = as.character(loc.obj@window.id)
-    version = pluginVersion(loc.obj)
-    
-    resource.uri = paste(loc.obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
-    request.res = GET(url=resource.uri)
-    selected.node.SUIDs = unname(fromJSON(rawToChar(request.res$content)))
-    
-    #print(selected.node.SUIDs)
-}) # deleteSelectedNodes
+    function(obj) {
+        
+})
+## END deleteSelectedNodes
    
 # ------------------------------------------------------------------------------
 setMethod('selectEdges', 'CytoscapeWindowClass', 
