@@ -3897,25 +3897,22 @@ setMethod('getSelectedNodeCount', 'CytoscapeWindowClass',
    
 # ------------------------------------------------------------------------------
 setMethod('getSelectedNodes', 'CytoscapeWindowClass', 
-  function(obj) {
-    net.SUID = as.character(obj@window.id)
-    version = pluginVersion(obj)
-    
-    if(getSelectedNodeCount(obj) == 0) {
-      return(NA)
-    } else {
-      resource.uri = paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
-      request.res = GET(url=resource.uri)
-      
-      selected.nodes.SUIDs = fromJSON(rawToChar(request.res$content))
-      selected.nodes.names = c()
-      
-      # uses the nodes dictionary; (not decided yet if the dictionary will be used)
-      dict.indices = which(sapply(obj@suid.name.dict, function(s) { s$SUID }) %in% selected.nodes.SUIDs)
-      selected.nodes.names = sapply(obj@suid.name.dict[dict.indices], function(i) {i$name})
-      return(selected.nodes.names)
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        if(getSelectedNodeCount(obj) == 0) {
+            return(NA)
+        } else {
+            resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
+            request.res <- GET(url=resource.uri)
+            
+            selected.node.SUIDs <- fromJSON(rawToChar(request.res$content))
+            selected.node.names <- .nodeSUIDToNodeName(obj, selected.node.SUIDs)
+            return(selected.node.names)
     }
-}) # getSelectedNodes
+}) 
+## END getSelectedNodes
    
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('hideSelectedNodes', 'CytoscapeWindowClass',
