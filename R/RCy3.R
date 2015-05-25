@@ -3830,16 +3830,16 @@ setMethod ('getAllEdges', 'CytoscapeWindowClass',
 
 # ------------------------------------------------------------------------------
 setMethod('clearSelection', 'CytoscapeWindowClass', 
-  function(obj) {
-    net.SUID = as.character(obj@window.id)
-    version = pluginVersion(obj)
-    # if any nodes are selected, unselect them
-    resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns/selected?default=false", sep="/")
-    request.res <- PUT(url=resource.uri, body=FALSE)
-    
-    redraw(obj)
-    invisible(request.res)
-}) # clearSelection
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        # if any nodes are selected, unselect them
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns/selected?default=false", sep="/")
+        request.res <- PUT(url=resource.uri, body=FALSE)
+        
+        invisible(request.res)
+}) 
+## END clearSelection
    
 # ------------------------------------------------------------------------------
 setMethod('selectNodes', 'CytoscapeWindowClass', 
