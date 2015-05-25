@@ -3831,8 +3831,6 @@ setMethod('getAllEdges', 'CytoscapeWindowClass',
 }) 
 ## END getAllEdges
 
-
-
 # ------------------------------------------------------------------------------
 setMethod('clearSelection', 'CytoscapeWindowClass', 
     function(obj) {
@@ -3848,45 +3846,46 @@ setMethod('clearSelection', 'CytoscapeWindowClass',
    
 # ------------------------------------------------------------------------------
 setMethod('selectNodes', 'CytoscapeWindowClass', 
-  function(obj, node.names, preserve.current.selection = TRUE) {
-    net.suid = as.character(obj@window.id)
-    
-    if(preserve.current.selection) {
-      if(getSelectedNodeCount(obj) > 0) {
-        node.names = unique(c(getSelectedNodes(obj), node.names))
-      }
-    }
-    
-    if(!preserve.current.selection) {
-      clearSelection(obj)
-    }
-    # check for unknown nodes
-    unknown.nodes = setdiff(node.names, nodes(obj@graph))
-    if(length(unknown.nodes) > 0) {
-      node.string = paste(unknown.nodes, collapse='')
-      msg = paste('RCy3::selectNodes asked to select nodes not in graph: ', node.string)
-      write(msg, stderr())
-      node.names = intersect(node.names, nodes(obj@graph))
-    }
-    
-    if(length(node.names) == 0) {
-      invisible('no nodes to select')
-    }
-    
-    version <- pluginVersion(obj)
-    # update the 'selected' column
-    resource.uri <- paste(obj@uri, version, "networks", net.suid, "tables/defaultnode/columns/selected", sep="/")
-    
-    node.suid.indices <- which(sapply(obj@suid.name.dict, function(d) d$name) %in% node.names)
-    # set the RESTful request body(content)
-    select.nodes.req <- lapply(obj@suid.name.dict[node.suid.indices], function(i) {list(SUID=i$SUID, value='true')})
-    select.nodes.req.JSON <- toJSON(select.nodes.req)
-    
-    select.nodes.req.res <- PUT(url=resource.uri, body=select.nodes.req.JSON, encode="json")
-    
-    redraw(obj)
-    invisible(select.nodes.req.res)
-}) # selectNodes
+    function(obj, node.names, preserve.current.selection = TRUE) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        if(preserve.current.selection) {
+            if(getSelectedNodeCount(obj) > 0) {
+                node.names <- unique(c(getSelectedNodes(obj), node.names))
+            }
+        }
+        
+        if(!preserve.current.selection) {
+            clearSelection(obj)
+        }
+        
+        # check for unknown nodes
+        unknown.nodes <- setdiff(node.names, getAllNodes(obj))
+        
+        if(length(unknown.nodes) > 0) {
+            nodes.string <- paste(unknown.nodes, collapse=' ')
+            
+            write(sprintf("NOTICE in RCy3::selectNodes():\n\t nodes [%s] are not in the Cytoscape graph and will not be selected", nodes.string), stderr())
+            
+            node.names <- intersect(node.names, getAllNodes(obj))
+        }
+        
+        if(length(node.names) == 0) {
+            write(sprintf("NOTICE in RCy3::selectNodes():\t\n no nodes to select >> the function call has no effect"), stderr())
+        }
+        
+        # update the 'selected' column
+        node.SUIDs <- .nodeNameToNodeSUID(obj, node.names)
+        SUID.value.pairs <- lapply(node.SUIDs, function(s) {list('SUID'=s, 'value'=TRUE)})
+        SUID.value.pairs.JSON <- toJSON(SUID.value.pairs)
+        
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns/selected", sep="/")
+        request.res <- PUT(url=resource.uri, body=SUID.value.pairs.JSON, encode="json")
+        
+        invisible(request.res)
+}) 
+## END selectNodes
    
 # ------------------------------------------------------------------------------
 setMethod('getSelectedNodeCount', 'CytoscapeWindowClass', 
