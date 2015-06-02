@@ -1673,167 +1673,167 @@ properlyInitializedEdgeAttribute = function (graph, attribute.name) {
 } # properlyInitializedEdgeAttribute
 
 # ------------------------------------------------------------------------------
-setMethod('setNodeAttributes', 'CytoscapeWindowClass', function(obj, attribute.name) { 
-    # it might be the case that 'obj@graph' contains nodes that do NOT exist in Cytoscape
-    # the below line identifies the indices of those graph nodes, which DO exist in Cytoscape
-    node.indices = which(nodes(obj@graph) %in% getAllNodes(obj))
-    
-    if(length(node.indices) > 0) {
-        node.names = nodes(obj@graph)[node.indices]
+setMethod('setNodeAttributes', 'CytoscapeWindowClass', 
+    function(obj, attribute.name) { 
+        # it might be the case that 'obj@graph' contains nodes that do NOT exist in Cytoscape
+        # the below line identifies the indices of those graph nodes, which DO exist in Cytoscape
+        node.indices = which(nodes(obj@graph) %in% getAllNodes(obj))
         
-        values = noa(obj@graph, attribute.name)[node.indices]
-        
-        caller.specified.attribute.class = 
-            attr(nodeDataDefaults(obj@graph, attribute.name), 'class')
-        invisible(setNodeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, node.names, values))
-    } else {
-        write(sprintf("WARNING in RCy3::setNodeAttributes():\n\t before setting node attributes, please first send the graph nodes to Cytoscape >> function aborted"), stderr())
-    }
-}) # END setNodeAttributes
+        if(length(node.indices) > 0) {
+            node.names = nodes(obj@graph)[node.indices]
+            
+            values = noa(obj@graph, attribute.name)[node.indices]
+            
+            caller.specified.attribute.class = 
+                attr(nodeDataDefaults(obj@graph, attribute.name), 'class')
+            invisible(setNodeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, node.names, values))
+        } else {
+            write(sprintf("WARNING in RCy3::setNodeAttributes():\n\t before setting node attributes, please first send the graph nodes to Cytoscape >> function aborted"), stderr())
+        }
+})
+## END setNodeAttributes
 
 # ------------------------------------------------------------------------------
 setMethod('setNodeAttributesDirect', 'CytoscapeWindowClass', 
-  function(obj, attribute.name, attribute.type, node.names, values) {
-    if(length(node.names) == 0) {
-      return()
-    }
-    # assert that each node has matching value for this attribute
-    if(length(node.names) != length(values)) {
-      write(sprintf('RCy3::setNodeAttributeDirect ERROR.'), stderr())
-      write(sprintf('attribute name %s, node.names %d, values %d', attribute.name, length(node.names), length(values)), stderr())
-      return()
-    }
-    #TODO check if nodes were already sent. If not, stop (TanjaM April 2015)
-    
-    caller.specified.attribute.class = simpleCap(tolower(attribute.type))
-    # if the attribute's 'class'-parameter is null or empty, make it 'String'
-    if(is.null(caller.specified.attribute.class) || length(caller.specified.attribute.class) == 0) {
-      caller.specified.attribute.class = 'String'
-    }
-    # CyREST does not support 'Floating' data type, so have to use 'Double' 
-    if(caller.specified.attribute.class == 'Floating') {
-      caller.specified.attribute.class = 'Double'
-    }
-    
-    res = ''
-    plug.ver <- pluginVersion(obj)
-    net.suid <- as.character(obj@window.id)
-    # check that the attribute does not already exist in the Cytoscape network
-    existing.attribute.names <- getNodeAttributeNames(obj)
-    
-    if(!attribute.name %in% existing.attribute.names) {
-      # creates new 'Node Table' attribute (column) in Cytoscape
-      # TO DO: [GIK] maybe put in seperate function
-      new.cynode.tbl.col <- list(name=attribute.name, type=caller.specified.attribute.class)
-      new.cynode.tbl.col.JSON <- toJSON(new.cynode.tbl.col)
-      resource.uri <- paste(obj@uri, plug.ver, "networks", net.suid, "tables/defaultnode/columns", sep="/")
-      new.cynode.tbl.col.res <- POST(url=resource.uri, body=new.cynode.tbl.col.JSON, encode="json")
-      # END TO DO
-    } 
-    
-    # TO DO: [GIK] maybe put in seperate function
-    resource.uri <- paste(obj@uri, plug.ver, "networks", net.suid, "tables/defaultnode/columns", attribute.name, sep="/")
-    
-    name = sapply(obj@suid.name.dict, function(x) x$name)
-    SUID = sapply(obj@suid.name.dict, function(x) x$SUID)
-    df <- data.frame(name, SUID)
-    
-    df$value <- values
-    pair <- apply(df[,c('SUID', 'value')], 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
-    pair.JSON <- toJSON(pair)
-    # print(pair.JSON)
-    res <- PUT(url=resource.uri, body=pair.JSON, encode="json")
-    # END TO DO
+    function(obj, attribute.name, attribute.type, node.names, values) {
+        net.SUID = as.character(obj@window.id)
+        version = pluginVersion(obj)
+        
+        caller.specified.attribute.class = tolower(attribute.type)
+        # the switch-block ensures the attribute values have the correct data type
+        switch(caller.specified.attribute.class,
+               "floating"=,
+               "numeric"=,
+               "double"={
+                   caller.specified.attribute.class = 'Double'
+                   values = as.numeric(values)
+               },
+               "integer"=,
+               "int"={
+                   caller.specified.attribute.class = "Integer"
+                   values = as.integer(values)
+               },
+               "boolean"={
+                   caller.specified.attribute.class = "Boolean"
+                   values = as.logical(values)
+               },{
+                   caller.specified.attribute.class = "String"
+                   values = as.character(values)
+               }
+        )
+        
+        # CREATES NEW COLUMN (IF NEEDED)
+        if(!attribute.name %in% getNodeAttributeNames(obj)) {
+            # create new table column in Cytoscape 'Node Table' to store the attribute values
+            tbl.col = list(name=attribute.name, type=caller.specified.attribute.class)
+            tbl.col.JSON = toJSON(tbl.col)
+            resource.uri = 
+                paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
+            request.res = POST(url=resource.uri, body=tbl.col.JSON, encode="json")
+        }
+        
+        if(length(node.names) > 0) {
+            if(length(node.names) != length(values)) {
+                write(sprintf("ERROR in RCy3::setNodeAttributesDirect():\n\t the number of values(%d) for attribute '%s' must equal the number of nodes(%d) >> function aborted", 
+                              length(values), attribute.name, length(node.names)), stderr())
+            } else {
+                node.SUIDs = .nodeNameToNodeSUID(obj, node.names)
+                node.name.suid.value.df = data.frame(node.names, node.SUIDs, values)
+                
+                # converts the above data frame data in the cyREST [SUID:value]-pairs format
+                node.SUID.value.pairs = 
+                    apply(node.name.suid.value.df[,c('node.SUIDs','values')], 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
+                node.SUID.value.pairs.JSON = toJSON(node.SUID.value.pairs)
+                
+                resource.uri = 
+                    paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns", attribute.name, sep="/")
+                request.res = PUT(url=resource.uri, body=node.SUID.value.pairs.JSON, encode="json")
+                invisible(request.res)
+            }
+        }
 })
+## END setNodeAttributesDirect
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeAttributes', 'CytoscapeWindowClass',
+# ------------------------------------------------------------------------------
+setMethod('setEdgeAttributes', 'CytoscapeWindowClass', 
+    function(obj, attribute.name) {
+        cyrest.edge.names = as.character(cy2.edge.names(obj@graph))
+        # user might have entered the names of edges that do NOT exist
+        # the below line will return the indices of the nodes that DO exist
+        edge.indices = which(cyrest.edge.names %in% getAllEdges(cw))
+        
+        if(length(edge.indices) > 0) {
+            edge.names = cyrest.edge.names[edge.indices]
+            edge.names.tilde = names(cy2.edge.names(obj@graph)[edge.indices])
+            edge.names.with.bars = gsub('~', '|', edge.names.tilde)
+            
+            values = eda(obj@graph, attribute.name)[edge.names.with.bars]
+            
+            caller.specified.attribute.class = attr(edgeDataDefaults(obj@graph, attribute.name), 'class')
+            
+            invisible(setEdgeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, edge.names, values))
+        } else {
+            write(sprintf("WARNING in RCy3::setEdgeAttributes():\n\t before setting edge attributes, please first send the graph edges to Cytoscape >> function aborted"), stderr())
+        }        
+}) 
+## END setEdgeAttributes
 
-   function (obj, attribute.name) {
-      if (length (edgeNames (obj@graph)) == 0){
-         return ()
-      }
-      
-      # get edge names and types
-      caller.specified.attribute.class = attr (edgeDataDefaults (obj@graph, attribute.name), 'class')
-      
-      edge.names = as.character (cy2.edge.names (obj@graph))
-      edge.names.tilde = names (cy2.edge.names (obj@graph))
-      edge.names.with.bars = gsub ('~', '|', edge.names.tilde)
-      values = unname(eda (obj@graph, attribute.name) [edge.names.with.bars])
-      result = setEdgeAttributesDirect (obj, attribute.name, caller.specified.attribute.class, edge.names, values)
-      invisible (result)
-     }) # setEdgeAttributes
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeAttributesDirect', 'CytoscapeWindowClass',
-
-   function (obj, attribute.name, attribute.type, edge.names, values) {
-      write (sprintf ('entering setEdgeAttributesDirect, %s, with %d names and %d values',
-                      attribute.name, length (edge.names), length (values)), stderr ())
-      
-      # return if no edge attributes
-      if (length (edge.names) == 0){
-         return ()
-      }
-      
-      #write (sprintf ('edge.names: %s', unlist (edge.names)), stderr ())
-      #write (sprintf ('    values: %s', unlist (values)), stderr ())
-      
-      caller.specified.attribute.class = tolower (attribute.type)
-      
-      if (is.null (caller.specified.attribute.class) || length (caller.specified.attribute.class) == 0){
-         # NULL, or non-null but empty
-         caller.specified.attribute.class = 'string'
-      }
-      
-      result = ''
-      # alert user if number of edges is not the same as number of edges with associated values
-      if (length (edge.names) != length (values)) {
-         write (sprintf ('RCy3::setEdgeAttributesDirect ERROR....'), stderr ())
-         write (sprintf ('attribute name %s, edge.names %d, values %d', attribute.name, length (edge.names), length (values)), stderr ())
-         return ();
-      }
-
-      # create table column for the attribute based on type
-      if (caller.specified.attribute.class %in% c ('float', 'floating', 'numeric', 'double')) {
-         attributes.to.send <- list(name=attribute.name, type="Double")
-      } else if (caller.specified.attribute.class %in% c ('integer', 'int')) {
-         attributes.to.send <- list(name=attribute.name, type="Integer")
-      } else if (caller.specified.attribute.class %in% c ('string', 'char', 'character', 'STRING')) {
-         attributes.to.send <- list(name=attribute.name, type="String")
-      } else if (caller.specified.attribute.class %in% c ('logical', 'bool', 'boolean')) {
-         attributes.to.send <- list(name=attribute.name, type="Boolean")
-      } else{
-         attributes.to.send <- list(name=toString(attribute.name), type="String")
-      }
-
-      # map edge names to edge SUIDs
-      resource.uri = paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge", sep="/")
-      request.res = GET(url=resource.uri)
-      request.res = fromJSON(rawToChar(request.res$content))
-
-      # get the row information from the edge table
-      row.lst <- request.res[[6]]
-      suids <- sapply(row.lst, '[[', "SUID")
-      names <- sapply(row.lst, '[[', "name")
-      edge.dict <- as.data.frame(cbind(names, suids))
-      
-      # send edge attributes as column names
-      resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns", sep="/")
-      edge.attributes.JSON <- toJSON(list(attributes.to.send))
-      request.res <- POST(url=resource.uri, body=edge.attributes.JSON, encode="json")
-      
-      # populate columns with attribute values
-      resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", as.character(obj@window.id), "tables/defaultedge/columns", as.character(attribute.name), sep="/")
-      df <- cbind(suids, values)
-      attribute.values.to.send <- apply(df, 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
-      attribute.values.to.send.JSON <- toJSON(attribute.values.to.send)
-      
-      request.res <- PUT(url=resource.uri, body=attribute.values.to.send.JSON, encode="json")
-
-      invisible (request.res)
-     }) # setEdgeAttributesDirect
+# ------------------------------------------------------------------------------
+setMethod('setEdgeAttributesDirect', 'CytoscapeWindowClass', 
+    function(obj, attribute.name, attribute.type, edge.names, values) {
+        net.SUID = as.character(obj@window.id)
+        version = pluginVersion(obj)
+        
+        if(length(edge.names) > 0) {
+            if(length(edge.names) != length(values)) {
+                write(sprintf("ERROR in RCy3::setEdgeAttributesDirect():\n\t the number of values(%d) for attribute '%s' must equal the number of edges(%d) >> function aborted", length(values), attribute.name, length(edge.names)), stderr())
+                
+            } else {
+                caller.specified.attribute.class = tolower(attribute.type)
+                # the switch-block ensures the attribute values have the correct data type
+                switch(caller.specified.attribute.class,
+                       "floating"=,
+                       "numeric"=,
+                       "double"={
+                           caller.specified.attribute.class = 'Double'
+                           values = as.numeric(values)
+                       },
+                       "integer"=,
+                       "int"={
+                           caller.specified.attribute.class = "Integer"
+                           values = as.integer(values)
+                       },
+                       "boolean"={
+                           caller.specified.attribute.class = "Boolean"
+                           values = as.logical(values)
+                       },{
+                           caller.specified.attribute.class = "String"
+                           values = as.character(values)
+                       }
+                )
+                
+                if(!attribute.name %in% getEdgeAttributeNames(obj)) {
+                    tbl.col = list(name=attribute.name, type=caller.specified.attribute.class)
+                    tbl.col.JSON = toJSON(tbl.col)
+                    resource.uri = 
+                        paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
+                    request.res = POST(url=resource.uri, body=tbl.col.JSON, encode="json")
+                }
+                
+                edge.SUIDs = .edgeNameToEdgeSUID(obj, edge.names)
+                edge.name.suid.value.df = data.frame(edge.names, edge.SUIDs, values)
+                
+                edge.SUID.value.pairs = 
+                    apply(edge.name.suid.value.df[,c('edge.SUIDs','values')], 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
+                edge.SUID.value.pairs.JSON = toJSON(edge.SUID.value.pairs)
+                resource.uri = 
+                    paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns", attribute.name, sep="/")
+                request.res = PUT(url=resource.uri, body=edge.SUID.value.pairs.JSON, encode="json")
+                invisible(request.res)        
+            }
+        }
+}) 
+## END setEdgeAttributesDirect
 
 # ------------------------------------------------------------------------------
 setMethod('displayGraph', 'CytoscapeWindowClass', function(obj) {
