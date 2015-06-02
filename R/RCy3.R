@@ -1999,74 +1999,70 @@ setMethod('fitContent', 'CytoscapeWindowClass',
 })
 ## END fitContent
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('fitSelectedContent', 'CytoscapeWindowClass',
-
-   function (obj) {
-       message("not yet implemented")
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.fitSelectedContent', obj@window.id))
-     })
+# ------------------------------------------------------------------------------
+setMethod('fitSelectedContent', 'CytoscapeWindowClass', 
+    function(obj) {
+        message("not yet implemented")
+})
+## END fitSelectedContent
 
 # ------------------------------------------------------------------------------
 setMethod('getCenter', 'CytoscapeWindowClass', 
-  function(obj) {
-    net.suid = as.character(obj@window.id)
-    # cyREST API version
-    version = pluginVersion(obj)
-    # get the views for the given network model
-    resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", sep="/")
-    request.res <- GET(resource.uri)
-    net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
-    
-    view.SUID <- as.character(net.views.SUIDs[[1]])
-    
-    # if multiple views are found, inform the user about it
-    if(length(net.views.SUIDs) > 1) {
-      write(sprintf("RCy3::getCenter() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
-    }
-    # get the X-coordinate
-    resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/")
-    request.res <- GET(resource.uri)
-    x.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
-    # get the Y-coordinate
-    resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
-    request.res <- GET(resource.uri)
-    y.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
-    return(list(x = x.coordinate, y = y.coordinate))
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        # get all Cytoscape views belonging to that network
+        net.views.SUIDs <- .getNetworkViews(obj)
+        view.SUID <- as.character(net.views.SUIDs[[1]])
+        
+        # if multiple views are found, inform the user about it
+        if(length(net.views.SUIDs) > 1) {
+            write(sprintf("RCy3::getCenter() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
+        }
+        # get the X-coordinate
+        resource.uri <- 
+            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/")
+        request.res <- GET(resource.uri)
+        x.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
+        # get the Y-coordinate
+        resource.uri <- 
+            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
+        request.res <- GET(resource.uri)
+        y.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
+        
+        return(list(x = x.coordinate, y = y.coordinate))
 })
+## END getCenter
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setCenter', 'CytoscapeWindowClass',
-    # This method can be used to pan and scroll the Cytoscape canvas, which is adjusted (moved) so that the specified
-    # x and y coordinates are at the center of the visible window.
-   function (obj, x, y) {
-       net.suid = as.character(obj@window.id)
-       # cyREST API version
-       version = pluginVersion(obj)
-       # get the views for the given network model
-       resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", sep="/")
-       request.res <- GET(resource.uri)
-       net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
-       
-       view.SUID <- as.character(net.views.SUIDs[[1]])
-       
-       # if multiple views are found, inform the user about it
-       if(length(net.views.SUIDs) > 1) {
-           write(sprintf("RCy3::setCenter() - %d views found... setting coordinates of the first one", length(net.views.SUIDs)), stderr())
-       }
-       
-       # set the X-coordinate
-       resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/")
-       new.x.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_X_LOCATION", value=x)))
-       request.res <- PUT(resource.uri, body=new.x.coordinate.JSON, encode="json")
-       #x.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
-       # set the Y-coordinate
-       resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
-       new.y.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_Y_LOCATION", value=y)))
-       request.res <- PUT(resource.uri, body=new.y.coordinate.JSON, encode="json")
-       invisible(request.res)
-       #y.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]       
-     })
+# ------------------------------------------------------------------------------
+
+setMethod('setCenter', 'CytoscapeWindowClass', 
+    function(obj, x, y) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        net.views.SUIDs <- .getNetworkViews(obj)
+        view.SUID <- as.character(net.views.SUIDs[[1]])
+        
+        # if multiple views are found, inform the user about it
+        if(length(net.views.SUIDs) > 1) {
+            write(sprintf("RCy3::setCenter() - %d views found... setting coordinates of the first one", length(net.views.SUIDs)), stderr())
+        }
+        
+        # set the X-coordinate
+        resource.uri <- 
+            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/")
+        new.x.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_X_LOCATION", value=x)))
+        request.res <- PUT(resource.uri, body=new.x.coordinate.JSON, encode="json")
+        # set the Y-coordinate
+        resource.uri <- 
+            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
+        new.y.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_Y_LOCATION", value=y)))
+        request.res <- PUT(resource.uri, body=new.y.coordinate.JSON, encode="json")
+        invisible(request.res)
+})
+## END setCenter
 
 # ------------------------------------------------------------------------------
 setMethod('getZoom', 'CytoscapeWindowClass', 
