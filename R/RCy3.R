@@ -1918,16 +1918,17 @@ setMethod('predictTimeToDisplayGraph', 'CytoscapeWindowClass',
      prediction = (0.002 * node.count) + (0.010 * edge.count) + (0.001 * noa.count) + (0.001 * eda.count)
      return (prediction)
   })
-#------------------------------------------------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
 setMethod('redraw', 'CytoscapeWindowClass', 
-  function(obj) {
-    id = as.character(obj@window.id)
-    
-    api.str = paste(obj@uri, pluginVersion(obj), "apply/styles", "default", id, sep = "/")
-    invisible(api.str)
-    #res <- GET(api.str)
-    #res.msg <- fromJSON(rawToChar(res$content))
-  }) # redraw
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        
+        resource.uri <- paste(obj@uri, pluginVersion(obj), "apply/styles", "default", net.SUID, sep = "/")
+        request.res <- GET(url=resource.uri)
+        invisible(request.res)
+}) 
+## END redraw
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setWindowSize', 'CytoscapeWindowClass',
