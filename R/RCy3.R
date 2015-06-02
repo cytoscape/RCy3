@@ -2036,7 +2036,8 @@ setMethod('getCenter', 'CytoscapeWindowClass',
 ## END getCenter
 
 # ------------------------------------------------------------------------------
-
+# this method could be used to pan and scroll the Cytoscape canvas, which is adjusted(moved) 
+# so that the specified x and y coordinates are at the center of the visible window.
 setMethod('setCenter', 'CytoscapeWindowClass', 
     function(obj, x, y) {
         net.SUID <- as.character(obj@window.id)
@@ -2066,55 +2067,52 @@ setMethod('setCenter', 'CytoscapeWindowClass',
 
 # ------------------------------------------------------------------------------
 setMethod('getZoom', 'CytoscapeWindowClass', 
-  function(obj) {
-    net.suid = as.character(obj@window.id)
-    # cyREST API version
-    version = pluginVersion(obj) 
-    # get the views for the given network model
-    # TO DO: put the SUIDs in vector in obj
-    resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", sep="/") 
-    request.res <- GET(resource.uri) 
-    net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
-    
-    view.SUID <- as.character(net.views.SUIDs[[1]])
-    # if multiple views are found, inform the user about it
-    if(length(net.views.SUIDs) > 1) {
-      write(sprintf("RCy3::getZoom() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
-    }
-    
-    resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "network/NETWORK_SCALE_FACTOR", sep="/")
-    request.res <- GET(resource.uri)
-    zoom.level <- fromJSON(rawToChar(request.res$content))$value[[1]]
-    
-    return(zoom.level)
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        # get the existing views for the given network model
+        net.views.SUIDs <- .getNetworkViews(obj)
+        view.SUID <- as.character(net.views.SUIDs[[1]])
+        
+        # if multiple views are found, inform the user about it
+        if(length(net.views.SUIDs) > 1) {
+            write(sprintf("RCy3::getZoom() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
+        }
+        
+        resource.uri <- 
+            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_SCALE_FACTOR", sep="/")
+        request.res <- GET(resource.uri)
+        zoom.level <- fromJSON(rawToChar(request.res$content))$value[[1]]
+        
+        return(zoom.level)
 })
+## END getZoom
 
 # ------------------------------------------------------------------------------
 setMethod('setZoom', 'CytoscapeWindowClass', 
-  function(obj, new.level) {
-    net.suid = as.character(obj@window.id)
-    version = pluginVersion(obj)
-    
-    resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", sep="/") 
-    request.res <- GET(resource.uri) 
-    net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
-    
-    view.SUID <- as.character(net.views.SUIDs[[1]])
-    # if multiple views are found, inform the user about it
-    if(length(net.views.SUIDs) > 1) {
-      write(sprintf("RCy3::getZoom() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
-    }
-    
-    view.zoom.value <- list(visualProperty = 'NETWORK_SCALE_FACTOR', value = new.level)
-    
-    view.zoom.value.JSON <- toJSON(list(view.zoom.value))
-    
-    resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "network", sep="/")
-    request.res <- PUT(url=resource.uri, body=view.zoom.value.JSON, encode="json")
-    
-    invisible(request.res)
-    redraw(obj)
+    function(obj, new.level) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        net.views.SUIDs <- .getNetworkViews(obj)
+        view.SUID <- as.character(net.views.SUIDs[[1]])
+        
+        # if multiple views are found, inform the user about it
+        if(length(net.views.SUIDs) > 1) {
+            write(sprintf("RCy3::getZoom() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
+        }
+        
+        view.zoom.value <- list(visualProperty = 'NETWORK_SCALE_FACTOR', value = new.level)
+        view.zoom.value.JSON <- toJSON(list(view.zoom.value))
+        
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network", sep="/")
+        request.res <- PUT(url=resource.uri, body=view.zoom.value.JSON, encode="json")
+        
+        invisible(request.res)
 })
+## END setZoom
+
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getViewCoordinates', 'CytoscapeWindowClass',
