@@ -1930,14 +1930,12 @@ setMethod('redraw', 'CytoscapeWindowClass',
 }) 
 ## END redraw
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setWindowSize', 'CytoscapeWindowClass',
-
-   function (obj, width, height) {
-       message("not yet implemented")
-#     id = as.character (obj@window.id)
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.resizeNetworkView', id, as.integer (width), as.integer (height)))
-     }) # redraw
+# ------------------------------------------------------------------------------
+setMethod('setWindowSize', 'CytoscapeWindowClass', 
+    function(obj, width, height) {
+        message("not yet implemented")
+})
+## END setWindowSize
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setTooltipInitialDelay', 'CytoscapeConnectionClass',
@@ -1993,12 +1991,13 @@ setMethod ('showGraphicsDetails', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 # display the graph using all of the available window space (the Cytoscape drawing canvas)
 setMethod('fitContent', 'CytoscapeWindowClass', 
-  function(obj) {
-    net.SUID = as.character(obj@window.id)
-    resource.uri = paste(obj@uri, pluginVersion(obj), "apply/fit", net.SUID, sep="/")
-    request.res = GET(url=resource.uri)
-    invisible(request.res)
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        resource.uri <- paste(obj@uri, pluginVersion(obj), "apply/fit", net.SUID, sep="/")
+        request.res <- GET(url=resource.uri)
+        invisible(request.res)
 })
+## END fitContent
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('fitSelectedContent', 'CytoscapeWindowClass',
