@@ -387,12 +387,7 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 		write(sprintf('Please use a unique name, or set "overwriteWindow=TRUE".'), stderr())
 		stop()
 	}
-	
-	# add a label to each node if not already present. default label is the node name, the node ID
-	if(is.classic.graph(graph)) 
-		if(edgemode(graph) == 'undirected') {
-			graph = remove.redundancies.in.undirected.graph(graph)
-		}
+
 	# are all node attributes properly initialized?
 	node.attributes = noa.names(graph)
 	if(length(node.attributes) > 0) {
@@ -777,9 +772,7 @@ setMethod ('setLayoutProperties', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod ('setGraph', 'CytoscapeWindowClass', function(obj, graph) {
-  if(edgemode(graph) == 'undirected') 
-    graph = remove.redundancies.in.undirected.graph (graph)
-  
+
   obj@graph = graph
   
   return (obj)
