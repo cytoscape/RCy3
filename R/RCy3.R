@@ -1557,8 +1557,7 @@ setMethod ('setNodePosition', 'CytoscapeWindowClass',
      
      # set y position
      setNodePropertyDirect(obj, node.names, y.coords, "NODE_Y_LOCATION")
-
-     invisible(res)
+     
     }) # setNodePosition
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3252,9 +3251,8 @@ setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
       }
       # set the edge property direct
       #     property.names = c ('Edge Opacity',  'Edge Source Arrow Opacity', 'Edge Target Arrow Opacity')
-      res <- setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LABEL_TRANSPARENCY")
-      res <- setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TRANSPARENCY")
-      invisible(res)
+      setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LABEL_TRANSPARENCY")
+      setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TRANSPARENCY")
      })
 
 #------------------------------------------------------------------------------------------------------------------------
