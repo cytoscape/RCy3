@@ -1784,7 +1784,7 @@ setMethod('setEdgeAttributes', 'CytoscapeWindowClass',
         cyrest.edge.names = as.character(cy2.edge.names(obj@graph))
         # user might have entered the names of edges that do NOT exist
         # the below line will return the indices of the nodes that DO exist
-        edge.indices = which(cyrest.edge.names %in% getAllEdges(cw))
+        edge.indices = which(cyrest.edge.names %in% getAllEdges(obj))
         
         if(length(edge.indices) > 0) {
             edge.names = cyrest.edge.names[edge.indices]
