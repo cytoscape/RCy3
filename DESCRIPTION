@@ -2,7 +2,7 @@ Package: RCy3
 Type: Package
 Title: Display and manipulate graphs in Cytoscape >= 3.2.1
 Version: 0.99.10
-Date: 2015-05-18
+Date: 2015-07-08
 Author: Paul Shannon, Tanja Muetze, Georgi Kolishovski
 Maintainer: Paul Shannon <pshannon@fhcrc.org>, Tanja Muetze <tanja.muetze14@imperial.ac.uk>, Georgi Kolishovski <g_kolishv@yahoo.com>
 Depends: R (>= 3.1.3), graph (>= 1.31.0), httr, RJSONIO, RCurl
