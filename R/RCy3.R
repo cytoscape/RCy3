@@ -1579,7 +1579,7 @@ setMethod ('getNodePosition', 'CytoscapeWindowClass',
       return(coordinates.list)
     }) # getNodePosition
 
-#------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 setMethod ('getNodeSize', 'CytoscapeWindowClass',
 
   function (obj, node.names) {
@@ -1905,19 +1905,21 @@ setMethod('displayGraph', 'CytoscapeWindowClass', function(obj) {
     
   # pseudo R 'pass-by-reference': cw now contains the [node suid,node name] pairs
   eval.parent(substitute(obj <- loc.obj))
-}) # END displayGraph
+}) 
+## END displayGraph
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod('predictTimeToDisplayGraph', 'CytoscapeWindowClass',
-  function (obj) {
-     g = obj@graph
-     node.count = length(nodes(g))
-     edge.count = length(edgeNames(g))
-     noa.count = length(noa.names(g)) * node.count
-     eda.count = length(eda.names(g)) * edge.count
-     prediction = (0.002 * node.count) + (0.010 * edge.count) + (0.001 * noa.count) + (0.001 * eda.count)
-     return (prediction)
-  })
+# ------------------------------------------------------------------------------
+setMethod('predictTimeToDisplayGraph', 'CytoscapeWindowClass', 
+    function(obj) {
+        g = obj@graph
+        node.count = length(nodes(g))
+        edge.count = length(edgeNames(g))
+        noa.count = length(noa.names(g)) * node.count
+        eda.count = length(eda.names(g)) * edge.count
+        prediction = (0.002 * node.count) + (0.010 * edge.count) + (0.001 * noa.count) + (0.001 * eda.count)
+        return (prediction)
+})
+## END predictTimeToDisplayGraph
 
 # ------------------------------------------------------------------------------
 setMethod('redraw', 'CytoscapeWindowClass', 
@@ -2114,46 +2116,40 @@ setMethod('setZoom', 'CytoscapeWindowClass',
 ## END setZoom
 
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('getViewCoordinates', 'CytoscapeWindowClass',
-
-   function (obj) {
-       message("not yet implemented")
-#     tmp = xml.rpc (obj@uri, 'Cytoscape.getViewCoordinates', obj@window.id)
-#     return (list (top.x=tmp[1], top.y=tmp[2], bottom.x=tmp[3], bottom.y=tmp[4]))
-     })
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('hidePanel', 'CytoscapeConnectionClass',
-
-   function (obj, panelName) {
-       message("not yet implemented")
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.hidePanel', panelName))
-     })
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('hideAllPanels', 'CytoscapeConnectionClass',
-
-  function (obj) {
-      message("not yet implemented")
-#    invisible (sapply (tolower (LETTERS), function (letter) hidePanel (obj, letter)))
-    })
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('dockPanel', 'CytoscapeConnectionClass',
-
-    function (obj, panelName) {
+# ------------------------------------------------------------------------------
+setMethod('getViewCoordinates', 'CytoscapeWindowClass', 
+    function(obj) {
         message("not yet implemented")
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.dockPanel', panelName))
-     })
+})
+## END getViewCoordinates
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('floatPanel', 'CytoscapeConnectionClass',
+# ------------------------------------------------------------------------------
+setMethod('hidePanel', 'CytoscapeConnectionClass', 
+    function(obj, panelName) {
+        message("not yet implemented")
+})
+## END hidePanel
 
-   function (obj, panelName) {
-       message("not yet implemented")
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.floatPanel', panelName))
-     })
+# ------------------------------------------------------------------------------
+setMethod('hideAllPanels', 'CytoscapeConnectionClass', 
+    function(obj) {
+        message("not yet implemented")
+})
+## END hideAllPanel
+
+# ------------------------------------------------------------------------------
+setMethod('dockPanel', 'CytoscapeConnectionClass', 
+    function(obj, panelName) {
+        message("not yet implemented")
+})
+## END dockPanel
+
+# ------------------------------------------------------------------------------
+setMethod('floatPanel', 'CytoscapeConnectionClass', 
+    function(obj, panelName) {
+        message("not yet implemented")
+})
+## END floatPanel
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeTooltipRule', 'CytoscapeWindowClass',
