@@ -3979,9 +3979,73 @@ setMethod('invertNodeSelection', 'CytoscapeWindowClass',
 ## END invertNodeSelection
  
 # ------------------------------------------------------------------------------
+# [GIK - Jul, 2015] function might break if self-loops exist in the graph
 setMethod('deleteSelectedNodes', 'CytoscapeWindowClass', 
     function(obj) {
+        loc.obj <- obj
         
+        net.SUID <- as.character(loc.obj@window.id)
+        version <- pluginVersion(loc.obj)
+        
+        selected.node.names <- getSelectedNodes(loc.obj)
+        selected.node.SUIDs <- .nodeNameToNodeSUID(loc.obj, selected.node.names)
+        
+        for(i in 1:length(selected.node.SUIDs)) {
+            node.SUID <- selected.node.SUIDs[i]
+            # (list of) edges that have this particular node as their source node
+            source.bound.edges <- list()
+            # (list of) edges that have this particular node as their target node
+            target.bound.edges <- list()
+            
+            source.bound.edge.indices <- 
+                which(sapply(loc.obj@edge.suid.name.dict, function(n) {n$source.node}) %in% node.SUID)
+            
+            if(length(source.bound.edge.indices) > 0) {
+                # get edge SUIDs
+                source.bound.edges <- 
+                    sapply(loc.obj@edge.suid.name.dict[source.bound.edge.indices], function(e) { e$SUID })
+                # delete all edges, whose source node is to-be deleted
+                for(k in 1:length(source.bound.edges)) {
+                    resource.uri <- paste(loc.obj@uri, version, "networks", net.SUID, "edges", as.character(source.bound.edges[k]), sep="/")
+                    
+                    request.res <- DELETE(url=resource.uri)
+                    # [GIK] TO-DO: delete the edge row/entry from Cytoscape's Edge table
+                }
+                # also, delete those edges from the session dictionary
+                loc.obj@edge.suid.name.dict[source.bound.edge.indices] <- NULL
+            }
+            
+            target.bound.edge.indices <- 
+                which(sapply(loc.obj@edge.suid.name.dict, function(n) {n$target.node}) %in% node.SUID)
+            
+            if(length(target.bound.edge.indices) > 0) {
+                # get edge SUIDs
+                target.bound.edges <- 
+                    sapply(loc.obj@edge.suid.name.dict[target.bound.edge.indices], function(e) { e$SUID })
+                # delete all edges, whose target node is to-be deleted
+                for(k in 1:length(target.bound.edges)) {
+                    resource.uri <- paste(loc.obj@uri, version, "networks", net.SUID, "edges", as.character(target.bound.edges[k]), sep="/")
+                    
+                    request.res <- DELETE(url=resource.uri)
+                    # [GIK] TO-DO: delete the edge row/entry from Cytoscape's Edge table
+                }
+                # also, delete those edges from the session dictionary
+                loc.obj@edge.suid.name.dict[target.bound.edge.indices] <- NULL
+            }
+            
+            # delete the node from the Cytoscape network
+            resource.uri <- 
+                paste(loc.obj@uri, version, "networks", net.SUID, "nodes", as.character(node.SUID), sep="/")
+            request.res <- DELETE(url=resource.uri)
+        
+            # [GIK] TO-DO: delete the node row/entry in the Cytoscape node table
+        
+            # delete the node from the session disctionary
+            node.index <- 
+                which(sapply(loc.obj@suid.name.dict, function(n) { n$SUID }) %in% node.SUID)
+            loc.obj@suid.name.dict[node.index] <- NULL
+        }
+        eval.parent(substitute(obj <- loc.obj))
 })
 ## END deleteSelectedNodes
    
