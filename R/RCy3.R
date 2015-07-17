@@ -748,27 +748,33 @@ setMethod ('getArrowShapes', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('getLayoutNames', 'CytoscapeConnectionClass', 
 	function(obj) {
-		request.uri = paste(obj@uri, pluginVersion(obj), "apply/layouts", sep="/")
-		request.res = GET(url=request.uri)
-		available.layouts = unname(fromJSON(rawToChar(request.res$content)))
-    
-    return(available.layouts)
-}) # getLayoutNames
+        request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", sep="/")
+        request.res <- GET(url=request.uri)
+        
+        available.layouts <- unname(fromJSON(rawToChar(request.res$content)))
+        
+        return(available.layouts)
+}) 
+## END getLayoutNames
 
-#------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 setMethod('getLayoutNameMapping', 'CytoscapeConnectionClass', 
-   function(obj) {
-       message("not yet implemented")
-#   return (xml.rpc (obj@uri, 'Cytoscape.getLayoutNamesMapping'))
-     }) # getLayoutNameMapping
+    function(obj) {
+        message("not yet implemented")
+})
+## END getLayoutNameMapping
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('getLayoutPropertyNames', 'CytoscapeConnectionClass', 
-
-   function (obj, layout.name) {
-       message("not yet implemented")
-#     return (xml.rpc (obj@uri, 'Cytoscape.getLayoutProperties', layout.name))
-     }) # getLayoutProperties
+# ------------------------------------------------------------------------------
+setMethod('getLayoutPropertyNames', 'CytoscapeConnectionClass', 
+    function(obj, layout.name) {
+        request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
+        request.res <- GET(url=request.uri)
+        
+        layout.property.names <- unname(fromJSON(rawToChar(request.res$content)))
+        
+        return(sapply(layout.property.names, '[[', 1))
+})
+## END getLayoutPropertyNames
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getLayoutPropertyType', 'CytoscapeConnectionClass', 
