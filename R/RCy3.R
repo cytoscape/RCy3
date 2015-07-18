@@ -2174,28 +2174,52 @@ setMethod('hidePanel', 'CytoscapeConnectionClass',
         net.SUID <- as.character(obj@window.id)
         version <- pluginVersion(obj)
         
-        resource.uri <- paste(obj@uri, version, "ui/", sep="/")
+        panel.name.state = list(name=panelName, state='HIDE')
+        
+        resource.uri <- paste(obj@uri, version, "ui/panels", sep="/")
+        request.res <- PUT(url=resource.uri, body=toJSON(list(panel.name.state)), encoding="json")
+        
+        invisible(resquest.res)
 })
 ## END hidePanel
 
 # ------------------------------------------------------------------------------
 setMethod('hideAllPanels', 'CytoscapeConnectionClass', 
     function(obj) {
-        message("not yet implemented")
+        hidePanel(obj, "SOUTH")
+        hidePanel(obj, "EAST")
+        hidePanel(obj, "WEST")
+        hidePanel(obj, "SOUTH_WEST")
 })
-## END hideAllPanel
+## END hideAllPanels
 
 # ------------------------------------------------------------------------------
 setMethod('dockPanel', 'CytoscapeConnectionClass', 
     function(obj, panelName) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
         
+        panel.name.state = list(name=panelName, state='DOCK')
+        
+        resource.uri <- paste(obj@uri, version, "ui/panels", sep="/")
+        request.res <- PUT(url=resource.uri, body=toJSON(list(panel.name.state)), encoding="json")
+        
+        invisible(resquest.res)
 })
 ## END dockPanel
 
 # ------------------------------------------------------------------------------
 setMethod('floatPanel', 'CytoscapeConnectionClass', 
     function(obj, panelName) {
-        message("not yet implemented")
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        panel.name.state = list(name=panelName, state='FLOAT')
+        
+        resource.uri <- paste(obj@uri, version, "ui/panels", sep="/")
+        request.res <- PUT(url=resource.uri, body=toJSON(list(panel.name.state)), encoding="json")
+        
+        invisible(resquest.res)
 })
 ## END floatPanel
 
