@@ -776,13 +776,21 @@ setMethod('getLayoutPropertyNames', 'CytoscapeConnectionClass',
 })
 ## END getLayoutPropertyNames
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('getLayoutPropertyType', 'CytoscapeConnectionClass', 
-
-   function (obj, layout.name, property.name) {
-       message("not yet implemented")
-#     return (xml.rpc (obj@uri, 'Cytoscape.getLayoutPropertyType', layout.name, property.name))
-     }) # getLayoutPropertyType
+# ------------------------------------------------------------------------------
+setMethod('getLayoutPropertyType', 'CytoscapeConnectionClass', 
+    function(obj, layout.name, property.name) {
+        request.uri <- 
+            paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), sep="/")
+        
+        print(request.uri)
+        
+        request.res <- GET(url=request.uri)
+        
+        # print(request.res)
+        
+        print(unname(fromJSON(rawToChar(request.res$content))))
+}) 
+## END getLayoutPropertyType
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getLayoutPropertyValue', 'CytoscapeConnectionClass', 
@@ -3521,30 +3529,34 @@ setMethod ('setEdgeTargetArrowOpacityDirect', 'CytoscapeWindowClass',
 #       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.name, 'Edge Label Position', as.character (new.value))
 #     invisible (result)
 #     })
+
 # ------------------------------------------------------------------------------
 setMethod('getNodeCount', 'CytoscapeWindowClass', 
-  function(obj) {
-    net.SUID = as.character(obj@window.id)
-    version = pluginVersion(obj)
-    
-    resource.uri = paste(obj@uri, version, "networks", net.SUID, "nodes/count", sep="/")
-    request.res = GET(resource.uri)
-    node.count = unname(fromJSON(rawToChar(request.res$content)))
-    return(node.count)
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes/count", sep="/")
+        request.res <- GET(resource.uri)
+        node.count <- unname(fromJSON(rawToChar(request.res$content)))
+        
+        return(as.integer(node.count))
 })
+## END getNodeCount
 
 # ------------------------------------------------------------------------------
 setMethod('getEdgeCount', 'CytoscapeWindowClass', 
-  function(obj) {
-    net.SUID = as.character(obj@window.id)
-    version = pluginVersion(obj)
-    
-    resource.uri = paste(obj@uri, version, "networks", net.SUID, "edges/count", sep="/")
-    # request result
-    request.res = GET(resource.uri)
-    edge.count <- unname(fromJSON(rawToChar(request.res$content)))
-    return(edge.count)
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "edges/count", sep="/")
+        request.res <- GET(resource.uri)
+        edge.count <- unname(fromJSON(rawToChar(request.res$content)))
+        
+        return(as.integer(edge.count))
 })
+## END getEdgeCount
 
 # ------------------------------------------------------------------------------
 setMethod('getNodeAttribute', 'CytoscapeConnectionClass', 
