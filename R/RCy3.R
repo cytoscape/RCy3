@@ -303,7 +303,7 @@ setGeneric ('getSelectedNodes',         signature='obj', function (obj) standard
 setGeneric ('clearSelection',           signature='obj', function (obj) standardGeneric ('clearSelection'))
 setGeneric ('getSelectedNodeCount',     signature='obj', function (obj) standardGeneric ('getSelectedNodeCount'))
 setGeneric ('hideNodes',                signature='obj', function (obj, node.names) standardGeneric ('hideNodes'))
-# setGeneric ('unhideNodes',              signature='obj', function (obj, node.names) standardGeneric ('unhideNodes'))
+setGeneric ('unhideNodes',              signature='obj', function (obj, node.names) standardGeneric ('unhideNodes'))
 setGeneric ('hideSelectedNodes',        signature='obj', function (obj) standardGeneric ('hideSelectedNodes'))
 setGeneric ('invertNodeSelection',      signature='obj', function (obj) standardGeneric ('invertNodeSelection'))
 setGeneric ('deleteSelectedNodes',      signature='obj', function (obj) standardGeneric ('deleteSelectedNodes'))
@@ -2148,10 +2148,10 @@ setMethod('setZoom', 'CytoscapeWindowClass',
         
         # if multiple views are found, inform the user about it
         if(length(net.views.SUIDs) > 1) {
-            write(sprintf("RCy3::getZoom() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
+            write(sprintf("RCy3::getZoom() - %d views found... returning coordinates of the first view", length(net.views.SUIDs)), stderr())
         }
         
-        view.zoom.value <- list(visualProperty = 'NETWORK_SCALE_FACTOR', value = new.level)
+        view.zoom.value <- list(visualProperty='NETWORK_SCALE_FACTOR', value=new.level)
         view.zoom.value.JSON <- toJSON(list(view.zoom.value))
         
         resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network", sep="/")
@@ -2161,18 +2161,20 @@ setMethod('setZoom', 'CytoscapeWindowClass',
 })
 ## END setZoom
 
-
 # ------------------------------------------------------------------------------
 setMethod('getViewCoordinates', 'CytoscapeWindowClass', 
     function(obj) {
-        message("not yet implemented")
+        message("pending implementation")
 })
 ## END getViewCoordinates
 
 # ------------------------------------------------------------------------------
 setMethod('hidePanel', 'CytoscapeConnectionClass', 
     function(obj, panelName) {
-        message("not yet implemented")
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        resource.uri <- paste(obj@uri, version, "ui/", sep="/")
 })
 ## END hidePanel
 
@@ -2186,7 +2188,7 @@ setMethod('hideAllPanels', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('dockPanel', 'CytoscapeConnectionClass', 
     function(obj, panelName) {
-        message("not yet implemented")
+        
 })
 ## END dockPanel
 
@@ -3809,46 +3811,55 @@ setMethod('deleteEdgeAttribute', 'CytoscapeConnectionClass',
 })
 
 # ------------------------------------------------------------------------------
-setMethod('getAllNodes', 'CytoscapeWindowClass', function(obj) {
-  loc.obj <- obj
-  
-  # CyREST version
-  version = pluginVersion(loc.obj)
-  # network suid
-  net.suid = as.character(loc.obj@window.id)
-  resource.uri <- paste(loc.obj@uri, version, "networks", net.suid, "nodes/count", sep="/")
-  
-  count <- rawToChar(GET(resource.uri)$content)
-  if(count == 0) {
-    return()
-  }
-  # get SUIDs of existing (in Cytoscape) nodes
-  resource.uri <- paste(loc.obj@uri, version, "networks", net.suid, "nodes", sep="/")
-  # get the SUIDs of the nodes in the Cytoscape graph
-  cy.nodes.SUIDs <- fromJSON(rawToChar(GET(resource.uri)$content))
-  # translate the SUIDs to node names
-  dict.suids.vec <- sapply(loc.obj@suid.name.dict, "[[", 2)
-  # if there is difference b/n the nodes in obj@graph and Cytoscape
-  diff.nodes <- setdiff(cy.nodes.SUIDs, dict.suids.vec)
-  
-  if(length(diff.nodes) > 0) {
-    for(i in 1:length(diff.nodes)) {
-      res.uri <- paste(loc.obj@uri, version, "networks", net.suid, "nodes", as.character(diff.nodes[i]), sep="/")
-      
-      node.name <- fromJSON(rawToChar(GET(res.uri)$content))$data$name
-      
-      loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict) + 1]] <- list(name=node.name, SUID=diff.nodes[i])
-    }
-    ### TO DO: add new node to graph
-  }
-  indices <- which(dict.suids.vec %in% cy.nodes.SUIDs)
-  
-  node.names <- sapply(loc.obj@suid.name.dict, function(x) x[[1]])
-  
-  eval.parent(substitute(obj <- loc.obj))
-  
-  return(node.names)
-}) # getAllNodes
+setMethod('getAllNodes', 'CytoscapeWindowClass', 
+    function(obj) {
+        loc.obj <- obj
+        
+        # CyREST version
+        version = pluginVersion(loc.obj)
+        # network suid
+        net.SUID <- as.character(loc.obj@window.id)
+        
+        n.count <- getNodeCount(obj)
+        
+        if(n.count == 0) {
+            return()
+        }
+        
+        # get SUIDs of existing (in Cytoscape) nodes
+        resource.uri <- paste(loc.obj@uri, version, "networks", net.SUID, "nodes", sep="/")
+        # get the SUIDs of the nodes in the Cytoscape graph
+        cy.nodes.SUIDs <- fromJSON(rawToChar(GET(resource.uri)$content))
+        
+        print(cy.nodes.SUIDs)
+        
+        # translate the SUIDs to node names
+        dict.suids.vec <- sapply(loc.obj@suid.name.dict, "[[", 2)
+        # if there is difference b/n the nodes in the dictionary and Cytoscape, identify these nodes
+        diff.nodes <- setdiff(cy.nodes.SUIDs, dict.suids.vec)
+        print(diff.nodes)
+        if(length(diff.nodes) > 0) {
+            for(i in 1:length(diff.nodes)) {
+                res.uri <- paste(loc.obj@uri, version, "networks", net.SUID, "nodes", as.character(diff.nodes[i]), sep="/")
+                # print(res.uri)
+                
+                
+                # node.name <- fromJSON(rawToChar(GET(res.uri)$content))$data$name
+                
+                # loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict) + 1]] <- list(name=node.name, SUID=diff.nodes[i])
+            }
+            ### TO DO: add new node to graph
+        }
+        
+        indices <- which(dict.suids.vec %in% cy.nodes.SUIDs)
+        
+        node.names <- sapply(loc.obj@suid.name.dict, function(x) x[[1]])
+        
+        eval.parent(substitute(obj <- loc.obj))
+        
+        return(node.names)
+}) 
+## END getAllNodes
 
 # ------------------------------------------------------------------------------
 setMethod('getAllEdges', 'CytoscapeWindowClass', 
@@ -3977,15 +3988,12 @@ setMethod('hideNodes', 'CytoscapeWindowClass',
 }) 
 ## END hideNodes
    
-#------------------------------------------------------------------------------------------------------------------------
-#setMethod ('unhideNodes', 'CytoscapeWindowClass',
-#
-#   function (obj, node.names) {
-#     id = as.character (obj@window.id)
-#     for (node in node.names)
-#       invisible (xml.rpc (obj@uri, 'Cytoscape.unhideNode', id, node, .convert=TRUE))
-#     }) # unhideNodes
-#   
+# ------------------------------------------------------------------------------------------------------------------------
+setMethod('unhideNodes', 'CytoscapeWindowClass', 
+    function(obj, node.names) {
+        setNodePropertyDirect(obj, node.names, 'true', "NODE_VISIBLE")
+}) 
+## END unhideNodes
 
 # ------------------------------------------------------------------------------
 # select all nodes that were not selected and deselect all nodes that were selected
@@ -4185,15 +4193,14 @@ setMethod ('hideSelectedEdges', 'CytoscapeWindowClass',
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.hideSelectedEdges', id, .convert=TRUE))
      }) # hideSelectedEdges
    
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('unhideAll', 'CytoscapeWindowClass',
-
-   function (obj) {
-#     id = as.character (obj@window.id)
-#     result = xml.rpc (obj@uri, 'Cytoscape.unhideAll', id, .convert=TRUE)
-#     redraw (obj)
-#     invisible (result)
-     }) # unhideAll
+# ------------------------------------------------------------------------------
+setMethod('unhideAll', 'CytoscapeWindowClass', 
+    function(obj) {
+        # setNodePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
+        
+        # setEdgePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
+}) 
+## END unhideAll
    
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getFirstNeighbors', 'CytoscapeWindowClass',
