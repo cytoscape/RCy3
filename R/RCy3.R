@@ -1260,47 +1260,55 @@ setMethod('.getNetworkViews', 'CytoscapeConnectionClass',
           }) # END .getNetworkViews
 
 # ------------------------------------------------------------------------------
-setMethod('.nodeNameToNodeSUID', 'CytoscapeConnectionClass',
-          function(obj, node.names) {
-              # initial source used 'which', but it did not return SUIDs in the input names order  
-              # dict.indices = which(node.names %in% sapply(obj@suid.name.dict, function(n) { n$name}))
-              # 'match' achieves this desired behavior
-              dict.node.names = sapply(obj@suid.name.dict, function(n) { n$name})
-              dict.indices = match(node.names, dict.node.names)
-              
-              node.SUIDs = sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
-              return(node.SUIDs)
-          }) # END .nodeNamesToNodeSUID
+setMethod('.nodeNameToNodeSUID', 'CytoscapeConnectionClass', 
+    function(obj, node.names) {
+        # initial source used 'which', but it did not return SUIDs in the input names order  
+        # dict.indices = which(node.names %in% sapply(obj@suid.name.dict, function(n) { n$name}))
+        # 'match' achieves this desired behavior
+        dict.node.names <- sapply(obj@suid.name.dict, function(n) {n$name})
+        dict.indices <- match(node.names, dict.node.names)
+        
+        # [dict.indices[!is.na(dict.indices)]] is used to clean any 'NAs' from the vector 
+        node.SUIDs <- sapply(obj@suid.name.dict[dict.indices[!is.na(dict.indices)]], function(i) {i$SUID})
+        return(node.SUIDs)
+}) 
+## END .nodeNamesToNodeSUID
 
 # ------------------------------------------------------------------------------
 setMethod('.nodeSUIDToNodeName', 'CytoscapeConnectionClass', 
-          function(obj, node.suids) {
-              dict.node.SUIDs = sapply(obj@suid.name.dict, function(s) { s$SUID})
-              dict.indices = match(node.suids, dict.node.SUIDs)
-              
-              node.names = sapply(obj@suid.name.dict[dict.indices], function(n) {n$name})
-              return(node.names)
-          }) # END .nodeSUIDToNodeName
+    function(obj, node.suids) {
+        dict.node.SUIDs <- sapply(obj@suid.name.dict, function(s) {s$SUID})
+        dict.indices <- match(node.suids, dict.node.SUIDs)
+        
+        # [dict.indices[!is.na(dict.indices)]] is used to clean any 'NAs' from the vector
+        node.names <- sapply(obj@suid.name.dict[dict.indices[!is.na(dict.indices)]], function(n) {n$name})
+        return(node.names)
+}) 
+## END .nodeSUIDToNodeName
 
 # ------------------------------------------------------------------------------
-setMethod('.edgeNameToEdgeSUID', 'CytoscapeConnectionClass',
-          function(obj, edge.names) {
-              dict.edge.names = sapply(obj@edge.suid.name.dict, function(e) {e$name})
-              dict.indices = match(edge.names, dict.edge.names)
-              
-              edge.SUIDs = sapply(obj@edge.suid.name.dict[dict.indices], function(i){i$SUID})
-              return(edge.SUIDs)
-          }) # END .edgeNamesToEdgeSUID
+setMethod('.edgeNameToEdgeSUID', 'CytoscapeConnectionClass', 
+    function(obj, edge.names) {
+        dict.edge.names <- sapply(obj@edge.suid.name.dict, function(e) {e$name})
+        dict.indices <- match(edge.names, dict.edge.names)
+        
+        # [dict.indices[!is.na(dict.indices)]] is used to clean any 'NAs' from the vector
+        edge.SUIDs <- sapply(obj@edge.suid.name.dict[dict.indices[!is.na(dict.indices)]], function(i){ i$SUID })
+        return(edge.SUIDs)
+}) 
+## END .edgeNamesToEdgeSUID
 
 # ------------------------------------------------------------------------------
 setMethod('.edgeSUIDToEdgeName', 'CytoscapeConnectionClass', 
-          function(obj, edge.suids) {
-              dict.edge.SUIDs = sapply(obj@edge.suid.name.dict, function(s) {s$SUID})
-              dict.indices = match(edge.suids, dict.edge.SUIDs)
-              
-              edge.names = sapply(obj@edge.suid.name.dict[dict.indices], function(e) {e$name})
-              return(edge.names)
-          }) # END .edgeSUIDToEdgeName
+    function(obj, edge.suids) {
+        dict.edge.SUIDs = sapply(obj@edge.suid.name.dict, function(s) {s$SUID})
+        dict.indices = match(edge.suids, dict.edge.SUIDs)
+        
+        # [dict.indices[!is.na(dict.indices)]] is used to clean any 'NAs' from the vector
+        edge.names = sapply(obj@edge.suid.name.dict[dict.indices[!is.na(dict.indices)]], function(e) {e$name})
+        return(edge.names)
+}) 
+## END .edgeSUIDToEdgeName
 
 # ------------------------------------------------------------------------------
 setMethod('addCyNode', 'CytoscapeWindowClass', function(obj, nodeName) { 
@@ -3867,6 +3875,7 @@ setMethod('clearSelection', 'CytoscapeWindowClass',
     function(obj) {
         net.SUID <- as.character(obj@window.id)
         version <- pluginVersion(obj)
+        
         # if any nodes are selected, unselect them
         resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns/selected?default=false", sep="/")
         request.res <- PUT(url=resource.uri, body=FALSE)
@@ -3920,15 +3929,18 @@ setMethod('selectNodes', 'CytoscapeWindowClass',
    
 # ------------------------------------------------------------------------------
 setMethod('getSelectedNodeCount', 'CytoscapeWindowClass', 
-  function(obj) {
-    net.SUID = as.character(obj@window.id)
-    version = pluginVersion(obj)
-    resource.uri = paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
-    request.res = GET(url=resource.uri)
-    
-    num.selected.nodes = length(fromJSON(rawToChar(request.res$content)))
-    return(num.selected.nodes)
-}) # getSelectedNodeCount
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
+        request.res <- GET(url=resource.uri)
+        
+        num.selected.nodes <- length(fromJSON(rawToChar(request.res$content)))
+        
+        return(num.selected.nodes)
+}) 
+## END getSelectedNodeCount
    
 # ------------------------------------------------------------------------------
 setMethod('getSelectedNodes', 'CytoscapeWindowClass', 
@@ -3958,15 +3970,12 @@ setMethod ('hideSelectedNodes', 'CytoscapeWindowClass',
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.hideSelectedNodes', id, .convert=TRUE))
      }) # hideSelectedNodes
    
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('hideNodes', 'CytoscapeWindowClass',
-
-   function (obj, node.names) {
-       message("not yet implemented")
-#     id = as.character (obj@window.id)
-#     for (node in node.names)
-#       invisible (xml.rpc (obj@uri, 'Cytoscape.hideNode', id, node, .convert=TRUE))
-     }) # hideNodes
+# ------------------------------------------------------------------------------
+setMethod('hideNodes', 'CytoscapeWindowClass', 
+    function(obj, node.names) {
+        setNodePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
+}) 
+## END hideNodes
    
 #------------------------------------------------------------------------------------------------------------------------
 #setMethod ('unhideNodes', 'CytoscapeWindowClass',
