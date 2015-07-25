@@ -3671,46 +3671,67 @@ setMethod('getAllNodeAttributes', 'CytoscapeWindowClass',
               return (result)
 })
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('getEdgeAttribute', 'CytoscapeConnectionClass',
+# ------------------------------------------------------------------------------
+setMethod('getEdgeAttribute', 'CytoscapeConnectionClass', 
+    function(obj, edge.name, attribute.name) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        edge.SUID <- as.character(.edgeNameToEdgeSUID(obj, edge.name))
+        
+        if(length(edge.SUID) < 1) {
+            write(sprintf("WARNING in RCy3::getEdgeAttribute():\n\t no edge with name '%s' could be found >> function returns empty value", edge.name), stderr())
+            
+            return("")
+        } else {
+            edge.attribute.type <- getEdgeAttributeType(obj, attribute.name)
+            
+            if(length(edge.attribute.type) > 0) {
+                resource.uri <- 
+                    paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/rows", edge.SUID, attribute.name, sep="/")
+                request.res <- GET(url=resource.uri)
+                
+                edge.attribute.value <- unname(rawToChar(request.res$content))
+                
+                switch(edge.attribute.type, 
+                    "Double"={
+                        return(as.numeric(edge.attribute.value))
+                    },
+                    "Long"=,
+                    "Integer"={
+                        return(as.integer(edge.attribute.value))
+                    },
+                    "Boolean"={
+                        return(as.logical(edge.attribute.value))
+                    },{
+                        return(as.character(edge.attribute.value))
+                    }
+                )
+            }
+            return("")
+        }
+})
+## END getEdgeAttribute
 
-   function (obj, edge.name, attribute.name) {
-       # get edge.name - edge.SUID table
-       edge.name.suid.tbl <- getEdgeNamesAndSUIDS(obj)
-       # TODO check if edge exists (TanjaM April 2015)
-       edge.SUID <- edge.name.suid.tbl$suids[which(edge.name.suid.tbl$names == edge.name)]
-       
-       # network ID and cyREST API version
-       net.suid = as.character(obj@window.id)
-       version = pluginVersion(obj)
-       
-       # get the node attribute in the nodes table
-       resource.uri <- paste(obj@uri, version, "networks", net.suid, "tables/defaultedge/rows", as.character(edge.SUID), attribute.name, sep="/")
-       request.res <- GET(resource.uri)
-       
-       edge.attribute.value <- unname(rawToChar(request.res$content))
-       
-       return(edge.attribute.value)
-     })
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod('getEdgeAttributeType', 'CytoscapeWindowClass',
-          function(obj, attribute.name) {
-              net.SUID = as.character(obj@window.id)
-              version = pluginVersion(obj)
-              
-              if(attribute.name %in% getEdgeAttributeNames(obj)) {
-                  resource.uri = 
-                      paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
-                  request.res = GET(url=resource.uri)
-                  
-                  edge.attributes.info = fromJSON(rawToChar(request.res$content))
-                  
-                  return(edge.attributes.info[[which(lapply(edge.attributes.info, function(a) {a$name}) %in% attribute.name)]]$type)
-              } else {
-                  write(sprintf("RCy3::getEdgeAttributeType: '%s' is not a recognized edge attribute name", attribute.name), stderr())
-              }
-          }) # END getEdgeAttributeType
+# ------------------------------------------------------------------------------
+setMethod('getEdgeAttributeType', 'CytoscapeWindowClass', 
+    function(obj, attribute.name) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        if(attribute.name %in% getEdgeAttributeNames(obj)) {
+            resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
+            request.res <- GET(url=resource.uri)
+            
+            edge.attributes.info <- fromJSON(rawToChar(request.res$content))
+            return(edge.attributes.info[[which(lapply(edge.attributes.info, function(a) {a$name}) %in% attribute.name)]]$type)
+        } else {
+            write(sprintf("WARNING in RCy3::getEdgeAttributeType():\n\t '%s' could not be recognized as a valid edge attribute >> function returns empty value", attribute.name), stderr())
+            
+            return("")
+        }
+})
+## END getEdgeAttributeType
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getAllEdgeAttributes', 'CytoscapeWindowClass',
