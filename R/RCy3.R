@@ -3855,34 +3855,32 @@ setMethod('getAllNodes', 'CytoscapeWindowClass',
         # get the SUIDs of the nodes in the Cytoscape graph
         cy.nodes.SUIDs <- fromJSON(rawToChar(GET(resource.uri)$content))
         
-        print(cy.nodes.SUIDs)
+        dict.nodes.SUIDs <- sapply(loc.obj@suid.name.dict, "[[", 2)
         
-        # translate the SUIDs to node names
-        dict.suids.vec <- sapply(loc.obj@suid.name.dict, "[[", 2)
-        # if there is difference b/n the nodes in the dictionary and Cytoscape, identify these nodes
-        diff.nodes <- setdiff(cy.nodes.SUIDs, dict.suids.vec)
-        print(diff.nodes)
+        # check that the nodes presented in Cytoscape & RCy3's session dictionary do match
+        diff.nodes <- setdiff(cy.nodes.SUIDs, dict.nodes.SUIDs)
+        
+        # in case that differences exist, run synchronization b/n RCy3 and RCytoscape
         if(length(diff.nodes) > 0) {
+            write(sprintf("WARNING in RCy3::getAllNodes():\n\t the following node(s) exist in Cytoscape, but don't exist in RCy3's session"), stderr())
+            
             for(i in 1:length(diff.nodes)) {
-                res.uri <- paste(loc.obj@uri, version, "networks", net.SUID, "nodes", as.character(diff.nodes[i]), sep="/")
-                # print(res.uri)
+                resource.uri <- 
+                    paste(loc.obj@uri, version, "networks", net.SUID, "nodes", as.character(diff.nodes[i]), sep="/")
+                node.name <- fromJSON(rawToChar(GET(res.uri)$content))$data$name 
                 
-                
-                # node.name <- fromJSON(rawToChar(GET(res.uri)$content))$data$name
-                
-                # loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict) + 1]] <- list(name=node.name, SUID=diff.nodes[i])
+            #    [GIK, Jul 2015] synch to be implemented
+            #    loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict) + 1]] <- 
+            #        list(name=node.name, SUID=diff.nodes[i])
             }
-            ### TO DO: add new node to graph
         }
         
-        indices <- which(dict.suids.vec %in% cy.nodes.SUIDs)
-        
-        node.names <- sapply(loc.obj@suid.name.dict, function(x) x[[1]])
+        node.names <- .nodeSUIDToNodeName(obj, cy.nodes.SUIDs[order(cy.nodes.SUIDs)])
         
         eval.parent(substitute(obj <- loc.obj))
         
         return(node.names)
-}) 
+})
 ## END getAllNodes
 
 # ------------------------------------------------------------------------------
