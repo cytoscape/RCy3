@@ -3775,34 +3775,38 @@ setMethod ('getAllEdgeAttributes', 'CytoscapeWindowClass',
 
 # ------------------------------------------------------------------------------
 setMethod('getNodeAttributeNames', 'CytoscapeConnectionClass', 
-  function(obj) {
-    net.SUID = as.character(obj@window.id)
-    resource.uri = paste(obj@uri, pluginVersion(obj), "networks", net.SUID, "tables/defaultnode/columns", sep="/")
-    # request result
-    request.res = GET(url = resource.uri)
-    request.res = fromJSON(rawToChar(request.res$content))
-    request.res = data.frame(t(sapply(request.res, c)))
-    request.res = unlist(request.res$name)
-    # exclude the 'default' nodes
-    node.attributes = request.res[! request.res %in% c("SUID", "shared name", "name", "selected")]
-    invisible(request.res)
-    return(node.attributes)
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        
+        resource.uri <- 
+            paste(obj@uri, pluginVersion(obj), "networks", net.SUID, "tables/defaultnode/columns", sep="/")
+        # request result
+        request.res <- GET(url=resource.uri)
+        request.res <- fromJSON(rawToChar(request.res$content))
+        request.res <- data.frame(t(sapply(request.res, c)))
+        request.res <- unlist(request.res$name)
+        # exclude some node attributes
+        node.attribute.names <- request.res[! request.res %in% c("SUID", "shared name", "selected")]
+        return(node.attribute.names)
 })
+## END getNodeAttributeNames
 
 # ------------------------------------------------------------------------------
 setMethod('getEdgeAttributeNames', 'CytoscapeConnectionClass', 
-  function(obj) {
-    net.SUID = as.character(obj@window.id)
-    resource.uri = paste(obj@uri, pluginVersion(obj), "networks", net.SUID, "tables/defaultedge/columns", sep="/")
-    # request result
-    request.res = GET(url=resource.uri)
-    request.res = fromJSON(rawToChar(request.res$content))
-    request.res = data.frame(t(sapply(request.res, c)))
-    request.res = unlist(request.res$name)
-    edge.attributes = request.res[! request.res %in% c("SUID", "shared name", "name", "selected")]
-    invisible(request.res)
-    return(edge.attributes)
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        resource.uri <- 
+            paste(obj@uri, pluginVersion(obj), "networks", net.SUID, "tables/defaultedge/columns", sep="/")
+        # request result
+        request.res <- GET(url=resource.uri)
+        request.res <- fromJSON(rawToChar(request.res$content))
+        request.res <- data.frame(t(sapply(request.res, c)))
+        request.res <- unlist(request.res$name)
+        # exclude some edge attributes
+        edge.attribute.names <- request.res[! request.res %in% c("SUID", "shared name", "shared interaction", "selected")]
+        return(edge.attribute.names)
 })
+## END getEdgeAttributeNames
 
 # ------------------------------------------------------------------------------
 # delete node attribute by deleting its column in the node table
@@ -3837,8 +3841,7 @@ setMethod('deleteEdgeAttribute', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('getAllNodes', 'CytoscapeWindowClass', 
     function(obj) {
-        loc.obj <- obj
-        
+        loc.obj <- obj      
         # CyREST version
         version = pluginVersion(loc.obj)
         # network suid
@@ -3874,7 +3877,6 @@ setMethod('getAllNodes', 'CytoscapeWindowClass',
             #        list(name=node.name, SUID=diff.nodes[i])
             }
         }
-        
         node.names <- .nodeSUIDToNodeName(obj, cy.nodes.SUIDs[order(cy.nodes.SUIDs)])
         
         eval.parent(substitute(obj <- loc.obj))
@@ -3900,7 +3902,7 @@ setMethod('getAllEdges', 'CytoscapeWindowClass',
         request.res <- fromJSON(rawToChar(request.res$content))
         names <- request.res$values
         return(names)
-}) 
+})
 ## END getAllEdges
 
 # ------------------------------------------------------------------------------
