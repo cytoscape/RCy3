@@ -3594,42 +3594,65 @@ setMethod('getEdgeCount', 'CytoscapeWindowClass',
 
 # ------------------------------------------------------------------------------
 setMethod('getNodeAttribute', 'CytoscapeConnectionClass', 
-    function (obj, node.name, attribute.name) {
-     # map node names to node SUIDs
-     dict.indices = which(sapply(obj@suid.name.dict, function(s) { s$name }) %in% node.name)
-     node.SUID = sapply(obj@suid.name.dict[dict.indices], function(i) {i$SUID})
-     
-     # network ID and cyREST API version
-     net.suid = as.character(obj@window.id)
-     version = pluginVersion(obj)
-     
-     # get the node attribute in the nodes table
-     resource.uri <- paste(obj@uri, version, "networks", net.suid, "tables/defaultnode/rows", as.character(node.SUID), attribute.name, sep="/")
-     request.res <- GET(resource.uri)
-     
-     node.attribute.value <- unname(rawToChar(request.res$content))
-
-     return(node.attribute.value)
+    function(obj, node.name, attribute.name) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        node.SUID <- as.character(.nodeNameToNodeSUID(obj, node.name))
+        
+        if(length(node.SUID) < 1) {
+            write(sprintf("WARNING in RCy3::getNodeAttribute():\n\t no node with name '%s' could be found >> function returns empty value", node.name), stderr())
+            
+            return("")
+        } else {
+            node.attribute.type <- getNodeAttributeType(obj, attribute.name)
+            
+            if(length(node.attribute.type) > 0) {
+                resource.uri <- 
+                    paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/rows", node.SUID, attribute.name, sep="/")
+                request.res <- GET(url=resource.uri)
+                
+                node.attribute.value <- unname(rawToChar(request.res$content))
+                
+                switch(node.attribute.type, 
+                    "Double"={
+                        return(as.numeric(node.attribute.value))
+                    },
+                    "Long"=,
+                    "Integer"={
+                        return(as.integer(node.attribute.value))
+                    },
+                    "Boolean"={
+                        return(as.logical(node.attribute.value))
+                    },{
+                        return(as.character(node.attribute.value))
+                    }
+                )
+            }
+            return("")
+        }
 })
 
 # ------------------------------------------------------------------------------
 setMethod('getNodeAttributeType', 'CytoscapeWindowClass', 
-          function(obj, attribute.name) {
-              net.SUID = as.character(obj@window.id)
-              version = pluginVersion(obj)
-              
-              if(attribute.name %in% getNodeAttributeNames(obj)) {
-                  resource.uri = 
-                      paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
-                  request.res = GET(url=resource.uri)
-                  
-                  node.attributes.info = fromJSON(rawToChar(request.res$content))
-                  
-                  return(node.attributes.info[[which(lapply(node.attributes.info, function(a) {a$name}) %in% attribute.name)]]$type)
-              } else {
-                  write(sprintf("RCy3::getNodeAttributeType error: '%s' is not a recognized node attribute name", attribute.name), stderr())
-              }
-          }) # END getNodeAttributeType
+    function(obj, attribute.name) {
+        net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
+        
+        if(attribute.name %in% getNodeAttributeNames(obj)) {
+            resource.uri <- 
+                paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
+            request.res <- GET(url=resource.uri)
+            
+            node.attributes.info <- fromJSON(rawToChar(request.res$content))
+            return(node.attributes.info[[which(lapply(node.attributes.info, function(a) {a$name}) %in% attribute.name)]]$type)
+        } else {
+            write(sprintf("WARNING in RCy3::getNodeAttributeType():\n\t '%s' could not be recognized as a valid node attribute >> function returns empty value", attribute.name), stderr())
+            
+            return("")
+        }
+}) 
+## END getNodeAttributeType
 
 # ------------------------------------------------------------------------------
 setMethod('getAllNodeAttributes', 'CytoscapeWindowClass', 
