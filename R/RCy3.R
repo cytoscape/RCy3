@@ -3313,32 +3313,36 @@ setMethod ('setEdgeColorDirect', 'CytoscapeWindowClass',
       # TODO maybe this should be EDGE_PAINT
       return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_STROKE_UNSELECTED_PAINT"))
      })
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeLabelDirect', 'CytoscapeWindowClass',
-   function (obj, edge.names, new.value) {
-      # set the edge color direct
-      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL"))
-     })
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeFontFaceDirect', 'CytoscapeWindowClass',
-   function (obj, edge.names, new.value) {
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_FONT_FACE"))
 
-     })
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeFontSizeDirect', 'CytoscapeWindowClass',
-   function (obj, edge.names, new.value) {
-      for (current.size in new.value){
-         # ensure the sizes are numbers
-         if (!is.double(current.size)) {
-            write (sprintf ('illegal font string "%s" in RCy3::setEdgeFontSizeDirect. It needs to be a number.', current.size), stderr ())
-            return ()
-         }
-      }
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_FONT_SIZE"))
-     })
+# ------------------------------------------------------------------------------
+setMethod('setEdgeLabelDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.value) {
+        setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL")
+})
+## END setEdgeLabelDirect
+
+# ------------------------------------------------------------------------------
+setMethod('setEdgeFontFaceDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.value) {
+        setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_FONT_FACE")
+})
+## END setEdgeFontFaceDirect
+
+# ------------------------------------------------------------------------------
+setMethod('setEdgeFontSizeDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.value) {
+        for(current.size in new.value) {
+            # ensure the sizes are valid numbers
+            if(!is.double(current.size)) {
+                write(sprintf ('illegal font string "%s" in RCy3::setEdgeFontSizeDirect():\t\n it needs to be a valid number.', current.size), stderr ())
+                return()
+            }
+        }
+        # set the edge property direct
+        setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_FONT_SIZE")
+})
+## END setEdgeFontSizeDirect
+
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
