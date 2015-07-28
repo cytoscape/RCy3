@@ -3116,26 +3116,32 @@ setMethod ('setNodeHeightDirect', 'CytoscapeWindowClass',
       return(setNodePropertyDirect(obj, node.names, new.heights, "NODE_HEIGHT"))
      })
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeLabelDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.labels) {
-      # set the node property direct
-      return(setNodePropertyDirect(obj, node.names, new.labels, "NODE_LABEL"))
-     })
+# ------------------------------------------------------------------------------
+setMethod('setNodeLabelDirect', 'CytoscapeWindowClass', 
+    function(obj, node.names, new.labels) {
+        setNodePropertyDirect(obj, node.names, new.labels, "NODE_LABEL")
+})
+## END setNodeLabelDirect
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeFontSizeDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.sizes) {
-      for (current.size in new.sizes){
-         # ensure the sizes are numbers
-         if (!is.double(current.size)) {
-            write (sprintf ('illegal font size "%s" in RCy3::setNodeFontSizeDirect. It needs to be a number.', current.size), stderr ())
-            return ()
-         }
-      }
-      # set the node property direct
-      return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_LABEL_FONT_SIZE"))
-     })
+# ------------------------------------------------------------------------------
+setMethod('setNodeFontSizeDirect', 'CytoscapeWindowClass', 
+    function(obj, node.names, new.sizes) {
+        size.type.errors = 0
+        
+        for(current.size in new.sizes) {
+            if(!is.double(current.size)) {
+                write(sprintf("ERROR in RCy3::setNodeFontSizeDirect():\n\t font size '%s' has to be numerical value", current.size), stderr())
+                
+                size.type.errors = size.type.errors + 1
+            }
+        }
+        
+        if(size.type.errors < 1) {
+            setNodePropertyDirect(obj, node.names, new.sizes, "NODE_LABEL_FONT_SIZE")
+        }
+})
+## END setNodeFontSizeDirect
+
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.colors) {
@@ -3149,6 +3155,7 @@ setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
       # set the node property direct
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_LABEL_COLOR"))
      })
+
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.shapes) {
@@ -5045,7 +5052,7 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
         new.values <- rep(new.values, length(node.names))
     }
     if(length(new.values) != length(node.names)) {
-        write(sprintf("ERROR in setNodePropertyDirect():\n\t number of node.names [%d] and new.values [%d] are not the same >> node(s) attribute could not be set", 
+        write(sprintf("ERROR in setNodePropertyDirect():\n\t the number of nodes [%d] and new values [%d] are not the same >> node(s) attribute couldn't be set", 
                       length(node.names), length(new.values)), stderr())
     } else {
         request.res <- c()
