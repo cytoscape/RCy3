@@ -4284,9 +4284,9 @@ setMethod ('hideSelectedEdges', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('unhideAll', 'CytoscapeWindowClass', 
     function(obj) {
-        # setNodePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
+        setNodePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
         
-        # setEdgePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
+        setEdgePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
 }) 
 ## END unhideAll
    
