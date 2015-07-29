@@ -416,7 +416,13 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 		write(sprintf('Please use a unique name, or set "overwriteWindow=TRUE".'), stderr())
 		stop()
 	}
-
+    
+    # add a label to each node if not already present. default label is the node name, the node ID    	
+    if(is.classic.graph(graph)){
+        if(edgemode(graph) == 'undirected') {
+            graph = remove.redundancies.in.undirected.graph(graph)
+        }
+    }
 	# are all node attributes properly initialized?
 	node.attributes = noa.names(graph)
 	if(length(node.attributes) > 0) {
@@ -818,10 +824,13 @@ setMethod ('setLayoutProperties', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod ('setGraph', 'CytoscapeWindowClass', function(obj, graph) {
-
-  obj@graph = graph
-  
-  return (obj)
+    if(edgemode(graph) == 'undirected'){
+        graph = remove.redundancies.in.undirected.graph (graph)
+    }
+    
+    obj@graph = graph
+    
+    return (obj)
 })
 
 # ------------------------------------------------------------------------------
@@ -4903,10 +4912,12 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
   a = sapply (pairs, "[", 1)
   b = sapply (pairs, "[", 2)
 
-  if ('edgeType' %in% eda.names (g))
-    edgeType = as.character (edgeData (g, from=a, to=b, attr='edgeType'))
-  else
-    edgeType = rep ('unspecified', length (a))
+  if ('edgeType' %in% eda.names (g)){
+      edgeType = as.character (edgeData (g, from=a, to=b, attr='edgeType'))
+  }else{
+      edgeType = rep ('unspecified', length (a))
+  }
+
 
   return (data.frame (source=a, target=b, edgeType=edgeType, stringsAsFactors=FALSE))
 
