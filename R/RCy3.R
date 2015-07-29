@@ -2213,7 +2213,7 @@ setMethod('dockPanel', 'CytoscapeConnectionClass',
         resource.uri <- paste(obj@uri, version, "ui/panels", sep="/")
         request.res <- PUT(url=resource.uri, body=toJSON(list(panel.name.state)), encoding="json")
         
-        invisible(resquest.res)
+        invisible(request.res)
 })
 ## END dockPanel
 
