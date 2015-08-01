@@ -3439,7 +3439,7 @@ setMethod('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
             write(error.msg, stderr())
             return(FALSE)
         }
-        
+        # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(setEdgePropertyDirect(obj, edge.names, toupper(new.values), "EDGE_LINE_TYPE"))
 })
 ## END setEdgeLineStyleDirect
@@ -3459,8 +3459,7 @@ setMethod('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
             write(error.msg, stderr())
             return(FALSE)
         }
-        
-        # returns TRUE or FALSE if an issue has been detected (like invalid edges, ...)
+        # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(setEdgePropertyDirect(obj, edge.names, toupper(new.values), "EDGE_SOURCE_ARROW_SHAPE"))
 })
 ## END setEdgeSourceArrowShapeDirect
@@ -3480,56 +3479,42 @@ setMethod('setEdgeTargetArrowShapeDirect', 'CytoscapeWindowClass',
             write(error.msg, stderr())
             return(FALSE)
         }
-        # returns TRUE or FALSE
+        # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(setEdgePropertyDirect(obj, edge.names, toupper(new.values), "EDGE_TARGET_ARROW_SHAPE"))
 })
 ## END setEdgeTargetArrowShapeDirect
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeSourceArrowColorDirect', 'CytoscapeWindowClass',
+# ------------------------------------------------------------------------------
+setMethod('setEdgeSourceArrowColorDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.colors) {
+        for(current.color in new.colors) {
+            # check the color is represented in hexadecimal format
+            if(substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
+                write(sprintf("\nERROR in setEdgeSourceArrowColorDirect(): illegal color string '%s'. Color needs to be in hexadecimal", current.color), stderr())
+                
+                return(FALSE)
+            }
+        }
+        # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
+        return(setEdgePropertyDirect(obj, edge.names, new.colors, "EDGE_SOURCE_ARROW_UNSELECTED_PAINT"))
+})
+## END setEdgeSourceArrowColorDirect
 
-   function (obj, edge.names, new.colors) {
-      if (length (edge.names) != length (new.colors)) {
-         msg = sprintf ('error in RCy3::setEdgeSourceArrowColorDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-                        length (new.colors), length (edge.names))
-         write (msg, stderr ())
-         return ()
-      }
-      
-      for (current.color in new.colors){
-         # ensure the color is formated in correct hexadecimal style
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCy3::setEdgeSourceArrowColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
-      }
-      
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.colors, "EDGE_SOURCE_ARROW_UNSELECTED_PAINT"))
-     })
+# ------------------------------------------------------------------------------
+setMethod('setEdgeTargetArrowColorDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.colors) {
+        for(current.color in new.colors) {
+            if(substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
+                write(sprintf("\nERROR in setEdgeTargetArrowColorDirect(): illegal color string '%s'. Color needs to be in hexadecimal", current.color), stderr())
+                
+                return(FALSE)
+            }
+        }
+        # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
+        return(setEdgePropertyDirect(obj, edge.names, new.colors, "EDGE_TARGET_ARROW_UNSELECTED_PAINT"))
+})
+## END setEdgeTargetArrowColorDirect
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeTargetArrowColorDirect', 'CytoscapeWindowClass',
-
-   function (obj, edge.names, new.colors) {
-      if (length (edge.names) != length (new.colors)) {
-         msg = sprintf ('error in RCy3::setEdgeTargetArrowColorDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-                        length (new.colors), length (edge.names))
-         write (msg, stderr ())
-         return ()
-      }
-      
-      for (current.color in new.colors){
-         # ensure the color is formated in correct hexadecimal style
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCy3::setEdgeTargetArrowColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
-      }
-      
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.colors, "EDGE_TARGET_ARROW_UNSELECTED_PAINT"))
-     })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelOpacityDirect', 'CytoscapeWindowClass',
