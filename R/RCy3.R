@@ -475,40 +475,50 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 
 } # END 'CytsoscapeWindow' constructor
 
-#------------------------------------------------------------------------------------------------------------------------
-# the 'existing window' class constructor, defined as a simple function, with no formal link to the class
-existing.CytoscapeWindow = function (title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE)
-{
-   res <- .BBSOverride(host, port)
-   host = res$host
-   port = res$port
-	 # The constructor for the CytoscapeWindowClass, used when Cytoscape already contains and displays a network.
-		uri <- sprintf('http://%s:%s', host, port)
-		# create this (inexpensively) just to gain access to the window list
-		cy.conn <- CytoscapeConnection(host, port)
+# ------------------------------------------------------------------------------
+existing.CytoscapeWindow = 
+    function(title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE) 
+        {
+        res <- .BBSOverride(host, port)
+        host <- res$host
+        port <- res$port
         
-        if (is.null(cy.conn)){
+		uri <- sprintf('http://%s:%s', host, port)
+		
+        # establish a connection to Cytoscape
+        cy.conn <- CytoscapeConnection(host, port)
+		
+        if(is.null(cy.conn)) {
+            write(sprintf("ERROR in existing.CytoscapeWindow():\n\t Cytoscape connection could not be established >> NULL returned"), stderr())
+            
             return()
         }
-		check.cytoscape.plugin.version(cy.conn)
-		
+        # ensure the script is using the latest cyREST plugin version 
+        check.cytoscape.plugin.version(cy.conn)
+        
 		existing.window.id = as.character(getWindowID(cy.conn, title))
 		
-		# inform the user if the desired window does not exist
-		if(is.na(existing.window.id)) {
-			write(sprintf('RCy3::existing.CytoscapeWindow: There is no window in Cytoscape named "%s". Please choose from the following titles:', title), stderr())
+		# inform user if the window does not exist
+        if(is.na(existing.window.id)) {
+            write(sprintf("ERROR in RCy3::existing.CytoscapeWindow():\n\t no window named '%s' exists in Cytoscape >> choose from the following titles: ", title), stderr())
 			write(as.character(getWindowList(cy.conn)), stderr())
-			return(NA)
+			
+            return(NA)
 		}
 		
 		# get graph from Cytoscape
-        cy.window<- new('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
+        cy.window <- new('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
+        
         if(copy.graph.from.cytoscape.to.R) {
             g.cy <- getGraphFromCyWindow(cy.window, title)
-            cy.window<- setGraph(cy.window, g.cy)
-    }
-    return(cy.window)
-} # END existing.CytsoscapeWindow
+            
+            cy.window <- setGraph(cy.window, g.cy)
+        }
+        
+        return(cy.window)
+}
+## END existing.CytsoscapeWindow
+
 
 # ------------------------------------------------------------------------------
 check.cytoscape.plugin.version = function(cyCon) 
@@ -740,16 +750,18 @@ setMethod ('getLineStyles', 'CytoscapeConnectionClass', function (obj) {
     return(request.res$values)
     })
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('getArrowShapes', 'CytoscapeConnectionClass',
-
-    function (obj) {
-        resource.uri <- paste(obj@uri, pluginVersion(obj), "styles/visualproperties/EDGE_TARGET_ARROW_SHAPE/values", sep="/")
-        #Comment TanjaM: EDGE_SOURCE_ARROW_SHAPE rather than TARGET returns the same results as of April 2015
+# ------------------------------------------------------------------------------
+setMethod('getArrowShapes', 'CytoscapeConnectionClass', 
+    function(obj) {
+        version <- pluginVersion(obj)
+        
+        resource.uri <- paste(obj@uri, version, "styles/visualproperties/EDGE_TARGET_ARROW_SHAPE/values", sep="/")
+        # TanjaM: EDGE_SOURCE_ARROW_SHAPE rather than TARGET returns the same results as of April 2015
         request.res <- GET(resource.uri)
         request.res <- fromJSON(rawToChar(request.res$content))
         return(request.res$values)
-    })
+})
+## END getArrowShapes
 
 # ------------------------------------------------------------------------------
 setMethod('getLayoutNames', 'CytoscapeConnectionClass', 
@@ -1085,6 +1097,7 @@ setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
       return(g)
   })
 ## END getGraphFromCyWindow
+
 # ------------------------------------------------------------------------------
 setMethod('sendNodes', 'CytoscapeWindowClass', function(obj) {
     loc.obj <- obj
@@ -1248,25 +1261,29 @@ setMethod ('.addEdges', signature (obj='CytoscapeWindowClass'),
     }) # END .addEdges
 
 # ------------------------------------------------------------------------------
-setMethod('.getWindowNameFromSUID', 'CytoscapeConnectionClass',
-          function(obj, win.suid) {
-              suid = as.character(win.suid)
-              resource.uri = paste(obj@uri, pluginVersion(obj), "networks", suid, sep="/")
-              request.res = GET(url=resource.uri)
-              win.name = fromJSON(rawToChar(request.res$content))$data$name
-              return(win.name)
-          }) # END .getWindowNameFromSUID
+# helper function: returns the name of the Cytoscape window based on its SUID
+setMethod('.getWindowNameFromSUID', 'CytoscapeConnectionClass', 
+    function(obj, win.suid) {
+        suid <- as.character(win.suid)
+        resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", suid, sep="/")
+        request.res <- GET(url=resource.uri)
+        win.name <- fromJSON(rawToChar(request.res$content))$data$name
+        return(win.name)
+}) 
+## END .getWindowNameFromSUID
 
 # ------------------------------------------------------------------------------
-setMethod('.getNetworkViews', 'CytoscapeConnectionClass',
-          function(obj) {
-              net.SUID = as.character(obj@window.id)
-              
-              resource.uri = paste(obj@uri, pluginVersion(obj), "networks", net.SUID, "views", sep="/")
-              request.res = GET(url=resource.uri)
-              network.view.SUIDs = unname(fromJSON(rawToChar(request.res$content)))
-              return(network.view.SUIDs)
-          }) # END .getNetworkViews
+# helper function: returns the SUIDs of all views belonging to specific network
+setMethod('.getNetworkViews', 'CytoscapeConnectionClass', 
+    function(obj) {
+        net.SUID <- as.character(obj@window.id)
+        
+        resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", net.SUID, "views", sep="/")
+        request.res <- GET(url=resource.uri)
+        network.view.SUIDs <- unname(fromJSON(rawToChar(request.res$content)))
+        return(network.view.SUIDs)
+}) 
+## END .getNetworkViews
 
 # ------------------------------------------------------------------------------
 setMethod('.nodeNameToNodeSUID', 'CytoscapeConnectionClass', 
@@ -1511,12 +1528,11 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
       eval.parent(substitute(obj <- loc.obj))
 }) # sendEdges
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod('layoutNetwork', 'CytoscapeWindowClass',
-  function(obj, layout.name = 'grid') {
-    if(!layout.name %in% getLayoutNames(obj)) {
-      write(sprintf("layout.name '%s' is not recognized; call getLayoutNames(<CytoscapeWindow>) to see those which are supported", layout.name), stderr())
-      return()
+# ------------------------------------------------------------------------------
+setMethod('layoutNetwork', 'CytoscapeWindowClass', 
+    function(obj, layout.name = 'grid') {
+        if(!layout.name %in% getLayoutNames(obj)) {
+            write(sprintf("layout.name '%s' is not recognized; call getLayoutNames(<CytoscapeWindow>) to see those which are supported", layout.name), stderr())
     }
     id = as.character(obj@window.id)
     
@@ -1980,8 +1996,9 @@ setMethod('predictTimeToDisplayGraph', 'CytoscapeWindowClass',
 setMethod('redraw', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@window.id)
+        version <- pluginVersion(obj)
         
-        resource.uri <- paste(obj@uri, pluginVersion(obj), "apply/styles", "default", net.SUID, sep = "/")
+        resource.uri <- paste(obj@uri, version, "apply/styles", "default", net.SUID, sep = "/")
         request.res <- GET(url=resource.uri)
         invisible(request.res)
 }) 
@@ -3315,8 +3332,8 @@ setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
       setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TRANSPARENCY")
      })
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeColorDirect', 'CytoscapeWindowClass',
+# ------------------------------------------------------------------------------
+setMethod('setEdgeColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
       for (current.color in new.value){
          # ensure the color is formated in correct hexadecimal style
@@ -3328,7 +3345,7 @@ setMethod ('setEdgeColorDirect', 'CytoscapeWindowClass',
       # set the edge color direct
       # TODO maybe this should be EDGE_PAINT
       return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_STROKE_UNSELECTED_PAINT"))
-     })
+})
 
 # ------------------------------------------------------------------------------
 setMethod('setEdgeLabelDirect', 'CytoscapeWindowClass', 
@@ -3347,15 +3364,20 @@ setMethod('setEdgeFontFaceDirect', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('setEdgeFontSizeDirect', 'CytoscapeWindowClass', 
     function(obj, edge.names, new.value) {
+        size.type.errors = 0
+        
         for(current.size in new.value) {
             # ensure the sizes are valid numbers
             if(!is.double(current.size)) {
                 write(sprintf ('illegal font string "%s" in RCy3::setEdgeFontSizeDirect():\t\n it needs to be a valid number.', current.size), stderr ())
-                return()
+                
+                size.type.errors = size.type.errors + 1
             }
         }
-        # set the edge property direct
-        setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_FONT_SIZE")
+        
+        if(size.type.errors < 1) {
+            setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_FONT_SIZE")
+        }
 })
 ## END setEdgeFontSizeDirect
 
@@ -3421,53 +3443,47 @@ setMethod ('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
       # set the edge property direct
       return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LINE_TYPE"))
      })
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
 
-   function (obj, edge.names, new.values) {
-      if (length (edge.names) != length (new.values)) {
-         msg = sprintf ('error in RCy3::setEdgeSourceArrowShapeDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-                        length (new.values), length (edge.names))
-         write (msg, stderr ())
-         return ()
-      }
-      
-      # ensure correct values
-      new.values <- toupper(new.values)
-      unique.values <- unique(new.values)
-      wrong.values <- sapply(unique.values, function(x) !(x %in% getArrowShapes(obj)))
-      if (any(wrong.values)){
-          write (sprintf ('ERROR in RCy3::setEdgeSourceArrowShapeDirect. Invalid value. For valid values use getArrowShapes'), stderr ())
-          return(NA)
-      }
-      
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_SOURCE_ARROW_SHAPE"))
-     })
+# ------------------------------------------------------------------------------
+setMethod('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.values) {
+        unique.new.values <- unique(new.values)
+        
+        wrong.values <- sapply(unique.new.values, function(v) { !(toupper(v) %in% getArrowShapes(obj)) })
+        
+        if(any(wrong.values)) {
+            error.msg <- paste(sprintf("'%s'", names(wrong.values[which(wrong.values)])), sep="", collapse=", ")
+            
+            error.msg <- paste("\n\t\tERROR in setEdgeSourceArrowShapeDirect() >> INVALID arrow shape value(s): ", error.msg, "\n", sep="")
+            
+            write(error.msg, stderr())
+            return(FALSE)
+        }
+        
+        # returns TRUE or FALSE
+        return(setEdgePropertyDirect(obj, edge.names, toupper(new.values), "EDGE_SOURCE_ARROW_SHAPE"))
+})
+## END setEdgeSourceArrowShapeDirect
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeTargetArrowShapeDirect', 'CytoscapeWindowClass',
-
-   function (obj, edge.names, new.values) {
-      if (length (edge.names) != length (new.values)) {
-         msg = sprintf ('error in RCy3::setEdgeTargetArrowShapeDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-                        length (new.values), length (edge.names))
-         write (msg, stderr ())
-         return ()
-      }
-      
-      # ensure correct values
-      new.values <- toupper(new.values)
-      unique.values <- unique(new.values)
-      wrong.values <- sapply(unique.values, function(x) !(x %in% getArrowShapes(obj)))
-      if (any(wrong.values)){
-          write (sprintf ('ERROR in RCy3::setEdgeTargetArrowShapeDirect. Invalid value. For valid values use getArrowShapes'), stderr ())
-          return(NA)
-      }
-      
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TARGET_ARROW_SHAPE"))
-     })
+# ------------------------------------------------------------------------------
+setMethod('setEdgeTargetArrowShapeDirect', 'CytoscapeWindowClass', 
+    function (obj, edge.names, new.values) {
+        unique.new.values <- unique(new.values)
+        
+        wrong.values <- sapply(unique.new.values, function(v) { !(toupper(v) %in% getArrowShapes(obj)) })
+        
+        if(any(wrong.values)) {
+            error.msg <- paste(sprintf("'%s'", names(wrong.values[which(wrong.values)])), sep="", collapse=", ")
+            
+            error.msg <- paste("\n\t\tERROR in setEdgeTargetArrowShapeDirect() >> INVALID arrow shape value(s): ", error.msg, "\n", sep="")
+            
+            write(error.msg, stderr())
+            return(FALSE)
+        }
+        # returns TRUE or FALSE
+        return(setEdgePropertyDirect(obj, edge.names, toupper(new.values), "EDGE_TARGET_ARROW_SHAPE"))
+})
+## END setEdgeTargetArrowShapeDirect
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeSourceArrowColorDirect', 'CytoscapeWindowClass',
@@ -3934,7 +3950,7 @@ setMethod('getAllNodes', 'CytoscapeWindowClass',
             for(i in 1:length(diff.nodes)) {
                 resource.uri <- 
                     paste(loc.obj@uri, version, "networks", net.SUID, "nodes", as.character(diff.nodes[i]), sep="/")
-                node.name <- fromJSON(rawToChar(GET(res.uri)$content))$data$name 
+                node.name <- fromJSON(rawToChar(GET(resource.uri)$content))$data$name 
                 
             #    [GIK, Jul 2015] synch to be implemented
             #    loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict) + 1]] <- 
