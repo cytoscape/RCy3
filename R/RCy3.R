@@ -3530,51 +3530,23 @@ setMethod ('setEdgeLabelOpacityDirect', 'CytoscapeWindowClass',
       return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_TRANSPARENCY"))
      })
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeSourceArrowOpacityDirect', 'CytoscapeWindowClass',
-   function (obj, edge.names, new.values) {
+# ------------------------------------------------------------------------------
+setMethod('setEdgeSourceArrowOpacityDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.values) {
+        write(sprintf("WARNING: Method RCy3::setEdgeSourceArrowOpacityDirect() is not implemented in RCy3!"), stderr())
+        
+        return(FALSE)
+})
+## END setEdgeSourceArrowOpacityDirect
 
-#     id = as.character (obj@window.id)
-#
-#     if (length (new.values) == 1)
-#       new.values = rep (new.values, length (edge.names))
-#     
-#     if (length (edge.names) != length (new.values)) {
-#       msg = sprintf ('error in RCy3::setEdgeSourceArrowOpacityirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-#                      length (new.values), length (edge.names))
-#       write (msg, stderr ())
-#       return ()
-#       }
-#
-#     for (i in 1:length (edge.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.names [i], 'Edge Source Arrow Opacity', as.character (new.values [i]))
-#
-#     invisible (result)
-     })
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeTargetArrowOpacityDirect', 'CytoscapeWindowClass',
-
-   function (obj, edge.names, new.values) {
-
-#     id = as.character (obj@window.id)
-#
-#     if (length (new.values) == 1)
-#       new.values = rep (new.values, length (edge.names))
-#     
-#     if (length (edge.names) != length (new.values)) {
-#       msg = sprintf ('error in RCy3::setEdgeTargetArrowOpacityirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-#                      length (new.values), length (edge.names))
-#       write (msg, stderr ())
-#       return ()
-#       }
-#
-#     for (i in 1:length (edge.names))
-#       result = xml.rpc (obj@uri, "Cytoscape.setEdgeProperty", edge.names [i], 'Edge Target Arrow Opacity', as.character (new.values [i]))
-#
-#     invisible (result)
-     })
-
+# ------------------------------------------------------------------------------
+setMethod('setEdgeTargetArrowOpacityDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.values) {
+        write(sprintf("WARNING: Method RCy3::setEdgeTargetArrowOpacityDirect() is not implemented in RCy3!"), stderr())
+        
+        return(FALSE)
+})
+## END setEdgeTargetArrowOpacityDirect
 
 #------------------------------------------------------------------------------------------------------------------------
 #setMethod ('setEdgeLabelPositionDirect', 'CytoscapeWindowClass',
