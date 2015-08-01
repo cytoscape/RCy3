@@ -3515,20 +3515,21 @@ setMethod('setEdgeTargetArrowColorDirect', 'CytoscapeWindowClass',
 })
 ## END setEdgeTargetArrowColorDirect
 
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeLabelOpacityDirect', 'CytoscapeWindowClass',
-   function (obj, edge.names, new.value) {
-      for (current.value in new.value){
-         # ensure the opacity value is a double and between 0 and 255
-         if (! is.double(current.value) || current.value < 0  || current.value > 255) {
-            write (sprintf ('illegal opacity string "%s" in RCy3::setEdgeLabelOpacityDirect. It needs to be between 0 and 255.', current.value), stderr ())
-            return ()
-         }
-      }
-      # set the node property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_TRANSPARENCY"))
-     })
+# ------------------------------------------------------------------------------
+setMethod('setEdgeLabelOpacityDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.value) {
+        for(current.value in new.value) {
+            # check that the opacity value is DOUBLE number between 0 and 255
+            if(!is.double(current.value) || current.value < 0  || current.value > 255) {
+                write(sprintf("\n\t\tERROR in setEdgeLabelOpacityDirect(): illegal opacity value '%s'. Opacity needs to be number between 0 and 255", current.value), stderr())
+                
+                return(FALSE)
+            }
+        }
+        # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
+        return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_TRANSPARENCY"))
+})
+## END setEdgeLabelOpacityDirect
 
 # ------------------------------------------------------------------------------
 setMethod('setEdgeSourceArrowOpacityDirect', 'CytoscapeWindowClass', 
