@@ -3407,9 +3407,10 @@ setMethod ('setEdgeTooltipDirect', 'CytoscapeWindowClass',
       return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TOOLTIP"))
 
      })
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeLineWidthDirect', 'CytoscapeWindowClass',
-   function (obj, edge.names, new.value) {
+
+# ------------------------------------------------------------------------------
+setMethod('setEdgeLineWidthDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.value) {
       for (current.size in new.value){
          # ensure the sizes are numbers
          if (!is.double(current.size)) {
@@ -3417,32 +3418,31 @@ setMethod ('setEdgeLineWidthDirect', 'CytoscapeWindowClass',
             return ()
          }
       }
+      
       # set the edge property direct
       return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_WIDTH"))
-     })
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
-   function (obj, edge.names, new.values) {
-      # TODO this if statement should be implemented for all node/edge direct functions
-      if (length (edge.names) != length (new.values)) {
-         msg = sprintf ('error in RCy3::setEdgeLineStyleDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-                        length (new.values), length (edge.names))
-         write (msg, stderr ())
-         return ()
-      }
-      
-      # ensure correct values
-      new.values <- toupper(new.values)
-      unique.values <- unique(new.values)
-      wrong.values <- sapply(unique.values, function(x) !(x %in% getLineStyles(obj)))
-      if (any(wrong.values)){
-          write (sprintf ('ERROR in RCy3::setEdgeLineStyleDirect. Invalid value. For valid values use getLineStyles'), stderr ())
-          return(NA)
-      }
-      
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_LINE_TYPE"))
-     })
+})
+
+# ------------------------------------------------------------------------------
+setMethod('setEdgeLineStyleDirect', 'CytoscapeWindowClass', 
+    function(obj, edge.names, new.values) {
+        unique.new.values <- unique(new.values)
+        
+        wrong.values <- 
+            sapply(unique.new.values, function(v) { !(toupper(v) %in% getLineStyles(obj)) })
+        
+        if(any(wrong.values)) {
+            error.msg <- paste(sprintf("'%s'", names(wrong.values[which(wrong.values)])), sep="", collapse=", ")
+            
+            error.msg <- paste("\n\t\tERROR in setEdgeLineStyleDirect() >> INVALID line style value(s): ", error.msg, "\n", sep="")
+            
+            write(error.msg, stderr())
+            return(FALSE)
+        }
+        
+        return(setEdgePropertyDirect(obj, edge.names, toupper(new.values), "EDGE_LINE_TYPE"))
+})
+## END setEdgeLineStyleDirect
 
 # ------------------------------------------------------------------------------
 setMethod('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass', 
@@ -3460,7 +3460,7 @@ setMethod('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
             return(FALSE)
         }
         
-        # returns TRUE or FALSE
+        # returns TRUE or FALSE if an issue has been detected (like invalid edges, ...)
         return(setEdgePropertyDirect(obj, edge.names, toupper(new.values), "EDGE_SOURCE_ARROW_SHAPE"))
 })
 ## END setEdgeSourceArrowShapeDirect
