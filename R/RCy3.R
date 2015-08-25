@@ -4842,19 +4842,16 @@ setMethod ('saveImage', 'CytoscapeWindowClass',
       id = as.character (obj@window.id)
       
       if (!file.exists(file.name)){
-          # TODO Comment TanjaM - scaling not possible with the new version -- remove?
+        # TODO Comment TanjaM - scaling not possible with the new version -- remove?
           
-          # get the view image from Cytoscape in PNG
-          if (image.type == 'png'){
-             resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,"views/first.png", sep="/")
-          } else{
-              write (sprintf ('Only png is currently supported.'), stderr ())
-          }
-          request.res <- GET(resource.uri, write_disk(paste0(file.name,".png")))
-          
-          write (sprintf ('saving image to %s.png', file.name), stderr ())
-          
-          # TODO add the other file types once CyREST allows for them, using else if statements
+        # get the view image from Cytoscape in PNG, PDF, or SVG format
+        resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
+                              paste0("views/first.", image.type), sep="/")
+
+        request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type)))
+        
+        write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
+        
       }else{
           write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
       }
