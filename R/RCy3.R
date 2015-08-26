@@ -5166,3 +5166,51 @@ findColumnType <- function(columnType){
         return("String")
     }
 } # findColumnType
+
+# plot.cy
+# New RCy3 function to read node and edge attributes according to class()
+#
+# Given a node attribute data frame (node.df) with the node names in column 1, 
+# and an edge attribute data.frame (edge.df) with node names in the first two columns,
+# plot.cy creates a graphNEL object with nodes, edges, and their attributes 
+# that can be loaded into Cytoscape with CytoscapeWindow. 
+#
+#  Author: Mark Grimes
+#	[plot.cy.5 in MGRCyFunctions.R]
+#########################################################################################
+#
+plot.cy <- function (node.df, edge.df) {
+	edge.nodes <- unique(c(as.character(edge.df[,1]), as.character(edge.df[,2])))		
+	mydata <- new("graphNEL", edgemode='directed', nodes = unique(c(as.character(node.df[, 1]), edge.nodes)))
+#	Set up and load all the node attributes
+	# read class and convert factor to character as required
+	node.df[,1] <- as.character(node.df[,1])
+	edge.df[,1:2] <- sapply(edge.df[,1:2], as.character)
+	node.class <- sapply (node.df, class)
+	if (any(grep("factor", node.class))) {
+		node.df[, grep("factor", node.class)] <- sapply(node.df[, grep("factor", node.class)], as.character) }
+	if (any(grep("integer", node.class))) {
+		node.df[, grep("integer", node.class)] <- sapply(node.df[, grep("integer", node.class)], as.numeric) }
+	node.class <- sapply (node.df, class)
+	edge.class <- sapply (edge.df, class)
+	if (any(grep("factor", edge.class))) {
+		edge.df[, grep("factor", edge.class)] <- sapply(edge.df[, grep("factor", edge.class)], as.character) }
+	edge.class <- sapply (edge.df, class)
+	# Nodes and attributes
+  for (i in 2:length(grep("character", node.class))) {
+	mydata <- initNodeAttribute (graph=mydata,  attribute.name=names(node.class[grep("character", node.class)])[i], attribute.type='char', default.value='undefined') 
+	nodeData (mydata, n=as.character(node.df[, 1]), attr=names(node.class[grep("character", node.class)])[i]) <- as.character(node.df[,grep("character", node.class)[i]])		}
+  for (i in 1:length(grep("numeric", node.class))) {	
+  	mydata <- initNodeAttribute (graph=mydata,  attribute.name=names(node.class[grep("numeric", node.class)])[i], attribute.type='numeric', default.value=0.0) 
+	nodeData (mydata, n=as.character(node.df[, 1]), attr=names(node.class[grep("numeric", node.class)])[i]) <- as.numeric(node.df[,grep("numeric", node.class)[i]])	}	
+	# Edges and attributes
+ 	mydata = addEdge (as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), mydata)
+  for (i in 3:length(grep("character", edge.class))) {
+	mydata <- initEdgeAttribute (graph= mydata, attribute.name=names(edge.df[,grep("character", edge.class)])[i], attribute.type='char', default.value='undefined')
+ 	edgeData (mydata, as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), attr=names(edge.df[,grep("character", edge.class)])[i]) <- as.character(edge.df[,grep("character", edge.class)[i]])		}
+  for (i in 1:length(grep("numeric", edge.class))) {	
+	mydata <- initEdgeAttribute(mydata, attribute.name=names(edge.class[grep("numeric", edge.class)])[i], attribute.type = "numeric", default.value = 0)
+	edgeData (mydata, as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), attr=names(edge.class[grep("numeric", edge.class)])[i]) <- as.numeric(edge.df[,grep("numeric", edge.class)[i]])	}	
+	return(mydata)
+}
+# END plot.cy
