@@ -1479,7 +1479,7 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
           
           # convert the [node.SUID, node.name] dict(list) to data frame object 
           suid.name.dict.df = 
-              data.frame(matrix(unlist(loc.obj@suid.name.dict), nrow=length(loc.obj@suid.name.dict), byrow=T), stringsAsFactors=FALSE)
+              data.frame(matrix(unlist(loc.obj@suid.name.dict), nrow=length(loc.obj@suid.name.dict), byrow=TRUE), stringsAsFactors=FALSE)
           colnames(suid.name.dict.df) <- c("name", "SUID")
           # get the SUIDs of the source nodes for the new edges
           source.node.SUIDs = .nodeNameToNodeSUID(loc.obj, source.nodes)
@@ -4593,7 +4593,7 @@ remove.redundancies.in.undirected.graph = function(gu)
   g = graph::addEdge(source.nodes, target.nodes, g)
 
   invisible(lapply(eda.names(gu), function(eda.name) {
-      edgeData(g, source.nodes, target.nodes, eda.name) <<- edgeData(gu, source.nodes, 
+      edgeData(g, source.nodes, target.nodes, eda.name) <- edgeData(gu, source.nodes, 
           target.nodes, eda.name)
   }))
 
@@ -4899,7 +4899,7 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
   edge.set.names = edgeSets (mg)
 
   template = list (source='', target='', edgeType='')
-  tbl = data.frame (template, stringsAsFactors=F)
+  tbl = data.frame (template, stringsAsFactors=FALSE)
   for (edge.set in edgeSets (mg)) {
     tilde.names = edgeNames (mg, edge.set)
     pairs = strsplit (tilde.names, '~')
