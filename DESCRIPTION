@@ -9,7 +9,7 @@ Depends: R (>= 3.2), graph (>= 1.31.0), httr, RJSONIO, RCurl
 Imports: methods
 Suggests: RUnit
 Description: Interactvive viewing and exploration of graphs, connecting R to Cytoscape >= 3.2.1
-License: GPL-2
+License: Artistic-2.0
 LazyLoad: yes
 biocViews: Visualization, GraphAndNetwork, ThirdPartyClient, Network
 Packaged: 2015-09-14 15:29:20 UTC; tmuetze
