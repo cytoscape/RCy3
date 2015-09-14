@@ -23,14 +23,12 @@ run.tests = function ()
   test.plugin.version ()
   
     # start with a clean slate, and no windows
-
+  deleteAllWindows (cy)
 
     # many of the tests modify the default visual style, quite heedless of prior or successor tests.
     # if you wish to restore the initial default style, it is saved here, just once, upon entry to this method
     # 
   #save.default.vizmap ()
-
-  deleteAllWindows (cy)
 
   test.create.class ()
   test.deleteWindow ()
@@ -55,7 +53,7 @@ run.tests = function ()
   test.eda ()
   test.cy2.edge.names ()
   test.getAdjacentEdgeNames ()
-  test.panelOperations ()
+  #test.panelOperations ()
   test.showGraphicsDetails ()
   test.setDefaultNodeShape ()
   test.setDefaultNodeColor ()
@@ -178,7 +176,7 @@ run.tests = function ()
 #------------------------------------------------------------------------------------------------------------------------
 save.default.vizmap = function ()
 {
-  default.style.name <<- 'original.default.style'
+  default.style.name <- 'original.default.style'
 
   if (!default.style.name %in% getVisualStyleNames (cy)) # it has not previously been stored
      copyVisualStyle (CytoscapeConnection (), 'default', 'orginal.default.style')
@@ -704,13 +702,13 @@ test.cy2.edge.names = function ()
 
 
    #  now create a directed graphNEL with one reciprocal edge.  do we get the cy2 edge names properly?
-  g.recip <<- RCy3::makeSimpleGraph ()
-  g.recip <<- graph::addEdge ('C', 'B', g.recip)
-  edgeData (g.recip, 'C', 'B', attr='edgeType') <<- 'synthetic rescue'
-  edgeData (g.recip, 'C', 'B', attr='score') <<- 42
-  edgeData (g.recip, 'C', 'B', attr='misc') <<- 'ellany'
+  g.recip <- RCy3::makeSimpleGraph ()
+  g.recip <- graph::addEdge ('C', 'B', g.recip)
+  edgeData (g.recip, 'C', 'B', attr='edgeType') <- 'synthetic rescue'
+  edgeData (g.recip, 'C', 'B', attr='score') <- 42
+  edgeData (g.recip, 'C', 'B', attr='misc') <- 'ellany'
   
-  g.recip.cy2.edge.names <<- cy2.edge.names (g.recip)
+  g.recip.cy2.edge.names <- cy2.edge.names (g.recip)
   checkEquals (length (g.recip.cy2.edge.names), 4)
   checkEquals (sort (names (g.recip.cy2.edge.names)), c ("A~B", "B~C", "C~A", "C~B"))
   checkEquals (sort (as.character (g.recip.cy2.edge.names)), 
@@ -792,8 +790,7 @@ test.setDefaultNodeShape = function (direct=FALSE)
 
    if (direct) {  # debug
      for (shape in shapes) {
-       if (!exists ('xml.rpc')) library (XMLRPC)
-       xml.rpc (cwe@uri, 'Cytoscape.setDefaultVizMapValue', 'default', 'Node Shape', shape); 
+       setDefaultNodeShape (cwe, shape); redraw (cwe)
        redraw (cwe); 
        Sys.sleep (1)
        } # for shape
@@ -1228,7 +1225,7 @@ test.setNodeBorderWidthRule = function ()
   layoutNetwork (cwe, 'grid')
   redraw (cwe)
 
-  hideAllPanels (cy)
+  #hideAllPanels (cy)
 
     # set the stage by making all the nodes white, to provide better contrast for the node border colors
   node.attribute.values = c (-3.0, 0.0, 3.0)
@@ -1340,7 +1337,7 @@ test.setNodeOpacityRule = function ()
 
     # first, the continuous 'interpolate' case, in which opacity is a function of lfc
   opacities = c (10, 128, 255)
-  x <<- cw
+  x <- cw
   setNodeOpacityRule (cw, node.attribute.name='lfc', lfc.values, opacities, mode='interpolate')
   redraw (cw)
 
@@ -2881,10 +2878,10 @@ test.simpleGraphWithReciprocalEdge = function ()
   edgeData (g.simple, 'C', 'B', attr='edgeType') = 'synthetic rescue'
   edgeData (g.simple, 'C', 'B', attr='score') = 42
   edgeData (g.simple, 'C', 'B', attr='misc') = 'ellany'
-  g <<- g.simple
+  g <- g.simple
 
   cws = CytoscapeWindow (title, g.simple)
-  cws.x <<- cws
+  cws.x <- cws
 
   displayGraph (cws)
   layoutNetwork (cws, 'grid')
@@ -2969,14 +2966,14 @@ test.getNodePosition = function ()
   displayGraph (cwe)
   layoutNetwork (cwe, 'grid')
   redraw (cwe)
-  xx <<- cwe
+  xx <- cwe
   
   layoutNetwork (cwe, 'grid')   # get a reasonable starting layout, with the nodes well-separate
 
      # the scheme:  get current positions, find their mean, place all the nodes there,
      # get their new positions, check to see that they are the means just set.
   
-  positions <<- getNodePosition (cwe, c ('A', 'B', 'C'))
+  positions <- getNodePosition (cwe, c ('A', 'B', 'C'))
 
      # place the nodes on top of each other, at the center of their 3-cornered original layout
 
@@ -3013,14 +3010,14 @@ test.getNodePosition.colonInNodeName = function ()
   displayGraph (cwe)
   layoutNetwork (cwe, 'grid')
   redraw (cwe)
-  xx <<- cwe
+  xx <- cwe
   
   layoutNetwork (cwe, 'grid')   # get a reasonable starting layout, with the nodes well-separate
 
      # the scheme:  get current positions, find their mean, place all the nodes there,
      # get their new positions, check to see that they are the means just set.
   
-  positions <<- getNodePosition (cwe, c ('A', 'B', 'C'))
+  positions <- getNodePosition (cwe, c ('A', 'B', 'C'))
 
      # place the nodes on top of each other, at the center of their 3-cornered original layout
 
@@ -3303,9 +3300,9 @@ test.sendDegenerateGraphs = function ()
   title = 'test.sendDegenerateGraphs'
   window.prep (title)
 
-  g.no.edges <<- new ('graphNEL')
-  g.no.edges <<- addNode (c ('A', 'B'), g.no.edges)
-  cw.degen <<- CytoscapeWindow (title, g.no.edges)
+  g.no.edges <- new ('graphNEL')
+  g.no.edges <- addNode (c ('A', 'B'), g.no.edges)
+  cw.degen <- CytoscapeWindow (title, g.no.edges)
   displayGraph (cw.degen)
   redraw (cw.degen)
   layoutNetwork (cw.degen, 'grid')
@@ -3313,8 +3310,8 @@ test.sendDegenerateGraphs = function ()
   title = 'test.sendEmptyGraph'
   window.prep (title)
 
-  g.empty <<- new ('graphNEL')
-  cw.empty <<- CytoscapeWindow (title, g.empty)
+  g.empty <- new ('graphNEL')
+  cw.empty <- CytoscapeWindow (title, g.empty)
   displayGraph (cw.empty)
   redraw (cw.empty)
   layoutNetwork (cw.empty, 'grid')
@@ -3351,10 +3348,10 @@ test.sendBigGraph = function ()
   probability.of.edge.being.selected = 0.05
   node.names = as.character (1:30)
 
-  g.big <<- randomEGraph (node.names, probability.of.edge.being.selected)
-  g.big <<- initEdgeAttribute (g.big, 'weight', 'numeric', 0.0)
+  g.big <- randomEGraph (node.names, probability.of.edge.being.selected)
+  g.big <- initEdgeAttribute (g.big, 'weight', 'numeric', 0.0)
   write (sprintf (title, length (nodes (g.big)), length (edgeNames (g.big))), stderr ())
-  cbig <<- CytoscapeWindow (title, g.big)
+  cbig <- CytoscapeWindow (title, g.big)
   stopifnot (class (cbig) == "CytoscapeWindowClass")
   displayGraph (cbig)
   redraw (cbig)
@@ -3405,47 +3402,47 @@ test.addGraphToGraph = function ()
   title = 'test.addGraphToGraph'
   window.prep (title)
 
-  cw3 <<- CytoscapeWindow (title, graph=makeSimpleGraph ())
+  cw3 <- CytoscapeWindow (title, graph=makeSimpleGraph ())
   displayGraph (cw3)
   redraw (cw3)
   layoutNetwork (cw3)
 
-  g2 <<- new("graphNEL", edgemode = "directed")
-  g2 <<- graph::addNode ('A', g2)
-  g2 <<- graph::addNode ('B', g2)
-  g2 <<- graph::addNode ('D', g2)
-  g2 <<- graph::addNode ('E', g2)
+  g2 <- new("graphNEL", edgemode = "directed")
+  g2 <- graph::addNode ('A', g2)
+  g2 <- graph::addNode ('B', g2)
+  g2 <- graph::addNode ('D', g2)
+  g2 <- graph::addNode ('E', g2)
 
-  g2 <<- initNodeAttribute (g2, "label", "char", "default node label")
-  g2 <<- initNodeAttribute (g2, "type", "char", "unspecified type")
+  g2 <- initNodeAttribute (g2, "label", "char", "default node label")
+  g2 <- initNodeAttribute (g2, "type", "char", "unspecified type")
 
-  g2 <<- initNodeAttribute (g2, "SCORE", "numeric", 0.0)
+  g2 <- initNodeAttribute (g2, "SCORE", "numeric", 0.0)
 
-  g2 <<- initEdgeAttribute (g2, "edgeType", "char", "unspecified")
-  g2 <<- initEdgeAttribute (g2, "probability", "numeric", 0.0)
+  g2 <- initEdgeAttribute (g2, "edgeType", "char", "unspecified")
+  g2 <- initEdgeAttribute (g2, "probability", "numeric", 0.0)
 
-  nodeData (g2, 'D', 'label') <<- 'Gene D'
-  nodeData (g2, 'E', 'label') <<- 'Gene E'
-  nodeData (g2, 'D', 'type') <<- 'new and novel'
-  nodeData (g2, 'E', 'type') <<- 'new and credible'
+  nodeData (g2, 'D', 'label') <- 'Gene D'
+  nodeData (g2, 'E', 'label') <- 'Gene E'
+  nodeData (g2, 'D', 'type') <- 'new and novel'
+  nodeData (g2, 'E', 'type') <- 'new and credible'
 
-  nodeData (g2, 'D', 'SCORE') <<- 1001.01
-  nodeData (g2, 'E', 'SCORE') <<- 99.09
+  nodeData (g2, 'D', 'SCORE') <- 1001.01
+  nodeData (g2, 'E', 'SCORE') <- 99.09
 
-  g2 <<- graph::addEdge ('D', 'E', g2)
-  g2 <<- graph::addEdge ('A', 'E', g2)
-  #g2 <<- graph::addEdge ('A', 'B', g2)
+  g2 <- graph::addEdge ('D', 'E', g2)
+  g2 <- graph::addEdge ('A', 'E', g2)
+  g2 <- graph::addEdge ('A', 'B', g2)
 
-  edgeData (g2, 'D', 'E', 'probability') <<- 0.95
-  edgeData (g2, 'D', 'E', 'edgeType') <<- 'literature'
-  edgeData (g2, 'A', 'E', 'edgeType') <<- 'inferred'
+  edgeData (g2, 'D', 'E', 'probability') <- 0.95
+  edgeData (g2, 'D', 'E', 'edgeType') <- 'literature'
+  edgeData (g2, 'A', 'E', 'edgeType') <- 'inferred'
 
   addGraphToGraph (cw3, g2)
   redraw (cw3)
   layoutNetwork (cw3)
 
     # now copy the combined graph back to R, check it for consistency
-  cw.copy <<- existing.CytoscapeWindow ('test.addGraphToGraph', copy=T)
+  cw.copy <- existing.CytoscapeWindow ('test.addGraphToGraph', copy=T)
 
     # first, simple node and edge names
   checkEquals (sort (nodes (cw.copy@graph)), c ('A', 'B', 'C', 'D', 'E'))
@@ -3496,13 +3493,13 @@ test.addGraphToGraph.degenerateFirstGraph = function ()
   g = addNode ('E', g)
   g = addNode ('F', g)
   window.prep (window.title)
-  cw <<- CytoscapeWindow (window.title, graph=g)
+  cw <- CytoscapeWindow (window.title, graph=g)
 
   displayGraph (cw)
   redraw (cw)
   layoutNetwork (cw, 'grid')
 
-  g2 <<- makeSimpleGraph ()
+  g2 <- makeSimpleGraph ()
   addGraphToGraph (cw, g2)
   
 
@@ -3519,13 +3516,13 @@ test.existing.CytoscapeWindow = function ()
     # first, try our standard 3-node, 3-edge testing graph
     #----------------------------------------------------------
 
-  cw <<- CytoscapeWindow (title, graph=makeSimpleGraph ())
+  cw <- CytoscapeWindow (title, graph=makeSimpleGraph ())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork (cw)
 
-  cw2 <<- existing.CytoscapeWindow (title, copy=TRUE)
-  g2 <<- cw2@graph
+  cw2 <- existing.CytoscapeWindow (title, copy=TRUE)
+  g2 <- cw2@graph
   checkEquals (sort (nodes (g2)), c ('A', 'B', 'C'))
   checkEquals (sort (edgeNames (g2)), c ("A~B", "B~C", "C~A"))
 
@@ -3564,8 +3561,8 @@ test.existing.CytoscapeWindow.emptyGraph = function ()
   redraw (cw.empty)
   layoutNetwork (cw.empty)
 
-  cw3 <<- existing.CytoscapeWindow (window.title, copy=TRUE)
-  g3 <<- cw3@graph
+  cw3 <- existing.CytoscapeWindow (window.title, copy=TRUE)
+  g3 <- cw3@graph
   checkEquals (length (nodes (g3)), 0)
   checkEquals (length (edges(g3)), 0)
 
@@ -3642,7 +3639,7 @@ test.addGetAndDeleteNodeAttributes = function ()
   displayGraph (cw)
   layoutNetwork (cw, 'grid')
   redraw (cw)
-  x <<- cw
+  x <- cw
      # canonicalName is added by Cytoscape
   checkEquals (length (intersect (getNodeAttributeNames (cy), c ("canonicalName", "count",  "label", "lfc", "type"))), 5)
 
@@ -3678,7 +3675,7 @@ test.getAllNodeAttributes = function ()
   layoutNetwork (cw)
 
   cwc = existing.CytoscapeWindow (title, copy=T)
-  tbl.noa <<- getAllNodeAttributes (cwc)
+  tbl.noa <- getAllNodeAttributes (cwc)
   checkEquals (nrow (tbl.noa), 3)
   checkTrue (ncol (tbl.noa) >= 5)
   expected.colnames =  c ("canonicalName", "count", "label", "lfc", "type")  # created here
@@ -4318,15 +4315,15 @@ restore.defaults = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test..getNovelEdges = function ()
 {
-  g.3e <<- makeSimpleGraph ()
-  g.0e <<- new ("graphNEL", edgemode = "directed")
+  g.3e <- makeSimpleGraph ()
+  g.0e <- new ("graphNEL", edgemode = "directed")
   g.0e = initEdgeAttribute (g.0e, 'edgeType', 'char', 'unspecified')
 
     # no novel edges if the 2nd arg has no edges
   checkTrue (is.na (RCy3:::.getNovelEdges (g.3e, g.0e)))
 
     # three novel edges if the 1st arg has zero edges, the second has 3
-  novel.edges <<- RCy3:::.getNovelEdges (g.0e, g.3e)
+  novel.edges <- RCy3:::.getNovelEdges (g.0e, g.3e)
   checkEquals (length (novel.edges), 3)
 
     # add one edge to g.0e which is an exact duplicate of the first edge of g.3e
@@ -4336,13 +4333,13 @@ test..getNovelEdges = function ()
   g.1e = addEdge ('A', 'B', g.1e)
   edgeData (g.1e, 'A', 'B', attr='edgeType') = 'phosphorylates'
 
-  g1 <<- g.1e
-  g3 <<- g.3e
+  g1 <- g.1e
+  g3 <- g.3e
 
-  novel.edges <<- RCy3:::.getNovelEdges (g.3e, g.1e)
+  novel.edges <- RCy3:::.getNovelEdges (g.3e, g.1e)
   checkEquals (length (novel.edges), 0)
 
-  novel.edges <<- RCy3:::.getNovelEdges (g.1e, g.3e)
+  novel.edges <- RCy3:::.getNovelEdges (g.1e, g.3e)
   checkEquals (length (novel.edges), 2)
 
 } # test..getNovelEdges
@@ -4630,7 +4627,7 @@ test.remove.redundancies.in.undirected.graph = function ()
   nodeData (gu, nodes (gu), 'label') = nodes (gu)
 
   t0 = Sys.time ()
-  g.fixed <<- RCy3:::remove.redundancies.in.undirected.graph (gu)
+  g.fixed <- RCy3:::remove.redundancies.in.undirected.graph (gu)
   t1 = Sys.time ()
   elapsed.time = as.numeric (difftime (t1, t0, units='secs'))
   checkTrue (elapsed.time < 5)  # consistently about 0.5 seconds in interactive testing
