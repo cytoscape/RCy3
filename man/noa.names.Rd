@@ -9,11 +9,12 @@ Retrieve the names of the node attributes in the specified graph.
 \usage{
 noa.names(graph)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{graph}{
-%%     ~~Describe \code{graph} here~~
+  \item{graph}{typically, a bioc graphNEL)}
 }
+\value{
+A list, the contents of which are the attribute values, the names of
+which are the names of the edges.
 }
 \author{
 Paul Shannon
@@ -28,7 +29,5 @@ Paul Shannon
   noa.names (g)
     #  [1] "type"  "lfc"   "label" "count"
 }
-
-
 
 \keyword{graph}
