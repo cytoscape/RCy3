@@ -24,7 +24,7 @@ which are the names of the edges.
 Paul Shannon
 }
 \seealso{
- eda
+ noa, eda, noa.names
 }
 \examples{
   g <- makeSimpleGraph()
