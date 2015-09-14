@@ -383,7 +383,10 @@ CytoscapeConnection = function(host='localhost', port=1234) {
     uri = sprintf('http://%s:%s', host, port)
     cc = new('CytoscapeConnectionClass', uri = uri)
     if (!url.exists(uri)){
-        write(sprintf('Connection failed. To troubleshoot: 1) Please ensure that you have Cytoscape open and the latest version of CyREST installed. 2) Ensure that you installed Java 8 (not 7 or below).'), stderr())
+        write(sprintf('Connection failed.'), stderr())
+        write(sprintf('To troubleshoot: 1) Please ensure that you have Cytoscape open'), stderr())
+        write(sprintf('2) that the latest version of CyREST is installed.'), stderr())
+        write(sprintf('3) that Cytoscape uses Java 8 (not 7 or below).'), stderr())
         return()
     }
     return(cc)

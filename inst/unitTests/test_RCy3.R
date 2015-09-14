@@ -81,7 +81,7 @@ run.tests = function ()
   test.setNodeLabelPropertiesDirect ()
   test.setNodeOpacityDirect ()
   test.setEdgeOpacityDirect ()
-  test.setEdgeColorDirect ()
+  test.setEdgeColorDirect () #TODO
   test.setEdgeSourceArrowShapeDirect ()
   test.setEdgeLabelDirect ()
   test.setEdgeFontSizeDirect ()
