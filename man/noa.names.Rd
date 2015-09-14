@@ -5,6 +5,10 @@ noa.names
 }
 \description{
 Retrieve the names of the node attributes in the specified graph.
+These are typically strings like 'type', 'label', 'count', and
+(strongly recommended when you create a graph) 'nodeType'.  Once you are
+reminded of the names of the edge attributes, you can use the method
+'eda' to get all the values of this attribute for the edges in the graph.
 }
 \usage{
 noa.names(graph)
