@@ -1548,58 +1548,55 @@ test.setNodeOpacityDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeOpacityDirect = function ()
 {
-  title = 'test.setEdgeOpacityDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  setDefaultEdgeLineWidth (cw, 10)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edge.names = cy2.edge.names (g)
-  # TODO for loops not needed
-  for (reps in 1:3) {
+    title = 'test.setEdgeOpacityDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    setDefaultEdgeLineWidth (cw, 10)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    
+    edge.names = cy2.edge.names (g)
+    
     setEdgeOpacityDirect (cw, edge.names [1],  80); 
     setEdgeOpacityDirect (cw, edge.names [2],  0); 
     setEdgeOpacityDirect (cw, edge.names [3],  255); 
     redraw (cw);
-  
+    
     setEdgeOpacityDirect (cw, edge.names [2],  80); 
     setEdgeOpacityDirect (cw, edge.names [3],  0); 
     setEdgeOpacityDirect (cw, edge.names [1],  255); 
     redraw (cw);
-  
+    
     setEdgeOpacityDirect (cw, edge.names [1],  80); 
     setEdgeOpacityDirect (cw, edge.names [3],  40); 
     setEdgeOpacityDirect (cw, edge.names [2],  255); 
     redraw (cw);
-  
+    
     setEdgeOpacityDirect (cw, edge.names [1],  0); 
     setEdgeOpacityDirect (cw, edge.names [3],  0); 
     setEdgeOpacityDirect (cw, edge.names [2],  0); 
     redraw (cw);
-  
+    
     setEdgeOpacityDirect (cw, edge.names [1],  255); 
     setEdgeOpacityDirect (cw, edge.names [3],  255); 
     setEdgeOpacityDirect (cw, edge.names [2],  255); 
     redraw (cw);
-    } # for reps
-
-  for (i in 1:3) {
+    
+    
     setEdgeOpacityDirect (cw, edge.names, 0); redraw (cw)
     setEdgeOpacityDirect (cw, edge.names, 255); redraw (cw)
-    } # for i
-
-  for (i in 1:3) {
+    
+    
     setEdgeOpacityDirect (cw, edge.names, c (0, 128, 255)); redraw (cw)
     setEdgeOpacityDirect (cw, edge.names, c (255, 0, 128)); redraw (cw)
-    } # for i
 
-  setEdgeOpacityDirect (cw, edge.names, 255); redraw (cw)
-
-  invisible (cw)
+    
+    setEdgeOpacityDirect (cw, edge.names, 255); redraw (cw)
+    
+    invisible (cw)
 
 } # test.setEdgeOpacityDirect
 #------------------------------------------------------------------------------------------------------------------------
