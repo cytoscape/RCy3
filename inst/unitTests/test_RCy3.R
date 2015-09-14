@@ -104,7 +104,7 @@ run.tests = function ()
   test.getAllNodes ()
   test.getAllEdges ()
   test.selectNodes ()
-  test.nodeNeighborReportingAndSelection ()
+  #test.nodeNeighborReportingAndSelection ()
   test.invertSelection ()
   test.deleteSelectedNodes ()
   test.hideNodes ()
@@ -1559,6 +1559,7 @@ test.setEdgeOpacityDirect = function ()
   redraw (cw)
 
   edge.names = cy2.edge.names (g)
+  # TODO for loops not needed
   for (reps in 1:3) {
     setEdgeOpacityDirect (cw, edge.names [1],  80); 
     setEdgeOpacityDirect (cw, edge.names [2],  0); 
@@ -1596,7 +1597,6 @@ test.setEdgeOpacityDirect = function ()
     setEdgeOpacityDirect (cw, edge.names, c (255, 0, 128)); redraw (cw)
     } # for i
 
-  Sys.sleep (1)
   setEdgeOpacityDirect (cw, edge.names, 255); redraw (cw)
 
   invisible (cw)
@@ -1670,7 +1670,7 @@ test.setEdgeSourceArrowShapeDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelDirect = function ()
 {
-  title = 'test.setEdgeOpacityDirect'
+  title = 'test.setEdgeLabelDirect '
   window.prep (title)
 
   cw = CytoscapeWindow ('setEdgeLabelDirect.test', graph=makeSimpleGraph())
@@ -1713,7 +1713,7 @@ test.setEdgeLabelDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeFontSizeDirect = function ()
 {
-  title = 'test.setEdgeOpacityDirect'
+  title = 'test.setEdgeFontSizeDirect'
   window.prep (title)
 
   g = RCy3::makeSimpleGraph ()
@@ -1732,7 +1732,7 @@ test.setEdgeFontSizeDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelColorDirect = function ()
 {
-  title = 'test.setEdgeOpacityDirect'
+  title = 'test.setEdgeLabelColorDirect'
   window.prep (title)
 
   g = RCy3::makeSimpleGraph ()
@@ -1990,7 +1990,7 @@ test.setEdgeTargetArrowColorDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelOpacityDirect = function ()
 {
-  title = 'test.setEdgeOpacityDirect'
+  title = 'test.setEdgeLabelOpacityDirect'
   window.prep (title)
 
   g = RCy3::makeSimpleGraph ()
@@ -2089,7 +2089,7 @@ test.setEdgeTargetArrowOpacityDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelPositionDirect = function ()
 {
-  title = 'test.setEdgeOpacityDirect'
+  title = 'test.setEdgeLabelPositionDirect'
   window.prep (title)
 
   g = RCy3::makeSimpleGraph ()
@@ -2108,7 +2108,7 @@ test.setEdgeLabelPositionDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelWidthDirect = function ()
 {
-  title = 'test.setEdgeOpacityDirect'
+  title = 'test.setEdgeLabelWidthDirect'
   window.prep (title)
 
   g = RCy3::makeSimpleGraph ()
