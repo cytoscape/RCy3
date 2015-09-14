@@ -1207,7 +1207,7 @@ setMethod ('.addEdges', signature (obj='CytoscapeWindowClass'),
             
             # convert the [node.SUID, node.name] dict(list) to data frame object
             suid.name.dict.df = 
-                data.frame(matrix(unlist(loc.obj@suid.name.dict), nrow=length(loc.obj@suid.name.dict), byrow=T), stringsAsFactors=FALSE)
+                data.frame(matrix(unlist(loc.obj@suid.name.dict), nrow=length(loc.obj@suid.name.dict), byrow=TRUE), stringsAsFactors=FALSE)
             colnames(suid.name.dict.df) <- c("name", "SUID")
             
             # get the SUIDs of the source nodes for the new edges
