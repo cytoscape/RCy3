@@ -387,6 +387,8 @@ CytoscapeConnection = function(host='localhost', port=1234) {
         write(sprintf('To troubleshoot: 1) Please ensure that you have Cytoscape open'), stderr())
         write(sprintf('2) that the latest version of CyREST is installed.'), stderr())
         write(sprintf('3) that Cytoscape uses Java 8 (not 7 or below).'), stderr())
+        write(sprintf('To help troubleshooting, please check:'), stderr())
+        write(sprintf('https://github.com/cytoscape/cytoscape-scripts/tree/master/system-checker'), stderr())
         return()
     }
     return(cc)
@@ -1421,13 +1423,13 @@ setMethod ('addGraphToGraph', 'CytoscapeWindowClass',
         
         for(attribute.name in node.attribute.names) {
             printf('sending noa %s', attribute.name)
-            .sendNodeAttributesForGraph(loc.obj, other.graph, attr=attribute.name, new.node.indices)
+            .sendNodeAttributesForGraph(loc.obj, other.graph, attribute.name, new.node.indices)
         }
         
         edge.attribute.names = eda.names(other.graph)
         for(attribute.name in edge.attribute.names) {
             printf('sending eda %s', attribute.name)
-            .sendEdgeAttributesForGraph(loc.obj, other.graph, attr=attribute.name, new.edge.indices)
+            .sendEdgeAttributesForGraph(loc.obj, other.graph, attribute.name, new.edge.indices)
         }
         
         # needed for 'pass-by-reference' R functionality
