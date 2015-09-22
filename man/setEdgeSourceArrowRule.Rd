@@ -8,7 +8,7 @@ Specify how data attributes -- for the specified named attribute -- are
 mapped to the source arrow type.}
 
 \usage{
-setEdgeSourceArrowRule(obj, edge.attribute.name, attribute.values, arrows, default='Arrow')
+setEdgeSourceArrowRule(obj, edge.attribute.name, attribute.values, arrows, default='ARROW')
 }
 
 \arguments{
