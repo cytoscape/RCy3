@@ -420,16 +420,6 @@ Finally, delete all the windows from this vignette:
 
 \item Mark Grimes kindly provided helpful user feedback.
 
-\item RCytoscape would not be possible without the generosity and skill of Jan Bot, whose Cytoscape plugin 'CytoscapeRPC' is the indispensable link in commuication between R and Cytoscape.
-
-\item Duncan Temple Lang's XMLRPC R package is also indispensable, providing the R end of the communication link.  Like Jan, Duncan has cheerfully provided excellent support during the development of RCytoscape.
-
-\item Nishant Gopalakrishnan kindly saw me through the Bioconductor package appproval process.  
-
-\item Dan Tenenbaum and Herve Pages, also of Bioconductor, have offered steadfast assistance and skill in creating the testing framework for RCytoscape.
-
-
-I am very grateful to all of these computer scientists, to the Cytoscape project, and to my colleagues at the Institute for Systems Biology.
 
 \end{itemize}
 
