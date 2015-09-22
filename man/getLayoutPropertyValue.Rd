@@ -34,10 +34,13 @@ getLayoutPropertyValue(obj, layout.name, property.name)
   cy <- CytoscapeConnection ()
   prop.names <- getLayoutPropertyNames (cy, 'isom')
   print (prop.names)
-    #  "maxEpoch" "sizeFactor" "radiusConstantTime"   "radius"  "minRadius" "initialAdaptation"  "minAdaptation" "coolingFactor" 
+    #  "maxEpoch" "sizeFactor" "radiusConstantTime"   "radius"  "minRadius"
+    #  "initialAdaptation"  "minAdaptation" "coolingFactor" 
   sapply (prop.names, function (pn) getLayoutPropertyValue (cy, 'isom', 'coolingFactor'))
-    #        maxEpoch         sizeFactor radiusConstantTime             radius          minRadius  initialAdaptation      minAdaptation      coolingFactor 
-    #            2                  2                  2                  2                  2                  2                  2                  2 
-}
+    #        maxEpoch         sizeFactor radiusConstantTime             radius
+    #        minRadius  initialAdaptation      minAdaptation      coolingFactor
+    #            2                  2                  2                  2            
+    #            2                  2                  2                  2
+    }
 
 \keyword{graph}
