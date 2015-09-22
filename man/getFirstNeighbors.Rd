@@ -7,7 +7,7 @@ Returns a non-redundant ('uniquified') list of all of the first
 neighbors of the supplied list of nodes.
 }
 \usage{
-getFirstNeighbors(obj, node.names)
+getFirstNeighbors(obj, node.names, as.nested.list = FALSE)
 }
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
