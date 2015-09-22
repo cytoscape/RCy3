@@ -32,7 +32,8 @@ getLayoutPropertyNames(obj, layout.name)
   cy <- CytoscapeConnection ()
   prop.names <- getLayoutPropertyNames (cy, 'isom')
   print (prop.names)
-    #  "maxEpoch" "sizeFactor" "radiusConstantTime"   "radius"  "minRadius" "initialAdaptation"  "minAdaptation" "coolingFactor"     
+    #  "maxEpoch" "sizeFactor" "radiusConstantTime"   "radius"  "minRadius"
+    #  "initialAdaptation"  "minAdaptation" "coolingFactor"     
 }
 
 \keyword{graph}
