@@ -15,7 +15,7 @@ setEdgeSourceArrowColorRule(obj, edge.attribute.name, control.points, colors, mo
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{edge.attribute.name}{the edge attribute whose values will, when this
 ColorRule is applied, determine the color of the source arrow for each edge.}
-  \item{attribute.values}{A list of scalar, discrete values. For
+  \item{control.points}{A list of scalar, discrete values. For
   instance, interaction types:  'phosphorylates', 'ubiquinates',
   'represses', 'activates' }
 \item{colors}{A color for each of the attribute.values}
