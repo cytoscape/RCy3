@@ -2205,6 +2205,12 @@ setMethod('hidePanel', 'CytoscapeConnectionClass',
         net.SUID <- as.character(obj@window.id)
         version <- pluginVersion(obj)
         
+        if (panelName %in% c('Data Panel', 'd', 'D')){
+            panelName <- 'SOUTH'
+        }else if (panelName %in% c('Control Panel', 'control', 'c')){
+            panelName <- 'WEST'
+        }
+        
         panel.name.state = list(name=panelName, state='HIDE')
         
         resource.uri <- paste(obj@uri, version, "ui/panels", sep="/")
@@ -2230,6 +2236,12 @@ setMethod('dockPanel', 'CytoscapeConnectionClass',
         net.SUID <- as.character(obj@window.id)
         version <- pluginVersion(obj)
         
+        if (panelName %in% c('Data Panel', 'd', 'D')){
+            panelName <- 'SOUTH'
+        }else if (panelName %in% c('Control Panel', 'control', 'c')){
+            panelName <- 'WEST'
+        }
+        
         panel.name.state = list(name=panelName, state='DOCK')
         
         resource.uri <- paste(obj@uri, version, "ui/panels", sep="/")
@@ -2244,6 +2256,12 @@ setMethod('floatPanel', 'CytoscapeConnectionClass',
     function(obj, panelName) {
         net.SUID <- as.character(obj@window.id)
         version <- pluginVersion(obj)
+        
+        if (panelName %in% c('Data Panel', 'd', 'D')){
+            panelName <- 'SOUTH'
+        }else if (panelName %in% c('Control Panel', 'control', 'c')){
+            panelName <- 'WEST'
+        }
         
         panel.name.state = list(name=panelName, state='FLOAT')
         
