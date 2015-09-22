@@ -20,7 +20,8 @@ A list of character strings, e.g., 'trapezoid', 'ellipse', 'rect'
 \examples{
   cy <- CytoscapeConnection ()
   getNodeShapes(cy)
-   # "trapezoid" "round_rect" "ellipse" "triangle"   "rect_3d" "diamond" "parallelogram" "octagon"   "trapezoid_2" "rect" "hexagon"
+   # "trapezoid" "round_rect" "ellipse" "triangle"   "rect_3d" "diamond"
+   # "parallelogram" "octagon"   "trapezoid_2" "rect" "hexagon"
 
 }
 
