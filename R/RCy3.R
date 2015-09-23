@@ -2202,7 +2202,6 @@ setMethod('getViewCoordinates', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('hidePanel', 'CytoscapeConnectionClass', 
     function(obj, panelName) {
-        net.SUID <- as.character(obj@window.id)
         version <- pluginVersion(obj)
         
         if (panelName %in% c('Data Panel', 'd', 'D')){
@@ -2233,7 +2232,6 @@ setMethod('hideAllPanels', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('dockPanel', 'CytoscapeConnectionClass', 
     function(obj, panelName) {
-        net.SUID <- as.character(obj@window.id)
         version <- pluginVersion(obj)
         
         if (panelName %in% c('Data Panel', 'd', 'D')){
@@ -2254,7 +2252,6 @@ setMethod('dockPanel', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('floatPanel', 'CytoscapeConnectionClass', 
     function(obj, panelName) {
-        net.SUID <- as.character(obj@window.id)
         version <- pluginVersion(obj)
         
         if (panelName %in% c('Data Panel', 'd', 'D')){
