@@ -32,7 +32,7 @@
 
 
 \title{RCy3}
-\author{Paul Shannon, Tanja Muetze, Georgi Kolishovski}
+\author{Paul Shannon}
 
 \begin{document}
 
@@ -72,13 +72,12 @@ Alternatively you can download the CyREST plugin as .jar file from Cytoscape's a
 Here we create a 3-node graph in R, send it to Cytoscape for display and layout.  For the sake of simplicity, no node attributes, no edges, and no vizmapping is included; those topics are covered in subsequent examples.
 
 <<g0>>=
-  #library(RCy3)
-    source('/Users/Pomm/Documents/Projects/Bioconductor/Github/Bioconductor_RCytoscape/R/RCy3.R')
+  library(RCy3)
   g <- new ('graphNEL', edgemode='directed')
   g <- graph::addNode ('A', g)
   g <- graph::addNode ('B', g)
   g <- graph::addNode ('C', g)
-  cw <- CytoscapeWindow ('vignette', graph=g)
+  cw <- CytoscapeWindow ('vignette', graph=g, overwrite=TRUE)
   displayGraph (cw)
 
 @ 
@@ -169,7 +168,7 @@ defauls, like you see below, requires the redraw, but setting rules
 Cytoscape soon.  In the meantime, if you are rendering a larg graph, you may want to call this only when you are sure you need to.
 
 <<defaults>>=
-  setDefaultNodeShape (cw, 'octagon')
+  setDefaultNodeShape (cw, 'OCTAGON')
   setDefaultNodeColor (cw, '#AAFF88')
   setDefaultNodeSize  (cw, 80)
   setDefaultNodeFontSize (cw, 40)
@@ -195,7 +194,7 @@ are 'kinase', 'TF' (for transcription factor) and 'cytokine'.  These are the dis
 moleculeType node attribute.  For each, we specify the shape we wish to use in rendering that type of molecule.  Thus, there
 is a discrete set of values, and we map from those values to shapes by a simple 'lookup' process.
 
-(Note (14 November 2011):  Cytoscape 3.2.1 apparently has some bugs in handling default values in vizmap rules.  For the time being, in creating a lookup rule, it is best to specify a complete mapping between data values and, i.e., node shape.  That is, specify all possible discrete data values, and provide an explicit mapping for all of them.)
+(Note (14 November 2011):  Cytoscape 2.8 apparently has some bugs in handling default values in vizmap rules.  For the time being, in creating a lookup rule, it is best to specify a complete mapping between data values and, i.e., node shape.  That is, specify all possible discrete data values, and provide an explicit mapping for all of them.)
 
 A second class of rules -- in contrast to lookup rules -- uses interpolation.  In the classic example, every node (every gene) has a mRNA expression
 value, expressed as a log fold change ('lfc') ratio, experiment vs. control.  Nodes with negative lfc are rendered in
@@ -280,7 +279,7 @@ Let us now try some simple back-and-forth between Cytoscape and R.  In Cytoscape
 
 Now we wish to extend the selected nodes to include the first neighbors of the already-selected node 'B'.  This is a common operation: for instance, after selecting one or more nodes based on experimental data or annotation, you may want to explore these in the context of interaction partners (in a protein-protein network) or in relation to upstream and downstream partners in a signaling or metabolic network.  Type:
 
-<<g9, eval=FALSE>>=
+<<g9>>=
   selectFirstNeighborsOfSelectedNodes (cw)
 @ 
 
@@ -296,8 +295,7 @@ You will see that all three nodes are now selected.  Get their identifers back t
 Despite its simplicity, RCy3's \emph{\textbf{setNodePosition}} method provides the means to create custom layout algorithms and animations.  Here is a rather nonsensical example, in which the 'A' node orbits around a fixed center, with the 'B' and 'C' nodes left unchanged.
 
 <<position>>=
-  cwe <- CytoscapeWindow ('vignette.setNodePosition',
-                              graph=RCy3::makeSimpleGraph ())
+  cwe <- CytoscapeWindow ('vignette.setNodePosition', graph=RCy3::makeSimpleGraph (), overwrite=TRUE)
   displayGraph (cwe)
   layoutNetwork (cwe, 'grid')
   redraw (cwe)
@@ -305,7 +303,8 @@ Despite its simplicity, RCy3's \emph{\textbf{setNodePosition}} method provides t
   center.x <- 200
   center.y <- 200
   radius <- 200
-  angles <- seq (0, 360, 60)
+    # sweep through full revoltion 3 times, 5 degrees at a time
+  angles <- seq (0, 360, 90)
   for (angle in angles) {
     angle.in.radians <- angle * pi / 180
     x <- center.x + (radius * cos (angle.in.radians))
@@ -326,9 +325,9 @@ We begin with the small sample graph just like that created in the 'setNodePosit
   g <- RCy3::makeSimpleGraph ()
   g <- initNodeAttribute (g, 'pval', 'numeric', 1.0)
 
-  cwm <- CytoscapeWindow ('movie', graph =g)
+  cwm <- CytoscapeWindow ('movie', graph=g, overwrite=TRUE)
   displayGraph (cwm)
-  layoutNetwork (cwm, 'grid')
+  layoutNetwork (cwm, 'jgraph-spring')
   redraw (cwm)
 
 @ 
