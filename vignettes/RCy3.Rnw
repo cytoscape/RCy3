@@ -32,7 +32,7 @@
 
 
 \title{RCy3}
-\author{Paul Shannon}
+\author{Paul Shannon, Tanja Muetze, Georgi Kolishovski}
 
 \begin{document}
 
@@ -194,7 +194,7 @@ are 'kinase', 'TF' (for transcription factor) and 'cytokine'.  These are the dis
 moleculeType node attribute.  For each, we specify the shape we wish to use in rendering that type of molecule.  Thus, there
 is a discrete set of values, and we map from those values to shapes by a simple 'lookup' process.
 
-(Note (14 November 2011):  Cytoscape 2.8 apparently has some bugs in handling default values in vizmap rules.  For the time being, in creating a lookup rule, it is best to specify a complete mapping between data values and, i.e., node shape.  That is, specify all possible discrete data values, and provide an explicit mapping for all of them.)
+(Note (14 November 2011):  Cytoscape 3.2.1 apparently has some bugs in handling default values in vizmap rules.  For the time being, in creating a lookup rule, it is best to specify a complete mapping between data values and, i.e., node shape.  That is, specify all possible discrete data values, and provide an explicit mapping for all of them.)
 
 A second class of rules -- in contrast to lookup rules -- uses interpolation.  In the classic example, every node (every gene) has a mRNA expression
 value, expressed as a log fold change ('lfc') ratio, experiment vs. control.  Nodes with negative lfc are rendered in
@@ -279,7 +279,7 @@ Let us now try some simple back-and-forth between Cytoscape and R.  In Cytoscape
 
 Now we wish to extend the selected nodes to include the first neighbors of the already-selected node 'B'.  This is a common operation: for instance, after selecting one or more nodes based on experimental data or annotation, you may want to explore these in the context of interaction partners (in a protein-protein network) or in relation to upstream and downstream partners in a signaling or metabolic network.  Type:
 
-<<g9>>=
+<<g9, eval=FALSE>>=
   selectFirstNeighborsOfSelectedNodes (cw)
 @ 
 
