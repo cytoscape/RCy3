@@ -40,7 +40,7 @@
 
 \emph{Cytoscape} is a well-known bioinformatics tool for displaying and exploring biological networks.
 \emph{\textbf{R}} is a powerful programming language and environment for statistical and exploratory data analysis.
-\emph{RCyr} uses CyREST to communicate between \emph{\textbf{R}} and Cytoscape, allowing Bioconductor graphs to be
+\emph{RCy3} uses CyREST to communicate between \emph{\textbf{R}} and Cytoscape, allowing Bioconductor graphs to be
 viewed, explored and manipulated with the Cytoscape point-and-click visual interface.  Thus these two quite different,
 quite useful bioinformatics software environments are connected, mutually enhancing each other, providing new
 possibilities for exploring biological data.
@@ -53,7 +53,7 @@ In addition to this package (RCy3), you will need:
      \url{http://www.oracle.com/technetwork/java/javase/downloads/jre7-downloads-1880261.html}.
   \item Cytoscape version 3.2.1+, which can be downloaded from 
      \url{http://cytoscape.org}.
-  \item CyREST, version 0.9.14 or later, a Cytoscape plugin which provides the Cytoscape end of the communication layer, can be downloaded from the Cytoscape plugins website:
+  \item CyREST, version 2.0.2 or later, a Cytoscape plugin which provides the Cytoscape end of the communication layer, can be downloaded from the Cytoscape plugins website:
      \url{http://apps.cytoscape.org/apps/cyrest}.
 \end{itemize}
 
@@ -272,9 +272,12 @@ If you want to have more of the Cytoscape Desktop devoted to displaying your gra
 
 Let us now try some simple back-and-forth between Cytoscape and R.  In Cytoscape, click the 'B' node.  In R:
 
+<<8a, echo=FALSE>>=
+selectNodes(cw, 'B')
+@
+
 <<g8>>=
   getSelectedNodes (cw)
-    
 @ 
 
 Now we wish to extend the selected nodes to include the first neighbors of the already-selected node 'B'.  This is a common operation: for instance, after selecting one or more nodes based on experimental data or annotation, you may want to explore these in the context of interaction partners (in a protein-protein network) or in relation to upstream and downstream partners in a signaling or metabolic network.  Type:
@@ -317,7 +320,7 @@ Despite its simplicity, RCy3's \emph{\textbf{setNodePosition}} method provides t
 
 \section{Movies:  explore time course data by animating node color and size}
 
-Timecourse microarray expression experiments are commonplace in molecular biology research.  Once reduced, the expression data is often summarized as a lfc (log fold change, experiment vs control) and a p-value for each gene at each time point.  Many Bioconductor packages can be used to find biologically interesting patterns in such data, but visualization -- as one aspect of exploratory data analysis -- should not be overlooked.  Here is a toy problem, a small example illustrating how this can be accomplished with RCy3.
+Time course microarray expression experiments are commonplace in molecular biology research.  Once reduced, the expression data is often summarized as a lfc (log fold change, experiment vs control) and a p-value for each gene at each time point.  Many Bioconductor packages can be used to find biologically interesting patterns in such data, but visualization -- as one aspect of exploratory data analysis -- should not be overlooked.  Here is a toy problem, a small example illustrating how this can be accomplished with RCy3.
 
 We begin with the small sample graph just like that created in the 'setNodePosition' example above.  We add some made-up statistical signficicance data into a new node attribute, 'pval'.
 
@@ -327,7 +330,7 @@ We begin with the small sample graph just like that created in the 'setNodePosit
 
   cwm <- CytoscapeWindow ('movie', graph=g, overwrite=TRUE)
   displayGraph (cwm)
-  layoutNetwork (cwm, 'jgraph-spring')
+  layoutNetwork (cwm, 'grid')
   redraw (cwm)
 
 @ 
@@ -379,7 +382,7 @@ Once the rules are in effect, node color and size will always be a function of e
     }
 
 @ 
-Though this example is very simple and quite without biologcal meaning, we hope that it adequately illustrates the technique.  We commonly use just this approach to explore large scale timecourse expression data experiments in the context of curated, biologically relevant pathways, such as those provided by KEGG, and selected by packages such as SPIA or Category.
+Though this example is very simple and quite without biologcal meaning, we hope that it adequately illustrates the technique.  We commonly use just this approach to explore large scale time course expression data experiments in the context of curated, biologically relevant pathways, such as those provided by KEGG, and selected by packages such as SPIA or Category.
 
 Finally, delete all the windows from this vignette:
 
