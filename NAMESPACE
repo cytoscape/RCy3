@@ -181,7 +181,8 @@ exportMethods (
    getDefaultEdgeReverseSelectionColor,
    setDefaultEdgeReverseSelectionColor,
    saveImage,
-   saveNetwork
+   saveNetwork,
+   plot.cy
    )
 
 export(
