@@ -362,8 +362,7 @@ setGeneric ('.edgeNameToEdgeSUID',
             signature='obj', function (obj, edge.names) standardGeneric ('.edgeNameToEdgeSUID'))
 setGeneric ('.edgeSUIDToEdgeName', 
             signature='obj', function (obj, edge.suids) standardGeneric ('.edgeSUIDToEdgeName'))
-setGeneric ('plot.cy',
-            signature='obj', function (obj, node.df, edge.df) standardGeneric('plot.cy'))
+setGeneric ('plot.cy', function (node.df, edge.df) standardGeneric('plot.cy'))
 
 # ------------------------------------------------------------------------------
 setValidity("CytoscapeWindowClass", function(object) {
