@@ -181,8 +181,7 @@ exportMethods (
    getDefaultEdgeReverseSelectionColor,
    setDefaultEdgeReverseSelectionColor,
    saveImage,
-   saveNetwork,
-   plot.cy
+   saveNetwork
    )
 
 export(
@@ -198,7 +197,8 @@ export(
    demoSimpleGraph,
    makeRandomGraph,
    initNodeAttribute,
-   initEdgeAttribute
+   initEdgeAttribute,
+   plot.cy
    )
 
 importClassesFrom(graph, graph, graphBase)
@@ -217,6 +217,4 @@ importFrom(graph, randomGraph)
 importFrom(RJSONIO, fromJSON, toJSON)
 importFrom(httr, GET, PUT, POST, DELETE)
 importFrom(RCurl, url.exists)
-
-
 
