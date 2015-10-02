@@ -20,7 +20,7 @@ A list of character strings.
 \examples{
   cw <- CytoscapeWindow ('getEdgeCount.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   redraw (cw)
     # in Cytoscape, interactively select two nodes, or
   getEdgeCount (cw)

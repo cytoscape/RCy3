@@ -32,7 +32,7 @@ None.
   cw <- CytoscapeWindow ('setNodeBorderOpacityDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   setNodeBorderOpacityDirect (cw, 'A', 220)
   setNodeBorderOpacityDirect (cw, c('B', 'C'), c(22, 55))
   redraw (cw)

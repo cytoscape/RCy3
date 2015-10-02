@@ -32,7 +32,7 @@ None.
   cw <- CytoscapeWindow ('hideNodes.test', graph=makeSimpleGraph())
   displayGraph(cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   # saveLayout (cw, 'layout.tmp.RData')
   hideNodes (cw, c ('A', 'B'))
   unhideAll (cw)

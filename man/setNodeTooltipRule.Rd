@@ -25,7 +25,7 @@ None.
 \examples{
   cw <- CytoscapeWindow ('setNodeTooltipRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   redraw (cw)
   setNodeTooltipRule (cw, 'type')
   setNodeTooltipRule (cw, 'lfc')

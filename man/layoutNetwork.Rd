@@ -26,7 +26,7 @@ Nothing.
 \examples{
   cw <- CytoscapeWindow ('layout.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork (cw, 'jgraph-spring')
+  layoutNetwork (cw, 'force-directed')
   redraw (cw)  # applies default vizmap (rendering) rules, plus any you
                # have specified
 }

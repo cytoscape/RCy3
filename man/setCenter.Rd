@@ -32,7 +32,7 @@ None.
   cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   original.center <- getCenter (cw)   # named list, "x" and "y".  initial values might be 140 and 90
     # now pan the display to the left, by setting the the visual center
     # to increasing values of x, without changing the location of the

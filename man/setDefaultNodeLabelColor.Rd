@@ -37,7 +37,7 @@ None.
   cw <- CytoscapeWindow ('setDefaultNodeLabelColor.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   setDefaultNodeLabelColor (cw, '#FFFFFF') # white node labels
   redraw (cw)
 }

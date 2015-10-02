@@ -35,7 +35,7 @@ None.
   cw <- CytoscapeWindow ('setDefaultEdgeLineWidth.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   setDefaultEdgeLineWidth (cw, 5) 
   redraw (cw)
 }

@@ -27,7 +27,7 @@ Nothing.
 \examples{
   cw <- CytoscapeWindow ('displayGraph.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   redraw (cw)
 }
 

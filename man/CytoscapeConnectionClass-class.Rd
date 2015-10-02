@@ -15,8 +15,6 @@
   \describe{
     \item{ping}{}
     \item{version}{}
-    \item{msg}{}
-    \item{clearMsg}{}
     \item{getWindowcount}{}
     \item{getWindowID}{}
     \item{getWindowCount}{}
