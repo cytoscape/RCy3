@@ -29,7 +29,7 @@ A named list of four numbers, with these names:  top.x, top.y, bottom.x, bottom.
   cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   print (getViewCoordinates (cw))
 }
 

@@ -34,7 +34,7 @@ None.
 \examples{
   cw <- CytoscapeWindow ('saveImage.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   redraw (cw)
   filename = tempfile () # paste (getwd (), 'saveImageTest.jpg', sep='/')
   # saveImage (cw, filename, 'jpg', 2.0)   # doesn't yet work reliably at bioc

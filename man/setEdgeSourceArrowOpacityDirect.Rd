@@ -29,7 +29,7 @@ None.
 \examples{
   cw <- CytoscapeWindow ('setEdgeSourceArrowOpacityDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   redraw (cw)
 
   edges.of.interest = as.character (cy2.edge.names (cw@graph))

@@ -28,7 +28,7 @@ None.
   cw <- CytoscapeWindow ('deleteSelectedEdges.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring') 
+  layoutNetwork(cw, 'force-directed') 
   print (cy2.edge.names (cw@graph))   # find out Cytoscape's names for  these edges
   selectEdges (cw, "B (synthetic lethal) C")
   deleteSelectedEdges (cw)

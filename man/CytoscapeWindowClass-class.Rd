@@ -10,6 +10,7 @@
     \item{\code{graph}:}{An \code{attrData} a graph instance.}
     \item{\code{collectTimings}:}{An \code{logical} object.}
     \item{\code{suid.name.dict}:}{A \code{list} object.}
+    \item{\code{edge.suid.name.dict}:}{A \code{list} object.}
     \item{\code{view.id}:}{A \code{numeric} object.}
     \item{\code{uri}:}{An \code{attrData} the address of the Cytoscape
       CyREST API.}

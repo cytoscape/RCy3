@@ -20,7 +20,7 @@ An integer.
 \examples{
   cw <- CytoscapeWindow ('getSelectedNodeCount.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   redraw (cw)
     # in Cytoscape, interactively select two nodes, or
   selectNodes (cw, c ('A','B'))

@@ -37,7 +37,7 @@ None.
   setEdgeTooltipRule (cw, 'edgeType')
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
      # have the tooltips popup after 200 milliseconds, and then
      # disappear after 3000 (3 seconds)
   setTooltipInitialDelay (cw, 200)

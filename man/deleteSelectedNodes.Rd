@@ -28,7 +28,7 @@ None.
   cw <- CytoscapeWindow ('deleteSelectedNodes.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring') 
+  layoutNetwork(cw, 'force-directed') 
   print (nodes (cw@graph))
   selectNodes (cw, "B")
   deleteSelectedNodes (cw)

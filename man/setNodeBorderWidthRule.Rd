@@ -33,7 +33,7 @@ None.
 \examples{
   cw <- CytoscapeWindow ('setNodeBorderWidthRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   redraw (cw)
   node.attribute.values = c ('kinase', 'transcription factor', 'glycoprotein')
   line.widths = c (0, 8, 16)

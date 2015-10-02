@@ -29,7 +29,7 @@ None.
   cw <- CytoscapeWindow ('setEdgeLabelDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   edge.names = as.character (cy2.edge.names (cw@graph)) [1:2]
   for (i in 1:10) {
     setEdgeLabelDirect (cw, edge.names, 255 - (i * 25))

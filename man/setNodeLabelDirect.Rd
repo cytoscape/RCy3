@@ -28,7 +28,7 @@ None.
   cw <- CytoscapeWindow ('setNodeLabelDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   setNodeLabelDirect (cw, 'A', 'A new, very long label')
   redraw (cw)
 }

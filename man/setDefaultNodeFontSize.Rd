@@ -38,7 +38,7 @@ None.
   cw <- CytoscapeWindow ('setDefaultNodeFontSize.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   setDefaultNodeFontSize (cw, 32)
   redraw (cw)
 }
