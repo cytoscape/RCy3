@@ -26,7 +26,7 @@ Nothing.
 \examples{
   cw <- CytoscapeWindow ('saveLayout.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   saveLayout (cw, 'layout.RData')
   layoutNetwork(cw, 'jgraph-circle')
   restoreLayout (cw, 'layout.RData')

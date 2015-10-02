@@ -29,7 +29,7 @@ None.
   cw <- CytoscapeWindow ('setEdgeLineWidthDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   edge.names = as.character (cy2.edge.names (cw@graph)) [1:2]
   for (i in 1:10) {
     setEdgeLineWidthDirect (cw, edge.names, i)

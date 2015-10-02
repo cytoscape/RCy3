@@ -28,7 +28,7 @@ Time in seconds.
                              collectTimings=TRUE)
   message (paste ('estimated time: ', predictTimeToDisplayGraph (cw)))
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
 }
 
 

@@ -35,8 +35,6 @@ CytoscapeConnection (host = "localhost", port = 1234)
 \seealso{
   ping
   version
-  msg
-  clearMsg
   getWindowCount
   getWindowID
   getWindowCount

@@ -32,7 +32,7 @@ None.
 \examples{
   cw <- CytoscapeWindow ('setEdgeTargetArrowShapeDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   redraw (cw)
 
 

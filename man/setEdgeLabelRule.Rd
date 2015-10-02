@@ -25,7 +25,7 @@ None.
 \examples{
   cw <- CytoscapeWindow ('setEdgeLabelRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   redraw (cw)
   setEdgeLabelRule (cw, 'edgeType')
 }

@@ -37,7 +37,7 @@ None.
   setEdgeTooltipRule (cw, 'edgeType')
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
      # have the tooltips popup right away, as soon as the mouse hovers
      # over a node or edge, and then stay up as long as the mouse
      # remains on top of that node or edge

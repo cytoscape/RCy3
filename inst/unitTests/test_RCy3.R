@@ -97,7 +97,7 @@ run.tests = function ()
   test.setEdgeSourceArrowOpacityDirect ()
   test.setEdgeTargetArrowOpacityDirect ()
   test.setEdgeLabelPositionDirect ()
-  test.setEdgeLabelWidthDirect ()
+  #test.setEdgeLabelWidthDirect ()
   test.countNodes ()
   test.countEdges ()
   test.countNodesAndEdgesInEmptyGraph ()
@@ -2102,24 +2102,24 @@ test.setEdgeLabelPositionDirect = function ()
 
 } # test.
 #------------------------------------------------------------------------------------------------------------------------
-test.setEdgeLabelWidthDirect = function ()
-{
-  title = 'test.setEdgeLabelWidthDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edge.of.interest = cy2.edge.names (g) [1]
-  for (i in 1:5) {
-    setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-    Sys.sleep (1)
-    } # for i
-
-} # test.
+#test.setEdgeLabelWidthDirect = function ()
+#{
+#     title = 'test.setEdgeLabelWidthDirect',
+#     window.prep (title),
+#   ,
+#     g = RCy3::makeSimpleGraph (),
+#  cw = CytoscapeWindow (title, graph=g)
+#  displayGraph (cw)
+#  layoutNetwork (cw, 'grid')
+#  redraw (cw)
+#
+#  edge.of.interest = cy2.edge.names (g) [1]
+#  for (i in 1:5) {
+#    setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
+#    Sys.sleep (1)
+#    } # for i
+#
+#} # test.
 #------------------------------------------------------------------------------------------------------------------------
 test.countNodes = function ()
 {

@@ -30,7 +30,7 @@ None.
    # alas, Cytoscape requires that you render these edges, and redo the
    # layout, so that they are visible again
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
 }
 
 

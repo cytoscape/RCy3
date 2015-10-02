@@ -27,7 +27,7 @@ None.
   cw <- CytoscapeWindow ('fitSelectedContent.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   setZoom (cw, 0.1)
   selectNodes (cw, 'A')
   fitSelectedContent (cw)

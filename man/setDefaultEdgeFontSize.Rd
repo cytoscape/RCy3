@@ -37,7 +37,7 @@ None.
   cw <- CytoscapeWindow ('test setDefaultEdgeFontSize', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   setEdgeLabelRule (cw, 'edgeType')
   setDefaultEdgeFontSize (cw, 66)
   redraw (cw)

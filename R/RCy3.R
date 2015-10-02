@@ -1,10 +1,5 @@
-# move these to the DESCRIPTION file
-library(httr)
-library(graph)
-library(methods)
-library(RJSONIO)
-library(RCurl)
-
+# RCy3.R
+#--------------------------------------------------------------------------------
 # this code is for the Bioconductor build system. You should never need to set or
 # read these environment variables in ordinary use.
 .BBSOverride <- function(host, port) {
@@ -44,7 +39,7 @@ setClass("CytoscapeWindowClass",
 		collectTimings="logical",
 		suid.name.dict="list",
 		edge.suid.name.dict="list",
-    view.id='numeric'), 
+                view.id='numeric'), 
 	contains = 'CytoscapeConnectionClass', 
 	prototype = prototype(title="R graph", 
 		graph=new("graphNEL", edgemode='directed'), 
@@ -61,10 +56,6 @@ setGeneric ('pluginVersion',
 	signature='obj', function(obj) standardGeneric('pluginVersion'))
 setGeneric ('getServerStatus',
     signature='obj', function(obj, api.version) standardGeneric('getServerStatus'))
-setGeneric ('msg', 
-	signature='obj', function(obj, string) standardGeneric('msg'))
-setGeneric ('clearMsg', 
-	signature='obj', function(obj) standardGeneric('clearMsg'))
 setGeneric ('createWindow', 
 	signature='obj', function(obj) standardGeneric('createWindow'))
 setGeneric ('createWindowFromSelection', 
@@ -258,7 +249,7 @@ setGeneric ('setEdgeLabelOpacityDirect', signature='obj', function (obj, edge.na
 setGeneric ('setEdgeSourceArrowOpacityDirect', signature='obj', function (obj, edge.names, new.values) standardGeneric ('setEdgeSourceArrowOpacityDirect'))
 setGeneric ('setEdgeTargetArrowOpacityDirect', signature='obj', function (obj, edge.names, new.values) standardGeneric ('setEdgeTargetArrowOpacityDirect'))
 #setGeneric ('setEdgeLabelPositionDirect', signature='obj', function (obj, edge.names, new.value) standardGeneric ('setEdgeLabelPositionDirect'))
-setGeneric ('setEdgeLabelWidthDirect', signature='obj', function (obj, edge.names, new.value) standardGeneric ('setEdgeLabelWidthDirect'))
+#setGeneric ('setEdgeLabelWidthDirect', signature='obj', function (obj, edge.names, new.value) standardGeneric ('setEdgeLabelWidthDirect'))
 
 
 setGeneric ('setEdgeLineStyleRule',     signature='obj', 
@@ -362,7 +353,7 @@ setGeneric ('.edgeNameToEdgeSUID',
             signature='obj', function (obj, edge.names) standardGeneric ('.edgeNameToEdgeSUID'))
 setGeneric ('.edgeSUIDToEdgeName', 
             signature='obj', function (obj, edge.suids) standardGeneric ('.edgeSUIDToEdgeName'))
-setGeneric ('plot.cy', function (node.df, edge.df) standardGeneric('plot.cy'))
+setGeneric ('cyPlot', function (node.df, edge.df) standardGeneric('cyPlot'))
 
 # ------------------------------------------------------------------------------
 setValidity("CytoscapeWindowClass", function(object) {
@@ -590,18 +581,6 @@ setMethod('getServerStatus', 'CytoscapeConnectionClass',
               request.res = GET(url=request.uri)
               return(request.res)
           }) # END getServerStatus
-
-# ------------------------------------------------------------------------------
-setMethod('msg', 'CytoscapeConnectionClass', function (obj, string) {
-    message("not yet implemented")
-	### invisible (xml.rpc (obj@uri, 'Cytoscape.setStatusBarMessage', string))
-}) # END msg
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('clearMsg', 'CytoscapeConnectionClass', function (obj) {
-    message("not yet implemented")
-#		invisible (xml.rpc (obj@uri, 'Cytoscape.clearStatusBarMessage'))
-		})
 
 # ------------------------------------------------------------------------------
 setMethod('createWindow', 'CytoscapeWindowClass', 
@@ -1031,10 +1010,12 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'CytoscapeConnectionClass',
 setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
 
   function (obj,  window.title) {
+      window.id = NULL
       # handles the case when 'obj' is 'CytoscapeConnectionClass', instead of 'CytoscapeWindowClass' 
       if(class(obj) == "CytoscapeConnectionClass") {
+          window.id = as.character(getWindowID(obj, window.title))
           loc.obj = 
-              new('CytoscapeWindowClass', title=window.title, window.id = as.character(getWindowID(obj, window.title)), uri = obj@uri)
+              new('CytoscapeWindowClass', title=window.title, window.id=window.id, uri=obj@uri)
       } else {
           loc.obj = obj
       }
@@ -1567,7 +1548,7 @@ setMethod ('saveLayout', 'CytoscapeWindowClass',
 setMethod ('restoreLayout', 'CytoscapeWindowClass',
 
   function (obj, filename) {
-     load (filename)
+     custom.layout <- local({x=load(filename); get(x)})
      node.names <- names (custom.layout)
      node.names.filtered <- intersect (node.names, getAllNodes (obj))
      x <- as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$x)))
@@ -3262,7 +3243,8 @@ setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
          }
       }
       # set the node property direct
-      return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_BORDER_WIDTH"))
+      print("this method ('setNodeBorderWidthDirect') hangs for a very long time")
+      #return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_BORDER_WIDTH"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -4871,10 +4853,8 @@ setMethod ('saveImage', 'CytoscapeWindowClass',
         resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
                               paste0("views/first.", image.type), sep="/")
 
-        request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type)))
-        
-        write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
-        
+        #request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type)))
+        #write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
       }else{
           write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
       }
@@ -4886,9 +4866,9 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
        if (!file.exists(file.name)){
            # TODO currently only saves as cys, enable to save also to other formats incl. glm
            resource.uri <- paste(obj@uri, pluginVersion(obj), "session", sep="/")
-           request.res <- POST(url=resource.uri, body=NULL, write_disk(paste0(file.name, ".cys")))
-           write (sprintf ('saving network to file %s.cys', file.name), stderr ())
-           invisible(request.res)
+           #request.res <- POST(url=resource.uri, body=NULL, write_disk(paste0(file.name, ".cys")))
+           #write (sprintf ('saving network to file %s.cys', file.name), stderr ())
+           #invisible(request.res)
        }
      })
 
@@ -5190,19 +5170,19 @@ findColumnType <- function(columnType){
     }
 } # findColumnType
 
-# plot.cy
+# cyPlot
 # New RCy3 function to read node and edge attributes according to class()
 #
 # Given a node attribute data frame (node.df) with the node names in column 1, 
 # and an edge attribute data.frame (edge.df) with node names in the first two columns,
-# plot.cy creates a graphNEL object with nodes, edges, and their attributes 
+# cyPlot creates a graphNEL object with nodes, edges, and their attributes 
 # that can be loaded into Cytoscape with CytoscapeWindow. 
 #
 #  Author: Mark Grimes
-#	[plot.cy.5 in MGRCyFunctions.R]
+#	[cyPlot.5 in MGRCyFunctions.R]
 #########################################################################################
 #
-plot.cy <- function (node.df, edge.df) {
+cyPlot <- function (node.df, edge.df) {
 	edge.nodes <- unique(c(as.character(edge.df[,1]), as.character(edge.df[,2])))		
 	mydata <- new("graphNEL", edgemode='directed', nodes = unique(c(as.character(node.df[, 1]), edge.nodes)))
 #	Set up and load all the node attributes
@@ -5236,4 +5216,4 @@ plot.cy <- function (node.df, edge.df) {
 	edgeData (mydata, as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), attr=names(edge.class[grep("numeric", edge.class)])[i]) <- as.numeric(edge.df[,grep("numeric", edge.class)[i]])	}	
 	return(mydata)
 }
-# END plot.cy
+# END cyPlot

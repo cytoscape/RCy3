@@ -27,7 +27,7 @@ None.
   cw <- CytoscapeWindow ('setNodeBorderWidthDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'jgraph-spring')
+  layoutNetwork(cw, 'force-directed')
   setNodeBorderWidthDirect (cw, 'A', 10)
   redraw (cw)
 }
