@@ -30,6 +30,9 @@ None.
 
 \seealso{ \code{\link{getArrowShapes}}}
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setEdgeTargetArrowRule.test', graph=makeSimpleGraph())
   arrows <- c ('Arrow', 'Diamond', 'Circle')
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')

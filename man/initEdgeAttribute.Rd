@@ -34,6 +34,9 @@ Paul Shannon
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   g = new ('graphNEL', edgemode='directed')
   g = initEdgeAttribute (g, 'edgeType', 'char', 'associates with')
 }

@@ -28,6 +28,9 @@ Paul Shannon
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   g <- makeSimpleGraph ()
   cy2.edge.names (g)
     #                      A~B                      B~C                      C~A 

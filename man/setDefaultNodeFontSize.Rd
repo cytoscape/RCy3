@@ -35,6 +35,9 @@ None.
  }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setDefaultNodeFontSize.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)

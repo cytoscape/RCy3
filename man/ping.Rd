@@ -19,6 +19,9 @@ ping(obj)
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   ping (cy)
     # "It works!"   

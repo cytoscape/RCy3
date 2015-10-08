@@ -56,6 +56,9 @@ CytoscapeConnection (host = "localhost", port = 1234)
 
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   deleteAllWindows (cy)
   getNodeShapes (cy)

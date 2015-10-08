@@ -27,6 +27,9 @@ Paul Shannon
  eda.names
 }
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
 g  <- makeSimpleGraph()
 eda (g, 'edgeType')
 

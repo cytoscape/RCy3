@@ -24,6 +24,8 @@ None.
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
   window.name <- 'demo addGraphToGraph'
   cw3 <- CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw3)

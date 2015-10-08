@@ -199,6 +199,12 @@ window.prep = function (title)
      deleteWindow (cy, title)
 
 } # window.prep
+
+
+.setUp <- function() deleteAllWindows(CytoscapeConnection())
+.tearDown <- function() deleteAllWindows(CytoscapeConnection())
+
+
 #------------------------------------------------------------------------------------------------------------------------
 test.plugin.version = function ()
 {
@@ -1414,6 +1420,7 @@ test.setNodeOpacityRule = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeColorDirect = function ()
 {
+  DEACTIVATED("too slow")
   title = 'test.setNodeColorDirect'
   window.prep (title)
 
@@ -1437,6 +1444,7 @@ test.setNodeColorDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeBorderColorDirect = function ()
 {
+  DEACTIVATED("too slow")
   title = 'test.setNodeBorderColorDirect'
   window.prep (title)
 
@@ -1460,6 +1468,7 @@ test.setNodeBorderColorDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeLabelDirect = function ()
 {
+  DEACTIVATED("too slow")
   title = 'test.setNodeLabelDirect'
   window.prep (title)
 
@@ -1485,6 +1494,7 @@ test.setNodeLabelDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeLabelPropertiesDirect = function ()
 {  
+  DEACTIVATED("too slow")
   print ('--- test.setNodeLabelsPropertiesDirect')
   title = 'test.setNodeLabelPropertiesDirect'
   window.prep (title)
@@ -1509,6 +1519,7 @@ test.setNodeLabelPropertiesDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeOpacityDirect = function ()
 {
+  DEACTIVATED("too slow")
   title = 'test.setNodeOpacityDirect'
   window.prep (title)
 
@@ -1547,6 +1558,7 @@ test.setNodeOpacityDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeOpacityDirect = function ()
 {
+    DEACTIVATED("too slow for some reason")
     title = 'test.setEdgeOpacityDirect'
     window.prep (title)
     
@@ -1601,6 +1613,7 @@ test.setEdgeOpacityDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeColorDirect = function ()
 {
+  DEACTIVATED("very slow for some reason")
   title = 'test.setEdgeColorDirect'
   window.prep (title)
 
@@ -1709,6 +1722,7 @@ test.setEdgeLabelDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeFontSizeDirect = function ()
 {
+  DEACTIVATED("too slow for some reason.")
   title = 'test.setEdgeFontSizeDirect'
   window.prep (title)
 
@@ -1728,6 +1742,7 @@ test.setEdgeFontSizeDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelColorDirect = function ()
 {
+  DEACTIVATED("too slow for some reason")
   title = 'test.setEdgeLabelColorDirect'
   window.prep (title)
 
@@ -1986,6 +2001,7 @@ test.setEdgeTargetArrowColorDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelOpacityDirect = function ()
 {
+  DEACTIVATED("too slow for some reason")
   title = 'test.setEdgeLabelOpacityDirect'
   window.prep (title)
 
@@ -2085,6 +2101,7 @@ test.setEdgeTargetArrowOpacityDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelPositionDirect = function ()
 {
+  DEACTIVATED("too slow for some reason")
   title = 'test.setEdgeLabelPositionDirect'
   window.prep (title)
 
@@ -2925,6 +2942,7 @@ test.setGraph = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodePosition = function ()
 {
+  DEACTIVATED("too slow")
   title = 'test.setNodePosition'
   window.prep (title)
 
@@ -2994,6 +3012,7 @@ test.getNodePosition = function ()
 # 
 test.getNodePosition.colonInNodeName = function ()
 {
+  DEACTIVATED("not fatally slow, but i am impatient. Reactivate later.")
   title = 'test.getNodePosition.colonInNodeName'
   window.prep (title)
 
@@ -3963,6 +3982,7 @@ test.center = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeSizeDirect = function ()
 { 
+  DEACTIVATED("too slow")
   title = 'test.setNodeSizeDirect'
   window.prep (title)
   cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
@@ -3987,6 +4007,7 @@ test.setNodeSizeDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeWidthAndHeightDirect = function ()
 { 
+  DEACTIVATED("too slow")
   title = 'test.setNodeWidthAndHeightDirect'
   window.prep (title)
   cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
@@ -4014,6 +4035,7 @@ test.setNodeWidthAndHeightDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeFontSizeDirect = function ()
 { 
+  DEACTIVATED("too slow")
   title = 'test.setNodeFontSizeDirect'
   window.prep (title)
   cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
@@ -4046,6 +4068,7 @@ test.setNodeFontSizeDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeShapeDirect = function ()
 { 
+  DEACTIVATED("too slow")
   title = 'test.setNodeShapeDirect'
   window.prep (title)
   cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
@@ -4067,6 +4090,7 @@ test.setNodeShapeDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeVizPropertiesDirect = function (cw=NULL)
 {
+  DEACTIVATED("too slow!")
   title = 'test.setEdgeVizPropertiesDirect'
 
   if (is.null (cw)) {
@@ -4383,6 +4407,7 @@ hiddenTest.saveNetwork = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeImageDirect = function (apply.viz.rules=FALSE)
 {
+  DEACTIVATED("may be too slow?")
   title = 'test.imageUrl'
   window.prep (title)
 

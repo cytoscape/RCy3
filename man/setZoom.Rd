@@ -30,6 +30,9 @@ None.
  }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   window.title = 'setZoom demo'
   cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
   displayGraph (cw)

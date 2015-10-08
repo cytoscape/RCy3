@@ -31,6 +31,9 @@ Nothing.
 
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   hidePanel (cy, 'Control Panel')
    # or

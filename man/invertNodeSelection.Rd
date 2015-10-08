@@ -24,6 +24,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('invertNodeSelection demo', graph=makeSimpleGraph())
      # all nodes should be selected, since none were before
   selectNodes (cw, 'A')
