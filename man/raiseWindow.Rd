@@ -23,6 +23,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('raiseWindow.test', graph=makeSimpleGraph())
   raiseWindow (cw)
 }

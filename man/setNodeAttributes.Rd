@@ -32,6 +32,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setNodeAttributes.test', graph=makeSimpleGraph())
   attribute.names = noa.names (cw@graph)
 

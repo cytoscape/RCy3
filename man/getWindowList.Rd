@@ -18,6 +18,9 @@ A named list,  in which the values are the titles of the windows; the names of t
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   getWindowList (cy) 
 }

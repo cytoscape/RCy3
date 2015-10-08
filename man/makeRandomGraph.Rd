@@ -23,6 +23,9 @@ nodes and edges.
 Paul Shannon
 }
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
 g = makeRandomGraph (node.count=12, seed=123)
 
 ## The function is currently defined as

@@ -29,6 +29,9 @@ Nothing.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy  <- CytoscapeConnection ()
   floatPanel (cy, 'Control Panel')
     # or with less typing

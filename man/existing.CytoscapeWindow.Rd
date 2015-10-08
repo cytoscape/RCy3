@@ -38,6 +38,9 @@ existing.CytoscapeWindow (title, host='localhost', port=1234, copy.graph.from.cy
 
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   cw <- CytoscapeWindow ('demo.existing', graph=makeSimpleGraph ())
   displayGraph (cw)

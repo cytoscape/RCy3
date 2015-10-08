@@ -26,6 +26,9 @@ A list of node names.
  }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('getFirstNeighbors.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)

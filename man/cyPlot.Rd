@@ -21,6 +21,9 @@ a graphNEL object with nodes, edges, and their attributes
 \author{Mark Grimes}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
 	# Create node and edge data frames
   node.tbl <- data.frame(Gene.Name=c("FOX", "CENT", "RTK"), Numeric.Data=as.numeric(c(10, 12, 7)), nodeType=c("ts factor", "nuclear porin", "receptor"))
   edge.tbl <- data.frame(Gene.1=c("FOX", "FOX", "CENT", "CENT"), Gene.2=c("CENT", "RTK", "FOX", "RTK"), Weight=as.numeric(c(0.1, 1, 2, 0.02)), edgeType="interaction")

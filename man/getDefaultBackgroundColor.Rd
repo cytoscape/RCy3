@@ -19,6 +19,9 @@ A character string, eg "java.awt.Color[r=204,g=204,b=255]"
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   print (getDefaultBackgroundColor (cy))   # "java.awt.Color[r=204,g=204,b=255]"
 }

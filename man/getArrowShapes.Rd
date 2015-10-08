@@ -22,6 +22,9 @@ A list of character strings, e.g., 'WHITE_DIAMOND', 'BLACK_T'
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   getArrowShapes (cy)
     # [1] "No Arrow" "Diamond" "Delta" "Arrow" "T" "Circle" "Half Arrow Top"  "Half Arrow Bottom"

@@ -18,6 +18,9 @@ An integer.
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   count.at.start = getWindowCount (cy)
   cw2 <- CytoscapeWindow ('getWindowCount.test1', graph=makeSimpleGraph())

@@ -19,6 +19,9 @@ A bioconductor graph object.
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('getGraphFromCyWindow.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw)

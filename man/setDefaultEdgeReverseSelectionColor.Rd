@@ -21,6 +21,9 @@ Nothing.
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw = CytoscapeWindow ("demo.setDefaultEdgeReverseSelectionColor", graph=makeSimpleGraph ())
   displayGraph (cw)
   print (setDefaultEdgeReverseSelectionColor (cw, '#FF0000'))

@@ -46,6 +46,9 @@ Nothing.
     # into the CytoscapeSession file from the Cytoscape application's
     # File menu)
 
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   window.name = 'demo.copyVisualStyle'
   cw = CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   setDefaultEdgeLineWidth (cw, 5);

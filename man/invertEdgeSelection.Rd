@@ -23,6 +23,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('invertEdgeSelection demo', graph=makeSimpleGraph())
      # all edges should be selected, since none were before
   invertEdgeSelection (cw)

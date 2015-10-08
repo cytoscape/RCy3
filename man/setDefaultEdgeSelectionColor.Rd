@@ -20,6 +20,9 @@ Nothing.
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw = CytoscapeWindow ("demo.setDefaultEdgeSelectionColor", graph=makeSimpleGraph ())
   displayGraph (cw)
   print (setDefaultEdgeSelectionColor (cw, '#FF0000'))

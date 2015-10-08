@@ -25,6 +25,9 @@ Unless node dimensions are 'unlocked' these two vectors will be identical.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('getNodeSize.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw)

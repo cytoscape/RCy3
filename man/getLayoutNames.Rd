@@ -32,6 +32,9 @@ A list of character strings, e.g., "jgraph-circle" "attribute-circle" "jgraph-an
  }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   getLayoutNames (cy)
    #  [1] "jgraph-circle" "attribute-circle" "jgraph-annealing"  ...
