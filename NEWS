@@ -1,0 +1,45 @@
+NEW RELEASE VERSION 0.99.0
+-------------------------
+
+NEW FEATURES
+    o added setDefaultEdgeSourceArrowColor to set the default arrow color
+    o added setDefaultEdgeTargetArrowColor to set the default target arrow color
+    o added two modes (interpolate and lookup) to setEdgeSourceArrowColorRule
+    o added two modes (interpolate and lookup) to setEdgeTargetArrowColorRule
+    
+    
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o removed new.CystoscapeWindow. CytoscapeWindow does the same job now.
+    o removed setEdgeLabelWidthDirect.
+    o removed setEdgeSourceArrowOpacityDirect.
+    o removed setEdgeTargetArrowOpacityDirect
+    o removed set.node.or.edge.properties
+    o removed getViewCoordinates
+    o removed setWindowSize
+    o removed fitSelectedContent
+    o removed raiseWindow
+    o removed setTooltipDismissDelay
+    o removed setTooltipInitialDelay
+    o removed clearMsg
+    o removed msg
+    o new names for features:
+    
+    
+> getNodeShapes(cw)
+[1] "DIAMOND"         "HEXAGON"         "OCTAGON"         "VEE"            
+[5] "TRIANGLE"        "PARALLELOGRAM"   "ELLIPSE"         "RECTANGLE"      
+[9] "ROUND_RECTANGLE"
+> getLayoutNames(cw)
+ [1] "attribute-circle"      "stacked-node-layout"   "degree-circle"        
+ [4] "circular"              "attributes-layout"     "kamada-kawai"         
+ [7] "force-directed"        "grid"                  "hierarchical"         
+[10] "fruchterman-rheingold" "isom"
+> getLineStyles(cw)
+ [1] "LONG_DASH"        "PARALLEL_LINES"   "FORWARD_SLASH"    "DASH_DOT"        
+ [5] "BACKWARD_SLASH"   "VERTICAL_SLASH"   "CONTIGUOUS_ARROW" "SEPARATE_ARROW"  
+ [9] "SOLID"            "EQUAL_DASH"       "ZIGZAG"           "DOT"             
+[13] "SINEWAVE"    
+> getArrowShapes(cw)
+[1] "DIAMOND"     "NONE"        "T"           "DELTA"       "CIRCLE"     
+[6] "ARROW"       "HALF_TOP"    "HALF_BOTTOM"
