@@ -380,7 +380,7 @@ CytoscapeConnection = function(host='localhost', port=1234) {
         write(sprintf('2) that the latest version of CyREST is installed.'), stderr())
         write(sprintf('3) that Cytoscape uses Java 8 (not 7 or below).'), stderr())
         write(sprintf('To help troubleshooting, please check:'), stderr())
-        write(sprintf('https://github.com/cytoscape/cytoscape-scripts/tree/master/system-checker'), stderr())
+        write(sprintf('http://www.cytoscape.org/troubleshooting.html'), stderr())
         return()
     }
     return(cc)

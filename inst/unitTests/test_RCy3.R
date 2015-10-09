@@ -221,7 +221,7 @@ test.plugin.version = function ()
   #tokens = strsplit (version.string, ' ')[[1]][1]
   #version.numbers = as.integer (strsplit (tokens, '\\.')[[1]])
   #major.minor.version = version.numbers [1] + (version.numbers [2]/10.0)
-  msg (cy, paste ('CytoscapeRPC version', major.minor.version))
+  #msg (cy, paste ('CytoscapeRPC version', major.minor.version))
   checkTrue (major.minor.version >= 0.99)
 
 } # test.plugin.version
@@ -268,7 +268,7 @@ test.deleteAllWindows = function ()
   deleteAllWindows (cy)
   new.window.count = getWindowCount (cy)
   checkEquals (new.window.count, 0)
-  msg (cy, 'deleted all windows')
+  #msg (cy, 'deleted all windows')
 
 } # test.deleteAllWindows
 #------------------------------------------------------------------------------------------------------------------------
@@ -312,7 +312,7 @@ test.getNodeShapes = function ()
   cy = CytoscapeConnection ()
   shapes = getNodeShapes (cy)
   checkTrue (length (shapes) > 8)
-  msg (cy, title)
+  #msg (cy, title)
 
    # pick a few specific shapes to test
  checkTrue (all (sapply (c ('HEXAGON', 'ELLIPSE', 'TRIANGLE'), function (s) s %in% shapes)))
@@ -341,7 +341,7 @@ test.getArrowShapes = function ()
   checkTrue (length (shapes) >= 8)
 
    # pick a few specific shapes to test
-  msg (cy, 'getArrowShapes')
+  #msg (cy, 'getArrowShapes')
   checkTrue (all (sapply (c ('DIAMOND', 'T', 'CIRCLE'), function (s) s %in% shapes)))
 
 } # test.getArrowShapes
@@ -355,7 +355,7 @@ test.getLineStyles = function ()
   checkTrue (length (styles) > 10)
 
    # pick a few specific styles to test
-  msg (cy, 'getLineStyles')
+  #msg (cy, 'getLineStyles')
   checkTrue (all (sapply (c ('SOLID', 'DOT', 'EQUAL_DASH'), function (s) s %in% styles)))
 
 } # test.getLineStyles
@@ -369,7 +369,7 @@ test.getLayoutNames = function ()
   checkTrue (length (names) > 10)
 
    # pick a few specific styles to test
-  msg (cy, 'getLayoutNames')
+  #msg (cy, 'getLayoutNames')
   checkTrue (all (sapply (c ('grid', 'isom', 'circular'), function (s) s %in% names)))
 
 } # test.getLayoutNames
@@ -539,7 +539,7 @@ test.sendNodes = function ()
   sendNodes (cwa)
   layoutNetwork (cwa, "grid")   # no edges, so other layouts will simply superimpose the nodes
   redraw (cwa)
-  msg (cwa, 'sendNodes')
+  #msg (cwa, 'sendNodes')
 
   invisible (cwa)
 
@@ -556,7 +556,7 @@ test.sendEdges = function ()
   sendEdges (cwe)
   layoutNetwork (cwe, 'grid')
   redraw (cwe)
-  msg (cwe, 'sendEdges')
+  #msg (cwe, 'sendEdges')
 
   invisible (cwe)
 
@@ -582,7 +582,7 @@ test.setNodeAttributes = function ()
 
   layoutNetwork (cwb, 'grid')
   redraw (cwb)
-  msg (cwb, 'setNodeAttributes')
+  #msg (cwb, 'setNodeAttributes')
 
 
     # now call the direct method, which -- in contrast to the unmarked method (setNodeAttributes) -- does not
@@ -635,7 +635,7 @@ test.setEdgeAttributes = function ()
 
   result = setEdgeAttributesDirect (cwe, 'misc', 'string', edge.names [1], edge.values [1])
 
-  msg (cwe, 'setEdgeAttributes')
+  #msg (cwe, 'setEdgeAttributes')
 
   invisible (cwe)  
 
@@ -754,7 +754,7 @@ test.panelOperations = function ()
 
   dockPanel (cw, 'control ')
   dockPanel (cw, 'data panel')
-  msg (cw, 'test.panelOperations')
+  #msg (cw, 'test.panelOperations')
 
 } # test.panelOperations
 #------------------------------------------------------------------------------------------------------------------------
@@ -801,14 +801,14 @@ test.setDefaultNodeShape = function (direct=FALSE)
        } # for shape
      } # direct
 
-  setDefaultNodeShape (cwe, 'octagon'); redraw (cwe)
-  msg (cwe, 'octagon')
+  setDefaultNodeShape (cwe, 'OCTAGON'); redraw (cwe)
+  #msg (cwe, 'octagon')
   Sys.sleep (1)
-  setDefaultNodeShape (cwe, 'ellipse');  redraw (cwe)
-  msg (cwe,'ellipse')
+  setDefaultNodeShape (cwe, 'ELLIPSE');  redraw (cwe)
+  #msg (cwe,'ellipse')
   Sys.sleep (1)
-  setDefaultNodeShape (cwe, 'triangle');  redraw (cwe)
-  msg (cwe, 'triangle')
+  setDefaultNodeShape (cwe, 'TRIANGLE');  redraw (cwe)
+  #msg (cwe, 'triangle')
 
   invisible (cwe)
 
@@ -1063,7 +1063,7 @@ test.setNodeLabelRule = function ()
   setNodeLabelRule (cwe, 'count')
   Sys.sleep (1)
   setNodeLabelRule (cwe, 'label')
-  msg (cwe, 'test.setNodeLabelRule')
+  #msg (cwe, 'test.setNodeLabelRule')
 
   invisible (cwe)
 
@@ -1085,7 +1085,7 @@ test.setEdgeLabelRule = function ()
   setEdgeLabelRule (cwe, 'score')
   Sys.sleep (1)
   setEdgeLabelRule (cwe, 'canonicalName')
-  msg (cwe, 'test.setEdgeLabelRule')
+  #msg (cwe, 'test.setEdgeLabelRule')
 
   invisible (cwe)
 
@@ -1107,7 +1107,7 @@ test.setNodeTooltipRule = function ()
   #setNodeLabelRule (cwe, 'lfc')
   #setNodeLabelRule (cwe, 'count')
   #setNodeLabelRule (cwe, 'label')
-  msg (cwe, 'test.setNodeTooltipRule')
+  #msg (cwe, 'test.setNodeTooltipRule')
 
   invisible (cwe)
 
@@ -1125,7 +1125,7 @@ test.setEdgeTooltipRule = function ()
 
   hidePanel (cwe, 'c');  hidePanel (cwe, 'd');
   setEdgeTooltipRule (cwe, 'edgeType')
-  msg (cwe, 'test.setEdgeTooltipRule')
+  #msg (cwe, 'test.setEdgeTooltipRule')
 
   invisible (cwe)
 
@@ -1160,13 +1160,13 @@ test.setNodeColorRule = function ()
   node.attribute.values = c ("kinase",  "transcription factor")
   node.colors =           c ('#8888FF', '#00F088')
   setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup', default.color='#AA33AA')
-  msg (cwe, 'test.setNodeColorRule')
+  #msg (cwe, 'test.setNodeColorRule')
 
     # now, use 1 element lists.
   node.attribute.values = c ("kinase")
   node.colors =           c ('#FFFFFF')
   setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup', default.color='#AA33AA')
-  msg (cwe, 'test.setNodeColorRule')
+  #msg (cwe, 'test.setNodeColorRule')
   redraw (cwe)
 
   invisible (cwe)
@@ -1213,7 +1213,7 @@ test.setNodeBorderColorRule = function ()
   colors =                c ('#FF00FF')
   setNodeBorderColorRule (cwe, 'type', node.attribute.values, colors, mode='lookup', default.color='#FFFFFF')
 
-  msg (cwe, 'test.setNodeBorderColorRule')
+  #msg (cwe, 'test.setNodeBorderColorRule')
  
   invisible (cwe)
 
@@ -1315,7 +1315,7 @@ test.setNodeShapeRule = function ()
   attribute.values = c ('glycoprotein')
   setNodeShapeRule (cwe, node.attribute.name='type', attribute.values, node.shapes, default.shape='ellipse')
 
-  msg (cwe, 'test.setNodeShapeRule')
+  #msg (cwe, 'test.setNodeShapeRule')
 
   invisible (cwe)
 
@@ -2205,7 +2205,7 @@ test.getAllNodes = function ()
   cwe.nodes = getAllNodes (cwe)
   checkEquals (length (intersect (cwe.nodes, nodes (cwe@graph))), 3)
 
-  msg (cwe, 'test.getAllNodes')
+  #msg (cwe, 'test.getAllNodes')
 
   invisible (cwe)
 
@@ -2226,7 +2226,7 @@ test.getAllEdges = function ()
   checkTrue ("B (synthetic lethal) C" %in% cwe.edges)
   checkTrue ("A (phosphorylates) B" %in% cwe.edges)
 
-  msg (cwe, 'test.getAllEdges')
+  #msg (cwe, 'test.getAllEdges')
 
   invisible (cwe)
 
@@ -2265,9 +2265,9 @@ test.selectNodes = function ()
   nodes.to.select = c (nodes.to.select, nodes (cwe@graph))
   selectNodes (cwe, nodes.to.select)
   checkEquals (getSelectedNodeCount (cwe), 3)
-  msg (cwe, 'test.selectNodes')
+  #msg (cwe, 'test.selectNodes')
 
-  msg (cwe, 'test.selectNodes')
+  #msg (cwe, 'test.selectNodes')
 
   invisible (cwe)
 
@@ -2394,7 +2394,7 @@ test.hideNodes = function ()
   layoutNetwork (cwe)
   redraw (cwe)
   #checkEquals (getNodeCount (cwe), 3)
-  msg (cwe, 'test.selectNodes')
+  #msg (cwe, 'test.selectNodes')
 
   invisible (cwe)
 
@@ -2419,7 +2419,7 @@ test.selectEdges = function ()
   clearSelection (cw)
   checkEquals (getSelectedEdgeCount (cw), 0)
 
-  msg (cw, 'test.selectEdges')
+  #msg (cw, 'test.selectEdges')
 
   invisible (cw)
 
@@ -2466,7 +2466,7 @@ test.setEdgeLineStyleRule = function ()
   checkEquals (length (intersect (line.styles, getLineStyles (cwe))), 1)
   setEdgeLineStyleRule (cwe, 'edgeType', edgeType.values, line.styles)
 
-  msg (cwe, 'test.setEdgeLineStyleRule')
+  #msg (cwe, 'test.setEdgeLineStyleRule')
 
   invisible (cwe)
 
@@ -2492,7 +2492,7 @@ test.setEdgeLineWidthRule = function ()
     # try one-element lists
   setEdgeLineWidthRule (cwe, 'edgeType', edgeType.values [1], 10)
   
-  msg (cwe, 'test.setEdgeLineStyleRule')
+  #msg (cwe, 'test.setEdgeLineStyleRule')
 
   invisible (cwe)
 
@@ -2525,7 +2525,7 @@ test.setEdgeColorRule = function ()
   colors = c ('#FF0000', '#000000', '#00FF00')
   setEdgeColorRule (cwe, 'score',  score.values, colors, mode='interpolate')
 
-  msg (cwe, 'test.setEdgeColorRule')
+  #msg (cwe, 'test.setEdgeColorRule')
 
   invisible (cwe)
 
@@ -2579,7 +2579,7 @@ test.setEdgeTargetArrowRule = function ()
   checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 3)
 
   setEdgeTargetArrowRule (cwe, 'edgeType', edgeType.values, arrows)
-  msg (cwe, 'test.setEdgeTargetArrowRule')
+  #msg (cwe, 'test.setEdgeTargetArrowRule')
 
     # now test the list-of-length-one call.  the called method will double the list to get past the xmlrpc
     # treatment of lists of length one as scalars, and a failed signature match
@@ -2589,7 +2589,7 @@ test.setEdgeTargetArrowRule = function ()
   checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 1)
 
   setEdgeTargetArrowRule (cwe, 'edgeType', edgeType.values, arrows)
-  msg (cwe, 'test.setEdgeTargetArrowRule')
+  #msg (cwe, 'test.setEdgeTargetArrowRule')
 
   invisible (cwe)
 
@@ -2625,7 +2625,7 @@ test.setEdgeArrowColorRules = function ()
     # test one-element list
   setEdgeSourceArrowColorRule (cwe, 'edgeType', "phosphorylates", '#000000')
 
-  msg (cwe, 'test.setEdgeArrowColorRules')
+  #msg (cwe, 'test.setEdgeArrowColorRules')
 
   invisible (cwe)
 
@@ -2650,7 +2650,7 @@ test.setEdgeSourceArrowRule = function ()
    # test one-element rule
   setEdgeSourceArrowRule (cwe, 'edgeType', edgeType.values [2], arrows [2])
 
-  msg (cwe, 'test.setEdgeSourceArrowRule')
+  #msg (cwe, 'test.setEdgeSourceArrowRule')
 
   invisible (cwe)
 
@@ -2716,7 +2716,7 @@ test.movie = function ()
     if (i < count) Sys.sleep (1)
     } # for i
 
-  msg (cwe, 'test.movie')
+  #msg (cwe, 'test.movie')
 
   invisible (cwe)
 
@@ -2744,7 +2744,7 @@ test.unmatchedAttributesError = function ()
   setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
 
   redraw (cwe)
-  msg (cwe, 'test.unmatchedAttributesError')
+  #msg (cwe, 'test.unmatchedAttributesError')
 
   invisible (cwe)
 
@@ -2917,7 +2917,7 @@ test.simpleGraphWithReciprocalEdge = function ()
 
   redraw (cws)
 
-  msg (cws, title)
+  #msg (cws, title)
 
   invisible (cws)
 
@@ -2934,7 +2934,7 @@ test.setGraph = function ()
   cw = setGraph (cw, new.graph)
   checkEquals (length (nodes (getGraph (cw))), 3)
 
-  msg (cw, 'test.setGraph')
+  #msg (cw, 'test.setGraph')
 
   invisible (cw)
 
