@@ -28,6 +28,8 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
   window.name <- 'demo addCyNode'
   cw <- CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)

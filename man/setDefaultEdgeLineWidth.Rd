@@ -32,6 +32,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setDefaultEdgeLineWidth.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)

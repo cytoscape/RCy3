@@ -40,6 +40,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setEdgeAttributesDirect.test', graph=makeSimpleGraph())
   sendNodes(cw)
   sendEdges(cw)

@@ -39,6 +39,8 @@
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
      # create a CytoscapeConnectionClass object by calling the constructor
   cy <- CytoscapeConnection (host='localhost', port=1234)
 

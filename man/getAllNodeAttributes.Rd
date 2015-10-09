@@ -35,6 +35,9 @@ A data frame, with a column for each attribute, a row for each node.
 
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
 
   window.name = 'demo.getAllNodeAttributes'
   cw = CytoscapeWindow (window.name, graph=makeSimpleGraph ())

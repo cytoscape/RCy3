@@ -25,6 +25,9 @@ None.
  }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setNodeImageDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)

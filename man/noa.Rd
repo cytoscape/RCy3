@@ -25,6 +25,9 @@ Paul Shannon
 noa.names
 }
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   g <- makeSimpleGraph ()
   noa (g, 'type')
     #           A.A                    B.B                    C.C 

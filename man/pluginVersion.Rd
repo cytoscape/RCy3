@@ -19,6 +19,9 @@ pluginVersion(obj)
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   print (pluginVersion (cy))
     # e.g., "1.7"

@@ -24,6 +24,9 @@ Time in seconds.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('predictTimeToDisplayGraph.test', graph=makeSimpleGraph(), 
                              collectTimings=TRUE)
   message (paste ('estimated time: ', predictTimeToDisplayGraph (cw)))

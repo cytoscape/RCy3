@@ -39,6 +39,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setNodeSizeRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw, 'grid')

@@ -32,6 +32,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setNodeShapeRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   shapes <- c ("TRIANGLE", "ROUND_RECTANGLE", "ELLIPSE")

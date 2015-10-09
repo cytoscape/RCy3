@@ -22,6 +22,9 @@ A list of character strings group, e.g., "floating|numeric|double",
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cyw <- CytoscapeConnection ()
   getAttributeClassNames (cyw)
    # [1] "floating|numeric|double" "integer|int"             "string|char|character"  

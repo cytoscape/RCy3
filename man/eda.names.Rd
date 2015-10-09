@@ -27,6 +27,9 @@ Paul Shannon
  noa, eda, noa.names
 }
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   g <- makeSimpleGraph()
   eda.names (g)
    # "edgeType" "score"    "misc"

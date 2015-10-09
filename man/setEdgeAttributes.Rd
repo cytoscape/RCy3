@@ -29,6 +29,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setEdgeAttributes.test', graph=makeSimpleGraph())
   attribute.names = eda.names (cw@graph)
 

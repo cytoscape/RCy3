@@ -18,6 +18,9 @@ A list of character strings.
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('getAllEdges.test', graph=makeSimpleGraph())
   displayGraph (cw)
   print (getAllEdges (cw))

@@ -43,6 +43,8 @@ The attribute in question, which may be of any scalar type.
 
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
 
   window.name = 'demo.getNodeAttribute'
   cw = CytoscapeWindow (window.name, graph=makeSimpleGraph ())

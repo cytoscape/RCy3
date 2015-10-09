@@ -20,6 +20,9 @@ The modified CytoscapeWindow object.
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setGraph.test')  # an empty graph is created by default
   graph <- makeSimpleGraph ()
   setGraph (cw, graph)

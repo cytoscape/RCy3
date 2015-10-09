@@ -32,6 +32,9 @@ getLayoutNameMapping(obj)
  }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   layout.name.map <- getLayoutNameMapping (cy)
   print (head (names (layout.name.map), n=3))

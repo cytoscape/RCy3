@@ -27,6 +27,9 @@ identifer appears to be an integer.
   }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   cw <- CytoscapeWindow ('getWindowID.test', graph=makeSimpleGraph())
   displayGraph (cw)

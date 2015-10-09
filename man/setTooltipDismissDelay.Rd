@@ -29,6 +29,9 @@ None.
  }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   window.title = 'setTooltipDismissDelay demo'
   cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
     # use node type as the tooltip
