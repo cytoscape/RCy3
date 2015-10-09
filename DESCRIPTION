@@ -2,11 +2,7 @@ Package: RCy3
 Type: Package
 Title: Display and manipulate graphs in Cytoscape >= 3.2.1
 Version: 0.99.25
-<<<<<<< HEAD
-Date: 2015-10-01
-=======
 Date: 2015-10-06
->>>>>>> origin/master
 Author: Tanja Muetze, Georgi Kolishovski, Paul Shannon
 Maintainer: Paul Shannon <pshannon@fhcrc.org>, Tanja Muetze <tanja.muetze14@imperial.ac.uk>, Georgi Kolishovski <g_kolishv@yahoo.com>
 Depends: R (>= 3.2), graph (>= 1.31.0), httr, RJSONIO, RCurl
@@ -16,9 +12,5 @@ Description: Vizualize, analyze and explore graphs, connecting R to Cytoscape >=
 License: Artistic-2.0
 LazyLoad: yes
 biocViews: Visualization, GraphAndNetwork, ThirdPartyClient, Network
-<<<<<<< HEAD
 Packaged: 2015-10-07 02:12:31 UTC; dtenenba
-=======
-Packaged: 2015-10-06 03:30:16 UTC; tmuetze
->>>>>>> origin/master
 NeedsCompilation: no
