@@ -19,6 +19,8 @@ Nothing
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
   cw<- CytoscapeWindow ('clearSelection.test', graph=makeSimpleGraph())
   displayGraph (cw)
   selectNodes (cw, 'A')

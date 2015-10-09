@@ -24,6 +24,9 @@ Nothing.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('layout.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork (cw, 'force-directed')

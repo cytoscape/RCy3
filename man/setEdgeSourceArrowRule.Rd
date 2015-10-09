@@ -33,6 +33,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setEdgeSourceArrowRule.test', graph=makeSimpleGraph())
   arrows <- c ('Arrow', 'Diamond', 'Circle')
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')

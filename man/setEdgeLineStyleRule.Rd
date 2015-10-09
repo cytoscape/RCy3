@@ -32,6 +32,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setEdgeLineStyleRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   line.styles     <- c ('SINEWAVE',       'DOT',              'PARALLEL_LINES')

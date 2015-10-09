@@ -28,6 +28,9 @@ Paul Shannon
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   g <- makeSimpleGraph ()
   print (nodes (g))
   print (getAdjacentEdgeNames (g, 'A'))

@@ -31,6 +31,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setEdgeColorRule.test', graph=makeSimpleGraph())
   displayGraph(cw)
   edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')

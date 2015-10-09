@@ -21,6 +21,9 @@ when the graph was created.
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('getNodePosition.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw)

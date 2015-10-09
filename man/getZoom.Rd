@@ -28,6 +28,9 @@ A names list, x and y.
  }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   window.title = 'getZoom demo'
   cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
   displayGraph (cw)

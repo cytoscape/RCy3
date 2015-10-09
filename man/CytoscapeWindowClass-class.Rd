@@ -35,6 +35,9 @@
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
      # create a CytoscapeWindowClass object by calling the constructor
   c2 <- CytoscapeWindow ('cwc demo', makeSimpleGraph ())  
 

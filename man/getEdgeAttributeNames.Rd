@@ -32,6 +32,8 @@ A list of names.
 
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
 
   cw = CytoscapeWindow ('demo.getEdgeAttributeNames', graph=makeSimpleGraph())
   displayGraph (cw)

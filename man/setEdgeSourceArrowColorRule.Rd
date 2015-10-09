@@ -33,6 +33,9 @@ None.
 \seealso{ \code{\link{setEdgeSourceArrowColorRule}}}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setEdgeSourceArrowColorRule.test', graph=makeSimpleGraph())
   colors <- c ("#AA00AA", "#AAAA00", "#AA0000")
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
