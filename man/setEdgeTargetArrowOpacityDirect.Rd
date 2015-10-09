@@ -27,6 +27,9 @@ None.
  }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setEdgeTargetArrowOpacityDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')

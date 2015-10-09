@@ -28,6 +28,9 @@ Nothing.
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   window.title <- 'demo deleteWindow'
   cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
   displayGraph (cw)

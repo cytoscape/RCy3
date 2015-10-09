@@ -34,6 +34,8 @@ nothing
 
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
 
   window.name = 'demo.deleteNodeAttribute'
   cw = CytoscapeWindow (window.name, graph=makeSimpleGraph ())

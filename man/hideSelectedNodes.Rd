@@ -24,6 +24,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('hideSelectedNodes.test', graph=makeSimpleGraph())
   # saveLayout (cw, 'layout.tmp.RData')
   selectNodes (cw, c ('A', 'B'))

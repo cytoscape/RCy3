@@ -42,6 +42,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('setNodeAttributesDirect.test', graph=makeSimpleGraph())
   sendNodes(cw)
   result = setNodeAttributesDirect (cw, 'count', 'int', c ('A', 'B', 'C'), c (4, 8, 12))

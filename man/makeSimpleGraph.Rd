@@ -17,6 +17,9 @@ and edges.
 Paul Shannon
 }
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
 g = makeSimpleGraph ()
 
 ## The function is currently defined as

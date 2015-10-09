@@ -19,6 +19,9 @@ A list of character strings, e.g., 'SOLID', 'DOT'
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cy <- CytoscapeConnection ()
   getLineStyles (cy)
   #  [1] "SOLID" "LONG_DASH" "EQUAL_DASH" ...

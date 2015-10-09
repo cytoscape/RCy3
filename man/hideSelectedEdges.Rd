@@ -23,6 +23,9 @@ None.
 }
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('hideSelectedEdges.test', graph=makeSimpleGraph())
   # selectEdges (cw, 'B (synthetic lethal) C')
   hideSelectedEdges (cw)

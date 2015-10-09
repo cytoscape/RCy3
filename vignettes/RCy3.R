@@ -1,4 +1,4 @@
-### R code from vignette source '/Users/pshannon/s/bioc/review/RCy3/RCy3/vignettes/RCy3.Rnw'
+### R code from vignette source '/Users/dtenenba/Downloads/RCy3/vignettes/RCy3.Rnw'
 
 ###################################################
 ### code chunk number 1: g0
@@ -8,7 +8,7 @@
   g <- graph::addNode ('A', g)
   g <- graph::addNode ('B', g)
   g <- graph::addNode ('C', g)
-  cw <- CytoscapeWindow ('vignette', graph=g)
+  cw <- CytoscapeWindow ('vignette', graph=g, overwrite=TRUE)
   displayGraph (cw)
 
 
@@ -43,7 +43,7 @@
 ###################################################
 ### code chunk number 4: defaults
 ###################################################
-  setDefaultNodeShape (cw, 'octagon')
+  setDefaultNodeShape (cw, 'OCTAGON')
   setDefaultNodeColor (cw, '#AAFF88')
   setDefaultNodeSize  (cw, 80)
   setDefaultNodeFontSize (cw, 40)
@@ -57,7 +57,7 @@
   print (noa.names (getGraph (cw)))  # what data attributes are defined?
   print (noa (getGraph (cw), 'moleculeType'))
   attribute.values <- c ('kinase',  'TF',       'cytokine')
-  node.shapes      <- c ('diamond', 'triangle', 'rect')
+  node.shapes      <- c ('DIAMOND', 'TRIANGLE', 'RECTANGLE')
   setNodeShapeRule (cw, node.attribute.name='moleculeType',
                     attribute.values, node.shapes)
   redraw (cw)
@@ -132,38 +132,42 @@
 
 
 ###################################################
-### code chunk number 11: g8
+### code chunk number 11: 8a
+###################################################
+selectNodes(cw, 'B')
+
+
+###################################################
+### code chunk number 12: g8
 ###################################################
   getSelectedNodes (cw)
-    
 
 
 ###################################################
-### code chunk number 12: g9
+### code chunk number 13: g9 (eval = FALSE)
 ###################################################
-  selectFirstNeighborsOfSelectedNodes (cw)
+##   selectFirstNeighborsOfSelectedNodes (cw)
 
 
 ###################################################
-### code chunk number 13: g10
+### code chunk number 14: g10
 ###################################################
   nodes <- getSelectedNodes (cw)
 
 
 ###################################################
-### code chunk number 14: position
+### code chunk number 15: position
 ###################################################
-  cwe <- CytoscapeWindow ('vignette.setNodePosition',
-                              graph=RCy3::makeSimpleGraph ())
+  cwe <- CytoscapeWindow ('vignette.setNodePosition', graph=RCy3::makeSimpleGraph (), overwrite=TRUE)
   displayGraph (cwe)
-  layoutNetwork (cwe, 'jgraph-spring')
+  layoutNetwork (cwe, 'grid')
   redraw (cwe)
 
   center.x <- 200
   center.y <- 200
   radius <- 200
     # sweep through full revoltion 3 times, 5 degrees at a time
-  angles <- seq (0, 360, 70)
+  angles <- seq (0, 360, 90)
   for (angle in angles) {
     angle.in.radians <- angle * pi / 180
     x <- center.x + (radius * cos (angle.in.radians))
@@ -175,20 +179,20 @@
 
 
 ###################################################
-### code chunk number 15: moviePrep
+### code chunk number 16: moviePrep
 ###################################################
   g <- RCy3::makeSimpleGraph ()
   g <- initNodeAttribute (g, 'pval', 'numeric', 1.0)
 
-  cwm <- CytoscapeWindow ('movie', graph =g)
+  cwm <- CytoscapeWindow ('movie', graph=g, overwrite=TRUE)
   displayGraph (cwm)
-  layoutNetwork (cwm, 'jgraph-spring')
+  layoutNetwork (cwm, 'grid')
   redraw (cwm)
 
 
 
 ###################################################
-### code chunk number 16: movieRules
+### code chunk number 17: movieRules
 ###################################################
   lfc.control.points <- c (-3.0, 0.0, 3.0)
   lfc.colors <- c ('#00AA00', '#00FF00', '#FFFFFF', '#FF0000', '#AA0000')
@@ -203,7 +207,7 @@
 
 
 ###################################################
-### code chunk number 17: animate
+### code chunk number 18: animate
 ###################################################
 
   pval.timepoint.1 <- c (0.01, 0.3, 0.05)
@@ -220,7 +224,6 @@
     setNodeAttributesDirect (cwm, 'pval', 'numeric', c ('A', 'B', 'C'),
                              pval.timepoint.1)
     redraw (cwm)
-    msg (cwm, 'timepoint 1')
     system ('sleep 1')
 
     setNodeAttributesDirect (cwm, 'lfc',  'numeric', c ('A', 'B', 'C'),
@@ -228,20 +231,18 @@
     setNodeAttributesDirect (cwm, 'pval', 'numeric', c ('A', 'B', 'C'),
                              pval.timepoint.2)
     redraw (cwm)
-    msg (cwm, 'timepoint 2')
     system ('sleep 1')
 
     setNodeAttributesDirect (cwm, 'lfc',  'numeric', c ('A', 'B', 'C'), lfc.timepoint.3)
     setNodeAttributesDirect (cwm, 'pval', 'numeric', c ('A', 'B', 'C'), pval.timepoint.3)
     redraw (cwm)
-    msg (cwm, 'timepoint 3')
     system ('sleep 1')
     }
 
 
 
 ###################################################
-### code chunk number 18: deleteWindows
+### code chunk number 19: deleteWindows
 ###################################################
   cy <- CytoscapeConnection ()
   window.names <- c ('vignette', 'vignette.setNodePosition', 'movie')

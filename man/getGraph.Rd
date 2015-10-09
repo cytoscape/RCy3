@@ -19,6 +19,9 @@ A graph object.
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeWindow ('getGraph.test', graph=makeSimpleGraph())
   displayGraph (cw)
   print (getGraph (cw))

@@ -20,6 +20,9 @@ A list of about 99 character strings, e.g., "EDGE_LABEL_FONT_SIZE" and "NODE_SHA
 \author{Paul Shannon}
 
 \examples{
+  # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+
   cw <- CytoscapeConnection ()
   getDirectlyModifiableVisualProperties (cw, vizmap.style.name="default")
 
