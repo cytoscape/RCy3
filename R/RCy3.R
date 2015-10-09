@@ -4041,10 +4041,9 @@ setMethod('getSelectedNodes', 'CytoscapeWindowClass',
 setMethod ('hideSelectedNodes', 'CytoscapeWindowClass',
 
    function (obj) {
-       message("not yet implemented")
-#     id = as.character (obj@window.id)
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.hideSelectedNodes', id, .convert=TRUE))
-     }) # hideSelectedNodes
+       node.names <- getSelectedNodes(obj)
+       setNodePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
+   }) # hideSelectedNodes
    
 # ------------------------------------------------------------------------------
 setMethod('hideNodes', 'CytoscapeWindowClass', 
@@ -4310,16 +4309,16 @@ setMethod ('getFirstNeighbors', 'CytoscapeWindowClass',
 setMethod ('selectFirstNeighborsOfSelectedNodes', 'CytoscapeWindowClass',
 
    function (obj) {
-       message("not yet implemented")
-#     if (getSelectedNodeCount (obj) > 0) {
-#       currently.selected = getSelectedNodes (obj)
-#       if (length (currently.selected) == 0)
-#         invisible ()
-#       neighbors = getFirstNeighbors (obj, currently.selected)
-#       full.selection = unique (c (currently.selected, neighbors))
-#       selectNodes (obj, full.selection)
-#       invisible (full.selection)
-#       } # if any nodes are already selected
+       if (getSelectedNodeCount (obj) > 0) {
+           currently.selected = getSelectedNodes (obj)
+           if (length (currently.selected) == 0){
+               invisible ()
+           }
+           neighbors = getFirstNeighbors (obj, currently.selected)
+           full.selection = unique (c (currently.selected, neighbors))
+           selectNodes (obj, full.selection)
+           invisible (full.selection)
+        } # if any nodes are already selected
      }) # selectFirstNeighborsOfSelectedNodes
 
 # ------------------------------------------------------------------------------
