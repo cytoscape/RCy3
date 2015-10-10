@@ -3600,18 +3600,16 @@ test.addGetAndDeleteEdgeAttributes = function ()
   displayGraph (cw)
   layoutNetwork (cw, 'grid')
   redraw (cw)
-
-  cy = CytoscapeConnection ()
-
+  
      # in this test we add two new edge attributes, 'species' and 'ageInYears'
      # if they are already defined, from a previous run of this test, start by deleting them.
 
-  novel.eda.to.delete = intersect (c ('ageInYears', 'treeSpecies'), getEdgeAttributeNames(cy))
+  novel.eda.to.delete = intersect (c ('ageInYears', 'treeSpecies'), getEdgeAttributeNames(cw))
   for (eda.name in novel.eda.to.delete)
     deleteEdgeAttribute (cy,eda.name)
     
      # canonicalName and interaction are added by Cytoscape
-  checkEquals (length (intersect (getEdgeAttributeNames (cy), c ("canonicalName", "edgeType", "interaction", "misc", "score"))), 5)
+  checkEquals (length (intersect (getEdgeAttributeNames (cw), c ("canonicalName", "edgeType", "interaction", "misc", "score"))), 5)
 
      # now add an attribute to two of the edges 
   first.two.edges = as.character (cy2.edge.names (g)[1:2])
@@ -3628,8 +3626,8 @@ test.addGetAndDeleteEdgeAttributes = function ()
   checkEquals (getEdgeAttribute (cw, "B (synthetic lethal) C", 'treeSpecies'), "yew")
   checkEquals (getEdgeAttribute (cw, "B (synthetic lethal) C", 'score'), -12)
 
-  deleteEdgeAttribute (cy, 'species')
-  deleteEdgeAttribute (cy, 'ageInYears')
+  deleteEdgeAttribute (cw, 'species')
+  deleteEdgeAttribute (cw, 'ageInYears')
 
   invisible (cw)
 
