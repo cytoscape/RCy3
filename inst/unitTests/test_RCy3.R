@@ -3638,23 +3638,21 @@ test.addGetAndDeleteNodeAttributes = function ()
   title = 'test.addGetAndDeleteNodeAttributes'
   window.prep (title)
 
-  cy = CytoscapeConnection ()
-
      # in this test we add two new node attributes, 'species' and 'ageInYears'
      # if they are already defined, from a previous run of this test, start by deleting them.
-
-  novel.noa.to.delete = intersect (c ('ageInYears', 'treeSpecies'), getNodeAttributeNames(cy))
-  for (noa.name in novel.noa.to.delete)
-    deleteNodeAttribute (cy, noa.name)
     
   g  = makeSimpleGraph ()
   cw = CytoscapeWindow (title, graph=g)
   displayGraph (cw)
   layoutNetwork (cw, 'grid')
   redraw (cw)
-  x <- cw
+  
+  novel.noa.to.delete = intersect (c ('ageInYears', 'treeSpecies'), getNodeAttributeNames(cw))
+  for (noa.name in novel.noa.to.delete)
+      deleteNodeAttribute (cy, noa.name)
+  
      # canonicalName is added by Cytoscape
-  checkEquals (length (intersect (getNodeAttributeNames (cy), c ("canonicalName", "count",  "label", "lfc", "type"))), 5)
+  checkEquals (length (intersect (getNodeAttributeNames (cw), c ("canonicalName", "count",  "label", "lfc", "type"))), 5)
 
      # now add an attribute to two of the nodes 
   first.two.nodes = nodes (g) [1:2]
@@ -3670,8 +3668,8 @@ test.addGetAndDeleteNodeAttributes = function ()
   checkEquals (getNodeAttribute (cw, 'A', 'ageInYears'), 'one millenium')
   checkEquals (getNodeAttribute (cw, 'B', 'ageInYears'), '')
 
-  deleteNodeAttribute (cy, 'species')
-  deleteNodeAttribute (cy, 'ageInYears')
+  deleteNodeAttribute (cw, 'species')
+  deleteNodeAttribute (cw, 'ageInYears')
 
   invisible (cw)
 
