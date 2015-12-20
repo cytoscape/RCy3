@@ -4,8 +4,8 @@
 \title{addCyEdge}
 \description{
 Given a CytoscapeWindow containing a (possibly empty) graph, this method
-adds a edge.  Edge attributes are added separately, via successive calls
-to sendEdgeAttributesDirect.  The two nodes must already exist in the
+adds an edge.  Edge attributes are added separately, via successive calls
+to sendEdgeAttributesDirect. The two nodes must already exist in the
 Cytoscape network.
 
 }
