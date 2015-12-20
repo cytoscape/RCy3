@@ -6,8 +6,8 @@
   application which are not specific to a particular window. }
 \section{Slots}{
   \describe{
-    \item{\code{uri}:}{An \code{attrData} the address of the Cytoscape
-      XMLRPC server.}
+    \item{\code{uri}:}{An \code{attrData}, the address of the Cytoscape
+      CyREST API call.}
   }
 }
 
