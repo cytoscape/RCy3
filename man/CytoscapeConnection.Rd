@@ -65,7 +65,7 @@ CytoscapeConnection (host = "localhost", port = 1234)
   # [1] "DIAMOND"         "OCTAGON"         "TRIANGLE"        "VEE"            
   # [5] "HEXAGON"         "RECTANGLE"       "PARALLELOGRAM"   "ROUND_RECTANGLE"
   # [9] "ELLIPSE"  
-  hidePanel (cy, 'WEST')
+  hidePanel (cy, 'control')
 }
 
 \keyword{ graph }
