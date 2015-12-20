@@ -2,25 +2,25 @@
 #--------------------------------------------------------------------------------
 # this code is for the Bioconductor build system. You should never need to set or
 # read these environment variables in ordinary use.
-.BBSOverride <- function(host, port) {
-    ret <- list()
-    if ((Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE") != "") &&  (Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE") != "")) {
-      host = Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE")
-      port = as(Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE"),"integer")
-      }
-    if (.Platform$r_arch == "x64") {
-        if ((Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE_64") != "") &&  (Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE_64") != "")) {
-          host = Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE_64")
-          port = as(Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE_64"),"integer")
-          }
-    }
-    #cat(paste("Using host", host, "and port", port, "."))
-
-    ret["host"] <- host
-    ret["port"] <- port
-    ret
-}
-
+# .BBSOverride <- function(host, port) {
+#     ret <- list()
+#     if ((Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE") != "") &&  (Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE") != "")) {
+#       host = Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE")
+#       port = as(Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE"),"integer")
+#       }
+#     if (.Platform$r_arch == "x64") {
+#         if ((Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE_64") != "") &&  (Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE_64") != "")) {
+#           host = Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE_64")
+#           port = as(Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE_64"),"integer")
+#           }
+#     }
+#     #cat(paste("Using host", host, "and port", port, "."))
+# 
+#     ret["host"] <- host
+#     ret["port"] <- port
+#     ret
+# }
+# 
 
 # ------------------------------------------------------------------------------
 printf = function (...) print (noquote (sprintf (...)))
@@ -369,9 +369,9 @@ setValidity("CytoscapeWindowClass", function(object) {
 # ------------------------------------------------------------------------------
 CytoscapeConnection = function(host='localhost', port=1234) {
 
-    res <- .BBSOverride(host, port)
-    host = res$host
-    port = res$port
+    #res <- .BBSOverride(host, port)
+    #host = res$host
+    #port = res$port
     uri = sprintf('http://%s:%s', host, port)
     cc = new('CytoscapeConnectionClass', uri = uri)
     if (!url.exists(uri)){
@@ -2188,8 +2188,10 @@ setMethod('hidePanel', 'CytoscapeConnectionClass',
         
         if (panelName %in% c('Data Panel', 'd', 'D')){
             panelName <- 'SOUTH'
-        }else if (panelName %in% c('Control Panel', 'control', 'c')){
+        }else if (panelName %in% c('Control Panel', 'control', 'c', 'Control')){
             panelName <- 'WEST'
+        }else if (!(panelName %in% c('WEST', 'SOUTH'))){
+            write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
         }
         
         panel.name.state = list(name=panelName, state='HIDE')
@@ -2215,11 +2217,13 @@ setMethod('hideAllPanels', 'CytoscapeConnectionClass',
 setMethod('dockPanel', 'CytoscapeConnectionClass', 
     function(obj, panelName) {
         version <- pluginVersion(obj)
-        
+
         if (panelName %in% c('Data Panel', 'd', 'D')){
             panelName <- 'SOUTH'
-        }else if (panelName %in% c('Control Panel', 'control', 'c')){
+        }else if (panelName %in% c('Control Panel', 'control', 'c', 'Control')){
             panelName <- 'WEST'
+        }else if (!(panelName %in% c('WEST', 'SOUTH'))){
+            write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
         }
         
         panel.name.state = list(name=panelName, state='DOCK')
@@ -2238,8 +2242,10 @@ setMethod('floatPanel', 'CytoscapeConnectionClass',
         
         if (panelName %in% c('Data Panel', 'd', 'D')){
             panelName <- 'SOUTH'
-        }else if (panelName %in% c('Control Panel', 'control', 'c')){
+        }else if (panelName %in% c('Control Panel', 'control', 'c', 'Control')){
             panelName <- 'WEST'
+        }else if (!(panelName %in% c('WEST', 'SOUTH'))){
+            write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
         }
         
         panel.name.state = list(name=panelName, state='FLOAT')
