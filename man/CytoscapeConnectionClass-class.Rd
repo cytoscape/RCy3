@@ -7,7 +7,7 @@
 \section{Slots}{
   \describe{
     \item{\code{uri}:}{An \code{attrData}, the address of the Cytoscape
-      CyREST API call.}
+      server.}
   }
 }
 
