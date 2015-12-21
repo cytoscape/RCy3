@@ -196,6 +196,7 @@ importMethodsFrom(graph, edgeData, "edgeData<-", edgeDataDefaults,
                  edgemode, "edgemode<-",
                  addNode, addEdge, edgeSets)
 
+
 importFrom(methods, new)
 importFrom(graph, randomGraph)
 importFrom(RJSONIO, fromJSON, toJSON)
