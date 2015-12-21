@@ -21,9 +21,10 @@ Nothing
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
-  cw<- CytoscapeWindow ('clearSelection.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('clearSelection.test', graph=makeSimpleGraph())
   displayGraph (cw)
   selectNodes (cw, 'A')
+  layoutNetwork(cw)
   print (getSelectedNodeCount (cw))   # should be 1
   clearSelection (cw)
   print (getSelectedNodeCount (cw))   # should be 0
