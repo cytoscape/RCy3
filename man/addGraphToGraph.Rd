@@ -4,11 +4,11 @@
 \title{addGraphToGraph}
 \description{
 Given a CytoscapeWindow containing a graph, this method adds new nodes,
-edges, and their attributes.  Thus, it is the way to extend a graph --
+edges, and their attributes. Thus, it is the way to extend a graph --
 to merge a new graph with an existing one.  A typical use would be to
 add a second KEGG pathway to a CytoscapeWindow upon discovering that
-two KEGG pathways overlap, sharing some enzymes and some reactions.  No
-existing attributes are written over.
+two KEGG pathways overlap, which share some enzymes and some reactions.
+No existing attributes are overwritten.
 }
 \usage{
 addGraphToGraph(obj, other.graph)
