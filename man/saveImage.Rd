@@ -16,7 +16,7 @@ saveImage(obj, file.name, image.type, scale)
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{file.name}{a \code{char} object. Use an explicit, full path, or
   this file will be written into your home directory.}
-  \item{image.type}{a \code{char} object. 'jpg' is the only image type   currently supported}
+  \item{image.type}{a \code{char} object. 'jpg' is the only image type  currently supported}
   \item{scale}{a \code{numeric} object.  How large (or small) to  scale the image. }
 
 }
@@ -40,7 +40,7 @@ None.
   layoutNetwork(cw, 'force-directed')
   redraw (cw)
   filename = tempfile () # paste (getwd (), 'saveImageTest.jpg', sep='/')
-  # saveImage (cw, filename, 'jpg', 2.0)   # doesn't yet work reliably at bioc
+  saveImage (cw, filename, 'jpg', 2.0)   # doesn't yet work reliably at bioc
 }
 
 
