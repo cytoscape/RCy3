@@ -390,9 +390,9 @@ CytoscapeConnection = function(host='localhost', port=1234) {
 # the 'CytoscapeWindow' class constructor, defined as a simple function
 CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), host='localhost', 
                            port=1234, create.window=TRUE, overwriteWindow=FALSE, collectTimings=FALSE){
-  res <- .BBSOverride(host, port)
-  host = res$host
-  port = res$port
+#     res <- .BBSOverride(host, port)
+#     host = res$host
+#     port = res$port
 	uri = sprintf('http://%s:%s', host, port)
 	
     # new 'CytoscapeConnectionClass' object
@@ -4858,8 +4858,8 @@ setMethod ('saveImage', 'CytoscapeWindowClass',
         resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
                               paste0("views/first.", image.type), sep="/")
 
-        #request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type)))
-        #write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
+        request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type)))
+        write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
       }else{
           write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
       }
