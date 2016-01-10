@@ -39,7 +39,7 @@ None.
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')
   redraw (cw)
-  filename = tempfile () # paste (getwd (), 'saveImageTest.jpg', sep='/')
+  filename = paste (getwd (), 'saveImageTest.jpg', sep='/')
   saveImage (cw, filename, 'jpg', 2.0)   # doesn't yet work reliably at bioc
 }
 
