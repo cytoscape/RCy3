@@ -65,7 +65,7 @@ Nothing.
   setVisualStyle (cw, new.unique.style.name)
 
    # save the session form the Cytoscape application menu.  the new
-   # style name  will be saved along with the network and its attributes
+   # style name will be saved along with the network and its attributes
 }
 
 \keyword{graph}
