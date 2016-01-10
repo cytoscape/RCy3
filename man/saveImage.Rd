@@ -39,8 +39,8 @@ None.
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')
   redraw (cw)
-  filename = paste (getwd (), 'saveImageTest.jpg', sep='/')
-  saveImage (cw, filename, 'jpg', 2.0)   # doesn't yet work reliably at bioc
+  filename = paste (getwd (), 'saveImageTest', sep='/')
+  saveImage (cw, filename, 'svg', 2.0)   # currently supports svg, pdf and png
 }
 
 
