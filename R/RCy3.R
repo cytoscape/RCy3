@@ -4793,7 +4793,7 @@ setMethod ('lockNodeDimensions', 'CytoscapeConnectionClass',
         style <- list(visualPropertyDependency="nodeSizeLocked", enabled =tolower(new.state))
         style.JSON <- toJSON(list(style))
         request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
-        
+
         # inform the user if the request was a success or failure
         if (request.res$status == 200){
             if(new.state==TRUE){
@@ -5016,48 +5016,48 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 is.classic.graph = function(obj)
 {
-  obj.classes = is(obj)
-
-  return ('graph' %in% obj.classes)
-  
+    obj.classes = is(obj)
+    
+    return ('graph' %in% obj.classes)
+    
 } # is.classic.graph
 
 # ------------------------------------------------------------------------------
 is.multiGraph = function(obj)
 {
-  obj.classes = is(obj)
-
-  return('MultiGraph' %in% obj.classes)
-
+    obj.classes = is(obj)
+    
+    return('MultiGraph' %in% obj.classes)
+    
 } # is.multiGraph
 
 # ------------------------------------------------------------------------------
 # capitalizes the first letter of all words in a string
 simpleCap <- function(x) {
-  s <- strsplit(x, " ")[[1]]
-  
-  return(paste(toupper(substring(s, 1, 1)), substring(s, 2), sep="", collapse=""))
+    s <- strsplit(x, " ")[[1]]
+    
+    return(paste(toupper(substring(s, 1, 1)), substring(s, 2), sep="", collapse=""))
 } ### END simpleCap
 
 # ------------------------------------------------------------------------------
 getVisualProperty <- function(obj, vizmap.style.name, property) {
-  resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", property, sep="/")
-  request.res <- GET(url=resource.uri)
-  return(fromJSON(rawToChar(request.res$content))[[2]])
+    resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", property, sep="/")
+    request.res <- GET(url=resource.uri)
+    return(fromJSON(rawToChar(request.res$content))[[2]])
 }
 
 # ------------------------------------------------------------------------------
 setVisualProperty <- function(obj, style.string, vizmap.style.name='default') {
-  resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
-  style.JSON <- toJSON(list(style.string))
-  request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
-  redraw(obj)
+    resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
+    style.JSON <- toJSON(list(style.string))
+    request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
+    redraw(obj)
 }
 
 # ------------------------------------------------------------------------------
 # obtain every other value for vector : used to resolve CyREST bug with returning column values
 obtainEveryOtherValue <- function(v) {
-  return(v[c(TRUE, FALSE)])
+    return(v[c(TRUE, FALSE)])
 }
 
 # ------------------------------------------------------------------------------
