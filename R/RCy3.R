@@ -4793,7 +4793,6 @@ setMethod ('lockNodeDimensions', 'CytoscapeConnectionClass',
         style <- list(visualPropertyDependency="nodeSizeLocked", enabled =tolower(new.state))
         style.JSON <- toJSON(list(style))
         request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
-        print (request.res)
         
         # inform the user if the request was a success or failure
         if (request.res$status == 200){
@@ -5156,10 +5155,10 @@ discreteMapping <- function(obj, attribute.name, control.points, colors, visual.
                              mappingColumnType = columnType, visualProperty=visual.property,
                              map = mapped.content)
     discrete.mapping.json <-toJSON(list(discrete.mapping))
-    print(discrete.mapping.json)
+    #print(discrete.mapping.json)
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
-    print(request.res)
+    #print(request.res)
     
     # inform the user if the request was a success or failure
     if (request.res$status == 201){
