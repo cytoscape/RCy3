@@ -51,7 +51,7 @@ None.
   node.attribute.name <- 'count'   # previously defined, has values which  range between 2 and 100
      # remind yourself of the values of count on each of the three nodes
   print (noa (getGraph (cw), 'count'))
-     #  A.A   B.B   C.C 
+     #  A   B   C 
      #  "2"  "30" "100" 
   setNodeSizeRule (cw, node.attribute.name, control.points, node.sizes, mode='interpolate')  # a warning is issued; below and above sizes must be inferred
 
