@@ -2581,7 +2581,6 @@ setMethod ('setNodeBorderWidthRule', 'CytoscapeWindowClass',
        
        # define the column type
        columnType <- findColumnType(typeof(line.widths[1]))
-
        # discrete mapping
        if (mode=="lookup"){
            discreteMapping (obj, node.attribute.name, attribute.values, line.widths,
@@ -2607,9 +2606,15 @@ setMethod('setDefaultNodeShape', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeSize', 'CytoscapeConnectionClass', 
-  function(obj, new.size, vizmap.style.name='default') {
-    style = list(visualProperty = "NODE_SIZE", value = new.size)
-    setVisualProperty(obj, style, vizmap.style.name)
+    function(obj, new.size, vizmap.style.name='default') {
+        # lock node dimensions
+        lockNodeDimensions (obj, TRUE)
+        
+        style = list(visualProperty = "NODE_SIZE", value = new.size)
+        setVisualProperty(obj, style, vizmap.style.name)
+        
+        # unlock node dimensions
+        lockNodeDimensions (obj, FALSE)
 })
 
 # ------------------------------------------------------------------------------
@@ -2730,6 +2735,9 @@ setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
         # define the column type
         columnType <- findColumnType(typeof(control.points[1]))
         
+        # lock node dimensions
+        lockNodeDimensions (obj, TRUE)
+        
         # set default
         setDefaultNodeSize (obj, default.size, vizmap.style.name)
         
@@ -2766,6 +2774,8 @@ setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
                             columnType=columnType, style=vizmap.style.name)    
             
         } # else: !interpolate, aka lookup
+        # unlock node dimensions
+        lockNodeDimensions (obj, FALSE)
     }) # setNodeSizeRule
 #
 #------------------------------------------------------------------------------------------------------------------------
@@ -3106,49 +3116,58 @@ setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_FILL_COLOR"))
      })
 #------------------------------------------------------------------------------------------------------------------------
-# only works if node dimensions are locked (that is, tied together).  see lockNodeDimensions (T/F)
+# only works if node dimensions are unlocked (that is not tied together).  see lockNodeDimensions (T/F)
 setMethod ('setNodeSizeDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.sizes) {
-      for (current.size in new.sizes){
-         # ensure the sizes are numbers
-         if (!is.double(current.size)) {
-            write (sprintf ('illegal size string "%s" in RCy3::setNodeSizeDirect. It needs to be a number.', current.size), stderr ())
-            return ()
-         }
-      }
-      # set the node properties direct
-      setNodePropertyDirect(obj, node.names, new.sizes, "NODE_WIDTH")
-      setNodePropertyDirect(obj, node.names, new.sizes, "NODE_HEIGHT")
-     })
+    function (obj, node.names, new.sizes) {
+        # unlock node dimensions
+        lockNodeDimensions (obj, FALSE)
+        
+        for (current.size in new.sizes){
+            # ensure the sizes are numbers
+            if (!is.double(current.size)) {
+                write (sprintf ('illegal size string "%s" in RCy3::setNodeSizeDirect. It needs to be a number.', current.size), stderr ())
+                return ()
+            }
+        }
+        # set the node properties direct
+        setNodePropertyDirect(obj, node.names, new.sizes, "NODE_WIDTH")
+        setNodePropertyDirect(obj, node.names, new.sizes, "NODE_HEIGHT")
+    })
 #------------------------------------------------------------------------------------------------------------------------
-# only works if node dimensions are not locked (that is, tied together).  see lockNodeDimensions (T/F)
+# only works if node dimensions are not locked (that is not tied together).  see lockNodeDimensions (T/F)
 setMethod ('setNodeWidthDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.widths) {
-      for (current.width in new.widths){
-         # ensure the width(s) are numbers
-         if (!is.double(current.width)) {
-            write (sprintf ('illegal node width "%s" in RCy3::setNodeWidthDirect. Width needs to be a number.', current.width), stderr ())
-            return ()
-         }
-      }
-      # set the node property direct
-      return(setNodePropertyDirect(obj, node.names, new.widths, "NODE_WIDTH"))
-     })
+    function (obj, node.names, new.widths) {
+        # unlock node dimensions
+        lockNodeDimensions (obj, FALSE)
+        
+        for (current.width in new.widths){
+            # ensure the width(s) are numbers
+            if (!is.double(current.width)) {
+                write (sprintf ('illegal node width "%s" in RCy3::setNodeWidthDirect. Width needs to be a number.', current.width), stderr ())
+                return ()
+            }
+        }
+        # set the node property direct
+        return(setNodePropertyDirect(obj, node.names, new.widths, "NODE_WIDTH"))
+    })
 
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is, tied together).  see lockNodeDimensions (T/F)
 setMethod ('setNodeHeightDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.heights) {
-      for (current.height in new.heights){
-         # ensure the height(s) are numbers
-         if (!is.double(current.height)) {
-            write (sprintf ('illegal height string "%s" in RCy3::setNodeHeightDirect. It needs to be a number.', current.height), stderr ())
-            return ()
-         }
-      }
-      # set the node property direct
-      return(setNodePropertyDirect(obj, node.names, new.heights, "NODE_HEIGHT"))
-     })
+    function (obj, node.names, new.heights) {
+        # unlock node dimensions
+        lockNodeDimensions (obj, FALSE)
+        
+        for (current.height in new.heights){
+            # ensure the height(s) are numbers
+            if (!is.double(current.height)) {
+                write (sprintf ('illegal height string "%s" in RCy3::setNodeHeightDirect. It needs to be a number.', current.height), stderr ())
+                return ()
+            }
+        }
+        # set the node property direct
+        return(setNodePropertyDirect(obj, node.names, new.heights, "NODE_HEIGHT"))
+    })
 
 # ------------------------------------------------------------------------------
 setMethod('setNodeLabelDirect', 'CytoscapeWindowClass', 
@@ -3249,8 +3268,7 @@ setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
          }
       }
       # set the node property direct
-      print("this method ('setNodeBorderWidthDirect') hangs for a very long time")
-      #return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_BORDER_WIDTH"))
+      return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_BORDER_WIDTH"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -4763,13 +4781,32 @@ setMethod('setVisualStyle', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('lockNodeDimensions', 'CytoscapeConnectionClass',
 
-   function (obj, new.state, visual.style.name='default') {
-       message("not implemented yet")
-#     if (! visual.style.name %in% getVisualStyleNames (obj)) {
-#       write (sprintf ('Error in RCy3::lockNodeDimensions.  No visual style named "%s"', visual.style.name), stderr ())
-#       return ()
-#       }
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.setNodeSizeLocked', visual.style.name, new.state))
+    function (obj, new.state, visual.style.name='default') {
+        # launch error if visual style name is missing
+        if (! visual.style.name %in% getVisualStyleNames (obj)) {
+        write (sprintf ('Error in RCy3::lockNodeDimensions.  No visual style named "%s"', visual.style.name), stdout ())
+        return ()
+        }
+    
+        #lock node dimensions
+        resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(visual.style.name), "dependencies", sep="/")
+        style <- list(visualPropertyDependency="nodeSizeLocked", enabled =tolower(new.state))
+        style.JSON <- toJSON(list(style))
+        request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
+        print (request.res)
+        
+        # inform the user if the request was a success or failure
+        if (request.res$status == 200){
+            if(new.state==TRUE){
+                write (sprintf ('RCy3::lockNodeDimensions. Locked node dimensions'), stdout ())
+            }else{
+                write (sprintf ('RCy3::lockNodeDimensions. Unlocked node dimensions'), stdout ())
+            }
+        }else{
+            write (sprintf ('Error in RCy3::lockNodeDimensions. Could not lock/unlocked node dimensions'), stderr ())
+        }
+        invisible(request.res)
+        
      }) # lockNodeDimensions
 
 # ------------------------------------------------------------------------------
@@ -4871,9 +4908,9 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
        if (!file.exists(file.name)){
            # TODO currently only saves as cys, enable to save also to other formats incl. glm
            resource.uri <- paste(obj@uri, pluginVersion(obj), "session", sep="/")
-           #request.res <- POST(url=resource.uri, body=NULL, write_disk(paste0(file.name, ".cys")))
-           #write (sprintf ('saving network to file %s.cys', file.name), stderr ())
-           #invisible(request.res)
+           request.res <- POST(url=resource.uri, body=NULL, write_disk(paste0(file.name, ".cys")))
+           write (sprintf ('saving network to file %s.cys', file.name), stderr ())
+           invisible(request.res)
        }
      })
 
@@ -5119,10 +5156,11 @@ discreteMapping <- function(obj, attribute.name, control.points, colors, visual.
                              mappingColumnType = columnType, visualProperty=visual.property,
                              map = mapped.content)
     discrete.mapping.json <-toJSON(list(discrete.mapping))
-    #print(discrete.mapping.json)
+    print(discrete.mapping.json)
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
-    #print(request.res)
+    print(request.res)
+    
     # inform the user if the request was a success or failure
     if (request.res$status == 201){
         write (sprintf ('Successfully set rule.'), stderr ())
