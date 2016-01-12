@@ -36,6 +36,7 @@ None.
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
+  # send and display graph
   cw <- CytoscapeWindow ('setEdgeSourceArrowColorRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
