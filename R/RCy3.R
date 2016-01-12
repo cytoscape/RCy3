@@ -819,17 +819,23 @@ setMethod ('getLayoutPropertyValue', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setLayoutProperties', 'CytoscapeConnectionClass', 
 
-   function (obj, layout.name, properties.list) {
-       message("not yet implemented")
-#     all.possible.props = getLayoutPropertyNames (obj, layout.name)   # will throw error if there are no modifiable properties
-#     for (prop in names (properties.list)) {
-#       if (!prop %in% all.possible.props)
-#         write (sprintf ('%s is not a property in layout %s', prop, layout.name), stderr ())
-#       else {
-#         new.value = properties.list [[prop]]
-#         result = xml.rpc (obj@uri, 'Cytoscape.setLayoutPropertyValue', layout.name, prop, as.character (new.value))
-#         } # else
-#       } # for prop
+    function (obj, layout.name, properties.list) {
+        all.possible.props <- getLayoutPropertyNames (obj, layout.name)
+        
+        # set properties iteratively, this could have been done with a single API call
+        for (prop in names (properties.list)) {
+            if (!prop %in% all.possible.props) {
+                write (sprintf ('%s is not a property in layout %s', prop, layout.name), stderr ())
+            } else {
+                new.value <- properties.list [[prop]]
+                new.property.value.list <- list("name"=prop, "value"=new.value)
+                new.property.value.list.JSON <- toJSON(list(new.property.value.list))
+                
+                request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
+                request.res <- PUT(url=request.uri, body= new.property.value.list.JSON, encode="json")
+                invisible(request.res)
+            }
+        } # for prop
      }) # setLayoutProperties
 
 # ------------------------------------------------------------------------------
