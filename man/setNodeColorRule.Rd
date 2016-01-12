@@ -66,15 +66,16 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('setNodeColorRule.test', graph=makeSimpleGraph())
+  displayGraph (cw)
+  layoutNetwork(cw)
+  redraw (cw)
   control.points <- c (-3.0, 0.0, 3.0)   # typical range of log-fold-change ratio values
     # paint negative values shades of green, positive values shades of
     # red, out-of-range low values are dark green; out-of-range high
     # values are dark red
   node.colors <- c ("#00AA00", "#00FF00", "#FFFFFF", "#FF0000", "#AA0000")
   setNodeColorRule (cw, node.attribute.name='lfc', control.points, node.colors, mode='interpolate')
-  displayGraph (cw)
-  layoutNetwork(cw)
-  redraw (cw)
+  
   data.values <- c ("kinase", "transcription factor", "glycoprotein")
   node.colors <- c ("#0000AA", "#FFFF00", "#0000AA") 
   setNodeColorRule (cw, node.attribute.name='type', data.values,   node.colors, mode='lookup', default.color='#AA0000')
