@@ -38,7 +38,9 @@ None.
   cy <- CytoscapeConnection ()
   prop.names <- getLayoutPropertyNames (cy, 'isom')
   print (prop.names)
-    #  "maxEpoch" "sizeFactor" "radiusConstantTime"   "radius"  "minRadius" "initialAdaptation"  "minAdaptation" "coolingFactor" 
+    # [1] "maxEpoch"           "radiusConstantTime" "radius"             "minRadius"         
+    # [5] "initialAdaptation"  "minAdaptation"      "sizeFactor"         "coolingFactor"     
+    # [9] "singlePartition"  
   print (getLayoutPropertyValue (cy, 'isom', 'radiusConstantTime'))
     # modify just two of the eight properties; the others are unchanged
   setLayoutProperties (cy, 'isom', list (radiusConstantTime=4, radius=20))
