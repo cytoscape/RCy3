@@ -2580,7 +2580,7 @@ setMethod ('setNodeBorderWidthRule', 'CytoscapeWindowClass',
        setDefaultNodeBorderWidth(obj, default.width, vizmap.style.name)
        
        # define the column type
-       columnType <- findColumnType(typeof(line.widths[1]))
+       columnType <- "String" #findColumnType(typeof(line.widths[1]))
        # discrete mapping
        if (mode=="lookup"){
            discreteMapping (obj, node.attribute.name, attribute.values, line.widths,
@@ -3065,7 +3065,7 @@ setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass',
         setDefaultEdgeSourceArrowColor (obj, default.color, vizmap.style.name)
         
         # define the column type
-        columnType <- findColumnType(typeof(control.points[1]))
+        columnType <- "String" #findColumnType(typeof(control.points[1]))
         
         
         if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
