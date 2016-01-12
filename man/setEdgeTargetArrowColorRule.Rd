@@ -52,6 +52,11 @@ None.
   
   # set rule
   setEdgeTargetArrowColorRule (cw, 'edgeType', edgeType.values, colors, mode='lookup')
+  
+  # if not specified, the mode is interpolate
+  colors <- c ("#FFFFFF", "#00FF00", "#00AA00", "#FF0000", "#AA0000")
+  control.points <- c( -12.0, 35.0, 0.0 )
+  setEdgeTargetArrowColorRule(cw, 'score', control.points, colors)
 }
 
 \keyword{graph}
