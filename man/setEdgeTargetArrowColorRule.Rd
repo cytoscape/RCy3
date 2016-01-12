@@ -36,14 +36,22 @@ None.
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
+  # send and display network
   cw <- CytoscapeWindow ('setEdgeTargetArrowColorRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'force-directed')
   
+  # add edge arrows
+  arrows <- c ('Arrow', 'Diamond', 'Circle')
+  edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
+  setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
+  
   colors <- c ("#AA00AA", "#AAAA00", "#AA0000")
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
-  setEdgeTargetArrowColorRule (cw, 'edgeType', edgeType.values, colors)
+  
+  # set rule
+  setEdgeTargetArrowColorRule (cw, 'edgeType', edgeType.values, colors, mode='lookup')
 }
 
 \keyword{graph}
