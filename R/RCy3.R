@@ -755,7 +755,6 @@ setMethod('getLayoutNames', 'CytoscapeConnectionClass',
         request.res <- GET(url=request.uri)
         
         available.layouts <- unname(fromJSON(rawToChar(request.res$content)))
-        
         return(available.layouts)
 }) 
 ## END getLayoutNames
@@ -763,7 +762,20 @@ setMethod('getLayoutNames', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('getLayoutNameMapping', 'CytoscapeConnectionClass', 
     function(obj) {
-        message("not yet implemented")
+        layout.names <- getLayoutNames(obj)
+        layout.full.names <- c()
+        
+        # get the English/full name of a layout
+        for (layout.name in layout.names){
+            request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), sep="/")
+            request.res <- GET(url=request.uri)
+            
+            layout.property.names <- unname(fromJSON(rawToChar(request.res$content)))
+            layout.full.names <- c(layout.full.names, layout.property.names[[4]])
+        }
+        names(layout.names) <- layout.full.names
+        
+        return(layout.names)
 })
 ## END getLayoutNameMapping
 
