@@ -40,10 +40,12 @@ getLayoutPropertyValue(obj, layout.name, property.name)
     #  "maxEpoch" "sizeFactor" "radiusConstantTime"   "radius"  "minRadius"
     #  "initialAdaptation"  "minAdaptation" "coolingFactor" 
   sapply (prop.names, function (pn) getLayoutPropertyValue (cy, 'isom', 'coolingFactor'))
-    #        maxEpoch         sizeFactor radiusConstantTime             radius
-    #        minRadius  initialAdaptation      minAdaptation      coolingFactor
-    #            2                  2                  2                  2            
-    #            2                  2                  2                  2
+  # maxEpoch radiusConstantTime             radius          minRadius 
+  #       2                  2                  2                  2 
+  # initialAdaptation      minAdaptation         sizeFactor      coolingFactor 
+  #               2                  2                  2                  2 
+  # singlePartition 
+  #               2 
     }
 
 \keyword{graph}
