@@ -37,6 +37,10 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('setEdgeTargetArrowColorRule.test', graph=makeSimpleGraph())
+  displayGraph (cw)
+  redraw (cw)
+  layoutNetwork(cw, 'force-directed')
+  
   colors <- c ("#AA00AA", "#AAAA00", "#AA0000")
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
   setEdgeTargetArrowColorRule (cw, 'edgeType', edgeType.values, colors)
