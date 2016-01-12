@@ -34,8 +34,13 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('setEdgeTargetArrowRule.test', graph=makeSimpleGraph())
+  displayGraph (cw)
+  layoutNetwork(cw)
+  redraw (cw)
+  
   arrows <- c ('Arrow', 'Diamond', 'Circle')
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
+  
   setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
   redraw (cw)
 }
