@@ -774,7 +774,6 @@ setMethod('getLayoutPropertyNames', 'CytoscapeConnectionClass',
         request.res <- GET(url=request.uri)
         
         layout.property.names <- unname(fromJSON(rawToChar(request.res$content)))
-        
         return(sapply(layout.property.names, '[[', 1))
 })
 ## END getLayoutPropertyNames
@@ -782,16 +781,13 @@ setMethod('getLayoutPropertyNames', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('getLayoutPropertyType', 'CytoscapeConnectionClass', 
     function(obj, layout.name, property.name) {
-        request.uri <- 
-            paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), sep="/")
-        
-        print(request.uri)
-        
+        request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
         request.res <- GET(url=request.uri)
         
-        # print(request.res)
-        
-        print(unname(fromJSON(rawToChar(request.res$content))))
+        layout.property.list <- unname(fromJSON(rawToChar(request.res$content)))
+        layout.property.names <- sapply(layout.property.list, '[[', 1)
+        position <- layout.property.names == property.name
+        return(sapply(layout.property.list, '[[', 3)[position])
 }) 
 ## END getLayoutPropertyType
 
@@ -799,8 +795,13 @@ setMethod('getLayoutPropertyType', 'CytoscapeConnectionClass',
 setMethod ('getLayoutPropertyValue', 'CytoscapeConnectionClass', 
 
    function (obj, layout.name, property.name) {
-       message("not yet implemented")
-#     return (xml.rpc (obj@uri, 'Cytoscape.getLayoutPropertyValue', layout.name, property.name))
+       request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
+       request.res <- GET(url=request.uri)
+       
+       layout.property.list <- unname(fromJSON(rawToChar(request.res$content)))
+       layout.property.names <- sapply(layout.property.list, '[[', 1)
+       position <- layout.property.names == property.name
+       return(sapply(layout.property.list, '[[', 4)[position])
      }) # getLayoutPropertyValue
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -2733,7 +2734,7 @@ setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
         vizmap.style.name = 'default'
         
         # define the column type
-        columnType <- findColumnType(typeof(control.points[1]))
+        columnType <- "String" #findColumnType(typeof(control.points[1]))
         
         # lock node dimensions
         lockNodeDimensions (obj, TRUE)
@@ -3065,7 +3066,7 @@ setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass',
         setDefaultEdgeSourceArrowColor (obj, default.color, vizmap.style.name)
         
         # define the column type
-        columnType <- "String" #findColumnType(typeof(control.points[1]))
+        columnType <- findColumnType(typeof(control.points[1]))
         
         
         if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
@@ -5187,9 +5188,11 @@ continuousMapping <- function(obj, attribute.name, control.points, colors, visua
                                mappingColumnType = columnType, visualProperty=visual.property,
                                points = mapped.content)
     continuous.mapping.json <- toJSON(list(continuous.mapping))
-    
+    #print(continuous.mapping.json)
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=continuous.mapping.json, encode="json")
+    #print(request.res)
+    
     # inform the user if the request was a success or failure
     if (request.res$status == 201){
         write (sprintf ('Successfully set rule.'), stderr ())
