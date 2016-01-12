@@ -40,10 +40,12 @@ getLayoutPropertyType(obj, layout.name, property.name)
     #  "maxEpoch" "sizeFactor" "radiusConstantTime"   "radius"  "minRadius"
     #  "initialAdaptation"  "minAdaptation" "coolingFactor" 
   sapply (prop.names, function (pn) getLayoutPropertyType (cy, 'isom',   pn))
-   #    maxEpoch         sizeFactor  radiusConstantTime     radius  
-   #    minRadius  initialAdaptation      minAdaptation      coolingFactor 
-   #   "INTEGER"          "INTEGER"           "INTEGER"   "INTEGER"
-   #   "INTEGER"           "DOUBLE"           "DOUBLE"    "DOUBLE" 
+  # maxEpoch radiusConstantTime             radius          minRadius 
+  #           "int"              "int"              "int"              "int" 
+  # initialAdaptation      minAdaptation         sizeFactor      coolingFactor 
+  #        "double"           "double"           "double"           "double" 
+  # singlePartition 
+  #       "boolean" 
 
 }
 
