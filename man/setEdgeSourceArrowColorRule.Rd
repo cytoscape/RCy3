@@ -40,8 +40,16 @@ None.
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'force-directed')
+  
   colors <- c ("#AA00AA", "#AAAA00", "#AA0000")
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
+  
+  # add edge arrows
+  arrows <- c ('Arrow', 'Diamond', 'Circle')
+  edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
+  setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
+  
+  # set rule
   setEdgeSourceArrowColorRule (cw, 'edgeType', edgeType.values, colors)
 }
 
