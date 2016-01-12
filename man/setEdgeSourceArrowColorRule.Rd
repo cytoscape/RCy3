@@ -51,7 +51,7 @@ None.
   setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
   
   # set rule
-  setEdgeSourceArrowColorRule (cw, 'edgeType', edgeType.values, colors)
+  setEdgeSourceArrowColorRule (cw, 'edgeType', edgeType.values, colors, mode='lookup')
 }
 
 \keyword{graph}
