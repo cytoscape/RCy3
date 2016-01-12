@@ -48,10 +48,15 @@ None.
   # add edge arrows
   arrows <- c ('Arrow', 'Diamond', 'Circle')
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
-  setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
+  setEdgeSourceArrowRule (cw, 'edgeType', edgeType.values, arrows)
   
   # set rule
   setEdgeSourceArrowColorRule (cw, 'edgeType', edgeType.values, colors, mode='lookup')
+  
+  # if not specified, the mode is interpolate
+  colors <- c ("#FFFFFF", "#00FF00", "#00AA00", "#FF0000", "#AA0000")
+  control.points <- c( -12.0, 35.0, 0.0 )
+  setEdgeSourceArrowColorRule(cw, 'score', control.points, colors)
 }
 
 \keyword{graph}
