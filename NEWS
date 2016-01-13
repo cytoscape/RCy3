@@ -24,8 +24,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
     o removed clearMsg
     o removed msg
     o new names for features:
-    
-    
 > getNodeShapes(cw)
 [1] "DIAMOND"         "HEXAGON"         "OCTAGON"         "VEE"            
 [5] "TRIANGLE"        "PARALLELOGRAM"   "ELLIPSE"         "RECTANGLE"      
