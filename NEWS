@@ -11,8 +11,8 @@ NEW FEATURES
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o removed new.CystoscapeWindow. CytoscapeWindow does the same job now.
-    o removed setEdgeLabelWidthDirect.
-    o removed setEdgeSourceArrowOpacityDirect.
+    o removed setEdgeLabelWidthDirect
+    o removed setEdgeSourceArrowOpacityDirect
     o removed setEdgeTargetArrowOpacityDirect
     o removed set.node.or.edge.properties
     o removed getViewCoordinates
@@ -23,6 +23,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
     o removed setTooltipInitialDelay
     o removed clearMsg
     o removed msg
+    o setEdgeLabelPositionDirect
     o new names for features:
 > getNodeShapes(cw)
 [1] "DIAMOND"         "HEXAGON"         "OCTAGON"         "VEE"            
