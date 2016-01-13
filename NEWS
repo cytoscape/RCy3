@@ -12,6 +12,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
     o removed new.CystoscapeWindow. CytoscapeWindow does the same job now.
     o removed setEdgeLabelWidthDirect
+    o removed setEdgeLabelPositionDirect
     o removed setEdgeSourceArrowOpacityDirect
     o removed setEdgeTargetArrowOpacityDirect
     o removed set.node.or.edge.properties
