@@ -23,7 +23,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
     o removed setTooltipInitialDelay
     o removed clearMsg
     o removed msg
-    o setEdgeLabelPositionDirect
     o new names for features:
 > getNodeShapes(cw)
 [1] "DIAMOND"         "HEXAGON"         "OCTAGON"         "VEE"            
