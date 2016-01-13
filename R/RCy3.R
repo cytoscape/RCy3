@@ -2013,7 +2013,9 @@ setMethod('redraw', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('setWindowSize', 'CytoscapeWindowClass', 
     function(obj, width, height) {
-        message("not yet implemented")
+        write(sprintf("WARNING: Method RCy3::setWindowSize() is not implemented in RCy3!"), stderr())
+        
+        return(FALSE)
 })
 ## END setWindowSize
 
@@ -2021,7 +2023,9 @@ setMethod('setWindowSize', 'CytoscapeWindowClass',
 setMethod ('setTooltipInitialDelay', 'CytoscapeConnectionClass',
 
    function (obj, msecs) {
-       message("not yet implemented")
+       write(sprintf("WARNING: Method RCy3::setTooltipInitialDelay() is not implemented in RCy3!"), stderr())
+       return(FALSE)
+       
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.setToolTipInitialDelay', as.integer (msecs)))
      })
 
@@ -2029,34 +2033,38 @@ setMethod ('setTooltipInitialDelay', 'CytoscapeConnectionClass',
 setMethod ('setTooltipDismissDelay', 'CytoscapeConnectionClass',
 
    function (obj, msecs) {
-       message("not yet implemented")
+       write(sprintf("WARNING: Method RCy3::setTooltipDismissDelay() is not implemented in RCy3!"), stderr())
+       return(FALSE)
+       
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.setToolTipDismissDelay', as.integer (msecs)))
      })
 
 # ------------------------------------------------------------------------------
 setMethod('raiseWindow', 'CytoscapeConnectionClass', 
-  function(obj, window.title = NA) {
-      message("not yet implemented")
-    if(is.na(window.title)) {
-      if(class(obj) == 'CytoscapeWindowClass') {
-        window.id = obj@window.id
-      } else {
-        write(sprintf('error in RCy3::raiseWindow(), no window title provided'), stderr())
-        return()
-      }
-    } # no window title
-    # if window title was provided
-    if(!is.na(window.title)) {
-      window.id = getWindowID(obj, window.title)
-      
-      if(is.na(window.id)) {
-        write(sprintf('error in RCy3::raiseWindow(), unrecognized window title: %s', window.title), stderr ())
-        return()
-      }
-      # TO DO: call to raise the view
-      
-    } # window title was provided
-}) # raiseWindow
+    function(obj, window.title = NA) {
+        write(sprintf("WARNING: Method RCy3::raiseWindow() is not implemented in RCy3!"), stderr())
+        return(FALSE)
+        
+#         if (is.na(window.title)) {
+#             if(class(obj) == 'CytoscapeWindowClass') {
+#                 window.id = obj@window.id
+#             } else {
+#                 write(sprintf('error in RCy3::raiseWindow(), no window title provided'), stderr())
+#                 return()
+#             }
+#         } # no window title
+#         
+#         # if window title was provided
+#         if(!is.na(window.title)) {
+#             window.id = getWindowID(obj, window.title)
+#             
+#             if(is.na(window.id)) {
+#                 write(sprintf('error in RCy3::raiseWindow(), unrecognized window title: %s', window.title), stderr ())
+#                 return()
+#             }
+#             # TO DO: call to raise the view
+#         } # window title was provided
+    }) # raiseWindow
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('showGraphicsDetails', 'CytoscapeConnectionClass',
@@ -2086,7 +2094,9 @@ setMethod('fitContent', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('fitSelectedContent', 'CytoscapeWindowClass', 
     function(obj) {
-        message("not yet implemented")
+        write(sprintf("WARNING: Method RCy3::fitSelectedContent() is not implemented in RCy3!"), stderr())
+        
+        return(FALSE)
 })
 ## END fitSelectedContent
 
@@ -2200,7 +2210,9 @@ setMethod('setZoom', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('getViewCoordinates', 'CytoscapeWindowClass', 
     function(obj) {
-        message("pending implementation")
+        write(sprintf("WARNING: Method RCy3::getViewCoordinates() is not implemented in RCy3!"), stderr())
+        
+        return(FALSE)
 })
 ## END getViewCoordinates
 
@@ -4299,7 +4311,7 @@ setMethod ('getSelectedEdges', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('hideSelectedEdges', 'CytoscapeWindowClass',
 
-   function (obj) {
+    function (obj) {
 #     id = as.character (obj@window.id)
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.hideSelectedEdges', id, .convert=TRUE))
      }) # hideSelectedEdges
