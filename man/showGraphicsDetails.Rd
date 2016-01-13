@@ -12,7 +12,6 @@ showGraphicsDetails(obj, new.value)
 }
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
-  \item{new.value}{a \code{logical} object, TRUE or FALSE.}
 }
 
 \value{
@@ -25,7 +24,7 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cy <- CytoscapeConnection ()
-  showGraphicsDetails (cy, TRUE)
+  showGraphicsDetails (cy)
 
 }
 
