@@ -768,13 +768,13 @@ test.showGraphicsDetails = function ()
   layoutNetwork (cw, 'grid')
   redraw (cw)
 
-  showGraphicsDetails (cw, FALSE)
-  showGraphicsDetails (cw, TRUE)
+  showGraphicsDetails (cw)
+  showGraphicsDetails (cw)
 
   cy = CytoscapeConnection ()
   
-  showGraphicsDetails (cy, FALSE)   
-  showGraphicsDetails (cy, TRUE)
+  showGraphicsDetails (cy)
+  showGraphicsDetails (cy)
 
   invisible (cw)
 
