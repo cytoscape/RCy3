@@ -19,7 +19,7 @@ setDefaultEdgeSourceArrowColor(obj, new.color, vizmap.style.name = "default")
 \value{
 None.
 }
-\author{Tanja Muetze}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
    setDefaultNodeShape
