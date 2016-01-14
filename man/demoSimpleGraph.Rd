@@ -12,9 +12,7 @@ demoSimpleGraph()
 \value{
 Returns a CytoscapeWindow object, for subsequent manipulation
 }
-\author{
-Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())

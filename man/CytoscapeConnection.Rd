@@ -28,9 +28,7 @@ CytoscapeConnection (host = "localhost", port = 1234)
 \value{
   An object of the CytoscapeConnection Class.
 }
-\author{
-  Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   ping

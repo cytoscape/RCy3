@@ -25,9 +25,7 @@ initNodeAttribute(graph, attribute.name, attribute.type, default.value)
 \value{
 Returns the modified graph.
 }
-\author{
-Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \seealso{
   initEdgeAttribute
   makeSimpleGraph

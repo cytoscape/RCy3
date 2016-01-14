@@ -19,9 +19,7 @@ getAdjacentEdgeNames(graph, node.names)
 \value{
 Zero or more cy2-style edge names.
 }
-\author{
-Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   cy2.edge.names, selectEdges, getSelectedNodes, selectFirstNeighborsOfSelectedNodes

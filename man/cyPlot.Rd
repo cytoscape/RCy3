@@ -18,7 +18,7 @@ cyPlot(node.df, edge.df)
 \value{
 a graphNEL object with nodes, edges, and their attributes
 }
-\author{Mark Grimes}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}Mark Grimes}
 
 \examples{
   # first, delete existing windows to save memory:
