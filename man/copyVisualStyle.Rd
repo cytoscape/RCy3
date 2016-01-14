@@ -28,7 +28,7 @@ copyVisualStyle(obj, from.style, to.style)
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getVisualStyleNames

@@ -21,7 +21,7 @@ hidePanel(obj, panelName)
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   floatPanel

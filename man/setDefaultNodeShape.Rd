@@ -18,7 +18,7 @@ setDefaultNodeShape(obj, new.shape, vizmap.style.name = "default")
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
    getNodeShapes

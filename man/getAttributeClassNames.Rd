@@ -19,7 +19,7 @@ getAttributeClassNames(obj)
 A list of character strings group, e.g., "floating|numeric|double",
 "integer|int", "string|char|character"  
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

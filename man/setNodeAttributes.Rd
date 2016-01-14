@@ -20,7 +20,7 @@ setNodeAttributes(obj, attribute.name)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeAttributesDirect

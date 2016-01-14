@@ -17,7 +17,7 @@ setTooltipInitialDelay(obj, msecs)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setTooltipDismissDelay,

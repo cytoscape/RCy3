@@ -18,7 +18,7 @@ getNodePosition(obj, node.names)
 A names list of x,y pairs; names are the identifiers of nodes supplied
 when the graph was created.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

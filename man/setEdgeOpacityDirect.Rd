@@ -20,7 +20,7 @@ setEdgeOpacityDirect(obj, edge.names, new.values)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 
 \seealso{

@@ -25,7 +25,7 @@ getAllNodeAttributes(obj, onlySelectedNodes=FALSE)
 \value{
 A data frame, with a column for each attribute, a row for each node.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getNodeAttribute

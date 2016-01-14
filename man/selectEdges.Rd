@@ -17,7 +17,7 @@ selectEdges(obj, edge.names, preserve.current.selection=TRUE)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   clearSelection

@@ -26,7 +26,7 @@ rule is applied, determine the sourceArrow of each edge.}
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   \code{\link{getArrowShapes}}

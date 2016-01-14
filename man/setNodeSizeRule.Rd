@@ -32,7 +32,7 @@ rule is applied, determine the size of each node.}
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeColorRule

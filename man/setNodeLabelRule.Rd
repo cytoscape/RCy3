@@ -20,7 +20,7 @@ rule is applied, determine the label on each node.}
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

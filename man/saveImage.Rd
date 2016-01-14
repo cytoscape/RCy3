@@ -24,7 +24,7 @@ saveImage(obj, file.name, image.type, scale)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   selectNodes

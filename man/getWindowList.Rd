@@ -15,7 +15,7 @@ getWindowList(obj)
 \value{
 A named list,  in which the values are the titles of the windows; the names of the list are integers.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

@@ -20,7 +20,7 @@ setNodeWidthDirect(obj, node.names, new.widths)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeWidthRule

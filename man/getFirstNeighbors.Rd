@@ -18,7 +18,7 @@ getFirstNeighbors(obj, node.names, as.nested.list = FALSE)
 \value{
 A list of node names.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   selectNodes  

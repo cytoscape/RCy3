@@ -17,7 +17,7 @@ saveLayout(obj, filename, timestamp.in.filename=FALSE)
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   restoreLayout

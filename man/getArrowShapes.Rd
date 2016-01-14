@@ -19,7 +19,7 @@ getArrowShapes(obj)
 \value{
 A list of character strings, e.g., 'WHITE_DIAMOND', 'BLACK_T'
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

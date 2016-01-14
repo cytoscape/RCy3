@@ -18,7 +18,7 @@ setEdgeFontSizeDirect(obj, edge.names, new.value)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 
 \seealso{

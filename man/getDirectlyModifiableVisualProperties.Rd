@@ -17,7 +17,7 @@ getDirectlyModifiableVisualProperties(obj, vizmap.style.name = "default")
 \value{
 A list of about 99 character strings, e.g., "EDGE_LABEL_FONT_SIZE" and "NODE_SHAPE"
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
