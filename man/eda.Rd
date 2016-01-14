@@ -20,9 +20,7 @@ The edge.attribute.name may be obtained from the function, eda.names.
 A list, the contents of which are the attribute values, the names of
 which are the names of the edges.
 }
-\author{
-Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \seealso{
  eda.names
 }

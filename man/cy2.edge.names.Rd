@@ -23,9 +23,7 @@ cy2.edge.names(graph, R.edge.names=NA)
 A named list, in with Cytoscape edges names are the content, and bioc
 graph edge names are their names.
 }
-\author{
-Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

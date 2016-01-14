@@ -47,9 +47,7 @@ CytoscapeWindow(title, graph = new("graphNEL", edgemode='directed'),
 \value{
   An object of the CytoscapeWindow Class.
 }
-\author{
-  Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   CytoscapeWindow
