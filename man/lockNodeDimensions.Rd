@@ -18,7 +18,7 @@ lockNodeDimensions(obj, new.state, visual.style.name='default')
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeSizeDirect

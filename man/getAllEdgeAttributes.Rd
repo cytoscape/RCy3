@@ -25,7 +25,7 @@ getAllEdgeAttributes(obj, onlySelectedEdges=FALSE)
 \value{
 A data frame, with a column for each attribute, a row for each edge.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getEdgeAttribute

@@ -17,7 +17,7 @@ layoutNetwork(obj, layout.name='grid')
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getNodeShapes

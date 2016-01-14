@@ -33,7 +33,7 @@ getEdgeAttribute(obj, edge.name, attribute.name)
 \value{
 The attribute in question, which may be of any scalar type.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getEdgeAttributeNames

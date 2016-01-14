@@ -15,7 +15,7 @@ getNodeShapes(obj)
 \value{
 A list of character strings, e.g., 'trapezoid', 'ellipse', 'rect'
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

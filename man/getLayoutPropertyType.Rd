@@ -19,7 +19,7 @@ getLayoutPropertyType(obj, layout.name, property.name)
   necessarily to R types.
 }
 
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   layout

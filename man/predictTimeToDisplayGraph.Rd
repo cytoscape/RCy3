@@ -17,7 +17,7 @@ predictTimeToDisplayGraph(obj)
 \value{
 Time in seconds.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   CytoscapeWindow

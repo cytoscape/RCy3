@@ -24,7 +24,7 @@ deleteNodeAttribute(obj, attribute.name)
 \value{
 nothing
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getNodeAttributeNames

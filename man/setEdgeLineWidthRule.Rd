@@ -28,7 +28,7 @@ setEdgeLineWidthRule(obj, edge.attribute.name, attribute.values, line.widths, de
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

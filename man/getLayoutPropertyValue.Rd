@@ -19,7 +19,7 @@ getLayoutPropertyValue(obj, layout.name, property.name)
   this property for this layout.
 }
 
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   layout

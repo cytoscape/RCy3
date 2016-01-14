@@ -19,7 +19,7 @@ getLayoutNames(obj)
 A list of character strings, e.g., "jgraph-circle" "attribute-circle" "jgraph-annealing"
 }
 
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 
 \seealso{

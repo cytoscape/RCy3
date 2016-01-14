@@ -18,7 +18,7 @@ setNodeImageDirect(obj, node.names, image.urls)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeShapeDirect

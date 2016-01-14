@@ -18,7 +18,7 @@ A list of character strings.  Note that node names are returned -- their origina
 primary identifiers -- and that these may be different from the node labels that you see when you
 look at the graph in Cytoscape.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

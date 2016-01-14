@@ -18,7 +18,7 @@ getNodeSize(obj, node.names)
 A named list containing two equal-lengthed vectors, width and height.
 Unless node dimensions are 'unlocked' these two vectors will be identical.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeSizeRule, setNodeSizeDirect, lockNodeDimensions

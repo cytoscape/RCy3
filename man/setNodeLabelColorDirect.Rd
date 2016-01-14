@@ -18,7 +18,7 @@ setNodeLabelColorDirect(obj, node.names, new.colors)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeFontSizeDirect

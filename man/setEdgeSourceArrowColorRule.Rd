@@ -28,7 +28,7 @@ ColorRule is applied, determine the color of the source arrow for each edge.}
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{ \code{\link{setEdgeSourceArrowColorRule}}}
 
