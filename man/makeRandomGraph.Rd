@@ -19,9 +19,7 @@ makeRandomGraph(node.count=12, seed=123)
 Returns (by default) a 12-node, rather dense undirected  graph, with some attributes on the
 nodes and edges.
 }
-\author{
-Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())

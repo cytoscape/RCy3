@@ -32,9 +32,7 @@ existing.CytoscapeWindow (title, host='localhost', port=1234, copy.graph.from.cy
 \value{
   An object of the existing.CytoscapeWindow Class.
 }
-\author{
-  Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 
 \examples{

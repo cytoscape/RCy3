@@ -13,9 +13,7 @@ makeSimpleGraph()
 Returns a 3-node, 3-edge graph, with some attributes on the nodes
 and edges.
 }
-\author{
-Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
