@@ -17,7 +17,7 @@ getZoom(obj)
 \value{
 A names list, x and y.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setZoom

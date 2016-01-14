@@ -31,7 +31,7 @@ setEdgeAttributesDirect(obj, attribute.name, attribute.type, edge.names, values)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setEdgeAttributes

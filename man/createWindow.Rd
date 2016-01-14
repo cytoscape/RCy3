@@ -24,6 +24,6 @@ createWindow(obj)
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \keyword{graph}

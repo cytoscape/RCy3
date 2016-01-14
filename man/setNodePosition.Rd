@@ -22,7 +22,7 @@ setNodePosition(obj, node.names, x.coords, y.coords)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getNodePosition

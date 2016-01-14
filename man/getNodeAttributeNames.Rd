@@ -21,7 +21,7 @@ getNodeAttributeNames(obj)
 \value{
 A list of names.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getNodeAttribute

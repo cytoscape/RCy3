@@ -24,7 +24,7 @@ hexadecimal RGB, like this:  '#FF0000' or '#FA8800'}
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \seealso{
   setEdgeLineStyleRule
   setNodeColorRule

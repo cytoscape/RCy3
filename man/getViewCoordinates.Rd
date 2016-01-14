@@ -16,7 +16,7 @@ getViewCoordinates(obj)
 \value{
 A named list of four numbers, with these names:  top.x, top.y, bottom.x, bottom.y
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getViewCoordinates

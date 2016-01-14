@@ -20,7 +20,7 @@ getWindowID(obj, window.title)
 The identifier (id) of a window, which is always a string -- even if the
 identifer appears to be an integer.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getWindowList

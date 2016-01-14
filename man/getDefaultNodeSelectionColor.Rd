@@ -16,7 +16,7 @@ getDefaultNodeSelectionColor(obj, vizmap.style.name)
 \value{
 A character string, eg "java.awt.Color[r=204,g=204,b=255]"
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

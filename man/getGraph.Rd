@@ -16,7 +16,7 @@ getGraph(obj)
 \value{
 A graph object.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

@@ -18,7 +18,7 @@ setNodeShapeDirect(obj, node.names, new.shapes)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getNodeShapes

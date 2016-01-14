@@ -22,7 +22,7 @@ rule is applied, determine the opacity of each edge.}
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \seealso{
   setEdgeLineStyleRule
   setEdgeColorRule

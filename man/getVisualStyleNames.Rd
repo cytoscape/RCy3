@@ -20,7 +20,7 @@ getVisualStyleNames(obj)
 \value{
 a \code{list} of character strings.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   copyVisualStyle

@@ -20,7 +20,7 @@ getLayoutNameMapping(obj)
  A named list of strings.
 }
 
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   layout
