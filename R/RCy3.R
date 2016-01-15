@@ -4320,10 +4320,10 @@ setMethod ('hideSelectedEdges', 'CytoscapeWindowClass',
 setMethod('unhideAll', 'CytoscapeWindowClass', 
     function(obj) {
         node.names <- getAllNodes(obj)
+        setNodePropertyDirect(obj, node.names, 'true', "NODE_VISIBLE")
         
-        setNodePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
-        
-        setEdgePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
+        edge.names <- getAllEdges(obj)
+        setEdgePropertyDirect(obj, edge.names, 'true', "EDGE_VISIBLE")
 }) 
 ## END unhideAll
    
