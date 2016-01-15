@@ -2147,12 +2147,12 @@ setMethod('setCenter', 'CytoscapeWindowClass',
         
         # set the X-coordinate
         resource.uri <- 
-            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/")
+            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network", sep="/")
         new.x.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_X_LOCATION", value=x)))
         request.res <- PUT(resource.uri, body=new.x.coordinate.JSON, encode="json")
         # set the Y-coordinate
         resource.uri <- 
-            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
+            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network", sep="/")
         new.y.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_Y_LOCATION", value=y)))
         request.res <- PUT(resource.uri, body=new.y.coordinate.JSON, encode="json")
         invisible(request.res)
