@@ -13,7 +13,7 @@ getNodeShapes(obj)
 }
 
 \value{
-A list of character strings, e.g., 'ELLIPSE', 'RECTANGLE'
+A list of character strings, e.g. 'ELLIPSE', 'RECTANGLE'.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
