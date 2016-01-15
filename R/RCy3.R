@@ -3246,25 +3246,28 @@ setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.shapes) {
-       if (length (node.names) != length (new.shapes)) {
-           msg = sprintf ('error in RCy3::setNodeShapeDirect.  new.shapes count (%d) is neither 1 nor same as node.names count (%d)',
+    function (obj, node.names, new.shapes) {
+        if (length (node.names) != length (new.shapes)) {
+            msg = sprintf ('error in RCy3::setNodeShapeDirect.  new.shapes count (%d) is neither 1 nor same as node.names count (%d)',
                           length (new.shapes), length (node.names))
-           write (msg, stderr ())
-           return ()
-       }
-       
-       # ensure correct node shapes
-       new.shapes <- toupper(new.shapes)
-       unique.node.shapes <- unique(new.shapes)
-       wrong.node.shape <- sapply(unique.node.shapes, function(x) !(x %in% getNodeShapes(obj)))
-       if (any(wrong.node.shape)){
-           write (sprintf ('ERROR in RCy3::setNodeShapeDirect. %s is not a valid shape. For valid ones use getNodeShapes', new.shapes), stderr ())
-           return(NA)
-       }
-       
-       # set the node property direct
-       return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE"))
+            write (msg, stderr ())
+            return ()
+        }
+        
+        # convert old to new node shapes
+        new.shapes[new.shapes=='round_rect'] <- 'ROUND_RECTANGLE'
+        new.shapes[new.shapes=='rect'] <- 'RECTANGLE'
+        
+        # ensure correct node shapes
+        new.shapes <- toupper(new.shapes)
+        unique.node.shapes <- unique(new.shapes)
+        wrong.node.shape <- sapply(unique.node.shapes, function(x) !(x %in% getNodeShapes(obj)))
+        if (any(wrong.node.shape)){
+            write (sprintf ('ERROR in RCy3::setNodeShapeDirect. %s is not a valid shape. Please note that some older shapes are no longer available. For valid ones check getNodeShapes.', new.shapes), stderr ())
+            return(NA)
+        }
+        # set the node property direct
+        return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3272,18 +3275,15 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
 
     function (obj, node.names, image.urls) {
         return(setNodePropertyDirect(obj, node.names, paste0("org.cytoscape.ding.customgraphics.bitmap.URLImageCustomGraphics,14,bundle:", image.urls, ",bitmap image"), "NODE_CUSTOMGRAPHICS_1"))
-
-#     if (length (image.urls) == 1)
-#       image.urls = rep (image.urls, length (node.names))
-#
-#     if (length (node.names) != length (image.urls)) {
-#       msg = sprintf ('error in RCy3::setNodeImageDirect.  image.urls count (%d) is neither 1 nor same as node.names count (%d)',
-#                      length (image.urls), length (node.names))
-#       write (msg, stderr ())
-#       return ()
-#       }
-#    
-#     id = as.character (obj@window.id)
+        if (length (image.urls) == 1){
+            image.urls = rep (image.urls, length (node.names))
+        }
+        if (length (node.names) != length (image.urls)) {
+            msg = sprintf ('error in RCy3::setNodeImageDirect.  image.urls count (%d) is neither 1 nor same as node.names count (%d)',
+                           length (image.urls), length (node.names))
+            write (msg, stderr ())
+            return ()
+        }
 #     for (i in 1:length (node.names)) {
 #       setNodeShapeDirect (obj, node.names [i], 'rect')
 #       setNodeLabelDirect (obj, node.names [i], '')
@@ -5113,22 +5113,19 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
     node.SUIDs <- .nodeNameToNodeSUID(obj, node.names)
     
     # 'node.names' and 'new.values' must have the same length
-    if(length(new.values) == 1) {
-        new.values <- rep(new.values, length(node.names))
-    }
+#     if(length(new.values) == 1) {
+#         new.values <- rep(new.values, length(node.names))
+#     }
     if(length(new.values) != length(node.names)) {
         write(sprintf("ERROR in setNodePropertyDirect():\n\t the number of nodes [%d] and new values [%d] are not the same >> node(s) attribute couldn't be set", 
                       length(node.names), length(new.values)), stderr())
     } else {
-        request.res <- c()
-        
         for(i in seq(node.SUIDs)) {
             node.SUID <- as.character(node.SUIDs[i])
             current.value <- new.values[i]
             
             resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", node.SUID, sep="/")
             node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
-            
             request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
         } # end for (node.SUID in node.SUIDs)
         invisible(request.res)
