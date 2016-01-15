@@ -42,14 +42,14 @@ None.
     #  simple graph
   setCenter (cw, 200, 90)
   system ('sleep 1')
-  setCenter (cw, 300, 90)
+  setCenter (cw, 100, 90)
   system ('sleep 1')
-  setCenter (cw, 400, 90)
+  setCenter (cw, 0, 90)
+  system ('sleep 1')
+  setCenter (cw, -100, 90)
   system ('sleep 1')
     # and now pan back to the original position
-  setCenter (cw, 300, 90)
-  system ('sleep 1')
-  setCenter (cw, 200, 90)
+  setCenter (cw, -100, 0)
   system ('sleep 1')
   setCenter (cw, original.center$x, original.center$y)
 }
