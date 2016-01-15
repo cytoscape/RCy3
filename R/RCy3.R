@@ -4312,8 +4312,8 @@ setMethod ('getSelectedEdges', 'CytoscapeWindowClass',
 setMethod ('hideSelectedEdges', 'CytoscapeWindowClass',
 
     function (obj) {
-#     id = as.character (obj@window.id)
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.hideSelectedEdges', id, .convert=TRUE))
+        edge.names <- getSelectedEdges(obj)
+        setEdgePropertyDirect(obj, edge.names, 'false', "EDGE_VISIBLE")
      }) # hideSelectedEdges
    
 # ------------------------------------------------------------------------------
