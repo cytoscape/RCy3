@@ -13,7 +13,7 @@ getNodeShapes(obj)
 }
 
 \value{
-A list of character strings, e.g., 'trapezoid', 'ellipse', 'rect'
+A list of character strings, e.g., 'ELLIPSE', 'RECTANGLE'
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
@@ -23,8 +23,9 @@ A list of character strings, e.g., 'trapezoid', 'ellipse', 'rect'
 
   cy <- CytoscapeConnection ()
   getNodeShapes(cy)
-   # "trapezoid" "round_rect" "ellipse" "triangle"   "rect_3d" "diamond"
-   # "parallelogram" "octagon"   "trapezoid_2" "rect" "hexagon"
+   # [1] "VEE"             "RECTANGLE"       "PARALLELOGRAM"   "DIAMOND"        
+   # [5] "ROUND_RECTANGLE" "ELLIPSE"         "TRIANGLE"        "HEXAGON"        
+   # [9] "OCTAGON" 
 
 }
 
