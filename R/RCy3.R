@@ -5111,7 +5111,6 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
     view.SUID <- as.character(net.views.SUIDs[[1]])
     
     node.SUIDs <- .nodeNameToNodeSUID(obj, node.names)
-    
     # 'node.names' and 'new.values' must have the same length
 #     if(length(new.values) == 1) {
 #         new.values <- rep(new.values, length(node.names))
@@ -5119,7 +5118,13 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
     if(length(new.values) != length(node.names)) {
         write(sprintf("ERROR in setNodePropertyDirect():\n\t the number of nodes [%d] and new values [%d] are not the same >> node(s) attribute couldn't be set", 
                       length(node.names), length(new.values)), stderr())
+    } else if (length(node.names)==1){
+        # only one node
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", node.SUIDs, sep="/")
+        node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=new.values)))
+        request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
     } else {
+        # multiple nodes
         for(i in seq(node.SUIDs)) {
             node.SUID <- as.character(node.SUIDs[i])
             current.value <- new.values[i]
@@ -5128,8 +5133,8 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
             node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
             request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
         } # end for (node.SUID in node.SUIDs)
-        invisible(request.res)
     }
+    invisible(request.res)
 }
 ## END setNodePropertyDirect
 
