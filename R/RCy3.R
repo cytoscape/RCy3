@@ -4084,6 +4084,7 @@ setMethod('getSelectedNodes', 'CytoscapeWindowClass',
         version <- pluginVersion(obj)
         
         if(getSelectedNodeCount(obj) == 0) {
+            write (sprintf ('warning!  No nodes selected.'), stdout ())
             return(NA)
         } else {
             resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
@@ -4367,17 +4368,20 @@ setMethod ('getFirstNeighbors', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------
 setMethod ('selectFirstNeighborsOfSelectedNodes', 'CytoscapeWindowClass',
 
-   function (obj) {
-       if (getSelectedNodeCount (obj) > 0) {
-           currently.selected = getSelectedNodes (obj)
-           if (length (currently.selected) == 0){
-               invisible ()
-           }
-           neighbors = getFirstNeighbors (obj, currently.selected)
-           full.selection = unique (c (currently.selected, neighbors))
-           selectNodes (obj, full.selection)
-           invisible (full.selection)
+    function (obj) {
+        if (getSelectedNodeCount (obj) > 0) {
+            currently.selected = getSelectedNodes (obj)
+            if (length (currently.selected) == 0){
+                invisible ()
+            }
+            neighbors = getFirstNeighbors (obj, currently.selected)
+            full.selection = unique (c (currently.selected, neighbors))
+            selectNodes (obj, full.selection)
+            invisible (full.selection)
         } # if any nodes are already selected
+        else {
+            write (sprintf ('warning!  No nodes selected.'), stdout ())
+        }
      }) # selectFirstNeighborsOfSelectedNodes
 
 # ------------------------------------------------------------------------------
@@ -4819,8 +4823,8 @@ setMethod ('lockNodeDimensions', 'CytoscapeConnectionClass',
     function (obj, new.state, visual.style.name='default') {
         # launch error if visual style name is missing
         if (! visual.style.name %in% getVisualStyleNames (obj)) {
-        write (sprintf ('Error in RCy3::lockNodeDimensions.  No visual style named "%s"', visual.style.name), stdout ())
-        return ()
+            write (sprintf ('Error in RCy3::lockNodeDimensions.  No visual style named "%s"', visual.style.name), stdout ())
+            return ()
         }
     
         #lock node dimensions
