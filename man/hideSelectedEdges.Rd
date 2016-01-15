@@ -27,7 +27,11 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('hideSelectedEdges.test', graph=makeSimpleGraph())
-  # selectEdges (cw, 'B (synthetic lethal) C')
+  displayGraph (cw)
+  redraw (cw)
+  layoutNetwork(cw, 'force-directed')
+  
+  selectEdges (cw, 'B (synthetic lethal) C')
   hideSelectedEdges (cw)
   unhideAll (cw)
    # alas, Cytoscape requires that you render these edges, and redo the
