@@ -28,6 +28,9 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('hideSelectedNodes.test', graph=makeSimpleGraph())
+  displayGraph (cw)
+  redraw (cw)
+  layoutNetwork(cw, 'force-directed')
   # saveLayout (cw, 'layout.tmp.RData')
   selectNodes (cw, c ('A', 'B'))
   hideSelectedNodes (cw)
