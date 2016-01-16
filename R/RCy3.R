@@ -3248,10 +3248,12 @@ setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
 setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
     function (obj, node.names, new.shapes) {
         if (length (node.names) != length (new.shapes)) {
-            msg = sprintf ('error in RCy3::setNodeShapeDirect.  new.shapes count (%d) is neither 1 nor same as node.names count (%d)',
-                          length (new.shapes), length (node.names))
-            write (msg, stderr ())
-            return ()
+            if (length(new.shapes) != 1){
+                msg = sprintf ('error in RCy3::setNodeShapeDirect.  new.shapes count (%d) is neither 1 nor same as node.names count (%d)',
+                               length (new.shapes), length (node.names))
+                write (msg, stderr ())
+                return ()
+            }
         }
         
         # convert old to new node shapes
@@ -3274,22 +3276,25 @@ setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
 setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
 
     function (obj, node.names, image.urls) {
-        return(setNodePropertyDirect(obj, node.names, paste0("org.cytoscape.ding.customgraphics.bitmap.URLImageCustomGraphics,14,bundle:", image.urls, ",bitmap image"), "NODE_CUSTOMGRAPHICS_1"))
-        if (length (image.urls) == 1){
-            image.urls = rep (image.urls, length (node.names))
-        }
         if (length (node.names) != length (image.urls)) {
-            msg = sprintf ('error in RCy3::setNodeImageDirect.  image.urls count (%d) is neither 1 nor same as node.names count (%d)',
-                           length (image.urls), length (node.names))
-            write (msg, stderr ())
-            return ()
+            if (length (image.urls) == 1){
+                msg = sprintf ('Error in RCy3::setNodeImageDirect. Image.urls count (%d) is neither 1 nor same as node.names count (%d)',
+                               length (image.urls), length (node.names))
+                write (msg, stderr ())
+                return ()
+            }
         }
-#     for (i in 1:length (node.names)) {
-#       setNodeShapeDirect (obj, node.names [i], 'rect')
-#       setNodeLabelDirect (obj, node.names [i], '')
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names [i], 'Node Custom Graphics 1', image.urls [i])
-#       }
-#     invisible (result)
+        
+        return(setNodePropertyDirect(obj, node.names, image.urls, "NODE_CUSTOMGRAPHICS_1"))
+        
+        #return(setNodePropertyDirect(obj, node.names, paste0("org.cytoscape.ding.customgraphics.bitmap.URLImageCustomGraphics,14,bundle:,bitmap image"), "NODE_CUSTOMGRAPHICS_1"))
+
+        # the below code is from a previous RCytoscape version
+#         for (i in 1:length (node.names)) {
+#             setNodeShapeDirect (obj, node.names [i], 'rect')
+#             setNodeLabelDirect (obj, node.names [i], '')
+#             result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names [i], 'Node Custom Graphics 1', image.urls [i])
+#         }
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -5112,10 +5117,10 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
     
     node.SUIDs <- .nodeNameToNodeSUID(obj, node.names)
     # 'node.names' and 'new.values' must have the same length
-#     if(length(new.values) == 1) {
-#         new.values <- rep(new.values, length(node.names))
-#     }
-    if(length(new.values) != length(node.names)) {
+    if (length(new.values) == 1) {
+        new.values <- rep(new.values, length(node.names))
+    }
+    if (length(new.values) != length(node.names)) {
         write(sprintf("ERROR in setNodePropertyDirect():\n\t the number of nodes [%d] and new values [%d] are not the same >> node(s) attribute couldn't be set", 
                       length(node.names), length(new.values)), stderr())
     } else if (length(node.names)==1){
@@ -5125,7 +5130,7 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
         request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
     } else {
         # multiple nodes
-        for(i in seq(node.SUIDs)) {
+        for (i in seq(node.SUIDs)) {
             node.SUID <- as.character(node.SUIDs[i])
             current.value <- new.values[i]
             
