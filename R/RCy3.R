@@ -1343,22 +1343,26 @@ setMethod('.edgeSUIDToEdgeName', 'CytoscapeConnectionClass',
 ## END .edgeSUIDToEdgeName
 
 # ------------------------------------------------------------------------------
-setMethod('addCyNode', 'CytoscapeWindowClass', function(obj, nodeName) { 
+setMethod('addCyNode', 'CytoscapeWindowClass', function(obj, nodeName) {
     loc.obj <- obj
 
     if(nodeName %in% getAllNodes(loc.obj)) {
         write(sprintf('RCy3::addCyNode, %s node already present in Cytoscape graph', nodeName), stderr())
         return()
     }
+    
     # get the network suid
     net.suid <- as.character(loc.obj@window.id)
     resource.uri <- paste(loc.obj@uri, pluginVersion(loc.obj), "networks", net.suid, "nodes", sep="/")
-  
     nodename.json = toJSON(c(nodeName))
+    
     # add the node to the Cytoscape graph
     new.cynode.res <- POST(url=resource.uri, body=nodename.json, encode="json")
-
     new.cynode.suid.name <- unname(fromJSON(rawToChar(new.cynode.res$content)))
+    
+    # add a node label --> not required
+    # setNodePropertyDirect(cw, new.cynode.suid.name[[1]]$name, nodeName, "NODE_LABEL")
+    
     # add the new node to the cw@suid.name.dict
     loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict)+1]] <- 
         list(name=new.cynode.suid.name[[1]]$name, SUID=new.cynode.suid.name[[1]]$SUID)
