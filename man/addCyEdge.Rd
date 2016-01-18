@@ -36,10 +36,9 @@ None.
   window.name <- 'demo addCyEdge'
   cw <- CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)
+  layoutNetwork(cw)
   directed = TRUE
   addCyEdge (cw, 'A', 'B', 'synthetic rescue', directed)
-  redraw (cw)
-  layoutNetwork(cw)
 
 
 }
