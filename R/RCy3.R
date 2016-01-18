@@ -476,9 +476,9 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 existing.CytoscapeWindow = 
     function(title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE) 
         {
-        res <- .BBSOverride(host, port)
-        host <- res$host
-        port <- res$port
+        #res <- .BBSOverride(host, port)
+        #host <- res$host
+        #port <- res$port
         
 		uri <- sprintf('http://%s:%s', host, port)
 		
