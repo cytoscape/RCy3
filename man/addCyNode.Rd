@@ -35,6 +35,7 @@ addCyNode(obj, nodeName)
   layoutNetwork (cw)
   addCyNode (cw, 'A NEW NODE')
   layoutNetwork (cw)
+  redraw (cw)
 }
 
 \keyword{graph}
