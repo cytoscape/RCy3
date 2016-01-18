@@ -6,12 +6,13 @@
 In the specified CytoscapeWindow, set the images of the specified nodes.
 }
 \usage{
-setNodeImageDirect(obj, node.names, image.urls)
+setNodeImageDirect(obj, node.names, image.positions)
 }
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{node.names}{one or more \code{String} objects.}
-  \item{image.urls}{one or more \code{String} objects. If just one, then
+  \item{image.positions}{one or more \code{int} objects, specifying the
+    position of the image in the Image Manager. If just one, then
     this is replicated for each of the supplied node.names.}
 }
 
