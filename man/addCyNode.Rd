@@ -17,9 +17,8 @@ addCyNode(obj, nodeName)
   \item{nodeName}{a \code{character string} object. }
 }
 
-\value{
-None.
-}
+\value{None.}
+
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
@@ -33,9 +32,9 @@ None.
   window.name <- 'demo addCyNode'
   cw <- CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)
+  layoutNetwork (cw)
   addCyNode (cw, 'A NEW NODE')
-  redraw (cw)
-  layoutNetwork(cw)
+  layoutNetwork (cw)
 }
 
 \keyword{graph}
