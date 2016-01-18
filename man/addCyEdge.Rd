@@ -39,8 +39,6 @@ None.
   layoutNetwork(cw)
   directed = TRUE
   addCyEdge (cw, 'A', 'B', 'synthetic rescue', directed)
-
-
 }
 
 \keyword{graph}
