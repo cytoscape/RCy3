@@ -3284,11 +3284,25 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
                 return ()
             }
         }
+        # only allow for upto 9 custom graphics
+        if ((length(unique(image.urls)))>9){
+            msg = sprintf ('Error in RCy3::setNodeImageDirect. Cytoscape only supports upto 9 custom graphics.')
+            write (msg, stderr ())
+            return()
+        }
+        # pseudo code:
+        # for loop
+        # if is == "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],"
+        # if "NODE_CUSTOMGRAPHICS_9" passed and still not: error message
+        # not working: return(setNodePropertyDirect(obj, node.names, image.urls, "NODE_CUSTOMGRAPHICS_1"))
+        position <- 12
+        return(setNodePropertyDirect(obj, node.names, paste0("org.cytoscape.ding.customgraphics.bitmap.URLImageCustomGraphics,", position, ",bundle"), "NODE_CUSTOMGRAPHICS_1"))
+        return(TRUE)
         
-        return(setNodePropertyDirect(obj, node.names, image.urls, "NODE_CUSTOMGRAPHICS_1"))
+        # test code to remove an image
+        # setNodePropertyDirect(obj, node.names, "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],", "NODE_CUSTOMGRAPHICS_1")
         
-        #return(setNodePropertyDirect(obj, node.names, paste0("org.cytoscape.ding.customgraphics.bitmap.URLImageCustomGraphics,14,bundle:,bitmap image"), "NODE_CUSTOMGRAPHICS_1"))
-
+        
         # the below code is from a previous RCytoscape version
 #         for (i in 1:length (node.names)) {
 #             setNodeShapeDirect (obj, node.names [i], 'rect')
