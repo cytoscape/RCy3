@@ -64,7 +64,7 @@ Nothing.
   new.names = getVisualStyleNames (cw)
   setVisualStyle (cw, new.unique.style.name)
 
-   # save the session form the Cytoscape application menu.  the new
+   # save the session from the Cytoscape application menu. The new
    # style name will be saved along with the network and its attributes
 }
 
