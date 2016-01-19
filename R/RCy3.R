@@ -1423,19 +1423,20 @@ setMethod ('addGraphToGraph', 'CytoscapeWindowClass',
         # RCy3 keeps a dictionary of the network nodes 
         # the below vector stores the indices of the newly added nodes in this dictionary
         new.node.indices = .addNodes(loc.obj, other.graph)
+        
         # RCy3 keeps a dictionary of the network edges
         # the below vector stores the indices of the newly added edges to this dictionary
         new.edge.indices = .addEdges(loc.obj, other.graph)
         
         node.attribute.names = noa.names(other.graph)
         
-        for(attribute.name in node.attribute.names) {
+        for (attribute.name in node.attribute.names) {
             printf('sending noa %s', attribute.name)
             .sendNodeAttributesForGraph(loc.obj, other.graph, attribute.name, new.node.indices)
         }
         
         edge.attribute.names = eda.names(other.graph)
-        for(attribute.name in edge.attribute.names) {
+        for (attribute.name in edge.attribute.names) {
             printf('sending eda %s', attribute.name)
             .sendEdgeAttributesForGraph(loc.obj, other.graph, attribute.name, new.edge.indices)
         }
