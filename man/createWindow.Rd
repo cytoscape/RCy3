@@ -11,7 +11,7 @@ This method will probably not often be useful: it is called behind the
 scenes by the CytoscapeWindow constructor unless you specify (in calling
 the constructor) 'create.window=FALSE'.   In that case, or if you
 interactively delete the window in Cytoscape, or if you call the
-'destroyWindow' or 'destroyAllWindows' methods, you can create a new
+'deleteWindow' or 'deleteAllWindows' methods, you can create a new
 window by calling this method.
 }
 \usage{
@@ -25,5 +25,17 @@ createWindow(obj)
 Nothing.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
+
+\examples{
+   # first, delete existing windows to save memory:
+  deleteAllWindows(CytoscapeConnection())
+  
+   # create a CytoscapeWindowClass object by calling the constructor
+  c2 <- CytoscapeWindow ('cwc demo', makeSimpleGraph ())
+  
+   # delete the window and then recreate it
+  deleteAllWindows(CytoscapeConnection())
+  createWindow(c2)
+}
 
 \keyword{graph}
