@@ -1360,14 +1360,12 @@ setMethod('addCyNode', 'CytoscapeWindowClass', function(obj, nodeName) {
     new.cynode.res <- POST(url=resource.uri, body=nodename.json, encode="json")
     new.cynode.suid.name <- unname(fromJSON(rawToChar(new.cynode.res$content)))
     
-    # add a node label --> not required
-    # setNodePropertyDirect(cw, new.cynode.suid.name[[1]]$name, nodeName, "NODE_LABEL")
-    
     # add the new node to the cw@suid.name.dict
     loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict)+1]] <- 
         list(name=new.cynode.suid.name[[1]]$name, SUID=new.cynode.suid.name[[1]]$SUID)
-    # TO DO: add the node to the cw@graph object
-    # cw@graph <- addNode(nodeName, cw@graph)
+    
+    # add the node to the R graph object
+    loc.obj@graph <- addNode(nodeName, loc.obj@graph)
 
     eval.parent(substitute(obj <- loc.obj))
 })
@@ -1397,7 +1395,6 @@ setMethod('addCyEdge', 'CytoscapeWindowClass',
     }
     
     net.suid <- as.character(loc.obj@window.id)
-    
     resource.uri <- paste(loc.obj@uri, pluginVersion(loc.obj), "networks", net.suid, "edges", sep="/")
     
     node.names.vec <- sapply(loc.obj@suid.name.dict, "[[", 1)
@@ -1408,6 +1405,12 @@ setMethod('addCyEdge', 'CytoscapeWindowClass',
     edge.data.JSON <- toJSON(list(edge.data))
     
     new.cyedge.res <- POST(url=resource.uri, body=edge.data.JSON, encode='json')
+    invisible(new.cyedge.res)
+    
+    # add the edge to the R graph object
+    loc.obj@graph <- addEdge(sourceNode, targetNode, loc.obj@graph)
+    
+    eval.parent(substitute(obj <- loc.obj))
 })
 
 #------------------------------------------------------------------------------------------------------------------------
