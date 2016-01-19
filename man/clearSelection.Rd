@@ -23,12 +23,11 @@ Nothing
   deleteAllWindows(CytoscapeConnection())
   cw <- CytoscapeWindow ('clearSelection.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  selectNodes (cw, 'A')
   layoutNetwork(cw)
+  selectNodes (cw, 'A')
   print (getSelectedNodeCount (cw))   # should be 1
   clearSelection (cw)
   print (getSelectedNodeCount (cw))   # should be 0
-
 }
 
 \keyword{graph}
