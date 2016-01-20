@@ -25,7 +25,7 @@ A list of character strings.
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')
   redraw (cw)
-    # in Cytoscape, interactively select two edges or call the selectEdges function
+    # in Cytoscape, interactively select an edge or call the selectEdges function
   selectEdges (cwe, "A (phosphorylates) B")
   getSelectedEdges (cw)
 }
