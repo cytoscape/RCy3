@@ -2,9 +2,9 @@
 \alias{deleteSelectedEdges}
 \alias{deleteSelectedEdges,CytoscapeWindowClass-method}
 \title{deleteSelectedEdges}
-\description{In Cytoscape, remove all selected edges.  These edges will
-  still exist in the corresponding R graph until you delete them there
-  as well.
+\description{This function removes all selected edges in Cytoscape.
+  These edges will still exist in the corresponding R graph
+  until you delete them there as well.
 }
 \usage{
 deleteSelectedEdges(obj)
