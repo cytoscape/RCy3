@@ -2,8 +2,8 @@
 \alias{deleteSelectedNodes}
 \alias{deleteSelectedNodes,CytoscapeWindowClass-method}
 \title{deleteSelectedNodes}
-\description{In Cytoscape, delete all the selected nodes.  Edges originating
-  or terminating in these nodes will be deleted also.  The nodes will
+\description{This function deletes all the selected nodes in Cytoscape.  Edges originating
+  or terminating in these nodes will also be deleted. The nodes and edges will
   still exist in the corresponding R graph until you explicitly delete them there
   as well.
 }
@@ -33,6 +33,7 @@ None.
   redraw (cw)
   layoutNetwork(cw, 'force-directed') 
   print (nodes (cw@graph))
+    # [1] "A" "B" "C"
   selectNodes (cw, "B")
   deleteSelectedNodes (cw)
 }
