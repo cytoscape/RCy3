@@ -336,9 +336,7 @@ setGeneric ('lockNodeDimensions',     signature='obj', function (obj, new.state,
 # private methods, for internal use only
 #-----------------------------------------------------------
 setGeneric ('.addNodes',
-            signature='obj', function(obj, other.graph) standardGeneric ('.addNodes'))
-setGeneric ('.addEdges',
-            signature='obj', function(obj, other.graph) standardGeneric ('.addEdges'))
+            signature='obj', function (obj, other.graph) standardGeneric ('.addNodes'))
 setGeneric ('.addEdges', 
             signature='obj', function (obj, other.graph) standardGeneric ('.addEdges'))
 setGeneric ('.getWindowNameFromSUID', 
@@ -600,19 +598,113 @@ setMethod('createWindow', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('createWindowFromSelection', 'CytoscapeWindowClass',
 
-	function (obj, new.windowTitle, return.graph=FALSE) {
-#		if (getSelectedNodeCount (obj) == 0) {
-#	    write (noquote ('RCy3::createWindowFromSelection error:  no nodes are selected'), stderr ())
-#      return (NA)
-#      }
-#    if (new.windowTitle %in% as.character (getWindowList (obj))) {
-#      msg = sprintf ('RCy3::createWindowFromSelection error:  window "%s" already exists', new.windowTitle)
-#      write (noquote (msg), stderr ())
-#      return (NA)
-#      }
-#      
-#    window.id = xml.rpc (obj@uri, 'Cytoscape.createNetworkFromSelection', obj@window.id, new.windowTitle)
-#    return (existing.CytoscapeWindow (new.windowTitle, copy.graph.from.cytoscape.to.R = return.graph))
+    function (obj, new.windowTitle, return.graph=FALSE) {
+        if (getSelectedNodeCount (obj) == 0) {
+            write (noquote ('RCy3::createWindowFromSelection error:  no nodes are selected'), stderr ())
+            return (NA)
+        }
+
+        if (new.windowTitle %in% as.character (getWindowList (obj))) {
+            msg <- sprintf ('RCy3::createWindowFromSelection error:  window "%s" already exists', new.windowTitle)
+            write (noquote (msg), stderr ())
+            return (NA)
+        }
+        
+        # create new window
+        cy.window <- CytoscapeWindow (new.windowTitle)
+        
+        net.SUID <- as.character(cy.window@window.id)
+        version <- pluginVersion(obj)
+        
+        
+        # copy nodes over
+        selected.nodes <- getSelectedNodes(obj)
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes", sep="/")
+        new.nodes.JSON <- toJSON(selected.nodes)
+        request.res <- POST(url=resource.uri, body=new.nodes.JSON, encode="json")
+        new.node.SUIDs <- unname(fromJSON(rawToChar(request.res$content)))
+        new.node.names <- do.call(rbind, lapply(new.node.SUIDs, data.frame, stringsAsFactors=FALSE))
+        invisible(request.res)
+        
+        
+        # copy node attributes over
+        node.attribute.names <- noa.names(obj@graph)
+        for (attribute.name in node.attribute.names) {
+            printf('sending node attribute "%s"', attribute.name)
+            caller.specified.attribute.class <- attr(nodeDataDefaults(obj@graph, attribute.name), 'class')
+            values <- noa(obj@graph, attribute.name)[selected.nodes]
+            values <- data.frame(values)
+            values["name"] <- rownames(values)
+            node.name.suid.value.df <- merge(new.node.names, values, by='name')
+            
+            # converts the above data frame data in the cyREST [SUID:value]-pairs format
+            node.SUID.value.pairs <- 
+                apply(node.name.suid.value.df[,c('SUID','values')], 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
+            apply(data.frame(new.node.SUIDs, values), 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
+            node.SUID.value.pairs.JSON = toJSON(node.SUID.value.pairs)
+            resource.uri <- 
+                paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns", attribute.name, sep="/")
+            request.res <- PUT(url=resource.uri, body=node.SUID.value.pairs.JSON, encode="json")
+            invisible(request.res)
+        }
+        
+        
+        # copy edges over
+        if (is.classic.graph(obj@graph)) {
+            tbl.edges <- .classicGraphToNodePairTable(obj@graph)
+        } else if (is.multiGraph(obj@graph)) {
+            tbl.edges <- .multiGraphToNodePairTable(obj@graph)
+        }
+        new.tbl.edges <- tbl.edges[tbl.edges$source %in% selected.nodes & tbl.edges$target %in% selected.nodes,]
+        num.edges.to.copy <- nrow(new.tbl.edges)
+        if (num.edges.to.copy > 0) {
+            directed <- rep(TRUE, nrow(new.tbl.edges)) #TODO enable undirected?
+            
+            if (num.edges.to.copy == 1) {
+                # get the SUIDs of the source nodes for the new edges
+                source.node.SUIDs <- new.node.names$SUID[new.node.names$name==new.tbl.edges$source]
+                # get the SUIDs of the target nodes for the new edges
+                target.node.SUIDs <- new.node.names$SUID[new.node.names$name==new.tbl.edges$target]
+            }else{
+                source.node.SUIDs <- match(new.tbl.edges$source, new.node.names$name)
+                target.node.SUIDs <- sapply(new.tbl.edges$target, function(x) {match(x, new.node.names$name)})
+                #target.node.SUIDs <- sapply(new.tbl.edges$target, function(x) {which(x== new.node.names$name)})
+                print(target.node.SUIDs)
+            }
+            # format the new edges data for sending to Cytoscape
+            edge.tbl.records = 
+                apply(cbind(source.node.SUIDs, target.node.SUIDs, directed, new.tbl.edges$edgeType), MARGIN=1,
+                      FUN=function(r) {list(source=unname(r[[1]]), target=unname(r[[2]]), directed=unname(r[[3]]), interaction=unname(r[[4]]))})
+            edge.tbl.records.JSON = toJSON(edge.tbl.records)
+            resource.uri = paste(cy.window@uri, version, "networks", net.SUID, "edges", sep="/")
+            request.res = POST(url=resource.uri, body=edge.tbl.records.JSON, encode="json")
+            new.edge.SUIDs <- unname(fromJSON(rawToChar(request.res$content)))
+            invisible(request.res)
+        }
+        
+        
+        # copy edge attributes over
+        edge.attribute.names = eda.names(obj@graph)
+        for (attribute.name in edge.attribute.names) {
+            printf('sending edge attribute "%s"', attribute.name)
+            caller.specified.attribute.class = attr(edgeDataDefaults(obj@graph, attribute.name), 'class')
+            
+            edge.name.suid.value.df <- data.frame(rbind(unlist(new.edge.SUIDs)))
+            edge.name.suid.value.df$edgeName <- paste0(new.node.names$name[new.node.names$SUID==edge.name.suid.value.df$source], "|",
+                                              new.node.names$name[new.node.names$SUID==edge.name.suid.value.df$target])
+            values = eda(obj@graph, attribute.name)
+            edge.name.suid.value.df$edgeValue <- unname(values)[(names(values)==edge.name.suid.value.df$edgeName)]
+            
+            edge.SUID.value.pairs = 
+                apply(edge.name.suid.value.df[,c('SUID','edgeValue')], 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
+            edge.SUID.value.pairs.JSON = toJSON(edge.SUID.value.pairs)
+            resource.uri = 
+                paste(cy.window@uri, version, "networks", net.SUID, "tables/defaultedge/columns", attribute.name, sep="/")
+            request.res = PUT(url=resource.uri, body=edge.SUID.value.pairs.JSON, encode="json")
+            invisible(request.res)
+        }
+        
+        return (existing.CytoscapeWindow (new.windowTitle, copy.graph.from.cytoscape.to.R = return.graph))
     }) # createWindowFromSelection
 
 # ------------------------------------------------------------------------------
@@ -840,13 +932,13 @@ setMethod ('setLayoutProperties', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod ('setGraph', 'CytoscapeWindowClass', function(obj, graph) {
+    loc.obj <- obj
     if(edgemode(graph) == 'undirected'){
         graph = remove.redundancies.in.undirected.graph (graph)
     }
     
-    obj@graph = graph
-    
-    return (obj)
+    loc.obj@graph = graph
+    eval.parent(substitute(obj <- loc.obj))
 })
 
 # ------------------------------------------------------------------------------
@@ -1028,7 +1120,7 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
 
-  function (obj,  window.title) {
+    function (obj,  window.title) {
       window.id = NULL
       # handles the case when 'obj' is 'CytoscapeConnectionClass', instead of 'CytoscapeWindowClass' 
       if(class(obj) == "CytoscapeConnectionClass") {
@@ -1096,7 +1188,6 @@ setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
           
       } else {
           write(sprintf("ERROR in RCy3::getGraphFromCyWindow():\n\t there is no graph with name '%s' in Cytoscape", window.title), stderr())
-          
           return(NA)
       }
       
