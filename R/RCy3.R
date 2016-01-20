@@ -666,10 +666,8 @@ setMethod ('createWindowFromSelection', 'CytoscapeWindowClass',
                 # get the SUIDs of the target nodes for the new edges
                 target.node.SUIDs <- new.node.names$SUID[new.node.names$name==new.tbl.edges$target]
             }else{
-                source.node.SUIDs <- match(new.tbl.edges$source, new.node.names$name)
-                target.node.SUIDs <- sapply(new.tbl.edges$target, function(x) {match(x, new.node.names$name)})
-                #target.node.SUIDs <- sapply(new.tbl.edges$target, function(x) {which(x== new.node.names$name)})
-                print(target.node.SUIDs)
+                source.node.SUIDs <- new.node.names$SUID[match(new.tbl.edges$source, new.node.names$name)]
+                target.node.SUIDs <- new.node.names$SUID[match(new.tbl.edges$target, new.node.names$name)]
             }
             # format the new edges data for sending to Cytoscape
             edge.tbl.records = 
@@ -687,20 +685,27 @@ setMethod ('createWindowFromSelection', 'CytoscapeWindowClass',
         edge.attribute.names = eda.names(obj@graph)
         for (attribute.name in edge.attribute.names) {
             printf('sending edge attribute "%s"', attribute.name)
-            caller.specified.attribute.class = attr(edgeDataDefaults(obj@graph, attribute.name), 'class')
-            
-            edge.name.suid.value.df <- data.frame(rbind(unlist(new.edge.SUIDs)))
-            edge.name.suid.value.df$edgeName <- paste0(new.node.names$name[new.node.names$SUID==edge.name.suid.value.df$source], "|",
-                                              new.node.names$name[new.node.names$SUID==edge.name.suid.value.df$target])
-            values = eda(obj@graph, attribute.name)
-            edge.name.suid.value.df$edgeValue <- unname(values)[(names(values)==edge.name.suid.value.df$edgeName)]
-            
-            edge.SUID.value.pairs = 
+            values <- eda(obj@graph, attribute.name)
+
+            if (num.edges.to.copy == 1) {
+                # add edge name to the dataframe
+                edge.name.suid.value.df <- data.frame(rbind(unlist(new.edge.SUIDs)))
+                edge.name.suid.value.df$edgeName <- paste0(new.node.names$name[new.node.names$SUID==edge.name.suid.value.df$source], "|",
+                                                           new.node.names$name[new.node.names$SUID==edge.name.suid.value.df$target])
+                edge.name.suid.value.df$edgeValue <- unname(values)[(names(values)==edge.name.suid.value.df$edgeName)]
+            }else{
+                edge.name.suid.value.df <- data.frame(matrix(unlist(new.edge.SUIDs), nrow=3, byrow = TRUE))
+                names(edge.name.suid.value.df) <-  names(data.frame(rbind(unlist(new.edge.SUIDs[[1]]))))
+                edge.name.suid.value.df$edgeName <- paste0(new.node.names$name[match(edge.name.suid.value.df$source, new.node.names$SUID)], "|",
+                                                           new.node.names$name[match(edge.name.suid.value.df$target, new.node.names$SUID)])
+                edge.name.suid.value.df$edgeValue <- unname(values)[match(edge.name.suid.value.df$edgeName, names(values))]
+            }
+            edge.SUID.value.pairs <- 
                 apply(edge.name.suid.value.df[,c('SUID','edgeValue')], 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
             edge.SUID.value.pairs.JSON = toJSON(edge.SUID.value.pairs)
-            resource.uri = 
+            resource.uri <- 
                 paste(cy.window@uri, version, "networks", net.SUID, "tables/defaultedge/columns", attribute.name, sep="/")
-            request.res = PUT(url=resource.uri, body=edge.SUID.value.pairs.JSON, encode="json")
+            request.res <- PUT(url=resource.uri, body=edge.SUID.value.pairs.JSON, encode="json")
             invisible(request.res)
         }
         
