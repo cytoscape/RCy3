@@ -3,9 +3,9 @@
 \alias{showGraphicsDetails,CytoscapeConnectionClass-method}
 \title{showGraphicsDetails}
 \description{
-For all windows, and regardless of the current zoom
-level, display or hide graphics details --  of which node labels are the
-most obvious example.
+For all windows, and regardless of the current zoom level,
+display or hide graphics details --  of which node labels
+are the most obvious example.
 }
 \usage{
 showGraphicsDetails(obj, new.value)
@@ -25,7 +25,6 @@ None.
 
   cy <- CytoscapeConnection ()
   showGraphicsDetails (cy)
-
 }
 
 \keyword{graph}
