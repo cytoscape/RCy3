@@ -3,8 +3,9 @@
 \alias{getLineStyles,CytoscapeConnectionClass-method}
 \title{getLineStyles}
 \description{
-Retrieve the names of the currently supported line types -- values which
-can be used to render edges, and thus can be used in calls to 'setEdgeLineStyleRule'
+Retrieve the names of the currently supported line types
+-- values which can be used to render edges, and thus
+can be used in calls to 'setEdgeLineStyleRule'.
 }
 \usage{
 getLineStyles(obj)
