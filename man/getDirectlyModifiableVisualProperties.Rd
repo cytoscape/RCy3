@@ -15,7 +15,7 @@ getDirectlyModifiableVisualProperties(obj, vizmap.style.name = "default")
 }
 
 \value{
-A list of about 99 character strings, e.g., "EDGE_LABEL_FONT_SIZE" and "NODE_SHAPE"
+A list of about 106 character strings, e.g., "EDGE_LABEL_FONT_SIZE" and "NODE_SHAPE"
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
@@ -25,8 +25,6 @@ A list of about 99 character strings, e.g., "EDGE_LABEL_FONT_SIZE" and "NODE_SHA
 
   cw <- CytoscapeConnection ()
   getDirectlyModifiableVisualProperties (cw, vizmap.style.name="default")
-
-
 }
 
 \keyword{graph}
