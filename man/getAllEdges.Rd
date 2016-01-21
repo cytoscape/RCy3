@@ -24,7 +24,7 @@ A list of character strings.
   cw <- CytoscapeWindow ('getAllEdges.test', graph=makeSimpleGraph())
   displayGraph (cw)
   print (getAllEdges (cw))
-    # [1] "C (undefined) A"  "B (synthetic lethal) C" "A (phosphorylates) B"  
+    # [1] "A (phosphorylates) B"   "B (synthetic lethal) C" "C (undefined) A"    
 }
 
 \keyword{graph}
