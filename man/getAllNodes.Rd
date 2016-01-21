@@ -27,7 +27,7 @@ look at the graph in Cytoscape.
   cw <- CytoscapeWindow ('getAllNodes.test', graph=makeSimpleGraph())
   displayGraph (cw)
   print (getAllNodes (cw))
-    #  [1] "C" "B" "A"
+    # [1] "A" "B" "C"
 }
 
 \keyword{graph}
