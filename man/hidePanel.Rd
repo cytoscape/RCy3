@@ -32,7 +32,6 @@ Nothing.
   hideAllPanels
 }
 
-
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
@@ -44,6 +43,5 @@ Nothing.
     # or
   hidePanel (cy, 'WEST')
 }
-
 
 \keyword{graph}
