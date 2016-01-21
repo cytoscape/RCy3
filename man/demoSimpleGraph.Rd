@@ -16,8 +16,8 @@ Returns a CytoscapeWindow object, for subsequent manipulation
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
-
-cwd <- demoSimpleGraph ()
+  
+  cwd <- demoSimpleGraph ()
 }
 
 \keyword{graph}
