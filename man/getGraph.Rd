@@ -3,7 +3,7 @@
 \alias{getGraph,CytoscapeWindowClass-method}
 \title{getGraph}
 \description{
-Returns the bioconductor graph object which belongs to the specified
+Returns the Bioconductor graph object which belongs to the specified
 CytoscapeWindow object
 }
 \usage{
