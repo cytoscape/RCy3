@@ -22,6 +22,8 @@ Nothing.
 \seealso{
   getLayoutNameMapping
   getLayoutNames
+  restoreLayout
+  saveLayout
 }
 
 \examples{
