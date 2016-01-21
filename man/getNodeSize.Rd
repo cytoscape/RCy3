@@ -3,8 +3,7 @@
 \alias{getNodeSize,CytoscapeWindowClass-method}
 \title{getNodeSize}
 \description{
-  Get the size of the specified nodes on the CytoscapeWindow
-  canvas.  
+  Get the size of the specified nodes on the CytoscapeWindow canvas.  
 }
 \usage{
 getNodeSize(obj, node.names)
@@ -31,9 +30,11 @@ Unless node dimensions are 'unlocked' these two vectors will be identical.
   cw <- CytoscapeWindow ('getNodeSize.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw)
-  sizes = getNodeSize (cw, c ('A', 'B', 'C'))
+  sizes <- getNodeSize (cw, c ('A', 'B', 'C'))
   print (sizes$width)
+    # [1] 75 75 75
   print (sizes$height)
+    # [1] 35 35 35
   setNodeSizeDirect (cw, 'A',  180)
   redraw (cw)
   print (getNodeSize (cw, 'A'))
@@ -41,7 +42,7 @@ Unless node dimensions are 'unlocked' these two vectors will be identical.
   setNodeWidthDirect (cw, 'A', 300)
   setNodeHeightDirect (cw, 'A', 100)
   redraw (cw)
-  sizes = getNodeSize (cw, 'A')
+  sizes <- getNodeSize (cw, 'A')
   print (sizes$width)
   print (sizes$height)
   lockNodeDimensions (cw, TRUE)
