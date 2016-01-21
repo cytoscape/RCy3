@@ -24,6 +24,8 @@ None.
  }
 
 \examples{
+  #WARNING: function currently not supported
+
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
