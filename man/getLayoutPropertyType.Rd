@@ -3,7 +3,8 @@
 \alias{getLayoutPropertyType,CytoscapeConnectionClass-method}
 \title{getLayoutPropertyType}
 \description{
-Returns a list of the tunable properties for the specified layout.
+Returns the type of one of the tunable properties
+(property.name) for the specified layout.
 }
 \usage{
 getLayoutPropertyType(obj, layout.name, property.name)
@@ -41,14 +42,13 @@ getLayoutPropertyType(obj, layout.name, property.name)
     # "initialAdaptation"  "minAdaptation"      "sizeFactor"         "coolingFactor"
     # "singlePartition" 
 
-  sapply (prop.names, function (pn) getLayoutPropertyType (cy, 'isom',   pn))
-  # maxEpoch radiusConstantTime             radius          minRadius
-  #           "int"              "int"              "int"              "int"
-  # initialAdaptation      minAdaptation         sizeFactor      coolingFactor
-  #        "double"           "double"           "double"           "double"
-  # singlePartition 
-  #       "boolean" 
-
+  sapply (prop.names, function (pn) getLayoutPropertyType (cy, 'isom', pn))
+    # maxEpoch radiusConstantTime             radius          minRadius
+    #           "int"              "int"              "int"              "int"
+    # initialAdaptation      minAdaptation         sizeFactor      coolingFactor
+    #        "double"           "double"           "double"           "double"
+    # singlePartition 
+    #       "boolean" 
 }
 
 \keyword{graph}
