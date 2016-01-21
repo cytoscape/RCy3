@@ -14,7 +14,7 @@ getDefaultNodeSelectionColor(obj, vizmap.style.name)
 }
 
 \value{
-A character string, eg "java.awt.Color[r=204,g=204,b=255]"
+A character string, a hexadecimal, e.g. #000000
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
@@ -23,7 +23,8 @@ A character string, eg "java.awt.Color[r=204,g=204,b=255]"
   deleteAllWindows(CytoscapeConnection())
 
   cy <- CytoscapeConnection ()
-  print (getDefaultNodeSelectionColor (cy))   # "java.awt.Color[r=0,g=255,b=0]"
+  print (getDefaultNodeSelectionColor (cy))
+    # [1] "#FFFF00"
 }
 
 \keyword{graph}
