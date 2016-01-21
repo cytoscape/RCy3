@@ -23,10 +23,14 @@ None.
 }
 
 \examples{
+  # WARNING: Method RCy3::raiseWindow() is not implemented in RCy3!
+  
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('raiseWindow.test', graph=makeSimpleGraph())
+  cw2 <- CytoscapeWindow ('raiseWindow.test2', graph=makeSimpleGraph())
+  
   raiseWindow (cw)
 }
 
