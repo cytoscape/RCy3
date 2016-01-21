@@ -30,9 +30,8 @@ which are the names of the edges.
 
   g  <- makeSimpleGraph()
   eda (g, 'edgeType')
-    #             A|B                B|C                C|A 
-    # "phosphorylates" "synthetic lethal"        "undefined" 
-  ## The function is currently defined as
+    #             A|B                B|C                C|A
+    # "phosphorylates" "synthetic lethal"        "undefined"
 
 }
 \keyword{graph}
