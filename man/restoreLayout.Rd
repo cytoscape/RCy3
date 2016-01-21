@@ -33,6 +33,7 @@ Nothing.
   saveLayout (cw, 'layout.RData')
   layoutNetwork(cw, 'isom')
   restoreLayout (cw, 'layout.RData')
+  # you might need to adjust the zoom
 }
 
 \keyword{graph}
