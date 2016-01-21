@@ -3,7 +3,7 @@
 \alias{getDefaultEdgeReverseSelectionColor,CytoscapeConnectionClass-method}
 \title{getDefaultEdgeReverseSelectionColor}
 \description{
-Retrieve the default color used to display selected edges.
+Retrieve the default color used to display not selected edges.
 }
 \usage{
 getDefaultEdgeReverseSelectionColor(obj, vizmap.style.name)
