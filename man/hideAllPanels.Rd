@@ -5,7 +5,7 @@
 
 \description{
 All panels will be hidden, and no longer visible in the Cytoscape
-Desktop of, if floating, elsewhere on the computer screen.  }
+Desktop, even if floating, elsewhere on the computer screen.  }
 \usage{
 hideAllPanels(obj)
 }
@@ -24,7 +24,6 @@ Nothing.
   hidePanel
 }
 
-
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
@@ -32,6 +31,5 @@ Nothing.
   cy <- CytoscapeConnection ()
   hideAllPanels (cy)
 }
-
 
 \keyword{graph}
