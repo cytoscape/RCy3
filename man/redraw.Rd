@@ -3,7 +3,8 @@
 \alias{redraw,CytoscapeWindowClass-method}
 \title{redraw}
 \description{
-Asks Cytoscape to redraw all nodes and edges, applying the vizmap rules.
+Ask Cytoscape to redraw all nodes and edges,
+applying the vizmap rules.
 }
 \usage{
 redraw(obj)
@@ -19,7 +20,7 @@ None.
 
 \seealso{
   displayGraph
-  layout
+  layoutNetwork
 }
 
 \examples{
@@ -27,7 +28,10 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('redraw.test', graph=makeSimpleGraph())
-  redraw (cw)
+  displayGraph (cw)
+  layoutNetwork(cw, 'force-directed')
+  redraw (cw)  # applies default vizmap (rendering) rules, plus any you
+               # have specified
 }
 
 \keyword{graph}
