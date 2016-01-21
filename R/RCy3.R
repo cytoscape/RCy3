@@ -2327,7 +2327,7 @@ setMethod('hidePanel', 'CytoscapeConnectionClass',
         
         if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
-        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'cp')){
+        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'co')){
             panelName <- 'WEST'
         }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
             write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
@@ -2360,7 +2360,7 @@ setMethod('dockPanel', 'CytoscapeConnectionClass',
 
         if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
-        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'cp')){
+        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'co')){
             panelName <- 'WEST'
         }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
             write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
@@ -2383,7 +2383,7 @@ setMethod('floatPanel', 'CytoscapeConnectionClass',
         
         if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
-        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'cp')){
+        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'co')){
             panelName <- 'WEST'
         }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
             write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
@@ -2403,7 +2403,7 @@ setMethod('floatPanel', 'CytoscapeConnectionClass',
 setMethod ('setNodeTooltipRule', 'CytoscapeWindowClass',
 
       # todo:  prevent the obligatory redraw
-      # Comment TanjaM: the comment above was there already
+      # Comment TM: the comment above was there already
 
       function (obj, node.attribute.name) {
           id = as.character (obj@window.id)
