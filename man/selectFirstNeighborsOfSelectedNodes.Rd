@@ -6,7 +6,7 @@
 \title{selectFirstNeighborsOfSelectedNodes}
 \description{
 Expand the selection by adding the first neighbors, in the Cytosape network, of
-the nodes currently selected (again, in the Cytoscape network).  The R
+the nodes currently selected (again, in the Cytoscape network). The R
 graph is unchanged.
 }
 \usage{
