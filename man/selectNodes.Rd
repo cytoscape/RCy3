@@ -31,6 +31,8 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('selectNodes.test', graph=makeSimpleGraph())
+  displayGraph (cw)
+  layoutNetwork(cw, 'force-directed')
   clearSelection (cw)
   selectNodes (cw, c ('A', 'B'))
   getSelectedNodes (cw)
