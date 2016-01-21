@@ -26,8 +26,9 @@ A list of character strings.
   layoutNetwork(cw, 'force-directed')
   redraw (cw)
     # in Cytoscape, interactively select an edge or call the selectEdges function
-  selectEdges (cwe, "A (phosphorylates) B")
+  selectEdges (cw, "A (phosphorylates) B")
   getSelectedEdges (cw)
+    # [1] "A (phosphorylates) B"
 }
 
 \keyword{graph}
