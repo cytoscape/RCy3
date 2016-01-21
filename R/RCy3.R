@@ -4655,11 +4655,11 @@ demoSimpleGraph = function ()
     if (window.title %in% as.character (getWindowList (cy)))
     deleteWindow (cy, window.title)
     
-    g.simple = RCy3::makeSimpleGraph ()
+    g.simple = makeSimpleGraph ()
     cws = CytoscapeWindow (window.title, g.simple)
     
     displayGraph (cws)
-    layoutNetwork (cws, 'default')
+    layoutNetwork (cws, 'grid')
     setNodeLabelRule (cws, 'label')
     
     node.attribute.values = c ("kinase",  "transcription factor")
