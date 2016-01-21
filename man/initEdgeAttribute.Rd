@@ -4,10 +4,10 @@
 initEdgeAttribute
 }
 \description{
-Create the  edge attribute slot that the Bioconductor graph class
+Create the edge attribute slot that the Bioconductor graph class
 requires, including a default value, and then specifying what the base
 type (or 'class') is -- 'char', 'integer', or 'numeric' -- which is needed by
-RCytoscape.  This method converts these standard R data type names, to
+RCy3. This method converts these standard R data type names, to
 the forms needed by Cytoscape.
 }
 \usage{
