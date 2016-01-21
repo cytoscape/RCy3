@@ -33,8 +33,6 @@ A data frame, with a column for each attribute, a row for each edge.
   getAllNodeAttributes
 }
 
-
-
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
@@ -46,6 +44,11 @@ A data frame, with a column for each attribute, a row for each edge.
   layoutNetwork(cw)
     # get all attributes for all edges
   tbl.eda = getAllEdgeAttributes (cw, onlySelectedEdges=FALSE)
+  tbl.eda
+    #             edgeType source target score         misc
+    # A|B   phosphorylates      A      B    35 default misc
+    # B|C synthetic lethal      B      C   -12 default misc
+    # C|A        undefined      C      A     0 default misc
 
 }
 
