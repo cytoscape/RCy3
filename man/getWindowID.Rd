@@ -3,9 +3,9 @@
 \alias{getWindowID,CytoscapeConnectionClass-method}
 \title{getWindowID}
 \description{
-Windows in Cytoscape have both a title and an identifier.  The title is
+Windows in Cytoscape have both a title and an identifier. The title is
 useful for human readers; the identifier is used by Cytoscape internals,
-and is sometimes useful to obtain.  This method returns the identifier
+and is sometimes useful to obtain.This method returns the identifier
 associated with the window title.
 }
 \usage{
