@@ -4,7 +4,7 @@
 \title{getNodePosition}
 \description{
   Get the position of the specified nodes on the CytoscapeWindow
-  canvas.  Useful in retrieving the current position of nodes in the window.
+  canvas. Useful in retrieving the current position of nodes in the window.
 }
 \usage{
 getNodePosition(obj, node.names)
