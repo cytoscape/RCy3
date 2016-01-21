@@ -11,11 +11,10 @@ getDefaultNodeReverseSelectionColor(obj, vizmap.style.name)
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
   \item{vizmap.style.name}{a \code{character} object, 'default' by default }
-
 }
 
 \value{
-A character string, eg "java.awt.Color[r=204,g=204,b=255]"
+A character string, a hexadecimal, e.g. #000000
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
@@ -24,7 +23,8 @@ A character string, eg "java.awt.Color[r=204,g=204,b=255]"
   deleteAllWindows(CytoscapeConnection())
 
   cy <- CytoscapeConnection ()
-  print (getDefaultNodeReverseSelectionColor (cy))   # "java.awt.Color[r=0,g=255,b=0]"
+  print (getDefaultNodeReverseSelectionColor (cy))
+    # [1] "#1E90FF"
 }
 
 \keyword{graph}
