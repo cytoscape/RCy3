@@ -26,11 +26,12 @@ An integer.
   layoutNetwork(cw, 'force-directed')
   redraw (cw)
   clearSelection (cw)
-  getSelectedEdgeCount (cw) # should be 0
-    # in Cytoscape, interactively select an edge, or programmatically (doesn't work yet)
-    # selectEdges (cwe, "A (phosphorylates) B")
   getSelectedEdgeCount (cw)
-  # should be 1
+    # [1] 0
+    # in Cytoscape, interactively select an edge, or programmatically
+  selectEdges (cw, "A (phosphorylates) B")
+  getSelectedEdgeCount (cw)
+    # [1] 1
 }
 
 \keyword{graph}
