@@ -3,7 +3,9 @@
 \alias{getNodeShapes,CytoscapeConnectionClass-method}
 \title{getNodeShapes}
 \description{
-Retrieve the names of the currently supported node shapes, which can then be used in calls to setNodeShapeRule and setDefaultVizMapValue 
+Retrieve the names of the currently supported node shapes,
+which can then be used in calls to setNodeShapeRule and
+setDefaultVizMapValue.
 }
 \usage{
 getNodeShapes(obj)
@@ -26,7 +28,6 @@ A list of character strings, e.g. 'ELLIPSE', 'RECTANGLE'.
    # [1] "VEE"             "RECTANGLE"       "PARALLELOGRAM"   "DIAMOND"        
    # [5] "ROUND_RECTANGLE" "ELLIPSE"         "TRIANGLE"        "HEXAGON"        
    # [9] "OCTAGON" 
-
 }
 
 \keyword{graph}
