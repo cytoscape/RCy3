@@ -3,8 +3,7 @@
 \alias{hideSelectedEdges,CytoscapeWindowClass-method}
 \title{hideSelectedEdges}
 \description{
-Hide (but do not delete) the currently selected edges.   'Unhide' is
-supposed to return them to view, but this is broken in Cytoscape 2.7.
+Hide (but do not delete) the currently selected edges.
 }
 \usage{
 hideSelectedEdges(obj)
@@ -34,11 +33,11 @@ None.
   selectEdges (cw, 'B (synthetic lethal) C')
   hideSelectedEdges (cw)
   unhideAll (cw)
-   # alas, Cytoscape requires that you render these edges, and redo the
-   # layout, so that they are visible again
-  redraw (cw)
-  layoutNetwork(cw, 'force-directed')
+   # previously, Cytoscape required that you render these edges,
+   # and redo the layout, so that they are visible again.
+   # This is no longer required.
+  #redraw (cw)
+  #layoutNetwork(cw, 'force-directed')
 }
-
 
 \keyword{graph}
