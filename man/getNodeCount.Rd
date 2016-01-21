@@ -25,7 +25,6 @@ A list of character strings.
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')
   redraw (cw)
-    # in Cytoscape, interactively select two nodes, or
   getNodeCount (cw)
   # [1] 3
 }
