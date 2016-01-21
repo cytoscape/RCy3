@@ -3,7 +3,7 @@
 \alias{getGraphFromCyWindow,CytoscapeConnectionClass-method}
 \title{getGraphFromCyWindow}
 \description{
-Returns the Cytoscape network as a bioconductor graph
+Returns the Cytoscape network as a Bioconductor graph
 }
 \usage{
 getGraphFromCyWindow(obj, window.title)
@@ -14,7 +14,7 @@ getGraphFromCyWindow(obj, window.title)
 }
 
 \value{
-A bioconductor graph object.
+A Bioconductor graph object.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
@@ -24,7 +24,7 @@ A bioconductor graph object.
 
   cw <- CytoscapeWindow ('getGraphFromCyWindow.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw)
+  layoutNetwork (cw)
   redraw (cw)
   g.cy <- getGraphFromCyWindow (cw, 'getGraphFromCyWindow.test')
   print (g.cy)  # 3 nodes, 3 edges
