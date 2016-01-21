@@ -3,11 +3,12 @@
 \alias{getLayoutNameMapping,CytoscapeConnectionClass-method}
 \title{getLayoutNameMapping}
 \description{
-The Cytoscape 'Layout' menu lists many layout algorithms, but the names
-presented there are different from the names by which these
-algorithms are known to layout method.   This method returns a
-named list in which the names are from the GUI, and the values identify
-the names you must use to choose an algorithms in the programmatic interface.
+The Cytoscape 'Layout' menu lists many layout algorithms, but the
+names presented there are different from the names by which these
+algorithms are known to layout method. This method returns a named
+list in which the names are from the GUI, and the values identify
+the names you must use to choose an algorithms in the
+programmatic interface.
 }
 \usage{
 getLayoutNameMapping(obj)
@@ -23,7 +24,6 @@ getLayoutNameMapping(obj)
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
-  layout
   getLayoutNames
   getLayoutPropertyNames
   getLayoutPropertyType
