@@ -27,15 +27,12 @@ a \code{list} of character strings.
   setVisualStyle
 }
 
-
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
-
-  cy = CytoscapeConnection ()
+  cy <- CytoscapeConnection ()
   print (getVisualStyleNames (cy))
-
 }
 
 \keyword{graph}
