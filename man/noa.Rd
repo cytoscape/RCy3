@@ -18,18 +18,21 @@ noa(graph, node.attribute.name)
 A list, the contents of which are the attribute values, the names of
 which are the names of the nodes.
 }
+
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
+
 \seealso{
 noa.names
 }
+
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
   g <- makeSimpleGraph ()
   noa (g, 'type')
-    #           A.A                    B.B                    C.C 
+    #             A                      B                      C 
     #      "kinase" "transcription factor"         "glycoprotein" 
-
 }
+
 \keyword{graph}
