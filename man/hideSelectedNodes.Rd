@@ -3,9 +3,10 @@
 \alias{hideSelectedNodes,CytoscapeWindowClass-method}
 \title{hideSelectedNodes}
 \description{
-Hide (but do not delete) the currently selected nodes.   We strongly
+Hide (but do not delete) the currently selected nodes. We strongly
 recommened that you save the current layout before hiding any nodes:
-'unhideAll' often places restored nodes in unpredictable positions.
+'unhideAll' previously often placed restored nodes in unpredictable
+positions.
 }
 \usage{
 hideSelectedNodes(obj)
@@ -31,12 +32,11 @@ None.
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'force-directed')
-  # saveLayout (cw, 'layout.tmp.RData')
+  saveLayout (cw, 'layout.tmp.RData')
   selectNodes (cw, c ('A', 'B'))
   hideSelectedNodes (cw)
   unhideAll (cw)
-  # restoreLayout (cw, 'layout.tmp.RData')
+  restoreLayout (cw, 'layout.tmp.RData')
 }
-
 
 \keyword{graph}
