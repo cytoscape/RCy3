@@ -3,7 +3,7 @@
 \alias{saveLayout,CytoscapeWindowClass-method}
 \title{saveLayout}
 \description{
-save the current layout (that is, node positions) to the specified file.
+Save the current layout (that is, node positions) to the specified file.
 }
 \usage{
 saveLayout(obj, filename, timestamp.in.filename=FALSE)
@@ -31,10 +31,10 @@ Nothing.
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')
   saveLayout (cw, 'layout.RData')
-  layoutNetwork(cw, 'jgraph-circle')
+  layoutNetwork(cw, 'fruchterman-rheingold')
   restoreLayout (cw, 'layout.RData')
+  # you might need to adjust the zoom
   saveLayout (cw, 'layout2', timestamp.in.filename=TRUE)
 }
-
 
 \keyword{graph}
