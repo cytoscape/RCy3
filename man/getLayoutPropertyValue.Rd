@@ -3,7 +3,8 @@
 \alias{getLayoutPropertyValue,CytoscapeConnectionClass-method}
 \title{getLayoutPropertyValue}
 \description{
-Returns the appropriately typed value of the specified tunable property for the specified layout.
+Returns the appropriately typed value of the specified
+tunable property for the specified layout.
 }
 \usage{
 getLayoutPropertyValue(obj, layout.name, property.name)
@@ -47,6 +48,6 @@ getLayoutPropertyValue(obj, layout.name, property.name)
     #               2                  2                  2                  2 
     # singlePartition 
     #               2 
-    }
+}
 
 \keyword{graph}
