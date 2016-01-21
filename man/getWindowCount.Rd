@@ -30,5 +30,4 @@ An integer.
     # [1] 2
 }
 
-
 \keyword{graph}
