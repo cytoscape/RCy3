@@ -2325,12 +2325,13 @@ setMethod('hidePanel', 'CytoscapeConnectionClass',
     function(obj, panelName) {
         version <- pluginVersion(obj)
         
-        if (panelName %in% c('Data Panel', 'd', 'D')){
+        if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
-        }else if (panelName %in% c('Control Panel', 'control', 'c', 'Control')){
+        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'cp')){
             panelName <- 'WEST'
-        }else if (!(panelName %in% c('WEST', 'SOUTH'))){
+        }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
             write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
+            return(NA)
         }
         
         panel.name.state = list(name=panelName, state='HIDE')
@@ -2357,12 +2358,13 @@ setMethod('dockPanel', 'CytoscapeConnectionClass',
     function(obj, panelName) {
         version <- pluginVersion(obj)
 
-        if (panelName %in% c('Data Panel', 'd', 'D')){
+        if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
-        }else if (panelName %in% c('Control Panel', 'control', 'c', 'Control')){
+        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'cp')){
             panelName <- 'WEST'
-        }else if (!(panelName %in% c('WEST', 'SOUTH'))){
+        }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
             write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
+            return(NA)
         }
         
         panel.name.state = list(name=panelName, state='DOCK')
@@ -2379,12 +2381,13 @@ setMethod('floatPanel', 'CytoscapeConnectionClass',
     function(obj, panelName) {
         version <- pluginVersion(obj)
         
-        if (panelName %in% c('Data Panel', 'd', 'D')){
+        if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
-        }else if (panelName %in% c('Control Panel', 'control', 'c', 'Control')){
+        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'cp')){
             panelName <- 'WEST'
-        }else if (!(panelName %in% c('WEST', 'SOUTH'))){
+        }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
             write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
+            return(NA)
         }
         
         panel.name.state = list(name=panelName, state='FLOAT')
