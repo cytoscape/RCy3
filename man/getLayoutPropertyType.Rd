@@ -16,8 +16,8 @@ getLayoutPropertyType(obj, layout.name, property.name)
 }
 
 \value{
-  A character string specifying the type.  These types do not always
-  necessarily to R types.
+  A character string specifying the type. These types do not always
+  necessarily need to be R types.
 }
 
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
