@@ -31,7 +31,9 @@ Zero or more cy2-style edge names.
 
   g <- makeSimpleGraph ()
   print (nodes (g))
+    # [1] "A" "B" "C"
   print (getAdjacentEdgeNames (g, 'A'))
+    # [1] "A (phosphorylates) B" "C (undefined) A"  
 }
 
 \keyword{graph}
