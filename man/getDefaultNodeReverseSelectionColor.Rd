@@ -3,7 +3,7 @@
 \alias{getDefaultNodeReverseSelectionColor,CytoscapeConnectionClass-method}
 \title{getDefaultNodeReverseSelectionColor}
 \description{
-Retrieve the default color used to display selected nodes.
+Retrieve the default color used to display not selected nodes.
 }
 \usage{
 getDefaultNodeReverseSelectionColor(obj, vizmap.style.name)
