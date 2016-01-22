@@ -4943,7 +4943,7 @@ setMethod('setVisualStyle', 'CytoscapeConnectionClass',
     # change the current style to the new style
     resource.uri <- paste(obj@uri, pluginVersion(obj), "apply/styles", new.style.name, net.SUID, sep="/")
     req.res <- GET(url=resource.uri)
-    write(sprintf('network visual style has been set to (%s)', new.style.name), stderr())
+    write(sprintf('network visual style has been set to "%s"', new.style.name), stdout())
     invisible(req.res)
 })
 
