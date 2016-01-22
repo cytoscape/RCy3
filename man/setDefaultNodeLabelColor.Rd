@@ -38,7 +38,7 @@ None.
 
   cw <- CytoscapeWindow ('setDefaultNodeLabelColor.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
   setDefaultNodeLabelColor (cw, '#FFFFFF') # white node labels
   # redraw (cw) --> not required anymore
 }
