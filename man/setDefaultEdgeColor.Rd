@@ -3,8 +3,7 @@
 \alias{setDefaultEdgeColor,CytoscapeConnectionClass-method}
 \title{setDefaultEdgeColor}
 \description{
-In the specified CytoscapeConnection, stipulate the color for all edges
-other than those mentioned in an edge color rule.
+Set the default edge color.
 }
 \usage{
 setDefaultEdgeColor(obj, new.color, vizmap.style.name = "default")
@@ -43,9 +42,8 @@ None.
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw, 'grid')
-  setDefaultEdgeColor (cw, '#FFFFFF') # white edges
-  redraw (cw)
+  setDefaultEdgeColor (cw, '#888888') # grey edges
+  redraw (cw) # redraw is not required anymore
 }
-
 
 \keyword{graph}
