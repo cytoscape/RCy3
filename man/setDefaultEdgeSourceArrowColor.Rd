@@ -3,8 +3,9 @@
 \alias{setDefaultEdgeSourceArrowColor,CytoscapeConnectionClass-method}
 \title{setDefaultEdgeSourceArrowColor}
 \description{
-In the specified CytoscapeConnection, stipulate the color for all edge source arrows
-other than those mentioned in an edge source arrow color rule.
+In the specified CytoscapeConnection, stipulate the default
+color for all edge source arrows other than those mentioned
+in an edge source arrow color rule.
 }
 \usage{
 setDefaultEdgeSourceArrowColor(obj, new.color, vizmap.style.name = "default")
@@ -41,11 +42,10 @@ None.
 
   cw <- CytoscapeWindow ('setDefaultEdgeSourceArrowColor test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'grid')
-  setDefaultEdgeSourceArrowColor (cw, '#FFFFFF') # white edges
-  redraw (cw)
+  layoutNetwork(cw, 'force-directed')
+  setDefaultEdgeSourceArrowColor (cw, '#F0F0F0')
+  setEdgeSourceArrowShapeDirect (cw, c('A (phosphorylates) B', 'B (synthetic lethal) C'), 'DIAMOND')
+  # redraw (cw) --> not required anymore
 }
-
 
 \keyword{graph}
