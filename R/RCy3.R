@@ -3560,7 +3560,7 @@ setMethod('setEdgeFontSizeDirect', 'CytoscapeWindowClass',
         
         for(current.size in new.value) {
             # ensure the sizes are valid numbers
-            if(!is.double(current.size)) {
+            if(!is.numeric(current.size)) {
                 write(sprintf ('illegal font string "%s" in RCy3::setEdgeFontSizeDirect():\t\n it needs to be a valid number.', current.size), stderr ())
                 
                 size.type.errors = size.type.errors + 1
