@@ -26,7 +26,7 @@ Nothing.
   cw = CytoscapeWindow ("demo.setDefaultNodeReverseSelectionColor", graph=makeSimpleGraph ())
   displayGraph (cw)
   layoutNetwork (cw, 'force-directed')
-  setDefaultNodeReverseSelectionColor (cw, '##FFFF00') # yellow
+  setDefaultNodeReverseSelectionColor (cw, '#AA33FF') # purple
   # redraw (cw) --> not required anymore
 }
 
