@@ -3,8 +3,7 @@
 \alias{setDefaultEdgeFontSize,CytoscapeConnectionClass-method}
 \title{setDefaultEdgeFontSize}
 \description{
-In the specified CytoscapeConnection, stipulate the color for all edges
-other than those mentioned in a edge color rule.
+Set the default edge font size.
 }
 \usage{
 setDefaultEdgeFontSize(obj, new.size, vizmap.style.name = "default")
@@ -42,9 +41,9 @@ None.
   redraw (cw)
   layoutNetwork(cw, 'force-directed')
   setEdgeLabelRule (cw, 'edgeType')
-  setDefaultEdgeFontSize (cw, 66)
-  redraw (cw)
+  setDefaultEdgeFontSize (cw, 20)
+  setDefaultEdgeFontSize (cw, 1)
+  #redraw (cw) # not required anymore
 }
-
 
 \keyword{graph}
