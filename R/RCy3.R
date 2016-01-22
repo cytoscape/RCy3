@@ -3076,10 +3076,7 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
         setVisualProperty(obj, default.width.list, vizmap.style.name)
         
         # define the column type
-        # TODO there seems to be an error in Cytoscape. It requires a String rather than a Double.
-        # if we don't say columnType = String, an error occurs or the user has to input the numbers as strings
-        #columnType <- findColumnType(typeof(line.widths[1]))
-        columnType <- "String"
+        columnType <- findColumnType(typeof(line.widths[1]))
         
         # discrete mapping
         discreteMapping (obj, edge.attribute.name, attribute.values, line.widths,
