@@ -3,8 +3,9 @@
 \alias{setDefaultNodeBorderWidth,CytoscapeConnectionClass-method}
 \title{setDefaultNodeBorderWidth}
 \description{
-In the specified CytoscapeConnection, stipulate the color for all nodeBorders
-other than those mentioned in a node border color rule.
+In the specified CytoscapeConnection, stipulate the default
+border width for all node borders other than those mentioned
+in a node border width rule.
 }
 \usage{
 setDefaultNodeBorderWidth(obj, new.width, vizmap.style.name = "default")
@@ -40,11 +41,9 @@ None.
 
   cw <- CytoscapeWindow ('setDefaultNodeBorderWidth.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'force-directed')
   setDefaultNodeBorderWidth (cw, 5)
-  redraw (cw)
+  # redraw (cw) --> not required anymore
 }
-
 
 \keyword{graph}
