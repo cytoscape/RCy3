@@ -3,14 +3,13 @@
 \alias{setEdgeAttributesDirect,CytoscapeWindowClass-method}
 \title{setEdgeAttributesDirect}
 \description{
-Transfer the named edge attribute to Cytoscape.  This method is
-required, for instance, if you wish to run a 'movie.'  For example, if
-you have a timecourse experiment, with different values at successive
-time points  of the 'phosphorylates' or 'binds' relationship between two
-nodes.   With an edgeColor rule already specified, you can animate the
+Transfer the named edge attributes to Cytoscape. This method is
+required, for instance, if you wish to run a 'movie.' For example, if
+you have a time course experiment with different values at successive
+time points of the 'phosphorylates' or 'binds' relationship between two
+nodes. With an edgeColor rule already specified, you can animate the
 display of the edges in the graph by pumping new values of the edge
-attributes, and then asking for a redraw.  An example of such
-edge-attribute-driven animation can be found here....[todo].
+attributes, and then asking for a redraw.
 }
 \usage{
 setEdgeAttributesDirect(obj, attribute.name, attribute.type, edge.names, values)
@@ -21,11 +20,11 @@ setEdgeAttributesDirect(obj, attribute.name, attribute.type, edge.names, values)
     the edges. }
   \item{attribute.type}{a \code{string} from one of these three groups:
      (floating, numeric, double), (integer, int), (string,
-    char, character).  This parameter is required because RCytoscape
-    cannot always infer the type of an attribute.}
+     char, character). This parameter is required because RCy3
+     cannot always infer the type of an attribute.}
   \item{edge.names}{a \code{list} of strings, edge names}
   \item{values}{a list of objects of the type specified by
-    'attribute.name', one per edge}
+     'attribute.name', one per edge}
 }
 
 \value{
