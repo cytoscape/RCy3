@@ -3,9 +3,8 @@
 \alias{setEdgeLabelColorDirect,CytoscapeWindowClass-method}
 \title{setEdgeLabelColorDirect}
 \description{
-In the specified CytoscapeWindow, set the labelColor of the specified edge
-or edges.  Low numbers, near zero, are transparent.
-High numbers, near 255, are maximally opaque:  they are fully visible.
+In the specified CytoscapeWindow, set the color of the label of the
+specified edge or edges.
 }
 \usage{
 setEdgeLabelColorDirect(obj, edge.names, new.value)
@@ -21,22 +20,24 @@ None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
+\seealso{
+  setEdgeLabelColorDirect
+  setEdgeLabelDirect
+  setEdgeFontSizeDirect
+ }
+ 
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('setEdgeLabelColorDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'force-directed')
-  edge.names = as.character (cy2.edge.names (cw@graph)) [1:2]
-  setEdgeLabelColorDirect (cw, edge.names, '#FF0000')
-  redraw (cw)
+  edge.names <- as.character (cy2.edge.names (cw@graph))
+  setEdgeLabelDirect (cw, edge.names, 'some label')
+  setEdgeLabelColorDirect (cw, edge.names [1:2], '#FF0000')
   setEdgeLabelColorDirect (cw, edge.names, '#00FF00')
-  redraw (cw)
-  setEdgeLabelColorDirect (cw, edge.names, '#000000')
-  redraw (cw)
-
+  setEdgeLabelColorDirect (cw, edge.names [3], '#000000')
 }
 
 \keyword{graph}
