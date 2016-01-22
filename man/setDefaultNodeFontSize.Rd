@@ -12,7 +12,7 @@ setDefaultNodeFontSize(obj, new.size, vizmap.style.name = "default")
 }
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
-  \item{new.size}{a \code{String} object, a positive integer.}
+  \item{new.size}{an \code{integer}.}
   \item{vizmap.style.name}{a \code{String} object.}
 }
 
