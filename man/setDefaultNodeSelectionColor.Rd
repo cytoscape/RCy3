@@ -12,7 +12,6 @@ setDefaultNodeSelectionColor(obj, new.color, vizmap.style.name)
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
   \item{new.color}{a \code{character} object, in quoted hexadecimal format }
   \item{vizmap.style.name}{a \code{character} object, 'default' by default }
-
 }
 
 \value{
@@ -26,8 +25,9 @@ Nothing.
 
   cw = CytoscapeWindow ("demo.setDefaultNodeSelectionColor", graph=makeSimpleGraph ())
   displayGraph (cw)
-  print (setDefaultNodeSelectionColor (cw, '#FF0000'))
-  redraw (cw)
+  layoutNetwork (cw, 'force-directed')
+  setDefaultNodeSelectionColor (cw, '##FFFF00') # yellow
+  # redraw (cw) --> not required anymore
 }
 
 \keyword{graph}
