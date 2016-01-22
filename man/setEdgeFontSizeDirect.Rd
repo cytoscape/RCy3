@@ -24,6 +24,7 @@ None.
   setNodeFontSizeDirect
   setEdgeLabelColorDirect
   setEdgeLabelDirect
+  setEdgeLabelOpacityDirect
  }
 
 \examples{
