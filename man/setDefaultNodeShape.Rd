@@ -3,7 +3,7 @@
 \alias{setDefaultNodeShape,CytoscapeConnectionClass-method}
 \title{setDefaultNodeShape}
 \description{
-For all CytoscapeWindow's, specify the default node shape.
+For all CytoscapeWindows, specify the default node shape.
 }
 \usage{
 setDefaultNodeShape(obj, new.shape, vizmap.style.name = "default")
@@ -41,13 +41,11 @@ None.
 
   cw <- CytoscapeWindow ('setDefaultNodeShape.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'grid')
   legal.shapes <- getNodeShapes (cw)
-  # stopifnot ('DIAMOND' %in% legal.shapes)
+  stopifnot ('DIAMOND' %in% legal.shapes)
   setDefaultNodeShape (cw, 'DIAMOND')
-  redraw (cw)
+  # redraw (cw) --> not required anymore
 }
-
 
 \keyword{graph}
