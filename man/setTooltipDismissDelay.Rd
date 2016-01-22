@@ -4,7 +4,7 @@
 \title{setTooltipDismissDelay}
 \description{
 Specify the number of milliseconds before the tooltip (a small
-lightweight window) pops up over a node or edge.
+lightweight window) disappears over a node or edge after appearing.
 }
 \usage{
 setTooltipDismissDelay(obj, msecs)
@@ -29,6 +29,8 @@ None.
  }
 
 \examples{
+  # WARNING: Method RCy3::setTooltipDismissDelay() is not implemented in RCy3!
+  
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -39,7 +41,6 @@ None.
     # and edgeType
   setEdgeTooltipRule (cw, 'edgeType')
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'force-directed')
      # have the tooltips popup after 200 milliseconds, and then
      # disappear after 3000 (3 seconds)
