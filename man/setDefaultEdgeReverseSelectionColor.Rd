@@ -27,6 +27,7 @@ Nothing.
   displayGraph (cw)
   layoutNetwork (cw)
   setDefaultEdgeReverseSelectionColor (cw, '#0000FF')
+  redraw (cw)
 }
 
 \keyword{graph}
