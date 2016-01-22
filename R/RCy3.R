@@ -5042,13 +5042,13 @@ setMethod('setDefaultEdgeSelectionColor', 'CytoscapeConnectionClass',
 setMethod ('getDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 
    function (obj, vizmap.style.name='default') {
-      return(getVisualProperty(obj, vizmap.style.name, 'EDGE_PAINT'))
+      return(getVisualProperty(obj, vizmap.style.name, 'EDGE_STROKE_UNSELECTED_PAINT'))
       })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 
    function (obj, new.color, vizmap.style.name='default') {
-      style = list(visualProperty = "EDGE_PAINT", value = new.color) 
+      style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
       setVisualProperty(obj, style, vizmap.style.name)
       })
 #------------------------------------------------------------------------------------------------------------------------
@@ -5223,7 +5223,7 @@ setVisualProperty <- function(obj, style.string, vizmap.style.name='default') {
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
     style.JSON <- toJSON(list(style.string))
     request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
-    redraw(obj)
+    invisible(request.res)
 }
 
 # ------------------------------------------------------------------------------
