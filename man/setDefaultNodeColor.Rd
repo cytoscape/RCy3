@@ -41,7 +41,7 @@ None.
   cw <- CytoscapeWindow ('setDefaultNodeColor.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')
-  setDefaultNodeColor (cw, '#FF8888') # light blue
+  setDefaultNodeColor (cw, '#FF8888') # light red
   # redraw (cw) --> not required anymore
 }
 
