@@ -3,7 +3,7 @@
 \alias{setDefaultEdgeSelectionColor,CytoscapeConnectionClass-method}
 \title{setDefaultEdgeSelectionColor}
 \description{
-Retrieve the default color used to display selected edges.
+Set the default color used to display selected edges.
 }
 \usage{
 setDefaultEdgeSelectionColor(obj, new.color, vizmap.style.name)
@@ -25,8 +25,9 @@ Nothing.
 
   cw = CytoscapeWindow ("demo.setDefaultEdgeSelectionColor", graph=makeSimpleGraph ())
   displayGraph (cw)
-  print (setDefaultEdgeSelectionColor (cw, '#FF0000'))
-  redraw (cw)
+  layoutNetwork (cw)
+  setDefaultEdgeSelectionColor (cw, '#00FF00')
+  # redraw (cw) --> not required anymore
 }
 
 \keyword{graph}
