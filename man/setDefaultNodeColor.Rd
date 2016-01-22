@@ -3,8 +3,8 @@
 \alias{setDefaultNodeColor,CytoscapeConnectionClass-method}
 \title{setDefaultNodeColor}
 \description{
-In the specified CytoscapeWindow, stipulate the color for all nodes
-other than those mentioned in a node border color rule.
+In the specified CytoscapeWindow, stipulate the default color for
+all nodes other than those mentioned in a node border color rule.
 }
 \usage{
 setDefaultNodeColor(obj, new.color, vizmap.style.name = "default")
@@ -40,11 +40,9 @@ None.
 
   cw <- CytoscapeWindow ('setDefaultNodeColor.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'force-directed')
-  setDefaultNodeColor (cw, '#8888FF') # light blue
-  redraw (cw)
+  setDefaultNodeColor (cw, '#FF8888') # light blue
+  # redraw (cw) --> not required anymore
 }
-
 
 \keyword{graph}
