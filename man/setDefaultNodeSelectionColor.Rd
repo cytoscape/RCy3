@@ -23,7 +23,7 @@ Nothing.
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
-  cw = CytoscapeWindow ("demo.setDefaultNodeSelectionColor", graph=makeSimpleGraph ())
+  cw <- CytoscapeWindow ("demo.setDefaultNodeSelectionColor", graph=makeSimpleGraph ())
   displayGraph (cw)
   layoutNetwork (cw, 'force-directed')
   setDefaultNodeSelectionColor (cw, '##FFFF00') # yellow
