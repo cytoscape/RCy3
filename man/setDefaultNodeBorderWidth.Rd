@@ -12,7 +12,7 @@ setDefaultNodeBorderWidth(obj, new.width, vizmap.style.name = "default")
 }
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
-  \item{new.width}{a \code{String} object, a hex string, of the form '#RRGGBB'.}
+  \item{new.width}{an \code{integer}.}
   \item{vizmap.style.name}{a \code{String} object.}
 }
 
