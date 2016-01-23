@@ -3605,7 +3605,7 @@ setMethod('setEdgeLineWidthDirect', 'CytoscapeWindowClass',
     function(obj, edge.names, new.value) {
       for (current.size in new.value){
          # ensure the sizes are numbers
-         if (!is.double(current.size)) {
+         if (!is.numeric(current.size)) {
             write (sprintf ('illegal size string "%s" in RCy3::setEdgeLineWidthDirect. It needs to be a number.', current.size), stderr ())
             return ()
          }
