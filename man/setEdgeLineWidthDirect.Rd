@@ -3,8 +3,8 @@
 \alias{setEdgeLineWidthDirect,CytoscapeWindowClass-method}
 \title{setEdgeLineWidthDirect}
 \description{
-In the specified CytoscapeWindow, set the lineWidth of the specified edge
-or edges.  Width is measured in pixels.
+In the specified CytoscapeWindow, set the line width of the specified edge
+or edges. Width is measured in pixels.
 }
 \usage{
 setEdgeLineWidthDirect(obj, edge.names, new.value)
@@ -20,9 +20,26 @@ None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
-
 \seealso{
   setNodeLineWidthDirect
+  setEdgeLineStyleRule
+  setEdgeColorDirect
+  setEdgeFontSizeDirect
+  setEdgeLabelColorDirect
+  setEdgeLabelDirect
+  setEdgeLabelOpacityDirect
+  setEdgeLabelWidthDirect
+  setEdgeLineStyleDirect
+  setEdgeOpacityDirect
+  setEdgeSourceArrowColorDirect
+  setEdgeSourceArrowDirect
+  setEdgeSourceArrowOpacityDirect
+  setEdgeSourceArrowShapeDirect
+  setEdgeTargetArrowColorDirect
+  setEdgeTargetArrowDirect
+  setEdgeTargetArrowOpacityDirect
+  setEdgeTargetArrowShapeDirect
+  setEdgeTooltipDirect
  }
 
 \examples{
@@ -31,16 +48,13 @@ None.
 
   cw <- CytoscapeWindow ('setEdgeLineWidthDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'force-directed')
-  edge.names = as.character (cy2.edge.names (cw@graph)) [1:2]
+  layoutNetwork (cw, 'force-directed')
+  edge.names <- as.character (cy2.edge.names (cw@graph)) [1:2]
   for (i in 1:10) {
     setEdgeLineWidthDirect (cw, edge.names, i)
-    redraw (cw)
     }
 
- setEdgeLineWidthDirect (cw, edge.names, 1)
-
+ setEdgeLineWidthDirect (cw, edge.names, c(1,3))
 }
 
 \keyword{graph}
