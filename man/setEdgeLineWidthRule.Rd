@@ -1,13 +1,11 @@
 \name{setEdgeLineWidthRule}
-
 \alias{setEdgeLineWidthRule}
 \alias{setEdgeLineWidthRule,CytoscapeWindowClass-method}
-
 \title{setEdgeLineWidthRule}
 
 \description{
 Specify the edge attribute which controls the thickness of the edges
-displayed in the graph.  This is currently only a lookup mapping.  An
+displayed in the graph. This is currently only a lookup mapping.  An
 interpolated mapping will be added in the future.
 }
 
@@ -24,7 +22,6 @@ setEdgeLineWidthRule(obj, edge.attribute.name, attribute.values, line.widths, de
   \item{default.width}{use this where the rule fails to apply}
 }
 
-
 \value{
 None.
 }
@@ -36,10 +33,9 @@ None.
 
   cw <- CytoscapeWindow ('setEdgeLineWidthRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'force-directed')
-  redraw (cw)
-  edge.attribute.values = c ('phosphorylates', 'synthetic lethal',   'undefined')
-  line.widths = c (0, 8, 16)
+  layoutNetwork (cw, 'force-directed')
+  edge.attribute.values = c('phosphorylates', 'synthetic lethal',   'undefined')
+  line.widths = c(0, 8, 16)
   setEdgeLineWidthRule (cw, 'edgeType', edge.attribute.values, line.widths)
 }
 
