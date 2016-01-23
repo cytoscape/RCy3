@@ -27,7 +27,7 @@ None.
 
   cw <- CytoscapeWindow ('setEdgeLabelRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
   setEdgeLabelRule (cw, 'edgeType')
 }
 
