@@ -12,14 +12,14 @@ setEdgeLineStyleRule(obj, edge.attribute.name, attribute.values, line.styles, de
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
-  \item{edge.attribute.name}{the edge attribute whose values will, when this
-rule is applied, determine the lineStyle of each edge.}
+  \item{edge.attribute.name}{the edge attribute whose values will determine
+        the line style of each edge when this rule is applied.}
   \item{attribute.values}{A list of scalar, discrete values. For
-  instance, interaction types:  'phosphorylates', 'ubiquinates',
-  'represses', 'activates' }
-\item{line.styles}{One line style for each of the attribute.values}
-\item{default.style}{The style to use when an explicit mapping is not provided.}
-
+        instance, interaction types:  'phosphorylates', 'ubiquinates',
+        'represses', 'activates' }
+  \item{line.styles}{One line style for each of the attribute.values}
+  \item{default.style}{The style to use when an explicit mapping is
+        not provided.}
 }
 
 \value{
@@ -37,12 +37,11 @@ None.
 
   cw <- CytoscapeWindow ('setEdgeLineStyleRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  line.styles     <- c ('SINEWAVE',       'DOT',              'PARALLEL_LINES')
+  layoutNetwork (cw, 'force-directed')
+  line.styles <- c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
   setEdgeLineStyleRule (cw, 'edgeType', edgeType.values, line.styles)
   redraw (cw)
 }
 
 \keyword{graph}
-
-
