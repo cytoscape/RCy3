@@ -5,7 +5,7 @@
 
 \description{
 Specify the edge attribute which controls the thickness of the edges
-displayed in the graph. This is currently only a lookup mapping.  An
+displayed in the graph. This is currently only a lookup mapping. An
 interpolated mapping will be added in the future.
 }
 
