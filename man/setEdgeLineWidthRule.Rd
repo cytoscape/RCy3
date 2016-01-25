@@ -34,8 +34,8 @@ None.
   cw <- CytoscapeWindow ('setEdgeLineWidthRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork (cw, 'force-directed')
-  edge.attribute.values = c('phosphorylates', 'synthetic lethal',   'undefined')
-  line.widths = c(0, 8, 16)
+  edge.attribute.values <- c('phosphorylates', 'synthetic lethal',   'undefined')
+  line.widths <- c(0, 8, 16)
   setEdgeLineWidthRule (cw, 'edgeType', edge.attribute.values, line.widths)
 }
 
