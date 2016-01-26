@@ -2763,9 +2763,6 @@ setMethod('setDefaultNodeSize', 'CytoscapeConnectionClass',
         
         style <- list(visualProperty = "NODE_SIZE", value = new.size)
         setVisualProperty(obj, style, vizmap.style.name)
-        
-        # unlock node dimensions
-        lockNodeDimensions (obj, FALSE)
 })
 
 # ------------------------------------------------------------------------------
@@ -2922,11 +2919,8 @@ setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
             }
             discreteMapping(obj, node.attribute.name, control.points, node.sizes,
                             visual.property="NODE_SIZE",
-                            columnType=columnType, style=vizmap.style.name)    
-
+                            columnType=columnType, style=vizmap.style.name)
         } # else: !interpolate, aka lookup
-        # unlock node dimensions
-        lockNodeDimensions (obj, FALSE)
         
     }) # setNodeSizeRule
 #
