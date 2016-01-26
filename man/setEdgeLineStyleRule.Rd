@@ -29,6 +29,7 @@ None.
 
 \seealso{
   \code{\link{getLineStyles}}
+  \code{\link{setNodeShapeRule}} (detailed example)
 }
 
 \examples{
