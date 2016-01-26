@@ -28,6 +28,8 @@ None.
 
 \seealso{
   \code{\link{getArrowShapes}}
+  setNodeShapeRule (detailed example)
+  setEdgeColorRule
 }
 
 \examples{
