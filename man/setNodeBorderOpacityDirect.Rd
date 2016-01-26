@@ -22,9 +22,19 @@ None.
 
 \seealso{
   setNodeBorderColorRule (detailed example)
+  setNodeBorderColorDirect
+  setNodeBorderWidthDirect
+  setNodeColorDirect
   setNodeFillOpacityDirect
+  setNodeFontSizeDirect
+  setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelColorDirect
+  setNodeLabelDirect
   setNodeLabelOpacityDirect
   setNodeOpacityDirect
+  setNodeShapeDirect
+  setNodeSizeDirect
  }
 
 \examples{
