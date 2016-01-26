@@ -68,12 +68,13 @@ None.
 
   cw <- CytoscapeWindow ('setNodeBorderColorRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
   control.points <- c (-3.0, 0.0, 3.0)   # typical range of log-fold-change ratio values
     # paint negative values shades of green, positive values shades of
     # red, out-of-range low values are dark green; out-of-range high
     # values are dark red
   colors <- c ("#00AA00", "#00FF00", "#FFFFFF", "#FF0000", "#AA0000")
+  setDefaultNodeBorderWidth (cw, 5)
   setNodeBorderColorRule (cw, node.attribute.name='lfc', control.points, colors, mode='interpolate')
   data.values <- c ("kinase", "transcription factor", "glycoprotein")
   colors <- c ("#0000AA", "#FFFF00", "#00AAAA") 
