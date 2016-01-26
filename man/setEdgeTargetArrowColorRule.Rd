@@ -1,11 +1,11 @@
 \name{setEdgeTargetArrowColorRule}
 \alias{setEdgeTargetArrowColorRule}
 \alias{setEdgeTargetArrowColorRule,CytoscapeWindowClass-method}
-\title{Specify Rule for the Target Arrow Color}
+\title{Specify rule for the target arrow color}
 \description{
 Specify how edge attributes -- that is, data values of the specified edge
-attribute -- control the color of the target arrow, found at the end of an edge, where it connects to the
-  target node.}
+attribute -- control the color of the target arrow, found at the end of
+an edge, where it connects to the target node.}
 
 \usage{
 setEdgeTargetArrowColorRule(obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000')
@@ -13,16 +13,14 @@ setEdgeTargetArrowColorRule(obj, edge.attribute.name, control.points, colors, mo
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
-  \item{edge.attribute.name}{the edge attribute whose values will, when this
-ColorRule is applied, determine the color of the target arrow of each edge.}
-  \item{control.points}{A list of scalar, discrete values. For
-  instance, interaction types:  'phosphorylates', 'ubiquinates',
-  'represses', 'activates' }
-\item{colors}{A color for each of the attribute.values}
-\item{mode}{either 'interpolate' or 'lookup'.}
-\item{default.color}{The color to use when an explicit mapping is not
-  provided.)}
-
+  \item{edge.attribute.name}{the edge attribute whose values will determine
+        the color of the target arrow of each edge when this rule is applied.}
+  \item{control.points}{A list of scalar, discrete values. For instance,
+        interaction types: 'phosphorylates', 'ubiquinates', 'represses', 'activates'}
+  \item{colors}{A color for each of the attribute.values}
+  \item{mode}{either 'interpolate' or 'lookup'.}
+  \item{default.color}{The color to use when an explicit mapping is not
+        provided.}
 }
 
 \value{
@@ -39,11 +37,10 @@ None.
   # send and display network
   cw <- CytoscapeWindow ('setEdgeTargetArrowColorRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
   
   # add edge arrows
-  arrows <- c ('Arrow', 'Diamond', 'Circle')
+  arrows <- c ('CIRCLE', 'ARROW', 'DIAMOND')
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
   setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
   
@@ -60,4 +57,3 @@ None.
 }
 
 \keyword{graph}
-
