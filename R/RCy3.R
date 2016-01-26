@@ -930,6 +930,11 @@ setMethod ('setLayoutProperties', 'CytoscapeConnectionClass',
                 
                 request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
                 request.res <- PUT(url=request.uri, body= new.property.value.list.JSON, encode="json")
+                if (request.res$status == 200){
+                    write (sprintf ("Successfully updated the property '%s'.", prop), stdout ())
+                } else {
+                    write (sprintf ("Something went wrong. Unable to update property '%s'.", prop), stderr ())
+                }
                 invisible(request.res)
             }
         } # for prop
