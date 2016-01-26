@@ -3,9 +3,9 @@
 \alias{setNodePosition,CytoscapeWindowClass-method}
 \title{setNodePosition}
 \description{
-  Set the position of the specified nodes on the CytoscapeWindow
-  canvas.  Use this for any hand-crafted layouts, or novel layout
-  algorithms, you wish to use.
+Set the position of the specified nodes on the CytoscapeWindow
+canvas. Use this for any hand-crafted layouts, or novel layout
+algorithms, you wish to use.
 }
 \usage{
 setNodePosition(obj, node.names, x.coords, y.coords)
@@ -14,9 +14,9 @@ setNodePosition(obj, node.names, x.coords, y.coords)
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{node.names}{a \code{list} of strings, the names of nodes to select. }
   \item{x.coords}{a \code{list} of floating point numbers, one for each
-    node in the node.names list. }
+        node in the node.names list. }
   \item{y.coords}{a \code{list} of floating point numbers, one for each
-    node in the node.names list. }
+        node in the node.names list. }
 }
 
 \value{
