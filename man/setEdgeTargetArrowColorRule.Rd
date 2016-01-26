@@ -29,9 +29,10 @@ None.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
-  setNodeShapeRule (detailed example)
+  setNodeBorderColorRule (detailed example)
   \code{\link{setEdgeSourceArrowColorRule}}
   setEdgeColorRule
+  setNodeShapeRule
 }
 \examples{
   # first, delete existing windows to save memory:
