@@ -28,8 +28,11 @@ None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
-\seealso{ \code{\link{setEdgeSourceArrowColorRule}}}
-
+\seealso{
+  setNodeShapeRule (detailed example)
+  \code{\link{setEdgeSourceArrowColorRule}}
+  setEdgeColorRule
+}
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
