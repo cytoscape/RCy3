@@ -21,6 +21,18 @@ None.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
+  setNodeBorderColorDirect
+  setNodeBorderOpacityDirect
+  setNodeColorDirect
+  setNodeFillOpacityDirect
+  setNodeFontSizeDirect
+  setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelColorDirect
+  setNodeLabelDirect
+  setNodeLabelOpacityDirect
+  setNodeOpacityDirect
+  setNodeShapeDirect
   setNodeSizeDirect
  }
 
