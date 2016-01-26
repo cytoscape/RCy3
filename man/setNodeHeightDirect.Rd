@@ -36,7 +36,7 @@ None.
   cw <- CytoscapeWindow ('setNodeHeightDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork (cw, 'force-directed')
-  lockNodeDimensions (cw, 'default', FALSE)
+  lockNodeDimensions (cw, FALSE)
   setNodeHeightDirect (cw, 'A', 32)
   setNodeHeightDirect (cw, c('A', 'B'), 15)
   setNodeHeightDirect (cw, c('C', 'B'), c(15, 30))
