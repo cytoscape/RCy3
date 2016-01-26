@@ -26,8 +26,9 @@ The modified CytoscapeWindow object.
   cw <- CytoscapeWindow ('setGraph.test')  # an empty graph is created by default
   graph <- makeSimpleGraph ()
   setGraph (cw, graph)
+  displayGraph (cw)
+  layoutNetwork (cw, 'force-directed')
   print (length (nodes (getGraph (cw))))
-
 }
 
 \keyword{graph}
