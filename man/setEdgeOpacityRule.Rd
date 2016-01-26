@@ -25,9 +25,12 @@ setEdgeOpacityRule(obj, edge.attribute.name, control.points, opacities, mode)
 None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
+
 \seealso{
-  setEdgeLineStyleRule
+  setNodeShapeRule (detailed example)
   setEdgeColorRule
+  setEdgeLineStyleRule
+  setNodeColorRule
 }
 
 \examples{
