@@ -13,8 +13,8 @@ setEdgeTooltipRule(obj, edge.attribute.name)
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
-  \item{edge.attribute.name}{the edge attribute whose values will, when this
-        rule is applied, determine the tooltip on each edge.}
+  \item{edge.attribute.name}{the edge attribute whose values will
+        determine the tooltip on each edge when this rule is applied.}
 }
 
 \value{
@@ -22,14 +22,16 @@ None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
+\seealso{
+  setEdgeTooltipDirect
+ }
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('setEdgeTooltipRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'force-directed')
-  redraw (cw)
+  layoutNetwork (cw, 'force-directed')
   setEdgeTooltipRule (cw, 'edgeType')
 }
 
