@@ -2884,8 +2884,8 @@ setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
         vizmap.style.name = 'default'
         
         # define the column type
-        columnType <- "String" #findColumnType(typeof(control.points[1]))
-        
+        columnType <- findColumnType(typeof(control.points[1]))
+
         # lock node dimensions
         lockNodeDimensions (obj, TRUE)
         
@@ -2917,16 +2917,17 @@ setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
             if (!good.args) {
                 write (sprintf ('cp: %d', length (control.points)), stderr ())
                 write (sprintf ('co: %d', length (node.sizes)), stderr ())
-                write ("Error! RCy3:setNodeSizeRule.  Expecting exactly as many node.sizes as control.points in lookup mode.", stderr ())
+                write ("Error! RCy3:setNodeSizeRule. Expecting exactly as many node.sizes as control.points in lookup mode.", stderr ())
                 return ()
             }
             discreteMapping(obj, node.attribute.name, control.points, node.sizes,
                             visual.property="NODE_SIZE",
                             columnType=columnType, style=vizmap.style.name)    
-            
+
         } # else: !interpolate, aka lookup
         # unlock node dimensions
         lockNodeDimensions (obj, FALSE)
+        
     }) # setNodeSizeRule
 #
 #------------------------------------------------------------------------------------------------------------------------
@@ -4961,22 +4962,22 @@ setMethod ('lockNodeDimensions', 'CytoscapeConnectionClass',
     function (obj, new.state, visual.style.name='default') {
         # launch error if visual style name is missing
         if (! visual.style.name %in% getVisualStyleNames (obj)) {
-            write (sprintf ('Error in RCy3::lockNodeDimensions.  No visual style named "%s"', visual.style.name), stdout ())
+            write (sprintf ('Error in RCy3::lockNodeDimensions. No visual style named "%s"', visual.style.name), stdout ())
             return ()
         }
     
         #lock node dimensions
         resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(visual.style.name), "dependencies", sep="/")
-        style <- list(visualPropertyDependency="nodeSizeLocked", enabled =tolower(new.state))
+        style <- list(visualPropertyDependency="nodeSizeLocked", enabled = tolower(new.state))
         style.JSON <- toJSON(list(style))
         request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
-
+        
         # inform the user if the request was a success or failure
-        if (request.res$status == 200){
-            if(new.state==TRUE){
-                write (sprintf ('RCy3::lockNodeDimensions. Locked node dimensions'), stdout ())
+        if (request.res$status == 200 || request.res$status == 201){
+            if (new.state==TRUE){
+                write (sprintf ('Locked node dimensions.'), stdout ())
             }else{
-                write (sprintf ('RCy3::lockNodeDimensions. Unlocked node dimensions'), stdout ())
+                write (sprintf ('Unlocked node dimensions.'), stdout ())
             }
         }else{
             write (sprintf ('Error in RCy3::lockNodeDimensions. Could not lock/unlocked node dimensions'), stderr ())
@@ -5365,10 +5366,8 @@ continuousMapping <- function(obj, attribute.name, control.points, colors, visua
                                mappingColumnType = columnType, visualProperty=visual.property,
                                points = mapped.content)
     continuous.mapping.json <- toJSON(list(continuous.mapping))
-    #print(continuous.mapping.json)
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=continuous.mapping.json, encode="json")
-    #print(request.res)
     
     # inform the user if the request was a success or failure
     if (request.res$status == 201){
