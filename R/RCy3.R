@@ -1687,39 +1687,47 @@ setMethod ('restoreLayout', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodePosition', 'CytoscapeWindowClass',
 
-  function (obj, node.names, x.coords, y.coords) {
-     unknown.nodes <- setdiff (node.names, getAllNodes (obj))
-     recognized.nodes <- intersect(node.names, getAllNodes(obj))
-     if (length (unknown.nodes) > 0) {
-        node.names = intersect (node.names, nodes (obj@graph))
-        write (sprintf ("Error!  unknown nodes in RCy3::setNodePosition"), stderr ())
-        for (i in 1:length (unknown.nodes)){
-           write (sprintf ("     %s", unknown.nodes [i]), stderr ())
-        } # end for
-        return ()
-      } # end if 
-     
-     indices <- match(recognized.nodes, node.names)
-     node.names <- recognized.nodes
-     
-     x.coords <- x.coords[indices]
-     y.coords <- y.coords[indices]
-     count = length (node.names)
-     #stopifnot (length (x.coords) == count)
-     #stopifnot (length (y.coords) == count)
+    function (obj, node.names, x.coords, y.coords) {
+        unknown.nodes <- setdiff (node.names, getAllNodes (obj))
+        recognized.nodes <- intersect(node.names, getAllNodes(obj))
+        
+        # throw error if nodes in node.names don't exist in the network
+        if (length (unknown.nodes) > 0) {
+            node.names = intersect (node.names, nodes (obj@graph))
+            write (sprintf ("Error! Unknown nodes in RCy3::setNodePosition"), stderr ())
+            for (i in 1:length (unknown.nodes)){
+                write (sprintf ("     %s", unknown.nodes [i]), stderr ())
+            } # end for
+            return ()
+        } # end if 
 
-     if (count == 0){
-        return ()
-     }
-     
-     # TODO we might want to check if the coordinates are valid numbers
-     
-     # set x position
-     setNodePropertyDirect(obj, node.names, x.coords, "NODE_X_LOCATION")
-     
-     # set y position
-     setNodePropertyDirect(obj, node.names, y.coords, "NODE_Y_LOCATION")
-     
+        # ensure that node.names, x.coords, y.coords are of the same length
+        print (c(length(node.names), length(x.coords), length(y.coords)))
+        print (length(unique(c(length(node.names), length(x.coords), length(y.coords)))))
+        if (length(unique(c(length(node.names), length(x.coords), length(y.coords))))>1){
+            write (sprintf ("Error! RCy3::setNodePosition: The node names vector has to be the same length as each of the x and y coordiante vectors."), stderr ())
+        }
+        indices <- match(recognized.nodes, node.names)
+        node.names <- recognized.nodes
+        
+        x.coords <- x.coords[indices]
+        y.coords <- y.coords[indices]
+        count = length (node.names)
+        #stopifnot (length (x.coords) == count)
+        #stopifnot (length (y.coords) == count)
+        
+        if (count == 0){
+            return ()
+        }
+        
+        # TODO we might want to check if the coordinates are valid numbers
+        
+        # set x position
+        setNodePropertyDirect(obj, node.names, x.coords, "NODE_X_LOCATION")
+        
+        # set y position
+        setNodePropertyDirect(obj, node.names, y.coords, "NODE_Y_LOCATION")
+        
     }) # setNodePosition
 
 #------------------------------------------------------------------------------------------------------------------------
