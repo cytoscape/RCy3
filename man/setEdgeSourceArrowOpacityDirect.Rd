@@ -26,7 +26,6 @@ None.
   setDefaultEdgeSourceArrowColor
   setEdgeSourceArrowColorDirect
   setEdgeSourceArrowColorRule
-  setEdgeSourceArrowOpacityDirect
   setEdgeSourceArrowRule
   setEdgeSourceArrowShapeDirect
   setEdgeTargetArrowColorDirect
