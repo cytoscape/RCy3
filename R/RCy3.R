@@ -3067,7 +3067,7 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
         vizmap.style.name = 'default'
         
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
-            write (sprintf ('warning!  setEdgeLineWidthRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+            write (sprintf ('Warning! setEdgeLineWidthRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
             return ()
         }
         
@@ -3076,7 +3076,8 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
         setVisualProperty(obj, default.width.list, vizmap.style.name)
         
         # define the column type
-        columnType <- findColumnType(typeof(line.widths[1]))
+        #columnType <- findColumnType(typeof(line.widths[1]))
+        columnType <- 'String'
         
         # discrete mapping
         discreteMapping (obj, edge.attribute.name, attribute.values, line.widths,
@@ -5323,10 +5324,8 @@ discreteMapping <- function(obj, attribute.name, control.points, colors, visual.
                              mappingColumnType = columnType, visualProperty=visual.property,
                              map = mapped.content)
     discrete.mapping.json <-toJSON(list(discrete.mapping))
-    #print(discrete.mapping.json)
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
-    #print(request.res)
     
     # inform the user if the request was a success or failure
     if (request.res$status == 201){
