@@ -1,7 +1,7 @@
 \name{setEdgeSourceArrowRule}
 \alias{setEdgeSourceArrowRule}
 \alias{setEdgeSourceArrowRule,CytoscapeWindowClass-method}
-\title{specify the arrow types to be used at the end of an edge, at the
+\title{specify the arrow types to be used at the end of an edge at the
   'source' node}
 \description{
 Specify how data attributes -- for the specified named attribute -- are
@@ -13,14 +13,12 @@ setEdgeSourceArrowRule(obj, edge.attribute.name, attribute.values, arrows, defau
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
-  \item{edge.attribute.name}{the edge attribute whose values will, when this
-rule is applied, determine the sourceArrow of each edge.}
-  \item{attribute.values}{A list of scalar, discrete values. For
-  instance, interaction types:  'phosphorylates', 'ubiquinates',
-  'represses', 'activates' }
-\item{arrows}{One arrow type for each of the attribute.values}
-\item{default}{The arrow type to use when an explicit mapping is not provided.}
-
+  \item{edge.attribute.name}{the edge attribute whose values will determine
+        the source arrow of each edge when this rule is applied.}
+  \item{attribute.values}{A list of scalar, discrete values. For instance,
+  interaction types:'phosphorylates', 'ubiquinates', 'represses', 'activates' }
+  \item{arrows}{One arrow type for each of the attribute.values}
+  \item{default}{The arrow type to use when an explicit mapping is not provided.}
 }
 
 \value{
@@ -37,11 +35,11 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('setEdgeSourceArrowRule.test', graph=makeSimpleGraph())
-  arrows <- c ('Arrow', 'Diamond', 'Circle')
-  edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
+  displayGraph (cw)
+  layoutNetwork (cw, 'force-directed')
+  arrows <- c('Arrow', 'Diamond', 'Circle')
+  edgeType.values <- c('phosphorylates', 'synthetic lethal', 'undefined')
   setEdgeSourceArrowRule (cw, 'edgeType', edgeType.values, arrows)
-  redraw (cw)
 }
 
 \keyword{graph}
-
