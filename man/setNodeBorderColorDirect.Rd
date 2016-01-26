@@ -21,6 +21,19 @@ None.
 
 \seealso{
   setNodeSizeDirect
+  setNodeBorderOpacityDirect
+  setNodeBorderWidthDirect
+  setNodeColorDirect
+  setNodeFillOpacityDirect
+  setNodeFontSizeDirect
+  setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelColorDirect
+  setNodeLabelDirect
+  setNodeLabelOpacityDirect
+  setNodeOpacityDirect
+  setNodeShapeDirect
+  setNodeWidthDirect
  }
 
 \examples{
