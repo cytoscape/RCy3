@@ -12,7 +12,7 @@ setNodeFontSizeDirect(obj, node.names, new.sizes)
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{node.names}{one or more \code{String} objects.}
-  \item{new.sizes}{one or more \code{integer}, in pixel units.}
+  \item{new.sizes}{one or more \code{integers}, in pixel units.}
 }
 
 \value{
