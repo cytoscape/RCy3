@@ -29,7 +29,7 @@ None.
 
 \seealso{
   \code{\link{getLineStyles}}
-  \code{\link{setNodeShapeRule}} (detailed example)
+  \code{\link{setNodeBorderColorRule}} (detailed example)
 }
 
 \examples{
@@ -42,7 +42,6 @@ None.
   line.styles <- c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
   edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
   setEdgeLineStyleRule (cw, 'edgeType', edgeType.values, line.styles)
-  redraw (cw)
 }
 
 \keyword{graph}
