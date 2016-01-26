@@ -4,7 +4,7 @@
 \title{setEdgeTooltipDirect}
 \description{
 In the specified CytoscapeWindow, set the tooltips of the specified edge
-or edges.  The tooltips are not available until redraw is called.
+or edges.
 }
 \usage{
 setEdgeTooltipDirect(obj, edge.names, new.values)
@@ -20,9 +20,7 @@ None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
-
 \seealso{
-  cy2.edge.names
   setEdgeTooltipRule
  }
 
@@ -32,24 +30,17 @@ None.
 
   cw <- CytoscapeWindow ('setEdgeTooltipDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'force-directed')
-  redraw (cw)
+  layoutNetwork (cw, 'force-directed')
 
-  edges.of.interest = as.character (cy2.edge.names (cw@graph))
+  edges.of.interest <- as.character (cy2.edge.names (cw@graph))
 
     # first try passing three edges and three tooltips
   setEdgeTooltipDirect (cw, edges.of.interest, c ('tooltip #1', 'tooltip #2', 'tooltip #3'))
-  redraw (cw)
 
-  Sys.sleep (1)
-  
     # now try passing three edges and one tooltip
   setEdgeTooltipDirect (cw, edges.of.interest, 'a general purpose tooltip')
-  redraw (cw)
 
   setEdgeTooltipDirect (cw, edges.of.interest, '')
-  redraw (cw)
-
 }
 
 \keyword{graph}
