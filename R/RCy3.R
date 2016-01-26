@@ -2592,7 +2592,7 @@ setMethod ('setNodeOpacityRule', 'CytoscapeWindowClass',
         
         if (aspect.fill == FALSE && aspect.border == FALSE && aspect.label == FALSE) {
             specific.options = 'fill, border, label'
-            msg.1 = "Error! RCy3:setNodeOpacityRule.  apect must be 'all' (the default) "
+            msg.1 = "Error! RCy3:setNodeOpacityRule. Aspect must be 'all' (the default) "
             msg.2 = sprintf ("or some combination, in any order, of %s", specific.options)
             write (msg.1, stderr ())
             write (msg.2, stderr ())
