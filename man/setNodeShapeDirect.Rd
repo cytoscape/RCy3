@@ -11,8 +11,8 @@ setNodeShapeDirect(obj, node.names, new.shapes)
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{node.names}{one or more \code{String} objects.}
-  \item{new.shapes}{one or more \code{String} objects, one of the allowed values
-    returned by getNodeShape.}
+  \item{new.shapes}{one or more \code{String} objects, each of the
+        allowed values returned by getNodeShape.}
 }
 
 \value{
@@ -30,12 +30,11 @@ None.
 
   cw <- CytoscapeWindow ('setNodeShapeDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'grid')
-  getNodeShapes(cw)
+  layoutNetwork (cw, 'grid')
+  getNodeShapes (cw)
   setNodeShapeDirect (cw, 'A', 'TRIANGLE')
-  redraw (cw)
+  setNodeShapeDirect (cw, c('B', 'C'), getNodeShapes(cw)[2:3])
+  setNodeShapeDirect (cw, c('A', 'B', 'C'), 'PARALLELOGRAM')
 }
-
 
 \keyword{graph}
