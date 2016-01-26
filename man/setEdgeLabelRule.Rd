@@ -21,7 +21,7 @@ None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
-seealso{
+\seealso{
   setNodeShapeRule (detailed example)
   setEdgeColorRule
 }
