@@ -3,7 +3,7 @@
 \alias{setLayoutProperties,CytoscapeConnectionClass-method}
 \title{setLayoutProperties}
 \description{
-Sets the specified properties for the specified layout.  Unmentioned
+Sets the specified properties for the specified layout. Unmentioned
 properties are left unchanged.
 }
 \usage{
