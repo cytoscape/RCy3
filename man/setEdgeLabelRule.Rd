@@ -22,7 +22,7 @@ None.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
-  setNodeShapeRule (detailed example)
+  setNodeBorderColorRule (detailed example)
   setEdgeColorRule
 }
 
