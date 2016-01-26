@@ -40,10 +40,10 @@ None.
   setEdgeSourceArrowRule (cw, 'edgeType', edgeType.values, arrows)
   setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
 
-  colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
-  colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
+  colors.1 <- c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
+  colors.2 <- c ("#AA00AA", "#00AAAA", "#0000AA")
 
-  edge.names = as.character (cy2.edge.names (cw@graph)) [1:3]
+  edge.names <- as.character (cy2.edge.names (cw@graph)) [1:3]
 
   for (i in 1:2) {
     setEdgeSourceArrowColorDirect (cw, edge.names, colors.1)
