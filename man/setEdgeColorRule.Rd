@@ -28,8 +28,8 @@ None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \seealso{
+  setNodeShapeRule (detailed example)
   setEdgeLineStyleRule
-  setNodeColorRule
 }
 
 \examples{
