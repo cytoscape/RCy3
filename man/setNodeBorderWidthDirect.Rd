@@ -34,6 +34,7 @@ None.
   setNodeOpacityDirect
   setNodeShapeDirect
   setNodeSizeDirect
+  setNodeWidthDirect
  }
 
 \examples{
