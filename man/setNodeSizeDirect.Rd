@@ -4,8 +4,8 @@
 \title{setNodeSizeDirect}
 \description{
 In the specified CytoscapeWindow, set the size of the specified node(s).
-Note that the node dimensions (height and width) must be locked (the default
-state) for this to work.  Node height and width change together.
+Note that the node dimensions (height and width) must be unlocked for
+this to work. Node height and width change together.
 }
 \usage{
 setNodeSizeDirect(obj, node.names, new.sizes)
@@ -33,11 +33,10 @@ None.
 
   cw <- CytoscapeWindow ('setNodeSizeDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'grid')
+  layoutNetwork (cw, 'grid')
   setNodeSizeDirect (cw, 'A', 32)
-  redraw (cw)
+  setNodeSizeDirect (cw, getAllNodes(cw), 15)
+  setNodeSizeDirect (cw, c('A', 'B'), c(30, 40))
 }
-
 
 \keyword{graph}
