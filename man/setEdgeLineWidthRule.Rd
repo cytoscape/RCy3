@@ -27,6 +27,11 @@ None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
+\seealso{
+  setNodeShapeRule (detailed example)
+  setEdgeColorRule
+}
+
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
