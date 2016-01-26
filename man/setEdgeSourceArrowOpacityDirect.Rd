@@ -23,6 +23,17 @@ None.
 
 \seealso{
   setEdgeTargetArrowOpacityDirect
+  setDefaultEdgeSourceArrowColor
+  setEdgeSourceArrowColorDirect
+  setEdgeSourceArrowColorRule
+  setEdgeSourceArrowOpacityDirect
+  setEdgeSourceArrowRule
+  setEdgeSourceArrowShapeDirect
+  setEdgeTargetArrowColorDirect
+  setEdgeTargetArrowColorRule
+  setEdgeTargetArrowRule
+  setEdgeTargetArrowShapeDirect
+  setDefaultEdgeTargetArrowColor
  }
 
 \examples{
