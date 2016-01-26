@@ -21,7 +21,20 @@ None.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
+  setNodeBorderColorDirect
+  setNodeBorderOpacityDirect
+  setNodeBorderWidthDirect
+  setNodeColorDirect
+  setNodeFillOpacityDirect
+  setNodeFontSizeDirect
+  setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelColorDirect
+  setNodeLabelOpacityDirect
+  setNodeOpacityDirect
   setNodeShapeDirect
+  setNodeSizeDirect
+  setNodeWidthDirect
  }
 
 \examples{
@@ -30,11 +43,10 @@ None.
 
   cw <- CytoscapeWindow ('setNodeLabelDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
   setNodeLabelDirect (cw, 'A', 'A new, very long label')
-  redraw (cw)
+  setNodeLabelDirect (cw, c('B', 'C'), 'Some node')
+  setNodeLabelDirect (cw, c('B', 'C'), c('node B', 'node C'))
 }
-
 
 \keyword{graph}
