@@ -1691,6 +1691,11 @@ setMethod ('setNodePosition', 'CytoscapeWindowClass',
         unknown.nodes <- setdiff (node.names, getAllNodes (obj))
         recognized.nodes <- intersect(node.names, getAllNodes(obj))
         
+        # ensure that nodes were provided
+        if (length (node.names) == 0){
+            return ()
+        }
+
         # throw error if nodes in node.names don't exist in the network
         if (length (unknown.nodes) > 0) {
             node.names = intersect (node.names, nodes (obj@graph))
@@ -1702,26 +1707,17 @@ setMethod ('setNodePosition', 'CytoscapeWindowClass',
         } # end if 
 
         # ensure that node.names, x.coords, y.coords are of the same length
-        print (c(length(node.names), length(x.coords), length(y.coords)))
-        print (length(unique(c(length(node.names), length(x.coords), length(y.coords)))))
         if (length(unique(c(length(node.names), length(x.coords), length(y.coords))))>1){
             write (sprintf ("Error! RCy3::setNodePosition: The node names vector has to be the same length as each of the x and y coordiante vectors."), stderr ())
-        }
-        indices <- match(recognized.nodes, node.names)
-        node.names <- recognized.nodes
-        
-        x.coords <- x.coords[indices]
-        y.coords <- y.coords[indices]
-        count = length (node.names)
-        #stopifnot (length (x.coords) == count)
-        #stopifnot (length (y.coords) == count)
-        
-        if (count == 0){
-            return ()
+            return()
         }
         
-        # TODO we might want to check if the coordinates are valid numbers
-        
+        # check if the coordinates are valid numbers
+        if (!any(is.numeric(c(x.coords, y.coords)))){
+            write (sprintf ("Error! RCy3::setNodePosition: x and y coordiante vectors must be numeric."), stderr ())
+            return()
+        }
+            
         # set x position
         setNodePropertyDirect(obj, node.names, x.coords, "NODE_X_LOCATION")
         
