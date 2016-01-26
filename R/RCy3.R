@@ -2757,7 +2757,7 @@ setMethod('setDefaultNodeSize', 'CytoscapeConnectionClass',
         # lock node dimensions
         lockNodeDimensions (obj, TRUE)
         
-        style = list(visualProperty = "NODE_SIZE", value = new.size)
+        style <- list(visualProperty = "NODE_SIZE", value = new.size)
         setVisualProperty(obj, style, vizmap.style.name)
         
         # unlock node dimensions
@@ -3459,7 +3459,7 @@ setMethod ('setNodeOpacityDirect', 'CytoscapeWindowClass',
       for (current.value in new.values){
          # ensure the opacity value is a double and between 0 and 255
          if (! is.double(current.value) || current.value < 0  || current.value > 255) {
-            write (sprintf ('illegal opacity string "%s" in RCy3::setNodeOpacityDirect. It needs to be between 0 and 255.', current.value), stderr ())
+            write (sprintf ('RCy3::setNodeOpacityDirect: illegal opacity string "%s". It needs to be between 0 and 255.', current.value), stderr ())
             return ()
          }
       }
@@ -5250,8 +5250,9 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
         new.values <- rep(new.values, length(node.names))
     }
     if (length(new.values) != length(node.names)) {
-        write(sprintf("ERROR in setNodePropertyDirect():\n\t the number of nodes [%d] and new values [%d] are not the same >> node(s) attribute couldn't be set", 
+        write(sprintf("ERROR in setNodePropertyDirect():\n   the number of nodes [%d] and new values [%d] are not the same >> node(s) attribute couldn't be set", 
                       length(node.names), length(new.values)), stderr())
+        return()
     } else if (length(node.names)==1){
         # only one node
         resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", node.SUIDs, sep="/")
