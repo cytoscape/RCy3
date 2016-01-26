@@ -22,7 +22,20 @@ None.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
+  setNodeBorderColorDirect
+  setNodeBorderOpacityDirect
+  setNodeBorderWidthDirect
+  setNodeColorDirect
+  setNodeFillOpacityDirect
   setNodeFontSizeDirect
+  setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelDirect
+  setNodeLabelOpacityDirect
+  setNodeOpacityDirect
+  setNodeShapeDirect
+  setNodeSizeDirect
+  setNodeWidthDirect
  }
 
 \examples{
