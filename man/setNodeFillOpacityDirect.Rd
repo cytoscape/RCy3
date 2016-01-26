@@ -3,8 +3,8 @@
 \alias{setNodeFillOpacityDirect,CytoscapeWindowClass-method}
 \title{setNodeFillOpacityDirect}
 \description{
-In the specified CytoscapeWindow, set the opacity of the fill color of
-the specified node.
+In the specified CytoscapeWindow, set the opacity of the fill
+color of the specified node(s).
 }
 \usage{
 setNodeFillOpacityDirect(obj, node.names, new.values)
@@ -20,13 +20,22 @@ None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
-
 \seealso{
+  setNodeBorderColorDirect
+  setNodeBorderOpacityDirect
+  setNodeBorderWidthDirect
+  setNodeColorDirect
+  setNodeFontSizeDirect
+  setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelColorDirect
+  setNodeLabelDirect
   setNodeLabelOpacityDirect
   setNodeOpacityDirect
-  setNodeBorderOpacityDirect
+  setNodeShapeDirect
+  setNodeSizeDirect
+  setNodeWidthDirect
  }
-
 
 \examples{
   # first, delete existing windows to save memory:
@@ -34,12 +43,9 @@ None.
 
   cw <- CytoscapeWindow ('setNodeFillOpacityDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'force-directed')
-  setNodeFillOpacityDirect (cw, 'A', 220)
-  setNodeFillOpacityDirect (cw, c('B', 'C'), c(222, 233))
-  redraw (cw)
+  layoutNetwork (cw, 'force-directed')
+  setNodeFillOpacityDirect (cw, 'A', 20)
+  setNodeFillOpacityDirect (cw, c('B', 'C'), c(122, 133))
 }
-
 
 \keyword{graph}
