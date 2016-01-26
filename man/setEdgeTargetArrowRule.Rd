@@ -26,7 +26,12 @@ None.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
-\seealso{ \code{\link{getArrowShapes}}}
+\seealso{
+  \code{\link{getArrowShapes}}
+  setNodeBorderColorRule (detailed example)
+  setEdgeColorRule
+}
+
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
