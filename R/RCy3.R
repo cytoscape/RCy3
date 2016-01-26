@@ -3586,16 +3586,17 @@ setMethod ('setEdgeLabelColorDirect', 'CytoscapeWindowClass',
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTooltipDirect', 'CytoscapeWindowClass',
-   function (obj, edge.names, new.values) {
-      if (length (edge.names) != length (new.values)) {
-         msg = sprintf ('error in RCy3::setEdgeTooltipDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-                        length (new.values), length (edge.names))
-         write (msg, stderr ())
-         return ()
-      }
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TOOLTIP"))
-
+    function (obj, edge.names, new.values) {
+        if (length (edge.names) != length (new.values)) {
+            if (length(new.values) != 1){
+                msg = sprintf ('error in RCy3::setEdgeTooltipDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+                               length (new.values), length (edge.names))
+                write (msg, stderr ())
+                return ()
+            }
+        }
+        # set the edge property direct
+        return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TOOLTIP"))
      })
 
 # ------------------------------------------------------------------------------
