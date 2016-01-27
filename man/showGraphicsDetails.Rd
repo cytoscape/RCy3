@@ -12,6 +12,7 @@ showGraphicsDetails(obj, new.value)
 }
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
+  \item{new.value}{a \code{boolean}, if the details are shown }
 }
 
 \value{
