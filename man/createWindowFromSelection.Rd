@@ -35,14 +35,13 @@ an empty graph.
 
   cw <- CytoscapeWindow (title, makeSimpleGraph ())
   displayGraph (cw)
-  layoutNetwork(cw)
+  layoutNetwork (cw)
   selectNodes (cw, c ('A', 'C'))
  
   new.window.title <- 'NEW WINDOW'
   if (new.window.title %in% as.character (getWindowList (cy))){
     deleteWindow (cy, new.window.title)
   }
-
   c2 <- createWindowFromSelection (cw, new.window.title, TRUE)
   layoutNetwork (c2 'force-directed')
   clearSelection (c2)
