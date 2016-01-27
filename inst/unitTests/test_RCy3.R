@@ -228,7 +228,7 @@ run.tests = function ()
     test.defaultColors ()
     test.setWindowSizeRaiseWindow ()
     test.fitContent ()
-    test.windowCoordinates ()
+    #test.windowCoordinates ()
     
     deleteAllWindows (cy)
     
