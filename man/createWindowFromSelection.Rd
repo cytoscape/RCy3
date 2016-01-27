@@ -40,7 +40,7 @@ an empty graph.
  
   new.window.title <- 'NEW WINDOW'
   c2 <- createWindowFromSelection (cw, new.window.title, TRUE)
-  layoutNetwork (c2 'force-directed')
+  layoutNetwork (c2, 'force-directed')
   clearSelection (c2)
   selectNodes (c2, 'C')
   print (getSelectedNodeCount (c2))  # should be 1
