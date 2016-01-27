@@ -417,7 +417,6 @@ test.getAttributeClassNames = function ()
     checkTrue (grep ('integer', possible.values) > 0)
     checkTrue (grep ('character', possible.values) > 0)
 
-
 } # test.getAttributeClassNames
 #------------------------------------------------------------------------------------------------------------------------
 test.getArrowShapes = function ()
@@ -527,7 +526,7 @@ test.getLayoutPropertyValue = function ()
     
     for (prop in props) {
         value = getLayoutPropertyValue (cy, layout.name, prop)
-        #printf ('force-directed layout %s: %s', prop, value)
+        printf ('force-directed layout %s: %s', prop, value)
     } # for prop
 
 } # test.getLayoutPropertyValue
@@ -554,23 +553,6 @@ test.setLayoutProperties = function ()
     displayGraph (cw)
     redraw (cw)
     
-    # use a popular (and tunable) layout algorithm, show how selected properties can be modified, 
-    # and demonstrate how they affect the layout.
-    
-    layout.name = getLayoutNameMapping (cy)[['Edge-Weighted Spring Embedded']]  
-    
-    checkTrue ('edge_attribute'    %in% getLayoutPropertyNames (cy, layout.name))
-    checkTrue ('distance_strength' %in% getLayoutPropertyNames (cy, layout.name))
-    
-    setLayoutProperties (cy, layout.name, list (edge_attribute='score', distance_strength=100))
-    layoutNetwork (cw, layout.name)
-    
-    setLayoutProperties (cy, layout.name, list (edge_attribute='score', distance_strength=-100))
-    layoutNetwork (cw, layout.name)
-    
-    setLayoutProperties (cy, layout.name, list (edge_attribute='score', distance_strength=100))
-    layoutNetwork (cw, layout.name)
-    
     invisible (cw)
     
 } # test.setLayoutProperties
@@ -588,7 +570,6 @@ test.collectTimings = function ()
     cwe = CytoscapeWindow (title, graph=makeSimpleGraph (), collectTimings=TRUE)
     displayGraph (cwe)
     layoutNetwork (cwe, 'grid')
-    redraw (cwe)
     
     invisible (cwe)  
 
@@ -620,8 +601,6 @@ test.sendEdges = function ()
     sendNodes (cwe)
     sendEdges (cwe)
     layoutNetwork (cwe, 'grid')
-    redraw (cwe)
-    #msg (cwe, 'sendEdges')
     
     invisible (cwe)
 
@@ -686,17 +665,10 @@ test.setEdgeAttributes = function ()
     checkEquals (length (edge.names), 3)
     edge.values = c ('alligator', 'hedgehog', 'anteater')
     result = setEdgeAttributesDirect (cwe, 'misc', 'string', edge.names, edge.values)
-    
-    # sending a single attribute to CytoscapeRPC runs into a problem:  xmlrpc maps these to scalars,
-    # rather than as lists of length 1, and no CytoscapeRPC method is matched.
-    # (10 dec 2010) RCy3::setEdgeAttributesDirect solves this inelegantly, but duplicating
-    # the edge name and attribute values, making lists of length 2
-    
+
     result = setEdgeAttributesDirect (cwe, 'misc', 'string', edge.names [1], edge.values [1])
     
-    #msg (cwe, 'setEdgeAttributes')
-    
-    invisible (cwe)  
+    invisible (cwe)
 
 } # test.setEdgeAttributes
 #------------------------------------------------------------------------------------------------------------------------
@@ -808,10 +780,10 @@ test.panelOperations = function ()
     hidePanel (cw, 'Control Panel')
     hidePanel (cw, 'd')
     
-    floatPanel (cw, 'Control Pa')
+    floatPanel (cw, 'Co')
     floatPanel (cw, 'DATA')
     
-    dockPanel (cw, 'control ')
+    dockPanel (cw, 'control')
     dockPanel (cw, 'data panel')
 
 } # test.panelOperations
@@ -859,13 +831,10 @@ test.setDefaultNodeShape = function (direct=FALSE)
     } # direct
     
     setDefaultNodeShape (cwe, 'OCTAGON')
-    #msg (cwe, 'octagon')
     Sys.sleep (0.3)
     setDefaultNodeShape (cwe, 'ELLIPSE')
-    #msg (cwe,'ellipse')
     Sys.sleep (0.3)
     setDefaultNodeShape (cwe, 'TRIANGLE')
-    #msg (cwe, 'triangle')
     
     invisible (cwe)
 
@@ -873,215 +842,140 @@ test.setDefaultNodeShape = function (direct=FALSE)
 #------------------------------------------------------------------------------------------------------------------------
 test.setDefaultNodeColor = function (direct=FALSE)
 {
-  title = 'test.setDefaultNodeColor'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
-  if (direct) {  # useful for debuggin
-    for (i in 1:3) {
-      if (!exists ('xml.rpc')) library (XMLRPC)
-      xml.rpc (cwe@uri, 'Cytoscape.setDefaultVizMapValue', 'default', 'Node Color', '#AAAA00'); redraw (cwe)
-      xml.rpc (cwe@uri, 'Cytoscape.setDefaultVizMapValue', 'default', 'Node Color', '#00AAAA'); redraw (cwe)
-      } # for i
-    } # direct
-
-  setDefaultNodeColor (cwe, '#AA00AA')
-
-  invisible (cwe)
+    title = 'test.setDefaultNodeColor'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    setDefaultNodeColor (cwe, '#AA00AA')
+    
+    invisible (cwe)
 
 } # test.setDefaultNodeColor
 #------------------------------------------------------------------------------------------------------------------------
 test.setDefaultNodeSize = function (direct=FALSE)
 {
-  title = 'test.setDefaultNodeSize'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
-  for (i in 1:3) {
+    title = 'test.setDefaultNodeSize'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
     setDefaultNodeSize (cwe, 20)
-    Sys.sleep (0.3)
     setDefaultNodeSize (cwe, 200)
-    Sys.sleep (0.3)
-    } # for i
-
-  setDefaultNodeSize (cwe, 60)
-
-  invisible (cwe)
+    
+    invisible (cwe)
 
 } # test.setDefaultNodeSize
 #------------------------------------------------------------------------------------------------------------------------
 test.setDefaultNodeBorderColor = function (direct=FALSE)
 {
-  title = 'test.setDefaultNodeBorderColor'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
-  for (i in 1:3) {
-    setDefaultNodeBorderColor (cwe, '#FFFFFF'); 
-    Sys.sleep (0.3)
-    setDefaultNodeBorderColor (cwe, '#FF0000'); 
-    Sys.sleep (0.3)
-    } # for i
-
-  invisible (cwe)
+    title = 'test.setDefaultNodeBorderColor'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
+    setDefaultNodeBorderColor (cwe, '#FFFFFF') 
+    setDefaultNodeBorderColor (cwe, '#FF0000')
+    
+    invisible (cwe)
 
 } # test.setDefaultNodeBorderColor
 #------------------------------------------------------------------------------------------------------------------------
 test.setDefaultNodeBorderWidth = function (direct=FALSE)
 {
-  title = 'test.setDefaultNodeBorderWidth'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
-
-  for (i in 1:3) {
+    title = 'test.setDefaultNodeBorderWidth'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
     setDefaultNodeBorderWidth (cwe, 5)
-    Sys.sleep (0.3)
-    setDefaultNodeBorderWidth (cwe, 0)
-    Sys.sleep (0.3)
-    } # for i
-
-  setDefaultNodeBorderWidth (cwe, 1)
-
-  invisible (cwe)
-
+    setDefaultNodeBorderWidth (cwe, 1)
+    
+    invisible (cwe)
+    
 } # test.setDefaultNodeBorderWidth
 #------------------------------------------------------------------------------------------------------------------------
 test.setDefaultNodeFontSize = function (direct=FALSE)
 {
-  title = 'test.setDefaultNodeFontSize'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
-  for (i in 1:3) {
-    setDefaultNodeFontSize (cwe, 3); redraw (cwe)
-    Sys.sleep (0.3)
-    setDefaultNodeFontSize (cwe, 30); redraw (cwe)
-    Sys.sleep (0.3)
-    }
-  
-  setDefaultNodeFontSize (cwe, 12); redraw (cwe)
-
-  invisible (cwe)
+    title = 'test.setDefaultNodeFontSize'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
+    setDefaultNodeFontSize (cwe, 12)
+    
+    invisible (cwe)
 
 } # test.setDefaultNodeFontSize
 #------------------------------------------------------------------------------------------------------------------------
 test.setDefaultNodeLabelColor = function (direct=FALSE)
 {
-  title = 'test.setDefaultNodeLabelColor'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
-
-  for (i in 1:3) {
-    setDefaultNodeLabelColor (cwe, '#FFAAAA');redraw (cwe)
-    Sys.sleep (0.3)
-    setDefaultNodeLabelColor (cwe, '#000000');redraw (cwe)
-    Sys.sleep (0.3)
-    } # for i
-
-  invisible (cwe)
+    title = 'test.setDefaultNodeLabelColor'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
+    setDefaultNodeLabelColor (cwe, '#FFAAAA')
+    
+    invisible (cwe)
 
 } # test.setDefaultNodeLabelColor
 #------------------------------------------------------------------------------------------------------------------------
 test.setDefaultEdgeLineWidth = function (direct=FALSE)
 {
-  title = 'test.setDefaultEdgeLineWidth'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
-
-  for (i in 1:3) {
-    setDefaultEdgeLineWidth (cwe, 5); redraw (cwe)
-    Sys.sleep (0.3)
-    setDefaultEdgeLineWidth (cwe, 0); redraw (cwe)
-    Sys.sleep (0.3)
-    }
-
-  setDefaultEdgeLineWidth (cwe, 1); redraw (cwe)
-
-  invisible (cwe)
+    title = 'test.setDefaultEdgeLineWidth'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
+    setDefaultEdgeLineWidth (cwe, 10)
+    
+    invisible (cwe)
 
 } # test.setDefaultEdgeLineWidth
 #------------------------------------------------------------------------------------------------------------------------
 test.setDefaultEdgeColor = function (direct=FALSE)
 {
-  title = 'test.setDefaultEdgeColor'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
-
-  for (i in 1:3) {
-    setDefaultEdgeColor (cwe, '#FFFFFF'); redraw (cwe)
-    Sys.sleep (0.3)
-    setDefaultEdgeColor (cwe, '#FF0000'); redraw (cwe)
-    Sys.sleep (0.3)
-    } # for i
-
-  setDefaultEdgeColor (cwe, '#000000'); redraw (cwe)
-
-  invisible (cwe)
+    title = 'test.setDefaultEdgeColor'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
+    setDefaultEdgeColor (cwe, '#FF0000')
+    
+    invisible (cwe)
 
 } # test.setDefaultEdgeColor
 #------------------------------------------------------------------------------------------------------------------------
 test.setDefaultEdgeFontSize = function ()
 {
-  title = 'test.setDefaultEdgeFontSize'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  setNodeSizeDirect (cwe, getAllNodes (cwe), 40)
-  setEdgeLabelRule (cwe, 'edgeType')   # gives us some text we can inspect for changing font size (below)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  hideAllPanels (cwe)
-
-  for (i in 1:3) {
-    setDefaultEdgeFontSize (cwe, i * 15);
-    redraw (cwe)
-    Sys.sleep (0.3)
-    } # for i
-
-  setDefaultEdgeFontSize (cwe, 12);
-  redraw (cwe)
-
-  invisible (cwe)
+    title = 'test.setDefaultEdgeFontSize'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    setNodeSizeDirect (cwe, getAllNodes (cwe), 40)
+    setEdgeLabelRule (cwe, 'edgeType')   # gives us some text we can inspect for changing font size (below)
+    layoutNetwork (cwe, 'grid')
+    
+    setDefaultEdgeFontSize (cwe, 12);
+    
+    invisible (cwe)
 
 } # test.setDefaultEdgeFontSize
 #------------------------------------------------------------------------------------------------------------------------
