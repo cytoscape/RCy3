@@ -5331,9 +5331,9 @@ discreteMapping <- function(obj, attribute.name, control.points, colors, visual.
     
     # inform the user if the request was a success or failure
     if (request.res$status == 201){
-        write (sprintf ('Successfully set rule.'), stderr ())
+        write (sprintf ('Successfully set rule.'), stdout ())
     }else{
-        write (sprintf ('Error. Could not set rule...'), stderr ())
+        write (sprintf ('Error. Could not set rule...'), stdout ())
     }
     
     invisible (request.res)
@@ -5361,9 +5361,9 @@ continuousMapping <- function(obj, attribute.name, control.points, colors, visua
     
     # inform the user if the request was a success or failure
     if (request.res$status == 201){
-        write (sprintf ('Successfully set rule.'), stderr ())
+        write (sprintf ('Successfully set rule.'), stdout ())
     }else{
-        write (sprintf ('Error. Could not set rule...'), stderr ())
+        write (sprintf ('Error. Could not set rule...'), stdout ())
     }
     invisible (request.res)
 } # continuousMapping
