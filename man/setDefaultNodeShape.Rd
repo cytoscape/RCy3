@@ -41,7 +41,7 @@ None.
 
   cw <- CytoscapeWindow ('setDefaultNodeShape.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'grid')
+  layoutNetwork (cw, 'grid')
   legal.shapes <- getNodeShapes (cw)
   stopifnot ('DIAMOND' %in% legal.shapes)
   setDefaultNodeShape (cw, 'DIAMOND')
