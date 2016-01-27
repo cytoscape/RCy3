@@ -284,312 +284,307 @@ test.getWindowID = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.getWindowList = function ()
 {
-  title = 'test.getWindowList'
-  window.prep (title)
-
-  cw2 = CytoscapeWindow (title, new ('graphNEL'))
-  window.list = getWindowList (cw2)
-  checkTrue (title %in% as.character (getWindowList (cw2)))
-
-  invisible (cw2)
-
+    title = 'test.getWindowList'
+    window.prep (title)
+    
+    cw2 = CytoscapeWindow (title, new ('graphNEL'))
+    window.list = getWindowList (cw2)
+    checkTrue (title %in% as.character (getWindowList (cw2)))
+    
+    invisible (cw2)
+    
 } # test.getWindowList
 #------------------------------------------------------------------------------------------------------------------------
 test.getNodeShapes = function ()
 {
-  title = 'test.getNodeShapes'
-  window.prep (title)
+    title = 'test.getNodeShapes'
+    window.prep (title)
+    
+    cy = CytoscapeConnection ()
+    shapes = getNodeShapes (cy)
+    checkTrue (length (shapes) > 8)
+    #msg (cy, title)
 
-  cy = CytoscapeConnection ()
-  shapes = getNodeShapes (cy)
-  checkTrue (length (shapes) > 8)
-  #msg (cy, title)
-
-   # pick a few specific shapes to test
- checkTrue (all (sapply (c ('HEXAGON', 'ELLIPSE', 'TRIANGLE'), function (s) s %in% shapes)))
+    # pick a few specific shapes to test
+    checkTrue (all (sapply (c ('HEXAGON', 'ELLIPSE', 'TRIANGLE'), function (s) s %in% shapes)))
 
 } # test.getNodeShapes
 #------------------------------------------------------------------------------------------------------------------------
 test.getAttributeClassNames = function ()
 {
-  title = 'test.getAttributeClassNames'
-
-  cy = CytoscapeConnection ()
-  possible.values = getAttributeClassNames (cy)
-  checkTrue (grep ('numeric', possible.values) > 0)
-  checkTrue (grep ('integer', possible.values) > 0)
-  checkTrue (grep ('character', possible.values) > 0)
+    title = 'test.getAttributeClassNames'
+    
+    cy = CytoscapeConnection ()
+    possible.values = getAttributeClassNames (cy)
+    checkTrue (grep ('numeric', possible.values) > 0)
+    checkTrue (grep ('integer', possible.values) > 0)
+    checkTrue (grep ('character', possible.values) > 0)
 
 
 } # test.getAttributeClassNames
 #------------------------------------------------------------------------------------------------------------------------
 test.getArrowShapes = function ()
 {
-  title = 'test.getArrowShapes'
-
-  cy = CytoscapeConnection ()
-  shapes = getArrowShapes (cy)
-  checkTrue (length (shapes) >= 8)
-
-   # pick a few specific shapes to test
-  #msg (cy, 'getArrowShapes')
-  checkTrue (all (sapply (c ('DIAMOND', 'T', 'CIRCLE'), function (s) s %in% shapes)))
+    title = 'test.getArrowShapes'
+    
+    cy = CytoscapeConnection ()
+    shapes = getArrowShapes (cy)
+    checkTrue (length (shapes) >= 8)
+    
+    # pick a few specific shapes to test
+    #msg (cy, 'getArrowShapes')
+    checkTrue (all (sapply (c ('DIAMOND', 'T', 'CIRCLE'), function (s) s %in% shapes)))
 
 } # test.getArrowShapes
 #------------------------------------------------------------------------------------------------------------------------
 test.getLineStyles = function ()
 {
-  title = 'test.getLineStyles'
-
-  cy = CytoscapeConnection ()
-  styles = getLineStyles (cy)
-  checkTrue (length (styles) > 10)
-
-   # pick a few specific styles to test
-  #msg (cy, 'getLineStyles')
-  checkTrue (all (sapply (c ('SOLID', 'DOT', 'EQUAL_DASH'), function (s) s %in% styles)))
+    title = 'test.getLineStyles'
+    
+    cy = CytoscapeConnection ()
+    styles = getLineStyles (cy)
+    checkTrue (length (styles) > 10)
+    
+    # pick a few specific styles to test
+    #msg (cy, 'getLineStyles')
+    checkTrue (all (sapply (c ('SOLID', 'DOT', 'EQUAL_DASH'), function (s) s %in% styles)))
 
 } # test.getLineStyles
 #------------------------------------------------------------------------------------------------------------------------
 test.getLayoutNames = function ()
 {
-  title = 'test.getLayoutNames'
-
-  cy = CytoscapeConnection ()
-  names = getLayoutNames (cy)
-  checkTrue (length (names) > 10)
-
-   # pick a few specific styles to test
-  #msg (cy, 'getLayoutNames')
-  checkTrue (all (sapply (c ('grid', 'isom', 'circular'), function (s) s %in% names)))
+    title = 'test.getLayoutNames'
+    
+    cy = CytoscapeConnection ()
+    names = getLayoutNames (cy)
+    checkTrue (length (names) > 10)
+    
+    # pick a few specific styles to test
+    #msg (cy, 'getLayoutNames')
+    checkTrue (all (sapply (c ('grid', 'isom', 'circular'), function (s) s %in% names)))
 
 } # test.getLayoutNames
 #------------------------------------------------------------------------------------------------------------------------
 test.getLayoutNameMapping = function ()
 {
-  cy = CytoscapeConnection ()
-  name.map = getLayoutNameMapping (cy)
-  checkTrue (length (name.map) >= 18)    # 20 on (4 mar 2011)
-
-  checkEquals (name.map [['Sugiyama Layout']], "jgraph-sugiyama")
-  checkEquals (name.map [['Edge-Weighted Spring Embedded']], "kamada-kawai")
-  checkEquals (name.map [['Grid Layout']], "grid")
+    cy = CytoscapeConnection ()
+    name.map = getLayoutNameMapping (cy)
+    checkTrue (length (name.map) >= 18)    # 20 on (4 mar 2011)
+    
+    checkEquals (name.map [['Sugiyama Layout']], "jgraph-sugiyama")
+    checkEquals (name.map [['Edge-Weighted Spring Embedded']], "kamada-kawai")
+    checkEquals (name.map [['Grid Layout']], "grid")
 
 } # test.getLayoutNameMapping
 #------------------------------------------------------------------------------------------------------------------------
 test.getLayoutPropertyNames = function ()
 {
-   print (noquote ('------- test.getLayoutPropertyNames'))
-   cy = CytoscapeConnection ()
-   props = getLayoutPropertyNames (cy, 'force-directed')
-   expected = c ("defaultNodeMass", "defaultSpringCoefficient", "defaultSpringLength", 
+    print (noquote ('------- test.getLayoutPropertyNames'))
+    cy = CytoscapeConnection ()
+    props = getLayoutPropertyNames (cy, 'force-directed')
+    expected = c ("defaultNodeMass", "defaultSpringCoefficient", "defaultSpringLength", 
                  "discrete", 
                  "edge_attribute", 
                  "edge_weight_group", "force_alg_settings", "max_weight", "min_weight", "numIterations", 
                  "partition", "selected_only", "standard", "weight_type")
-   checkTrue (length (intersect (props, expected)) > (length (props) - 2))  # some variation across Cytoscape versions
-
-   props = getLayoutPropertyNames (cy, 'isom')
-   expected = c ("coolingFactor", "initialAdaptation", "maxEpoch", "minAdaptation", "minRadius", 
+    checkTrue (length (intersect (props, expected)) > (length (props) - 2))  # some variation across Cytoscape versions
+    
+    props = getLayoutPropertyNames (cy, 'isom')
+    expected = c ("coolingFactor", "initialAdaptation", "maxEpoch", "minAdaptation", "minRadius", 
                  "radius", "radiusConstantTime", "sizeFactor")
-   checkEquals (sort (props), expected)
-
+    checkEquals (sort (props), expected)
+    
 
 } # test.getLayoutPropertyNames
 #------------------------------------------------------------------------------------------------------------------------
 test.getLayoutPropertyType = function ()
 {
-   print (noquote ('------- test.getLayoutPropertyType'))
-   cy = CytoscapeConnection ()
-
+    print (noquote ('------- test.getLayoutPropertyType'))
+    cy = CytoscapeConnection ()
+    
      # a couple of single call tests
-   checkEquals (getLayoutPropertyType (cy, 'isom', 'coolingFactor'), 'DOUBLE')
-   checkEquals (getLayoutPropertyType (cy, 'force-directed', 'edge_weight_group'), 'GROUP')
-
-   props = getLayoutPropertyNames (cy, 'force-directed')
+    checkEquals (getLayoutPropertyType (cy, 'isom', 'coolingFactor'), 'DOUBLE')
+    checkEquals (getLayoutPropertyType (cy, 'force-directed', 'edge_weight_group'), 'GROUP')
+    
+    props = getLayoutPropertyNames (cy, 'force-directed')
     # now get all the property types for the force-directed layout
-  propTypes.all = sapply (sort (props), function (prop) getLayoutPropertyType (cy, 'force-directed', prop))
-
+    propTypes.all = sapply (sort (props), function (prop) getLayoutPropertyType (cy, 'force-directed', prop))
+    
     # check them all
-  checkEquals (propTypes.all [["defaultNodeMass"]], "DOUBLE")
-  checkEquals (propTypes.all [["defaultSpringCoefficient"]], "DOUBLE")
-  checkEquals (propTypes.all [["defaultSpringLength"]], "DOUBLE")
-  #checkEquals (propTypes.all [["discrete"]], "BOOLEAN")
-  checkEquals (propTypes.all [["edge_attribute"]], "EDGEATTRIBUTE")
-  checkEquals (propTypes.all [["edge_weight_group"]], "GROUP")
-  checkEquals (propTypes.all [["force_alg_settings"]], "GROUP")
-  checkEquals (propTypes.all [["max_weight"]], "DOUBLE")
-  checkEquals (propTypes.all [["min_weight"]], "DOUBLE")
-  checkEquals (propTypes.all [["numIterations"]], "INTEGER")
-  checkEquals (propTypes.all [["partition"]], "BOOLEAN")
-  checkEquals (propTypes.all [["selected_only"]], "BOOLEAN")
-  checkEquals (propTypes.all [["standard"]], "GROUP")
-  checkEquals (propTypes.all [["weight_type"]], "LIST")
+    checkEquals (propTypes.all [["defaultNodeMass"]], "DOUBLE")
+    checkEquals (propTypes.all [["defaultSpringCoefficient"]], "DOUBLE")
+    checkEquals (propTypes.all [["defaultSpringLength"]], "DOUBLE")
+    #checkEquals (propTypes.all [["discrete"]], "BOOLEAN")
+    checkEquals (propTypes.all [["edge_attribute"]], "EDGEATTRIBUTE")
+    checkEquals (propTypes.all [["edge_weight_group"]], "GROUP")
+    checkEquals (propTypes.all [["force_alg_settings"]], "GROUP")
+    checkEquals (propTypes.all [["max_weight"]], "DOUBLE")
+    checkEquals (propTypes.all [["min_weight"]], "DOUBLE")
+    checkEquals (propTypes.all [["numIterations"]], "INTEGER")
+    checkEquals (propTypes.all [["partition"]], "BOOLEAN")
+    checkEquals (propTypes.all [["selected_only"]], "BOOLEAN")
+    checkEquals (propTypes.all [["standard"]], "GROUP")
+    checkEquals (propTypes.all [["weight_type"]], "LIST")
 
 } # test.getLayoutPropertyType
 #------------------------------------------------------------------------------------------------------------------------
 test.getLayoutPropertyValue = function ()
 {
-   print (noquote ('------- test.getLayoutPropertyValue'))
-   cy = CytoscapeConnection ()
-
-   layout.name = 'force-directed'
-   props = getLayoutPropertyNames (cy, layout.name)
-
-   prop = 'edge_attribute'
-   checkTrue (prop %in% props)
-   checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 'weight')
-
-   prop = 'numIterations'
-   checkTrue (prop %in% props)
-   checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 100)
-
-   prop = 'min_weight'
-   checkTrue (prop %in% props)
-   checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 0.0)
-
-   prop = 'max_weight'
-   checkTrue (prop %in% props)
-   checkTrue (getLayoutPropertyValue (cy, layout.name, prop) > 1e300)
-
-   for (prop in props) {
-     value = getLayoutPropertyValue (cy, layout.name, prop)
-     #printf ('force-directed layout %s: %s', prop, value)
-     } # for prop
+    print (noquote ('------- test.getLayoutPropertyValue'))
+    cy = CytoscapeConnection ()
+    
+    layout.name = 'force-directed'
+    props = getLayoutPropertyNames (cy, layout.name)
+    
+    prop = 'edge_attribute'
+    checkTrue (prop %in% props)
+    checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 'weight')
+    
+    prop = 'numIterations'
+    checkTrue (prop %in% props)
+    checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 100)
+    
+    prop = 'min_weight'
+    checkTrue (prop %in% props)
+    checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 0.0)
+    
+    prop = 'max_weight'
+    checkTrue (prop %in% props)
+    checkTrue (getLayoutPropertyValue (cy, layout.name, prop) > 1e300)
+    
+    for (prop in props) {
+        value = getLayoutPropertyValue (cy, layout.name, prop)
+        #printf ('force-directed layout %s: %s', prop, value)
+    } # for prop
 
 } # test.getLayoutPropertyValue
 #------------------------------------------------------------------------------------------------------------------------
 test.setLayoutProperties = function ()
 {
     # first, do some 'blind' (that is, window-less) tests
-  cy = CytoscapeConnection ()
-  layout.name = 'force-directed'
-  prop = 'numIterations'
-  setLayoutProperties (cy, layout.name, list (numIterations=200))
-  checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 200)
-
+    cy = CytoscapeConnection ()
+    layout.name = 'force-directed'
+    prop = 'numIterations'
+    setLayoutProperties (cy, layout.name, list (numIterations=200))
+    checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 200)
+    
     # return to the defaults
-  setLayoutProperties (cy, layout.name, list (numIterations=100))
-  checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 100)
-
+    setLayoutProperties (cy, layout.name, list (numIterations=100))
+    checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 100)
+    
     # now create a Cy window and manipulate the layout
-
-  title = 'test.setLayoutProperties'
-  window.prep (title)
-
-  cw =  CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-
-     # use a popular (and tunable) layout algorithm, show how selected properties can be modified, 
-     # and demonstrate how they affect the layout.
-
-  layout.name = getLayoutNameMapping (cy)[['Edge-Weighted Spring Embedded']]  
-
-  checkTrue ('edge_attribute'    %in% getLayoutPropertyNames (cy, layout.name))
-  checkTrue ('distance_strength' %in% getLayoutPropertyNames (cy, layout.name))
-
-  setLayoutProperties (cy, layout.name, list (edge_attribute='score', distance_strength=100))
-  layoutNetwork (cw, layout.name)
-
-  setLayoutProperties (cy, layout.name, list (edge_attribute='score', distance_strength=-100))
-  layoutNetwork (cw, layout.name)
-
-  setLayoutProperties (cy, layout.name, list (edge_attribute='score', distance_strength=100))
-  layoutNetwork (cw, layout.name)
-
-  invisible (cw)
-
+    
+    title = 'test.setLayoutProperties'
+    window.prep (title)
+    
+    cw =  CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    
+    # use a popular (and tunable) layout algorithm, show how selected properties can be modified, 
+    # and demonstrate how they affect the layout.
+    
+    layout.name = getLayoutNameMapping (cy)[['Edge-Weighted Spring Embedded']]  
+    
+    checkTrue ('edge_attribute'    %in% getLayoutPropertyNames (cy, layout.name))
+    checkTrue ('distance_strength' %in% getLayoutPropertyNames (cy, layout.name))
+    
+    setLayoutProperties (cy, layout.name, list (edge_attribute='score', distance_strength=100))
+    layoutNetwork (cw, layout.name)
+    
+    setLayoutProperties (cy, layout.name, list (edge_attribute='score', distance_strength=-100))
+    layoutNetwork (cw, layout.name)
+    
+    setLayoutProperties (cy, layout.name, list (edge_attribute='score', distance_strength=100))
+    layoutNetwork (cw, layout.name)
+    
+    invisible (cw)
+    
 } # test.setLayoutProperties
 #------------------------------------------------------------------------------------------------------------------------
 test.collectTimings = function ()
 {
-  title = 'test.collectTimings'
-  window.prep (title)
-
-  cy = CytoscapeConnection ()
-  if (title %in% as.character (getWindowList (cy)))
-     deleteWindow (cy, title)
-
-  cwe = CytoscapeWindow (title, graph=makeSimpleGraph (), collectTimings=TRUE)
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  invisible (cwe)  
+    title = 'test.collectTimings'
+    window.prep (title)
+    
+    cy = CytoscapeConnection ()
+    if (title %in% as.character (getWindowList (cy))){
+        deleteWindow (cy, title)
+    }
+    
+    cwe = CytoscapeWindow (title, graph=makeSimpleGraph (), collectTimings=TRUE)
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    invisible (cwe)  
 
 } # test.collectTimings
 #------------------------------------------------------------------------------------------------------------------------
 test.sendNodes = function ()
 {
-  title = 'test.sendNodes'
-  window.prep (title)
-  g = RCy3::makeSimpleGraph ()
-
-  cwa = CytoscapeWindow (title, graph=g)
-  sendNodes (cwa)
-  layoutNetwork (cwa, "grid")   # no edges, so other layouts will simply superimpose the nodes
-  redraw (cwa)
-  #msg (cwa, 'sendNodes')
-
-  invisible (cwa)
+    title = 'test.sendNodes'
+    window.prep (title)
+    g = RCy3::makeSimpleGraph ()
+    
+    cwa = CytoscapeWindow (title, graph=g)
+    sendNodes (cwa)
+    layoutNetwork (cwa, "grid")   # no edges, so other layouts will simply superimpose the nodes
+    redraw (cwa)
+    #msg (cwa, 'sendNodes')
+    
+    invisible (cwa)
 
 } # test.sendNodes
 #------------------------------------------------------------------------------------------------------------------------
 test.sendEdges = function ()
 {
-  title = 'test.sendEdges'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cwe = CytoscapeWindow (title, graph=g)
-  sendNodes (cwe)
-  sendEdges (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-  #msg (cwe, 'sendEdges')
-
-  invisible (cwe)
+    title = 'test.sendEdges'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cwe = CytoscapeWindow (title, graph=g)
+    sendNodes (cwe)
+    sendEdges (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    #msg (cwe, 'sendEdges')
+    
+    invisible (cwe)
 
 } # test.sendEdges
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeAttributes = function ()
 {
-  title = 'test.setNodeAttributes'
-  window.prep (title)
-
-  cy = CytoscapeConnection ()
-  if (title %in% as.character (getWindowList (cy)))
-     deleteWindow (cy, title)
-
-  g = RCy3::makeSimpleGraph ()
-  cwb = CytoscapeWindow (title, graph=g)
-  sendNodes (cwb)
-  attribute.names = noa.names (g)
-
-  for (attribute.name in attribute.names) {
-    result = setNodeAttributes (cwb, attribute.name)
+    title = 'test.setNodeAttributes'
+    window.prep (title)
+    
+    cy = CytoscapeConnection ()
+    if (title %in% as.character (getWindowList (cy))){
+        deleteWindow (cy, title)    
     }
-
-  layoutNetwork (cwb, 'grid')
-  redraw (cwb)
-  #msg (cwb, 'setNodeAttributes')
-
-
+    
+    g = RCy3::makeSimpleGraph ()
+    cwb = CytoscapeWindow (title, graph=g)
+    sendNodes (cwb)
+    attribute.names = noa.names (g)
+    
+    for (attribute.name in attribute.names) {
+        result = setNodeAttributes (cwb, attribute.name)
+    }
+    
+    layoutNetwork (cwb, 'grid')
+    redraw (cwb)
+    
     # now call the direct method, which -- in contrast to the unmarked method (setNodeAttributes) -- does not
     # extract attributes from the graph; they are instead supplied separately, and thus are well suited to
     # successive updates, as in a movie
-
-  result = setNodeAttributesDirect (cwb, 'count', 'int', c ('A', 'B', 'C'), c (38, 105, 0))
-
-    # sending a single attribute to CytoscapeRPC runs into a problem:  xmlrpc maps these to scalars,
-    # rather than as lists of length 1, and no CytoscapeRPC method is matched.
-    # (10 dec 2010) RCy3::setNodeAttributesDirect solves this inelegantly, but duplicating
-    # the node name and attribute values, making lists of length 2
-    # 
-  result = setNodeAttributesDirect (cwb, 'count', 'int', 'A', 432)
-
-  invisible (cwb)
+    
+    result = setNodeAttributesDirect (cwb, 'count', 'int', c ('A', 'B', 'C'), c (38, 105, 0))
+    
+    result = setNodeAttributesDirect (cwb, 'count', 'int', 'A', 432)
+    
+    invisible (cwb)
 
 
 } # test.setNodeAttributes
@@ -597,210 +592,209 @@ test.setNodeAttributes = function ()
 # depends on prior creation of cwe by test.sendEdges
 test.setEdgeAttributes = function ()
 {
-  title = 'test.setEdgeAttributes'
-  window.prep (title)
-
-  cy = CytoscapeConnection ()
-  if (title %in% as.character (getWindowList (cy)))
-     deleteWindow (cy, title)
-
-  cwe = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-  attribute.names = eda.names (cwe@graph)
-
-  for (attribute.name in attribute.names) {
-    result = setEdgeAttributes (cwe, attribute.name)
+    title = 'test.setEdgeAttributes'
+    window.prep (title)
+    
+    cy = CytoscapeConnection ()
+    if (title %in% as.character (getWindowList (cy))){
+        deleteWindow (cy, title)
+    }
+    cwe = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    attribute.names = eda.names (cwe@graph)
+    
+    for (attribute.name in attribute.names) {
+        result = setEdgeAttributes (cwe, attribute.name)
     } 
-
-  edge.names = as.character (cy2.edge.names (cwe@graph))
-  checkEquals (length (edge.names), 3)
-  edge.values = c ('alligator', 'hedgehog', 'anteater')
-  result = setEdgeAttributesDirect (cwe, 'misc', 'string', edge.names, edge.values)
-
+    
+    edge.names = as.character (cy2.edge.names (cwe@graph))
+    checkEquals (length (edge.names), 3)
+    edge.values = c ('alligator', 'hedgehog', 'anteater')
+    result = setEdgeAttributesDirect (cwe, 'misc', 'string', edge.names, edge.values)
+    
     # sending a single attribute to CytoscapeRPC runs into a problem:  xmlrpc maps these to scalars,
     # rather than as lists of length 1, and no CytoscapeRPC method is matched.
     # (10 dec 2010) RCy3::setEdgeAttributesDirect solves this inelegantly, but duplicating
     # the edge name and attribute values, making lists of length 2
-
-  result = setEdgeAttributesDirect (cwe, 'misc', 'string', edge.names [1], edge.values [1])
-
-  #msg (cwe, 'setEdgeAttributes')
-
-  invisible (cwe)  
+    
+    result = setEdgeAttributesDirect (cwe, 'misc', 'string', edge.names [1], edge.values [1])
+    
+    #msg (cwe, 'setEdgeAttributes')
+    
+    invisible (cwe)  
 
 } # test.setEdgeAttributes
 #------------------------------------------------------------------------------------------------------------------------
 test.noa = function ()
 {
-  title = 'test.noa'
-  window.prep (title)
-
-  g.simple = makeSimpleGraph ()
-
-  result = noa (g.simple, 'type')
-  checkEquals (length (result), 3)
-  checkEquals (sort (names (result)), c ('A', 'B', 'C'))
-  checkEquals (result [['A']], 'kinase')
-  checkEquals (result [['B']], 'transcription factor')
-  checkEquals (result [['C']], 'glycoprotein')
-
-  checkTrue (is.na (noa (g.simple, 'bogusAttributeName')))
-  invisible (g.simple)
+    title = 'test.noa'
+    window.prep (title)
+    
+    g.simple = makeSimpleGraph ()
+    
+    result = noa (g.simple, 'type')
+    checkEquals (length (result), 3)
+    checkEquals (sort (names (result)), c ('A', 'B', 'C'))
+    checkEquals (result [['A']], 'kinase')
+    checkEquals (result [['B']], 'transcription factor')
+    checkEquals (result [['C']], 'glycoprotein')
+    
+    checkTrue (is.na (noa (g.simple, 'bogusAttributeName')))
+    invisible (g.simple)
 
 } # test.noa
 #------------------------------------------------------------------------------------------------------------------------
 test.eda = function ()
 {
-  title = 'test.eda'
-  window.prep (title)
-
-  g.simple = makeSimpleGraph ()
-
-  result = eda (g.simple, 'edgeType')
-  checkEquals (length (result), 3)
-  checkEquals (sort (names (result)), c ("A|B", "B|C", "C|A"))
-  checkEquals (result [['A|B']], 'phosphorylates')
-  checkEquals (result [['B|C']], 'synthetic lethal')
-  checkEquals (result [['C|A']], 'undefined')
-
-  checkTrue (is.na (eda (g.simple, 'bogusAttributeName')))
-  invisible (g.simple)
+    title = 'test.eda'
+    window.prep (title)
+    
+    g.simple = makeSimpleGraph ()
+    
+    result = eda (g.simple, 'edgeType')
+    checkEquals (length (result), 3)
+    checkEquals (sort (names (result)), c ("A|B", "B|C", "C|A"))
+    checkEquals (result [['A|B']], 'phosphorylates')
+    checkEquals (result [['B|C']], 'synthetic lethal')
+    checkEquals (result [['C|A']], 'undefined')
+    
+    checkTrue (is.na (eda (g.simple, 'bogusAttributeName')))
+    invisible (g.simple)
 
 } # test.eda
 #------------------------------------------------------------------------------------------------------------------------
 test.cy2.edge.names = function ()
 {
-  title = 'test.cy2.edge.names'
-  window.prep (title)
-  g = RCy3::makeSimpleGraph ()
-
+    title = 'test.cy2.edge.names'
+    window.prep (title)
+    g = RCy3::makeSimpleGraph ()
+    
     # this graph has the expected 'edgeType' edge attribute, used to make a standard cytoscape edge name
-  edge.names = cy2.edge.names (g)
-  checkEquals (edge.names [['A~B']], "A (phosphorylates) B")
-  checkEquals (edge.names [['B~C']], "B (synthetic lethal) C")
-  checkEquals (edge.names [['C~A']], "C (undefined) A")
-
+    edge.names = cy2.edge.names (g)
+    checkEquals (edge.names [['A~B']], "A (phosphorylates) B")
+    checkEquals (edge.names [['B~C']], "B (synthetic lethal) C")
+    checkEquals (edge.names [['C~A']], "C (undefined) A")
+    
     # now create a tiny graph, two nodes, one edge, with NO edgeType attribute.  make sure it is converted properly
-  g2 =  new ('graphNEL', edgemode='directed')
-
-  g2 = graph::addNode ('A', g2)
-  g2 = graph::addNode ('B', g2)
-  g2 = graph::addEdge ('A', 'B', g2)
-
-  edge.names.2 = cy2.edge.names (g2)  
-  checkEquals (edge.names.2 [['A~B']], "A (unspecified) B")
-
-  g3 = new ('graphNEL', edgemode='directed')
-  edge.names.should.be.empty = cy2.edge.names (g3)
-  checkTrue (is.na (edge.names.should.be.empty))
-
-
-   #  now create a directed graphNEL with one reciprocal edge.  do we get the cy2 edge names properly?
-  g.recip <- RCy3::makeSimpleGraph ()
-  g.recip <- graph::addEdge ('C', 'B', g.recip)
-  edgeData (g.recip, 'C', 'B', attr='edgeType') <- 'synthetic rescue'
-  edgeData (g.recip, 'C', 'B', attr='score') <- 42
-  edgeData (g.recip, 'C', 'B', attr='misc') <- 'ellany'
-  
-  g.recip.cy2.edge.names <- cy2.edge.names (g.recip)
-  checkEquals (length (g.recip.cy2.edge.names), 4)
-  checkEquals (sort (names (g.recip.cy2.edge.names)), c ("A~B", "B~C", "C~A", "C~B"))
-  checkEquals (sort (as.character (g.recip.cy2.edge.names)), 
-               c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (synthetic rescue) B", "C (undefined) A"))
-
-  invisible (g3)
-
+    g2 =  new ('graphNEL', edgemode='directed')
+    
+    g2 = graph::addNode ('A', g2)
+    g2 = graph::addNode ('B', g2)
+    g2 = graph::addEdge ('A', 'B', g2)
+    
+    edge.names.2 = cy2.edge.names (g2)  
+    checkEquals (edge.names.2 [['A~B']], "A (unspecified) B")
+    
+    g3 = new ('graphNEL', edgemode='directed')
+    edge.names.should.be.empty = cy2.edge.names (g3)
+    checkTrue (is.na (edge.names.should.be.empty))
+    
+    
+    #  now create a directed graphNEL with one reciprocal edge.  do we get the cy2 edge names properly?
+    g.recip <- RCy3::makeSimpleGraph ()
+    g.recip <- graph::addEdge ('C', 'B', g.recip)
+    edgeData (g.recip, 'C', 'B', attr='edgeType') <- 'synthetic rescue'
+    edgeData (g.recip, 'C', 'B', attr='score') <- 42
+    edgeData (g.recip, 'C', 'B', attr='misc') <- 'ellany'
+    
+    g.recip.cy2.edge.names <- cy2.edge.names (g.recip)
+    checkEquals (length (g.recip.cy2.edge.names), 4)
+    checkEquals (sort (names (g.recip.cy2.edge.names)), c ("A~B", "B~C", "C~A", "C~B"))
+    checkEquals (sort (as.character (g.recip.cy2.edge.names)), 
+                 c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (synthetic rescue) B", "C (undefined) A"))
+    
+    invisible (g3)
+    
     # now try the subsetting version, where only the cy2 edge names of the specified edges -- a subset -- are returned
-  g = makeSimpleGraph ()
-  r.edge.names = sort (edgeNames (g)) 
-  checkEquals (r.edge.names, c ("A~B", "B~C", "C~A"))
-  checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))),
-                c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (undefined) A"))
-
-  checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [1], "A (phosphorylates) B")
-  checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [2], "B (synthetic lethal) C")
-  checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [3], "C (undefined) A")
-
-  checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [1:2], c ("A (phosphorylates) B", "B (synthetic lethal) C"))
-  checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [c(1,3)], c ("A (phosphorylates) B", "C (undefined) A"))
-  checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [2:3], c ("B (synthetic lethal) C", "C (undefined) A"))
+    g = makeSimpleGraph ()
+    r.edge.names = sort (edgeNames (g)) 
+    checkEquals (r.edge.names, c ("A~B", "B~C", "C~A"))
+    checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))),
+                 c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (undefined) A"))
+    
+    checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [1], "A (phosphorylates) B")
+    checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [2], "B (synthetic lethal) C")
+    checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [3], "C (undefined) A")
+    
+    checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [1:2], c ("A (phosphorylates) B", "B (synthetic lethal) C"))
+    checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [c(1,3)], c ("A (phosphorylates) B", "C (undefined) A"))
+    checkEquals (sort (as.character (cy2.edge.names (g, r.edge.names))) [2:3], c ("B (synthetic lethal) C", "C (undefined) A"))
 
 } # test.cy2.edge.names
 #------------------------------------------------------------------------------------------------------------------------
 # depends on prior creation of cw by test.createClass, providing a CytoscapeWindow object, with a 'uri' slot
 test.panelOperations = function ()
 {
-  title = 'test.panelOperations'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title)
-
-  hidePanel (cw, 'Control Panel')
-  hidePanel (cw, 'd')
-
-  floatPanel (cw, 'Control Pa')
-  floatPanel (cw, 'DATA')
-
-  dockPanel (cw, 'control ')
-  dockPanel (cw, 'data panel')
-  #msg (cw, 'test.panelOperations')
+    title = 'test.panelOperations'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title)
+    
+    hidePanel (cw, 'Control Panel')
+    hidePanel (cw, 'd')
+    
+    floatPanel (cw, 'Control Pa')
+    floatPanel (cw, 'DATA')
+    
+    dockPanel (cw, 'control ')
+    dockPanel (cw, 'data panel')
 
 } # test.panelOperations
 #------------------------------------------------------------------------------------------------------------------------
 test.showGraphicsDetails = function ()
 {
-  title = 'test.showGraphicsDetails'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  showGraphicsDetails (cw)
-  showGraphicsDetails (cw)
-
-  cy = CytoscapeConnection ()
-  
-  showGraphicsDetails (cy)
-  showGraphicsDetails (cy)
-
-  invisible (cw)
+    title = 'test.showGraphicsDetails'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    
+    showGraphicsDetails (cw)
+    showGraphicsDetails (cw)
+    
+    cy = CytoscapeConnection ()
+    
+    showGraphicsDetails (cy)
+    showGraphicsDetails (cy)
+    
+    invisible (cw)
 
 } # test.showGraphicsDetails
 #------------------------------------------------------------------------------------------------------------------------
 test.setDefaultNodeShape = function (direct=FALSE)
 {
-  title = 'test.setDefaultNodeShape'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-   hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
-   shapes = getNodeShapes (cwe)
-
-   if (direct) {  # debug
-     for (shape in shapes) {
-       setDefaultNodeShape (cwe, shape)
-       Sys.sleep (1)
-       } # for shape
-     } # direct
-
-  setDefaultNodeShape (cwe, 'OCTAGON')
-  #msg (cwe, 'octagon')
-  Sys.sleep (1)
-  setDefaultNodeShape (cwe, 'ELLIPSE')
-  #msg (cwe,'ellipse')
-  Sys.sleep (1)
-  setDefaultNodeShape (cwe, 'TRIANGLE')
-  #msg (cwe, 'triangle')
-
-  invisible (cwe)
+    title = 'test.setDefaultNodeShape'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
+    shapes = getNodeShapes (cwe)
+    
+    if (direct) {  # debug
+        for (shape in shapes) {
+            setDefaultNodeShape (cwe, shape)
+            Sys.sleep (0.3)
+        } # for shape
+    } # direct
+    
+    setDefaultNodeShape (cwe, 'OCTAGON')
+    #msg (cwe, 'octagon')
+    Sys.sleep (0.3)
+    setDefaultNodeShape (cwe, 'ELLIPSE')
+    #msg (cwe,'ellipse')
+    Sys.sleep (0.3)
+    setDefaultNodeShape (cwe, 'TRIANGLE')
+    #msg (cwe, 'triangle')
+    
+    invisible (cwe)
 
 } # test.setDefaultNodeShape
 #------------------------------------------------------------------------------------------------------------------------
@@ -840,9 +834,9 @@ test.setDefaultNodeSize = function (direct=FALSE)
   hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
   for (i in 1:3) {
     setDefaultNodeSize (cwe, 20)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setDefaultNodeSize (cwe, 200)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
   setDefaultNodeSize (cwe, 60)
@@ -863,9 +857,9 @@ test.setDefaultNodeBorderColor = function (direct=FALSE)
   hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
   for (i in 1:3) {
     setDefaultNodeBorderColor (cwe, '#FFFFFF'); 
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setDefaultNodeBorderColor (cwe, '#FF0000'); 
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
   invisible (cwe)
@@ -885,9 +879,9 @@ test.setDefaultNodeBorderWidth = function (direct=FALSE)
 
   for (i in 1:3) {
     setDefaultNodeBorderWidth (cwe, 5)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setDefaultNodeBorderWidth (cwe, 0)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
   setDefaultNodeBorderWidth (cwe, 1)
@@ -908,9 +902,9 @@ test.setDefaultNodeFontSize = function (direct=FALSE)
   hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
   for (i in 1:3) {
     setDefaultNodeFontSize (cwe, 3); redraw (cwe)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setDefaultNodeFontSize (cwe, 30); redraw (cwe)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     }
   
   setDefaultNodeFontSize (cwe, 12); redraw (cwe)
@@ -932,9 +926,9 @@ test.setDefaultNodeLabelColor = function (direct=FALSE)
 
   for (i in 1:3) {
     setDefaultNodeLabelColor (cwe, '#FFAAAA');redraw (cwe)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setDefaultNodeLabelColor (cwe, '#000000');redraw (cwe)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
   invisible (cwe)
@@ -955,9 +949,9 @@ test.setDefaultEdgeLineWidth = function (direct=FALSE)
 
   for (i in 1:3) {
     setDefaultEdgeLineWidth (cwe, 5); redraw (cwe)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setDefaultEdgeLineWidth (cwe, 0); redraw (cwe)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     }
 
   setDefaultEdgeLineWidth (cwe, 1); redraw (cwe)
@@ -980,9 +974,9 @@ test.setDefaultEdgeColor = function (direct=FALSE)
 
   for (i in 1:3) {
     setDefaultEdgeColor (cwe, '#FFFFFF'); redraw (cwe)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setDefaultEdgeColor (cwe, '#FF0000'); redraw (cwe)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
   setDefaultEdgeColor (cwe, '#000000'); redraw (cwe)
@@ -1008,7 +1002,7 @@ test.setDefaultEdgeFontSize = function ()
   for (i in 1:3) {
     setDefaultEdgeFontSize (cwe, i * 15);
     redraw (cwe)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
   setDefaultEdgeFontSize (cwe, 12);
@@ -1030,13 +1024,13 @@ test.setNodeLabelRule = function ()
 
   hidePanel (cwe, 'c');  hidePanel (cwe, 'd');
   setNodeLabelRule (cwe, 'label')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   setNodeLabelRule (cwe, 'type')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   setNodeLabelRule (cwe, 'lfc')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   setNodeLabelRule (cwe, 'count')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   setNodeLabelRule (cwe, 'label')
   #msg (cwe, 'test.setNodeLabelRule')
 
@@ -1056,9 +1050,9 @@ test.setEdgeLabelRule = function ()
 
   hidePanel (cwe, 'c');  hidePanel (cwe, 'd');
   setEdgeLabelRule (cwe, 'edgeType')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   setEdgeLabelRule (cwe, 'score')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   setEdgeLabelRule (cwe, 'canonicalName')
   #msg (cwe, 'test.setEdgeLabelRule')
 
@@ -1122,13 +1116,13 @@ test.setNodeColorRule = function ()
   node.attribute.values = c (-3.0, 0.0, 3.0)
   node.colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
   setNodeColorRule (cwe, 'lfc', node.attribute.values, node.colors, mode='interpolate')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
 
     # now, a lookup rule
   node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
   node.colors =           c ('#8888FF', '#00F088',              "#00CCCC")
   setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
 
     # now, a lookup rule with an incomplete lookup table:  does the default.color argument work?  cy2.7 bug -- not yet.
     # instead, the node is painted the cytoscape default color, pale red
@@ -1169,13 +1163,13 @@ test.setNodeBorderColorRule = function ()
   node.attribute.values = c (-3.0, 0.0, 3.0)
   colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
   setNodeBorderColorRule (cwe, 'lfc', node.attribute.values, colors, mode='interpolate')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
 
     # now, a lookup rule.  bright red, green and blue borders
   node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
   colors =                c ('#FF0000', '#00FF00',              "#0000FF")
   setNodeBorderColorRule (cwe, 'type', node.attribute.values, colors, mode='lookup')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
 
     # now, a lookup rule with an incomplete lookup table:  does the default.color argument work?  cy2.7 bug -- not yet.
     #  the glycoprotein node, 'Gene C', should have a white border around white fill
@@ -1405,11 +1399,11 @@ test.setNodeColorDirect = function ()
   redraw (cw)
 
   setNodeColorDirect (cw, 'A', '#AA0088')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   setNodeColorDirect (cw, 'A', '#AA4488')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   setNodeColorDirect (cw, 'A', '#AA8888')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
 
   setNodeColorDirect (cw, c ('A', 'B'), '#448844')
 
@@ -1429,11 +1423,11 @@ test.setNodeBorderColorDirect = function ()
   redraw (cw)
 
   setNodeBorderColorDirect (cw, 'A', '#AA0088')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   setNodeBorderColorDirect (cw, 'A', '#AA4488')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   setNodeBorderColorDirect (cw, 'A', '#AA8888')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
 
   setNodeBorderColorDirect (cw, c ('A', 'B'), '#448844')
 
@@ -1454,11 +1448,11 @@ test.setNodeLabelDirect = function ()
 
   setNodeLabelDirect (cw, 'A', 'new A label')
   redraw (cw)
-  Sys.sleep (1)
+  Sys.sleep (0.3)
     # try multiple nodes, one label, which RCy will replicate into the right number
   setNodeLabelDirect (cw, nodes (cw@graph), '')
   redraw (cw)
-  Sys.sleep (1)
+  Sys.sleep (0.3)
 
   setNodeLabelDirect (cw, c ('A', 'C'), c ('AzA', 'ByB'))
   redraw (cw)
@@ -1485,7 +1479,7 @@ test.setNodeLabelPropertiesDirect = function ()
     setNodeFontSizeDirect (cw, 'A', sizes [i])
     setNodeLabelColorDirect (cw, 'A', colors [i])
     redraw (cw)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
   invisible (cw)
@@ -1514,16 +1508,16 @@ test.setNodeOpacityDirect = function ()
   setNodeBorderOpacityDirect (cw, 'C', 0); redraw (cw);
   for (i in 1:3) {
     setNodeOpacityDirect (cw, 'D', 0); redraw (cw);
-    #Sys.sleep (1)
+    #Sys.sleep (0.3)
     setNodeOpacityDirect (cw, 'D', 255); redraw (cw);
-    #Sys.sleep (1)
+    #Sys.sleep (0.3)
     } # for i
 
   setNodeOpacityDirect (cw, c ('A', 'C'), 255); redraw (cw)
   setNodeOpacityDirect (cw, c ('B', 'D'), 50); redraw (cw)
   setNodeOpacityDirect (cw, c ('A', 'B', 'C', 'D'), c (10, 50, 100, 200)); redraw (cw)
   setNodeOpacityDirect (cw, c ('A', 'B', 'C', 'D'), c (200, 100, 50, 10)); redraw (cw)
-  Sys.sleep (1)
+  Sys.sleep (0.3)
 
   setNodeOpacityDirect (cw, c ('A', 'B', 'C', 'D'), 255); redraw (cw)
 
@@ -1601,11 +1595,11 @@ test.setEdgeColorDirect = function ()
   edge.of.interest = as.character (cy2.edge.names (g) [1])
   for (i in 1:5) {
     setEdgeColorDirect (cw, edge.of.interest, '#FF0000'); redraw (cw);
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setEdgeColorDirect (cw, edge.of.interest, '#00FF00'); redraw (cw);
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setEdgeColorDirect (cw, edge.of.interest, '#0000FF'); redraw (cw);
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
   invisible (cw)
@@ -1631,7 +1625,7 @@ test.setEdgeSourceArrowShapeDirect = function ()
   setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [2:5])
   redraw (cw)
 
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   
     # now try passing three edges and one arrow.shapes
   setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [6])
@@ -1641,7 +1635,7 @@ test.setEdgeSourceArrowShapeDirect = function ()
 
   for (shape in supported.arrow.shapes) {
     setEdgeSourceArrowShapeDirect (cw, edges.of.interest, shape)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     redraw (cw)
     }
 
@@ -1690,7 +1684,7 @@ test.setEdgeLabelDirect = function ()
 #  fonts = c ('courier', 'arial')
 #  for (font in fonts) {
 #    setEdgeFontFaceDirect (cw, edge.of.interest, font); redraw (cw);
-#    Sys.sleep (1)
+#    Sys.sleep (0.3)
 #    } # for i
 #
 #} # test.
@@ -1710,7 +1704,7 @@ test.setEdgeFontSizeDirect = function ()
   edge.of.interest = cy2.edge.names (g) [1]
   for (i in 1:5) {
     setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
 } # test.
@@ -1730,7 +1724,7 @@ test.setEdgeLabelColorDirect = function ()
   edge.of.interest = cy2.edge.names (g) [1]
   for (i in 1:5) {
     setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
 } # test.
@@ -1801,7 +1795,7 @@ test.setEdgeLineStyleDirect = function ()
   setEdgeLineStyleDirect (cw, edges.of.interest, supported.styles [5:7])
   redraw (cw)
 
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   
     # now try passing three edges and one styles
   setEdgeLineStyleDirect (cw, edges.of.interest, supported.styles [8])
@@ -1811,7 +1805,7 @@ test.setEdgeLineStyleDirect = function ()
 
   for (style in supported.styles) {
     setEdgeLineStyleDirect (cw, edges.of.interest, style)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     redraw (cw)
     }
 
@@ -1842,7 +1836,7 @@ test.setEdgeSourceArrowShapeDirect = function ()
   setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [5:7])
   redraw (cw)
 
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   
     # now try passing three edges and one arrow shape
   setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [8])
@@ -1852,7 +1846,7 @@ test.setEdgeSourceArrowShapeDirect = function ()
 
   for (shape in supported.arrow.shapes) {
     setEdgeSourceArrowShapeDirect (cw, edges.of.interest, shape)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     redraw (cw)
     }
 
@@ -1882,7 +1876,7 @@ test.setEdgeTargetArrowShapeDirect = function ()
   setEdgeTargetArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [5:7])
   redraw (cw)
 
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   
     # now try passing three edges and one arrow shape
   setEdgeTargetArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [8])
@@ -1892,7 +1886,7 @@ test.setEdgeTargetArrowShapeDirect = function ()
 
   for (shape in supported.arrow.shapes) {
     setEdgeTargetArrowShapeDirect (cw, edges.of.interest, shape)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     redraw (cw)
     }
 
@@ -1928,10 +1922,10 @@ test.setEdgeSourceArrowColorDirect = function ()
   for (i in 1:2) {
     setEdgeSourceArrowColorDirect (cw, edge.names, colors.1)
     redraw (cw)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setEdgeSourceArrowColorDirect (cw, edge.names, colors.2)
     redraw (cw)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
   invisible (cw)
@@ -1964,10 +1958,10 @@ test.setEdgeTargetArrowColorDirect = function ()
   for (i in 1:2) {
     setEdgeTargetArrowColorDirect (cw, edge.names, colors.1)
     redraw (cw)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setEdgeTargetArrowColorDirect (cw, edge.names, colors.2)
     redraw (cw)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
   invisible (cw)
@@ -1989,7 +1983,7 @@ test.setEdgeLabelOpacityDirect = function ()
   edge.of.interest = cy2.edge.names (g) [1]
   for (i in 1:5) {
     setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
 } # test.
@@ -2014,7 +2008,7 @@ test.setEdgeSourceArrowOpacityDirect = function ()
   setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, c (64, 128, 255))
   redraw (cw)
 
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   
     # now try passing three edges and just one opacity value; it will be applied to all arrows
   setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, 32)
@@ -2024,7 +2018,7 @@ test.setEdgeSourceArrowOpacityDirect = function ()
 
   for (opacity in seq (0, 255, by=45)) {
     setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, opacity)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     redraw (cw)
     }
 
@@ -2054,7 +2048,7 @@ test.setEdgeTargetArrowOpacityDirect = function ()
   setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, c (64, 128, 255))
   redraw (cw)
 
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   
     # now try passing three edges and just one opacity value; it will be applied to all arrows
   setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, 32)
@@ -2064,7 +2058,7 @@ test.setEdgeTargetArrowOpacityDirect = function ()
 
   for (opacity in seq (0, 255, by=45)) {
     setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, opacity)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     redraw (cw)
     }
 
@@ -2089,7 +2083,7 @@ test.setEdgeLabelPositionDirect = function ()
   edge.of.interest = cy2.edge.names (g) [1]
   for (i in 1:5) {
     setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 
 } # test.
@@ -2108,7 +2102,7 @@ test.setEdgeLabelPositionDirect = function ()
 #  edge.of.interest = cy2.edge.names (g) [1]
 #  for (i in 1:5) {
 #    setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-#    Sys.sleep (1)
+#    Sys.sleep (0.3)
 #    } # for i
 #
 #} # test.
@@ -2390,7 +2384,7 @@ test.selectEdges = function ()
     # not yet possible to select edges through CytoscapeRPCCallHandler
   selectEdges (cw, "A (phosphorylates) B")
   checkEquals (getSelectedEdgeCount (cw), 1)
-  Sys.sleep (1)
+  Sys.sleep (0.3)
   clearSelection (cw)
   checkEquals (getSelectedEdgeCount (cw), 0)
 
@@ -2486,7 +2480,7 @@ test.setEdgeColorRule = function ()
   edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
   colors = c ('#FF0000', '#FFFF00', '#00FF00')
   setEdgeColorRule (cwe, 'edgeType',  edgeType.values, colors, mode='lookup')
-  Sys.sleep (1)
+  Sys.sleep (0.3)
 
   all.white  = c ('#FFFFFF', '#FFFFFF', '#FFFFFF')
   setEdgeColorRule (cwe, 'edgeType',  edgeType.values [2], mode='lookup', '#000000')
@@ -2668,7 +2662,7 @@ test.movie = function ()
     result = setNodeAttributes (cwe, 'count')
     redraw (cwe)
 
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     nodeData (cwe@graph, 'A', 'lfc') = 3.0
     nodeData (cwe@graph, 'B', 'lfc') = 0.7
     nodeData (cwe@graph, 'C', 'lfc') = 1.9
@@ -2678,7 +2672,7 @@ test.movie = function ()
     result = setNodeAttributes (cwe, 'lfc')
     result = setNodeAttributes (cwe, 'count')
     redraw (cwe)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
 
     count.A = round (runif (1, 1, 200))
     count.B = round (runif (1, 1, 200))
@@ -2688,7 +2682,7 @@ test.movie = function ()
     result = setNodeAttributesDirect (cwe, 'lfc', 'numeric', c ('A', 'B', 'C'), c (-1.0, 0.0, 1.0))
     redraw (cwe)
 
-    if (i < count) Sys.sleep (1)
+    if (i < count) Sys.sleep (0.3)
     } # for i
 
   #msg (cwe, 'test.movie')
@@ -3784,7 +3778,7 @@ test.setVisualStyle = function ()
   current.names = getVisualStyleNames (cw5)
   for (style.name in current.names) {
     setVisualStyle (cy, style.name)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for style.name
 
   invisible (cw5)
@@ -4103,7 +4097,7 @@ test.setEdgeVizPropertiesDirect = function (cw=NULL)
     setEdgeSourceArrowOpacityDirect (cw, e1, 25 * i)
     setEdgeTargetArrowOpacityDirect (cw, e1, 255 - (25 * i))
     redraw (cw)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     }
 
   invisible (cw)
