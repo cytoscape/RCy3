@@ -1851,60 +1851,57 @@ test.setEdgeSourceArrowOpacityDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeTargetArrowOpacityDirect = function ()
 {
-  title = 'test.setEdgeTargetArrowOpacityDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edges.of.interest = as.character (cy2.edge.names (g))
-
-     # make sure the target arrows are visible
-  setEdgeTargetArrowShapeDirect (cw, edges.of.interest, 'Circle')
-
-    # first try passing three edges and three arrow opacity values
-  setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, c (64, 128, 255))
-  redraw (cw)
-
-  Sys.sleep (0.3)
-  
-    # now try passing three edges and just one opacity value; it will be applied to all arrows
-  setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, 32)
-  redraw (cw)
-
-    # now loop through all of the arrow.opacitys
-
-  for (opacity in seq (0, 255, by=45)) {
-    setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, opacity)
-    Sys.sleep (0.3)
+    title = 'test.setEdgeTargetArrowOpacityDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
     redraw (cw)
+    
+    edges.of.interest = as.character (cy2.edge.names (g))
+    
+     # make sure the target arrows are visible
+    setEdgeTargetArrowShapeDirect (cw, edges.of.interest, 'Circle')
+    
+    # first try passing three edges and three arrow opacity values
+    setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, c (64, 128, 255))
+    redraw (cw)
+    
+    Sys.sleep (0.3)
+    
+    # now try passing three edges and just one opacity value; it will be applied to all arrows
+    setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, 32)
+    redraw (cw)
+    
+    # now loop through all of the arrow.opacitys
+    for (opacity in seq (0, 255, by=45)) {
+        setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, opacity)
     }
-
+    
     # restore the default
-  setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, 255)
-  redraw (cw)
+    setEdgeTargetArrowOpacityDirect (cw, edges.of.interest, 255)
+    redraw (cw)
 
 } # test.setEdgeTargetArrowOpacityDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelPositionDirect = function ()
 {
-  #DEACTIVATED("too slow for some reason")
-  title = 'test.setEdgeLabelPositionDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edge.of.interest = cy2.edge.names (g) [1]
-  for (i in 1:5) {
-    setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-    Sys.sleep (0.3)
+    #DEACTIVATED("too slow for some reason")
+    title = 'test.setEdgeLabelPositionDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    
+    edge.of.interest = cy2.edge.names (g) [1]
+    for (i in 1:5) {
+        setEdgeOpacityDirect (cw, edge.of.interest, i * 30)
+        Sys.sleep (0.3)
     } # for i
 
 } # test.
@@ -1930,263 +1927,247 @@ test.setEdgeLabelPositionDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.countNodes = function ()
 {
-  title = 'test.countNodes'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-  checkEquals (getNodeCount (cwe), length (nodes (getGraph (cwe))))
-
-  invisible (cwe)
+    title = 'test.countNodes'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    checkEquals (getNodeCount (cwe), length (nodes (getGraph (cwe))))
+    
+    invisible (cwe)
 
 } # test.countNodes
 #------------------------------------------------------------------------------------------------------------------------
 test.countEdges = function ()
 {
-  title = 'test.countEdges'
-  window.prep (title)
-
-  cy = CytoscapeConnection ()
-  if (title %in% as.character (getWindowList (cy)))
-     deleteWindow (cy, title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-  checkEquals (getEdgeCount (cwe), length (edgeNames (getGraph (cwe))))
-
-  invisible (cwe)
+    title = 'test.countEdges'
+    window.prep (title)
+    
+    cy = CytoscapeConnection ()
+    if (title %in% as.character (getWindowList (cy))){
+        deleteWindow (cy, title)
+    }
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    checkEquals (getEdgeCount (cwe), length (edgeNames (getGraph (cwe))))
+    
+    invisible (cwe)
 
 } # test.countNodes
 #------------------------------------------------------------------------------------------------------------------------
 test.countNodesAndEdgesInEmptyGraph = function ()
 {
-  title = 'test.countNodesAndEdgesInEmptyGraph'
-  window.prep (title)
-
-  g.empty = new ("graphNEL", edgemode = "directed")
-  checkEquals (length (nodes (g.empty)), 0)
-  checkEquals (length (edges (g.empty)), 0)
-
-  cwe = CytoscapeWindow (title, graph=g.empty)  # default behavior, but let's make it explicit
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-  checkEquals (getNodeCount (cwe), 0)
-  checkEquals (getEdgeCount (cwe), 0)
-
-  invisible (cwe)
+    title = 'test.countNodesAndEdgesInEmptyGraph'
+    window.prep (title)
+    
+    g.empty = new ("graphNEL", edgemode = "directed")
+    checkEquals (length (nodes (g.empty)), 0)
+    checkEquals (length (edges (g.empty)), 0)
+    
+    cwe = CytoscapeWindow (title, graph=g.empty)  # default behavior, but let's make it explicit
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    checkEquals (getNodeCount (cwe), 0)
+    checkEquals (getEdgeCount (cwe), 0)
+    
+    invisible (cwe)
 
 } # test.countNodesAndEdgesInEmptyGraph 
 #------------------------------------------------------------------------------------------------------------------------
 test.getAllNodes = function ()
 {
-  title = 'test.getAllNodes'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  cwe.nodes = getAllNodes (cwe)
-  checkEquals (length (intersect (cwe.nodes, nodes (cwe@graph))), 3)
-
-  #msg (cwe, 'test.getAllNodes')
-
-  invisible (cwe)
+    title = 'test.getAllNodes'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    cwe.nodes = getAllNodes (cwe)
+    checkEquals (length (intersect (cwe.nodes, nodes (cwe@graph))), 3)
+    
+    invisible (cwe)
 
 } # test.getAllNodes
 #------------------------------------------------------------------------------------------------------------------------
 test.getAllEdges = function ()
 {
-  title = 'test.getAllEdges'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  cwe.edges = getAllEdges(cwe)
-  checkTrue ("C (undefined) A" %in% cwe.edges)
-  checkTrue ("B (synthetic lethal) C" %in% cwe.edges)
-  checkTrue ("A (phosphorylates) B" %in% cwe.edges)
-
-  #msg (cwe, 'test.getAllEdges')
-
-  invisible (cwe)
+    title = 'test.getAllEdges'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    cwe.edges = getAllEdges(cwe)
+    checkTrue ("C (undefined) A" %in% cwe.edges)
+    checkTrue ("B (synthetic lethal) C" %in% cwe.edges)
+    checkTrue ("A (phosphorylates) B" %in% cwe.edges)
+    
+    #msg (cwe, 'test.getAllEdges')
+    
+    invisible (cwe)
 
 } # test.getAllEdges
 #------------------------------------------------------------------------------------------------------------------------
 test.selectNodes = function ()
 {
-  title = 'test.selectNodes'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  clearSelection (cwe)
-  checkEquals (getSelectedNodeCount (cwe), 0)
-  cwe.nodes = selectNodes (cwe, c ('A', 'B'), preserve=T)
-  checkEquals (getSelectedNodeCount (cwe), 2)
-
-  cwe.nodes = selectNodes (cwe, 'C', preserve=T)
-  checkEquals (getSelectedNodeCount (cwe), 3)
-
-  clearSelection (cwe)
-  cwe.nodes = selectNodes (cwe, c ('A', 'B'), preserve=TRUE)
-  checkEquals (getSelectedNodeCount (cwe), 2)
-  cwe.nodes = selectNodes (cwe, 'C', preserve=FALSE)
-  checkEquals (getSelectedNodeCount (cwe), 1)
-  checkEquals (getSelectedNodes (cwe), 'C')
-
-  clearSelection (cwe)
-  checkEquals (getSelectedNodeCount (cwe), 0)
-  nodes.to.select = c ('bogus', 'missing')
-  selectNodes (cwe, nodes.to.select)
-  checkEquals (getSelectedNodeCount (cwe), 0)
-  nodes.to.select = c (nodes.to.select, nodes (cwe@graph))
-  selectNodes (cwe, nodes.to.select)
-  checkEquals (getSelectedNodeCount (cwe), 3)
-  #msg (cwe, 'test.selectNodes')
-
-  #msg (cwe, 'test.selectNodes')
-
-  invisible (cwe)
+    title = 'test.selectNodes'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    clearSelection (cwe)
+    checkEquals (getSelectedNodeCount (cwe), 0)
+    cwe.nodes = selectNodes (cwe, c ('A', 'B'), preserve=T)
+    checkEquals (getSelectedNodeCount (cwe), 2)
+    
+    cwe.nodes = selectNodes (cwe, 'C', preserve=T)
+    checkEquals (getSelectedNodeCount (cwe), 3)
+    
+    clearSelection (cwe)
+    cwe.nodes = selectNodes (cwe, c ('A', 'B'), preserve=TRUE)
+    checkEquals (getSelectedNodeCount (cwe), 2)
+    cwe.nodes = selectNodes (cwe, 'C', preserve=FALSE)
+    checkEquals (getSelectedNodeCount (cwe), 1)
+    checkEquals (getSelectedNodes (cwe), 'C')
+    
+    clearSelection (cwe)
+    checkEquals (getSelectedNodeCount (cwe), 0)
+    nodes.to.select = c ('bogus', 'missing')
+    selectNodes (cwe, nodes.to.select)
+    checkEquals (getSelectedNodeCount (cwe), 0)
+    nodes.to.select = c (nodes.to.select, nodes (cwe@graph))
+    selectNodes (cwe, nodes.to.select)
+    checkEquals (getSelectedNodeCount (cwe), 3)
+    
+    invisible (cwe)
 
 } # test.selectNodes
 #------------------------------------------------------------------------------------------------------------------------
 test.nodeNeighborReportingAndSelection = function ()
 {
-  title = 'test.nodeNeighborReportingAndSelection'
-  window.prep (title)
-
-   # create a circular graph
-  LETTERS = toupper (letters)
-  source.nodes  <- LETTERS [1:26]
-  target.nodes  <- c (LETTERS [2:26], LETTERS [1])
-  weights <- runif (length (letters))
-  df <- data.frame (from=source.nodes, to=target.nodes, weight=weights)
-  g.bam <- graphBAM (df, edgemode='directed')
-  g.bam <- initEdgeAttribute (g.bam, 'weight', 'numeric', 0.0)
-
-  cw = CytoscapeWindow (title, graph=g.bam)
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
+    title = 'test.nodeNeighborReportingAndSelection'
+    window.prep (title)
+    
+    # create a circular graph
+    LETTERS = toupper (letters)
+    source.nodes  <- LETTERS [1:26]
+    target.nodes  <- c (LETTERS [2:26], LETTERS [1])
+    weights <- runif (length (letters))
+    df <- data.frame (from=source.nodes, to=target.nodes, weight=weights)
+    g.bam <- graphBAM (df, edgemode='directed')
+    g.bam <- initEdgeAttribute (g.bam, 'weight', 'numeric', 0.0)
+    
+    cw = CytoscapeWindow (title, graph=g.bam)
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
     # paint the edges shades of green as function of weight
-  setDefaultEdgeLineWidth (cw, 5)
-  setEdgeColorRule (cw, 'weight',  c (0, 1), c ('#FFFFFF', '#00FF00'),  mode='interpolate')
-
+    setDefaultEdgeLineWidth (cw, 5)
+    setEdgeColorRule (cw, 'weight',  c (0, 1), c ('#FFFFFF', '#00FF00'),  mode='interpolate')
+    
     # select M, then its immediate neighbors
-  checkEquals (getSelectedNodeCount (cw), 0)
-  checkEquals (sort (getFirstNeighbors (cw, 'M')), c ('L', 'N'))
-  selectNodes (cw, 'M')
-  checkEquals (getSelectedNodeCount (cw), 1)
-  selectFirstNeighborsOfSelectedNodes (cw)
-  checkEquals (getSelectedNodeCount (cw), 3)
-  checkEquals (sort (getSelectedNodes (cw)), c ('L', 'M', 'N'))
-  sfn (cw)
-  checkEquals (getSelectedNodeCount (cw), 5)
-  nodes = sort (getSelectedNodes (cw))
-  checkEquals (nodes, c ("K", "L", "M", "N", "O"))
-  invisible (cw)
+    checkEquals (getSelectedNodeCount (cw), 0)
+    checkEquals (sort (getFirstNeighbors (cw, 'M')), c ('L', 'N'))
+    selectNodes (cw, 'M')
+    checkEquals (getSelectedNodeCount (cw), 1)
+    selectFirstNeighborsOfSelectedNodes (cw)
+    checkEquals (getSelectedNodeCount (cw), 3)
+    checkEquals (sort (getSelectedNodes (cw)), c ('L', 'M', 'N'))
+    sfn (cw)
+    checkEquals (getSelectedNodeCount (cw), 5)
+    nodes = sort (getSelectedNodes (cw))
+    checkEquals (nodes, c ("K", "L", "M", "N", "O"))
+    invisible (cw)
 
 } # test.nodeNeighborReportingAndSelection
 #------------------------------------------------------------------------------------------------------------------------
 test.invertSelection = function ()
 {
-  title = 'test.invertSelection'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  clearSelection (cwe)
-  checkEquals (getSelectedNodeCount (cwe), 0)
-  cwe.nodes = selectNodes (cwe, c ('A', 'B'))
-  checkEquals (getSelectedNodeCount (cwe), 2)
-
-  for (i in 1:5) {
+    title = 'test.invertSelection'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    clearSelection (cwe)
+    checkEquals (getSelectedNodeCount (cwe), 0)
+    cwe.nodes = selectNodes (cwe, c ('A', 'B'))
+    checkEquals (getSelectedNodeCount (cwe), 2)
+    
     invertNodeSelection (cwe)
     redraw (cwe)
     checkEquals (getSelectedNodeCount (cwe), 1)
     invertNodeSelection (cwe)
     redraw (cwe)
     checkEquals (getSelectedNodeCount (cwe), 2)
-    } # for i
-
-  
-  #deleteSelectedNodes ()
-  clearSelection (cwe)
-
-  invisible (cwe)
+    
+    clearSelection (cwe)
+    
+    invisible (cwe)
 
 } # test.invertSelection 
 #------------------------------------------------------------------------------------------------------------------------
 test.deleteSelectedNodes = function ()
 {
-  title = 'test.deleteSelectedNodes'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  clearSelection (cwe)
-  checkEquals (getSelectedNodeCount (cwe), 0)
-  cwe.nodes = selectNodes (cwe, c ('A', 'B'))
-  checkEquals (getSelectedNodeCount (cwe), 2)
-
-  for (i in 1:5) {
-    invertNodeSelection (cwe)
+    title = 'test.deleteSelectedNodes'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
     redraw (cwe)
-    checkEquals (getSelectedNodeCount (cwe), 1)
-    invertNodeSelection (cwe)
-    redraw (cwe)
+    
+    clearSelection (cwe)
+    checkEquals (getSelectedNodeCount (cwe), 0)
+    cwe.nodes = selectNodes (cwe, c ('A', 'B'))
     checkEquals (getSelectedNodeCount (cwe), 2)
-    } # for i
-
-  invisible (cwe)
+    
+    deleteSelectedNodes(cwe)
+    checkEquals(getAllNodes(cwe), 1)
+    invisible (cwe)
 
 } # test.invertNodeSelection 
 #------------------------------------------------------------------------------------------------------------------------
-# reveals unexpected behavior of 'unhideAll':  nodes & edges from other unknown places are 'unhidden' as well (pshannon: 07 jan 2011)
 test.hideNodes = function ()
 {
-  title = 'test.hideNodes'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  clearSelection (cwe)
-  checkEquals (getSelectedNodeCount (cwe), 0)
-  cwe.nodes = selectNodes (cwe, c ('A', 'B'))
-  checkEquals (getSelectedNodeCount (cwe), 2)
-  checkEquals (getNodeCount (cwe), 3)
-  hideSelectedNodes (cwe)
-  checkEquals (getNodeCount (cwe), 1)
-  unhideAll (cwe)
-  layoutNetwork (cwe)
-  redraw (cwe)
-  #checkEquals (getNodeCount (cwe), 3)
-  #msg (cwe, 'test.selectNodes')
-
-  invisible (cwe)
+    title = 'test.hideNodes'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    clearSelection (cwe)
+    checkEquals (getSelectedNodeCount (cwe), 0)
+    cwe.nodes = selectNodes (cwe, c ('A', 'B'))
+    checkEquals (getSelectedNodeCount (cwe), 2)
+    checkEquals (getNodeCount (cwe), 3)
+    hideSelectedNodes (cwe)
+    checkEquals (getNodeCount (cwe), 1)
+    unhideAll (cwe)
+    layoutNetwork (cwe)
+    redraw (cwe)
+    #checkEquals (getNodeCount (cwe), 3)
+    #msg (cwe, 'test.selectNodes')
+    
+    invisible (cwe)
 
 } # test.hideNodes
 #------------------------------------------------------------------------------------------------------------------------
