@@ -6,6 +6,7 @@ NEW FEATURES
     o added setDefaultEdgeTargetArrowColor to set the default target arrow color
     o added two modes (interpolate and lookup) to setEdgeSourceArrowColorRule
     o added two modes (interpolate and lookup) to setEdgeTargetArrowColorRule
+    o redraw is no longer required as the Cytoscape interface updates automatically.
     
     
 SIGNIFICANT USER-VISIBLE CHANGES
