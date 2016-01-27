@@ -1448,7 +1448,7 @@ setMethod('addCyNode', 'CytoscapeWindowClass', function(obj, nodeName) {
     loc.obj <- obj
 
     if(nodeName %in% getAllNodes(loc.obj)) {
-        write(sprintf('RCy3::addCyNode, %s node already present in Cytoscape graph', nodeName), stderr())
+        write(sprintf('RCy3::addCyNode, node "%s" already present in Cytoscape graph', nodeName), stderr())
         return()
     }
     
@@ -4671,8 +4671,6 @@ demoSimpleGraph = function ()
     sizes                = c (20, 50, 100)
     setNodeSizeRule (cws, 'count', count.control.points, sizes, mode='interpolate')
     setNodeColorRule (cws, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
-    
-    redraw (cws)
     
     invisible (cws)
 
