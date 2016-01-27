@@ -4,7 +4,7 @@
 \title{addCyNode}
 \description{
 Given a CytoscapeWindow containing a (possibly empty) graph, this method
-adds a node.  Node attributes are added separately, via successive calls
+adds a node. Node attributes are added separately, via successive calls
 to sendNodeAttributesDirect. The new node must be unique -- not already
 a member of the graph as known to Cytoscape.
 
@@ -35,7 +35,7 @@ addCyNode(obj, nodeName)
   layoutNetwork (cw)
   addCyNode (cw, 'A NEW NODE')
   layoutNetwork (cw)
-  redraw (cw)
+  # redraw (cw) --> function no longer required
 }
 
 \keyword{graph}
