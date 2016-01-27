@@ -254,9 +254,9 @@ run.tests = function ()
     deleteAllWindows (cy)
     
     test..getNovelEdges ()
-    test.setNodeImageDirect ()
-    test.validity ()
-    test.tooltip.delays ()
+    #test.setNodeImageDirect ()
+    #test.validity ()
+    #test.tooltip.delays ()
     
     deleteAllWindows (cy)
     
@@ -3953,128 +3953,128 @@ hiddenTest.saveImage = function ()
 # apparently does not run reliably at bioc
 hiddenTest.saveNetwork = function ()
 {
-  title = 'test.saveNetwork'
-  window.prep (title)
-
-  g.simple = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, g.simple)
-
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  setNodeLabelRule (cw, 'label')
-  redraw (cw)
-
-  filename = sprintf ('%s/%s', tempdir (), 'saveNetworkTest.gml')
-  printf ('saving gml file to %s', filename)
-  saveNetwork (cw, filename)
-  checkTrue (file.exists (filename))
-
-  invisible (cw)
+    title = 'test.saveNetwork'
+    window.prep (title)
+    
+    g.simple = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, g.simple)
+    
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    setNodeLabelRule (cw, 'label')
+    redraw (cw)
+    
+    filename = sprintf ('%s/%s', tempdir (), 'saveNetworkTest')
+    printf ('saving cys file to %s', filename)
+    saveNetwork (cw, filename)
+    checkTrue (file.exists (paste0(filename, '.cys')))
+    
+    invisible (cw)
 
 } # test.saveNetwork
 #------------------------------------------------------------------------------------------------------------------------
-test.setNodeImageDirect = function (apply.viz.rules=FALSE)
-{
-  #DEACTIVATED("may be too slow?")
-  title = 'test.imageUrl'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, makeSimpleGraph ())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  setNodeLabelRule (cw, 'label')
-
-  setNodeImageDirect (cw, 'A', 'http://rcytoscape.systemsbiology.net/versions/current/images/isb.png')
-  setNodeImageDirect (cw, 'B', 'http://rcytoscape.systemsbiology.net/versions/current/images/tudelft.jpg')
-  setNodeImageDirect (cw, 'C', 'http://rcytoscape.systemsbiology.net/versions/current/images/bioc.tiff')
-
-  setNodeColorDirect (cw, 'A', '#0000FF')
-  setNodeColorDirect (cw, 'B', '#FF00FF')
-  setNodeColorDirect (cw, 'C', '#FF0000')
-
-  redraw (cw)
-  setWindowSize (cw, 800, 800)
-  fitContent (cw)
-
-  invisible (cw)
-
-} # test.setNodeImageDirect
+# test.setNodeImageDirect = function (apply.viz.rules=FALSE)
+# {
+#     #DEACTIVATED("may be too slow?")
+#     title = 'test.imageUrl'
+#     window.prep (title)
+#     
+#     cw = CytoscapeWindow (title, makeSimpleGraph ())
+#     displayGraph (cw)
+#     layoutNetwork (cw, 'grid')
+#     setNodeLabelRule (cw, 'label')
+#     
+#     setNodeImageDirect (cw, 'A', 'http://rcytoscape.systemsbiology.net/versions/current/images/isb.png')
+#     setNodeImageDirect (cw, 'B', 'http://rcytoscape.systemsbiology.net/versions/current/images/tudelft.jpg')
+#     setNodeImageDirect (cw, 'C', 'http://rcytoscape.systemsbiology.net/versions/current/images/bioc.tiff')
+#     
+#     setNodeColorDirect (cw, 'A', '#0000FF')
+#     setNodeColorDirect (cw, 'B', '#FF00FF')
+#     setNodeColorDirect (cw, 'C', '#FF0000')
+#     
+#     redraw (cw)
+#     #setWindowSize (cw, 800, 800)
+#     fitContent (cw)
+#     
+#     invisible (cw)
+# 
+# } # test.setNodeImageDirect
 #------------------------------------------------------------------------------------------------------------------------
-test.validity = function ()
-{
-  title = 'test.validity error #1'
-  window.prep (title)
-
-  g.undirected = new ('graphNEL', edgemode='undirected')
-  g.undirected = graph::addNode ('A', g.undirected)
-  g.undirected = graph::addNode ('B', g.undirected)
-  g.undirected = graph::addEdge ('A', 'B', g.undirected)
-  g.undirected = initEdgeAttribute (g.undirected, 'edgeType', 'char', 'unspecified')
-  edgeData (g.undirected, 'A', 'B', 'edgeType') = 'reciprocal'
-
-
-     # should not fail, but warning should be given
-  cw = CytoscapeWindow (title, g.undirected)
-  checkEquals (validCyWin (cw), TRUE)
-
-     # fix the edgeType complaint
-
-  window.prep (title)
-  g = new ('graphNEL', edgemode='directed')
-
-     # should fail with 'You must provide an 'edgeType' edge attribute, which will be mapped to Cytoscape's crucial ...
-  cw = CytoscapeWindow (title, g)
-  checkEquals (validCyWin (cw), FALSE)
-
-     # fix the edgeType complaint
-  title = 'test.validity fixed'
-  g = initEdgeAttribute (g, 'edgeType', 'char', 'unspecified')    
-  window.prep (title)
-  cw = CytoscapeWindow (title, g)
-  print (checkTrue (validCyWin (cw)))
-
-    # add a new node attribute the old-fashioned R graph way, make sure the failure to properly initialize is caught
-  nodeDataDefaults (g, attr='pval') = 1.0
-  title = 'test.validity error #2'
-  window.prep (title)
-  cw = CytoscapeWindow (title, g)
-  checkTrue (!validCyWin (cw))
-
-    # add a new edge attribute the old-fashioned R graph way, make sure the failure to properly initialize is caught
-  title = 'test.validity error #3'
-  edgeDataDefaults (g, attr='score') = 0.0
-  window.prep (title)
-  cw = CytoscapeWindow (title, g)
-  checkTrue (!validCyWin (cw))
-
-    # now fix them both
-  title = 'test.validity fix all'
-  g = initNodeAttribute (g, 'pval', 'numeric', 1.0)
-  g = initEdgeAttribute (g, 'score', 'numeric', 0)
-  window.prep (title)
-  cw = CytoscapeWindow (title, g)
-  print (checkTrue (validCyWin (cw)))
-
-  invisible (cw)
-
-} # test.validity
+# test.validity = function ()
+# {
+#     title = 'test.validity error #1'
+#     window.prep (title)
+#     
+#     g.undirected = new ('graphNEL', edgemode='undirected')
+#     g.undirected = graph::addNode ('A', g.undirected)
+#     g.undirected = graph::addNode ('B', g.undirected)
+#     g.undirected = graph::addEdge ('A', 'B', g.undirected)
+#     g.undirected = initEdgeAttribute (g.undirected, 'edgeType', 'char', 'unspecified')
+#     edgeData (g.undirected, 'A', 'B', 'edgeType') = 'reciprocal'
+#     
+#     
+#     # should not fail, but warning should be given
+#     cw = CytoscapeWindow (title, g.undirected)
+#     checkEquals (validCyWin (cw), TRUE)
+#     
+#     # fix the edgeType complaint
+#     
+#     window.prep (title)
+#     g = new ('graphNEL', edgemode='directed')
+#     
+#     # should fail with 'You must provide an 'edgeType' edge attribute, which will be mapped to Cytoscape's crucial ...
+#     cw = CytoscapeWindow (title, g)
+#     checkEquals (validCyWin (cw), FALSE)
+#     
+#     # fix the edgeType complaint
+#     title = 'test.validity fixed'
+#     g = initEdgeAttribute (g, 'edgeType', 'char', 'unspecified')    
+#     window.prep (title)
+#     cw = CytoscapeWindow (title, g)
+#     print (checkTrue (validCyWin (cw)))
+#     
+#     # add a new node attribute the old-fashioned R graph way, make sure the failure to properly initialize is caught
+#     nodeDataDefaults (g, attr='pval') = 1.0
+#     title = 'test.validity error #2'
+#     window.prep (title)
+#     cw = CytoscapeWindow (title, g)
+#     checkTrue (!validCyWin (cw))
+#     
+#     # add a new edge attribute the old-fashioned R graph way, make sure the failure to properly initialize is caught
+#     title = 'test.validity error #3'
+#     edgeDataDefaults (g, attr='score') = 0.0
+#     window.prep (title)
+#     cw = CytoscapeWindow (title, g)
+#     checkTrue (!validCyWin (cw))
+#     
+#     # now fix them both
+#     title = 'test.validity fix all'
+#     g = initNodeAttribute (g, 'pval', 'numeric', 1.0)
+#     g = initEdgeAttribute (g, 'score', 'numeric', 0)
+#     window.prep (title)
+#     cw = CytoscapeWindow (title, g)
+#     print (checkTrue (validCyWin (cw)))
+#     
+#     invisible (cw)
+# 
+# } # test.validity
 #------------------------------------------------------------------------------------------------------------------------
 # not really an automated test, except of syntax.  cut and paste these commands into your R session to see that
 # they really perform as expected.
 
-test.tooltip.delays = function ()
-{
-  cw = demoSimpleGraph ()
-
-    # display immediately, stay up until mouse moves away
-  setTooltipInitialDelay (cw, 0)
-  setTooltipDismissDelay (cw, 0)
-
-    # display after 1 second, for 1 second
-  setTooltipInitialDelay (cw, 1000)
-  setTooltipDismissDelay (cw, 1000)
-  
-} # test.tooltip.delays
+# test.tooltip.delays = function ()
+# {
+#     cw = demoSimpleGraph ()
+#     
+#     # display immediately, stay up until mouse moves away
+#     setTooltipInitialDelay (cw, 0)
+#     setTooltipDismissDelay (cw, 0)
+#     
+#     # display after 1 second, for 1 second
+#     setTooltipInitialDelay (cw, 1000)
+#     setTooltipDismissDelay (cw, 1000)
+#   
+# } # test.tooltip.delays
 #------------------------------------------------------------------------------------------------------------------------
 # also not an automated test, though exception testing could accomplish that
 test.detectUnitializedNodeAttributes = function ()
@@ -4082,129 +4082,127 @@ test.detectUnitializedNodeAttributes = function ()
     # starting with the code in makeSampleGraph, change 3 node and 1 edge attribute to use the  standard (not RCy) 
     # attribute initializations. this is an error with respect to RCy, which needs explicit typing of the attributes
     # see if they are caught
-
-  g = new("graphNEL", edgemode = "directed")
-
-  #g = initNodeAttribute(g, "type", "char", "undefined")
-  #g = initNodeAttribute(g, "lfc", "numeric", 1)
-  #g = initNodeAttribute(g, "label", "char", "default node label")
-  g = initNodeAttribute(g, "count", "integer", 0)
-
-  nodeDataDefaults (g, attr='type') = ''
-  nodeDataDefaults (g, attr='lfc') = 0.0
-  nodeDataDefaults (g, attr='label') = ''
-
-  g = initEdgeAttribute(g, "edgeType", "char", "undefined")
-  g = initEdgeAttribute(g, "score", "numeric", 0)
-  g = initEdgeAttribute(g, "misc", "char", "default misc")
-
-  g = graph::addNode("A", g)
-  g = graph::addNode("B", g)
-  g = graph::addNode("C", g)
-  nodeData(g, "A", "type") = "kinase"
-  nodeData(g, "B", "type") = "transcription factor"
-  nodeData(g, "C", "type") = "glycoprotein"
-  nodeData(g, "A", "lfc") = -3
-  nodeData(g, "B", "lfc") = 0
-  nodeData(g, "C", "lfc") = 3
-  nodeData(g, "A", "count") = 2
-  nodeData(g, "B", "count") = 30
-  nodeData(g, "C", "count") = 100
-  nodeData(g, "A", "label") = "Gene A"
-  nodeData(g, "B", "label") = "Gene B"
-  nodeData(g, "C", "label") = "Gene C"
-  g = graph::addEdge("A", "B", g)
-  g = graph::addEdge("B", "C", g)
-  g = graph::addEdge("C", "A", g)
-  edgeData(g, "A", "B", "edgeType") = "phosphorylates"
-  edgeData(g, "B", "C", "edgeType") = "synthetic lethal"
-  edgeData(g, "A", "B", "score") = 35
-  edgeData(g, "B", "C", "score") = -12
-
-  cw = CytoscapeWindow (title = 'detect unitialized node attributes', graph = g, deleteAnyWindowsOfSameTitle=TRUE)
-
+    
+    g = new("graphNEL", edgemode = "directed")
+    
+    g = initNodeAttribute(g, "type", "char", "undefined")
+    g = initNodeAttribute(g, "lfc", "numeric", 1)
+    g = initNodeAttribute(g, "label", "char", "default node label")
+    g = initNodeAttribute(g, "count", "integer", 0)
+    
+    nodeDataDefaults (g, attr='type') = ''
+    nodeDataDefaults (g, attr='lfc') = 0.0
+    nodeDataDefaults (g, attr='label') = ''
+    
+    g = initEdgeAttribute(g, "edgeType", "char", "undefined")
+    g = initEdgeAttribute(g, "score", "numeric", 0)
+    g = initEdgeAttribute(g, "misc", "char", "default misc")
+    
+    g = graph::addNode("A", g)
+    g = graph::addNode("B", g)
+    g = graph::addNode("C", g)
+    nodeData(g, "A", "type") = "kinase"
+    nodeData(g, "B", "type") = "transcription factor"
+    nodeData(g, "C", "type") = "glycoprotein"
+    nodeData(g, "A", "lfc") = -3
+    nodeData(g, "B", "lfc") = 0
+    nodeData(g, "C", "lfc") = 3
+    nodeData(g, "A", "count") = 2
+    nodeData(g, "B", "count") = 30
+    nodeData(g, "C", "count") = 100
+    nodeData(g, "A", "label") = "Gene A"
+    nodeData(g, "B", "label") = "Gene B"
+    nodeData(g, "C", "label") = "Gene C"
+    g = graph::addEdge("A", "B", g)
+    g = graph::addEdge("B", "C", g)
+    g = graph::addEdge("C", "A", g)
+    edgeData(g, "A", "B", "edgeType") = "phosphorylates"
+    edgeData(g, "B", "C", "edgeType") = "synthetic lethal"
+    edgeData(g, "A", "B", "score") = 35
+    edgeData(g, "B", "C", "score") = -12
+    
+    cw = CytoscapeWindow (title = 'detect unitialized node attributes 1', graph = g)
 
 } # test.detectUnitializedNodeAttributes 
 #------------------------------------------------------------------------------------------------------------------------
 # also not an automated test, though exception testing could accomplish that
 test.detectUnitializedEdgeAttributes = function ()
 {
-    # starting with the code in makeSampleGraph, change 3 node and 1 edge attribute to use the  standard (not RCy) 
-    # attribute initializations. this is an error with respect to RCy, which needs explicit typing of the attributes
+    # starting with the code in makeSampleGraph, change 3 node and 1 edge attribute to use the standard (not RCy) 
+    # attribute initializations. This is an error with respect to RCy, which needs explicit typing of the attributes
     # see if they are caught
-
-  g = new("graphNEL", edgemode = "directed")
-
-  g = initNodeAttribute(g, "type", "char", "undefined")
-  g = initNodeAttribute(g, "lfc", "numeric", 1)
-  g = initNodeAttribute(g, "label", "char", "default node label")
-  g = initNodeAttribute(g, "count", "integer", 0)
-
-  g = initEdgeAttribute(g, "edgeType", "char", "undefined")
-  g = initEdgeAttribute(g, "score", "numeric", 0)
-  #g = initEdgeAttribute(g, "misc", "char", "default misc")
-  edgeDataDefaults (g, attr='misc') = ''
-
-  g = graph::addNode("A", g)
-  g = graph::addNode("B", g)
-  g = graph::addNode("C", g)
-  nodeData(g, "A", "type") = "kinase"
-  nodeData(g, "B", "type") = "transcription factor"
-  nodeData(g, "C", "type") = "glycoprotein"
-  nodeData(g, "A", "lfc") = -3
-  nodeData(g, "B", "lfc") = 0
-  nodeData(g, "C", "lfc") = 3
-  nodeData(g, "A", "count") = 2
-  nodeData(g, "B", "count") = 30
-  nodeData(g, "C", "count") = 100
-  nodeData(g, "A", "label") = "Gene A"
-  nodeData(g, "B", "label") = "Gene B"
-  nodeData(g, "C", "label") = "Gene C"
-  g = graph::addEdge("A", "B", g)
-  g = graph::addEdge("B", "C", g)
-  g = graph::addEdge("C", "A", g)
-  edgeData(g, "A", "B", "edgeType") = "phosphorylates"
-  edgeData(g, "B", "C", "edgeType") = "synthetic lethal"
-  edgeData(g, "A", "B", "score") = 35
-  edgeData(g, "B", "C", "score") = -12
-
-  cw = CytoscapeWindow (title = 'detect unitialized node attributes', graph = g, deleteAnyWindowsOfSameTitle=TRUE)
-
-
+    
+    g = new("graphNEL", edgemode = "directed")
+    
+    g = initNodeAttribute(g, "type", "char", "undefined")
+    g = initNodeAttribute(g, "lfc", "numeric", 1)
+    g = initNodeAttribute(g, "label", "char", "default node label")
+    g = initNodeAttribute(g, "count", "integer", 0)
+    
+    g = initEdgeAttribute(g, "edgeType", "char", "undefined")
+    g = initEdgeAttribute(g, "score", "numeric", 0)
+    g = initEdgeAttribute(g, "misc", "char", "default misc")
+    edgeDataDefaults (g, attr='misc') = ''
+    
+    g = graph::addNode("A", g)
+    g = graph::addNode("B", g)
+    g = graph::addNode("C", g)
+    nodeData(g, "A", "type") = "kinase"
+    nodeData(g, "B", "type") = "transcription factor"
+    nodeData(g, "C", "type") = "glycoprotein"
+    nodeData(g, "A", "lfc") = -3
+    nodeData(g, "B", "lfc") = 0
+    nodeData(g, "C", "lfc") = 3
+    nodeData(g, "A", "count") = 2
+    nodeData(g, "B", "count") = 30
+    nodeData(g, "C", "count") = 100
+    nodeData(g, "A", "label") = "Gene A"
+    nodeData(g, "B", "label") = "Gene B"
+    nodeData(g, "C", "label") = "Gene C"
+    g = graph::addEdge("A", "B", g)
+    g = graph::addEdge("B", "C", g)
+    g = graph::addEdge("C", "A", g)
+    edgeData(g, "A", "B", "edgeType") = "phosphorylates"
+    edgeData(g, "B", "C", "edgeType") = "synthetic lethal"
+    edgeData(g, "A", "B", "score") = 35
+    edgeData(g, "B", "C", "score") = -12
+    
+    cw = CytoscapeWindow (title = 'detect unitialized node attributes 2', graph = g)
+    
 } # test.detectUnitializedNodeAttributes 
 #------------------------------------------------------------------------------------------------------------------------
 test.remove.redundancies.in.undirected.graph = function ()
 {
-  print ('----- test.remove.redundancies.in.undirected.graph')
-  nNode <- 500
-  nEdge <- 5000
-  tmpNodes <- as.character(seq(1, nNode))
-  allEdges <- expand.grid(tmpNodes, tmpNodes, stringsAsFactors = F)
-  allEdges <- allEdges[(allEdges[, 1] != allEdges[, 2]), ]
-  allEdges <- allEdges[(sample(nrow(allEdges), nEdge)), ]
-  edgeWeight <- rnorm(nEdge)
-  gu <- new("graphNEL", nodes = tmpNodes, edgemode = "undirected")
-
-  gu = initNodeAttribute(gu, "type", "char", "undefined")
-  gu = initNodeAttribute(gu, "lfc", "numeric", 1)
-  gu = initNodeAttribute(gu, "label", "char", "default node label")
-
-  gu = initEdgeAttribute(gu, "edgeType", "char", "undefined")
-  gu = initEdgeAttribute(gu, "weight", "numeric", 0)
-
-  gu = addEdge(allEdges[, 1], allEdges[, 2], gu, edgeWeight)
-  nodeData (gu, nodes (gu), 'label') = nodes (gu)
-
-  t0 = Sys.time ()
-  g.fixed <- RCy3:::remove.redundancies.in.undirected.graph (gu)
-  t1 = Sys.time ()
-  elapsed.time = as.numeric (difftime (t1, t0, units='secs'))
-  checkTrue (elapsed.time < 5)  # consistently about 0.5 seconds in interactive testing
-  checkTrue (all (nodes (gu) == nodes (g.fixed)))
-  checkTrue (all (edgeNames (gu) == edgeNames (g.fixed)))
-
+    print ('----- test.remove.redundancies.in.undirected.graph')
+    nNode <- 500
+    nEdge <- 5000
+    tmpNodes <- as.character(seq(1, nNode))
+    allEdges <- expand.grid(tmpNodes, tmpNodes, stringsAsFactors = F)
+    allEdges <- allEdges[(allEdges[, 1] != allEdges[, 2]), ]
+    allEdges <- allEdges[(sample(nrow(allEdges), nEdge)), ]
+    edgeWeight <- rnorm(nEdge)
+    gu <- new("graphNEL", nodes = tmpNodes, edgemode = "undirected")
+    
+    gu = initNodeAttribute(gu, "type", "char", "undefined")
+    gu = initNodeAttribute(gu, "lfc", "numeric", 1)
+    gu = initNodeAttribute(gu, "label", "char", "default node label")
+    
+    gu = initEdgeAttribute(gu, "edgeType", "char", "undefined")
+    gu = initEdgeAttribute(gu, "weight", "numeric", 0)
+    
+    gu = addEdge(allEdges[, 1], allEdges[, 2], gu, edgeWeight)
+    nodeData (gu, nodes (gu), 'label') = nodes (gu)
+    
+    t0 = Sys.time ()
+    g.fixed <- RCy3:::remove.redundancies.in.undirected.graph (gu)
+    t1 = Sys.time ()
+    elapsed.time = as.numeric (difftime (t1, t0, units='secs'))
+    checkTrue (elapsed.time < 5)  # consistently about 0.5 seconds in interactive testing
+    checkTrue (all (nodes (gu) == nodes (g.fixed)))
+    checkTrue (all (edgeNames (gu) == edgeNames (g.fixed)))
+    
     # the main test
-  checkEquals (length (unlist (edges (gu))), 2 * length (unlist (edges (g.fixed))))
+    checkEquals (length (unlist (edges (gu))), 2 * length (unlist (edges (g.fixed))))
 
 } # test.remove.redundancies.in.undirected.graph 
 #------------------------------------------------------------------------------------------------------------------------
