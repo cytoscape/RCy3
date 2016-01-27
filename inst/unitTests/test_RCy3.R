@@ -1449,14 +1449,11 @@ test.setEdgeOpacityDirect = function ()
     setEdgeOpacityDirect (cw, edge.names [2],  255); 
     redraw (cw);
     
-    
     setEdgeOpacityDirect (cw, edge.names, 0); redraw (cw)
     setEdgeOpacityDirect (cw, edge.names, 255); redraw (cw)
     
-    
     setEdgeOpacityDirect (cw, edge.names, c (0, 128, 255)); redraw (cw)
     setEdgeOpacityDirect (cw, edge.names, c (255, 0, 128)); redraw (cw)
-    
     
     setEdgeOpacityDirect (cw, edge.names, 255); redraw (cw)
     
@@ -3242,8 +3239,9 @@ test.createWindowFromSelection = function ()
   selectNodes (cw, c ('A', 'C'))
  
   new.window.title = 'NEW'
-  if (new.window.title %in% as.character (getWindowList (cy)))
+  if (new.window.title %in% as.character (getWindowList (cy))){
     deleteWindow (cy, new.window.title)
+  }
 
   c2 = createWindowFromSelection (cw, new.window.title, TRUE)
   redraw (c2)
