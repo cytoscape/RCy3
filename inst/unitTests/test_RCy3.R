@@ -981,131 +981,98 @@ test.setDefaultEdgeFontSize = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeLabelRule = function ()
 {
-  title = 'test.setNodeLabelRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  hidePanel (cwe, 'c');  hidePanel (cwe, 'd');
-  setNodeLabelRule (cwe, 'label')
-  Sys.sleep (0.3)
-  setNodeLabelRule (cwe, 'type')
-  Sys.sleep (0.3)
-  setNodeLabelRule (cwe, 'lfc')
-  Sys.sleep (0.3)
-  setNodeLabelRule (cwe, 'count')
-  Sys.sleep (0.3)
-  setNodeLabelRule (cwe, 'label')
-  #msg (cwe, 'test.setNodeLabelRule')
-
-  invisible (cwe)
+    title = 'test.setNodeLabelRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
+    setNodeLabelRule (cwe, 'label')
+    setNodeLabelRule (cwe, 'type')
+    setNodeLabelRule (cwe, 'lfc')
+    setNodeLabelRule (cwe, 'count')
+    
+    invisible (cwe)
 
 }  # test.setNodeLabelRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelRule = function ()
 {
-  title = 'test.setEdgeLabelRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  hidePanel (cwe, 'c');  hidePanel (cwe, 'd');
-  setEdgeLabelRule (cwe, 'edgeType')
-  Sys.sleep (0.3)
-  setEdgeLabelRule (cwe, 'score')
-  Sys.sleep (0.3)
-  setEdgeLabelRule (cwe, 'canonicalName')
-  #msg (cwe, 'test.setEdgeLabelRule')
-
-  invisible (cwe)
+    title = 'test.setEdgeLabelRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    setEdgeLabelRule (cwe, 'edgeType')
+    setEdgeLabelRule (cwe, 'score')
+    
+    invisible (cwe)
 
 }  # test.setEdgeLabelRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeTooltipRule = function ()
 {
-  title = 'test.setNodeTooltipRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  hidePanel (cwe, 'c');  hidePanel (cwe, 'd');
-  #setNodeLabelRule (cwe, 'label')
-  setNodeTooltipRule (cwe, 'type')
-  #setNodeLabelRule (cwe, 'lfc')
-  #setNodeLabelRule (cwe, 'count')
-  #setNodeLabelRule (cwe, 'label')
-  #msg (cwe, 'test.setNodeTooltipRule')
-
-  invisible (cwe)
+    title = 'test.setNodeTooltipRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
+    setNodeTooltipRule (cwe, 'type')
+    
+    invisible (cwe)
 
 }  # test.setNodeTooltipRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeTooltipRule = function ()
 {
-  title = 'test.setEdgeTooltipRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  hidePanel (cwe, 'c');  hidePanel (cwe, 'd');
-  setEdgeTooltipRule (cwe, 'edgeType')
-  #msg (cwe, 'test.setEdgeTooltipRule')
-
-  invisible (cwe)
+    title = 'test.setEdgeTooltipRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    setEdgeTooltipRule (cwe, 'edgeType')
+    
+    invisible (cwe)
 
 }  # test.setEdgeTooltipRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeColorRule = function ()
 {
-  title = 'test.setNodeColorRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');
-
+    title = 'test.setNodeColorRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
     # first, specify a mode='interpolate' rule -- the default
-  node.attribute.values = c (-3.0, 0.0, 3.0)
-  node.colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
-  setNodeColorRule (cwe, 'lfc', node.attribute.values, node.colors, mode='interpolate')
-  Sys.sleep (0.3)
-
+    node.attribute.values = c (-3.0, 0.0, 3.0)
+    node.colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
+    setNodeColorRule (cwe, 'lfc', node.attribute.values, node.colors, mode='interpolate')
+    
     # now, a lookup rule
-  node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
-  node.colors =           c ('#8888FF', '#00F088',              "#00CCCC")
-  setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup')
-  Sys.sleep (0.3)
-
+    node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
+    node.colors =           c ('#8888FF', '#00F088',              "#00CCCC")
+    setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup')
+    
     # now, a lookup rule with an incomplete lookup table:  does the default.color argument work?  cy2.7 bug -- not yet.
     # instead, the node is painted the cytoscape default color, pale red
-  node.attribute.values = c ("kinase",  "transcription factor")
-  node.colors =           c ('#8888FF', '#00F088')
-  setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup', default.color='#AA33AA')
-  #msg (cwe, 'test.setNodeColorRule')
-
+    node.attribute.values = c ("kinase",  "transcription factor")
+    node.colors = c ('#8888FF', '#00F088')
+    setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup', default.color='#AA33AA')
+    #msg (cwe, 'test.setNodeColorRule')
+    
     # now, use 1 element lists.
-  node.attribute.values = c ("kinase")
-  node.colors =           c ('#FFFFFF')
-  setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup', default.color='#AA33AA')
-  #msg (cwe, 'test.setNodeColorRule')
-  redraw (cwe)
-
-  invisible (cwe)
+    node.attribute.values = c ("kinase")
+    node.colors = c ('#FFFFFF')
+    setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup', default.color='#AA33AA')
+    
+    invisible (cwe)
 
 } # test.setNodeColorRule
 #------------------------------------------------------------------------------------------------------------------------
