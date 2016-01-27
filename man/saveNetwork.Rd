@@ -35,8 +35,9 @@ None.
   layoutNetwork (cw, 'force-directed')
   redraw (cw)
   filename <- paste (getwd (), 'saveNetworkTest', sep='/')
-  saveNetwork (cw, filename)
-  print (sprintf ('cys file exists? %s', file.exists (paste0(filename, '.cys'))))
+  saveNetwork (cw, filename) # overwrites files with the same name
+  # check if the file exists
+  file.exists (paste0(filename, '.cys'))
 }
 
 \keyword{graph}
