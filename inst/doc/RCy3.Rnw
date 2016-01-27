@@ -405,7 +405,7 @@ Finally, delete all the windows from this vignette:
 
 \item Paul Shannon's generous advice and mentorship was very important for transforming this package from using XMLRPC and CytoscapeRPC to using CyREST.
 
-\item Keiichiro Ono kindly provided CyREST as well as help and support for new functionalities and changes.
+\item Keiichiro Ono and Barry Demchak kindly provided CyREST as well as help and support for new functionalities and changes.
 
 \item Mark Grimes kindly provided helpful user feedback.
 
