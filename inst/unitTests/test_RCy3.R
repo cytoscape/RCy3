@@ -1469,11 +1469,9 @@ test.setEdgeColorDirect = function ()
     layoutNetwork (cw, 'grid')
     
     edge.of.interest = as.character (cy2.edge.names (g) [1])
-    for (i in 1:5) {
-        setEdgeColorDirect (cw, edge.of.interest, '#FF0000'); redraw (cw);
-        setEdgeColorDirect (cw, edge.of.interest, '#00FF00'); redraw (cw);
-        setEdgeColorDirect (cw, edge.of.interest, '#0000FF'); redraw (cw);
-    } # for i
+    setEdgeColorDirect (cw, edge.of.interest, '#FF0000')
+    setEdgeColorDirect (cw, edge.of.interest, '#00FF00')
+    setEdgeColorDirect (cw, edge.of.interest, '#0000FF')
     
     invisible (cw)
 
@@ -1481,64 +1479,44 @@ test.setEdgeColorDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeSourceArrowShapeDirect = function ()
 {
-  title = 'test.setEdgeSourceArrowShapeDirect'
-  window.prep (title)
-
-  cw = CytoscapeWindow ('setEdgeSourceArrowShapeDirect.test', graph=makeSimpleGraph())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-  setWindowSize (cw, 800, 800)
-  fitContent (cw)
-
-  edges.of.interest = as.character (cy2.edge.names (g))
-  supported.arrow.shapes = getArrowShapes (cw)
-
+    title = 'test.setEdgeSourceArrowShapeDirect'
+    window.prep (title)
+    
+    cw = CytoscapeWindow ('setEdgeSourceArrowShapeDirect.test', graph=makeSimpleGraph())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    setWindowSize (cw, 800, 800)
+    fitContent (cw)
+    
+    edges.of.interest = as.character (cy2.edge.names (g))
+    supported.arrow.shapes = getArrowShapes (cw)
+    
     # first try passing three edges and three arrow shapes
-  setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [2:5])
-  redraw (cw)
-
-  Sys.sleep (0.3)
-  
-    # now try passing three edges and one arrow.shapes
-  setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [6])
-  redraw (cw)
-
-    # now loop through all of the arrow.shapes
-
-  for (shape in supported.arrow.shapes) {
-    setEdgeSourceArrowShapeDirect (cw, edges.of.interest, shape)
+    setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [2:4])
+    
     Sys.sleep (0.3)
-    redraw (cw)
-    }
-
+    
+    # now try passing three edges and one arrow.shapes
+    setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [6])
+    
     # restore the default
-  setEdgeSourceArrowShapeDirect (cw, edges.of.interest, 'No Arrow')
-  redraw (cw)
-  invisible (cw)
+    setEdgeSourceArrowShapeDirect (cw, edges.of.interest, 'NONE')
+    invisible (cw)
 
 } # test.setEdgeSourceArrowShapeDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelDirect = function ()
 {
-  title = 'test.setEdgeLabelDirect '
-  window.prep (title)
-
-  cw = CytoscapeWindow ('setEdgeLabelDirect.test', graph=makeSimpleGraph())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw, 'grid')
-  edge.names = cy2.edge.names (cw@graph)[1:2]
-  for (i in 1:10) {
-    setEdgeLabelDirect (cw, edge.names, 255 - (i * 25))
-    redraw (cw)
-    }
-  for (i in 1:10) {
-    setEdgeLabelDirect (cw, edge.names, i * 25)
-    redraw (cw)
-    }
-
-  invisible (cw)
+    title = 'test.setEdgeLabelDirect '
+    window.prep (title)
+    
+    cw = CytoscapeWindow ('setEdgeLabelDirect.test', graph=makeSimpleGraph())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    edge.names = cy2.edge.names (cw@graph)[1:2]
+    setEdgeLabelDirect (cw, edge.names, 'some name')
+    
+    invisible (cw)
 
 } # test.setEdgeLabelDirect
 #------------------------------------------------------------------------------------------------------------------------
@@ -1564,341 +1542,311 @@ test.setEdgeLabelDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeFontSizeDirect = function ()
 {
-  #DEACTIVATED("too slow for some reason.")
-  title = 'test.setEdgeFontSizeDirect'
-  window.prep (title)
+    #DEACTIVATED("too slow for some reason.")
+    title = 'test.setEdgeFontSizeDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    
+    edge.of.interest = cy2.edge.names (g) [1]
+    setEdgeFontSizeDirect (cw, edge.of.interest, 12)
 
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edge.of.interest = cy2.edge.names (g) [1]
-  for (i in 1:5) {
-    setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-    Sys.sleep (0.3)
-    } # for i
-
-} # test.
+} # test.setEdgeFontSizeDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelColorDirect = function ()
 {
-  #DEACTIVATED("too slow for some reason")
-  title = 'test.setEdgeLabelColorDirect'
-  window.prep (title)
+    #DEACTIVATED("too slow for some reason")
+    title = 'test.setEdgeLabelColorDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    
+    edge.names = cy2.edge.names (g)
+    setEdgeLabelDirect (cw, edge.names, 'some label')
+    setEdgeLabelColorDirect (cw, edge.names [1:2], '#FF0000')
+    setEdgeLabelColorDirect (cw, edge.names, '#00FF00')
+    setEdgeLabelColorDirect (cw, edge.names [3], '#000000')
 
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edge.of.interest = cy2.edge.names (g) [1]
-  for (i in 1:5) {
-    setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-    Sys.sleep (0.3)
-    } # for i
-
-} # test.
+} # test.setEdgeLabelColorDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeTooltipDirect = function ()
 {
-  title = 'setEdgeTooltipDirect.test'
-  window.prep (title)
-
-  cw <- CytoscapeWindow (title, graph=makeSimpleGraph())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edges.of.interest = as.character (cy2.edge.names (cw@graph))
-
+    title = 'setEdgeTooltipDirect.test'
+    window.prep (title)
+    
+    cw <- CytoscapeWindow (title, graph=makeSimpleGraph())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    
+    edges.of.interest = as.character (cy2.edge.names (cw@graph))
+    
     # first try passing three edges and three tooltips
-  setEdgeTooltipDirect (cw, edges.of.interest, c ('tooltip #1', 'tooltip #2', 'tooltip #3'))
-  redraw (cw)
-
+    setEdgeTooltipDirect (cw, edges.of.interest, c ('tooltip #1', 'tooltip #2', 'tooltip #3'))
+    redraw (cw)
+    
     # now try passing three edges and one tooltip
-  setEdgeTooltipDirect (cw, edges.of.interest [1:2], 'a general purpose tooltip')
-  redraw (cw)
-
-  invisible (cw)
+    setEdgeTooltipDirect (cw, edges.of.interest [1:2], 'a general purpose tooltip')
+    redraw (cw)
+    
+    invisible (cw)
 
 } # test.setEdgeTooltipDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLineWidthDirect = function ()
 {
-  title = 'test.setEdgeLineWidthDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edges.of.interest = cy2.edge.names (g) [1:2]
-
-  for (i in 1:10) {
-    setEdgeLineWidthDirect (cw, edges.of.interest, i)
+    title = 'test.setEdgeLineWidthDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
     redraw (cw)
+    
+    edges.of.interest = cy2.edge.names (g) [1:2]
+    
+    for (i in 1:10) {
+        setEdgeLineWidthDirect (cw, edges.of.interest, i)
     }
-
-  setEdgeLineWidthDirect (cw, edges.of.interest, 1)
-  redraw (cw)
+    
+    setEdgeLineWidthDirect (cw, edges.of.interest, 1)
+    redraw (cw)
 
 } # test.setEdgeLineWidthDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLineStyleDirect = function ()
 {
-  title = 'test.setEdgeLineStyleDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edges.of.interest = as.character (cy2.edge.names (g))
-
-  supported.styles = getLineStyles (cw)
-
-    # first try passing three edges and three styles
-  setEdgeLineStyleDirect (cw, edges.of.interest, supported.styles [5:7])
-  redraw (cw)
-
-  Sys.sleep (0.3)
-  
-    # now try passing three edges and one styles
-  setEdgeLineStyleDirect (cw, edges.of.interest, supported.styles [8])
-  redraw (cw)
-
-    # now loop through all of the styles
-
-  for (style in supported.styles) {
-    setEdgeLineStyleDirect (cw, edges.of.interest, style)
-    Sys.sleep (0.3)
+    title = 'test.setEdgeLineStyleDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
     redraw (cw)
+    
+    edges.of.interest = as.character (cy2.edge.names (g))
+    
+    supported.styles = getLineStyles (cw)
+    
+    # first try passing three edges and three styles
+    setEdgeLineStyleDirect (cw, edges.of.interest, supported.styles [5:7])
+    redraw (cw)
+    
+    Sys.sleep (0.3)
+    
+    # now try passing three edges and one styles
+    setEdgeLineStyleDirect (cw, edges.of.interest, supported.styles [8])
+    redraw (cw)
+    
+    # now loop through all of the styles
+    
+    for (style in supported.styles) {
+        setEdgeLineStyleDirect (cw, edges.of.interest, style)
     }
-
-  setEdgeLineStyleDirect (cw, edges.of.interest, 'SOLID')
-  redraw (cw)
-
-  invisible (cw)
+    
+    setEdgeLineStyleDirect (cw, edges.of.interest, 'SOLID')
+    redraw (cw)
+    
+    invisible (cw)
 
 } # test.setEdgeLineStyleDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeSourceArrowShapeDirect = function ()
 {
-  title = 'test.setEdgeSourceArrowShapeDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-  setWindowSize (cw, 800, 800)
-  fitContent (cw)
-
-  edges.of.interest = as.character (cy2.edge.names (g))
-  supported.arrow.shapes = getArrowShapes (cw)
-
-    # first try passing three edges and three arrow.shapes
-  setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [5:7])
-  redraw (cw)
-
-  Sys.sleep (0.3)
-  
-    # now try passing three edges and one arrow shape
-  setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [8])
-  redraw (cw)
-
-    # now loop through all of the arrow.shapes
-
-  for (shape in supported.arrow.shapes) {
-    setEdgeSourceArrowShapeDirect (cw, edges.of.interest, shape)
-    Sys.sleep (0.3)
+    title = 'test.setEdgeSourceArrowShapeDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
     redraw (cw)
+    setWindowSize (cw, 800, 800)
+    fitContent (cw)
+    
+    edges.of.interest = as.character (cy2.edge.names (g))
+    supported.arrow.shapes = getArrowShapes (cw)
+    
+    # first try passing three edges and three arrow.shapes
+    setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [5:7])
+    redraw (cw)
+    
+    Sys.sleep (0.3)
+    
+    # now try passing three edges and one arrow shape
+    setEdgeSourceArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [8])
+    redraw (cw)
+    
+    # now loop through all of the arrow.shapes
+    
+    for (shape in supported.arrow.shapes) {
+        setEdgeSourceArrowShapeDirect (cw, edges.of.interest, shape)
     }
-
+    
     # restore the default
-  setEdgeSourceArrowShapeDirect (cw, edges.of.interest, 'No Arrow')
-  redraw (cw)
-
-  invisible (cw)
+    setEdgeSourceArrowShapeDirect (cw, edges.of.interest, 'NONE')
+    redraw (cw)
+    
+    invisible (cw)
 
 } # test.setEdgeSourceArrowShapeDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeTargetArrowShapeDirect = function ()
 {
-  title = 'test.setEdgeTargetArrowShapeDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edges.of.interest = as.character (cy2.edge.names (g))
-  supported.arrow.shapes = getArrowShapes (cw)
-
-    # first try passing three edges and three arrow.shapes
-  setEdgeTargetArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [5:7])
-  redraw (cw)
-
-  Sys.sleep (0.3)
-  
-    # now try passing three edges and one arrow shape
-  setEdgeTargetArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [8])
-  redraw (cw)
-
-    # now loop through all of the arrow.shapes
-
-  for (shape in supported.arrow.shapes) {
-    setEdgeTargetArrowShapeDirect (cw, edges.of.interest, shape)
-    Sys.sleep (0.3)
+    title = 'test.setEdgeTargetArrowShapeDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
     redraw (cw)
+    
+    edges.of.interest = as.character (cy2.edge.names (g))
+    supported.arrow.shapes = getArrowShapes (cw)
+    
+    # first try passing three edges and three arrow.shapes
+    setEdgeTargetArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [5:7])
+    redraw (cw)
+    
+    Sys.sleep (0.3)
+    
+    # now try passing three edges and one arrow shape
+    setEdgeTargetArrowShapeDirect (cw, edges.of.interest, supported.arrow.shapes [8])
+    redraw (cw)
+    
+    # now loop through all of the arrow.shapes
+    for (shape in supported.arrow.shapes) {
+        setEdgeTargetArrowShapeDirect (cw, edges.of.interest, shape)
     }
-
+    
     # restore the default
-  setEdgeTargetArrowShapeDirect (cw, edges.of.interest, 'No Arrow')
-  redraw (cw)
-
-  invisible (cw)
+    setEdgeTargetArrowShapeDirect (cw, edges.of.interest, 'NONE')
+    
+    invisible (cw)
 
 } # test.setTargetArrowShapeDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeSourceArrowColorDirect = function ()
 {
-  title = 'test.setEdgeSourceArrowColorDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  arrows = c ('Arrow', 'Diamond', 'Circle')
-  edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-  setEdgeSourceArrowRule (cw, 'edgeType', edgeType.values, arrows)
-  setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
-
-  colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
-  colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
-
-  edge.names = as.character (cy2.edge.names (g) [1:3])
-
-  for (i in 1:2) {
+    title = 'test.setEdgeSourceArrowColorDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    
+    arrows = c ('Arrow', 'Diamond', 'Circle')
+    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
+    setEdgeSourceArrowRule (cw, 'edgeType', edgeType.values, arrows)
+    setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
+    
+    colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
+    colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
+    
+    edge.names = as.character (cy2.edge.names (g) [1:3])
+    
     setEdgeSourceArrowColorDirect (cw, edge.names, colors.1)
-    redraw (cw)
-    Sys.sleep (0.3)
     setEdgeSourceArrowColorDirect (cw, edge.names, colors.2)
-    redraw (cw)
-    Sys.sleep (0.3)
-    } # for i
-
-  invisible (cw)
+    
+    invisible (cw)
 
 } # test.setEdgeSourceArrowColorDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeTargetArrowColorDirect = function ()
 {
-  title = 'test.setEdgeTargetArrowColorDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-  setWindowSize (cw, 800, 800)
-  fitContent (cw)
-
-  arrows = c ('Arrow', 'Diamond', 'Circle')
-  edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-  setEdgeSourceArrowRule (cw, 'edgeType', edgeType.values, arrows)
-  setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
-
-  colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
-  colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
-
-  edge.names = as.character (cy2.edge.names (g) [1:3])
-
-  for (i in 1:2) {
+    title = 'test.setEdgeTargetArrowColorDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    setWindowSize (cw, 800, 800)
+    fitContent (cw)
+    
+    arrows = c ('Arrow', 'Diamond', 'Circle')
+    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
+    setEdgeSourceArrowRule (cw, 'edgeType', edgeType.values, arrows)
+    setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
+    
+    colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
+    colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
+    
+    edge.names = as.character (cy2.edge.names (g) [1:3])
+    
     setEdgeTargetArrowColorDirect (cw, edge.names, colors.1)
-    redraw (cw)
-    Sys.sleep (0.3)
     setEdgeTargetArrowColorDirect (cw, edge.names, colors.2)
-    redraw (cw)
-    Sys.sleep (0.3)
-    } # for i
-
-  invisible (cw)
+    
+    invisible (cw)
 
 } # test.setEdgeTargetArrowColorDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLabelOpacityDirect = function ()
 {
-  #DEACTIVATED("too slow for some reason")
-  title = 'test.setEdgeLabelOpacityDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edge.of.interest = cy2.edge.names (g) [1]
-  for (i in 1:5) {
-    setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-    Sys.sleep (0.3)
+    #DEACTIVATED("too slow for some reason")
+    title = 'test.setEdgeLabelOpacityDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    
+    edge.of.interest = cy2.edge.names (g) [1]
+    for (i in 1:5) {
+        setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
     } # for i
 
 } # test.
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeSourceArrowOpacityDirect = function ()
 {
-  title = 'test.setEdgeSourceArrowOpacityDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edges.of.interest = as.character (cy2.edge.names (g))
-
-     # make sure the source arrows are visible
-  setEdgeSourceArrowShapeDirect (cw, edges.of.interest, 'Circle')
-
-    # first try passing three edges and three arrow opacity values
-  setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, c (64, 128, 255))
-  redraw (cw)
-
-  Sys.sleep (0.3)
-  
-    # now try passing three edges and just one opacity value; it will be applied to all arrows
-  setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, 32)
-  redraw (cw)
-
-    # now loop through all of the arrow.opacitys
-
-  for (opacity in seq (0, 255, by=45)) {
-    setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, opacity)
-    Sys.sleep (0.3)
+    title = 'test.setEdgeSourceArrowOpacityDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
     redraw (cw)
+    
+    edges.of.interest = as.character (cy2.edge.names (g))
+    
+    # make sure the source arrows are visible
+    setEdgeSourceArrowShapeDirect (cw, edges.of.interest, 'Circle')
+    
+    # first try passing three edges and three arrow opacity values
+    setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, c (64, 128, 255))
+    redraw (cw)
+    
+    Sys.sleep (0.3)
+    
+    # now try passing three edges and just one opacity value; it will be applied to all arrows
+    setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, 32)
+    redraw (cw)
+    
+    # now loop through all of the arrow.opacitys
+    for (opacity in seq (0, 255, by=45)) {
+        setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, opacity)
     }
-
+    
     # restore the default
-  setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, 255)
-  redraw (cw)
-
+    setEdgeSourceArrowOpacityDirect (cw, edges.of.interest, 255)
+    
 } # test.setEdgeSourceArrowOpacityDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeTargetArrowOpacityDirect = function ()
