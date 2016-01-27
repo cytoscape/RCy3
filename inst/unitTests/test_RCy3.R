@@ -5,171 +5,171 @@ library (RUnit)
 
 #------------------------------------------------------------------------------------------------------------------------
 if (!exists ('cy'))
-  cy = CytoscapeConnection ()
+    cy = CytoscapeConnection ()
 #------------------------------------------------------------------------------------------------------------------------
 # the peculiar naming of this function ensures that it will be called first, before all other test.xxx methods.  i think!
 test...aaaaFirstTestCalled = function ()
 {
-  print ('------- first test, deleting any pre-existing CytoscapeWindows')
-  deleteAllWindows (CytoscapeConnection ());
+    print ('------- first test, deleting any pre-existing CytoscapeWindows')
+    deleteAllWindows (CytoscapeConnection ());
 }
 #------------------------------------------------------------------------------------------------------------------------
 run.tests = function ()
 {
-  options ('warn'=2)   # make sure that any R warnings are treated as fatal errors
-
+    options ('warn'=2)   # make sure that any R warnings are treated as fatal errors
+    
     # before doing anything else, make sure that the Cytoscape plugin version is one we can respond to
-  test.plugin.version ()
-  
+    test.plugin.version ()
+    
     # start with a clean slate, and no windows
-  deleteAllWindows (cy)
-
+    deleteAllWindows (cy)
+    
     # many of the tests modify the default visual style, quite heedless of prior or successor tests.
     # if you wish to restore the initial default style, it is saved here, just once, upon entry to this method
     # 
-  #save.default.vizmap ()
-
-  test.create.class ()
-  test.deleteWindow ()
-  test.deleteAllWindows ()
-  test.getWindowID ()
-  test.getWindowList ()
-  test.getNodeShapes ()
-  test.getAttributeClassNames ()
-  test.getArrowShapes ()
-  test.getLineStyles ()
-  test.getLayoutNames ()
-  test.getLayoutNameMapping ()
-  test.getLayoutPropertyNames ()
-  test.getLayoutPropertyType ()
-  test.getLayoutPropertyValue ()
-  test.setLayoutProperties ()
-  test.sendNodes ()
-  test.sendEdges ()
-  test.setNodeAttributes ()
-  test.setEdgeAttributes ()
-  test.noa ()
-  test.eda ()
-  test.cy2.edge.names ()
-  test.getAdjacentEdgeNames ()
-  test.panelOperations ()
-  test.showGraphicsDetails ()
-  test.setDefaultNodeShape ()
-  test.setDefaultNodeColor ()
-  test.setDefaultNodeSize ()
-  test.setDefaultNodeBorderColor ()
-  test.setDefaultNodeBorderWidth ()
-  test.setDefaultNodeFontSize ()
-  test.setDefaultNodeLabelColor ()
-  test.setDefaultEdgeLineWidth ()
-  test.setDefaultEdgeColor ()
-  test.setDefaultEdgeFontSize ()
-  test.setNodeLabelRule ()
-  test.setEdgeLabelRule ()
-  test.setNodeTooltipRule ()
-  test.setEdgeTooltipRule ()
-  test.setNodeColorRule ()
-  test.setNodeBorderColorRule ()
-  test.setNodeBorderWidthRule ()
-  test.setNodeSizeRule ()
-  test.setNodeShapeRule ()
-  test.setNodeOpacityRule ()
-  test.setNodeColorDirect ()
-  test.setNodeBorderColorDirect ()
-  test.setNodeLabelDirect ()
-  test.setNodeLabelPropertiesDirect ()
-  test.setNodeOpacityDirect ()
-  test.setEdgeOpacityDirect ()
-  test.setEdgeColorDirect ()
-  test.setEdgeSourceArrowShapeDirect ()
-  test.setEdgeLabelDirect ()
-  test.setEdgeFontSizeDirect ()
-  test.setEdgeLabelColorDirect ()
-  test.setEdgeTooltipDirect ()
-  test.setEdgeLineWidthDirect ()
-  test.setEdgeLineStyleDirect ()
-  test.setEdgeSourceArrowShapeDirect ()
-  test.setEdgeTargetArrowShapeDirect ()
-  test.setEdgeSourceArrowColorDirect ()
-  test.setEdgeTargetArrowColorDirect ()
-  test.setEdgeLabelOpacityDirect ()
-  test.setEdgeSourceArrowOpacityDirect ()
-  test.setEdgeTargetArrowOpacityDirect ()
-  test.setEdgeLabelPositionDirect ()
-  test.setEdgeLabelWidthDirect ()
-  test.countNodes ()
-  test.countEdges ()
-  test.countNodesAndEdgesInEmptyGraph ()
-  test.getAllNodes ()
-  test.getAllEdges ()
-  test.selectNodes ()
-  test.nodeNeighborReportingAndSelection ()
-  test.invertSelection ()
-  test.deleteSelectedNodes ()
-  test.hideNodes ()
-  test.selectEdges ()
-  test.setEdgeLineStyleRule ()
-  test.setEdgeLineWidthRule ()
-  test.setEdgeColorRule ()
-  test.setEdgeTargetArrowRule ()
-  test.setEdgeArrowColorRules ()
-  test.setEdgeSourceArrowRule ()
-  test.movie ()
-  test.unmatchedAttributesError ()
-  test.remove.redundancies.in.undirected.graph ()
-  test.randomUndirectedGraph ()
-  test.simpleGraph ()
-  test.simpleGraphWithReciprocalEdge ()
-  test.setGraph ()
-  test.setNodePosition ()
-  test.getNodePosition ()
-  test.getNodePosition.colonInNodeName ()
-  test.getNodeSize ()
-  test.haveNodeAttribute ()
-  test.haveEdgeAttribute ()
-  test.copyNodeAttributesFromCyGraph ()
-  test.copyEdgeAttributesFromCyGraph ()
-  test.getGraphFromCyWindow ()
-  test.sendDegenerateGraphs ()
-  test.sendBigGraph ()
-  test.createWindowFromSelection ()
-  test.addGraphToGraph ()
-  test.addGraphToGraph.degenerateFirstGraph ()
-  test.existing.CytoscapeWindow ()
-  test.existing.CytoscapeWindow.noEdges ()
-  test.existing.CytoscapeWindow.emptyGraph ()
-  test.getAttributeNames ()
-  test.addGetAndDeleteEdgeAttributes ()
-  test.addGetAndDeleteNodeAttributes ()
-  test.getAllNodeAttributes ()
-  test.getAllEdgeAttributes ()
-  test.getVisualStyleNames ()
-  test.copyVisualStyle ()
-  test.setVisualStyle ()
-  test.defaultColors ()
-  test.setWindowSizeRaiseWindow ()
-  test.fitContent ()
-  test.windowCoordinates ()
-  test.zoom ()
-  test.center ()
-  test.setNodeSizeDirect ()
-  test.setNodeWidthAndHeightDirect ()
-  test.setNodeFontSizeDirect ()
-  test.setNodeShapeDirect ()
-  test.setEdgeVizPropertiesDirect ()
-  test.graphBAM ()
-  test.addCyNode ()
-  test.addCyEdge ()
-  test.twoGraphsDoubleEdges ()
-  test..classicGraphToNodePairTable ()
-  test.rcy.edgeNames ()
-  test..getNovelEdges ()
-  test.setNodeImageDirect ()
-  test.validity ()
-  test.tooltip.delays ()
-
-  options ('warn'=0)
-
+    #save.default.vizmap ()
+    
+    test.create.class ()
+    test.deleteWindow ()
+    test.deleteAllWindows ()
+    test.getWindowID ()
+    test.getWindowList ()
+    test.getNodeShapes ()
+    test.getAttributeClassNames ()
+    test.getArrowShapes ()
+    test.getLineStyles ()
+    test.getLayoutNames ()
+    test.getLayoutNameMapping ()
+    test.getLayoutPropertyNames ()
+    test.getLayoutPropertyType ()
+    test.getLayoutPropertyValue ()
+    test.setLayoutProperties ()
+    test.sendNodes ()
+    test.sendEdges ()
+    test.setNodeAttributes ()
+    test.setEdgeAttributes ()
+    test.noa ()
+    test.eda ()
+    test.cy2.edge.names ()
+    test.getAdjacentEdgeNames ()
+    test.panelOperations ()
+    test.showGraphicsDetails ()
+    test.setDefaultNodeShape ()
+    test.setDefaultNodeColor ()
+    test.setDefaultNodeSize ()
+    test.setDefaultNodeBorderColor ()
+    test.setDefaultNodeBorderWidth ()
+    test.setDefaultNodeFontSize ()
+    test.setDefaultNodeLabelColor ()
+    test.setDefaultEdgeLineWidth ()
+    test.setDefaultEdgeColor ()
+    test.setDefaultEdgeFontSize ()
+    test.setNodeLabelRule ()
+    test.setEdgeLabelRule ()
+    test.setNodeTooltipRule ()
+    test.setEdgeTooltipRule ()
+    test.setNodeColorRule ()
+    test.setNodeBorderColorRule ()
+    test.setNodeBorderWidthRule ()
+    test.setNodeSizeRule ()
+    test.setNodeShapeRule ()
+    test.setNodeOpacityRule ()
+    test.setNodeColorDirect ()
+    test.setNodeBorderColorDirect ()
+    test.setNodeLabelDirect ()
+    test.setNodeLabelPropertiesDirect ()
+    test.setNodeOpacityDirect ()
+    test.setEdgeOpacityDirect ()
+    test.setEdgeColorDirect ()
+    test.setEdgeSourceArrowShapeDirect ()
+    test.setEdgeLabelDirect ()
+    test.setEdgeFontSizeDirect ()
+    test.setEdgeLabelColorDirect ()
+    test.setEdgeTooltipDirect ()
+    test.setEdgeLineWidthDirect ()
+    test.setEdgeLineStyleDirect ()
+    test.setEdgeSourceArrowShapeDirect ()
+    test.setEdgeTargetArrowShapeDirect ()
+    test.setEdgeSourceArrowColorDirect ()
+    test.setEdgeTargetArrowColorDirect ()
+    test.setEdgeLabelOpacityDirect ()
+    test.setEdgeSourceArrowOpacityDirect ()
+    test.setEdgeTargetArrowOpacityDirect ()
+    test.setEdgeLabelPositionDirect ()
+    test.setEdgeLabelWidthDirect ()
+    test.countNodes ()
+    test.countEdges ()
+    test.countNodesAndEdgesInEmptyGraph ()
+    test.getAllNodes ()
+    test.getAllEdges ()
+    test.selectNodes ()
+    test.nodeNeighborReportingAndSelection ()
+    test.invertSelection ()
+    test.deleteSelectedNodes ()
+    test.hideNodes ()
+    test.selectEdges ()
+    test.setEdgeLineStyleRule ()
+    test.setEdgeLineWidthRule ()
+    test.setEdgeColorRule ()
+    test.setEdgeTargetArrowRule ()
+    test.setEdgeArrowColorRules ()
+    test.setEdgeSourceArrowRule ()
+    test.movie ()
+    test.unmatchedAttributesError ()
+    test.remove.redundancies.in.undirected.graph ()
+    test.randomUndirectedGraph ()
+    test.simpleGraph ()
+    test.simpleGraphWithReciprocalEdge ()
+    test.setGraph ()
+    test.setNodePosition ()
+    test.getNodePosition ()
+    test.getNodePosition.colonInNodeName ()
+    test.getNodeSize ()
+    test.haveNodeAttribute ()
+    test.haveEdgeAttribute ()
+    test.copyNodeAttributesFromCyGraph ()
+    test.copyEdgeAttributesFromCyGraph ()
+    test.getGraphFromCyWindow ()
+    test.sendDegenerateGraphs ()
+    test.sendBigGraph ()
+    test.createWindowFromSelection ()
+    test.addGraphToGraph ()
+    test.addGraphToGraph.degenerateFirstGraph ()
+    test.existing.CytoscapeWindow ()
+    test.existing.CytoscapeWindow.noEdges ()
+    test.existing.CytoscapeWindow.emptyGraph ()
+    test.getAttributeNames ()
+    test.addGetAndDeleteEdgeAttributes ()
+    test.addGetAndDeleteNodeAttributes ()
+    test.getAllNodeAttributes ()
+    test.getAllEdgeAttributes ()
+    test.getVisualStyleNames ()
+    test.copyVisualStyle ()
+    test.setVisualStyle ()
+    test.defaultColors ()
+    test.setWindowSizeRaiseWindow ()
+    test.fitContent ()
+    test.windowCoordinates ()
+    test.zoom ()
+    test.center ()
+    test.setNodeSizeDirect ()
+    test.setNodeWidthAndHeightDirect ()
+    test.setNodeFontSizeDirect ()
+    test.setNodeShapeDirect ()
+    test.setEdgeVizPropertiesDirect ()
+    test.graphBAM ()
+    test.addCyNode ()
+    test.addCyEdge ()
+    test.twoGraphsDoubleEdges ()
+    test..classicGraphToNodePairTable ()
+    test.rcy.edgeNames ()
+    test..getNovelEdges ()
+    test.setNodeImageDirect ()
+    test.validity ()
+    test.tooltip.delays ()
+    
+    options ('warn'=0)
+    
 } # run.tests
 #------------------------------------------------------------------------------------------------------------------------
 save.default.vizmap = function ()
@@ -191,12 +191,12 @@ save.default.vizmap = function ()
 #
 window.prep = function (title)
 {
-  write (noquote (sprintf ('------- %s', title)), stderr ())
-
-  cy = CytoscapeConnection ()
-  if (title %in% as.character (getWindowList (cy)))
-     deleteWindow (cy, title)
-
+    write (noquote (sprintf ('------- %s', title)), stderr ())
+    
+    cy <- CytoscapeConnection ()
+    if (title %in% as.character (getWindowList (cy))){
+        deleteWindow (cy, title)
+    }
 } # window.prep
 
 
@@ -207,86 +207,78 @@ window.prep = function (title)
 #------------------------------------------------------------------------------------------------------------------------
 test.plugin.version = function ()
 {
-  title = 'test.plugin.version'
-  cy = CytoscapeConnection ()
-
-  plugin.version.string = pluginVersion (cy)
-  string.tmp1 = strsplit (plugin.version.string,' ')[[1]][1]
-  string.tmp2 = gsub ('[a-z]', '', string.tmp1)
-  string.tmp3 = gsub ('[A-Z]', '', string.tmp2)
-  major.minor.version = as.numeric (string.tmp3)
-
-
-  #tokens = strsplit (version.string, ' ')[[1]][1]
-  #version.numbers = as.integer (strsplit (tokens, '\\.')[[1]])
-  #major.minor.version = version.numbers [1] + (version.numbers [2]/10.0)
-  #msg (cy, paste ('CytoscapeRPC version', major.minor.version))
-  checkTrue (major.minor.version >= 0.99)
+    title = 'test.plugin.version'
+    cy = CytoscapeConnection ()
+    
+    plugin.version.string = pluginVersion (cy)
+    string.tmp1 = strsplit (plugin.version.string,' ')[[1]][1]
+    string.tmp2 = gsub ('[a-z]', '', string.tmp1)
+    string.tmp3 = gsub ('[A-Z]', '', string.tmp2)
+    major.minor.version = as.numeric (string.tmp3)
+    checkTrue (major.minor.version >= 1)
 
 } # test.plugin.version
 #------------------------------------------------------------------------------------------------------------------------
 test.create.class = function ()
 {
-  title = 'test.create.class'
-  window.prep (title)
-
-  g = new ('graphNEL')
-
-  cw = CytoscapeWindow (title, g)
-  checkTrue (validObject (cw))
+    title = 'test.create.class'
+    window.prep (title)
+    
+    g = new ('graphNEL')
+    
+    cw = CytoscapeWindow (title, g)
+    checkTrue (validObject (cw))
 
 } # test.create.class
 #------------------------------------------------------------------------------------------------------------------------
 test.deleteWindow = function ()
 {
-  title = 'test.deleteWindow'
-  window.prep (title)
-
-  cy = CytoscapeConnection ()
-  cw = CytoscapeWindow (title, new ('graphNEL'))
-
-  original.window.count = getWindowCount (cy)
-  deleteWindow (cw)
-  new.window.count = getWindowCount (cy)
-  checkTrue (new.window.count == original.window.count - 1)
-
+    title = 'test.deleteWindow'
+    window.prep (title)
+    
+    cy = CytoscapeConnection ()
+    cw = CytoscapeWindow (title, new ('graphNEL'))
+    
+    original.window.count = getWindowCount (cy)
+    deleteWindow (cw)
+    new.window.count = getWindowCount (cy)
+    checkTrue (new.window.count == original.window.count - 1)
+    
     # now delete a window by name
-  window.prep (title)
-  cw = CytoscapeWindow (title, new ('graphNEL'))
-  original.window.count = getWindowCount (cy)
-  deleteWindow (cy, title)
-  new.window.count = getWindowCount (cy)
-  checkTrue (new.window.count == original.window.count - 1)
+    window.prep (title)
+    cw = CytoscapeWindow (title, new ('graphNEL'))
+    original.window.count = getWindowCount (cy)
+    deleteWindow (cy, title)
+    new.window.count = getWindowCount (cy)
+    checkTrue (new.window.count == original.window.count - 1)
 
 } # test.deleteWindow
 #------------------------------------------------------------------------------------------------------------------------
 test.deleteAllWindows = function ()
 {
-  title = 'test.deleteAllWindows'
-  cy = CytoscapeConnection ()
-  deleteAllWindows (cy)
-  new.window.count = getWindowCount (cy)
-  checkEquals (new.window.count, 0)
-  #msg (cy, 'deleted all windows')
+      title = 'test.deleteAllWindows'
+      cy = CytoscapeConnection ()
+      deleteAllWindows (cy)
+      new.window.count = getWindowCount (cy)
+      checkEquals (new.window.count, 0)
 
 } # test.deleteAllWindows
 #------------------------------------------------------------------------------------------------------------------------
 test.getWindowID = function ()
 {
-  title = 'test.getWindowID'
-  window.prep (title)
-
-  cw3 =  CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw3)
-  redraw (cw3)
-  layoutNetwork (cw3)
-
-  cy = CytoscapeConnection ()
-
-  id = getWindowID (cy, 'test.getWindowID')
-  checkEquals (id, cw3@window.id)
-
-  invisible (cw3)
+    title = 'test.getWindowID'
+    window.prep (title)
+    
+    cw3 =  CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw3)
+    layoutNetwork (cw3)
+    
+    cy = CytoscapeConnection ()
+    
+    id = getWindowID (cy, 'test.getWindowID')
+    checkEquals (id, cw3@window.id)
+    
+    invisible (cw3)
 
 } # test.getWindowID
 #------------------------------------------------------------------------------------------------------------------------
@@ -794,19 +786,18 @@ test.setDefaultNodeShape = function (direct=FALSE)
 
    if (direct) {  # debug
      for (shape in shapes) {
-       setDefaultNodeShape (cwe, shape); redraw (cwe)
-       redraw (cwe); 
+       setDefaultNodeShape (cwe, shape)
        Sys.sleep (1)
        } # for shape
      } # direct
 
-  setDefaultNodeShape (cwe, 'OCTAGON'); redraw (cwe)
+  setDefaultNodeShape (cwe, 'OCTAGON')
   #msg (cwe, 'octagon')
   Sys.sleep (1)
-  setDefaultNodeShape (cwe, 'ELLIPSE');  redraw (cwe)
+  setDefaultNodeShape (cwe, 'ELLIPSE')
   #msg (cwe,'ellipse')
   Sys.sleep (1)
-  setDefaultNodeShape (cwe, 'TRIANGLE');  redraw (cwe)
+  setDefaultNodeShape (cwe, 'TRIANGLE')
   #msg (cwe, 'triangle')
 
   invisible (cwe)
@@ -821,7 +812,6 @@ test.setDefaultNodeColor = function (direct=FALSE)
   cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
   displayGraph (cwe)
   layoutNetwork (cwe, 'grid')
-  redraw (cwe)
 
   hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
   if (direct) {  # useful for debuggin
@@ -833,7 +823,6 @@ test.setDefaultNodeColor = function (direct=FALSE)
     } # direct
 
   setDefaultNodeColor (cwe, '#AA00AA')
-  redraw (cwe)
 
   invisible (cwe)
 
@@ -847,20 +836,16 @@ test.setDefaultNodeSize = function (direct=FALSE)
   cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
   displayGraph (cwe)
   layoutNetwork (cwe, 'grid')
-  redraw (cwe)
 
   hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
   for (i in 1:3) {
     setDefaultNodeSize (cwe, 20)
-    redraw (cwe)
     Sys.sleep (1)
     setDefaultNodeSize (cwe, 200)
-    redraw (cwe)
     Sys.sleep (1)
     } # for i
 
   setDefaultNodeSize (cwe, 60)
-  redraw (cwe)
 
   invisible (cwe)
 
@@ -874,15 +859,12 @@ test.setDefaultNodeBorderColor = function (direct=FALSE)
   cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
   displayGraph (cwe)
   layoutNetwork (cwe, 'grid')
-  redraw (cwe)
 
   hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
   for (i in 1:3) {
     setDefaultNodeBorderColor (cwe, '#FFFFFF'); 
-    redraw (cwe)
     Sys.sleep (1)
     setDefaultNodeBorderColor (cwe, '#FF0000'); 
-    redraw (cwe)
     Sys.sleep (1)
     } # for i
 
@@ -898,21 +880,17 @@ test.setDefaultNodeBorderWidth = function (direct=FALSE)
   cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
   displayGraph (cwe)
   layoutNetwork (cwe, 'grid')
-  redraw (cwe)
 
   hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
 
   for (i in 1:3) {
     setDefaultNodeBorderWidth (cwe, 5)
-    redraw (cwe)
     Sys.sleep (1)
     setDefaultNodeBorderWidth (cwe, 0)
-    redraw (cwe)
     Sys.sleep (1)
     } # for i
 
   setDefaultNodeBorderWidth (cwe, 1)
-  redraw (cwe)
 
   invisible (cwe)
 
@@ -926,7 +904,6 @@ test.setDefaultNodeFontSize = function (direct=FALSE)
   cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
   displayGraph (cwe)
   layoutNetwork (cwe, 'grid')
-  redraw (cwe)
 
   hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
   for (i in 1:3) {
@@ -950,7 +927,6 @@ test.setDefaultNodeLabelColor = function (direct=FALSE)
   cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
   displayGraph (cwe)
   layoutNetwork (cwe, 'grid')
-  redraw (cwe)
 
   hidePanel (cwe, 'd');   hidePanel (cwe, 'c');   
 
