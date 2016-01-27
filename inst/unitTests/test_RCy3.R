@@ -2164,7 +2164,7 @@ test.hideNodes = function ()
     unhideAll (cwe)
     layoutNetwork (cwe)
     redraw (cwe)
-    #checkEquals (getNodeCount (cwe), 3)
+    checkEquals (getNodeCount (cwe), 3)
     #msg (cwe, 'test.selectNodes')
     
     invisible (cwe)
@@ -2173,287 +2173,265 @@ test.hideNodes = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.selectEdges = function ()
 {
-  title = 'test.selectEdges'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  clearSelection (cw)
-  checkEquals (getSelectedEdgeCount (cw), 0)
-    # not yet possible to select edges through CytoscapeRPCCallHandler
-  selectEdges (cw, "A (phosphorylates) B")
-  checkEquals (getSelectedEdgeCount (cw), 1)
-  Sys.sleep (0.3)
-  clearSelection (cw)
-  checkEquals (getSelectedEdgeCount (cw), 0)
-
-  #msg (cw, 'test.selectEdges')
-
-  invisible (cw)
+    title = 'test.selectEdges'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    
+    clearSelection (cw)
+    checkEquals (getSelectedEdgeCount (cw), 0)
+    selectEdges (cw, "A (phosphorylates) B")
+    checkEquals (getSelectedEdgeCount (cw), 1)
+    Sys.sleep (0.3)
+    clearSelection (cw)
+    checkEquals (getSelectedEdgeCount (cw), 0)
+    
+    invisible (cw)
 
 } # test.selectEdges
 #------------------------------------------------------------------------------------------------------------------------
 test.getAdjacentEdgeNames = function ()
 {
-  title = 'test.getAdjacentEdgeNames'
-  g = RCy3::makeSimpleGraph ()
-  expected.names = c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (undefined) A")
-  checkEquals (sort (as.character (cy2.edge.names (g))), expected.names)
-
-  checkEquals (sort (getAdjacentEdgeNames (g, 'A')), expected.names [c (1,3)])
-  checkEquals (sort (getAdjacentEdgeNames (g, 'B')), expected.names [c (1,2)])
-  checkEquals (sort (getAdjacentEdgeNames (g, 'C')), expected.names [c (2,3)])
-
-  checkEquals (sort (getAdjacentEdgeNames (g, c ('A', 'B'))), expected.names [1:3])
-  checkEquals (sort (getAdjacentEdgeNames (g, c ('B', 'C'))), expected.names [1:3])
-  checkEquals (sort (getAdjacentEdgeNames (g, c ('A', 'C'))), expected.names [1:3])
-  invisible (g)
+    title = 'test.getAdjacentEdgeNames'
+    g = RCy3::makeSimpleGraph ()
+    expected.names = c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (undefined) A")
+    checkEquals (sort (as.character (cy2.edge.names (g))), expected.names)
+    
+    checkEquals (sort (getAdjacentEdgeNames (g, 'A')), expected.names [c (1,3)])
+    checkEquals (sort (getAdjacentEdgeNames (g, 'B')), expected.names [c (1,2)])
+    checkEquals (sort (getAdjacentEdgeNames (g, 'C')), expected.names [c (2,3)])
+    
+    checkEquals (sort (getAdjacentEdgeNames (g, c ('A', 'B'))), expected.names [1:3])
+    checkEquals (sort (getAdjacentEdgeNames (g, c ('B', 'C'))), expected.names [1:3])
+    checkEquals (sort (getAdjacentEdgeNames (g, c ('A', 'C'))), expected.names [1:3])
+    invisible (g)
 
 } # test.getAdjacentEdgeNames
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLineStyleRule = function ()
 {
-  title = 'test.setEdgeLineStyleRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-
-  line.styles = c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
-  edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-  checkEquals (length (intersect (line.styles, getLineStyles (cwe))), 3)
-
-  setEdgeLineStyleRule (cwe, 'edgeType', edgeType.values, line.styles)
-
+    title = 'test.setEdgeLineStyleRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    
+    line.styles = c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
+    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
+    checkEquals (length (intersect (line.styles, getLineStyles (cwe))), 3)
+    
+    setEdgeLineStyleRule (cwe, 'edgeType', edgeType.values, line.styles)
+    
     # test one-element lists
-  line.styles = c ('DOT')
-  edgeType.values = c ('synthetic lethal')
-  checkEquals (length (intersect (line.styles, getLineStyles (cwe))), 1)
-  setEdgeLineStyleRule (cwe, 'edgeType', edgeType.values, line.styles)
-
-  #msg (cwe, 'test.setEdgeLineStyleRule')
-
-  invisible (cwe)
+    line.styles = c ('DOT')
+    edgeType.values = c ('synthetic lethal')
+    checkEquals (length (intersect (line.styles, getLineStyles (cwe))), 1)
+    setEdgeLineStyleRule (cwe, 'edgeType', edgeType.values, line.styles)
+    
+    #msg (cwe, 'test.setEdgeLineStyleRule')
+    
+    invisible (cwe)
 
 } # test.setEdgeLineStyleRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeLineWidthRule = function ()
 {
-  title = 'test.setEdgeLineWidthRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  line.styles = c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
-  edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-  checkEquals (length (intersect (line.styles, getLineStyles (cwe))), 3)
-
-  setEdgeLineStyleRule (cwe, 'edgeType', edgeType.values, line.styles)
-  setEdgeLineWidthRule (cwe, 'edgeType', edgeType.values, c (0, 8, 16))
-
+    title = 'test.setEdgeLineWidthRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    line.styles = c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
+    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
+    checkEquals (length (intersect (line.styles, getLineStyles (cwe))), 3)
+    
+    setEdgeLineStyleRule (cwe, 'edgeType', edgeType.values, line.styles)
+    setEdgeLineWidthRule (cwe, 'edgeType', edgeType.values, c (0, 8, 16))
+    
     # try one-element lists
-  setEdgeLineWidthRule (cwe, 'edgeType', edgeType.values [1], 10)
-  
-  #msg (cwe, 'test.setEdgeLineStyleRule')
-
-  invisible (cwe)
+    setEdgeLineWidthRule (cwe, 'edgeType', edgeType.values [1], 10)
+    
+    invisible (cwe)
 
 } # test.setEdgeLineWidthRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeColorRule = function ()
 {
-  title = 'test.setEdgeColorRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-  colors = c ('#FF0000', '#FFFF00', '#00FF00')
-  setEdgeColorRule (cwe, 'edgeType',  edgeType.values, colors, mode='lookup')
-  Sys.sleep (0.3)
-
-  all.white  = c ('#FFFFFF', '#FFFFFF', '#FFFFFF')
-  setEdgeColorRule (cwe, 'edgeType',  edgeType.values [2], mode='lookup', '#000000')
-
+    title = 'test.setEdgeColorRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
+    colors = c ('#FF0000', '#FFFF00', '#00FF00')
+    setEdgeColorRule (cwe, 'edgeType',  edgeType.values, colors, mode='lookup')
+    Sys.sleep (0.3)
+    
+    all.white  = c ('#FFFFFF', '#FFFFFF', '#FFFFFF')
+    setEdgeColorRule (cwe, 'edgeType',  edgeType.values [2], mode='lookup', '#000000')
+    
     # now create a continuous ('interpolate') mode rule, using the score edge attribute
-  score.values = c (-15, 0, 40);
-  colors = c ('#00FF00', '#FFFFFF', '#FF0000')
-  setEdgeColorRule (cwe, 'score',  score.values, colors, mode='interpolate')
-
+    score.values = c (-15, 0, 40);
+    colors = c ('#00FF00', '#FFFFFF', '#FF0000')
+    setEdgeColorRule (cwe, 'score',  score.values, colors, mode='interpolate')
+    
     # now swap the colors
-  colors = c ('#FF0000', '#000000', '#00FF00')
-  setEdgeColorRule (cwe, 'score',  score.values, colors, mode='interpolate')
-
-  #msg (cwe, 'test.setEdgeColorRule')
-
-  invisible (cwe)
+    colors = c ('#FF0000', '#000000', '#00FF00')
+    setEdgeColorRule (cwe, 'score',  score.values, colors, mode='interpolate')
+    
+    invisible (cwe)
 
 } # test.setEdgeColorRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeOpacityRule = function ()
 {
-  title = 'test.setEdgeOpacityRule'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-
-  edgeType.values = c ("phosphorylates", "synthetic lethal", "undefined")
-
-     # want to see edges and both arrows, to check success of opacity rule
-  setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, rep ('ARROW', 3))
-  setEdgeSourceArrowRule (cw, 'edgeType', edgeType.values, rep ('ARROW', 3))
-  setDefaultEdgeLineWidth (cw, 5)
-
-  redraw (cw)
-
+    title = 'test.setEdgeOpacityRule'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    
+    edgeType.values = c ("phosphorylates", "synthetic lethal", "undefined")
+    
+    # want to see edges and both arrows, to check success of opacity rule
+    setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, rep ('ARROW', 3))
+    setEdgeSourceArrowRule (cw, 'edgeType', edgeType.values, rep ('ARROW', 3))
+    setDefaultEdgeLineWidth (cw, 5)
+    
+    redraw (cw)
+    
     # do the lookup rule
-  opacities = c (25, 100, 255)
-  setEdgeOpacityRule (cw, 'edgeType',  edgeType.values, opacities, mode='lookup')
-  redraw (cw)
-
+    opacities = c (25, 100, 255)
+    setEdgeOpacityRule (cw, 'edgeType',  edgeType.values, opacities, mode='lookup')
+    redraw (cw)
+    
     # now do the interpolated version
-  opacities = c (10, 125, 255)
-  control.points = c (-12, 0, 35)
-  setEdgeOpacityRule (cw, 'score',  control.points, opacities, mode='interpolate')  
-  redraw (cw)
-
-  invisible (cw)
+    opacities = c (10, 125, 255)
+    control.points = c (-12, 0, 35)
+    setEdgeOpacityRule (cw, 'score',  control.points, opacities, mode='interpolate')  
+    redraw (cw)
+    
+    invisible (cw)
 
 } # test.setEdgeOpacityRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeTargetArrowRule = function ()
 {
-  title = 'test.setEdgeTargetArrowRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  arrows = c ('Delta', 'T', 'Diamond')
-  edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-  checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 3)
-
-  setEdgeTargetArrowRule (cwe, 'edgeType', edgeType.values, arrows)
-  #msg (cwe, 'test.setEdgeTargetArrowRule')
-
+    title = 'test.setEdgeTargetArrowRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    arrows = c ('Delta', 'T', 'Diamond')
+    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
+    checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 3)
+    
+    setEdgeTargetArrowRule (cwe, 'edgeType', edgeType.values, arrows)
+    
     # now test the list-of-length-one call.  the called method will double the list to get past the xmlrpc
     # treatment of lists of length one as scalars, and a failed signature match
-
-  arrows = c ('Circle')
-  edgeType.values = c ('phosphorylates')
-  checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 1)
-
-  setEdgeTargetArrowRule (cwe, 'edgeType', edgeType.values, arrows)
-  #msg (cwe, 'test.setEdgeTargetArrowRule')
-
-  invisible (cwe)
+    arrows = c ('Circle')
+    edgeType.values = c ('phosphorylates')
+    checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 1)
+    
+    setEdgeTargetArrowRule (cwe, 'edgeType', edgeType.values, arrows)
+    
+    invisible (cwe)
 
 } # test.setEdgeTargetArrowRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeArrowColorRules = function ()
 {
-  title = 'test.setEdgeArrowColorRules'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  #xml.rpc (cwe@uri, 'Cytoscape.discreteMapper', as.character (cwe@window.id), 'default', 'edgeType', 'Edge Target Arrow Color',
-  #                  '#FFFFFF', c ("phosphorylates", "synthetic lethal", "undefined"), 
-  #                  #c ("#0000AA", "#00AA00", "#AA0000"))
-  #                  c ("#AA00AA", "#AAAA00", "#AA0000"))
-
-  #xml.rpc (cwe@uri, 'Cytoscape.createContinuousEdgeVisualStyle', 'edgeType', 'Edge Target Arrow Color',
-  #         c (-40, 0, 40), c ('#00FF00', '#FFFFFF', '#FF0000'))
-
-  colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
-  colors.2 = c ("#AA00AA", "#AAAA00", "#AA0000")
-
-  setEdgeTargetArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.1)
-  setEdgeSourceArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.1)
-  system ('sleep 0.3')
-  setEdgeTargetArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.2)
-  setEdgeSourceArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.2)
-
+    title = 'test.setEdgeArrowColorRules'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
+    colors.2 = c ("#AA00AA", "#AAAA00", "#AA0000")
+    
+    setEdgeTargetArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.1)
+    setEdgeSourceArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.1)
+    system ('sleep 0.3')
+    setEdgeTargetArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.2)
+    setEdgeSourceArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.2)
+    
     # test one-element list
-  setEdgeSourceArrowColorRule (cwe, 'edgeType', "phosphorylates", '#000000')
-
-  #msg (cwe, 'test.setEdgeArrowColorRules')
-
-  invisible (cwe)
+    setEdgeSourceArrowColorRule (cwe, 'edgeType', "phosphorylates", '#000000')
+    
+    invisible (cwe)
 
 } # test.setEdgetArrowColorRules
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeSourceArrowRule = function ()
 {
-  title = 'test.setEdgeSourceArrowRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  arrows = c ('Arrow', 'Diamond', 'Circle')
-  edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-  checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 3)
-
-  setEdgeSourceArrowRule (cwe, 'edgeType', edgeType.values, arrows)
-
-   # test one-element rule
-  setEdgeSourceArrowRule (cwe, 'edgeType', edgeType.values [2], arrows [2])
-
-  #msg (cwe, 'test.setEdgeSourceArrowRule')
-
-  invisible (cwe)
+    title = 'test.setEdgeSourceArrowRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    arrows = c ('Arrow', 'Diamond', 'Circle')
+    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
+    checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 3)
+    
+    setEdgeSourceArrowRule (cwe, 'edgeType', edgeType.values, arrows)
+    
+    # test one-element rule
+    setEdgeSourceArrowRule (cwe, 'edgeType', edgeType.values [2], arrows [2])
+    
+    invisible (cwe)
 
 } # test.setEdgeSourceArrowRule
 #------------------------------------------------------------------------------------------------------------------------
 test.movie = function ()
 {
-  title = 'test.movie'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
+    title = 'test.movie'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
     # establish the rules which apply during the full run of the movie
     # different node sizes and node colors are created, not by changing these rules, but
     # by changing node attribute values, for the integer attribute 'count' and the numeric attribute 'lfc'
-  count.control.points = c (2, 30, 100)
-  sizes                = c (20, 50, 100)
-  setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
-  setNodeColorRule (cwe, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
-
-  count = 3
-
-     # three renderings of the 3-node, 3-edge network are created in this loop, which runs 'count' times
-     # the first two set new attributes on the R graph data structure, then ask RCy to send those values
-     # to R from the graph
-     # the third rendering bypasses storage of new attribute values on the R graph, sending them instead 
-     # directly to Cytoscape.  (hence 'setNodeAttributesDirect')
+    count.control.points = c (2, 30, 100)
+    sizes                = c (20, 50, 100)
+    setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
+    setNodeColorRule (cwe, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
     
-  for (i in 1:count) { 
+    count = 3
+    
+    # three renderings of the 3-node, 3-edge network are created in this loop, which runs 'count' times
+    # the first two set new attributes on the R graph data structure, then ask RCy3 to send those values
+    # to R from the graph
+    # the third rendering bypasses storage of new attribute values on the R graph, sending them instead 
+    # directly to Cytoscape.  (hence 'setNodeAttributesDirect')
+    
+    for (i in 1:count) { 
     nodeData (cwe@graph, 'A', 'lfc') = -3.0
     nodeData (cwe@graph, 'B', 'lfc') = -0.7
     nodeData (cwe@graph, 'C', 'lfc') = -1.9
@@ -2463,7 +2441,7 @@ test.movie = function ()
     result = setNodeAttributes (cwe, 'lfc')
     result = setNodeAttributes (cwe, 'count')
     redraw (cwe)
-
+    
     Sys.sleep (0.3)
     nodeData (cwe@graph, 'A', 'lfc') = 3.0
     nodeData (cwe@graph, 'B', 'lfc') = 0.7
@@ -2475,49 +2453,44 @@ test.movie = function ()
     result = setNodeAttributes (cwe, 'count')
     redraw (cwe)
     Sys.sleep (0.3)
-
+    
     count.A = round (runif (1, 1, 200))
     count.B = round (runif (1, 1, 200))
     count.C = round (runif (1, 1, 200))
-
+    
     result = setNodeAttributesDirect (cwe, 'count', 'int', c ('A', 'B', 'C'), c (count.A, count.B, count.C)); 
     result = setNodeAttributesDirect (cwe, 'lfc', 'numeric', c ('A', 'B', 'C'), c (-1.0, 0.0, 1.0))
     redraw (cwe)
-
-    if (i < count) Sys.sleep (0.3)
-    } # for i
-
-  #msg (cwe, 'test.movie')
-
-  invisible (cwe)
+    
+    invisible (cwe)
 
 } # test.movie
 #------------------------------------------------------------------------------------------------------------------------
 test.unmatchedAttributesError = function ()
 {
-  title = 'test.unmatchedAttributesError'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
+    title = 'test.unmatchedAttributesError'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
     # this works
-  count.control.points = c (2, 30, 100)
-  sizes                = c (20, 50, 100)
-  setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
-  redraw (cwe)
-
+    count.control.points = c (2, 30, 100)
+    sizes                = c (20, 50, 100)
+    setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
+    redraw (cwe)
+    
     # this should fail gracefully
-  count.control.points = c (2, 30, 100)
-  sizes                = c (20, 50, 100)
-  setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
-
-  redraw (cwe)
-  #msg (cwe, 'test.unmatchedAttributesError')
-
-  invisible (cwe)
+    count.control.points = c (2, 30, 100)
+    sizes                = c (20, 50, 100)
+    setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
+    
+    redraw (cwe)
+    #msg (cwe, 'test.unmatchedAttributesError')
+    
+    invisible (cwe)
 
 } # test.unmatchedAttributesError
 #------------------------------------------------------------------------------------------------------------------------
@@ -2525,557 +2498,470 @@ test.unmatchedAttributesError = function ()
 #------------------------------------------------------------------------------------------------------------------------
 #RCy3:::makeRandomGraph ()
 #------------------------------------------------------------------------------------------------------------------------
-# this tests the otherwise invisible method in RCytocape.R, called to compensate for the extra edges and edge attributes
+# this tests the otherwise invisible method in RCy3.R, called to compensate for the extra edges and edge attributes
 # packed into an undirected graph
-test.remove.redundancies.in.undirected.graph = function ()
-{
-
-  title = 'test.remove.redundancies.in.undirected.graph'
-  window.prep (title)
-
-     # create a small random graph,
-  set.seed (333)
-  V = letters [1:4]
-  gu = randomEGraph (V, 0.7)
-
-    # add 2 node attributes
-  nodeDataDefaults (gu, 'count') = 0
-  nodeDataDefaults (gu, 'char') = 'X'
-
-
-  counts = sample (1:100, length (nodes (gu)))
-  chars = sample (letters, length (nodes (gu)))
-
-  for (i in 1: length (nodes (gu))) {
-    nodeData (gu, nodes (gu)[i], 'count') = counts [i]
-    nodeData (gu, nodes (gu)[i], 'char')  = chars [i]
-    } # for i
-
-    # now add an edge attribute, in addition to the 'weight' attribute which randomEGraph supplies
-  edgeDataDefaults (gu, 'pmid') = '9999999'
-  edge.node.pairs = strsplit (edgeNames (gu), '\\~')
-  for (node.pair in edge.node.pairs) {
-    source.node = node.pair [1]
-    target.node = node.pair [2]
-    pmid.fake = 87654321 + sample (1:1000, 1)
-    edgeData (gu, source.node, target.node, 'pmid') = as.character (pmid.fake)
-    } # for node.pair
-    
-  gu.fixed = RCy3:::remove.redundancies.in.undirected.graph (gu)
-  gu.copy = gu
-
-    # do some basic checks:  nodes?  edges?  count of node & edge attributes?  edge attribute names?  node attribute names? 
-  checkEquals (sort (nodes (gu)), sort (nodes (gu.fixed)))
-  checkEquals (sort (edgeNames (gu)), sort (edgeNames (gu.fixed)))
-  checkEquals (length (edgeDataDefaults (gu)), length (edgeDataDefaults (gu.fixed)))
-  checkEquals (length (nodeDataDefaults (gu)), length (nodeDataDefaults (gu.fixed)))
-  checkEquals (eda.names (gu), eda.names (gu.fixed))
-  checkEquals (noa.names (gu), noa.names (gu.fixed))
-
-    # now check that the default edge attribute values are all the same
-  if (length (edgeDataDefaults (gu) > 0)) 
-    checkTrue (all (sapply (names (edgeDataDefaults (gu)), function (eda.name) 
-                checkEquals (edgeDataDefaults (gu, eda.name), edgeDataDefaults (gu.fixed, eda.name)))))
-
-    # having checked the default eda's above, now check the specific assigned values
-  edge.node.pairs = strsplit (edgeNames (gu.fixed), '\\~')
-  eda.names = eda.names (gu.fixed)
-
-  for (node.pair in edge.node.pairs) {
-    source.node = node.pair [1]
-    target.node = node.pair [2]
-    for (edge.attribute in eda.names) {
-      checkEquals (unlist (edgeData (gu,       source.node, target.node, edge.attribute), use.names=FALSE),
-                   unlist (edgeData (gu.fixed, source.node, target.node, edge.attribute), use.names=FALSE))
-      } # for each edge.attribute
-    } # for edge
-
-     # was all the node data transferred properly?
-
-  if (length (nodeDataDefaults (gu)) > 0) {
-    for (node in nodes (gu)) {
-      for (node.attribute in noa.names (gu.fixed)) {
-        checkEquals (unlist (nodeData (gu,       node, node.attribute), use.names=FALSE),
-                     unlist (nodeData (gu.fixed, node, node.attribute), use.names=FALSE))
-       } # for node.attribute
-     } # for node
-   } # if length
-
-  invisible (gu.fixed)
-  
-} # test.remove.redundancies.in.undirected.graph 
 #------------------------------------------------------------------------------------------------------------------------
 test.randomUndirectedGraph = function ()
 {
-  title = 'test.randomUndirectedGraph'
-  window.prep (title)
-
-  g.random = RCy3::makeRandomGraph ()
-  edgeData (g.random, '1', '2', 'weight') = 0.55
-  edgeData (g.random, '1', '2', 'pmid') = '12345678' 
-
-  cwr = CytoscapeWindow (title, g.random)
-  displayGraph (cwr)
-  layoutNetwork (cwr, 'grid')
-  redraw (cwr)
-
-  invisible (cwr)
+    title = 'test.randomUndirectedGraph'
+    window.prep (title)
+    
+    g.random = RCy3::makeRandomGraph ()
+    edgeData (g.random, '1', '2', 'weight') = 0.55
+    edgeData (g.random, '1', '2', 'pmid') = '12345678' 
+    
+    cwr = CytoscapeWindow (title, g.random)
+    displayGraph (cwr)
+    layoutNetwork (cwr, 'grid')
+    redraw (cwr)
+    
+    invisible (cwr)
 
 } # test.randomUndirectedGraph 
 #------------------------------------------------------------------------------------------------------------------------
 test.simpleGraph = function (apply.viz.rules=TRUE, do.redraw=TRUE)
 {
-  title = 'test.simpleGraph'
-  window.prep (title)
-
-  g.simple = RCy3::makeSimpleGraph ()
-  cws = CytoscapeWindow (title, g.simple)
-
-  displayGraph (cws)
-  layoutNetwork (cws, 'grid')
-
-  if (apply.viz.rules) {
-    setNodeLabelRule (cws, 'label')
-    setDefaultNodeBorderWidth (cws, 5)
-    node.attribute.values = c ("kinase",  "transcription factor")
-    colors =                c ('#A0AA00', '#FF0000')
-    setNodeBorderColorRule (cws, 'type', node.attribute.values, colors, mode='lookup', default.color='#88FF22')
-    count.control.points = c (2, 30, 100)
-    sizes                = c (20, 50, 100)
-    setNodeSizeRule (cws, 'count', count.control.points, sizes, mode='interpolate')
-    setNodeColorRule (cws, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
-    redraw (cws)
+    title = 'test.simpleGraph'
+    window.prep (title)
+    
+    g.simple = RCy3::makeSimpleGraph ()
+    cws = CytoscapeWindow (title, g.simple)
+    
+    displayGraph (cws)
+    layoutNetwork (cws, 'grid')
+    
+    if (apply.viz.rules) {
+        setNodeLabelRule (cws, 'label')
+        setDefaultNodeBorderWidth (cws, 5)
+        node.attribute.values = c ("kinase",  "transcription factor")
+        colors =                c ('#A0AA00', '#FF0000')
+        setNodeBorderColorRule (cws, 'type', node.attribute.values, colors, mode='lookup', default.color='#88FF22')
+        count.control.points = c (2, 30, 100)
+        sizes                = c (20, 50, 100)
+        setNodeSizeRule (cws, 'count', count.control.points, sizes, mode='interpolate')
+        setNodeColorRule (cws, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
+        redraw (cws)
     } # if apply.viz.rules
-
-
-  invisible (cws)
+    
+    
+    invisible (cws)
 
 } # test.simpleGraph
 #------------------------------------------------------------------------------------------------------------------------
 test.simpleGraphWithReciprocalEdge = function ()
 {
-  title = 'test.simpleGraphWithReciprocalEdge'
-  window.prep (title)
-
-  g.simple = RCy3::makeSimpleGraph ()
-  g.simple = graph::addEdge ('C', 'B', g.simple)
-  edgeData (g.simple, 'C', 'B', attr='edgeType') = 'synthetic rescue'
-  edgeData (g.simple, 'C', 'B', attr='score') = 42
-  edgeData (g.simple, 'C', 'B', attr='misc') = 'ellany'
-  g <- g.simple
-
-  cws = CytoscapeWindow (title, g.simple)
-  cws.x <- cws
-
-  displayGraph (cws)
-  layoutNetwork (cws, 'grid')
-  setNodeLabelRule (cws, 'label')
-  node.attribute.values = c ("kinase",  "transcription factor")
-  colors =                c ('#A0AA00', '#FF0000')
-  setDefaultNodeBorderWidth (cws, 5)
-  setNodeBorderColorRule (cws, 'type', node.attribute.values, colors, mode='lookup', default.color='#88FF22')
-  count.control.points = c (2, 30, 100)
-  sizes                = c (20, 50, 100)
-  setNodeSizeRule (cws, 'count', count.control.points, sizes, mode='interpolate')
-  setNodeColorRule (cws, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
-  arrows = c ('Arrow', 'Arrow', 'Arrow', 'None')
-  edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'synthetic rescue', 'undefined')
-  setEdgeTargetArrowRule (cws, 'edgeType', edgeType.values, arrows)
-
-  edgeType.values = c ('phosphorylates', 'synthetic lethal', 'synthetic rescue', 'undefined')
-  edgeColors = c ('#0000AA', '#000000', '#00AA00', '#FFFFFF')
-  setEdgeColorRule (cws, 'edgeType',  edgeType.values, edgeColors, mode='lookup')
-
-  redraw (cws)
-
-  #msg (cws, title)
-
-  invisible (cws)
+    title = 'test.simpleGraphWithReciprocalEdge'
+    window.prep (title)
+    
+    g.simple = RCy3::makeSimpleGraph ()
+    g.simple = graph::addEdge ('C', 'B', g.simple)
+    edgeData (g.simple, 'C', 'B', attr='edgeType') = 'synthetic rescue'
+    edgeData (g.simple, 'C', 'B', attr='score') = 42
+    edgeData (g.simple, 'C', 'B', attr='misc') = 'ellany'
+    g <- g.simple
+    
+    cws = CytoscapeWindow (title, g.simple)
+    cws.x <- cws
+    
+    displayGraph (cws)
+    layoutNetwork (cws, 'grid')
+    setNodeLabelRule (cws, 'label')
+    node.attribute.values = c ("kinase",  "transcription factor")
+    colors =                c ('#A0AA00', '#FF0000')
+    setDefaultNodeBorderWidth (cws, 5)
+    setNodeBorderColorRule (cws, 'type', node.attribute.values, colors, mode='lookup', default.color='#88FF22')
+    count.control.points = c (2, 30, 100)
+    sizes                = c (20, 50, 100)
+    setNodeSizeRule (cws, 'count', count.control.points, sizes, mode='interpolate')
+    setNodeColorRule (cws, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
+    arrows = c ('Arrow', 'Arrow', 'Arrow', 'None')
+    edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'synthetic rescue', 'undefined')
+    setEdgeTargetArrowRule (cws, 'edgeType', edgeType.values, arrows)
+    
+    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'synthetic rescue', 'undefined')
+    edgeColors = c ('#0000AA', '#000000', '#00AA00', '#FFFFFF')
+    setEdgeColorRule (cws, 'edgeType',  edgeType.values, edgeColors, mode='lookup')
+    
+    redraw (cws)
+    
+    invisible (cws)
 
 } # test.simpleGraphWithReciprocalEdge
 #------------------------------------------------------------------------------------------------------------------------
 test.setGraph = function ()
 {
-  title = 'test.setGraph'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title)
-  checkEquals (length (nodes (getGraph (cw))), 0)
-  new.graph = RCy3::makeSimpleGraph ()
-  cw = setGraph (cw, new.graph)
-  checkEquals (length (nodes (getGraph (cw))), 3)
-
-  #msg (cw, 'test.setGraph')
-
-  invisible (cw)
+    title = 'test.setGraph'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title)
+    checkEquals (length (nodes (getGraph (cw))), 0)
+    new.graph = RCy3::makeSimpleGraph ()
+    cw = setGraph (cw, new.graph)
+    checkEquals (length (nodes (getGraph (cw))), 3)
+    
+    invisible (cw)
 
 } # test.setGraph 
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodePosition = function ()
 {
-  #DEACTIVATED("too slow")
-  title = 'test.setNodePosition'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  layoutNetwork (cwe, 'grid')   # get a reasonable starting layout, with the nodes well-separate
-
-  center.x = 200
-  center.y = 200
-  radius = 200
-  angles = rep (seq (0, 360, 5), 3)  # sweep through full revoltion 3 times, 5 degrees at a time
+    #DEACTIVATED("too slow")
+    title = 'test.setNodePosition'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    layoutNetwork (cwe, 'grid')   # get a reasonable starting layout, with the nodes well-separate
+    
+    center.x = 200
+    center.y = 200
+    radius = 200
+    angles = seq (0, 360, 5)  # sweep through full revoltion, 5 degrees at a time
     # move just the A node, swinging it around the 'center' at 200, 200.  
     # it would be nice not know more about the coordinate system than I now do, perhaps to
     # query current position on any node
-  for (angle in angles) {
-    angle.in.radians = angle * pi / 180
-    x = center.x + (radius * cos (angle.in.radians))
-    y = center.y + (radius * sin (angle.in.radians))
-    setNodePosition (cwe, 'A', x, y)
+    for (angle in angles) {
+        angle.in.radians = angle * pi / 180
+        x = center.x + (radius * cos (angle.in.radians))
+        y = center.y + (radius * sin (angle.in.radians))
+        setNodePosition (cwe, 'A', x, y)
     }
-
-  invisible (cwe)
+    
+    invisible (cwe)
 
 } # test.setNodePosition
 #------------------------------------------------------------------------------------------------------------------------
 test.getNodePosition = function ()
 {
-  title = 'test.getNodePosition'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-  xx <- cwe
-  
-  layoutNetwork (cwe, 'grid')   # get a reasonable starting layout, with the nodes well-separate
-
-     # the scheme:  get current positions, find their mean, place all the nodes there,
-     # get their new positions, check to see that they are the means just set.
-  
-  positions <- getNodePosition (cwe, c ('A', 'B', 'C'))
-
-     # place the nodes on top of each other, at the center of their 3-cornered original layout
-
-  center.x = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$x)))))
-  center.y = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$y)))))
-
-  setNodePosition (cwe, c ('A', 'B', 'C'), rep (center.x, 3), rep (center.y, 3))
-  current.x = getNodePosition (cwe, 'A')[[1]]$x
-  current.y = getNodePosition (cwe, 'A')[[1]]$y
-  #printf ('center:  %d  %d', center.x, center.y)
-  #printf ('current: %d  %d', current.x, current.y)
-  
-  checkEqualsNumeric (current.x, center.x, tol=1)
-  checkEqualsNumeric (current.y, center.y, tol=1)
-
-  invisible (cwe)
+    title = 'test.getNodePosition'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    layoutNetwork (cwe, 'grid')   # get a reasonable starting layout, with the nodes well-separate
+    
+    # the scheme:  get current positions, find their mean, place all the nodes there,
+    # get their new positions, check to see that they are the means just set.
+    
+    positions <- getNodePosition (cwe, c ('A', 'B', 'C'))
+    
+    # place the nodes on top of each other, at the center of their 3-cornered original layout
+    center.x = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$x)))))
+    center.y = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$y)))))
+    
+    setNodePosition (cwe, c ('A', 'B', 'C'), rep (center.x, 3), rep (center.y, 3))
+    current.x = getNodePosition (cwe, 'A')[[1]]$x
+    current.y = getNodePosition (cwe, 'A')[[1]]$y
+    #printf ('center:  %d  %d', center.x, center.y)
+    #printf ('current: %d  %d', current.x, current.y)
+    
+    checkEqualsNumeric (current.x, center.x, tol=1)
+    checkEqualsNumeric (current.y, center.y, tol=1)
+    
+    invisible (cwe)
 
 } # test.getNodePosition
 #------------------------------------------------------------------------------------------------------------------------
-# until now, the encoding trick for returning node positions from RCytoscape has been to separate node name from x,y by ':'
-#   "2022:417.0,122.0" "659:156.0,0.0"
-# 
 test.getNodePosition.colonInNodeName = function ()
 {
-  #DEACTIVATED("not fatally slow, but i am impatient. Reactivate later.")
-  title = 'test.getNodePosition.colonInNodeName'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  funky.node.name = 'abcd:xyz::1234,funky?!'
-  g = graph::addNode (funky.node.name, g)
-  nodeData (g, funky.node.name, 'label') = funky.node.name
-
-  cwe = CytoscapeWindow (title, graph=g)
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-  xx <- cwe
-  
-  layoutNetwork (cwe, 'grid')   # get a reasonable starting layout, with the nodes well-separate
-
-     # the scheme:  get current positions, find their mean, place all the nodes there,
-     # get their new positions, check to see that they are the means just set.
-  
-  positions <- getNodePosition (cwe, c ('A', 'B', 'C'))
-
-     # place the nodes on top of each other, at the center of their 3-cornered original layout
-
-  center.x = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$x)))))
-  center.y = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$y)))))
-
-     # rearrange the positions
-  layoutNetwork (cwe, 'grid')
-
+    #DEACTIVATED("not fatally slow, but i am impatient. Reactivate later.")
+    title = 'test.getNodePosition.colonInNodeName'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    funky.node.name = 'abcd:xyz::1234,funky?!'
+    g = graph::addNode (funky.node.name, g)
+    nodeData (g, funky.node.name, 'label') = funky.node.name
+    
+    cwe = CytoscapeWindow (title, graph=g)
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    redraw (cwe)
+    
+    layoutNetwork (cwe, 'grid')   # get a reasonable starting layout, with the nodes well-separate
+    
+    # the scheme:  get current positions, find their mean, place all the nodes there,
+    # get their new positions, check to see that they are the means just set.
+    
+    positions <- getNodePosition (cwe, c ('A', 'B', 'C'))
+    
+    # place the nodes on top of each other, at the center of their 3-cornered original layout
+    
+    center.x = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$x)))))
+    center.y = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$y)))))
+    
+    # rearrange the positions
+    layoutNetwork (cwe, 'grid')
+    
     # superimpose A,B, and C  in the center
-  setNodePosition (cwe, c ('A', 'B', 'C'), rep (center.x, 3), rep (center.y, 3))
-  x.funky = center.x + 50
-  y.funky = center.y + 50
+    setNodePosition (cwe, c ('A', 'B', 'C'), rep (center.x, 3), rep (center.y, 3))
+    x.funky = center.x + 50
+    y.funky = center.y + 50
     # offset funky.node.name
-  setNodePosition (cwe, funky.node.name, x.funky, y.funky)
-  fitContent (cwe)
-  setZoom (cwe, 0.75 * getZoom (cwe))
-  
-     # now check that the nodes have been repositioned from grid to centered (A,B,C) and offset (funky.node.name)
-  current.x = getNodePosition (cwe, 'A')[[1]]$x
-  current.y = getNodePosition (cwe, 'A')[[1]]$y
-  
-  checkEqualsNumeric (current.x, center.x, tol=1)
-  checkEqualsNumeric (current.y, center.y, tol=1)
-
-  funky.pos.x = getNodePosition (cwe, funky.node.name) [[1]]$x
-  funky.pos.y = getNodePosition (cwe, funky.node.name) [[1]]$y
-  checkEqualsNumeric (funky.pos.x, x.funky, tol=1)
-  checkEqualsNumeric (funky.pos.y, y.funky, tol=1)
-
-  invisible (cwe)
+    setNodePosition (cwe, funky.node.name, x.funky, y.funky)
+    fitContent (cwe)
+    setZoom (cwe, 0.75 * getZoom (cwe))
+    
+    # now check that the nodes have been repositioned from grid to centered (A,B,C) and offset (funky.node.name)
+    current.x = getNodePosition (cwe, 'A')[[1]]$x
+    current.y = getNodePosition (cwe, 'A')[[1]]$y
+    
+    checkEqualsNumeric (current.x, center.x, tol=1)
+    checkEqualsNumeric (current.y, center.y, tol=1)
+    
+    funky.pos.x = getNodePosition (cwe, funky.node.name) [[1]]$x
+    funky.pos.y = getNodePosition (cwe, funky.node.name) [[1]]$y
+    checkEqualsNumeric (funky.pos.x, x.funky, tol=1)
+    checkEqualsNumeric (funky.pos.y, y.funky, tol=1)
+    
+    invisible (cwe)
 
 } # test.getNodePosition.colonInNodeName
 #------------------------------------------------------------------------------------------------------------------------
 test.getNodeSize = function ()
 {
-  title = 'test.getNodeSize'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-
-     # establish a good starting point
-  setNodeSizeDirect (cw, nodes (cw@graph), rep (100, 3))
-  redraw (cw)
-
-  sizes =  getNodeSize (cw, nodes (cw@graph))
+    title = 'test.getNodeSize'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    
+    # establish a good starting point
+    setNodeSizeDirect (cw, nodes (cw@graph), rep (100, 3))
+    redraw (cw)
+    
+    sizes =  getNodeSize (cw, nodes (cw@graph))
     # these next test pass fine in uncomplicated circumstances, but (apparently) fail due to
     # vizmap complexities when lots of windows are or have been open
-  #checkEquals (sizes$width, c (100, 100, 100))
-  #checkEquals (sizes$height, c (100, 100, 100))
-
-  setNodeSizeDirect (cw, c ('A', 'B'), 150); redraw (cw)
-  sizes =  getNodeSize (cw, nodes (cw@graph))
-
+    #checkEquals (sizes$width, c (100, 100, 100))
+    #checkEquals (sizes$height, c (100, 100, 100))
+    
+    setNodeSizeDirect (cw, c ('A', 'B'), 150); redraw (cw)
+    sizes =  getNodeSize (cw, nodes (cw@graph))
+    
     # these next test pass fine in uncomplicated circumstances, but (apparently) fail due to
     # vizmap complexities when lots of windows are or have been open
-  #checkEquals (sizes$width, c (150, 150, 100))
-  #checkEquals (sizes$height, c (150, 150, 100))
-
-  setNodeSizeDirect (cw, c ('A', 'B'), c (180, 32));   redraw (cw)
-
-  sizes = getNodeSize (cw, nodes (cw@graph))
-  #checkEquals (sizes$width, c (180, 32, 100))
-  #checkEquals (sizes$height, c (180, 32, 100))
-
-     # now allow for non-symmetric dimensions, in which width and height are set separately
-  lockNodeDimensions (cw, FALSE)
-  setNodeHeightDirect (cw, c ('A', 'B', 'C'), c (12, 22, 32))
-  setNodeWidthDirect (cw, c ('A', 'B', 'C'), c (120, 122, 132))
-  redraw (cw)
-
-  sizes = getNodeSize (cw, 'B')
-  #checkEquals (sizes$width, 122)
-  #checkEquals (sizes$height, 22)
-
-       # return to symmetric dimensions
-  lockNodeDimensions (cw, TRUE)
-  redraw (cw)
-
-      # not sure how width and height are rectified.  it appears that the last-used width=height values are returned
-  sizes = getNodeSize (cw, nodes (cw@graph))
-  #checkEquals (sizes$width, sizes$height)
-         
-  invisible (cw)
+    #checkEquals (sizes$width, c (150, 150, 100))
+    #checkEquals (sizes$height, c (150, 150, 100))
+    
+    setNodeSizeDirect (cw, c ('A', 'B'), c (180, 32));   redraw (cw)
+    
+    sizes = getNodeSize (cw, nodes (cw@graph))
+    #checkEquals (sizes$width, c (180, 32, 100))
+    #checkEquals (sizes$height, c (180, 32, 100))
+    
+    # now allow for non-symmetric dimensions, in which width and height are set separately
+    lockNodeDimensions (cw, FALSE)
+    setNodeHeightDirect (cw, c ('A', 'B', 'C'), c (12, 22, 32))
+    setNodeWidthDirect (cw, c ('A', 'B', 'C'), c (120, 122, 132))
+    redraw (cw)
+    
+    sizes = getNodeSize (cw, 'B')
+    #checkEquals (sizes$width, 122)
+    #checkEquals (sizes$height, 22)
+    
+    # return to symmetric dimensions
+    lockNodeDimensions (cw, TRUE)
+    redraw (cw)
+    
+    # not sure how width and height are rectified.  it appears that the last-used width=height values are returned
+    sizes = getNodeSize (cw, nodes (cw@graph))
+    #checkEquals (sizes$width, sizes$height)
+     
+    invisible (cw)
 
 } # test.getNodeSize
 #------------------------------------------------------------------------------------------------------------------------
 test.haveNodeAttribute = function ()
 {
-  title = 'test.haveNodeAttribute'
-  window.prep (title)
-
-  cw3 = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw3)
-  redraw (cw3)
-  layoutNetwork (cw3)
-
-  cy = CytoscapeConnection ()
-
-  nodes.with.attribute = RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'lfc')
-  checkEquals (sort (nodes.with.attribute),  c ('A', 'B', 'C'))
-
-  checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'type')), 3)
-  checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'label')), 3)
-  checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'count')), 3)
-
-  checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'bogus')), 0)
-
-  invisible (cw3)
+    title = 'test.haveNodeAttribute'
+    window.prep (title)
+    
+    cw3 = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw3)
+    redraw (cw3)
+    layoutNetwork (cw3)
+    
+    cy = CytoscapeConnection ()
+    
+    nodes.with.attribute = RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'lfc')
+    checkEquals (sort (nodes.with.attribute),  c ('A', 'B', 'C'))
+    
+    checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'type')), 3)
+    checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'label')), 3)
+    checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'count')), 3)
+    
+    checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'bogus')), 0)
+    
+    invisible (cw3)
 
 } # test.haveNodeAttribute
 #------------------------------------------------------------------------------------------------------------------------
 test.haveEdgeAttribute = function ()
 {
-  title = 'test.haveEdgeAttribute'
-  window.prep (title)
-
-  cw3 = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw3)
-  redraw (cw3)
-  layoutNetwork (cw3)
-
-  cy = CytoscapeConnection ()
-
-  cy2.edgenames = as.character (cy2.edge.names (getGraph (cw3)))
-  edges.with.attribute = RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'edgeType')
-
-  checkEquals (length (edges.with.attribute), 3)
-  checkTrue ("A (phosphorylates) B" %in% edges.with.attribute)
-  checkTrue ("B (synthetic lethal) C" %in% edges.with.attribute)
-  checkTrue ("C (undefined) A" %in% edges.with.attribute)
-
-  checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'score')) == 3)
-  checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'misc')) == 3)
-  checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'bogus')) == 0)
+    title = 'test.haveEdgeAttribute'
+    window.prep (title)
+    
+    cw3 = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw3)
+    redraw (cw3)
+    layoutNetwork (cw3)
+    
+    cy = CytoscapeConnection ()
+    
+    cy2.edgenames = as.character (cy2.edge.names (getGraph (cw3)))
+    edges.with.attribute = RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'edgeType')
+    
+    checkEquals (length (edges.with.attribute), 3)
+    checkTrue ("A (phosphorylates) B" %in% edges.with.attribute)
+    checkTrue ("B (synthetic lethal) C" %in% edges.with.attribute)
+    checkTrue ("C (undefined) A" %in% edges.with.attribute)
+    
+    checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'score')) == 3)
+    checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'misc')) == 3)
+    checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'bogus')) == 0)
 
 } # test.haveEdgeAttribute
 #------------------------------------------------------------------------------------------------------------------------
 hiddenTest.haveEdgeAttribute.oneEdgeOnly = function ()
 {
-  title = 'test.haveEdgeAttribute.oneEdgeOnly'
-  window.prep (title)
-
-  g = makeSimpleGraph ()
-  g = removeNode ('A', g)
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
-  cy = CytoscapeConnection ()
-
-  cy2.edgenames = as.character (cy2.edge.names (getGraph (cw)))
-
-  checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'score')) == 1)
+    title = 'test.haveEdgeAttribute.oneEdgeOnly'
+    window.prep (title)
+    
+    g = makeSimpleGraph ()
+    g = removeNode ('A', g)
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
+    cy = CytoscapeConnection ()
+    
+    cy2.edgenames = as.character (cy2.edge.names (getGraph (cw)))
+    
+    checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'score')) == 1)
 
 } # hiddenTest.haveEdgeAttribute.oneEdgeOnly
 #------------------------------------------------------------------------------------------------------------------------
 test.copyNodeAttributesFromCyGraph = function ()
 {
-  title = 'test.copyNodeAttributesFromCyGraph'
-  window.prep (title)
-
-  cw3 = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw3)
-  redraw (cw3)
-  layoutNetwork (cw3)
-
+    title = 'test.copyNodeAttributesFromCyGraph'
+    window.prep (title)
+    
+    cw3 = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw3)
+    redraw (cw3)
+    layoutNetwork (cw3)
+    
     # we can now depend upon Cytoscape holding its own version of cw3@graph 
     # in expected use, we expect that 'getGraphFromWindow' will be called, to get the nodes, edges, and both
     # node & edge attributes
-    # but here, we only want to test the reliabiilty of querying the Cytoscape version of the graph for all of its node
-    # attributes.  so we build a 3-node graph, *without* attributes, and pass that to copyNodeAttributesFromCyGraph, 
+    # but here, we only want to test the reliability of querying the Cytoscape version of the graph for all of its node
+    # attributes. So we build a 3-node graph, *without* attributes, and pass that to copyNodeAttributesFromCyGraph, 
     # which should copy those Cytoscape graph node attributes onto the graph we pass in.
-  g = new ('graphNEL', edgemode='directed')
-  g = graph::addNode (c ('A', 'B', 'C'), g)
-
-  cy = CytoscapeConnection ()
-  g2 = RCy3:::copyNodeAttributesFromCyGraph (cy, getWindowID (cy, title), g)
-  checkEquals (length (intersect (noa.names (g2), c ("canonicalName", "count", "label", "lfc", "type"))), 5)
-  checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='canonicalName')), c ('A', 'B', 'C'))
-  checkEquals (as.integer (nodeData (g2, c ('A', 'B', 'C'), attr='count')), c (2, 30, 100))
-  checkEquals (as.numeric (nodeData (g2, c ('A', 'B', 'C'), attr='lfc')), c (-3,  0,  3))
-  checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='type')), c ("kinase", "transcription factor", "glycoprotein"))
-
-  invisible (cw3)
+    g = new ('graphNEL', edgemode='directed')
+    g = graph::addNode (c ('A', 'B', 'C'), g)
+    
+    cy = CytoscapeConnection ()
+    g2 = RCy3:::copyNodeAttributesFromCyGraph (cy, getWindowID (cy, title), g)
+    checkEquals (length (intersect (noa.names (g2), c ("canonicalName", "count", "label", "lfc", "type"))), 5)
+    checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='canonicalName')), c ('A', 'B', 'C'))
+    checkEquals (as.integer (nodeData (g2, c ('A', 'B', 'C'), attr='count')), c (2, 30, 100))
+    checkEquals (as.numeric (nodeData (g2, c ('A', 'B', 'C'), attr='lfc')), c (-3,  0,  3))
+    checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='type')), c ("kinase", "transcription factor", "glycoprotein"))
+    
+    invisible (cw3)
 
 } # test.copyNodeAttributesFromCyGraph
 #------------------------------------------------------------------------------------------------------------------------
 test.copyEdgeAttributesFromCyGraph = function ()
 {
-  title = 'test.copyEdgeAttributesFromCyGraph'
-  window.prep (title)
-
-  cw3 = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw3)
-  redraw (cw3)
-  layoutNetwork (cw3)
-
-  g = new ('graphNEL', edgemode='directed')
-  g = graph::addNode (c ('A', 'B', 'C'), g)
-  g = graph::addEdge("A", "B", g)
-  g = graph::addEdge("B", "C", g)
-  g = graph::addEdge("C", "A", g)
-   # "C (undefined) A" "B (synthetic lethal) C"   "A (phosphorylates) B" 
-  edgeDataDefaults (g, 'edgeType') = 'undefined'
-  edgeData (g, 'A', 'B', 'edgeType') = 'phosphorylates'
-  edgeData (g, 'B', 'C', 'edgeType') = 'synthetic lethal'
-  edgeData (g, 'C', 'A', 'edgeType') = 'undefined'
-
-  cy = CytoscapeConnection ()
-  g2 = RCy3:::copyEdgeAttributesFromCyGraph (cy, cw3, g)
-
-  checkEquals (eda (g2, 'score') [['A|B']], 35)
-  checkEquals (eda (g2, 'score') [['B|C']], -12)
-  checkEquals (eda (g2, 'score') [['C|A']], 0)
-
-  checkEquals (eda (g2, 'edgeType') [['A|B']], 'phosphorylates')
-  checkEquals (eda (g2, 'edgeType') [['B|C']], 'synthetic lethal')
-  checkEquals (eda (g2, 'edgeType') [['C|A']], 'undefined')
-
-  checkEquals (eda (g2, 'interaction') [['A|B']], 'phosphorylates')
-  checkEquals (eda (g2, 'interaction') [['B|C']], 'synthetic lethal')
-  checkEquals (eda (g2, 'interaction') [['C|A']], 'undefined')
-
-  checkEquals (eda (g2, 'misc') [['A|B']], 'default misc')
-  checkEquals (eda (g2, 'misc') [['B|C']], 'default misc')
-  checkEquals (eda (g2, 'misc') [['C|A']], 'default misc')
-
-  checkEquals (eda (g2, 'canonicalName') [['A|B']],  "A (phosphorylates) B")
-  checkEquals (eda (g2, 'canonicalName') [['B|C']],  "B (synthetic lethal) C")
-  checkEquals (eda (g2, 'canonicalName') [['C|A']],  "C (undefined) A")
-
-  invisible (g2)
+    title = 'test.copyEdgeAttributesFromCyGraph'
+    window.prep (title)
+    
+    cw3 = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw3)
+    redraw (cw3)
+    layoutNetwork (cw3)
+    
+    g = new ('graphNEL', edgemode='directed')
+    g = graph::addNode (c ('A', 'B', 'C'), g)
+    g = graph::addEdge("A", "B", g)
+    g = graph::addEdge("B", "C", g)
+    g = graph::addEdge("C", "A", g)
+    # "C (undefined) A" "B (synthetic lethal) C"   "A (phosphorylates) B" 
+    edgeDataDefaults (g, 'edgeType') = 'undefined'
+    edgeData (g, 'A', 'B', 'edgeType') = 'phosphorylates'
+    edgeData (g, 'B', 'C', 'edgeType') = 'synthetic lethal'
+    edgeData (g, 'C', 'A', 'edgeType') = 'undefined'
+    
+    cy = CytoscapeConnection ()
+    g2 = RCy3:::copyEdgeAttributesFromCyGraph (cy, cw3, g)
+    
+    checkEquals (eda (g2, 'score') [['A|B']], 35)
+    checkEquals (eda (g2, 'score') [['B|C']], -12)
+    checkEquals (eda (g2, 'score') [['C|A']], 0)
+    
+    checkEquals (eda (g2, 'edgeType') [['A|B']], 'phosphorylates')
+    checkEquals (eda (g2, 'edgeType') [['B|C']], 'synthetic lethal')
+    checkEquals (eda (g2, 'edgeType') [['C|A']], 'undefined')
+    
+    checkEquals (eda (g2, 'interaction') [['A|B']], 'phosphorylates')
+    checkEquals (eda (g2, 'interaction') [['B|C']], 'synthetic lethal')
+    checkEquals (eda (g2, 'interaction') [['C|A']], 'undefined')
+    
+    checkEquals (eda (g2, 'misc') [['A|B']], 'default misc')
+    checkEquals (eda (g2, 'misc') [['B|C']], 'default misc')
+    checkEquals (eda (g2, 'misc') [['C|A']], 'default misc')
+    
+    checkEquals (eda (g2, 'canonicalName') [['A|B']],  "A (phosphorylates) B")
+    checkEquals (eda (g2, 'canonicalName') [['B|C']],  "B (synthetic lethal) C")
+    checkEquals (eda (g2, 'canonicalName') [['C|A']],  "C (undefined) A")
+    
+    invisible (g2)
 
 } # test.copyEdgeAttributesFromCyGraph
 #------------------------------------------------------------------------------------------------------------------------
 test.getGraphFromCyWindow = function ()
 {
-  cy = CytoscapeConnection ()
-
-  title = 'test.getGraphFromCyWindow'
-  window.prep (title)
-
-  cw3 = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw3)
-  redraw (cw3)
-  layoutNetwork (cw3)
-
-  g3 = getGraphFromCyWindow (cy, 'test.getGraphFromCyWindow')
-  checkEquals (sort (nodes (g3)), c ('A', 'B', 'C'))
-  checkEquals (length (intersect (noa.names (g3), c ("canonicalName", "count", "label", "lfc", "type"))), 5)
-  checkEquals (as.character (sort (noa (g3, 'canonicalName'))), c ('A', 'B', 'C'))
-  checkEquals (as.integer   (sort (noa (g3, 'count'))),         c (2, 30, 100))
-  checkEquals (as.character (sort (noa (g3, 'label'))),         c ('Gene A', 'Gene B', 'Gene C'))
-  checkEquals (as.numeric (sort (noa (g3, 'lfc'))),             c (-3,  0,  3))
-  checkEquals (as.character (sort (noa (g3, 'type'))),          c ("glycoprotein", "kinase", "transcription factor"))
-
-  checkEquals (length (intersect (eda.names (g3), c ("canonicalName", "edgeType", "interaction", "misc", "score"))), 5)
-
-  checkEquals (sort (names (cy2.edge.names (g3))),        c ('A~B',                   'B~C',                    'C~A'))
-  checkEquals (sort (as.character (cy2.edge.names (g3))), c ("A (phosphorylates) B",  "B (synthetic lethal) C", "C (undefined) A"))
-
-  checkEquals (as.character (sort (eda (g3, 'edgeType'))), c ("phosphorylates", "synthetic lethal", "undefined"))
-  checkEquals (as.character (sort (eda (g3, 'canonicalName'))), c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (undefined) A"))
-  checkEquals (as.character (sort (eda (g3, 'interaction'))), c ("phosphorylates", "synthetic lethal", "undefined"))
-  checkEquals (as.character (sort (eda (g3, 'misc'))), c ("default misc", "default misc", "default misc"))
-  checkEquals (as.numeric (sort (eda (g3, 'score'))), c (-12,  0,  35))
-
-  invisible (g3)
+    cy = CytoscapeConnection ()
+    
+    title = 'test.getGraphFromCyWindow'
+    window.prep (title)
+    
+    cw3 = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw3)
+    redraw (cw3)
+    layoutNetwork (cw3)
+    
+    g3 = getGraphFromCyWindow (cy, 'test.getGraphFromCyWindow')
+    checkEquals (sort (nodes (g3)), c ('A', 'B', 'C'))
+    checkEquals (length (intersect (noa.names (g3), c ("canonicalName", "count", "label", "lfc", "type"))), 5)
+    checkEquals (as.character (sort (noa (g3, 'canonicalName'))), c ('A', 'B', 'C'))
+    checkEquals (as.integer   (sort (noa (g3, 'count'))),         c (2, 30, 100))
+    checkEquals (as.character (sort (noa (g3, 'label'))),         c ('Gene A', 'Gene B', 'Gene C'))
+    checkEquals (as.numeric (sort (noa (g3, 'lfc'))),             c (-3,  0,  3))
+    checkEquals (as.character (sort (noa (g3, 'type'))),          c ("glycoprotein", "kinase", "transcription factor"))
+    
+    checkEquals (length (intersect (eda.names (g3), c ("canonicalName", "edgeType", "interaction", "misc", "score"))), 5)
+    
+    checkEquals (sort (names (cy2.edge.names (g3))),        c ('A~B',                   'B~C',                    'C~A'))
+    checkEquals (sort (as.character (cy2.edge.names (g3))), c ("A (phosphorylates) B",  "B (synthetic lethal) C", "C (undefined) A"))
+    
+    checkEquals (as.character (sort (eda (g3, 'edgeType'))), c ("phosphorylates", "synthetic lethal", "undefined"))
+    checkEquals (as.character (sort (eda (g3, 'canonicalName'))), c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (undefined) A"))
+    checkEquals (as.character (sort (eda (g3, 'interaction'))), c ("phosphorylates", "synthetic lethal", "undefined"))
+    checkEquals (as.character (sort (eda (g3, 'misc'))), c ("default misc", "default misc", "default misc"))
+    checkEquals (as.numeric (sort (eda (g3, 'score'))), c (-12,  0,  35))
+    
+    invisible (g3)
 
 } # test.getGraphFromCyWindow
 #------------------------------------------------------------------------------------------------------------------------
