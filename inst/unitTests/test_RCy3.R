@@ -1422,7 +1422,8 @@ test.setEdgeOpacityDirect = function ()
     displayGraph (cw)
     layoutNetwork (cw, 'grid')
     
-    edge.names = cy2.edge.names (g)
+    named.edge.names = cy2.edge.names (g)
+    edge.names <- unname(named.edge.names)
     
     setEdgeOpacityDirect (cw, edge.names [1], 80)
     setEdgeOpacityDirect (cw, edge.names [2], 0)
@@ -1458,27 +1459,23 @@ test.setEdgeOpacityDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeColorDirect = function ()
 {
-  DEACTIVATED("very slow for some reason")
-  title = 'test.setEdgeColorDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  edge.of.interest = as.character (cy2.edge.names (g) [1])
-  for (i in 1:5) {
-    setEdgeColorDirect (cw, edge.of.interest, '#FF0000'); redraw (cw);
-    Sys.sleep (0.3)
-    setEdgeColorDirect (cw, edge.of.interest, '#00FF00'); redraw (cw);
-    Sys.sleep (0.3)
-    setEdgeColorDirect (cw, edge.of.interest, '#0000FF'); redraw (cw);
-    Sys.sleep (0.3)
+    #DEACTIVATED("very slow for some reason")
+    title = 'test.setEdgeColorDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    
+    edge.of.interest = as.character (cy2.edge.names (g) [1])
+    for (i in 1:5) {
+        setEdgeColorDirect (cw, edge.of.interest, '#FF0000'); redraw (cw);
+        setEdgeColorDirect (cw, edge.of.interest, '#00FF00'); redraw (cw);
+        setEdgeColorDirect (cw, edge.of.interest, '#0000FF'); redraw (cw);
     } # for i
-
-  invisible (cw)
+    
+    invisible (cw)
 
 } # test.setEdgeColorDirect
 #------------------------------------------------------------------------------------------------------------------------
@@ -2857,7 +2854,7 @@ test.getNodePosition = function ()
 # 
 test.getNodePosition.colonInNodeName = function ()
 {
-  DEACTIVATED("not fatally slow, but i am impatient. Reactivate later.")
+  #DEACTIVATED("not fatally slow, but i am impatient. Reactivate later.")
   title = 'test.getNodePosition.colonInNodeName'
   window.prep (title)
 
