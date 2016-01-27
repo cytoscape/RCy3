@@ -176,7 +176,7 @@ setGeneric ('setDefaultEdgeReverseSelectionColor',  signature='obj',
                 function (obj, new.color, vizmap.style.name='default') standardGeneric ('setDefaultEdgeReverseSelectionColor'))
 
 setGeneric ('saveImage',                  signature='obj', function (obj, file.name, image.type, scale=1.0) standardGeneric ('saveImage'))
-setGeneric ('saveNetwork',                signature='obj', function (obj, file.name, format='gml') standardGeneric ('saveNetwork'))
+setGeneric ('saveNetwork',                signature='obj', function (obj, file.name, format='cys') standardGeneric ('saveNetwork'))
 
 setGeneric ('setDefaultNodeShape',        signature='obj', function (obj, new.shape, vizmap.style.name='default') standardGeneric ('setDefaultNodeShape'))
 setGeneric ('setDefaultNodeSize',         signature='obj', function (obj, new.size, vizmap.style.name='default') standardGeneric ('setDefaultNodeSize'))
