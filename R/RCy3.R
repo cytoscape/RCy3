@@ -2411,25 +2411,23 @@ setMethod('floatPanel', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeTooltipRule', 'CytoscapeWindowClass',
 
-      # todo:  prevent the obligatory redraw
-      # Comment TM: the comment above was there already
-
       function (obj, node.attribute.name) {
-          id = as.character (obj@window.id)
+          id <- as.character (obj@window.id)
           viz.style.name = 'default'
           if (!node.attribute.name %in% noa.names (obj@graph)) {
-              write (sprintf ('warning!  setNodeTooltipRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
+              write (sprintf ('Warning! RCy3::setNodeTooltipRule: passed non-existent node attribute: %s', node.attribute.name), stderr ())
               return ()
           }
-          attribute.values = as.character (noa (obj@graph, node.attribute.name))
+          attribute.values = noa (obj@graph, node.attribute.name)
           
           # set default tooltip
           default.tooltip <- list(visualProperty = "NODE_TOOLTIP", value = "")
           setVisualProperty(obj, default.tooltip, viz.style.name)
           
           # define the column type
-          columnType <- findColumnType(typeof(attribute.values[1]))
-          
+          sample.node.attribute <- getNodeAttribute (obj, getAllNodes(obj)[1], node.attribute.name)
+          columnType <- findColumnType(typeof(sample.node.attribute))
+
           # discrete mapping
           discreteMapping(obj, node.attribute.name, attribute.values, attribute.values,
                           visual.property="NODE_TOOLTIP", columnType=columnType, style=viz.style.name)
