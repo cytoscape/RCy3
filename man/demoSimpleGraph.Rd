@@ -4,7 +4,7 @@
 demoSimpleGraph
 }
 \description{
-Create, display and render the 3-node, 3-edge graph, with some biological trappings.
+Create, display and render the 3-node, 3-edge graph,with some biological trappings.
 }
 \usage{
 demoSimpleGraph()
