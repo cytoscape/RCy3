@@ -43,7 +43,7 @@ None.
   displayGraph (cw)
   layoutNetwork (cw, 'grid')
   legal.shapes <- getNodeShapes (cw)
-  stopifnot ('DIAMOND' %in% legal.shapes)
+  #stopifnot ('DIAMOND' %in% legal.shapes)
   setDefaultNodeShape (cw, 'DIAMOND')
   # redraw (cw) --> not required anymore
 }
