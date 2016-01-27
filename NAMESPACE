@@ -18,6 +18,7 @@ exportMethods (
    deleteWindow,
    displayGraph,
    dockPanel,
+   existing.CytoscapeWindow,
    fitContent,
    fitSelectedContent,
    floatPanel,
@@ -71,6 +72,8 @@ exportMethods (
    invertNodeSelection,
    layoutNetwork,
    lockNodeDimensions,
+   noa,
+   noa.names,
    ping,
    pluginVersion,
    predictTimeToDisplayGraph,
@@ -200,6 +203,6 @@ importMethodsFrom(graph, edgeData, "edgeData<-", edgeDataDefaults,
 importFrom(methods, new)
 importFrom(graph, randomGraph)
 importFrom(RJSONIO, fromJSON, toJSON)
-importFrom(httr, GET, PUT, POST, DELETE)
+importFrom(httr, GET, PUT, POST, DELETE, write_disk)
 importFrom(RCurl, url.exists)
 
