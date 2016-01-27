@@ -32,11 +32,11 @@ None.
 
   cw <- CytoscapeWindow ('saveNetwork.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
   redraw (cw)
   filename <- paste (getwd (), 'saveNetworkTest', sep='/')
   saveNetwork (cw, filename)
-  print (sprintf ('cys file exists? %s', file.exists (paste0(filename, '.cys')))
+  print (sprintf ('cys file exists? %s', file.exists (paste0(filename, '.cys'))))
 }
 
 \keyword{graph}
