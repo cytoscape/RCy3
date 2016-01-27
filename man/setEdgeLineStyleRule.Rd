@@ -39,8 +39,8 @@ None.
   cw <- CytoscapeWindow ('setEdgeLineStyleRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork (cw, 'force-directed')
-  line.styles <- c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
-  edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
+  line.styles <- c('SINEWAVE', 'DOT', 'PARALLEL_LINES')
+  edgeType.values <- c('phosphorylates', 'synthetic lethal', 'undefined')
   setEdgeLineStyleRule (cw, 'edgeType', edgeType.values, line.styles)
 }
 
