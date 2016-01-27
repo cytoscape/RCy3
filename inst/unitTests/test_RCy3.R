@@ -226,7 +226,7 @@ run.tests = function ()
     deleteAllWindows (cy)
     
     test.defaultColors ()
-    test.setWindowSizeRaiseWindow ()
+    #test.setWindowSizeRaiseWindow ()
     test.fitContent ()
     #test.windowCoordinates ()
     
@@ -2432,35 +2432,36 @@ test.movie = function ()
     # directly to Cytoscape.  (hence 'setNodeAttributesDirect')
     
     for (i in 1:count) { 
-    nodeData (cwe@graph, 'A', 'lfc') = -3.0
-    nodeData (cwe@graph, 'B', 'lfc') = -0.7
-    nodeData (cwe@graph, 'C', 'lfc') = -1.9
-    nodeData (cwe@graph, 'A', 'count') = 10
-    nodeData (cwe@graph, 'B', 'count') = 140
-    nodeData (cwe@graph, 'C', 'count') = 32
-    result = setNodeAttributes (cwe, 'lfc')
-    result = setNodeAttributes (cwe, 'count')
-    redraw (cwe)
-    
-    Sys.sleep (0.3)
-    nodeData (cwe@graph, 'A', 'lfc') = 3.0
-    nodeData (cwe@graph, 'B', 'lfc') = 0.7
-    nodeData (cwe@graph, 'C', 'lfc') = 1.9
-    nodeData (cwe@graph, 'A', 'count') = 50
-    nodeData (cwe@graph, 'B', 'count') = 22
-    nodeData (cwe@graph, 'C', 'count') = 180
-    result = setNodeAttributes (cwe, 'lfc')
-    result = setNodeAttributes (cwe, 'count')
-    redraw (cwe)
-    Sys.sleep (0.3)
-    
-    count.A = round (runif (1, 1, 200))
-    count.B = round (runif (1, 1, 200))
-    count.C = round (runif (1, 1, 200))
-    
-    result = setNodeAttributesDirect (cwe, 'count', 'int', c ('A', 'B', 'C'), c (count.A, count.B, count.C)); 
-    result = setNodeAttributesDirect (cwe, 'lfc', 'numeric', c ('A', 'B', 'C'), c (-1.0, 0.0, 1.0))
-    redraw (cwe)
+        nodeData (cwe@graph, 'A', 'lfc') = -3.0
+        nodeData (cwe@graph, 'B', 'lfc') = -0.7
+        nodeData (cwe@graph, 'C', 'lfc') = -1.9
+        nodeData (cwe@graph, 'A', 'count') = 10
+        nodeData (cwe@graph, 'B', 'count') = 140
+        nodeData (cwe@graph, 'C', 'count') = 32
+        result = setNodeAttributes (cwe, 'lfc')
+        result = setNodeAttributes (cwe, 'count')
+        redraw (cwe)
+        
+        Sys.sleep (0.3)
+        nodeData (cwe@graph, 'A', 'lfc') = 3.0
+        nodeData (cwe@graph, 'B', 'lfc') = 0.7
+        nodeData (cwe@graph, 'C', 'lfc') = 1.9
+        nodeData (cwe@graph, 'A', 'count') = 50
+        nodeData (cwe@graph, 'B', 'count') = 22
+        nodeData (cwe@graph, 'C', 'count') = 180
+        result = setNodeAttributes (cwe, 'lfc')
+        result = setNodeAttributes (cwe, 'count')
+        redraw (cwe)
+        Sys.sleep (0.3)
+        
+        count.A = round (runif (1, 1, 200))
+        count.B = round (runif (1, 1, 200))
+        count.C = round (runif (1, 1, 200))
+        
+        result = setNodeAttributesDirect (cwe, 'count', 'int', c ('A', 'B', 'C'), c (count.A, count.B, count.C)); 
+        result = setNodeAttributesDirect (cwe, 'lfc', 'numeric', c ('A', 'B', 'C'), c (-1.0, 0.0, 1.0))
+        redraw (cwe)
+    }
     
     invisible (cwe)
 
@@ -2480,15 +2481,6 @@ test.unmatchedAttributesError = function ()
     count.control.points = c (2, 30, 100)
     sizes                = c (20, 50, 100)
     setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
-    redraw (cwe)
-    
-    # this should fail gracefully
-    count.control.points = c (2, 30, 100)
-    sizes                = c (20, 50, 100)
-    setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
-    
-    redraw (cwe)
-    #msg (cwe, 'test.unmatchedAttributesError')
     
     invisible (cwe)
 
@@ -2561,7 +2553,6 @@ test.simpleGraphWithReciprocalEdge = function ()
     g <- g.simple
     
     cws = CytoscapeWindow (title, g.simple)
-    cws.x <- cws
     
     displayGraph (cws)
     layoutNetwork (cws, 'grid')
@@ -3246,184 +3237,184 @@ test.addGetAndDeleteEdgeAttributes = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.addGetAndDeleteNodeAttributes = function ()
 {
-  title = 'test.addGetAndDeleteNodeAttributes'
-  window.prep (title)
-
-     # in this test we add two new node attributes, 'species' and 'ageInYears'
-     # if they are already defined, from a previous run of this test, start by deleting them.
+    title = 'test.addGetAndDeleteNodeAttributes'
+    window.prep (title)
     
-  g  = makeSimpleGraph ()
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-  
-  novel.noa.to.delete = intersect (c ('ageInYears', 'treeSpecies'), getNodeAttributeNames(cw))
-  for (noa.name in novel.noa.to.delete)
-      deleteNodeAttribute (cy, noa.name)
-  
-     # canonicalName is added by Cytoscape
-  checkEquals (length (intersect (getNodeAttributeNames (cw), c ("canonicalName", "count",  "label", "lfc", "type"))), 5)
-
-     # now add an attribute to two of the nodes 
-  first.two.nodes = nodes (g) [1:2]
-  values = c ('cedar', 'ash')
-  setNodeAttributesDirect (cw, 'treeSpecies', 'char', first.two.nodes, values)
-
+    # in this test we add two new node attributes, 'species' and 'ageInYears'
+    # if they are already defined, from a previous run of this test, start by deleting them.
+    
+    g  = makeSimpleGraph ()
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    
+    novel.noa.to.delete = intersect (c ('ageInYears', 'treeSpecies'), getNodeAttributeNames(cw))
+    for (noa.name in novel.noa.to.delete){
+        deleteNodeAttribute (cy, noa.name)
+    }
+    
+    # canonicalName is added by Cytoscape
+    checkEquals (length (intersect (getNodeAttributeNames (cw), c ("canonicalName", "count",  "label", "lfc", "type"))), 5)
+    
+    # now add an attribute to two of the nodes 
+    first.two.nodes = nodes (g) [1:2]
+    values = c ('cedar', 'ash')
+    setNodeAttributesDirect (cw, 'treeSpecies', 'char', first.two.nodes, values)
+    
     # now add an attribute to a single node.  this exercises a different branch in RCytoscape:setNodeAttributesDirect
-  first.node = nodes (g) [1]
-  value = 'one millenium'
-  setNodeAttributesDirect (cw, 'ageInYears', 'char', first.node, value)
-  checkTrue ('ageInYears' %in% getNodeAttributeNames (cw))
-  checkEquals (getNodeAttribute (cw, 'B', 'type'), 'transcription factor')
-  checkEquals (getNodeAttribute (cw, 'A', 'ageInYears'), 'one millenium')
-  checkEquals (getNodeAttribute (cw, 'B', 'ageInYears'), '')
-
-  deleteNodeAttribute (cw, 'species')
-  deleteNodeAttribute (cw, 'ageInYears')
-
-  invisible (cw)
+    first.node = nodes (g) [1]
+    value = 'one millenium'
+    setNodeAttributesDirect (cw, 'ageInYears', 'char', first.node, value)
+    checkTrue ('ageInYears' %in% getNodeAttributeNames (cw))
+    checkEquals (getNodeAttribute (cw, 'B', 'type'), 'transcription factor')
+    checkEquals (getNodeAttribute (cw, 'A', 'ageInYears'), 'one millenium')
+    checkEquals (getNodeAttribute (cw, 'B', 'ageInYears'), '')
+    
+    deleteNodeAttribute (cw, 'species')
+    deleteNodeAttribute (cw, 'ageInYears')
+    
+    invisible (cw)
 
 } #  test.addGetAndDeleteNodeAttributes 
 #------------------------------------------------------------------------------------------------------------------------
 test.getAllNodeAttributes = function ()
 {
-  title = 'test.getAllNodeAttributes'
-  window.prep (title)
-  
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
+    title = 'test.getAllNodeAttributes'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
+    cwc = existing.CytoscapeWindow (title, copy=T)
+    tbl.noa <- getAllNodeAttributes (cwc)
+    checkEquals (nrow (tbl.noa), 3)
+    checkTrue (ncol (tbl.noa) >= 5)
+    expected.colnames =  c ("canonicalName", "count", "label", "lfc", "type")  # created here
+    checkEquals (length (intersect (colnames (tbl.noa), expected.colnames)), 5)
+    checkEquals (sort (rownames (tbl.noa)), c ("A", "B", "C"))
+    
+    # now try a graph with only one node attribute.  this case used to fail (pshannon, 16 feb 2011)
+    
+    g2 = new ('graphNEL', edgemode='directed')
+    g2 = initNodeAttribute (g2, 'label', 'char', 'NA')
+    g2 = addNode ('A', g2)
+    nodeData (g2, 'A', 'label') = 'a label for A'
+    window.title = 'single node attribute test'
+    if (window.title %in% as.character (getWindowList (cw)))
+    deleteWindow (cw, window.title)
+    cw2 = CytoscapeWindow (window.title, graph=g2)
+    tbl.noa2 = getAllNodeAttributes (cw2)
+    checkEquals (ncol (tbl.noa2), 1)
+    checkEquals (nrow (tbl.noa2), 1)
+    checkEquals (colnames (tbl.noa2), 'label')
+    checkEquals (rownames (tbl.noa2), 'A')
+    
+    invisible (list (a=tbl.noa, b=tbl.noa2))
 
-  cwc = existing.CytoscapeWindow (title, copy=T)
-  tbl.noa <- getAllNodeAttributes (cwc)
-  checkEquals (nrow (tbl.noa), 3)
-  checkTrue (ncol (tbl.noa) >= 5)
-  expected.colnames =  c ("canonicalName", "count", "label", "lfc", "type")  # created here
-  checkEquals (length (intersect (colnames (tbl.noa), expected.colnames)), 5)
-  checkEquals (sort (rownames (tbl.noa)), c ("A", "B", "C"))
-
-   # now try a graph with only one node attribute.  this case used to fail (pshannon, 16 feb 2011)
-
-  g2 = new ('graphNEL', edgemode='directed')
-  g2 = initNodeAttribute (g2, 'label', 'char', 'NA')
-  g2 = addNode ('A', g2)
-  nodeData (g2, 'A', 'label') = 'a label for A'
-  window.title = 'single node attribute test'
-  if (window.title %in% as.character (getWindowList (cw)))
-     deleteWindow (cw, window.title)
-  cw2 = CytoscapeWindow (window.title, graph=g2)
-  tbl.noa2 = getAllNodeAttributes (cw2)
-  checkEquals (ncol (tbl.noa2), 1)
-  checkEquals (nrow (tbl.noa2), 1)
-  checkEquals (colnames (tbl.noa2), 'label')
-  checkEquals (rownames (tbl.noa2), 'A')
-  
-  invisible (list (a=tbl.noa, b=tbl.noa2))
-  
 } # test.getAllNodeAttributes
 #------------------------------------------------------------------------------------------------------------------------
 test.getAllEdgeAttributes = function ()
 {
-  title = 'test.getAllEdgeAttributes'
-  window.prep (title)
-  
-  cw =  CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-  tbl.eda = getAllEdgeAttributes (cw)
-  checkEquals (class (tbl.eda), 'data.frame')
-  checkEquals (dim (tbl.eda), c (3, 5))
-  checkEquals (sort (rownames (tbl.eda)), c ("A|B", "B|C", "C|A"))
-  checkEquals (sort (colnames (tbl.eda)), c ("edgeType", "misc", "score", "source", "target"))
-  checkEquals (class (tbl.eda$score), 'numeric')
-
+    title = 'test.getAllEdgeAttributes'
+    window.prep (title)
+    
+    cw =  CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    tbl.eda = getAllEdgeAttributes (cw)
+    checkEquals (class (tbl.eda), 'data.frame')
+    checkEquals (dim (tbl.eda), c (3, 5))
+    checkEquals (sort (rownames (tbl.eda)), c ("A|B", "B|C", "C|A"))
+    checkEquals (sort (colnames (tbl.eda)), c ("edgeType", "misc", "score", "source", "target"))
+    checkEquals (class (tbl.eda$score), 'numeric')
+    
     # now try a graph with one edge, and just one edge attribute, to make sure that this edge case is handled properly
-
-  g2 = new ('graphNEL', edgemode='directed')
-  g2 = initEdgeAttribute (g2, 'edgeType', 'char', 'unspecified')
-  g2 = addNode ('A', g2)
-  g2 = addNode ('B', g2)
-  g2 = addEdge ('A', 'B', g2)
-
-  edgeData (g2, 'A', 'B', 'edgeType') = 'phosphorylates'
-
-  cy = CytoscapeConnection ()
-
-  window.title = 'edge attribute test, one attribute only'
-  if (window.title %in% as.character (getWindowList (cy)))
-    deleteWindow (cy, window.title)
-
-  cw2 = CytoscapeWindow (window.title, graph=g2, create.window=FALSE)
-  tbl.eda2 = getAllEdgeAttributes (cw2)
-
-  checkEquals (ncol (tbl.eda2), 3)
-  checkEquals (nrow (tbl.eda2), 1)
-  checkEquals (sort (colnames (tbl.eda2)), c ('edgeType', 'source', 'target'))
-
-  invisible (tbl.eda2)
+    g2 = new ('graphNEL', edgemode='directed')
+    g2 = initEdgeAttribute (g2, 'edgeType', 'char', 'unspecified')
+    g2 = addNode ('A', g2)
+    g2 = addNode ('B', g2)
+    g2 = addEdge ('A', 'B', g2)
+    
+    edgeData (g2, 'A', 'B', 'edgeType') = 'phosphorylates'
+    
+    cy = CytoscapeConnection ()
+    
+    window.title = 'edge attribute test, one attribute only'
+    if (window.title %in% as.character (getWindowList (cy))){
+        deleteWindow (cy, window.title)
+    }
+    
+    cw2 = CytoscapeWindow (window.title, graph=g2, create.window=FALSE)
+    tbl.eda2 = getAllEdgeAttributes (cw2)
+    
+    checkEquals (ncol (tbl.eda2), 3)
+    checkEquals (nrow (tbl.eda2), 1)
+    checkEquals (sort (colnames (tbl.eda2)), c ('edgeType', 'source', 'target'))
+    
+    invisible (tbl.eda2)
 
 } # test.getAllEdgeAttributes
 #------------------------------------------------------------------------------------------------------------------------
 test.getVisualStyleNames = function ()
 {
-  title = 'test.getVisualStyleNames'
-  window.prep (title)
-
-  cw3 =  CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw3)
-  redraw (cw3)
-  layoutNetwork (cw3)
-  current.names = getVisualStyleNames (cw3)
-  checkTrue (length (intersect (current.names, c (title, 'default', 'Nested Network Style', 'Minimal', 'Sample1', 'Universe'))) >= 3)
-
-  invisible (cw3)
+    title = 'test.getVisualStyleNames'
+    window.prep (title)
+    
+    cw3 =  CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw3)
+    redraw (cw3)
+    layoutNetwork (cw3)
+    current.names = getVisualStyleNames (cw3)
+    checkTrue (length (intersect (current.names, c (title, 'default', 'Nested Network Style', 'Minimal', 'Sample1', 'Universe'))) >= 3)
+    
+    invisible (cw3)
 
 } # test.getVisualStyleNames 
 #------------------------------------------------------------------------------------------------------------------------
 test.copyVisualStyle = function ()
 {
-  title = 'test.copyVisualStyle'
-  window.prep (title)
-
-  cw4 = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw4)
-  redraw (cw4)
-  layoutNetwork (cw4)
-
-  current.names = getVisualStyleNames (cw4)
-
-    # code around a very weird bug, which I do not understand at all (pshannon, 26 dec 2010)
-  unique.name = FALSE;
-  new.style.name = sprintf ("tmp.%s", runif (1, 1, 1000))
-  copyVisualStyle (cw4, 'default', new.style.name)
-  new.names = getVisualStyleNames (cw4)
-  checkEquals (setdiff (new.names, current.names), new.style.name)
-
-  invisible (cw4)
+    title = 'test.copyVisualStyle'
+    window.prep (title)
+    
+    cw4 = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw4)
+    redraw (cw4)
+    layoutNetwork (cw4)
+    
+    current.names = getVisualStyleNames (cw4)
+    
+    unique.name = FALSE;
+    new.style.name = sprintf ("tmp.%s", runif (1, 1, 1000))
+    copyVisualStyle (cw4, 'default', new.style.name)
+    new.names = getVisualStyleNames (cw4)
+    checkEquals (setdiff (new.names, current.names), new.style.name)
+    
+    invisible (cw4)
 
 } # test.copyVisualStyle
 #------------------------------------------------------------------------------------------------------------------------
 test.setVisualStyle = function ()
 {
-  title = 'test.setVisualStyle'
-  window.prep (title)
-  cy = CytoscapeConnection ()
-
-  cw5 = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw5)
-  redraw (cw5)
-  layoutNetwork (cw5)
-  
-  current.names = getVisualStyleNames (cw5)
-  for (style.name in current.names) {
-    setVisualStyle (cy, style.name)
-    Sys.sleep (0.3)
+    title = 'test.setVisualStyle'
+    window.prep (title)
+    cy = CytoscapeConnection ()
+    
+    cw5 = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw5)
+    redraw (cw5)
+    layoutNetwork (cw5)
+    
+    current.names = getVisualStyleNames (cw5)
+    for (style.name in current.names) {
+        setVisualStyle (cw5, style.name)
+        Sys.sleep (0.1)
     } # for style.name
-
-  invisible (cw5)
+    
+    invisible (cw5)
 
 } # test.setVisualStyle
 #------------------------------------------------------------------------------------------------------------------------
@@ -3431,63 +3422,62 @@ test.setVisualStyle = function ()
 # todo:  call set, call get, check for color match
 test.defaultColors = function ()
 {
-  title = 'test.defaultColors'
-  window.prep (title)
-  cy = CytoscapeConnection ()
-  getDefaultBackgroundColor (cy)
-  getDefaultEdgeReverseSelectionColor (cy)
-  getDefaultEdgeSelectionColor (cy)
-  getDefaultNodeReverseSelectionColor (cy)
-  getDefaultNodeSelectionColor (cy)
-
-  black = '#000000'
-  red = '#FF0000'
-  white = '#FFFFFF'
-  green = '#00FF00'
-  gray = '#888888'
-
-  setDefaultBackgroundColor (cy, white)
-  setDefaultEdgeReverseSelectionColor (cy, red)
-  setDefaultEdgeSelectionColor (cy, green)
-  setDefaultNodeReverseSelectionColor (cy, red)
-  setDefaultNodeSelectionColor (cy, green)
+    title = 'test.defaultColors'
+    window.prep (title)
+    cy = CytoscapeConnection ()
+    getDefaultBackgroundColor (cy)
+    getDefaultEdgeReverseSelectionColor (cy)
+    getDefaultEdgeSelectionColor (cy)
+    getDefaultNodeReverseSelectionColor (cy)
+    getDefaultNodeSelectionColor (cy)
+    
+    black = '#000000'
+    red = '#FF0000'
+    white = '#FFFFFF'
+    green = '#00FF00'
+    gray = '#888888'
+    
+    setDefaultBackgroundColor (cy, white)
+    setDefaultEdgeReverseSelectionColor (cy, red)
+    setDefaultEdgeSelectionColor (cy, green)
+    setDefaultNodeReverseSelectionColor (cy, red)
+    setDefaultNodeSelectionColor (cy, green)
 
 } # test.defaultColors
 #------------------------------------------------------------------------------------------------------------------------
-test.setWindowSizeRaiseWindow = function ()
-{
-  title = 'test.setWindowSizeRaiseWindow'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  raiseWindow (cw)
-
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-  for (i in 1:10) {
-    setWindowSize (cw, 200, 200)
-    setWindowSize (cw, 400, 400)
-    } # for i
-
-    # now raise a few random windows by name
-
-  if (!exists ('cy'))
-    cy = CytoscapeConnection ()
-
-  window.names = as.character (getWindowList (cy))
-
-  if (length (window.names) > 2) {  # only if there are multiple windows
-    for (i in 1:10) {
-      index = as.integer (runif (1, 1, length (window.names)))
-      raiseWindow (cy, window.names [index])
-      raiseWindow (cw)
-      } # for i
-    } # if 3 or more windows are open
-
-  invisible (cw)
-  
-} # test.setWindowSizeRaiseWindow
+# test.setWindowSizeRaiseWindow = function ()
+# {
+#     title = 'test.setWindowSizeRaiseWindow'
+#     window.prep (title)
+#     
+#     cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+#     raiseWindow (cw)
+#     
+#     displayGraph (cw)
+#     redraw (cw)
+#     layoutNetwork (cw)
+#     for (i in 1:3) {
+#         setWindowSize (cw, 200, 200)
+#         setWindowSize (cw, 400, 400)
+#     } # for i
+#     
+#     # now raise a few random windows by name
+#     if (!exists ('cy')){
+#         cy = CytoscapeConnection ()
+#     }
+#     window.names = as.character (getWindowList (cy))
+#     
+#     if (length (window.names) > 2) {  # only if there are multiple windows
+#         for (i in 1:3) {
+#             index = as.integer (runif (1, 1, length (window.names)))
+#             raiseWindow (cy, window.names [index])
+#             raiseWindow (cw)
+#         } # for i
+#     } # if 3 or more windows are open
+#     
+#     invisible (cw)
+# 
+# } # test.setWindowSizeRaiseWindow
 #------------------------------------------------------------------------------------------------------------------------
 test.fitContent = function ()
 {
