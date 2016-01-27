@@ -4,15 +4,17 @@
 demoSimpleGraph
 }
 \description{
-Create, display and render the 3-node, 3-edge graph,with some biological trappings.
+Create, display and render the 3-node, 3-edge graph,
+with some biological trappings.
 }
 \usage{
 demoSimpleGraph()
 }
 \value{
-Returns a CytoscapeWindow object, for subsequent manipulation
+Returns a CytoscapeWindow object for subsequent manipulation
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
+
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
