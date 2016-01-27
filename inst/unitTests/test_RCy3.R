@@ -4,19 +4,14 @@ library (RCy3)
 library (RUnit)
 
 #------------------------------------------------------------------------------------------------------------------------
-if (!exists ('cy'))
+if (!exists ('cy')){
     cy = CytoscapeConnection ()
-#------------------------------------------------------------------------------------------------------------------------
-# the peculiar naming of this function ensures that it will be called first, before all other test.xxx methods.  i think!
-test...aaaaFirstTestCalled = function ()
-{
-    print ('------- first test, deleting any pre-existing CytoscapeWindows')
-    deleteAllWindows (CytoscapeConnection ());
 }
+
 #------------------------------------------------------------------------------------------------------------------------
 run.tests = function ()
 {
-    options ('warn'=2)   # make sure that any R warnings are treated as fatal errors
+    options ('warn'=2) # make sure that any R warnings are treated as fatal errors
     
     # before doing anything else, make sure that the Cytoscape plugin version is one we can respond to
     test.plugin.version ()
@@ -271,11 +266,11 @@ run.tests = function ()
 #------------------------------------------------------------------------------------------------------------------------
 save.default.vizmap = function ()
 {
-  default.style.name <- 'original.default.style'
-
-  if (!default.style.name %in% getVisualStyleNames (cy)) # it has not previously been stored
-     copyVisualStyle (CytoscapeConnection (), 'default', 'orginal.default.style')
-
+    default.style.name <- 'original.default.style'
+    
+    if (!default.style.name %in% getVisualStyleNames (cy)){ # it has not previously been stored
+        copyVisualStyle (CytoscapeConnection (), 'default', 'orginal.default.style')
+    }
 
 } # save.default.vizmap
 #------------------------------------------------------------------------------------------------------------------------
@@ -1068,7 +1063,7 @@ test.setNodeColorRule = function ()
     
     # now, use 1 element lists.
     node.attribute.values = c ("kinase")
-    node.colors = c ('#FFFFFF')
+    node.colors = c ('#00AA88')
     setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup', default.color='#AA33AA')
     
     invisible (cwe)
@@ -1314,7 +1309,7 @@ test.setNodeColorDirect = function ()
     layoutNetwork (cw, 'grid')
     
     setNodeColorDirect (cw, 'A', '#AA0088')
-    setNodeColorDirect (cw, c ('A', 'B'), '#448844')
+    setNodeColorDirect (cw, c ('C', 'B'), '#448844')
     
     invisible (cw)
 
@@ -1330,7 +1325,7 @@ test.setNodeBorderColorDirect = function ()
     layoutNetwork (cw, 'grid')
     
     setNodeBorderColorDirect (cw, 'A', '#AA4488')
-    setNodeBorderColorDirect (cw, c ('A', 'B'), '#AA8888')
+    setNodeBorderColorDirect (cw, c ('C', 'B'), '#AA8888')
     
     invisible (cw)
 
@@ -1357,65 +1352,61 @@ test.setNodeLabelDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeLabelPropertiesDirect = function ()
 {  
-  DEACTIVATED("too slow")
-  print ('--- test.setNodeLabelsPropertiesDirect')
-  title = 'test.setNodeLabelPropertiesDirect'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  sizes = c (10, 50, 80)
-  colors = c ('#0000FF', '#00FF00', '#FF0000')
-  for (i in 1:length (sizes)) { 
-    setNodeFontSizeDirect (cw, 'A', sizes [i])
-    setNodeLabelColorDirect (cw, 'A', colors [i])
+    DEACTIVATED("too slow")
+    print ('--- test.setNodeLabelsPropertiesDirect')
+    title = 'test.setNodeLabelPropertiesDirect'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
     redraw (cw)
-    Sys.sleep (0.3)
+    
+    sizes = c (10, 50, 80)
+    colors = c ('#0000FF', '#00FF00', '#FF0000')
+    for (i in 1:length (sizes)) { 
+        setNodeFontSizeDirect (cw, 'A', sizes [i])
+        setNodeLabelColorDirect (cw, 'A', colors [i])
     } # for i
-
-  invisible (cw)
+    
+    invisible (cw)
 
 } # test.setNodeLabelsPropertiesDirect 
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeOpacityDirect = function ()
 {
-  DEACTIVATED("too slow")
-  title = 'test.setNodeOpacityDirect'
-  window.prep (title)
-
-  g = RCy3::makeSimpleGraph ()
-  g = addNode ('D', g)
-  nodeData (g, 'D', 'label') = 'blink'
-  cw = CytoscapeWindow (title, graph=g)
-  displayGraph (cw)
-  setNodeSizeDirect (cw, 'D', 120)
-  layoutNetwork (cw, 'grid')
-  fitContent (cw)
-  setZoom (cw, 0.8 * getZoom (cw))
-  redraw (cw)
-
-  setNodeFillOpacityDirect (cw, 'A', 0); redraw (cw);
-  setNodeLabelOpacityDirect (cw, 'B', 0); redraw (cw);
-  setNodeBorderOpacityDirect (cw, 'C', 0); redraw (cw);
-  for (i in 1:3) {
-    setNodeOpacityDirect (cw, 'D', 0); redraw (cw);
-    #Sys.sleep (0.3)
-    setNodeOpacityDirect (cw, 'D', 255); redraw (cw);
-    #Sys.sleep (0.3)
+    DEACTIVATED("too slow")
+    title = 'test.setNodeOpacityDirect'
+    window.prep (title)
+    
+    g = RCy3::makeSimpleGraph ()
+    g = addNode ('D', g)
+    nodeData (g, 'D', 'label') = 'blink'
+    cw = CytoscapeWindow (title, graph=g)
+    displayGraph (cw)
+    setNodeSizeDirect (cw, 'D', 120)
+    layoutNetwork (cw, 'grid')
+    fitContent (cw)
+    setZoom (cw, 0.8 * getZoom (cw))
+    redraw (cw)
+    
+    setNodeFillOpacityDirect (cw, 'A', 0)
+    setNodeLabelOpacityDirect (cw, 'B', 0)
+    setNodeBorderOpacityDirect (cw, 'C', 0)
+    for (i in 1:3) {
+        setNodeOpacityDirect (cw, 'D', 0)
+        setNodeOpacityDirect (cw, 'D', 255)
     } # for i
-
-  setNodeOpacityDirect (cw, c ('A', 'C'), 255); redraw (cw)
-  setNodeOpacityDirect (cw, c ('B', 'D'), 50); redraw (cw)
-  setNodeOpacityDirect (cw, c ('A', 'B', 'C', 'D'), c (10, 50, 100, 200)); redraw (cw)
-  setNodeOpacityDirect (cw, c ('A', 'B', 'C', 'D'), c (200, 100, 50, 10)); redraw (cw)
-  Sys.sleep (0.3)
-
-  setNodeOpacityDirect (cw, c ('A', 'B', 'C', 'D'), 255); redraw (cw)
-
-  invisible (cw)
+    
+    setNodeOpacityDirect (cw, c ('A', 'C'), 255)
+    setNodeOpacityDirect (cw, c ('B', 'D'), 50)
+    setNodeOpacityDirect (cw, c ('A', 'B', 'C', 'D'), c (10, 50, 100, 200))
+    setNodeOpacityDirect (cw, c ('A', 'B', 'C', 'D'), c (200, 100, 50, 10))
+    Sys.sleep (0.3)
+    
+    setNodeOpacityDirect (cw, c ('A', 'B', 'C', 'D'), 255); redraw (cw)
+    
+    invisible (cw)
 
 } # test.setNodeOpacityDirect
 #------------------------------------------------------------------------------------------------------------------------
@@ -1434,10 +1425,9 @@ test.setEdgeOpacityDirect = function ()
     
     edge.names = cy2.edge.names (g)
     
-    setEdgeOpacityDirect (cw, edge.names [1],  80); 
-    setEdgeOpacityDirect (cw, edge.names [2],  0); 
-    setEdgeOpacityDirect (cw, edge.names [3],  255); 
-    redraw (cw);
+    setEdgeOpacityDirect (cw, edge.names [1],  80)
+    setEdgeOpacityDirect (cw, edge.names [2],  0)
+    setEdgeOpacityDirect (cw, edge.names [3],  255)
     
     setEdgeOpacityDirect (cw, edge.names [2],  80); 
     setEdgeOpacityDirect (cw, edge.names [3],  0); 
@@ -1466,7 +1456,7 @@ test.setEdgeOpacityDirect = function ()
     
     setEdgeOpacityDirect (cw, edge.names, c (0, 128, 255)); redraw (cw)
     setEdgeOpacityDirect (cw, edge.names, c (255, 0, 128)); redraw (cw)
-
+    
     
     setEdgeOpacityDirect (cw, edge.names, 255); redraw (cw)
     
