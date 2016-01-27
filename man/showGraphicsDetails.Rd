@@ -24,7 +24,7 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cy <- CytoscapeConnection ()
-  showGraphicsDetails (cy)
+  showGraphicsDetails (cy, new.value)
 }
 
 \keyword{graph}
