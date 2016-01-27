@@ -1065,7 +1065,6 @@ test.setNodeColorRule = function ()
     node.attribute.values = c ("kinase",  "transcription factor")
     node.colors = c ('#8888FF', '#00F088')
     setNodeColorRule (cwe, 'type', node.attribute.values, node.colors, mode='lookup', default.color='#AA33AA')
-    #msg (cwe, 'test.setNodeColorRule')
     
     # now, use 1 element lists.
     node.attribute.values = c ("kinase")
@@ -1112,7 +1111,6 @@ test.setNodeBorderColorRule = function ()
     colors =                c ('#FF00FF')
     setNodeBorderColorRule (cwe, 'type', node.attribute.values, colors, mode='lookup', default.color='#FFFFFF')
     
-    #msg (cwe, 'test.setNodeBorderColorRule')
     
     invisible (cwe)
 
@@ -1120,24 +1118,21 @@ test.setNodeBorderColorRule = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeBorderWidthRule = function ()
 {
-  title  = 'test.setNodeBorderWidthRule'
-  window.prep (title)
-  cy = CytoscapeConnection ()
-  
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  #hideAllPanels (cy)
-
+    title  = 'test.setNodeBorderWidthRule'
+    window.prep (title)
+    cy = CytoscapeConnection ()
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
     # set the stage by making all the nodes white, to provide better contrast for the node border colors
-  node.attribute.values = c (-3.0, 0.0, 3.0)
-  colors = c ('#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF')
-  setNodeColorRule (cwe, 'lfc', node.attribute.values, colors, mode='interpolate')
-  setDefaultNodeBorderColor (cwe, '#FF0000')
-
-  for (i in 1:3) {
+    node.attribute.values = c (-3.0, 0.0, 3.0)
+    colors = c ('#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF')
+    setNodeColorRule (cwe, 'lfc', node.attribute.values, colors, mode='interpolate')
+    setDefaultNodeBorderColor (cwe, '#FF0000')
+    
+    for (i in 1:3) {
        # 3 different node border sizes
      node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
      border.widths =         c (0, 10, 20)
@@ -1147,247 +1142,216 @@ test.setNodeBorderWidthRule = function ()
      border.widths =         c (20, 0, 10);
      setNodeBorderWidthRule (cwe, 'type', node.attribute.values, border.widths)
      } # for i   
-
-  invisible (cwe)
+    
+    invisible (cwe)
 
 } # test.setNodeBorderWidthRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeSizeRule = function ()
 {
-  title = 'test.setNodeSizeRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');
-
+    title = 'test.setNodeSizeRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
     # first, create a simple 2-point rule, with 'below' and 'above' values strong enough to see that they are working
     # recall that makeSimpleGraph creates count attributes like this:
     # noa (getGraph (cwe), 'count')     #   A.A   B.B   C.C 
     #                                       "2"  "30" "100" 
-
-  count.control.points = c (20,  40)
-  node.sizes           = c (1, 80,  120, 300)
-  setNodeSizeRule (cwe, 'count', count.control.points, node.sizes, mode='interpolate')
-  system ('sleep 2')
-
+    
+    count.control.points = c (20,  40)
+    node.sizes           = c (1, 80,  120, 300)
+    setNodeSizeRule (cwe, 'count', count.control.points, node.sizes, mode='interpolate')
+    system ('sleep 0.3')
+    
     # now chop off the below & above values.  A should grow to 80, almost as big as B, and C should shrink to 120, larger that B
-
-  count.control.points = c (20,  40)
-  node.sizes           = c (80,  120)
-  setNodeSizeRule (cwe, 'count', count.control.points, node.sizes, mode='interpolate')
-  system ('sleep 2')
-
+    
+    count.control.points = c (20,  40)
+    node.sizes           = c (80,  120)
+    setNodeSizeRule (cwe, 'count', count.control.points, node.sizes, mode='interpolate')
+    system ('sleep 0.3')
+    
     # now use a mode='lookup' rule.  specify two sizes, look to see that the third type, glycoprotein, gets the tiny small size
-  molecule.types = c ('kinase', 'transcription factor')
-  node.sizes     = c (60,        80)
-  setNodeSizeRule (cwe, 'type', molecule.types,  node.sizes, default.size= 5, mode='lookup')
-  redraw (cwe)
-
-  invisible (cwe)
+    molecule.types = c ('kinase', 'transcription factor')
+    node.sizes     = c (60, 80)
+    setNodeSizeRule (cwe, 'type', molecule.types,  node.sizes, default.size= 5, mode='lookup')
+    
+    invisible (cwe)
 
 } # test.setNodeSizeRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeShapeRule = function ()
 {
-  title = 'test.setNodeShapeRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-     # specify shapes for only two of the three nodes and node types.  make sure that the third node gets
-     # the default shape
-  
-     # make rule for 2 of 3 node types, leaving the third as the default
-  node.shapes = c ('diamond', 'triangle')
-  attribute.values = c ('kinase', 'glycoprotein')
-  setNodeShapeRule (cwe, node.attribute.name='type', attribute.values, node.shapes, default.shape='ellipse')
-
-     # test one-element lists
-  node.shapes = c ('diamond')
-  attribute.values = c ('glycoprotein')
-  setNodeShapeRule (cwe, node.attribute.name='type', attribute.values, node.shapes, default.shape='ellipse')
-
-  #msg (cwe, 'test.setNodeShapeRule')
-
-  invisible (cwe)
+    title = 'test.setNodeShapeRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
+    
+    # specify shapes for only two of the three nodes and node types.  make sure that the third node gets
+    # the default shape
+    
+    # make rule for 2 of 3 node types, leaving the third as the default
+    node.shapes = c ('diamond', 'triangle')
+    attribute.values = c ('kinase', 'glycoprotein')
+    setNodeShapeRule (cwe, node.attribute.name='type', attribute.values, node.shapes, default.shape='ellipse')
+    
+    # test one-element lists
+    node.shapes = c ('diamond')
+    attribute.values = c ('glycoprotein')
+    setNodeShapeRule (cwe, node.attribute.name='type', attribute.values, node.shapes, default.shape='ellipse')
+    
+    invisible (cwe)
 
 } # test.setNodeShapeRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeOpacityRule = function ()
 {
-  title = 'test.setNodeOpacityRule'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cw)
-
-     # make the node borders prominent
-  setDefaultNodeBorderColor (cw, '#FFFF00')
-  setDefaultNodeBorderWidth (cw, 10)
-
-  lfc.values = c (-3.0, 0, 3.0)
-
+    title = 'test.setNodeOpacityRule'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cw)
+    
+    # make the node borders prominent
+    setDefaultNodeBorderColor (cw, '#FFFF00')
+    setDefaultNodeBorderWidth (cw, 10)
+    
+    lfc.values = c (-3.0, 0, 3.0)
+    
     # make the nodes big, give them strong colors
-  setNodeSizeDirect (cw, nodes (cw@graph), 100)
-  setNodeColorRule (cw, 'lfc', lfc.values, c ('#FF0000', '#00FF00', '#0000FF'), mode='interpolate'); redraw (cw)
-  layoutNetwork (cw, 'grid')
-
+    setNodeSizeDirect (cw, nodes (cw@graph), 100)
+    setNodeColorRule (cw, 'lfc', lfc.values, c ('#FF0000', '#00FF00', '#0000FF'), mode='interpolate'); redraw (cw)
+    layoutNetwork (cw, 'grid')
+    
     # first, the continuous 'interpolate' case, in which opacity is a function of lfc
-  opacities = c (10, 128, 255)
-  x <- cw
-  setNodeOpacityRule (cw, node.attribute.name='lfc', lfc.values, opacities, mode='interpolate')
-  redraw (cw)
-
-     # reset
-  setNodeOpacityRule (cw, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate', aspect='all'); 
-  redraw (cw)
-
+    opacities = c (10, 128, 255)
+    setNodeOpacityRule (cw, node.attribute.name='lfc', lfc.values, opacities, mode='interpolate')
+    redraw (cw)
+    
+    # reset
+    setNodeOpacityRule (cw, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate', aspect='all'); 
+    redraw (cw)
+    
     # now try a few of the aspect-specific rules, still in interpolate mode
     # border:
-  setNodeOpacityRule (cw, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate', aspect='border'); 
-  redraw (cw)
-  setNodeOpacityRule (cw, 'lfc', lfc.values, c (40,128, 0), mode='interpolate', aspect='border'); 
-  redraw (cw)
-
-     # reset
-  setNodeOpacityRule (cw, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate');   redraw (cw)
-
+    setNodeOpacityRule (cw, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate', aspect='border'); 
+    redraw (cw)
+    setNodeOpacityRule (cw, 'lfc', lfc.values, c (40,128, 0), mode='interpolate', aspect='border'); 
+    redraw (cw)
+    
+    # reset
+    setNodeOpacityRule (cw, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate');   redraw (cw)
+    
     # label
-  setNodeOpacityRule (cw, 'lfc', lfc.values, c (40,128, 0), mode='interpolate', aspect='border'); 
-  redraw (cw)
-
-     # reset
-  setNodeOpacityRule (cw, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate');   redraw (cw)
-
+    setNodeOpacityRule (cw, 'lfc', lfc.values, c (40,128, 0), mode='interpolate', aspect='border'); 
+    redraw (cw)
+    
+    # reset
+    setNodeOpacityRule (cw, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate');   redraw (cw)
+    
     # border
-  setNodeOpacityRule (cw, 'lfc', lfc.values, c (40,128, 0), mode='interpolate', aspect='border'); 
-  redraw (cw)
-
+    setNodeOpacityRule (cw, 'lfc', lfc.values, c (40,128, 0), mode='interpolate', aspect='border'); 
+    redraw (cw)
+    
     # a mix...
-  setNodeOpacityRule (cw, 'lfc', lfc.values, c (128, 128, 128), mode='interpolate', aspect='border, label, fill'); 
-  redraw (cw)
-
-
-  scalar.values = as.character (noa (cw@graph, 'type'))
-     # reset
-  setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup');   redraw (cw)
-
+    setNodeOpacityRule (cw, 'lfc', lfc.values, c (128, 128, 128), mode='interpolate', aspect='border, label, fill'); 
+    redraw (cw)
+    
+    
+    scalar.values = as.character (noa (cw@graph, 'type'))
+    # reset
+    setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup');   redraw (cw)
+    
     # label
-  setNodeOpacityRule (cw, 'type', scalar.values, c (40,128, 0), mode='lookup', aspect='border'); 
-  redraw (cw)
-
-     # reset
-  setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup');   redraw (cw)
-
+    setNodeOpacityRule (cw, 'type', scalar.values, c (40,128, 0), mode='lookup', aspect='border'); 
+    redraw (cw)
+    
+    # reset
+    setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup');   redraw (cw)
+    
     # border
-  setNodeOpacityRule (cw, 'type', scalar.values, c (40,128, 0), mode='lookup', aspect='border'); 
-  redraw (cw)
-
+    setNodeOpacityRule (cw, 'type', scalar.values, c (40,128, 0), mode='lookup', aspect='border'); 
+    redraw (cw)
+    
     # a mix...
-  setNodeOpacityRule (cw, 'type', scalar.values, c (128, 128, 128), mode='lookup', aspect='border, label, fill'); 
-  redraw (cw)
-
+    setNodeOpacityRule (cw, 'type', scalar.values, c (128, 128, 128), mode='lookup', aspect='border, label, fill'); 
+    redraw (cw)
+    
     # make everything except labels transparent
-  setNodeOpacityRule (cw, 'type', scalar.values, c (0, 0, 0), mode='lookup', aspect='border, fill'); 
-  setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='label')
-  redraw (cw)
-
+    setNodeOpacityRule (cw, 'type', scalar.values, c (0, 0, 0), mode='lookup', aspect='border, fill'); 
+    setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='label')
+    redraw (cw)
+    
     # make everything except borders transparent
-  setNodeOpacityRule (cw, 'type', scalar.values, c (0, 0, 0), mode='lookup', aspect='label, fill'); 
-  setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='border')
-  redraw (cw)
-
+    setNodeOpacityRule (cw, 'type', scalar.values, c (0, 0, 0), mode='lookup', aspect='label, fill'); 
+    setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='border')
+    redraw (cw)
+    
     # make everything except fill transparent
-  setNodeOpacityRule (cw, 'type', scalar.values, c (0, 0, 0), mode='lookup', aspect='label, border'); 
-  setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='fill')
-  redraw (cw)
-
+    setNodeOpacityRule (cw, 'type', scalar.values, c (0, 0, 0), mode='lookup', aspect='label, border'); 
+    setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='fill')
+    redraw (cw)
+    
     # now restore everything
-  setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='all')
-  redraw (cw)
-
-  invisible (cw)
+    setNodeOpacityRule (cw, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='all')
+    redraw (cw)
+    
+    invisible (cw)
 
 } # test.setNodeOpacityRule
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeColorDirect = function ()
 {
-  DEACTIVATED("too slow")
-  title = 'test.setNodeColorDirect'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  setNodeColorDirect (cw, 'A', '#AA0088')
-  Sys.sleep (0.3)
-  setNodeColorDirect (cw, 'A', '#AA4488')
-  Sys.sleep (0.3)
-  setNodeColorDirect (cw, 'A', '#AA8888')
-  Sys.sleep (0.3)
-
-  setNodeColorDirect (cw, c ('A', 'B'), '#448844')
-
-  invisible (cw)
+    title = 'test.setNodeColorDirect'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    
+    setNodeColorDirect (cw, 'A', '#AA0088')
+    setNodeColorDirect (cw, c ('A', 'B'), '#448844')
+    
+    invisible (cw)
 
 } # test.setNodeColorirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeBorderColorDirect = function ()
 {
-  DEACTIVATED("too slow")
-  title = 'test.setNodeBorderColorDirect'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  setNodeBorderColorDirect (cw, 'A', '#AA0088')
-  Sys.sleep (0.3)
-  setNodeBorderColorDirect (cw, 'A', '#AA4488')
-  Sys.sleep (0.3)
-  setNodeBorderColorDirect (cw, 'A', '#AA8888')
-  Sys.sleep (0.3)
-
-  setNodeBorderColorDirect (cw, c ('A', 'B'), '#448844')
-
-  invisible (cw)
+    title = 'test.setNodeBorderColorDirect'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    
+    setNodeBorderColorDirect (cw, 'A', '#AA4488')
+    setNodeBorderColorDirect (cw, c ('A', 'B'), '#AA8888')
+    
+    invisible (cw)
 
 } # test.setNodeBorderColorDirect 
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeLabelDirect = function ()
 {
-  DEACTIVATED("too slow")
-  title = 'test.setNodeLabelDirect'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-
-  setNodeLabelDirect (cw, 'A', 'new A label')
-  redraw (cw)
-  Sys.sleep (0.3)
+    DEACTIVATED("too slow")
+    title = 'test.setNodeLabelDirect'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    
+    setNodeLabelDirect (cw, 'A', 'new A label')
     # try multiple nodes, one label, which RCy will replicate into the right number
-  setNodeLabelDirect (cw, nodes (cw@graph), '')
-  redraw (cw)
-  Sys.sleep (0.3)
-
-  setNodeLabelDirect (cw, c ('A', 'C'), c ('AzA', 'ByB'))
-  redraw (cw)
-
-  invisible (cw)
+    setNodeLabelDirect (cw, nodes (cw@graph), '')
+    setNodeLabelDirect (cw, c ('A', 'C'), c ('AzA', 'ByB'))
+    
+    invisible (cw)
 
 } # test.setNodeLabelDirect
 #------------------------------------------------------------------------------------------------------------------------
@@ -2517,7 +2481,7 @@ test.setEdgeArrowColorRules = function ()
 
   setEdgeTargetArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.1)
   setEdgeSourceArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.1)
-  system ('sleep 2')
+  system ('sleep 0.3')
   setEdgeTargetArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.2)
   setEdgeSourceArrowColorRule (cwe, 'edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.2)
 
