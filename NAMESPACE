@@ -72,8 +72,6 @@ exportMethods (
    invertNodeSelection,
    layoutNetwork,
    lockNodeDimensions,
-   noa,
-   noa.names,
    ping,
    pluginVersion,
    predictTimeToDisplayGraph,
