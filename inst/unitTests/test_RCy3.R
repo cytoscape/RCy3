@@ -33,140 +33,237 @@ run.tests = function ()
     test.deleteWindow ()
     test.deleteAllWindows ()
     test.getWindowID ()
+    
+    deleteAllWindows (cy)
+    
     test.getWindowList ()
     test.getNodeShapes ()
     test.getAttributeClassNames ()
     test.getArrowShapes ()
+    
+    deleteAllWindows (cy)
+    
     test.getLineStyles ()
     test.getLayoutNames ()
     test.getLayoutNameMapping ()
     test.getLayoutPropertyNames ()
+    
+    deleteAllWindows (cy)
+    
     test.getLayoutPropertyType ()
     test.getLayoutPropertyValue ()
     test.setLayoutProperties ()
     test.sendNodes ()
+    
+    deleteAllWindows (cy)
+    
     test.sendEdges ()
     test.setNodeAttributes ()
     test.setEdgeAttributes ()
     test.noa ()
+    
+    deleteAllWindows (cy)
+    
     test.eda ()
     test.cy2.edge.names ()
     test.getAdjacentEdgeNames ()
     test.panelOperations ()
+    
+    deleteAllWindows (cy)
+    
     test.showGraphicsDetails ()
     test.setDefaultNodeShape ()
     test.setDefaultNodeColor ()
     test.setDefaultNodeSize ()
+    
+    deleteAllWindows (cy)
+    
     test.setDefaultNodeBorderColor ()
     test.setDefaultNodeBorderWidth ()
     test.setDefaultNodeFontSize ()
     test.setDefaultNodeLabelColor ()
+    
+    deleteAllWindows (cy)
+    
     test.setDefaultEdgeLineWidth ()
     test.setDefaultEdgeColor ()
     test.setDefaultEdgeFontSize ()
     test.setNodeLabelRule ()
+    
+    deleteAllWindows (cy)
+    
     test.setEdgeLabelRule ()
     test.setNodeTooltipRule ()
     test.setEdgeTooltipRule ()
     test.setNodeColorRule ()
+    
+    deleteAllWindows (cy)
+    
     test.setNodeBorderColorRule ()
     test.setNodeBorderWidthRule ()
     test.setNodeSizeRule ()
     test.setNodeShapeRule ()
+    
+    deleteAllWindows (cy)
+    
     test.setNodeOpacityRule ()
     test.setNodeColorDirect ()
     test.setNodeBorderColorDirect ()
     test.setNodeLabelDirect ()
+    
+    deleteAllWindows (cy)
+    
     test.setNodeLabelPropertiesDirect ()
     test.setNodeOpacityDirect ()
     test.setEdgeOpacityDirect ()
     test.setEdgeColorDirect ()
+    
+    deleteAllWindows (cy)
+    
     test.setEdgeSourceArrowShapeDirect ()
     test.setEdgeLabelDirect ()
     test.setEdgeFontSizeDirect ()
     test.setEdgeLabelColorDirect ()
+    
+    deleteAllWindows (cy)
+    
     test.setEdgeTooltipDirect ()
     test.setEdgeLineWidthDirect ()
     test.setEdgeLineStyleDirect ()
     test.setEdgeSourceArrowShapeDirect ()
+    
+    deleteAllWindows (cy)
+    
     test.setEdgeTargetArrowShapeDirect ()
     test.setEdgeSourceArrowColorDirect ()
     test.setEdgeTargetArrowColorDirect ()
     test.setEdgeLabelOpacityDirect ()
+    
+    deleteAllWindows (cy)
+    
     test.setEdgeSourceArrowOpacityDirect ()
     test.setEdgeTargetArrowOpacityDirect ()
     test.setEdgeLabelPositionDirect ()
     test.setEdgeLabelWidthDirect ()
     test.countNodes ()
     test.countEdges ()
+    
+    deleteAllWindows (cy)
+    
     test.countNodesAndEdgesInEmptyGraph ()
     test.getAllNodes ()
     test.getAllEdges ()
     test.selectNodes ()
     test.nodeNeighborReportingAndSelection ()
+    
+    deleteAllWindows (cy)
+    
     test.invertSelection ()
     test.deleteSelectedNodes ()
     test.hideNodes ()
     test.selectEdges ()
     test.setEdgeLineStyleRule ()
+    
+    deleteAllWindows (cy)
+    
     test.setEdgeLineWidthRule ()
     test.setEdgeColorRule ()
     test.setEdgeTargetArrowRule ()
     test.setEdgeArrowColorRules ()
     test.setEdgeSourceArrowRule ()
+    
+    deleteAllWindows (cy)
+    
     test.movie ()
     test.unmatchedAttributesError ()
     test.remove.redundancies.in.undirected.graph ()
     test.randomUndirectedGraph ()
+    
+    deleteAllWindows (cy)
+    
     test.simpleGraph ()
     test.simpleGraphWithReciprocalEdge ()
     test.setGraph ()
     test.setNodePosition ()
+    
+    deleteAllWindows (cy)
+    
     test.getNodePosition ()
     test.getNodePosition.colonInNodeName ()
     test.getNodeSize ()
     test.haveNodeAttribute ()
+    
+    deleteAllWindows (cy)
+    
     test.haveEdgeAttribute ()
     test.copyNodeAttributesFromCyGraph ()
     test.copyEdgeAttributesFromCyGraph ()
     test.getGraphFromCyWindow ()
+    
+    deleteAllWindows (cy)
+    
     test.sendDegenerateGraphs ()
     test.sendBigGraph ()
     test.createWindowFromSelection ()
     test.addGraphToGraph ()
+    
+    deleteAllWindows (cy)
+    
     test.addGraphToGraph.degenerateFirstGraph ()
     test.existing.CytoscapeWindow ()
     test.existing.CytoscapeWindow.noEdges ()
     test.existing.CytoscapeWindow.emptyGraph ()
+    
+    deleteAllWindows (cy)
+    
     test.getAttributeNames ()
     test.addGetAndDeleteEdgeAttributes ()
     test.addGetAndDeleteNodeAttributes ()
     test.getAllNodeAttributes ()
+    
+    deleteAllWindows (cy)
+    
     test.getAllEdgeAttributes ()
     test.getVisualStyleNames ()
     test.copyVisualStyle ()
     test.setVisualStyle ()
+    
+    deleteAllWindows (cy)
+    
     test.defaultColors ()
     test.setWindowSizeRaiseWindow ()
     test.fitContent ()
     test.windowCoordinates ()
+    
+    deleteAllWindows (cy)
+    
     test.zoom ()
     test.center ()
     test.setNodeSizeDirect ()
     test.setNodeWidthAndHeightDirect ()
+    
+    deleteAllWindows (cy)
+    
     test.setNodeFontSizeDirect ()
     test.setNodeShapeDirect ()
     test.setEdgeVizPropertiesDirect ()
     test.graphBAM ()
+    
+    deleteAllWindows (cy)
+    
     test.addCyNode ()
     test.addCyEdge ()
     test.twoGraphsDoubleEdges ()
     test..classicGraphToNodePairTable ()
     test.rcy.edgeNames ()
+    deleteAllWindows (cy)
+    
     test..getNovelEdges ()
     test.setNodeImageDirect ()
     test.validity ()
     test.tooltip.delays ()
+    
+    deleteAllWindows (cy)
     
     options ('warn'=0)
     
@@ -369,10 +466,10 @@ test.getLayoutNameMapping = function ()
 {
     cy = CytoscapeConnection ()
     name.map = getLayoutNameMapping (cy)
-    checkTrue (length (name.map) >= 18)    # 20 on (4 mar 2011)
+    checkTrue (length (name.map) >= 12)    # 20 on (4 mar 2011)
     
-    checkEquals (name.map [['Sugiyama Layout']], "jgraph-sugiyama")
-    checkEquals (name.map [['Edge-Weighted Spring Embedded']], "kamada-kawai")
+    checkEquals (name.map [['Attribute Circle Layout']], "attribute-circle")
+    checkEquals (name.map [['Edge-weighted Spring Embedded Layout']], "kamada-kawai")
     checkEquals (name.map [['Grid Layout']], "grid")
 
 } # test.getLayoutNameMapping
@@ -382,16 +479,13 @@ test.getLayoutPropertyNames = function ()
     print (noquote ('------- test.getLayoutPropertyNames'))
     cy = CytoscapeConnection ()
     props = getLayoutPropertyNames (cy, 'force-directed')
-    expected = c ("defaultNodeMass", "defaultSpringCoefficient", "defaultSpringLength", 
-                 "discrete", 
-                 "edge_attribute", 
-                 "edge_weight_group", "force_alg_settings", "max_weight", "min_weight", "numIterations", 
-                 "partition", "selected_only", "standard", "weight_type")
+    expected = c ("numIterations", "defaultSpringCoefficient", "defaultSpringLength",
+                  "defaultNodeMass", "isDeterministic", "singlePartition")
     checkTrue (length (intersect (props, expected)) > (length (props) - 2))  # some variation across Cytoscape versions
     
     props = getLayoutPropertyNames (cy, 'isom')
-    expected = c ("coolingFactor", "initialAdaptation", "maxEpoch", "minAdaptation", "minRadius", 
-                 "radius", "radiusConstantTime", "sizeFactor")
+    expected = c ("coolingFactor", "initialAdaptation", "maxEpoch", "minAdaptation",
+                  "minRadius", "radius", "radiusConstantTime", "singlePartition", "sizeFactor")
     checkEquals (sort (props), expected)
     
 
@@ -403,28 +497,19 @@ test.getLayoutPropertyType = function ()
     cy = CytoscapeConnection ()
     
      # a couple of single call tests
-    checkEquals (getLayoutPropertyType (cy, 'isom', 'coolingFactor'), 'DOUBLE')
-    checkEquals (getLayoutPropertyType (cy, 'force-directed', 'edge_weight_group'), 'GROUP')
+    checkEquals (getLayoutPropertyType (cy, 'isom', 'coolingFactor'), 'double')
     
     props = getLayoutPropertyNames (cy, 'force-directed')
     # now get all the property types for the force-directed layout
     propTypes.all = sapply (sort (props), function (prop) getLayoutPropertyType (cy, 'force-directed', prop))
     
     # check them all
-    checkEquals (propTypes.all [["defaultNodeMass"]], "DOUBLE")
-    checkEquals (propTypes.all [["defaultSpringCoefficient"]], "DOUBLE")
-    checkEquals (propTypes.all [["defaultSpringLength"]], "DOUBLE")
-    #checkEquals (propTypes.all [["discrete"]], "BOOLEAN")
-    checkEquals (propTypes.all [["edge_attribute"]], "EDGEATTRIBUTE")
-    checkEquals (propTypes.all [["edge_weight_group"]], "GROUP")
-    checkEquals (propTypes.all [["force_alg_settings"]], "GROUP")
-    checkEquals (propTypes.all [["max_weight"]], "DOUBLE")
-    checkEquals (propTypes.all [["min_weight"]], "DOUBLE")
-    checkEquals (propTypes.all [["numIterations"]], "INTEGER")
-    checkEquals (propTypes.all [["partition"]], "BOOLEAN")
-    checkEquals (propTypes.all [["selected_only"]], "BOOLEAN")
-    checkEquals (propTypes.all [["standard"]], "GROUP")
-    checkEquals (propTypes.all [["weight_type"]], "LIST")
+    checkEquals (propTypes.all [["defaultNodeMass"]], "double")
+    checkEquals (propTypes.all [["defaultSpringCoefficient"]], "double")
+    checkEquals (propTypes.all [["defaultSpringLength"]], "double")
+    checkEquals (propTypes.all [["numIterations"]], "int")
+    checkEquals (propTypes.all [["singlePartition"]], "boolean")
+    checkEquals (propTypes.all [["isDeterministic"]], "boolean")
 
 } # test.getLayoutPropertyType
 #------------------------------------------------------------------------------------------------------------------------
@@ -436,21 +521,9 @@ test.getLayoutPropertyValue = function ()
     layout.name = 'force-directed'
     props = getLayoutPropertyNames (cy, layout.name)
     
-    prop = 'edge_attribute'
-    checkTrue (prop %in% props)
-    checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 'weight')
-    
     prop = 'numIterations'
     checkTrue (prop %in% props)
     checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 100)
-    
-    prop = 'min_weight'
-    checkTrue (prop %in% props)
-    checkEquals (getLayoutPropertyValue (cy, layout.name, prop), 0.0)
-    
-    prop = 'max_weight'
-    checkTrue (prop %in% props)
-    checkTrue (getLayoutPropertyValue (cy, layout.name, prop) > 1e300)
     
     for (prop in props) {
         value = getLayoutPropertyValue (cy, layout.name, prop)
