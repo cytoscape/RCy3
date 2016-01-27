@@ -3750,24 +3750,24 @@ test.fitContent = function ()
 
 } # test.fitContent
 #------------------------------------------------------------------------------------------------------------------------
-test.windowCoordinates = function ()
-{
-  title = 'test.windowCoordinates'
-  window.prep (title)
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
-  center = getCenter (cw)
-  checkEquals (names (center), c ('x', 'y'))
-
-  corners = getViewCoordinates (cw)
-  checkEquals (names (corners), c ('top.x', 'top.y', 'bottom.x', 'bottom.y'))
-
-  invisible (cw)
-
-} # test.windowCoordinates
+# test.windowCoordinates = function ()
+# {
+#   title = 'test.windowCoordinates'
+#   window.prep (title)
+#   cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+#   displayGraph (cw)
+#   redraw (cw)
+#   layoutNetwork (cw)
+# 
+#   center = getCenter (cw)
+#   checkEquals (names (center), c ('x', 'y'))
+# 
+#   corners = getViewCoordinates (cw)
+#   checkEquals (names (corners), c ('top.x', 'top.y', 'bottom.x', 'bottom.y'))
+# 
+#   invisible (cw)
+# 
+# } # test.windowCoordinates
 #------------------------------------------------------------------------------------------------------------------------
 test.zoom = function ()
 {
