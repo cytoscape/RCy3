@@ -2969,326 +2969,278 @@ test.getGraphFromCyWindow = function ()
 # todo:  try single node, and single edge graphs.
 test.sendDegenerateGraphs = function ()
 {
-  title = 'test.sendDegenerateGraphs'
-  window.prep (title)
-
-  g.no.edges <- new ('graphNEL')
-  g.no.edges <- addNode (c ('A', 'B'), g.no.edges)
-  cw.degen <- CytoscapeWindow (title, g.no.edges)
-  displayGraph (cw.degen)
-  redraw (cw.degen)
-  layoutNetwork (cw.degen, 'grid')
-
-  title = 'test.sendEmptyGraph'
-  window.prep (title)
-
-  g.empty <- new ('graphNEL')
-  cw.empty <- CytoscapeWindow (title, g.empty)
-  displayGraph (cw.empty)
-  redraw (cw.empty)
-  layoutNetwork (cw.empty, 'grid')
-
-  invisible (cw.empty)
+    title = 'test.sendDegenerateGraphs'
+    window.prep (title)
+    
+    g.no.edges <- new ('graphNEL')
+    g.no.edges <- addNode (c ('A', 'B'), g.no.edges)
+    cw.degen <- CytoscapeWindow (title, g.no.edges)
+    displayGraph (cw.degen)
+    redraw (cw.degen)
+    layoutNetwork (cw.degen, 'grid')
+    
+    title = 'test.sendEmptyGraph'
+    window.prep (title)
+    
+    g.empty <- new ('graphNEL')
+    cw.empty <- CytoscapeWindow (title, g.empty)
+    displayGraph (cw.empty)
+    redraw (cw.empty)
+    layoutNetwork (cw.empty, 'grid')
+    
+    invisible (cw.empty)
 
 } # test.sendDegenerateGraphs
 #------------------------------------------------------------------------------------------------------------------------
-# sending single strings from R to java via xmlrpc, when lists are expected, changes the signature match.
-# make sure we have a solution.
-#test.sendGraphWithSingleEdge = function ()
-#{
-#  title = 'test.sendGraphWithSingleEdge'
-#  window.prep (title)
-#
-#  g = makeSimpleGraph ()
-#  g = removeNode ('B', g)
-#  cw = CytoscapeWindow (title, g)
-#  displayGraph (cw)
-#  redraw (cw)
-#  layoutNetwork (cw, 'grid')
-#
-#  checkEquals (getEdgeCount (cw), 1)
-#
-#  invisible (cw)
-#
-#} # test.sendGraphWithSingleEdge
-#------------------------------------------------------------------------------------------------------------------------
-test.sendBigGraph = function ()
-{
-  title = 'test.sendBigGraph'
-  window.prep (title)
-
-  probability.of.edge.being.selected = 0.05
-  node.names = as.character (1:30)
-
-  g.big <- randomEGraph (node.names, probability.of.edge.being.selected)
-  g.big <- initEdgeAttribute (g.big, 'weight', 'numeric', 0.0)
-  write (sprintf (title, length (nodes (g.big)), length (edgeNames (g.big))), stderr ())
-  cbig <- CytoscapeWindow (title, g.big)
-  stopifnot (class (cbig) == "CytoscapeWindowClass")
-  displayGraph (cbig)
-  redraw (cbig)
-  layoutNetwork (cbig, 'grid')
-
-  invisible (cbig)
-
-} # test.sendBigGraph
-#------------------------------------------------------------------------------------------------------------------------
 test.createWindowFromSelection = function ()
 {
-  title = 'test.createWindowFromSelection'
-  window.prep (title)
-  cy = CytoscapeConnection ()
-
-  cw =  CytoscapeWindow (title, makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-  selectNodes (cw, c ('A', 'C'))
- 
-  new.window.title = 'NEW'
-  if (new.window.title %in% as.character (getWindowList (cy))){
-    deleteWindow (cy, new.window.title)
-  }
-
-  c2 = createWindowFromSelection (cw, new.window.title, TRUE)
-  redraw (c2)
-  layoutNetwork (c2)
-
-  clearSelection (c2)
-  selectNodes (c2, 'C')
-  checkEquals (getSelectedNodeCount (c2), 1)
-
-  new.window.title = 'NEW, just 1 node'
-  if (new.window.title %in% as.character (getWindowList (cy))){
-    deleteWindow (cy, new.window.title)
-  }
-
-  c3 = createWindowFromSelection (c2, new.window.title, T)
-  redraw (c3)
-  layoutNetwork (c3)
-
-  invisible (list (cw=cw, c2=c2, c3=c3))
+    title = 'test.createWindowFromSelection'
+    window.prep (title)
+    cy = CytoscapeConnection ()
+    
+    cw =  CytoscapeWindow (title, makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    selectNodes (cw, c ('A', 'C'))
+    
+    new.window.title = 'NEW'
+    if (new.window.title %in% as.character (getWindowList (cy))){
+        deleteWindow (cy, new.window.title)
+    }
+    
+    c2 = createWindowFromSelection (cw, new.window.title, TRUE)
+    redraw (c2)
+    layoutNetwork (c2)
+    
+    clearSelection (c2)
+    selectNodes (c2, 'C')
+    checkEquals (getSelectedNodeCount (c2), 1)
+    
+    new.window.title = 'NEW, just 1 node'
+    if (new.window.title %in% as.character (getWindowList (cy))){
+        deleteWindow (cy, new.window.title)
+    }
+    
+    c3 = createWindowFromSelection (c2, new.window.title, T)
+    redraw (c3)
+    layoutNetwork (c3)
+    
+    invisible (list (cw=cw, c2=c2, c3=c3))
 
 } # test.createWindowFromSelection
 #------------------------------------------------------------------------------------------------------------------------
 test.addGraphToGraph = function ()
 {
-  title = 'test.addGraphToGraph'
-  window.prep (title)
-
-  cw3 <- CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw3)
-  redraw (cw3)
-  layoutNetwork (cw3)
-
-  g2 <- new("graphNEL", edgemode = "directed")
-  g2 <- graph::addNode ('A', g2)
-  g2 <- graph::addNode ('B', g2)
-  g2 <- graph::addNode ('D', g2)
-  g2 <- graph::addNode ('E', g2)
-
-  g2 <- initNodeAttribute (g2, "label", "char", "default node label")
-  g2 <- initNodeAttribute (g2, "type", "char", "unspecified type")
-
-  g2 <- initNodeAttribute (g2, "SCORE", "numeric", 0.0)
-
-  g2 <- initEdgeAttribute (g2, "edgeType", "char", "unspecified")
-  g2 <- initEdgeAttribute (g2, "probability", "numeric", 0.0)
-
-  nodeData (g2, 'D', 'label') <- 'Gene D'
-  nodeData (g2, 'E', 'label') <- 'Gene E'
-  nodeData (g2, 'D', 'type') <- 'new and novel'
-  nodeData (g2, 'E', 'type') <- 'new and credible'
-
-  nodeData (g2, 'D', 'SCORE') <- 1001.01
-  nodeData (g2, 'E', 'SCORE') <- 99.09
-
-  g2 <- graph::addEdge ('D', 'E', g2)
-  g2 <- graph::addEdge ('A', 'E', g2)
-  g2 <- graph::addEdge ('A', 'B', g2)
-
-  edgeData (g2, 'D', 'E', 'probability') <- 0.95
-  edgeData (g2, 'D', 'E', 'edgeType') <- 'literature'
-  edgeData (g2, 'A', 'E', 'edgeType') <- 'inferred'
-
-  addGraphToGraph (cw3, g2)
-  redraw (cw3)
-  layoutNetwork (cw3)
-
+    title = 'test.addGraphToGraph'
+    window.prep (title)
+    
+    cw3 <- CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw3)
+    redraw (cw3)
+    layoutNetwork (cw3)
+    
+    g2 <- new("graphNEL", edgemode = "directed")
+    g2 <- graph::addNode ('A', g2)
+    g2 <- graph::addNode ('B', g2)
+    g2 <- graph::addNode ('D', g2)
+    g2 <- graph::addNode ('E', g2)
+    
+    g2 <- initNodeAttribute (g2, "label", "char", "default node label")
+    g2 <- initNodeAttribute (g2, "type", "char", "unspecified type")
+    
+    g2 <- initNodeAttribute (g2, "SCORE", "numeric", 0.0)
+    
+    g2 <- initEdgeAttribute (g2, "edgeType", "char", "unspecified")
+    g2 <- initEdgeAttribute (g2, "probability", "numeric", 0.0)
+    
+    nodeData (g2, 'D', 'label') <- 'Gene D'
+    nodeData (g2, 'E', 'label') <- 'Gene E'
+    nodeData (g2, 'D', 'type') <- 'new and novel'
+    nodeData (g2, 'E', 'type') <- 'new and credible'
+    
+    nodeData (g2, 'D', 'SCORE') <- 1001.01
+    nodeData (g2, 'E', 'SCORE') <- 99.09
+    
+    g2 <- graph::addEdge ('D', 'E', g2)
+    g2 <- graph::addEdge ('A', 'E', g2)
+    g2 <- graph::addEdge ('A', 'B', g2)
+    
+    edgeData (g2, 'D', 'E', 'probability') <- 0.95
+    edgeData (g2, 'D', 'E', 'edgeType') <- 'literature'
+    edgeData (g2, 'A', 'E', 'edgeType') <- 'inferred'
+    
+    addGraphToGraph (cw3, g2)
+    redraw (cw3)
+    layoutNetwork (cw3)
+    
     # now copy the combined graph back to R, check it for consistency
-  cw.copy <- existing.CytoscapeWindow ('test.addGraphToGraph', copy=T)
-
+    cw.copy <- existing.CytoscapeWindow ('test.addGraphToGraph', copy=T)
+    
     # first, simple node and edge names
-  checkEquals (sort (nodes (cw.copy@graph)), c ('A', 'B', 'C', 'D', 'E'))
-  checkEquals (sort (edgeNames (cw.copy@graph)), c ("A~B", "A~E", "B~C", "C~A", "D~E"))
-
+    checkEquals (sort (nodes (cw.copy@graph)), c ('A', 'B', 'C', 'D', 'E'))
+    checkEquals (sort (edgeNames (cw.copy@graph)), c ("A~B", "A~E", "B~C", "C~A", "D~E"))
+    
     # are all the expected node and edge attributes present?
-  checkEquals (length (intersect (noa.names (cw.copy@graph), c ("canonicalName", "count", "label", "lfc", "SCORE", "type"))), 6)
-
+    checkEquals (length (intersect (noa.names (cw.copy@graph), c ("canonicalName", "count", "label", "lfc", "SCORE", "type"))), 6)
+    
     # edge attributes
-  checkEquals (length (intersect (eda.names (cw.copy@graph), c ("canonicalName", "edgeType", "interaction", "misc", "probability", "score"))), 6)
-
+    checkEquals (length (intersect (eda.names (cw.copy@graph), c ("canonicalName", "edgeType", "interaction", "misc", "probability", "score"))), 6)
+    
     # check the node label attributes
-  checkEquals (nodeData (cw.copy@graph, attr='label')$A, 'Gene A')
-  checkEquals (nodeData (cw.copy@graph, attr='label')$B, 'Gene B')
-  checkEquals (nodeData (cw.copy@graph, attr='label')$C, 'Gene C')
-  checkEquals (nodeData (cw.copy@graph, attr='label')$D, 'Gene D')
-  checkEquals (nodeData (cw.copy@graph, attr='label')$E, 'Gene E')
-  
+    checkEquals (nodeData (cw.copy@graph, attr='label')$A, 'Gene A')
+    checkEquals (nodeData (cw.copy@graph, attr='label')$B, 'Gene B')
+    checkEquals (nodeData (cw.copy@graph, attr='label')$C, 'Gene C')
+    checkEquals (nodeData (cw.copy@graph, attr='label')$D, 'Gene D')
+    checkEquals (nodeData (cw.copy@graph, attr='label')$E, 'Gene E')
+    
     # check the edgeType attributes
-  checkEquals (edgeData (cw.copy@graph, 'A', 'B', attr='edgeType')[[1]], 'phosphorylates')
-  checkEquals (edgeData (cw.copy@graph, 'A', 'E', attr='edgeType')[[1]], 'inferred')
-  checkEquals (edgeData (cw.copy@graph, 'B', 'C', attr='edgeType')[[1]], 'synthetic lethal')
-  checkEquals (edgeData (cw.copy@graph, 'C', 'A', attr='edgeType')[[1]], 'undefined')
-  checkEquals (edgeData (cw.copy@graph, 'D', 'E', attr='edgeType')[[1]], 'literature')
-
+    checkEquals (edgeData (cw.copy@graph, 'A', 'B', attr='edgeType')[[1]], 'phosphorylates')
+    checkEquals (edgeData (cw.copy@graph, 'A', 'E', attr='edgeType')[[1]], 'inferred')
+    checkEquals (edgeData (cw.copy@graph, 'B', 'C', attr='edgeType')[[1]], 'synthetic lethal')
+    checkEquals (edgeData (cw.copy@graph, 'C', 'A', attr='edgeType')[[1]], 'undefined')
+    checkEquals (edgeData (cw.copy@graph, 'D', 'E', attr='edgeType')[[1]], 'literature')
+    
     # check the edge probability attributes
-  checkEquals (as.numeric (edgeData (cw.copy@graph, 'A', 'B', attr='probability')[[1]]), 0.0)
-  checkEquals (as.numeric (edgeData (cw.copy@graph, 'A', 'E', attr='probability')[[1]]), 0.0)
-  checkEquals (as.numeric (edgeData (cw.copy@graph, 'B', 'C', attr='probability')[[1]]), 0.0)
-  checkEquals (as.numeric (edgeData (cw.copy@graph, 'C', 'A', attr='probability')[[1]]), 0.0)
-  checkEquals (as.numeric (edgeData (cw.copy@graph, 'D', 'E', attr='probability')[[1]]), 0.95)
-
-  checkEquals (as.integer (edgeData (cw.copy@graph, 'A', 'B', attr='score')[[1]]), 35)
-  checkEquals (as.integer (edgeData (cw.copy@graph, 'A', 'E', attr='score')[[1]]), 0)
-  checkEquals (as.integer (edgeData (cw.copy@graph, 'B', 'C', attr='score')[[1]]), -12)
-  checkEquals (as.integer (edgeData (cw.copy@graph, 'C', 'A', attr='score')[[1]]), 0)
-  checkEquals (as.integer (edgeData (cw.copy@graph, 'D', 'E', attr='score')[[1]]), 0)
-
-  invisible (cw.copy)
+    checkEquals (as.numeric (edgeData (cw.copy@graph, 'A', 'B', attr='probability')[[1]]), 0.0)
+    checkEquals (as.numeric (edgeData (cw.copy@graph, 'A', 'E', attr='probability')[[1]]), 0.0)
+    checkEquals (as.numeric (edgeData (cw.copy@graph, 'B', 'C', attr='probability')[[1]]), 0.0)
+    checkEquals (as.numeric (edgeData (cw.copy@graph, 'C', 'A', attr='probability')[[1]]), 0.0)
+    checkEquals (as.numeric (edgeData (cw.copy@graph, 'D', 'E', attr='probability')[[1]]), 0.95)
+    
+    checkEquals (as.integer (edgeData (cw.copy@graph, 'A', 'B', attr='score')[[1]]), 35)
+    checkEquals (as.integer (edgeData (cw.copy@graph, 'A', 'E', attr='score')[[1]]), 0)
+    checkEquals (as.integer (edgeData (cw.copy@graph, 'B', 'C', attr='score')[[1]]), -12)
+    checkEquals (as.integer (edgeData (cw.copy@graph, 'C', 'A', attr='score')[[1]]), 0)
+    checkEquals (as.integer (edgeData (cw.copy@graph, 'D', 'E', attr='score')[[1]]), 0)
+    
+    invisible (cw.copy)
 
 } # test.addGraphToGraph
 #------------------------------------------------------------------------------------------------------------------------
 test.addGraphToGraph.degenerateFirstGraph = function ()
 {
-  window.title = 'test.addGraphToGraph.degenerateFirstGraph'
-  g = new ('graphNEL', edgemode='directed')
-  g = addNode ('A', g)
-  g = addNode ('E', g)
-  g = addNode ('F', g)
-  window.prep (window.title)
-  cw <- CytoscapeWindow (window.title, graph=g)
-
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw, 'grid')
-
-  g2 <- makeSimpleGraph ()
-  addGraphToGraph (cw, g2)
-  
-
-  invisible (cw)
+    window.title = 'test.addGraphToGraph.degenerateFirstGraph'
+    g = new ('graphNEL', edgemode='directed')
+    g = addNode ('A', g)
+    g = addNode ('E', g)
+    g = addNode ('F', g)
+    window.prep (window.title)
+    cw <- CytoscapeWindow (window.title, graph=g)
+    
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw, 'grid')
+    
+    g2 <- makeSimpleGraph ()
+    addGraphToGraph (cw, g2)
+    
+    invisible (cw)
 
 } # test.addGraphToGraph.degenerateFirstGraph
 #------------------------------------------------------------------------------------------------------------------------
 test.existing.CytoscapeWindow = function ()
 {
-  title = 'test.existing.CytoscapeWindow'
-  window.prep (title)
-
+    title = 'test.existing.CytoscapeWindow'
+    window.prep (title)
+    
     #----------------------------------------------------------
     # first, try our standard 3-node, 3-edge testing graph
     #----------------------------------------------------------
-
-  cw <- CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
-  cw2 <- existing.CytoscapeWindow (title, copy=TRUE)
-  g2 <- cw2@graph
-  checkEquals (sort (nodes (g2)), c ('A', 'B', 'C'))
-  checkEquals (sort (edgeNames (g2)), c ("A~B", "B~C", "C~A"))
+    
+    cw <- CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
+    cw2 <- existing.CytoscapeWindow (title, copy=TRUE)
+    g2 <- cw2@graph
+    checkEquals (sort (nodes (g2)), c ('A', 'B', 'C'))
+    checkEquals (sort (edgeNames (g2)), c ("A~B", "B~C", "C~A"))
 
 } # test.existingCytoscapeWindow
 #------------------------------------------------------------------------------------------------------------------------
 test.existing.CytoscapeWindow.noEdges = function ()
 {
-  window.title = 'test.existing.CytoscapeWindow.noEdges'
-  window.prep (window.title)
- 
-  g.edgeless = new ('graphNEL', edgemode='directed')
-  g.edgeless = addNode ('X', g.edgeless)
-  g.edgeless = addNode ('Y', g.edgeless)
-  g.edgeless = addNode ('Z', g.edgeless)
-  cw.edgeless = CytoscapeWindow (window.title, graph=g.edgeless)
-  displayGraph (cw.edgeless)
-  redraw (cw.edgeless)
-  layoutNetwork (cw.edgeless)
-
-  cw3 = existing.CytoscapeWindow (window.title, copy=TRUE)
-  g3 = cw3@graph
-  checkEquals (sort (nodes (g3)), c ('X', 'Y', 'Z'))
-  checkEquals (length (edgeNames (g3)), 0)
-  
-  invisible (cw3)
+    window.title = 'test.existing.CytoscapeWindow.noEdges'
+    window.prep (window.title)
+    
+    g.edgeless = new ('graphNEL', edgemode='directed')
+    g.edgeless = addNode ('X', g.edgeless)
+    g.edgeless = addNode ('Y', g.edgeless)
+    g.edgeless = addNode ('Z', g.edgeless)
+    cw.edgeless = CytoscapeWindow (window.title, graph=g.edgeless)
+    displayGraph (cw.edgeless)
+    redraw (cw.edgeless)
+    layoutNetwork (cw.edgeless)
+    
+    cw3 = existing.CytoscapeWindow (window.title, copy=TRUE)
+    g3 = cw3@graph
+    checkEquals (sort (nodes (g3)), c ('X', 'Y', 'Z'))
+    checkEquals (length (edgeNames (g3)), 0)
+    
+    invisible (cw3)
 
 } # test.existingCytoscapeWindow.noEdges 
 #------------------------------------------------------------------------------------------------------------------------
 test.existing.CytoscapeWindow.emptyGraph = function ()
 {
-  window.title = 'test.existing.CytoscapeWindow.emptyGraph'
-  window.prep (window.title)
-  cw.empty = CytoscapeWindow (window.title)
-  checkEquals (length (nodes (cw.empty@graph)), 0)
-  displayGraph (cw.empty)
-  redraw (cw.empty)
-  layoutNetwork (cw.empty)
-
-  cw3 <- existing.CytoscapeWindow (window.title, copy=TRUE)
-  g3 <- cw3@graph
-  checkEquals (length (nodes (g3)), 0)
-  checkEquals (length (edges(g3)), 0)
+    window.title = 'test.existing.CytoscapeWindow.emptyGraph'
+    window.prep (window.title)
+    cw.empty = CytoscapeWindow (window.title)
+    checkEquals (length (nodes (cw.empty@graph)), 0)
+    displayGraph (cw.empty)
+    redraw (cw.empty)
+    layoutNetwork (cw.empty)
+    
+    cw3 <- existing.CytoscapeWindow (window.title, copy=TRUE)
+    g3 <- cw3@graph
+    checkEquals (length (nodes (g3)), 0)
+    checkEquals (length (edges(g3)), 0)
 
 } # test.existingCytoscapeWindow.emptyGraph
 #------------------------------------------------------------------------------------------------------------------------
-# can we create an edge attribute de novo?
-# can we set its value?  retrieve its value?
-test.getAttributeNames = function ()
-{
-  
-} # test.addEdgeAttribute
-#------------------------------------------------------------------------------------------------------------------------
 test.addGetAndDeleteEdgeAttributes = function ()
 {
-  title = 'test.addGetAndDeleteEdgeAttributes'
-  window.prep (title)
-
-  g  = makeSimpleGraph ()
-  cw = CytoscapeWindow ('test.addGetAndDeleteEdgeAttributes', graph=g)
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  redraw (cw)
-  
-     # in this test we add two new edge attributes, 'species' and 'ageInYears'
-     # if they are already defined, from a previous run of this test, start by deleting them.
-
-  novel.eda.to.delete = intersect (c ('ageInYears', 'treeSpecies'), getEdgeAttributeNames(cw))
-  for (eda.name in novel.eda.to.delete)
-    deleteEdgeAttribute (cy,eda.name)
+    title = 'test.addGetAndDeleteEdgeAttributes'
+    window.prep (title)
     
-     # canonicalName and interaction are added by Cytoscape
-  checkEquals (length (intersect (getEdgeAttributeNames (cw), c ("canonicalName", "edgeType", "interaction", "misc", "score"))), 5)
-
-     # now add an attribute to two of the edges 
-  first.two.edges = as.character (cy2.edge.names (g)[1:2])
-  values = c ('hemlock', 'yew')
-  setEdgeAttributesDirect (cw, 'treeSpecies', 'char', first.two.edges, values)
-
+    g  = makeSimpleGraph ()
+    cw = CytoscapeWindow ('test.addGetAndDeleteEdgeAttributes', graph=g)
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    redraw (cw)
+    
+    # in this test we add two new edge attributes, 'species' and 'ageInYears'
+    # if they are already defined, from a previous run of this test, start by deleting them.
+    
+    novel.eda.to.delete = intersect (c ('ageInYears', 'treeSpecies'), getEdgeAttributeNames(cw))
+    for (eda.name in novel.eda.to.delete){
+        deleteEdgeAttribute (cy, eda.name)
+    }
+    
+    # canonicalName and interaction are added by Cytoscape
+    checkEquals (length (intersect (getEdgeAttributeNames (cw), c ("canonicalName", "edgeType", "interaction", "misc", "score"))), 5)
+    
+    # now add an attribute to two of the edges 
+    first.two.edges = as.character (cy2.edge.names (g)[1:2])
+    values = c ('hemlock', 'yew')
+    setEdgeAttributesDirect (cw, 'treeSpecies', 'char', first.two.edges, values)
+    
     # now add an attribute to a single edge.  this exercises a different branch in RCytoscape:setEdgeAttributesDirect
-  first.edge = as.character (cy2.edge.names (g)[1])
-  value = 'one century'
-  setEdgeAttributesDirect (cw, 'ageInYears', 'char', first.edge, value)
-  checkTrue ('ageInYears' %in% getEdgeAttributeNames (cw))
-
-     # get names from cy2.edge.names (cw@graph)
-  checkEquals (getEdgeAttribute (cw, "B (synthetic lethal) C", 'treeSpecies'), "yew")
-  checkEquals (getEdgeAttribute (cw, "B (synthetic lethal) C", 'score'), -12)
-
-  deleteEdgeAttribute (cw, 'species')
-  deleteEdgeAttribute (cw, 'ageInYears')
-
-  invisible (cw)
+    first.edge = as.character (cy2.edge.names (g)[1])
+    value = 'one century'
+    setEdgeAttributesDirect (cw, 'ageInYears', 'char', first.edge, value)
+    checkTrue ('ageInYears' %in% getEdgeAttributeNames (cw))
+    
+    # get names from cy2.edge.names (cw@graph)
+    checkEquals (getEdgeAttribute (cw, "B (synthetic lethal) C", 'treeSpecies'), "yew")
+    checkEquals (getEdgeAttribute (cw, "B (synthetic lethal) C", 'score'), -12)
+    
+    deleteEdgeAttribute (cw, 'species')
+    deleteEdgeAttribute (cw, 'ageInYears')
+    
+    invisible (cw)
 
 } #  test.addGetAndDeleteEdgeAttributes 
 #------------------------------------------------------------------------------------------------------------------------
