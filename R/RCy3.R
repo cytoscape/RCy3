@@ -5062,7 +5062,7 @@ setMethod ('saveImage', 'CytoscapeWindowClass',
         resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
                               paste0("views/first.", image.type), sep="/")
 
-        request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type)))
+        request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type), overwrite = TRUE))
         write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
       }else{
           write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
@@ -5075,7 +5075,7 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
        if (!file.exists(file.name)){
            # TODO currently only saves as cys, enable to save also to other formats incl. glm
            resource.uri <- paste(obj@uri, pluginVersion(obj), "session", sep="/")
-           request.res <- POST(url=resource.uri, body=NULL, write_disk(paste0(file.name, ".cys")))
+           request.res <- POST(url=resource.uri, body=NULL, write_disk(paste0(file.name, ".cys"), overwrite = TRUE))
            write (sprintf ('saving network to file %s.cys', file.name), stderr ())
            invisible(request.res)
        }
