@@ -3252,8 +3252,9 @@ test.createWindowFromSelection = function ()
   checkEquals (getSelectedNodeCount (c2), 1)
 
   new.window.title = 'NEW, just 1 node'
-  if (new.window.title %in% as.character (getWindowList (cy)))
+  if (new.window.title %in% as.character (getWindowList (cy))){
     deleteWindow (cy, new.window.title)
+  }
 
   c3 = createWindowFromSelection (c2, new.window.title, T)
   redraw (c3)
