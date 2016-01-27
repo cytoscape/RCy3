@@ -3481,284 +3481,270 @@ test.defaultColors = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.fitContent = function ()
 {
-  title = 'test.fitContent'
-  window.prep (title)
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
-  clearSelection (cw)
-  selectNodes (cw, 'A')
-  checkEquals (getSelectedNodeCount (cw), 1)
-
-  for (i in 1:10) {
-    fitSelectedContent (cw)
-    fitContent (cw)
-    } # for i
-
-} # test.fitContent
-#------------------------------------------------------------------------------------------------------------------------
-# test.windowCoordinates = function ()
-# {
-#   title = 'test.windowCoordinates'
-#   window.prep (title)
-#   cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-#   displayGraph (cw)
-#   redraw (cw)
-#   layoutNetwork (cw)
-# 
-#   center = getCenter (cw)
-#   checkEquals (names (center), c ('x', 'y'))
-# 
-#   corners = getViewCoordinates (cw)
-#   checkEquals (names (corners), c ('top.x', 'top.y', 'bottom.x', 'bottom.y'))
-# 
-#   invisible (cw)
-# 
-# } # test.windowCoordinates
-#------------------------------------------------------------------------------------------------------------------------
-test.zoom = function ()
-{
-  title = 'test.zoom'
-  window.prep (title)
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
-  setWindowSize (cw, 1200, 800)  
-  fitContent (cw)
-
-  smaller = 0.5
-  larger = 2
-
-  for (i in 1:10) 
-    setZoom (cw, smaller * getZoom (cw))
-
-  for (i in 1:10) 
-    setZoom (cw, larger * getZoom (cw))
-
-  invisible (cw)
-
-} # test.zoom
-#------------------------------------------------------------------------------------------------------------------------
-test.center = function ()
-{
-  title = 'test.setCenter'
-  window.prep (title)
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
-  setWindowSize (cw, 1200, 800)  
-  fitContent (cw)
-  setZoom (cw, 0.5 * getZoom (cw))
-
-  center.orig = getCenter (cw)
-  delta = 100
-  x.left = center.orig$x - delta
-  x.right = center.orig$x + delta
-  y.up = center.orig$y - delta
-  y.down = center.orig$y + delta
-
-  for (i in 1:10) {
-    setCenter (cw, x.left, y.up)
-    setCenter (cw, as.integer (x.left), as.integer (y.up))   # make sure the called function casts this int back to numeric
-    setCenter (cw, x.left, y.down)
-    setCenter (cw, x.right, y.down)
-    setCenter (cw, x.right, y.up)
-    } # for i
-
-  setCenter (cw, center.orig$x, center.orig$y)
-
-  invisible (cw)
-
-} # test.center
-#------------------------------------------------------------------------------------------------------------------------
-test.setNodeSizeDirect = function ()
-{ 
-  #DEACTIVATED("too slow")
-  title = 'test.setNodeSizeDirect'
-  window.prep (title)
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-  
-  lockNodeDimensions (cw, TRUE)
-
-  small = 30
-  large = 300
-  for (i in 1:10) {
-    setNodeSizeDirect (cw, 'A', small); 
-    redraw (cw)
-    setNodeSizeDirect (cw, 'A', large); 
-    redraw (cw)
-    } # for i
-
-  invisible (cw)
-
-} # test.setNodeSizeDirect
-#------------------------------------------------------------------------------------------------------------------------
-test.setNodeWidthAndHeightDirect = function ()
-{ 
-  #DEACTIVATED("too slow")
-  title = 'test.setNodeWidthAndHeightDirect'
-  window.prep (title)
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
-  lockNodeDimensions (cw, FALSE)
-  
-  small = 30
-  large = 300
-
-  for (i in 1:10) {
-    setNodeWidthDirect (cw, 'A', small); 
-    setNodeHeightDirect (cw, 'A', large); 
-    redraw (cw)
-    setNodeWidthDirect (cw, 'A', large); 
-    setNodeHeightDirect (cw, 'A', small); 
-    redraw (cw)
-    } # for i
-
-  invisible (cw)
-
-} # test.setNodeWidthAndHeightDirect
-#------------------------------------------------------------------------------------------------------------------------
-test.setNodeFontSizeDirect = function ()
-{ 
-  #DEACTIVATED("too slow")
-  title = 'test.setNodeFontSizeDirect'
-  window.prep (title)
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
-  starting.size = 4
-  setNodeSizeDirect (cw, c ('A', 'B', 'C'), 50)
-  setNodeFontSizeDirect (cw, c ('A', 'B'), 12)
-  redraw (cw)
-  
-  for (i in 1:20) {
-    setNodeFontSizeDirect (cw, 'A', starting.size + i)
-    setNodeFontSizeDirect (cw, 'B', starting.size + (i*3))
-    redraw (cw)
-    } # for i
-
-  starting.size = 32
-  for (i in 20:1) {
-    setNodeFontSizeDirect (cw, 'A', starting.size - i)
-    setNodeFontSizeDirect (cw, 'B', starting.size - (i*3))
-    redraw (cw)
-    } # for i
-
-
-  invisible (cw)
-
-} # test.setNodeSizeDirect
-#------------------------------------------------------------------------------------------------------------------------
-test.setNodeShapeDirect = function ()
-{ 
-  #DEACTIVATED("too slow")
-  title = 'test.setNodeShapeDirect'
-  window.prep (title)
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
-  lockNodeDimensions (cw, TRUE)
-  setNodeSizeDirect (cw, 'A', 100)
-
-  for (new.shape in getNodeShapes (cw)) {
-    setNodeShapeDirect (cw, 'A', new.shape)
-    redraw (cw)
-    } # for new.shape
-
-  invisible (cw)
-
-} # test.setNodeShapeDirect
-#------------------------------------------------------------------------------------------------------------------------
-test.setEdgeVizPropertiesDirect = function (cw=NULL)
-{
-  #DEACTIVATED("too slow!")
-  title = 'test.setEdgeVizPropertiesDirect'
-
-  if (is.null (cw)) {
+    title = 'test.fitContent'
     window.prep (title)
     cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
     displayGraph (cw)
     redraw (cw)
     layoutNetwork (cw)
-    }
-
-  cy2.edgeNames = sort (getAllEdges (cw))
-  e1 = cy2.edgeNames [1]
-  e2 = cy2.edgeNames [2]
-  e3 = cy2.edgeNames [3]
-
-  colors = c ('#440000', '#004400', '#000044', '#880000', '#008800', '#000088', '#FF0000', '#00FF00', '#0000FF', '#FFFFFF')
-  line.styles = c ('SOLID', 'LONG_DASH', 'EQUAL_DASH', 'DASH_DOT', 'DOT', 'ZIGZAG', 'SINEWAVE', 'VERTICAL_SLASH', 
-                   'FORWARD_SLASH', 'BACKWARD_SLASH', 'PARALLEL_LINES', 'CONTIGUOUS_ARROW', 'SEPARATE_ARROW')
-
-  arrow.shapes = c ('No Arrow', 'Diamond', 'Delta', 'Arrow', 'T', 'Circle', 'Half Arrow Top', 'Half Arrow Bottom', 'Diamond', 'T')
-  labels = paste ('label', seq (10,100,10), sep='-');  labels [10] = ''
-  tooltips = paste ('tooltip', seq (10,100,10), sep='-');  tooltips [10] = ''
-  widths = c (1:9, 1)
-
-  for (i in 1:10) {
-    setEdgeOpacityDirect (cw, c (e2, e3), 25 * i)
-    setEdgeColorDirect (cw, e1, colors [i])
-    setEdgeLineStyleDirect (cw, e2, line.styles [i])
-    setEdgeSourceArrowShapeDirect (cw, e1, arrow.shapes [i])
-    setEdgeTargetArrowShapeDirect (cw, e1, arrow.shapes [i])
-    setEdgeLabelDirect (cw, e2, labels [i])
-    setEdgeLabelColorDirect (cw, e2, colors [i])
-    setEdgeTooltipDirect (cw, e2, tooltips [i])
-    setEdgeLineWidthDirect (cw, e3, widths [i])
-    setEdgeFontSizeDirect (cw, e2, widths [i] * 3)
-    setEdgeSourceArrowColorDirect (cw, e1, colors [11-i])
-    setEdgeTargetArrowColorDirect (cw, e1, colors [11-i])
-    setEdgeLabelOpacityDirect (cw, e2, 25 * i)
-    setEdgeSourceArrowOpacityDirect (cw, e1, 25 * i)
-    setEdgeTargetArrowOpacityDirect (cw, e1, 255 - (25 * i))
+    
+    clearSelection (cw)
+    selectNodes (cw, 'A')
+    checkEquals (getSelectedNodeCount (cw), 1)
+    
+    #fitSelectedContent (cw)
+    fitContent (cw)
+    
+} # test.fitContent
+#------------------------------------------------------------------------------------------------------------------------
+# test.windowCoordinates = function ()
+# {
+#     title = 'test.windowCoordinates'
+#     window.prep (title)
+#     cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+#     displayGraph (cw)
+#     redraw (cw)
+#     layoutNetwork (cw)
+#     
+#     center = getCenter (cw)
+#     checkEquals (names (center), c ('x', 'y'))
+#     
+#     corners = getViewCoordinates (cw)
+#     checkEquals (names (corners), c ('top.x', 'top.y', 'bottom.x', 'bottom.y'))
+#     
+#     invisible (cw)
+#
+#} # test.windowCoordinates
+#------------------------------------------------------------------------------------------------------------------------
+test.zoom = function ()
+{
+    title = 'test.zoom'
+    window.prep (title)
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
     redraw (cw)
-    Sys.sleep (0.3)
+    layoutNetwork (cw)
+    
+    #setWindowSize (cw, 1200, 800)  
+    fitContent (cw)
+    
+    smaller = 0.5
+    larger = 2
+    
+    for (i in 1:10){
+        setZoom (cw, smaller * getZoom (cw))
     }
+    
+    for (i in 1:10){
+        setZoom (cw, larger * getZoom (cw))
+    }
+    
+    invisible (cw)
 
-  invisible (cw)
+} # test.zoom
+#------------------------------------------------------------------------------------------------------------------------
+test.center = function ()
+{
+    title = 'test.setCenter'
+    window.prep (title)
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
+    #setWindowSize (cw, 1200, 800)  
+    fitContent (cw)
+    setZoom (cw, 0.5 * getZoom (cw))
+    
+    center.orig = getCenter (cw)
+    delta = 100
+    x.left = center.orig$x - delta
+    x.right = center.orig$x + delta
+    y.up = center.orig$y - delta
+    y.down = center.orig$y + delta
+    
+    for (i in 1:10) {
+        setCenter (cw, x.left, y.up)
+        setCenter (cw, as.integer (x.left), as.integer (y.up))   # make sure the called function casts this int back to numeric
+        setCenter (cw, x.left, y.down)
+        setCenter (cw, x.right, y.down)
+        setCenter (cw, x.right, y.up)
+    } # for i
+    
+    setCenter (cw, center.orig$x, center.orig$y)
+    
+    invisible (cw)
+
+} # test.center
+#------------------------------------------------------------------------------------------------------------------------
+test.setNodeSizeDirect = function ()
+{ 
+    #DEACTIVATED("too slow")
+    title = 'test.setNodeSizeDirect'
+    window.prep (title)
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
+    lockNodeDimensions (cw, TRUE)
+    
+    small = 30
+    large = 300
+    setNodeSizeDirect (cw, 'A', small); 
+    setNodeSizeDirect (cw, 'A', large); 
+
+    invisible (cw)
+
+} # test.setNodeSizeDirect
+#------------------------------------------------------------------------------------------------------------------------
+test.setNodeWidthAndHeightDirect = function ()
+{ 
+    #DEACTIVATED("too slow")
+    title = 'test.setNodeWidthAndHeightDirect'
+    window.prep (title)
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
+    lockNodeDimensions (cw, FALSE)
+    
+    small = 30
+    large = 300
+
+    setNodeWidthDirect (cw, 'A', small); 
+    setNodeHeightDirect (cw, 'A', large); 
+    setNodeWidthDirect (cw, 'A', large); 
+    setNodeHeightDirect (cw, 'A', small); 
+
+    invisible (cw)
+
+} # test.setNodeWidthAndHeightDirect
+#------------------------------------------------------------------------------------------------------------------------
+test.setNodeFontSizeDirect = function ()
+{ 
+    #DEACTIVATED("too slow")
+    title = 'test.setNodeFontSizeDirect'
+    window.prep (title)
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
+    starting.size = 4
+    setNodeSizeDirect (cw, c ('A', 'B', 'C'), 50)
+    setNodeFontSizeDirect (cw, c ('A', 'B'), 12)
+    redraw (cw)
+    
+    for (i in 1:20) {
+        setNodeFontSizeDirect (cw, 'A', starting.size + i)
+        setNodeFontSizeDirect (cw, 'B', starting.size + (i*3))
+    } # for i
+    
+    starting.size = 32
+    for (i in 20:1) {
+    setNodeFontSizeDirect (cw, 'A', starting.size - i)
+    setNodeFontSizeDirect (cw, 'B', starting.size - (i*3))
+    } # for i
+    
+    invisible (cw)
+
+} # test.setNodeSizeDirect
+#------------------------------------------------------------------------------------------------------------------------
+test.setNodeShapeDirect = function ()
+{ 
+    #DEACTIVATED("too slow")
+    title = 'test.setNodeShapeDirect'
+    window.prep (title)
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
+    lockNodeDimensions (cw, TRUE)
+    setNodeSizeDirect (cw, 'A', 100)
+    
+    for (new.shape in getNodeShapes (cw)) {
+        setNodeShapeDirect (cw, 'A', new.shape)
+    } # for new.shape
+    
+    invisible (cw)
+
+} # test.setNodeShapeDirect
+#------------------------------------------------------------------------------------------------------------------------
+test.setEdgeVizPropertiesDirect = function (cw=NULL)
+{
+    DEACTIVATED("too slow!")
+    title = 'test.setEdgeVizPropertiesDirect'
+    
+    window.prep (title)
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+
+    cy2.edgeNames = sort (getAllEdges (cw))
+    e1 = cy2.edgeNames [1]
+    e2 = cy2.edgeNames [2]
+    e3 = cy2.edgeNames [3]
+    
+    colors = c ('#440000', '#004400', '#000044', '#880000', '#008800', '#000088', '#FF0000', '#00FF00', '#0000FF', '#FFFFFF')
+    line.styles = c ('SOLID', 'LONG_DASH', 'EQUAL_DASH', 'DASH_DOT', 'DOT', 'ZIGZAG', 'SINEWAVE', 'VERTICAL_SLASH', 
+               'FORWARD_SLASH', 'BACKWARD_SLASH', 'PARALLEL_LINES', 'CONTIGUOUS_ARROW', 'SEPARATE_ARROW')
+    
+    arrow.shapes = c ('No Arrow', 'Diamond', 'Delta', 'Arrow', 'T', 'Circle', 'Half Arrow Top', 'Half Arrow Bottom', 'Diamond', 'T')
+    labels = paste ('label', seq (10,100,10), sep='-');  labels [10] = ''
+    tooltips = paste ('tooltip', seq (10,100,10), sep='-');  tooltips [10] = ''
+    widths = c (1:9, 1)
+    
+    for (i in 1:10) {
+        setEdgeOpacityDirect (cw, c (e2, e3), 25 * i)
+        setEdgeColorDirect (cw, e1, colors [i])
+        setEdgeLineStyleDirect (cw, e2, line.styles [i])
+        setEdgeSourceArrowShapeDirect (cw, e1, arrow.shapes [i])
+        setEdgeTargetArrowShapeDirect (cw, e1, arrow.shapes [i])
+        setEdgeLabelDirect (cw, e2, labels [i])
+        setEdgeLabelColorDirect (cw, e2, colors [i])
+        setEdgeTooltipDirect (cw, e2, tooltips [i])
+        setEdgeLineWidthDirect (cw, e3, widths [i])
+        setEdgeFontSizeDirect (cw, e2, widths [i] * 3)
+        setEdgeSourceArrowColorDirect (cw, e1, colors [11-i])
+        setEdgeTargetArrowColorDirect (cw, e1, colors [11-i])
+        setEdgeLabelOpacityDirect (cw, e2, 25 * i)
+        setEdgeSourceArrowOpacityDirect (cw, e1, 25 * i)
+        setEdgeTargetArrowOpacityDirect (cw, e1, 255 - (25 * i))
+        redraw (cw)
+        Sys.sleep (0.3)
+    }
+    
+    invisible (cw)
 
 } # test.setEdgeVizPropertiesDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.graphBAM = function ()
 { 
-  title = 'test.graphBAM'
-  window.prep (title)
-
+    title = 'test.graphBAM'
+    window.prep (title)
+    
     # example is taken from Nishant's man page
-  source.nodes  <- c ("a", "a", "b", "c", "d")
-  target.nodes  <- c ("b", "c", "c", "d", "a")
-  weights <- c(2.3, 2.3, 4.3, 1.0, 3.0)
-  df <- data.frame (from=source.nodes, to=target.nodes, weight=weights)
-  g.bam <- graphBAM (df)
-  g.bam <- initEdgeAttribute (g.bam, 'weight', 'numeric', 0.0)
-
-  cw = CytoscapeWindow (title, graph=g.bam)
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
+    source.nodes  <- c ("a", "a", "b", "c", "d")
+    target.nodes  <- c ("b", "c", "c", "d", "a")
+    weights <- c(2.3, 2.3, 4.3, 1.0, 3.0)
+    df <- data.frame (from=source.nodes, to=target.nodes, weight=weights)
+    g.bam <- graphBAM (df)
+    g.bam <- initEdgeAttribute (g.bam, 'weight', 'numeric', 0.0)
+    
+    cw = CytoscapeWindow (title, graph=g.bam)
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
     # paint the edges shades of red as function of weight
-  setDefaultEdgeLineWidth (cw, 5)
-  setEdgeColorRule (cw, 'weight',  c (0, 5), c ('#FFFFFF', '#FF0000'),  mode='interpolate')
-
-  invisible (cw)
+    setDefaultEdgeLineWidth (cw, 5)
+    setEdgeColorRule (cw, 'weight',  c (0, 5), c ('#FFFFFF', '#FF0000'),  mode='interpolate')
+    
+    invisible (cw)
 
 } # test.graphBAM
 #------------------------------------------------------------------------------------------------------------------------
@@ -3768,18 +3754,18 @@ test.graphBAM = function ()
 #  2) can we assign new values to those attributes?  use setEdgeAttributesDirect
 test.addCyNode = function ()
 { 
-  title = 'test.addCyNode'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw, 'grid')
-  checkEquals (getNodeCount (cw), 3)
-  addCyNode (cw, 'NEW')
-  layoutNetwork (cw, 'grid')
-  checkEquals (getNodeCount (cw), 4)
-  invisible (cw)
+    title = 'test.addCyNode'
+    window.prep (title)
+    
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw, 'grid')
+    checkEquals (getNodeCount (cw), 3)
+    addCyNode (cw, 'NEW')
+    layoutNetwork (cw, 'grid')
+    checkEquals (getNodeCount (cw), 4)
+    invisible (cw)
 
 } # test.addCyNode
 #------------------------------------------------------------------------------------------------------------------------
@@ -3789,193 +3775,178 @@ test.addCyNode = function ()
 #  2) can we assign new values to those attributes?  use setEdgeAttributesDirect
 test.addCyEdge = function ()
 { 
-  title = 'test.addCyEdge'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-  checkEquals (getEdgeCount (cw), 3)
-
-  directed.edge = TRUE
-  addCyEdge (cw, 'A', 'B', 'synthetic rescue', directed.edge)
-  redraw (cw)
-  layoutNetwork (cw)
-  checkEquals (getEdgeCount (cw), 4)
-  invisible (cw)
+    title = 'test.addCyEdge'
+    window.prep (title)
     
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    checkEquals (getEdgeCount (cw), 3)
+    
+    addCyNode (cw, 'NEW')
+    directed.edge = TRUE
+    addCyEdge (cw, 'A', 'NEW', 'synthetic rescue', directed.edge)
+    redraw (cw)
+    layoutNetwork (cw)
+    checkEquals (getEdgeCount (cw), 4)
+    invisible (cw)
+
 } # test.addCyEdge
 #------------------------------------------------------------------------------------------------------------------------
 test.twoGraphsDoubleEdges = function ()
 { 
-  title = 'test.twoGraphsDoubleEdges'
-  window.prep (title)
-
-  cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-  displayGraph (cw)
-  redraw (cw)
-  layoutNetwork (cw)
-
-  g2 = new ('graphNEL', edgemode='directed')
-  g2 = initEdgeAttribute (g2, 'edgeType', 'char', 'unspecified')
-
-  g2 = addNode ('A', g2)
-  g2 = addNode ('B', g2)
-  g2 = addEdge ('A', 'B', g2)
-
-  edgeData (g2, 'A', 'B', 'edgeType') = 'synthetic rescue'
-
-
-  # fails:  addGraphToGraph (cw, g2)
-  #xml.rpc (cw@uri, 'Cytoscape.createEdge', cw@window.id, 'A', 'B', 'synthetic rescue', T)
-  redraw (cw)
-  layoutNetwork (cw)
+    title = 'test.twoGraphsDoubleEdges'
+    window.prep (title)
     
+    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+    displayGraph (cw)
+    redraw (cw)
+    layoutNetwork (cw)
+    
+    g2 = new ('graphNEL', edgemode='directed')
+    g2 = initEdgeAttribute (g2, 'edgeType', 'char', 'unspecified')
+    
+    g2 = addNode ('A', g2)
+    g2 = addNode ('B', g2)
+    g2 = addEdge ('A', 'B', g2)
+    
+    edgeData (g2, 'A', 'B', 'edgeType') = 'synthetic rescue'
+    
+    addGraphToGraph (cw, g2)
+    redraw (cw)
+    layoutNetwork (cw)
+
 } # test.twoGraphsoubleEdges
 #------------------------------------------------------------------------------------------------------------------------
 test..classicGraphToNodePairTable = function ()
 {
-  print (noquote ('------- test..classicGraphToNodePairTable'))
-
+    print (noquote ('------- test..classicGraphToNodePairTable'))
+    
     # first, our standard demo graph, directed, no reciprocal edges
-
-  g = makeSimpleGraph ()
-  tbl.g = RCy3:::.classicGraphToNodePairTable (g)
-  checkEquals (dim (tbl.g), c (3, 3))
-  checkEquals (colnames (tbl.g), c ("source", "target", "edgeType"))
-  checkEquals (tbl.g$edgeType, c ("phosphorylates", "synthetic lethal", "undefined"))
-  checkEquals (tbl.g$source, c ("A", "B", "C"))
-  checkEquals (tbl.g$target, c ("B", "C", "A"))
-
+    
+    g = makeSimpleGraph ()
+    tbl.g = RCy3:::.classicGraphToNodePairTable (g)
+    checkEquals (dim (tbl.g), c (3, 3))
+    checkEquals (colnames (tbl.g), c ("source", "target", "edgeType"))
+    checkEquals (tbl.g$edgeType, c ("phosphorylates", "synthetic lethal", "undefined"))
+    checkEquals (tbl.g$source, c ("A", "B", "C"))
+    checkEquals (tbl.g$target, c ("B", "C", "A"))
+    
     # now extend the standard demo graph by adding an edge between C and B, making B & C reciprocally related nodes
-
-  #gx = makeSimpleGraph ()
-  #gx = graph::addEdge ('C', 'B', gx)
-  #edgeData (gx, 'C', 'B', attr='edgeType') = 'synthetic rescue'
-  #tbl.egx = RCy3:::.classicGraphToNodePairTable (gx)
-  #checkEquals (dim (tbl.egx), c (4, 3))
-  #checkEquals (colnames (tbl.egx), c ("source", "target", "edgeType"))
-  #checkEquals (tbl.egx$edgeType, c ("phosphorylates", "synthetic lethal", "undefined", "synthetic rescue"))
-  #checkEquals (tbl.egx$source, c ("A", "B", "C", "C"))
-  #checkEquals (tbl.egx$target, c ("B", "C", "A", "B"))
+    
+    gx = makeSimpleGraph ()
+    gx = graph::addEdge ('C', 'B', gx)
+    edgeData (gx, 'C', 'B', attr='edgeType') = 'synthetic rescue'
+    tbl.egx = RCy3:::.classicGraphToNodePairTable (gx)
+    checkEquals (dim (tbl.egx), c (4, 3))
+    checkEquals (colnames (tbl.egx), c ("source", "target", "edgeType"))
+    checkEquals (tbl.egx$edgeType, c ("phosphorylates", "synthetic lethal", "undefined", "synthetic rescue"))
+    checkEquals (tbl.egx$source, c ("A", "B", "C", "C"))
+    checkEquals (tbl.egx$target, c ("B", "C", "A", "B"))
 
 } # test..classicGraphToNodePairTable 
 #------------------------------------------------------------------------------------------------------------------------
 test.rcy.edgeNames = function ()
 {
-  print (noquote ('------- test.rcy.edgeNames'))
-  g = makeSimpleGraph ()
-  checkEquals (sort (RCy3:::.rcyEdgeNames (g)), c ("A~B", "B~C", "C~A"))
-  
-
+    print (noquote ('------- test.rcy.edgeNames'))
+    g = makeSimpleGraph ()
+    checkEquals (sort (RCy3:::.rcyEdgeNames (g)), c ("A~B", "B~C", "C~A"))
+    
     # now extend the standard demo graph by adding an edge between C and B, making B & C reciprocally related nodes
-
-  gx = makeSimpleGraph ()
-  gx = graph::addEdge ('C', 'B', gx)
-  edgeData (gx, 'C', 'B', attr='edgeType') = 'synthetic rescue'
-  checkEquals (sort (RCy3:::.rcyEdgeNames (gx)), c ("A~B", "B~C", "C~A", "C~B"))
+    gx = makeSimpleGraph ()
+    gx = graph::addEdge ('C', 'B', gx)
+    edgeData (gx, 'C', 'B', attr='edgeType') = 'synthetic rescue'
+    checkEquals (sort (RCy3:::.rcyEdgeNames (gx)), c ("A~B", "B~C", "C~A", "C~B"))
 
 } # test.rcy.edgeNames
 #------------------------------------------------------------------------------------------------------------------------
-# a standard demo, up on the website.  source it, run it.  a graph is created, displayed, retrieved, checked for identity
-hiddentest.graphAM.round.trip = function ()
-{
-  title = 'test.graphAM.round.trip'
-  write (noquote (sprintf ('------- %s', title)), stderr ())
-  source ('http://rcytoscape.systemsbiology.net/versions/current/cookbook/randomAM/randomAdjacencyMatrixGraphTest.R')
-  run (0:7)
-
-} # test.graphAM.round.trip
-#------------------------------------------------------------------------------------------------------------------------
 restore.defaults = function ()
 {
-  cy = CytoscapeConnection ()
-  setDefaultBackgroundColor (cy, '#CCCCFF')
-  setDefaultNodeShape (cy, 'ellipse')
-  lockNodeDimensions (cy, TRUE)
-  setDefaultNodeSelectionColor (cy, '#FFFF00')
-  setDefaultNodeReverseSelectionColor (cy, '#00FF00')
-  setDefaultEdgeSelectionColor (cy, '#FF0000')
-  setDefaultEdgeReverseSelectionColor (cy, '#00FF00')
-  setDefaultNodeSize (cy, 30)
-  setDefaultNodeColor (cy, '#FF8888')  # a guess
-
-  setDefaultNodeBorderColor (cy, '#000000')
-  setDefaultNodeBorderWidth (cy, 1)
-  setDefaultNodeFontSize (cy, 12)
-  setDefaultNodeLabelColor (cy, '#000000')
-  setDefaultEdgeLineWidth (cy, 1)
-  setDefaultEdgeColor (cy, '#0000FF')
+    cy = CytoscapeConnection ()
+    setDefaultBackgroundColor (cy, '#CCCCFF')
+    setDefaultNodeShape (cy, 'ellipse')
+    lockNodeDimensions (cy, TRUE)
+    setDefaultNodeSelectionColor (cy, '#FFFF00')
+    setDefaultNodeReverseSelectionColor (cy, '#00FF00')
+    setDefaultEdgeSelectionColor (cy, '#FF0000')
+    setDefaultEdgeReverseSelectionColor (cy, '#00FF00')
+    setDefaultNodeSize (cy, 30)
+    setDefaultNodeColor (cy, '#FF8888')  # a guess
+    
+    setDefaultNodeBorderColor (cy, '#000000')
+    setDefaultNodeBorderWidth (cy, 1)
+    setDefaultNodeFontSize (cy, 12)
+    setDefaultNodeLabelColor (cy, '#000000')
+    setDefaultEdgeLineWidth (cy, 1)
+    setDefaultEdgeColor (cy, '#0000FF')
 
 } # restore.defaults
 #------------------------------------------------------------------------------------------------------------------------
 test..getNovelEdges = function ()
 {
-  g.3e <- makeSimpleGraph ()
-  g.0e <- new ("graphNEL", edgemode = "directed")
-  g.0e = initEdgeAttribute (g.0e, 'edgeType', 'char', 'unspecified')
+g.3e <- makeSimpleGraph ()
+g.0e <- new ("graphNEL", edgemode = "directed")
+g.0e = initEdgeAttribute (g.0e, 'edgeType', 'char', 'unspecified')
 
-    # no novel edges if the 2nd arg has no edges
-  checkTrue (is.na (RCy3:::.getNovelEdges (g.3e, g.0e)))
+# no novel edges if the 2nd arg has no edges
+checkTrue (is.na (RCy3:::.getNovelEdges (g.3e, g.0e)))
 
-    # three novel edges if the 1st arg has zero edges, the second has 3
-  novel.edges <- RCy3:::.getNovelEdges (g.0e, g.3e)
-  checkEquals (length (novel.edges), 3)
+# three novel edges if the 1st arg has zero edges, the second has 3
+novel.edges <- RCy3:::.getNovelEdges (g.0e, g.3e)
+checkEquals (length (novel.edges), 3)
 
-    # add one edge to g.0e which is an exact duplicate of the first edge of g.3e
+# add one edge to g.0e which is an exact duplicate of the first edge of g.3e
 
-  g.1e = addNode ('A', g.0e)
-  g.1e = addNode ('B', g.1e)
-  g.1e = addEdge ('A', 'B', g.1e)
-  edgeData (g.1e, 'A', 'B', attr='edgeType') = 'phosphorylates'
+g.1e = addNode ('A', g.0e)
+g.1e = addNode ('B', g.1e)
+g.1e = addEdge ('A', 'B', g.1e)
+edgeData (g.1e, 'A', 'B', attr='edgeType') = 'phosphorylates'
 
-  g1 <- g.1e
-  g3 <- g.3e
+g1 <- g.1e
+g3 <- g.3e
 
-  novel.edges <- RCy3:::.getNovelEdges (g.3e, g.1e)
-  checkEquals (length (novel.edges), 0)
+novel.edges <- RCy3:::.getNovelEdges (g.3e, g.1e)
+checkEquals (length (novel.edges), 0)
 
-  novel.edges <- RCy3:::.getNovelEdges (g.1e, g.3e)
-  checkEquals (length (novel.edges), 2)
+novel.edges <- RCy3:::.getNovelEdges (g.1e, g.3e)
+checkEquals (length (novel.edges), 2)
 
 } # test..getNovelEdges
 #------------------------------------------------------------------------------------------------------------------------
 # apparently does not run reliably at bioc
 hiddenTest.saveImage = function ()
 {
-  title = 'test.saveImage'
-  window.prep (title)
-
-  g.simple = RCy3::makeSimpleGraph ()
-  cw = CytoscapeWindow (title, g.simple)
-
-  displayGraph (cw)
-  layoutNetwork (cw, 'grid')
-  setNodeLabelRule (cw, 'label')
-  redraw (cw)
-
+    title = 'test.saveImage'
+    window.prep (title)
+    
+    g.simple = RCy3::makeSimpleGraph ()
+    cw = CytoscapeWindow (title, g.simple)
+    
+    displayGraph (cw)
+    layoutNetwork (cw, 'grid')
+    setNodeLabelRule (cw, 'label')
+    redraw (cw)
+    
     #--- png first
-  filename = sprintf ('%s/%s', tempdir (), 'saveImageTest.png')
-  printf ('saving image file to %s', filename)
-  saveImage (cw, filename, 'png', 1.0)
-  checkTrue (file.exists (filename))
-
-  if (pluginVersion (cy) == '1.8') {
-      #--- now pdf
-    filename = sprintf ('%s/%s', tempdir (), 'saveImageTest.pdf')
+    filename = sprintf ('%s/%s', tempdir (), 'saveImageTest')
+    printf ('saving image file to %s', filename)
+    saveImage (cw, filename, 'png', 1.0)
+    checkTrue (file.exists (paste0(filename, '.png')))
+    
+    #--- now pdf
+    filename = sprintf ('%s/%s', tempdir (), 'saveImageTest')
     printf ('saving image file to %s', filename)
     saveImage (cw, filename, 'pdf')
-    checkTrue (file.exists (filename))
-
-      #--- now svg
-    filename = sprintf ('%s/%s', tempdir (), 'saveImageTest.svg')
+    checkTrue (file.exists (paste0(filename, '.pdf')))
+    
+    #--- now svg
+    filename = sprintf ('%s/%s', tempdir (), 'saveImageTest')
     printf ('saving image file to %s', filename)
     saveImage (cw, filename, 'svg')
-    checkTrue (file.exists (filename))
-    } # if plugin version 1.8 is being used
-
-  invisible (cw)
+    checkTrue (file.exists (paste0(filename, '.svg')))
+    
+    invisible (cw)
 
 } # test.saveImage
 #------------------------------------------------------------------------------------------------------------------------
