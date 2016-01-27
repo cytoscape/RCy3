@@ -32,7 +32,7 @@
 
 
 \title{RCy3}
-\author{Paul Shannon, Tanja Muetze, Georgi Kolishovski}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \begin{document}
 
@@ -51,9 +51,9 @@ In addition to this package (RCy3), you will need:
 \begin{itemize}
   \item Java SE 8. Cytoscape and CyREST currently do not support Java SE 6 anymore. It can be can downloaded from Oracle here:
      \url{http://www.oracle.com/technetwork/java/javase/downloads/jre7-downloads-1880261.html}.
-  \item Cytoscape version 3.2.1+, which can be downloaded from 
+  \item Cytoscape version 3.3.+, which can be downloaded from 
      \url{http://cytoscape.org}.
-  \item CyREST, version 2.0.2 or later, a Cytoscape plugin which provides the Cytoscape end of the communication layer, can be downloaded from the Cytoscape plugins website:
+  \item CyREST, version 3.0.0 or later, a Cytoscape plugin which provides the Cytoscape end of the communication layer, can be downloaded from the Cytoscape plugins website:
      \url{http://apps.cytoscape.org/apps/cyrest}.
 \end{itemize}
 
