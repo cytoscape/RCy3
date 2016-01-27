@@ -141,7 +141,7 @@ setGeneric ('setTooltipDismissDelay',	signature='obj', function (obj, msecs) sta
 
 setGeneric ('raiseWindow',					signature='obj', function (obj, window.title=NA) standardGeneric ('raiseWindow'))
 setGeneric ('setWindowSize',				signature='obj', function (obj, width, height) standardGeneric ('setWindowSize'))
-setGeneric ('showGraphicsDetails',		signature='obj', function (obj) standardGeneric ('showGraphicsDetails'))
+setGeneric ('showGraphicsDetails',		signature='obj', function (obj, new.value) standardGeneric ('showGraphicsDetails'))
 setGeneric ('fitContent',						signature='obj', function (obj) standardGeneric ('fitContent'))
 setGeneric ('fitSelectedContent',			signature='obj', function (obj) standardGeneric ('fitSelectedContent'))
 setGeneric ('getCenter',						signature='obj', function (obj) standardGeneric ('getCenter'))
@@ -2182,10 +2182,10 @@ setMethod('raiseWindow', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('showGraphicsDetails', 'CytoscapeConnectionClass',
 
-    function (obj) {
+    function (obj, new.value) {
         resource.uri <- paste(obj@uri, pluginVersion(obj), "ui/lod/", sep="/")
         request.res <- PUT(resource.uri)
-        invisible(request.res)
+        invisible (request.res)
         if (class (obj) == 'CytoscapeWindowClass'){
             redraw (obj)
         }
