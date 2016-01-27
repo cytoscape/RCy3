@@ -1078,47 +1078,43 @@ test.setNodeColorRule = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setNodeBorderColorRule = function ()
 {
-  title = 'test.setNodeBorderColorRule'
-  window.prep (title)
-
-  cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
-  displayGraph (cwe)
-  layoutNetwork (cwe, 'grid')
-  redraw (cwe)
-
-  hidePanel (cwe, 'd');   hidePanel (cwe, 'c');
-
+    title = 'test.setNodeBorderColorRule'
+    window.prep (title)
+    
+    cwe = CytoscapeWindow (title, graph=RCy3::makeSimpleGraph ())
+    displayGraph (cwe)
+    layoutNetwork (cwe, 'grid')
     # set the stage by making all the nodes white, to provide better contrast for the node border colors
-  node.attribute.values = c (-3.0, 0.0, 3.0)
-  colors = c ('#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF')
-  setNodeColorRule (cwe, 'lfc', node.attribute.values, colors, mode='interpolate')
-
+    node.attribute.values = c (-3.0, 0.0, 3.0)
+    colors = c ('#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF')
+    setNodeColorRule (cwe, 'lfc', node.attribute.values, colors, mode='interpolate')
+    
     # first, specify a mode='interpolate' rule -- the default
-  node.attribute.values = c (-3.0, 0.0, 3.0)
-  colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
-  setNodeBorderColorRule (cwe, 'lfc', node.attribute.values, colors, mode='interpolate')
-  Sys.sleep (0.3)
-
+    node.attribute.values = c (-3.0, 0.0, 3.0)
+    colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
+    setNodeBorderColorRule (cwe, 'lfc', node.attribute.values, colors, mode='interpolate')
+    Sys.sleep (0.3)
+    
     # now, a lookup rule.  bright red, green and blue borders
-  node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
-  colors =                c ('#FF0000', '#00FF00',              "#0000FF")
-  setNodeBorderColorRule (cwe, 'type', node.attribute.values, colors, mode='lookup')
-  Sys.sleep (0.3)
-
+    node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
+    colors =                c ('#FF0000', '#00FF00',              "#0000FF")
+    setNodeBorderColorRule (cwe, 'type', node.attribute.values, colors, mode='lookup')
+    Sys.sleep (0.3)
+    
     # now, a lookup rule with an incomplete lookup table:  does the default.color argument work?  cy2.7 bug -- not yet.
     #  the glycoprotein node, 'Gene C', should have a white border around white fill
-  node.attribute.values = c ("kinase",  "transcription factor")
-  colors =                c ('#0000FF', '#FF0000')
-  setNodeBorderColorRule (cwe, 'type', node.attribute.values, colors, mode='lookup', default.color='#FFFFFF')
-
+    node.attribute.values = c ("kinase",  "transcription factor")
+    colors =                c ('#0000FF', '#FF0000')
+    setNodeBorderColorRule (cwe, 'type', node.attribute.values, colors, mode='lookup', default.color='#FFFFFF')
+    
     # now, one element lists
-  node.attribute.values = c ("transcription factor")
-  colors =                c ('#FF00FF')
-  setNodeBorderColorRule (cwe, 'type', node.attribute.values, colors, mode='lookup', default.color='#FFFFFF')
-
-  #msg (cwe, 'test.setNodeBorderColorRule')
- 
-  invisible (cwe)
+    node.attribute.values = c ("transcription factor")
+    colors =                c ('#FF00FF')
+    setNodeBorderColorRule (cwe, 'type', node.attribute.values, colors, mode='lookup', default.color='#FFFFFF')
+    
+    #msg (cwe, 'test.setNodeBorderColorRule')
+    
+    invisible (cwe)
 
 } # test.setNodeBorderColorRule
 #------------------------------------------------------------------------------------------------------------------------
