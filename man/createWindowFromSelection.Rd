@@ -17,7 +17,7 @@ createWindowFromSelection(obj, new.windowTitle, return.graph)
 
 \value{
 A new CytoscapeWindow object, with the graph slot populated with the new
-selected subgraph, if requested.  If not requested, the graph slot holds
+selected subgraph, if requested. If not requested, the graph slot holds
 an empty graph.
 }
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
