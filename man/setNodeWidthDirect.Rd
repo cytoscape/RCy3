@@ -36,7 +36,8 @@ None.
   cw <- CytoscapeWindow ('setNodeWidthDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork (cw, 'force-directed')
-  lockNodeDimensions (cw, 'default', FALSE)
+  # lockNodeDimensions (cw, 'default', FALSE) # --> not required anymore.
+  # setNodeWidthDirect does this for you.
   setNodeWidthDirect (cw, 'A', 32)
   setNodeWidthDirect (cw, getAllNodes(cw), 15)
   setNodeWidthDirect (cw, c('A', 'B'), c(30, 40))
