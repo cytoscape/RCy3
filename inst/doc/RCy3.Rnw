@@ -80,7 +80,7 @@ Here we create a 3-node graph in R, send it to Cytoscape for display and layout.
 @ 
 
 You should now see a single red dot in the middle of a small Cytoscape window titled 'simple', contained along with possibly
-other windows within the Cytoscape Desktop.  This graph needs layout.  You can accomplish this in two ways:  by function call (see below), or interactively from the Cytoscape 'Layout' menu, where a reasonable choice is 'JGraph Layouts' -> 'GEM Layout', or 'yFiles Organic'.
+other windows within the Cytoscape Desktop. This graph needs layout. You can accomplish this in two ways: by function call (see below), or interactively from the Cytoscape 'Layout' menu, where a reasonable choice is 'JGraph Layouts' -> 'GEM Layout', or 'yFiles Organic'.
 
 After layout, you will see the structure of this graph:  3 unconnected nodes, unlabeled, small and colored red, and thus not very informative.  Fortunately, Cytoscape has some built-in rendering rules in which (and unless instructed otherwise) nodes are rendered round in shape, pale red in color, and labeled with the names supplied when they were added to the graph;  edges (if any) are simple blue lines. To get this default rendering, simply type
 
