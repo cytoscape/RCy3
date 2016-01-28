@@ -35,19 +35,19 @@ Unless node dimensions are 'unlocked' these two vectors will be identical.
     # [1] 75 75 75
   print (sizes$height)
     # [1] 35 35 35
-  setNodeSizeDirect (cw, 'A',  180)
+  setNodeSizeDirect (cw, 'A',  18)
   redraw (cw)
   print (getNodeSize (cw, 'A'))
-  lockNodeDimensions (cw, FALSE)
-  setNodeWidthDirect (cw, 'A', 300)
-  setNodeHeightDirect (cw, 'A', 100)
-  redraw (cw)
+  # lockNodeDimensions (cw, FALSE) # not required anymore
+  setNodeWidthDirect (cw, 'A', 30)
+  setNodeHeightDirect (cw, 'A', 10)
+  redraw (cw) # not required anymore
   sizes <- getNodeSize (cw, 'A')
   print (sizes$width)
   print (sizes$height)
-  lockNodeDimensions (cw, TRUE)
+  # lockNodeDimensions (cw, TRUE) # not required anymore
   setNodeSizeDirect (cw, 'A', 80)
-  redraw (cw)
+  redraw (cw) # not required anymore
   print (getNodeSize (cw, 'A'))
 }
 
