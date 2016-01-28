@@ -235,7 +235,7 @@ run.tests = function ()
     test.center ()
     #test.setNodeSizeDirect ()  #--> too slow
     #test.setNodeWidthAndHeightDirect ()  #--> too slow
-    
+
     deleteAllWindows (cy)
     
     test.setNodeFontSizeDirect ()  #--> too slow
