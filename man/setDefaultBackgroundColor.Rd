@@ -24,7 +24,7 @@ A character string, a hexadecimal, e.g. #000000
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('setDefaultBackgroundColor.test', graph=makeSimpleGraph())
-  setDefaultBackgroundColor (cy, '#CCCC00')
+  setDefaultBackgroundColor (cw, '#CCCC00')
   cw2 <- CytoscapeWindow ('setDefaultBackgroundColor.test2', graph=makeSimpleGraph())
 }
 
