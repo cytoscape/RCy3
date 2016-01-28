@@ -4146,6 +4146,10 @@ setMethod('clearSelection', 'CytoscapeWindowClass',
         resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns/selected?default=false", sep="/")
         request.res <- PUT(url=resource.uri, body=FALSE)
         
+        # if any edges are selected, unselect them
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/selected?default=false", sep="/")
+        request.res <- PUT(url=resource.uri, body=FALSE)
+        
         invisible(request.res)
 }) 
 ## END clearSelection

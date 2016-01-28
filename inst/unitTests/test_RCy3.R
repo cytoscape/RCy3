@@ -132,14 +132,14 @@ run.tests = function ()
     test.setEdgeTargetArrowShapeDirect ()
     test.setEdgeSourceArrowColorDirect ()
     test.setEdgeTargetArrowColorDirect ()
-    test.setEdgeLabelOpacityDirect ()  #--> too slow
+    #test.setEdgeLabelOpacityDirect ()  #--> too slow
     
     deleteAllWindows (cy)
     
-    test.setEdgeSourceArrowOpacityDirect ()
-    test.setEdgeTargetArrowOpacityDirect ()
-    test.setEdgeLabelPositionDirect ()  #--> too slow
-    test.setEdgeLabelWidthDirect ()
+    #test.setEdgeSourceArrowOpacityDirect ()
+    #test.setEdgeTargetArrowOpacityDirect ()
+    #test.setEdgeLabelPositionDirect ()  #--> too slow
+    #test.setEdgeLabelWidthDirect ()
     test.countNodes ()
     test.countEdges ()
     
@@ -1484,7 +1484,7 @@ test.setEdgeSourceArrowShapeDirect = function ()
     cw = CytoscapeWindow ('setEdgeSourceArrowShapeDirect.test', graph=makeSimpleGraph())
     displayGraph (cw)
     layoutNetwork (cw, 'grid')
-    setWindowSize (cw, 800, 800)
+    #setWindowSize (cw, 800, 800)
     fitContent (cw)
     
     edges.of.interest = as.character (cy2.edge.names (g))
@@ -1773,7 +1773,7 @@ test.setEdgeTargetArrowColorDirect = function ()
     displayGraph (cw)
     layoutNetwork (cw, 'grid')
     redraw (cw)
-    setWindowSize (cw, 800, 800)
+    #setWindowSize (cw, 800, 800)
     fitContent (cw)
     
     arrows = c ('Arrow', 'Diamond', 'Circle')
@@ -2138,7 +2138,7 @@ test.deleteSelectedNodes = function ()
     checkEquals (getSelectedNodeCount (cwe), 2)
     
     deleteSelectedNodes(cwe)
-    checkEquals(getAllNodes(cwe), 1)
+    checkEquals(getNodeCount(cwe), 1)
     invisible (cwe)
 
 } # test.invertNodeSelection 
@@ -2159,12 +2159,11 @@ test.hideNodes = function ()
     checkEquals (getSelectedNodeCount (cwe), 2)
     checkEquals (getNodeCount (cwe), 3)
     hideSelectedNodes (cwe)
-    checkEquals (getNodeCount (cwe), 1)
+    checkEquals (getNodeCount (cwe), 3)
     unhideAll (cwe)
     layoutNetwork (cwe)
     redraw (cwe)
     checkEquals (getNodeCount (cwe), 3)
-    #msg (cwe, 'test.selectNodes')
     
     invisible (cwe)
 
@@ -2337,7 +2336,7 @@ test.setEdgeTargetArrowRule = function ()
     layoutNetwork (cwe, 'grid')
     redraw (cwe)
     
-    arrows = c ('Delta', 'T', 'Diamond')
+    arrows = c ('DELTA', 'T', 'DIAMOND')
     edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
     checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 3)
     
@@ -2345,7 +2344,7 @@ test.setEdgeTargetArrowRule = function ()
     
     # now test the list-of-length-one call.  the called method will double the list to get past the xmlrpc
     # treatment of lists of length one as scalars, and a failed signature match
-    arrows = c ('Circle')
+    arrows = c ('CIRCLE')
     edgeType.values = c ('phosphorylates')
     checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 1)
     
@@ -2391,7 +2390,7 @@ test.setEdgeSourceArrowRule = function ()
     layoutNetwork (cwe, 'grid')
     redraw (cwe)
     
-    arrows = c ('Arrow', 'Diamond', 'Circle')
+    arrows = c ('ARROW', 'DIAMOND', 'CIRCLE')
     edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
     checkEquals (length (intersect (arrows, getArrowShapes (cwe))), 3)
     
@@ -2779,16 +2778,14 @@ test.haveNodeAttribute = function ()
     redraw (cw3)
     layoutNetwork (cw3)
     
-    cy = CytoscapeConnection ()
-    
-    nodes.with.attribute = RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'lfc')
+    nodes.with.attribute = RCy3:::haveNodeAttribute (cw3, nodes (getGraph (cw3)), 'lfc')
     checkEquals (sort (nodes.with.attribute),  c ('A', 'B', 'C'))
     
-    checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'type')), 3)
-    checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'label')), 3)
-    checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'count')), 3)
+    checkEquals (length (RCy3:::haveNodeAttribute (cw3, nodes (getGraph (cw3)), 'type')), 3)
+    checkEquals (length (RCy3:::haveNodeAttribute (cw3, nodes (getGraph (cw3)), 'label')), 3)
+    checkEquals (length (RCy3:::haveNodeAttribute (cw3, nodes (getGraph (cw3)), 'count')), 3)
     
-    checkEquals (length (RCy3:::haveNodeAttribute (cy, nodes (getGraph (cw3)), 'bogus')), 0)
+    checkEquals (length (RCy3:::haveNodeAttribute (cw3, nodes (getGraph (cw3)), 'bogus')), 0)
     
     invisible (cw3)
 
@@ -2804,19 +2801,17 @@ test.haveEdgeAttribute = function ()
     redraw (cw3)
     layoutNetwork (cw3)
     
-    cy = CytoscapeConnection ()
-    
     cy2.edgenames = as.character (cy2.edge.names (getGraph (cw3)))
-    edges.with.attribute = RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'edgeType')
+    edges.with.attribute = RCy3:::haveEdgeAttribute (cw3, cy2.edgenames, 'edgeType')
     
     checkEquals (length (edges.with.attribute), 3)
     checkTrue ("A (phosphorylates) B" %in% edges.with.attribute)
     checkTrue ("B (synthetic lethal) C" %in% edges.with.attribute)
     checkTrue ("C (undefined) A" %in% edges.with.attribute)
     
-    checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'score')) == 3)
-    checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'misc')) == 3)
-    checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'bogus')) == 0)
+    checkTrue (length (RCy3:::haveEdgeAttribute (cw3, cy2.edgenames, 'score')) == 3)
+    checkTrue (length (RCy3:::haveEdgeAttribute (cw3, cy2.edgenames, 'misc')) == 3)
+    checkTrue (length (RCy3:::haveEdgeAttribute (cw3, cy2.edgenames, 'bogus')) == 0)
 
 } # test.haveEdgeAttribute
 #------------------------------------------------------------------------------------------------------------------------
@@ -2836,7 +2831,7 @@ hiddenTest.haveEdgeAttribute.oneEdgeOnly = function ()
     
     cy2.edgenames = as.character (cy2.edge.names (getGraph (cw)))
     
-    checkTrue (length (RCy3:::haveEdgeAttribute (cy, cy2.edgenames, 'score')) == 1)
+    checkTrue (length (RCy3:::haveEdgeAttribute (cw, cy2.edgenames, 'score')) == 1)
 
 } # hiddenTest.haveEdgeAttribute.oneEdgeOnly
 #------------------------------------------------------------------------------------------------------------------------
@@ -2859,10 +2854,9 @@ test.copyNodeAttributesFromCyGraph = function ()
     g = new ('graphNEL', edgemode='directed')
     g = graph::addNode (c ('A', 'B', 'C'), g)
     
-    cy = CytoscapeConnection ()
-    g2 = RCy3:::copyNodeAttributesFromCyGraph (cy, getWindowID (cy, title), g)
-    checkEquals (length (intersect (noa.names (g2), c ("canonicalName", "count", "label", "lfc", "type"))), 5)
-    checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='canonicalName')), c ('A', 'B', 'C'))
+    g2 = RCy3:::copyNodeAttributesFromCyGraph (cw3, getWindowID (cy, title), g)
+    checkEquals (length (intersect (noa.names (g2), c ("name", "count", "label", "lfc", "type"))), 5)
+    checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='name')), c ('A', 'B', 'C'))
     checkEquals (as.integer (nodeData (g2, c ('A', 'B', 'C'), attr='count')), c (2, 30, 100))
     checkEquals (as.numeric (nodeData (g2, c ('A', 'B', 'C'), attr='lfc')), c (-3,  0,  3))
     checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='type')), c ("kinase", "transcription factor", "glycoprotein"))
@@ -2893,7 +2887,7 @@ test.copyEdgeAttributesFromCyGraph = function ()
     edgeData (g, 'C', 'A', 'edgeType') = 'undefined'
     
     cy = CytoscapeConnection ()
-    g2 = RCy3:::copyEdgeAttributesFromCyGraph (cy, cw3, g)
+    g2 = RCy3:::copyEdgeAttributesFromCyGraph (cw3, cw3, g)
     
     checkEquals (eda (g2, 'score') [['A|B']], 35)
     checkEquals (eda (g2, 'score') [['B|C']], -12)
@@ -2911,9 +2905,9 @@ test.copyEdgeAttributesFromCyGraph = function ()
     checkEquals (eda (g2, 'misc') [['B|C']], 'default misc')
     checkEquals (eda (g2, 'misc') [['C|A']], 'default misc')
     
-    checkEquals (eda (g2, 'canonicalName') [['A|B']],  "A (phosphorylates) B")
-    checkEquals (eda (g2, 'canonicalName') [['B|C']],  "B (synthetic lethal) C")
-    checkEquals (eda (g2, 'canonicalName') [['C|A']],  "C (undefined) A")
+    checkEquals (eda (g2, 'name') [['A|B']],  "A (phosphorylates) B")
+    checkEquals (eda (g2, 'name') [['B|C']],  "B (synthetic lethal) C")
+    checkEquals (eda (g2, 'name') [['C|A']],  "C (undefined) A")
     
     invisible (g2)
 
@@ -2933,20 +2927,20 @@ test.getGraphFromCyWindow = function ()
     
     g3 = getGraphFromCyWindow (cy, 'test.getGraphFromCyWindow')
     checkEquals (sort (nodes (g3)), c ('A', 'B', 'C'))
-    checkEquals (length (intersect (noa.names (g3), c ("canonicalName", "count", "label", "lfc", "type"))), 5)
-    checkEquals (as.character (sort (noa (g3, 'canonicalName'))), c ('A', 'B', 'C'))
+    checkEquals (length (intersect (noa.names (g3), c ("name", "count", "label", "lfc", "type"))), 5)
+    checkEquals (as.character (sort (noa (g3, 'name'))), c ('A', 'B', 'C'))
     checkEquals (as.integer   (sort (noa (g3, 'count'))),         c (2, 30, 100))
     checkEquals (as.character (sort (noa (g3, 'label'))),         c ('Gene A', 'Gene B', 'Gene C'))
     checkEquals (as.numeric (sort (noa (g3, 'lfc'))),             c (-3,  0,  3))
     checkEquals (as.character (sort (noa (g3, 'type'))),          c ("glycoprotein", "kinase", "transcription factor"))
     
-    checkEquals (length (intersect (eda.names (g3), c ("canonicalName", "edgeType", "interaction", "misc", "score"))), 5)
+    checkEquals (length (intersect (eda.names (g3), c ("name", "edgeType", "interaction", "misc", "score"))), 5)
     
     checkEquals (sort (names (cy2.edge.names (g3))),        c ('A~B',                   'B~C',                    'C~A'))
     checkEquals (sort (as.character (cy2.edge.names (g3))), c ("A (phosphorylates) B",  "B (synthetic lethal) C", "C (undefined) A"))
     
     checkEquals (as.character (sort (eda (g3, 'edgeType'))), c ("phosphorylates", "synthetic lethal", "undefined"))
-    checkEquals (as.character (sort (eda (g3, 'canonicalName'))), c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (undefined) A"))
+    checkEquals (as.character (sort (eda (g3, 'name'))), c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (undefined) A"))
     checkEquals (as.character (sort (eda (g3, 'interaction'))), c ("phosphorylates", "synthetic lethal", "undefined"))
     checkEquals (as.character (sort (eda (g3, 'misc'))), c ("default misc", "default misc", "default misc"))
     checkEquals (as.numeric (sort (eda (g3, 'score'))), c (-12,  0,  35))
@@ -3072,10 +3066,10 @@ test.addGraphToGraph = function ()
     checkEquals (sort (edgeNames (cw.copy@graph)), c ("A~B", "A~E", "B~C", "C~A", "D~E"))
     
     # are all the expected node and edge attributes present?
-    checkEquals (length (intersect (noa.names (cw.copy@graph), c ("canonicalName", "count", "label", "lfc", "SCORE", "type"))), 6)
+    checkEquals (length (intersect (noa.names (cw.copy@graph), c ("name", "count", "label", "lfc", "SCORE", "type"))), 6)
     
     # edge attributes
-    checkEquals (length (intersect (eda.names (cw.copy@graph), c ("canonicalName", "edgeType", "interaction", "misc", "probability", "score"))), 6)
+    checkEquals (length (intersect (eda.names (cw.copy@graph), c ("name", "edgeType", "interaction", "misc", "probability", "score"))), 6)
     
     # check the node label attributes
     checkEquals (nodeData (cw.copy@graph, attr='label')$A, 'Gene A')
@@ -3209,8 +3203,8 @@ test.addGetAndDeleteEdgeAttributes = function ()
         deleteEdgeAttribute (cy, eda.name)
     }
     
-    # canonicalName and interaction are added by Cytoscape
-    checkEquals (length (intersect (getEdgeAttributeNames (cw), c ("canonicalName", "edgeType", "interaction", "misc", "score"))), 5)
+    # name and interaction are added by Cytoscape
+    checkEquals (length (intersect (getEdgeAttributeNames (cw), c ("name", "edgeType", "interaction", "misc", "score"))), 5)
     
     # now add an attribute to two of the edges 
     first.two.edges = as.character (cy2.edge.names (g)[1:2])
@@ -3253,8 +3247,8 @@ test.addGetAndDeleteNodeAttributes = function ()
         deleteNodeAttribute (cy, noa.name)
     }
     
-    # canonicalName is added by Cytoscape
-    checkEquals (length (intersect (getNodeAttributeNames (cw), c ("canonicalName", "count",  "label", "lfc", "type"))), 5)
+    # name is added by Cytoscape
+    checkEquals (length (intersect (getNodeAttributeNames (cw), c ("name", "count",  "label", "lfc", "type"))), 5)
     
     # now add an attribute to two of the nodes 
     first.two.nodes = nodes (g) [1:2]
@@ -3291,7 +3285,7 @@ test.getAllNodeAttributes = function ()
     tbl.noa <- getAllNodeAttributes (cwc)
     checkEquals (nrow (tbl.noa), 3)
     checkTrue (ncol (tbl.noa) >= 5)
-    expected.colnames =  c ("canonicalName", "count", "label", "lfc", "type")  # created here
+    expected.colnames =  c ("name", "count", "label", "lfc", "type")  # created here
     checkEquals (length (intersect (colnames (tbl.noa), expected.colnames)), 5)
     checkEquals (sort (rownames (tbl.noa)), c ("A", "B", "C"))
     
