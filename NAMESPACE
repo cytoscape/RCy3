@@ -189,7 +189,6 @@ export(
 importClassesFrom(graph, graph, graphBase)
 
 importClassesFrom(methods, character, integer)
-
 importMethodsFrom(graph, edgeData, "edgeData<-", edgeDataDefaults,
                  "edgeDataDefaults<-", edgeNames, edges, inEdges,
                  nodeData, "nodeData<-", nodeDataDefaults,
