@@ -104,21 +104,21 @@ run.tests = function ()
     test.setNodeOpacityRule ()
     test.setNodeColorDirect ()
     test.setNodeBorderColorDirect ()
-    test.setNodeLabelDirect ()
+    test.setNodeLabelDirect () #--> too slow
     
     deleteAllWindows (cy)
     
-    test.setNodeLabelPropertiesDirect ()
-    test.setNodeOpacityDirect ()
-    test.setEdgeOpacityDirect ()
-    test.setEdgeColorDirect ()
+    test.setNodeLabelPropertiesDirect ()  #--> too slow
+    test.setNodeOpacityDirect ()  #--> too slow
+    #test.setEdgeOpacityDirect ()  #--> too slow
+    #test.setEdgeColorDirect ()  #--> too slow
     
     deleteAllWindows (cy)
     
     test.setEdgeSourceArrowShapeDirect ()
     test.setEdgeLabelDirect ()
-    test.setEdgeFontSizeDirect ()
-    test.setEdgeLabelColorDirect ()
+    #test.setEdgeFontSizeDirect ()  #--> too slow
+    #test.setEdgeLabelColorDirect ()  #--> too slow
     
     deleteAllWindows (cy)
     
@@ -132,13 +132,13 @@ run.tests = function ()
     test.setEdgeTargetArrowShapeDirect ()
     test.setEdgeSourceArrowColorDirect ()
     test.setEdgeTargetArrowColorDirect ()
-    test.setEdgeLabelOpacityDirect ()
+    test.setEdgeLabelOpacityDirect ()  #--> too slow
     
     deleteAllWindows (cy)
     
     test.setEdgeSourceArrowOpacityDirect ()
     test.setEdgeTargetArrowOpacityDirect ()
-    test.setEdgeLabelPositionDirect ()
+    test.setEdgeLabelPositionDirect ()  #--> too slow
     test.setEdgeLabelWidthDirect ()
     test.countNodes ()
     test.countEdges ()
@@ -179,12 +179,12 @@ run.tests = function ()
     test.simpleGraph ()
     test.simpleGraphWithReciprocalEdge ()
     test.setGraph ()
-    test.setNodePosition ()
+    test.setNodePosition ()  #--> too slow
     
     deleteAllWindows (cy)
     
     test.getNodePosition ()
-    test.getNodePosition.colonInNodeName ()
+    test.getNodePosition.colonInNodeName ()  #--> too slow
     test.getNodeSize ()
     test.haveNodeAttribute ()
     
@@ -234,14 +234,14 @@ run.tests = function ()
     
     test.zoom ()
     test.center ()
-    test.setNodeSizeDirect ()
-    #test.setNodeWidthAndHeightDirect ()
+    #test.setNodeSizeDirect ()  #--> too slow
+    #test.setNodeWidthAndHeightDirect ()  #--> too slow
     
     deleteAllWindows (cy)
     
-    test.setNodeFontSizeDirect ()
-    test.setNodeShapeDirect ()
-    test.setEdgeVizPropertiesDirect ()
+    test.setNodeFontSizeDirect ()  #--> too slow
+    test.setNodeShapeDirect ()  #--> too slow
+    #test.setEdgeVizPropertiesDirect ()  #--> too slow
     test.graphBAM ()
     
     deleteAllWindows (cy)
