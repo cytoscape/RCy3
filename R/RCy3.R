@@ -4959,15 +4959,15 @@ setMethod ('lockNodeDimensions', 'CytoscapeConnectionClass',
             write (sprintf ('Error in RCy3::lockNodeDimensions. No visual style named "%s"', visual.style.name), stdout ())
             return ()
         }
-    
+
         #lock node dimensions
         resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(visual.style.name), "dependencies", sep="/")
         style <- list(visualPropertyDependency="nodeSizeLocked", enabled = tolower(new.state))
         style.JSON <- toJSON(list(style))
         request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
-        
+
         # inform the user if the request was a success or failure
-        if (request.res$status == 200 || request.res$status == 201){
+        if (request.res$status == 204){
             if (new.state==TRUE){
                 write (sprintf ('Locked node dimensions.'), stdout ())
             }else{
