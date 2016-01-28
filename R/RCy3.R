@@ -1130,7 +1130,7 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
 
-    function (obj,  window.title) {
+    function (obj, window.title) {
       window.id = NULL
       # handles the case when 'obj' is 'CytoscapeConnectionClass', instead of 'CytoscapeWindowClass' 
       if(class(obj) == "CytoscapeConnectionClass") {
