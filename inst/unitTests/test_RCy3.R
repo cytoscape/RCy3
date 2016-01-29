@@ -578,9 +578,9 @@ test.sendNodes = function ()
     
     cwa = CytoscapeWindow (title, graph=g)
     sendNodes (cwa)
-    layoutNetwork (cwa, "grid")
-    # no edges, so other layouts will simply superimpose the nodes
+    layoutNetwork (cwa, "grid")   # no edges, so other layouts will simply superimpose the nodes
     redraw (cwa)
+    #msg (cwa, 'sendNodes')
     
     invisible (cwa)
 
