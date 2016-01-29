@@ -520,7 +520,8 @@ test.getLayoutPropertyValue = function ()
     
     for (prop in props) {
         value = getLayoutPropertyValue (cy, layout.name, prop)
-        print ('force-directed layout %s: %s', prop, value)
+        prop.value.output <- sprintf ('force-directed layout %s: %s', prop, value)
+        print (prop.value.output)
     } # for prop
 
 } # test.getLayoutPropertyValue
