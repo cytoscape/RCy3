@@ -1,5 +1,8 @@
 NEW RELEASE VERSION 0.99.0
 -------------------------
+PERSISTING ISSUES
+    o direct functions are currently overwritten by rule-based functions.
+      Once CyREST updates, this issue will be fixed.
 
 NEW FEATURES
     o added setDefaultEdgeSourceArrowColor to set the default arrow color
@@ -7,6 +10,8 @@ NEW FEATURES
     o added two modes (interpolate and lookup) to setEdgeSourceArrowColorRule
     o added two modes (interpolate and lookup) to setEdgeTargetArrowColorRule
     o redraw is no longer required as the Cytoscape interface updates automatically.
+    o lockNodeDimensions is no longer required. Functions that required locked node
+      dimensions do this automatically.
     
     
 SIGNIFICANT USER-VISIBLE CHANGES
