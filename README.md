@@ -1,13 +1,13 @@
-# Bioconductor_RCytoscape
-Update RCytoscape to work for Cytoscape 3.1.1 and higher using CyREST
+# Bioconductor_RCy3
+This package replaces RCytoscape for Cytoscape 3.1.1 and higher
 
 ## RCy3 Environment Setup
 
 In addition to this package (RCy3), you will need:
 
 1. Java SE 8. Cytoscape and CyREST currently do not support Java SE 6 anymore. It can be can downloaded from Oracle here: http://www.oracle.com/technetwork/java/javase/downloads/index.html. Java SE 7 works only in combination with Cytoscape 3.2.0.
-2. Cytoscape 3.2.1+ (with installed CyREST plugin 0.9.14+). Cytoscape can be downloaded using this URL: http://www.cytoscape.org/download.php. The CyREST plugin, a Cytoscape plugin which provides the Cytoscape end of the communication layer, can be easily be installed via the integrated app store or it can be downloaded from here: http://apps.cytoscape.org/apps/cyrest. See instructions below.
-3. R 3.1.3+ (and RStudio as IDE if desired) which can be downloaded here: http://cran.r-project.org.
+2. Cytoscape 3.3.+ (with installed CyREST plugin 3.3.1+). Cytoscape can be downloaded using this URL: http://www.cytoscape.org/download.php. The CyREST plugin, a Cytoscape plugin which provides the Cytoscape end of the communication layer, can be easily be installed via the integrated app store or it can be downloaded from here: http://apps.cytoscape.org/apps/cyrest. See instructions below.
+3. R 3.2+ (and RStudio as IDE if desired) which can be downloaded here: http://cran.r-project.org.
 
 ## Setup steps:
 
