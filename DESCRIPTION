@@ -5,7 +5,7 @@ Version: 1.0.1
 Date: 2016-01-28
 Author: Tanja Muetze, Georgi Kolishovski, Paul Shannon
 Maintainer: Tanja Muetze <tanja.muetze14@imperial.ac.uk>, Georgi Kolishovski <g_kolishv@yahoo.com>, Paul Shannon <pshannon@systemsbiology.org> 
-Depends: R (>= 3.2), graph (>= 1.31.0)
+Depends: R (>= 3.2), graph (>= 1.48.0)
 Imports: httr, methods, RCurl, RJSONIO
 Suggests: BiocGenerics, RUnit
 Description: Vizualize, analyze and explore graphs, connecting R to Cytoscape (>= 3.3).
