@@ -520,7 +520,7 @@ test.getLayoutPropertyValue = function ()
     
     for (prop in props) {
         value = getLayoutPropertyValue (cy, layout.name, prop)
-        printf ('force-directed layout %s: %s', prop, value)
+        print ('force-directed layout %s: %s', prop, value)
     } # for prop
 
 } # test.getLayoutPropertyValue
@@ -577,9 +577,9 @@ test.sendNodes = function ()
     
     cwa = CytoscapeWindow (title, graph=g)
     sendNodes (cwa)
-    layoutNetwork (cwa, "grid")   # no edges, so other layouts will simply superimpose the nodes
+    layoutNetwork (cwa, "grid")
+    # no edges, so other layouts will simply superimpose the nodes
     redraw (cwa)
-    #msg (cwa, 'sendNodes')
     
     invisible (cwa)
 
