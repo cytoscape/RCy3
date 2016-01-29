@@ -483,7 +483,7 @@ existing.CytoscapeWindow =
         # establish a connection to Cytoscape
         cy.conn <- CytoscapeConnection(host, port)
 		
-        if(is.null(cy.conn)) {
+        if (is.null(cy.conn)) {
             write(sprintf("ERROR in existing.CytoscapeWindow():\n\t Cytoscape connection could not be established >> NULL returned"), stderr())
             
             return()
@@ -494,23 +494,35 @@ existing.CytoscapeWindow =
 		existing.window.id = as.character(getWindowID(cy.conn, title))
 		
 		# inform user if the window does not exist
-        if(is.na(existing.window.id)) {
+        if (is.na(existing.window.id)) {
             write(sprintf("ERROR in RCy3::existing.CytoscapeWindow():\n\t no window named '%s' exists in Cytoscape >> choose from the following titles: ", title), stderr())
 			write(as.character(getWindowList(cy.conn)), stderr())
-			
             return(NA)
 		}
 		
 		# get graph from Cytoscape
         cy.window <- new('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
-        
-        if(copy.graph.from.cytoscape.to.R) {
+
+        if (copy.graph.from.cytoscape.to.R) {
+            # copy over graph
             g.cy <- getGraphFromCyWindow(cy.window, title)
-            
             cy.window <- setGraph(cy.window, g.cy)
+
+            # copy over obj@suid.name.dict
+            resource.uri <- paste(cy.window@uri, pluginVersion(cy.window), "networks", as.character(cy.window@window.id), sep="/")
+            request.res <- GET(url=resource.uri)
+            request.res <- fromJSON(rawToChar(request.res$content))
+
+            if (length(request.res$elements$nodes) != 0){
+                cy.window@suid.name.dict = lapply(request.res$elements$nodes, function(n) { 
+                    list(name=n$data$name, SUID=n$data$SUID) })
+            }
+            if (length(request.res$elements$edges) != 0){
+                cy.window@edge.suid.name.dict = lapply(request.res$elements$edges, function(e) {
+                    list(name=e$data$name, SUID=e$data$SUID) })
+            }
         }
-        
-        return(cy.window)
+        return (cy.window)
 }
 ## END existing.CytsoscapeWindow
 
@@ -942,12 +954,14 @@ setMethod ('setLayoutProperties', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod ('setGraph', 'CytoscapeWindowClass', function(obj, graph) {
+    # copy the graph over
     loc.obj <- obj
-    if(edgemode(graph) == 'undirected'){
+    if (edgemode(graph) == 'undirected'){
         graph = remove.redundancies.in.undirected.graph (graph)
     }
     
     loc.obj@graph = graph
+    
     eval.parent(substitute(obj <- loc.obj))
 })
 
@@ -1131,77 +1145,78 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'CytoscapeConnectionClass',
 setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
 
     function (obj, window.title) {
-      window.id = NULL
-      # handles the case when 'obj' is 'CytoscapeConnectionClass', instead of 'CytoscapeWindowClass' 
-      if(class(obj) == "CytoscapeConnectionClass") {
-          window.id = as.character(getWindowID(obj, window.title))
-          loc.obj = 
-              new('CytoscapeWindowClass', title=window.title, window.id=window.id, uri=obj@uri)
-      } else {
-          loc.obj = obj
-      }
-      # network id and cyREST plugin version
-      net.SUID = as.character(loc.obj@window.id)
-      version = pluginVersion(loc.obj)
-      
-      if(!is.na(net.SUID)) {
-          # get the graph from Cytoscape
-          resource.uri = paste(loc.obj@uri, version, "networks", net.SUID, sep="/")
-          request.res = GET(url=resource.uri)
-          request.res = fromJSON(rawToChar(request.res$content))
+        window.id = NULL
+        # handles the case when 'obj' is 'CytoscapeConnectionClass', instead of 'CytoscapeWindowClass' 
+        if (class(obj) == "CytoscapeConnectionClass") {
+            window.id = as.character(getWindowID(obj, window.title))
+            loc.obj = 
+                new('CytoscapeWindowClass', title=window.title, window.id=window.id, uri=obj@uri)
+        } else {
+            loc.obj = obj
+        }
+        # network id and cyREST plugin version
+        net.SUID = as.character(loc.obj@window.id)
+        version = pluginVersion(loc.obj)
+        
+        if (!is.na(net.SUID)) {
+            # get the graph from Cytoscape
+            resource.uri = paste(loc.obj@uri, version, "networks", net.SUID, sep="/")
+            request.res = GET(url=resource.uri)
+            request.res = fromJSON(rawToChar(request.res$content))
+            
+            g = new("graphNEL", edgemode='directed') # create graph object
+            
+            # GET GRAPH NODES
+            g.nodes = request.res$elements$nodes
+            # if there are no nodes in the graph received from Cytoscape, return an empty 'graphNEL' object
+            if(length(g.nodes) == 0) {
+                write(sprintf("NOTICE in RCy3::getGraphFromCyWindow():\n\t returning an empty 'graphNEL'"), stderr())
+                return(g)
+            }
+            
+            # else get the node names and add them to the R graph
+            loc.obj@suid.name.dict = lapply(g.nodes, function(n) { 
+            list(name=n$data$name, SUID=n$data$SUID) })
+            g.node.names = sapply(loc.obj@suid.name.dict, function(n) { n$name })
+            write(sprintf("\t received %d NODES from '%s'", length(g.nodes), window.title), stderr())
+            g = graph::addNode(g.node.names, g)
+            write(sprintf("\t - added %d nodes to the returned graph\n", length(g.node.names)), stderr())
+            
+            # GET NODE ATTRIBUTES (if any)
+            g = copyNodeAttributesFromCyGraph(loc.obj, net.SUID, g)
+            
+            # Bioconductor's 'graph' edges require the 'edgeType' attribute, so its default value is assigned
+            g = initEdgeAttribute (g, 'edgeType', 'char', 'assoc')
+            
+            # GET GRAPH EDGES
+            g.edges = request.res$elements$edges
+            
+            if (length(g.edges) > 0) {
+                regex = ' *[\\(|\\)] *'
+                write(sprintf("\n\t received %d EDGES from '%s'", length(g.edges), window.title), stderr())
+                
+                loc.obj@edge.suid.name.dict = lapply(g.edges, function(e) {
+                    list(name=e$data$name, SUID=e$data$SUID) })
+                g.edge.names = sapply(loc.obj@edge.suid.name.dict, function(e) { e$name })
+                edges.tokens = strsplit(g.edge.names, regex)
+                source.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[1]))
+                target.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[3]))
+                edge.types = unlist(lapply(edges.tokens, function(tokens) tokens[2]))
+                write(sprintf('\t - adding %d edges to the returned graph\n', length(edges.tokens)), stderr())
+                g = addEdge(source.nodes, target.nodes, g)
+                
+                edgeData(g, source.nodes, target.nodes, 'edgeType') = edge.types
+                
+                # GET EDGE ATTRIBUTES (if any)
+                g = copyEdgeAttributesFromCyGraph(loc.obj, window.id, g)
+            }
           
-          g = new("graphNEL", edgemode='directed') # create graph object
-          
-          # GET GRAPH NODES
-          g.nodes = request.res$elements$nodes
-          # if there are no nodes in the graph received from Cytoscape, return an empty 'graphNEL' object
-          if(length(g.nodes) == 0) {
-              write(sprintf("NOTICE in RCy3::getGraphFromCyWindow():\n\t returning an empty 'graphNEL'"), stderr())
-              return(g)
-          }
-          # else get the node names and add them to the R graph
-          loc.obj@suid.name.dict = lapply(g.nodes, function(n) { 
-              list(name=n$data$name, SUID=n$data$SUID) })
-          g.node.names = sapply(loc.obj@suid.name.dict, function(n) { n$name })
-          write(sprintf("\t received %d NODES from '%s'", length(g.nodes), window.title), stderr())
-          g = graph::addNode(g.node.names, g)
-          write(sprintf("\t - added %d nodes to the returned graph\n", length(g.node.names)), stderr())
-          
-          # GET NODE ATTRIBUTES (if any)
-          g = copyNodeAttributesFromCyGraph(loc.obj, net.SUID, g)
-          
-          # Bioconductor's 'graph' edges require the 'edgeType' attribute, so its default value is assigned
-          g = initEdgeAttribute (g, 'edgeType', 'char', 'assoc')
-          
-          # GET GRAPH EDGES
-          g.edges = request.res$elements$edges
-          
-          if(length(g.edges) > 0) {
-              regex = ' *[\\(|\\)] *'
-              write(sprintf("\n\t received %d EDGES from '%s'", length(g.edges), window.title), stderr())
-              
-              loc.obj@edge.suid.name.dict = lapply(g.edges, function(e) { 
-                  list(name=e$data$name, SUID=e$data$SUID) })
-              g.edge.names = sapply(loc.obj@edge.suid.name.dict, function(e) { e$name })
-              edges.tokens = strsplit(g.edge.names, regex)
-              source.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[1]))
-              target.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[3]))
-              edge.types = unlist(lapply(edges.tokens, function(tokens) tokens[2]))
-              write(sprintf('\t - adding %d edges to the returned graph\n', length(edges.tokens)), stderr())
-              g = addEdge(source.nodes, target.nodes, g)
-              
-              edgeData(g, source.nodes, target.nodes, 'edgeType') = edge.types
-              
-              # GET EDGE ATTRIBUTES (if any)
-              g = copyEdgeAttributesFromCyGraph(loc.obj, window.id, g)
-          }
-          
-      } else {
-          write(sprintf("ERROR in RCy3::getGraphFromCyWindow():\n\t there is no graph with name '%s' in Cytoscape", window.title), stderr())
-          return(NA)
-      }
-      
-      return(g)
+        } else {
+            write(sprintf("ERROR in RCy3::getGraphFromCyWindow():\n\t there is no graph with name '%s' in Cytoscape", window.title), stderr())
+            return(NA)
+        }
+        
+        return(g)
   })
 ## END getGraphFromCyWindow
 
@@ -1469,7 +1484,7 @@ setMethod('addCyNode', 'CytoscapeWindowClass', function(obj, nodeName) {
     loc.obj@graph <- addNode(nodeName, loc.obj@graph)
 
     eval.parent(substitute(obj <- loc.obj))
-})
+}) # addCyNode
 
 # ------------------------------------------------------------------------------
 setMethod('addCyEdge', 'CytoscapeWindowClass', 
@@ -1512,7 +1527,7 @@ setMethod('addCyEdge', 'CytoscapeWindowClass',
     loc.obj@graph <- addEdge(sourceNode, targetNode, loc.obj@graph)
     
     eval.parent(substitute(obj <- loc.obj))
-})
+}) # addCyEdge
 
 #------------------------------------------------------------------------------------------------------------------------
 # This method adds a new graph to an existing graph.
@@ -4088,7 +4103,7 @@ setMethod('getAllNodes', 'CytoscapeWindowClass',
         resource.uri <- paste(loc.obj@uri, version, "networks", net.SUID, "nodes", sep="/")
         # get the SUIDs of the nodes in the Cytoscape graph
         cy.nodes.SUIDs <- fromJSON(rawToChar(GET(resource.uri)$content))
-        
+
         dict.nodes.SUIDs <- sapply(loc.obj@suid.name.dict, "[[", 2)
         
         # check that the nodes presented in Cytoscape & RCy3's session dictionary do match
@@ -4098,15 +4113,17 @@ setMethod('getAllNodes', 'CytoscapeWindowClass',
         if(length(diff.nodes) > 0) {
             write(sprintf("WARNING in RCy3::getAllNodes():\n\t the following node(s) exist in Cytoscape, but don't exist in RCy3's session"), stderr())
             
+            nodes.only.in.cytoscape <- c()
             for(i in 1:length(diff.nodes)) {
                 resource.uri <- 
                     paste(loc.obj@uri, version, "networks", net.SUID, "nodes", as.character(diff.nodes[i]), sep="/")
                 node.name <- fromJSON(rawToChar(GET(resource.uri)$content))$data$name 
-                
+                nodes.only.in.cytoscape <- c(nodes.only.in.cytoscape, node.name)
             #    [GIK, Jul 2015] synch to be implemented
             #    loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict) + 1]] <- 
             #        list(name=node.name, SUID=diff.nodes[i])
             }
+            print(nodes.only.in.cytoscape)
         }
         node.names <- .nodeSUIDToNodeName(obj, cy.nodes.SUIDs[order(cy.nodes.SUIDs)])
         
