@@ -1,5 +1,5 @@
 # Bioconductor_RCy3
-This package replaces RCytoscape for Cytoscape 3.1.1 and higher
+This package replaces RCytoscape for Cytoscape 3 and higher
 
 ## RCy3 Environment Setup
 
@@ -13,7 +13,7 @@ In addition to this package (RCy3), you will need:
 
 First install Java, then Cytoscape and follow the instructions on the screen.
 
-Option 1: Open Cytoscape, click on "Apps" in the menubar and select "App Manager". In the App Manager on the "Install Apps" tab, type "CyREST" in the search bar and click on cyREST when it appears and then click on "Install".
+Option 1: Open Cytoscape, click on "Apps" in the menubar and select "App Manager". In the App Manager on the "Install Apps" tab, type "CyREST" in the search bar and click on CyREST when it appears and then click on "Install".
 
 Option 2: Alternatively you can download the CyREST plugin as .jar file from Cytoscape's app store here: http://apps.cytoscape.org/apps/cyrest. Then, open Cytoscape, click on "Apps" in the menubar and select "App Manager". In the App Manager on the "Install Apps" tab click on "Install from File...", choose the .jar file that you just downloaded, then click "Open" and then "Install". You are all set!
 
