@@ -1481,7 +1481,7 @@ test.setEdgeSourceArrowShapeDirect = function ()
     title = 'test.setEdgeSourceArrowShapeDirect'
     window.prep (title)
     
-    cw = CytoscapeWindow ('setEdgeSourceArrowShapeDirect.test', graph=makeSimpleGraph())
+    cw = CytoscapeWindow ('test.setEdgeSourceArrowShapeDirect', graph=makeSimpleGraph())
     displayGraph (cw)
     layoutNetwork (cw, 'grid')
     #setWindowSize (cw, 800, 800)
@@ -1509,7 +1509,7 @@ test.setEdgeLabelDirect = function ()
     title = 'test.setEdgeLabelDirect '
     window.prep (title)
     
-    cw = CytoscapeWindow ('setEdgeLabelDirect.test', graph=makeSimpleGraph())
+    cw = CytoscapeWindow ('test.setEdgeLabelDirect', graph=makeSimpleGraph())
     displayGraph (cw)
     layoutNetwork (cw, 'grid')
     edge.names = cy2.edge.names (cw@graph)[1:2]
@@ -1577,7 +1577,7 @@ test.setEdgeLabelColorDirect = function ()
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeTooltipDirect = function ()
 {
-    title = 'setEdgeTooltipDirect.test'
+    title = 'test.setEdgeTooltipDirect'
     window.prep (title)
     
     cw <- CytoscapeWindow (title, graph=makeSimpleGraph())
@@ -1885,25 +1885,25 @@ test.setEdgeTargetArrowOpacityDirect = function ()
 
 } # test.setEdgeTargetArrowOpacityDirect
 #------------------------------------------------------------------------------------------------------------------------
-test.setEdgeLabelPositionDirect = function ()
-{
-    #DEACTIVATED("too slow for some reason")
-    title = 'test.setEdgeLabelPositionDirect'
-    window.prep (title)
-    
-    g = RCy3::makeSimpleGraph ()
-    cw = CytoscapeWindow (title, graph=g)
-    displayGraph (cw)
-    layoutNetwork (cw, 'grid')
-    redraw (cw)
-    
-    edge.of.interest = cy2.edge.names (g) [1]
-    for (i in 1:5) {
-        setEdgeOpacityDirect (cw, edge.of.interest, i * 30)
-        Sys.sleep (0.3)
-    } # for i
-
-} # test.
+# test.setEdgeLabelPositionDirect = function () # WORKS PERFECTLY FINE BUT SLOW
+# {
+#     #DEACTIVATED("too slow for some reason")
+#     title = 'test.setEdgeLabelPositionDirect'
+#     window.prep (title)
+#     
+#     g = RCy3::makeSimpleGraph ()
+#     cw = CytoscapeWindow (title, graph=g)
+#     displayGraph (cw)
+#     layoutNetwork (cw, 'grid')
+#     redraw (cw)
+#     
+#     edge.of.interest = cy2.edge.names (g) [1]
+#     for (i in 1:5) {
+#         setEdgeOpacityDirect (cw, edge.of.interest, i * 30)
+#         Sys.sleep (0.3)
+#     } # for i
+# 
+# } # test.setEdgeLabelPositionDirect
 #------------------------------------------------------------------------------------------------------------------------
 #test.setEdgeLabelWidthDirect = function ()
 #{
@@ -2484,7 +2484,7 @@ test.unmatchedAttributesError = function ()
 
 } # test.unmatchedAttributesError
 #------------------------------------------------------------------------------------------------------------------------
-#run.tests ()
+run.tests ()
 #------------------------------------------------------------------------------------------------------------------------
 #RCy3:::makeRandomGraph ()
 #------------------------------------------------------------------------------------------------------------------------
