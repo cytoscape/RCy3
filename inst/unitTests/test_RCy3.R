@@ -3666,54 +3666,54 @@ test.setNodeShapeDirect = function ()
 
 } # test.setNodeShapeDirect
 #------------------------------------------------------------------------------------------------------------------------
-test.setEdgeVizPropertiesDirect = function (cw=NULL)
-{
-    #DEACTIVATED("too slow!")
-    title = 'test.setEdgeVizPropertiesDirect'
-    
-    window.prep (title)
-    cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-    displayGraph (cw)
-    redraw (cw)
-    layoutNetwork (cw)
-
-    cy2.edgeNames = sort (getAllEdges (cw))
-    e1 = cy2.edgeNames [1]
-    e2 = cy2.edgeNames [2]
-    e3 = cy2.edgeNames [3]
-    
-    colors = c ('#440000', '#004400', '#000044', '#880000', '#008800', '#000088', '#FF0000', '#00FF00', '#0000FF', '#FFFFFF')
-    line.styles = c ('SOLID', 'LONG_DASH', 'EQUAL_DASH', 'DASH_DOT', 'DOT', 'ZIGZAG', 'SINEWAVE', 'VERTICAL_SLASH', 
-               'FORWARD_SLASH', 'BACKWARD_SLASH', 'PARALLEL_LINES', 'CONTIGUOUS_ARROW', 'SEPARATE_ARROW')
-    
-    arrow.shapes = c ('No Arrow', 'Diamond', 'Delta', 'Arrow', 'T', 'Circle', 'Half Arrow Top', 'Half Arrow Bottom', 'Diamond', 'T')
-    labels = paste ('label', seq (10,100,10), sep='-');  labels [10] = ''
-    tooltips = paste ('tooltip', seq (10,100,10), sep='-');  tooltips [10] = ''
-    widths = c (1:9, 1)
-    
-    for (i in 1:10) {
-        setEdgeOpacityDirect (cw, c (e2, e3), 25 * i)
-        setEdgeColorDirect (cw, e1, colors [i])
-        setEdgeLineStyleDirect (cw, e2, line.styles [i])
-        setEdgeSourceArrowShapeDirect (cw, e1, arrow.shapes [i])
-        setEdgeTargetArrowShapeDirect (cw, e1, arrow.shapes [i])
-        setEdgeLabelDirect (cw, e2, labels [i])
-        setEdgeLabelColorDirect (cw, e2, colors [i])
-        setEdgeTooltipDirect (cw, e2, tooltips [i])
-        setEdgeLineWidthDirect (cw, e3, widths [i])
-        setEdgeFontSizeDirect (cw, e2, widths [i] * 3)
-        setEdgeSourceArrowColorDirect (cw, e1, colors [11-i])
-        setEdgeTargetArrowColorDirect (cw, e1, colors [11-i])
-        setEdgeLabelOpacityDirect (cw, e2, 25 * i)
-        setEdgeSourceArrowOpacityDirect (cw, e1, 25 * i)
-        setEdgeTargetArrowOpacityDirect (cw, e1, 255 - (25 * i))
-        redraw (cw)
-        Sys.sleep (0.3)
-    }
-    
-    invisible (cw)
-
-} # test.setEdgeVizPropertiesDirect
+# test.setEdgeVizPropertiesDirect = function (cw=NULL) # WORKS PERFECTLY BUT SLOW
+# {
+#     #DEACTIVATED("too slow!")
+#     title = 'test.setEdgeVizPropertiesDirect'
+#     
+#     window.prep (title)
+#     cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
+#     displayGraph (cw)
+#     redraw (cw)
+#     layoutNetwork (cw)
+# 
+#     cy2.edgeNames = sort (getAllEdges (cw))
+#     e1 = cy2.edgeNames [1]
+#     e2 = cy2.edgeNames [2]
+#     e3 = cy2.edgeNames [3]
+#     
+#     colors = c ('#440000', '#004400', '#000044', '#880000', '#008800', '#000088', '#FF0000', '#00FF00', '#0000FF', '#FFFFFF')
+#     line.styles = c ('SOLID', 'LONG_DASH', 'EQUAL_DASH', 'DASH_DOT', 'DOT', 'ZIGZAG', 'SINEWAVE', 'VERTICAL_SLASH', 
+#                'FORWARD_SLASH', 'BACKWARD_SLASH', 'PARALLEL_LINES', 'CONTIGUOUS_ARROW', 'SEPARATE_ARROW')
+#     
+#     arrow.shapes = c ('No Arrow', 'Diamond', 'Delta', 'Arrow', 'T', 'Circle', 'Half Arrow Top', 'Half Arrow Bottom', 'Diamond', 'T')
+#     labels = paste ('label', seq (10,100,10), sep='-');  labels [10] = ''
+#     tooltips = paste ('tooltip', seq (10,100,10), sep='-');  tooltips [10] = ''
+#     widths = c (1:9, 1)
+#     
+#     for (i in 1:10) {
+#         setEdgeOpacityDirect (cw, c (e2, e3), 25 * i)
+#         setEdgeColorDirect (cw, e1, colors [i])
+#         setEdgeLineStyleDirect (cw, e2, line.styles [i])
+#         setEdgeSourceArrowShapeDirect (cw, e1, arrow.shapes [i])
+#         setEdgeTargetArrowShapeDirect (cw, e1, arrow.shapes [i])
+#         setEdgeLabelDirect (cw, e2, labels [i])
+#         setEdgeLabelColorDirect (cw, e2, colors [i])
+#         setEdgeTooltipDirect (cw, e2, tooltips [i])
+#         setEdgeLineWidthDirect (cw, e3, widths [i])
+#         setEdgeFontSizeDirect (cw, e2, widths [i] * 3)
+#         setEdgeSourceArrowColorDirect (cw, e1, colors [11-i])
+#         setEdgeTargetArrowColorDirect (cw, e1, colors [11-i])
+#         setEdgeLabelOpacityDirect (cw, e2, 25 * i)
+#         setEdgeSourceArrowOpacityDirect (cw, e1, 25 * i)
+#         setEdgeTargetArrowOpacityDirect (cw, e1, 255 - (25 * i))
+#         redraw (cw)
+#         Sys.sleep (0.3)
+#     }
+#     
+#     invisible (cw)
+#
+#} # test.setEdgeVizPropertiesDirect
 #------------------------------------------------------------------------------------------------------------------------
 # test.graphBAM = function ()
 # { 
