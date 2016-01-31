@@ -82,7 +82,7 @@ Here we create a 3-node graph in R, send it to Cytoscape for display and layout.
 You should now see a single red dot in the middle of a small Cytoscape window titled 'simple', contained along with possibly
 other windows within the Cytoscape Desktop. This graph needs layout. You can accomplish this in two ways: by function call (see below), or interactively from the Cytoscape 'Layout' menu, where a reasonable choice is 'JGraph Layouts' -> 'GEM Layout', or 'yFiles Organic'.
 
-After layout, you will see the structure of this graph:  3 unconnected nodes, unlabeled, small and colored red, and thus not very informative.  Fortunately, Cytoscape has some built-in rendering rules in which (and unless instructed otherwise) nodes are rendered round in shape, pale red in color, and labeled with the names supplied when they were added to the graph;  edges (if any) are simple blue lines. To get this default rendering, simply type
+After layout, you will see the structure of this graph: 3 unconnected nodes, unlabeled, small and colored red, and thus not very informative. Fortunately, Cytoscape has some built-in rendering rules in which (and unless instructed otherwise) nodes are rendered round in shape, pale red in color, and labeled with the names supplied when they were added to the graph; edges (if any) are simple blue lines. To get this default rendering, simply type.
 
 <<g1>>=
     layoutNetwork (cw, layout.name='grid')
@@ -92,16 +92,16 @@ After layout, you will see the structure of this graph:  3 unconnected nodes, un
 
 \section{Add node attributes}
 
-We often know quite a lot about the nodes and edges in our graphs.   By conveying this information visually, the graph will be
-easier to explore.  For instance, we may know that protein A phosphorylates protein B, that A is a kinase and B a
+We often know quite a lot about the nodes and edges in our graphs. By conveying this information visually, the graph will be
+easier to explore. For instance, we may know that protein A phosphorylates protein B, that A is a kinase and B a
 transcription factor, and that their mRNA expression (compared to a control) is a log fold change, base 2, of 1.8 and
-3.2 respectively.  One of the core features of Cytoscape, the 'vizmapper', allows you to specify how data values (e.g.,
+3.2 respectively. One of the core features of Cytoscape, the 'vizmapper', allows you to specify how data values (e.g.,
 'kinase', 'transcription factor'; expression ratios) should control the visual attributes of the graph (node shape, node color or size).
-Here is a simple example.  (Note: edge attributes behave just like node attributes.  They can be assigned, communicated along with their graph to R, and used to control visual attributes of the graph.  In the current exercise, however,  to keep things simple, only
+Here is a simple example. (Note: edge attributes behave just like node attributes. They can be assigned, communicated along with their graph to R, and used to control visual attributes of the graph.  In the current exercise, however,  to keep things simple, only
 node attributes are discussed.  Edges and edge attributes are discussed below.)
 
 We continue with the small 3-node graph created in the previous code example, adding two kinds data attributes ('moleculeType' and 'lfc').
-Note, however, that adding the attributes does not in itself cause the appearance of the graph to change.  Such a change requires
+Note, however, that adding the attributes does not in itself cause the appearance of the graph to change. Such a change requires
 that you specify and apply the visual mapping rules, which will be explained in the \emph{next} section.
 
 You can, however, examine these attributes in Cytoscape, using Cytoscape's the 'Data Panel' to display attribute values of all nodes currently selected in the Cytoscape window:
@@ -117,18 +117,18 @@ You will encounter one obscurity in the code chunk just below: the explicit init
 for a graph.  This is similar to, but goes a bit further than, calls to \emph{nodeDataDefaults} required for
 Bioconductor graph objects.  In fact, such calls are executed within the RCy3 initNodeAttribute and
 initEdgeAttribute methods.  An additional bit of information is required here: the 'class' or data type of the attribute
-you are initializing.  It can be 'char', 'integer' or 'numeric'.
+you are initializing. It can be 'char', 'integer' or 'numeric'.
 
-For instance, the node attribute 'moleculeType' has values which are character strings.  The node attribute
-'lfc' (log fold change) is declared to be numeric.  This extra fuss is unavoidable: if you do not stipulate the
-class of each node and edge attribute, as is demonstrated below, then RCy3 will report an error.  We require this
+For instance, the node attribute 'moleculeType' has values which are character strings. The node attribute
+'lfc' (log fold change) is declared to be numeric. This extra fuss is unavoidable: if you do not stipulate the
+class of each node and edge attribute, as is demonstrated below, then RCy3 will report an error. We require this
 because it is only by way of such explicit assignment that RCy3 can resolve the difference between integer and
 floating point values -- necessary in the statically typed Java language (in which Cytoscape is written) though not in
 R.
 
-Here is the code for adding attributes to the nodes of the 3-node graph whose creation is demonstrated above.  Note that
+Here is the code for adding attributes to the nodes of the 3-node graph whose creation is demonstrated above. Note that
 one usually creates the structure of a graph -- specify its nodes and edges -- initializes node and edge attributes,
-specifies values for those attributes, and only then displays the graph.  For tutorial purposes here, the
+specifies values for those attributes, and only then displays the graph. For tutorial purposes here, the
 already-displayed graph is modified and redisplayed.
 
 <<g2>>=
@@ -153,14 +153,14 @@ You can now explore these simple node attribute values in Cytoscape, selecting n
 
 \section{Modifying the display:  default values and mapping rules}
 
-By default, Cytoscape displays nodes as pale red circles circles, and edges as blue undecorated lines.  RCy3
-provides an easy way to change these defaults.  More interestingly, RCy3 provides easy programmatic access to the
+By default, Cytoscape displays nodes as pale red circles circles, and edges as blue undecorated lines. RCy3
+provides an easy way to change these defaults. More interestingly, RCy3 provides easy programmatic access to the
 \emph{\textbf{vizmapper}}, by means of which the size, shape and color of nodes and edges is determined by the data attributes you have attached to those nodes and edges. 
 
 First, let's change the the defaults.  Note that 'redraw' must be called on the CytoscapeWindow to force an update of
-the display.  Cytoscape is a little inconsistent about this:  setting
+the display. Cytoscape is a little inconsistent about this: setting
 defauls, like you see below, requires the redraw, but setting rules
-(about which more below) does not.  We hope to get more consistency of
+(about which more below) does not. We hope to get more consistency of
 Cytoscape soon.  In the meantime, if you are rendering a larg graph, you may want to call this only when you are sure you need to.
 
 <<defaults>>=
@@ -184,23 +184,23 @@ Now we will add some visual mapping -- \emph {(vizmap)} -- rules.  These rules c
 
 The node shape rule, just above, is an example of a 'lookup' rule, which is sometimes called a 'discrete' rule.  The
 network has three nodes, each of them a gene, and each of them has a 'moleculeType' attribute.  In this case, the values
-are 'kinase', 'TF' (for transcription factor) and 'cytokine'.  These are the discrete values taken on by the
-moleculeType node attribute.  For each, we specify the shape we wish to use in rendering that type of molecule.  Thus, there
+are 'kinase', 'TF' (for transcription factor) and 'cytokine'. These are the discrete values taken on by the
+moleculeType node attribute.  For each, we specify the shape we wish to use in rendering that type of molecule. Thus, there
 is a discrete set of values, and we map from those values to shapes by a simple 'lookup' process.
 
-A second class of rules -- in contrast to lookup rules -- uses interpolation.  In the classic example, every node (every gene) has a mRNA expression
-value, expressed as a log fold change ('lfc') ratio, experiment vs. control.  Nodes with negative lfc are rendered in
-shades of green; nodes with positive lfc are rendered in shades of red.  Nodes with lfc == 0 are rendered in white.  All
+A second class of rules -- in contrast to lookup rules -- uses interpolation. In the classic example, every node (every gene) has a mRNA expression
+value, expressed as a log fold change ('lfc') ratio, experiment vs. control. Nodes with negative lfc are rendered in
+shades of green; nodes with positive lfc are rendered in shades of red. Nodes with lfc == 0 are rendered in white.  All
 intermediate values are rendered in appropriately interpolated shades of either green or red.
 
-setNodeColorRule and setNodeSizeRule are commonly interpolation rules: use mode='interpolate'.  But they may also be called as lookup rules:  use parameter mode='lookup' to accomplish this, and provide as many data points and sizes (or colors) needed to cover all possible values of the attribute you are mapping.
+setNodeColorRule and setNodeSizeRule are commonly interpolation rules: use mode='interpolate'. But they may also be called as lookup rules:  use parameter mode='lookup' to accomplish this, and provide as many data points and sizes (or colors) needed to cover all possible values of the attribute you are mapping.
 
 <<g4>>=
     setNodeColorRule (cw, 'lfc', c (-3.0, 0.0, 3.0),
                       c ('#00AA00', '#00FF00', '#FFFFFF', '#FF0000', '#AA0000'),
                       mode='interpolate')
 @ 
-Note that there \emph{five} colors, but only three control.points.  The two additional colors tell the interpolated mapper which colors to use if the stated data attribute (lfc) has a value less than the smallest control point (paint it a darkish green, \#00AA00) or larger than the largets control point (paint it a darkish red, \#AA0000).  These extreme (or out-of-bounds) colors may be omitted:
+Note that there \emph{five} colors, but only three control.points. The two additional colors tell the interpolated mapper which colors to use if the stated data attribute (lfc) has a value less than the smallest control point (paint it a darkish green, \#00AA00) or larger than the largets control point (paint it a darkish red, \#AA0000).  These extreme (or out-of-bounds) colors may be omitted:
 
 <<g41>>=
     setNodeColorRule (cw, 'lfc', c (-3.0, 0.0, 3.0),
@@ -270,13 +270,13 @@ Let us now try some simple back-and-forth between Cytoscape and R.  In Cytoscape
     getSelectedNodes (cw)
 @ 
 
-Now we wish to extend the selected nodes to include the first neighbors of the already-selected node 'B'.  This is a common operation: for instance, after selecting one or more nodes based on experimental data or annotation, you may want to explore these in the context of interaction partners (in a protein-protein network) or in relation to upstream and downstream partners in a signaling or metabolic network. Type:
+Now we wish to extend the selected nodes to include the first neighbors of the already-selected node 'B'. This is a common operation: for instance, after selecting one or more nodes based on experimental data or annotation, you may want to explore these in the context of interaction partners (in a protein-protein network) or in relation to upstream and downstream partners in a signaling or metabolic network. Type:
 
 <<g9, eval=FALSE>>=
     selectFirstNeighborsOfSelectedNodes (cw)
 @ 
 
-You will see that all three nodes are now selected.  Get their identifers back to R:
+You will see that all three nodes are now selected. Get their identifers back to R:
 
 <<g10>>=
     nodes <- getSelectedNodes (cw)
@@ -305,12 +305,11 @@ Despite its simplicity, RCy3's \emph{\textbf{setNodePosition}} method provides t
         setNodePosition (cwe, 'A', x, y)
     }
     # RCy will not create windows with duplicate names, so clear the decks for a subsequent possible run
-
 @ 
 
 \section{Movies: explore time course data by animating node color and size}
 
-Time course microarray expression experiments are commonplace in molecular biology research.  Once reduced, the expression data is often summarized as a lfc (log fold change, experiment vs control) and a p-value for each gene at each time point.  Many Bioconductor packages can be used to find biologically interesting patterns in such data, but visualization -- as one aspect of exploratory data analysis -- should not be overlooked.  Here is a toy problem, a small example illustrating how this can be accomplished with RCy3.
+Time course microarray expression experiments are commonplace in molecular biology research. Once reduced, the expression data is often summarized as a lfc (log fold change, experiment vs control) and a p-value for each gene at each time point.  Many Bioconductor packages can be used to find biologically interesting patterns in such data, but visualization -- as one aspect of exploratory data analysis -- should not be overlooked.  Here is a toy problem, a small example illustrating how this can be accomplished with RCy3.
 
 We begin with the small sample graph just like that created in the 'setNodePosition' example above.  We add some made-up statistical signficicance data into a new node attribute, 'pval'.
 
@@ -336,7 +335,7 @@ Now define the node size and node color rules we will use in the animation:
     setNodeSizeRule (cwm, 'pval', pval.control.points, pval.sizes,
                      mode='interpolate')
 @ 
-Once the rules are in effect, node color and size will always be a function of each nodes' lfc and pval numeric attributes.  Animation is accomplished easily:  all you have to do is to update these two attributes for each node at each time point, and asking Cytoscape to render the nodes following the rules it already has been instructed to follow.  Note that a message is written to the Cytoscape status message bar -- found at the lower left corner of the Cytoscape desktop -- to help keep track of what the current timepoint is.
+Once the rules are in effect, node color and size will always be a function of each nodes' lfc and pval numeric attributes. Animation is accomplished easily:  all you have to do is to update these two attributes for each node at each time point, and asking Cytoscape to render the nodes following the rules it already has been instructed to follow.  Note that a message is written to the Cytoscape status message bar -- found at the lower left corner of the Cytoscape desktop -- to help keep track of what the current timepoint is.
 <<animate>>=
 
     pval.timepoint.1 <- c (0.01, 0.3, 0.05)
@@ -368,7 +367,7 @@ Once the rules are in effect, node color and size will always be a function of e
     }
 
 @ 
-Though this example is very simple and quite without biologcal meaning, we hope that it adequately illustrates the technique.  We commonly use just this approach to explore large scale time course expression data experiments in the context of curated, biologically relevant pathways, such as those provided by KEGG, and selected by packages such as SPIA or Category.
+Though this example is very simple and quite without biologcal meaning, we hope that it adequately illustrates the technique. We commonly use just this approach to explore large scale time course expression data experiments in the context of curated, biologically relevant pathways, such as those provided by KEGG, and selected by packages such as SPIA or Category.
 
 Finally, delete all the windows from this vignette:
 
@@ -390,7 +389,7 @@ Finally, delete all the windows from this vignette:
 
 \begin{itemize}
 
-\item All vizmap rules are currently added to the 'default' vizmap.  It is not yet possible to delete rules from this map, either selectively or as a clean sweep.  More flexible use of vizmaps is high on the to-do list.
+\item All vizmap rules are currently added to the 'default' vizmap. It is not yet possible to delete rules from this map, either selectively or as a clean sweep.  More flexible use of vizmaps is high on the to-do list.
 
 \end{itemize}
 
