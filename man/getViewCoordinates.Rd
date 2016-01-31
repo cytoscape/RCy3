@@ -16,7 +16,7 @@ getViewCoordinates(obj)
 \value{
 A named list of four numbers, with these names:  top.x, top.y, bottom.x, bottom.y
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getViewCoordinates
@@ -25,6 +25,8 @@ A named list of four numbers, with these names:  top.x, top.y, bottom.x, bottom.
  }
 
 \examples{
+  # WARNING: Method RCy3::getViewCoordinates() is not implemented in RCy3!
+  
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -32,8 +34,8 @@ A named list of four numbers, with these names:  top.x, top.y, bottom.x, bottom.
   cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'force-directed')
-  print (getViewCoordinates (cw))
+  layoutNetwork (cw, 'force-directed')
+  #print (getViewCoordinates (cw))
 }
 
 \keyword{graph}

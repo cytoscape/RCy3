@@ -3,7 +3,7 @@
 \alias{setDefaultBackgroundColor,CytoscapeConnectionClass-method}
 \title{setDefaultBackgroundColor}
 \description{
-Retrieve the default color for the next CytoscapeWindow.
+Set the default color for the next CytoscapeWindow.
 }
 \usage{
 setDefaultBackgroundColor(obj, new.color, vizmap.style.name)
@@ -12,20 +12,20 @@ setDefaultBackgroundColor(obj, new.color, vizmap.style.name)
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
   \item{new.color}{a \code{character} object, in quoted hexadecimal format }
   \item{vizmap.style.name}{a \code{character} object, 'default' by default }
-
 }
 
 \value{
-A character string, eg "java.awt.Color[r=204,g=204,b=255]"
+A character string, a hexadecimal, e.g. #000000
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
-  cy <- CytoscapeConnection ()
-  setDefaultBackgroundColor (cy, '#CCCC00')
+  cw <- CytoscapeWindow ('setDefaultBackgroundColor.test', graph=makeSimpleGraph())
+  setDefaultBackgroundColor (cw, '#CCCC00')
+  cw2 <- CytoscapeWindow ('setDefaultBackgroundColor.test2', graph=makeSimpleGraph())
 }
 
 \keyword{graph}

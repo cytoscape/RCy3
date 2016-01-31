@@ -3,9 +3,8 @@
 \alias{setDefaultNodeLabelColor,CytoscapeConnectionClass-method}
 \title{setDefaultNodeLabelColor}
 \description{
-In the specified CytoscapeWindow, stipulate the color for all node
-labels.  There is, at present, no mapping rule for this trait.
-
+In the specified CytoscapeWindow, stipulate the default color for
+all node labels. There is, at present, no mapping rule for this trait.
 }
 \usage{
 setDefaultNodeLabelColor(obj, new.color, vizmap.style.name = "default")
@@ -19,7 +18,7 @@ setDefaultNodeLabelColor(obj, new.color, vizmap.style.name = "default")
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
    setDefaultNodeShape
@@ -39,11 +38,9 @@ None.
 
   cw <- CytoscapeWindow ('setDefaultNodeLabelColor.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
   setDefaultNodeLabelColor (cw, '#FFFFFF') # white node labels
-  redraw (cw)
+  # redraw (cw) --> not required anymore
 }
-
 
 \keyword{graph}

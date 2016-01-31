@@ -3,7 +3,7 @@
 \alias{getGraph,CytoscapeWindowClass-method}
 \title{getGraph}
 \description{
-Returns the bioconductor graph object which belongs to the specified
+Returns the Bioconductor graph object which belongs to the specified
 CytoscapeWindow object
 }
 \usage{
@@ -16,7 +16,7 @@ getGraph(obj)
 \value{
 A graph object.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

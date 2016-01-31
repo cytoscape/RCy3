@@ -8,8 +8,8 @@
 Node and edge attributes are usually added to a Cytoscape network by
 defining them on the graph used to construct a CytoscapeWindow.
 Once Cytoscape has been passed an attribute, however, it persists
-until you exit the application or delete it -- using the Cytoscape
-graphical user interface, or by calling this method.
+until you exit the application or delete it by using the Cytoscape
+graphical user interface or by calling this method.
 }
 \usage{
 deleteEdgeAttribute(obj, attribute.name)
@@ -24,15 +24,13 @@ deleteEdgeAttribute(obj, attribute.name)
 \value{
 nothing
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getEdgeAttributeNames
   addEdgeAttribute
   deleteNodeAttribute
 }
-
-
 
 \examples{
   # first, delete existing windows to save memory:
@@ -44,11 +42,14 @@ nothing
   displayGraph (cw)
   redraw (cw)
   layoutNetwork(cw)
-
-  print (paste ("before: ", getEdgeAttributeNames (cw)))
+  
+    # before:
+  print (getEdgeAttributeNames (cw))
+    # [1] "name"        "interaction" "edgeType"    "score"       "misc"  
   deleteEdgeAttribute (cw, 'score')
-  print (paste ("after: ", getEdgeAttributeNames (cw)))
-
+    # after
+  print (getEdgeAttributeNames (cw))
+    # [1] "name"        "interaction" "edgeType"    "misc" 
 }
 
 \keyword{graph}

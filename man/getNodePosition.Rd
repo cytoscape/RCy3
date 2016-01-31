@@ -4,7 +4,7 @@
 \title{getNodePosition}
 \description{
   Get the position of the specified nodes on the CytoscapeWindow
-  canvas.  Useful in retrieving the current position of nodes in the window.
+  canvas. Useful in retrieving the current position of nodes in the window.
 }
 \usage{
 getNodePosition(obj, node.names)
@@ -18,7 +18,7 @@ getNodePosition(obj, node.names)
 A names list of x,y pairs; names are the identifiers of nodes supplied
 when the graph was created.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

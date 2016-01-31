@@ -17,7 +17,7 @@ setTooltipInitialDelay(obj, msecs)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setTooltipDismissDelay,
@@ -29,17 +29,18 @@ None.
  }
 
 \examples{
+  # WARNING: Method RCy3::setTooltipInitialDelay() is not implemented in RCy3!
+
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
-  window.title = 'setTooltipInitialDelay demo'
+  window.title = 'setTooltipInitialDelay.demo'
   cw <- CytoscapeWindow (window.title, graph=makeSimpleGraph())
     # use node type as the tooltip
   setNodeTooltipRule (cw, 'type')
     # and edgeType
   setEdgeTooltipRule (cw, 'edgeType')
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'force-directed')
      # have the tooltips popup right away, as soon as the mouse hovers
      # over a node or edge, and then stay up as long as the mouse

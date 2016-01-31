@@ -4,8 +4,8 @@
 \title{addCyEdge}
 \description{
 Given a CytoscapeWindow containing a (possibly empty) graph, this method
-adds a edge.  Edge attributes are added separately, via successive calls
-to sendEdgeAttributesDirect.  The two nodes must already exist in the
+adds an edge.  Edge attributes are added separately, via successive calls
+to sendEdgeAttributesDirect. The two nodes must already exist in the
 Cytoscape network.
 
 }
@@ -23,7 +23,7 @@ addCyEdge(obj, sourceNode, targetNode, edgeType, directed)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   sendEdgeAttributesDirect
@@ -36,12 +36,9 @@ None.
   window.name <- 'demo addCyEdge'
   cw <- CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)
+  layoutNetwork(cw)
   directed = TRUE
   addCyEdge (cw, 'A', 'B', 'synthetic rescue', directed)
-  redraw (cw)
-  layoutNetwork(cw)
-
-
 }
 
 \keyword{graph}

@@ -3,22 +3,23 @@
 \alias{setDefaultNodeFontSize,CytoscapeConnectionClass-method}
 \title{setDefaultNodeFontSize}
 \description{
-In the specified CytoscapeWindow, stipulate the color for all nodeBorders
-other than those mentioned in a node border color rule.
+In the specified CytoscapeWindow, stipulate the default font
+size for all nodes other than those mentioned in a
+node font size rule.
 }
 \usage{
 setDefaultNodeFontSize(obj, new.size, vizmap.style.name = "default")
 }
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
-  \item{new.size}{a \code{String} object, a hex string, of the form '#RRGGBB'.}
+  \item{new.size}{an \code{integer}.}
   \item{vizmap.style.name}{a \code{String} object.}
 }
 
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
    setDefaultNodeShape
@@ -40,11 +41,9 @@ None.
 
   cw <- CytoscapeWindow ('setDefaultNodeFontSize.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'force-directed')
   setDefaultNodeFontSize (cw, 32)
-  redraw (cw)
+  # redraw (cw) --> not required anymore
 }
-
 
 \keyword{graph}

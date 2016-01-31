@@ -3,7 +3,7 @@
 \alias{setLayoutProperties,CytoscapeConnectionClass-method}
 \title{setLayoutProperties}
 \description{
-Sets the specified properties for the specified layout.  Unmentioned
+Sets the specified properties for the specified layout. Unmentioned
 properties are left unchanged.
 }
 \usage{
@@ -20,7 +20,7 @@ setLayoutProperties(obj, layout.name, properties.list)
 None.
 }
 
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   layout
@@ -38,8 +38,12 @@ None.
   cy <- CytoscapeConnection ()
   prop.names <- getLayoutPropertyNames (cy, 'isom')
   print (prop.names)
-    #  "maxEpoch" "sizeFactor" "radiusConstantTime"   "radius"  "minRadius" "initialAdaptation"  "minAdaptation" "coolingFactor" 
+    # [1] "maxEpoch"           "radiusConstantTime" "radius"             "minRadius"         
+    # [5] "initialAdaptation"  "minAdaptation"      "sizeFactor"         "coolingFactor"     
+    # [9] "singlePartition"  
   print (getLayoutPropertyValue (cy, 'isom', 'radiusConstantTime'))
+    # [1] 4
+    
     # modify just two of the eight properties; the others are unchanged
   setLayoutProperties (cy, 'isom', list (radiusConstantTime=4, radius=20))
 }

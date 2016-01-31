@@ -4,7 +4,7 @@
 makeRandomGraph
 }
 \description{
-Create a random undirected graphNEL, useful for testing.  Two default edge
+Create a random undirected graphNEL, useful for testing.Two default edge
 attributes are added, for demonstration purposes.
 }
 \usage{
@@ -19,27 +19,26 @@ makeRandomGraph(node.count=12, seed=123)
 Returns (by default) a 12-node, rather dense undirected  graph, with some attributes on the
 nodes and edges.
 }
-\author{
-Paul Shannon
-}
+
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
+
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
-g = makeRandomGraph (node.count=12, seed=123)
+  g = makeRandomGraph (node.count=12, seed=123)
 
-## The function is currently defined as
-function (node.count = 12, seed = 123) 
-{
-    set.seed(seed)
-    node.names = as.character(1:node.count)
-    g = randomGraph(node.names, M <- 1:2, p = 0.6)
-    attr(edgeDataDefaults(g, attr = "weight"), "class") = "DOUBLE"
-    edgeDataDefaults(g, "pmid") = "9988778899"
-    attr(edgeDataDefaults(g, attr = "pmid"), "class") = "STRING"
-    return(g)
-}
-
+  ## The function is currently defined as
+  function (node.count = 12, seed = 123) 
+  {
+      set.seed(seed)
+      node.names = as.character(1:node.count)
+      g = randomGraph(node.names, M <- 1:2, p = 0.6)
+      attr(edgeDataDefaults(g, attr = "weight"), "class") = "DOUBLE"
+      edgeDataDefaults(g, "pmid") = "9988778899"
+      attr(edgeDataDefaults(g, attr = "pmid"), "class") = "STRING"
+      return(g)
+  }
 }
 
 \keyword{graph}

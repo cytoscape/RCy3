@@ -3,9 +3,9 @@
 \alias{predictTimeToDisplayGraph,CytoscapeWindowClass-method}
 \title{predictTimeToDisplayGraph}
 \description{
-Use simple heuristics and previously collected timimg to predict the
+Use simple heuristics and previously collected timing to predict the
 length of time that will be required to send the R graph across the
-XMLRPC wire to Cytoscape.
+CyREST wire to Cytoscape.
 }
 \usage{
 predictTimeToDisplayGraph(obj)
@@ -17,7 +17,7 @@ predictTimeToDisplayGraph(obj)
 \value{
 Time in seconds.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   CytoscapeWindow
@@ -33,6 +33,5 @@ Time in seconds.
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')
 }
-
 
 \keyword{graph}

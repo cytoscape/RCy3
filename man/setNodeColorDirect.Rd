@@ -4,9 +4,9 @@
 \title{setNodeColorDirect}
 \description{
 In the specified CytoscapeWindow, set the color of the specified node or
-nodes.   This method bypasses the vizmap, and excludes this node, for
-the duration of the current Cytoscape session, from further manipulation by
-vizmap color rules.
+nodes. This method bypasses the vizmap and excludes this node, for
+the duration of the current Cytoscape session, from further manipulation
+by vizmap color rules.
 }
 \usage{
 setNodeColorDirect(obj, node.names, new.colors)
@@ -15,16 +15,31 @@ setNodeColorDirect(obj, node.names, new.colors)
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{node.names}{a \code{String} list object.}
   \item{new.colors}{an \code{String} object, using the standard
-    hexadecimal form, eg, '#FF88AA'}
+        hexadecimal form, eg, '#FF88AA'}
 }
 
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeColorRule
+  setNodeBorderColorDirect
+  setNodeBorderOpacityDirect
+  setNodeBorderWidthDirect
+  setNodeColorDirect
+  setNodeFillOpacityDirect
+  setNodeFontSizeDirect
+  setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelColorDirect
+  setNodeLabelDirect
+  setNodeLabelOpacityDirect
+  setNodeOpacityDirect
+  setNodeShapeDirect
+  setNodeSizeDirect
+  setNodeWidthDirect
  }
 
 \examples{
@@ -33,12 +48,9 @@ None.
 
   cw <- CytoscapeWindow ('setNodeColorDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
   setNodeColorDirect (cw, 'A', '#880000')
   setNodeColorDirect (cw, c('A', 'C'), c('#88FF00', '#880000'))
-  redraw (cw)
 }
-
 
 \keyword{graph}

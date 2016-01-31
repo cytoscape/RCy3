@@ -13,14 +13,14 @@ setNodeTooltipRule(obj, node.attribute.name)
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
-  \item{node.attribute.name}{the node attribute whose values will, when this
-        rule is applied, determine the tooltip on each node.}
+  \item{node.attribute.name}{the node attribute whose values will
+        determine the tooltip on each node when this rule is applied.}
 }
 
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
@@ -28,12 +28,10 @@ None.
 
   cw <- CytoscapeWindow ('setNodeTooltipRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'force-directed')
-  redraw (cw)
+  layoutNetwork (cw, 'force-directed')
   setNodeTooltipRule (cw, 'type')
   setNodeTooltipRule (cw, 'lfc')
   setNodeTooltipRule (cw, 'count')
-
 }
 
 \keyword{graph}

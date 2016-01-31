@@ -3,7 +3,7 @@
 \alias{setNodeShapeRule,CytoscapeWindowClass-method}
 \title{setNodeShapeRule}
 \description{
-Specify how data attributes how the specified node attribute values
+Specify how data attributes -- the specified node attribute values --
 determine the node shape.}
 \usage{
 setNodeShapeRule (obj, node.attribute.name=, attribute.values,
@@ -12,19 +12,19 @@ node.shapes, default.shape)
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
-  \item{node.attribute.name}{the node  attribute whose values will, when this
-rule is applied, determine the shape of each node.}
+  \item{node.attribute.name}{the node attribute whose values will
+        determine the shape of each node when this rule is applied.}
   \item{attribute.values}{A list of scalar, discrete values. For
-  instance, molecule types: 'transporter', 'receptor', 'kinase'}
+        instance, molecule types: 'transporter', 'receptor', 'kinase'}
   \item{node.shapes}{A list of nodes selected from among those supported.}
-  \item{default.shape}{A single string, the shape used if no explicit
-  mapping is provided.}
+  \item{default.shape}{A single \code{String}, the shape used if no explicit
+        mapping is provided.}
 }
 
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeColorRule
@@ -37,10 +37,10 @@ None.
 
   cw <- CytoscapeWindow ('setNodeShapeRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  shapes <- c ("TRIANGLE", "ROUND_RECTANGLE", "ELLIPSE")
-  molecule.types <- c ("kinase", "transcription factor", "glycoprotein")
-  setNodeShapeRule (cw, node.attribute.name='type', molecule.types,  shapes)
-  redraw (cw)
+  layoutNetwork (cw, 'force-directed')
+  shapes <- c("TRIANGLE", "ROUND_RECTANGLE", "ELLIPSE")
+  molecule.types <- c("kinase", "transcription factor", "glycoprotein")
+  setNodeShapeRule (cw, node.attribute.name='type', molecule.types, shapes)
 }
 
 \keyword{graph}

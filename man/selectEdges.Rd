@@ -17,11 +17,10 @@ selectEdges(obj, edge.names, preserve.current.selection=TRUE)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   clearSelection
-  selectEdge
   getSelectedEdgeCount
   getSelectedEdges
   hideSelectedEdges
@@ -36,8 +35,6 @@ None.
   clearSelection (cw)
   selectEdges (cw, c ("A (phosphorylates) B", "B (synthetic lethal) C"))
   getSelectedEdges (cw)
-    # more complicated, but more realistic:
-  #selectEdges (cw, as.character ( cy2.en (g, names (which (eda (g, 'edgeType') == 'phosphorylates')))))
 }
 
 \keyword{graph}

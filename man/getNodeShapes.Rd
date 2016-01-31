@@ -3,7 +3,9 @@
 \alias{getNodeShapes,CytoscapeConnectionClass-method}
 \title{getNodeShapes}
 \description{
-Retrieve the names of the currently supported node shapes, which can then be used in calls to setNodeShapeRule and setDefaultVizMapValue 
+Retrieve the names of the currently supported node shapes,
+which can then be used in calls to setNodeShapeRule and
+setDefaultVizMapValue.
 }
 \usage{
 getNodeShapes(obj)
@@ -13,9 +15,9 @@ getNodeShapes(obj)
 }
 
 \value{
-A list of character strings, e.g., 'trapezoid', 'ellipse', 'rect'
+A list of character strings, e.g. 'ELLIPSE', 'RECTANGLE'.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
@@ -23,9 +25,9 @@ A list of character strings, e.g., 'trapezoid', 'ellipse', 'rect'
 
   cy <- CytoscapeConnection ()
   getNodeShapes(cy)
-   # "trapezoid" "round_rect" "ellipse" "triangle"   "rect_3d" "diamond"
-   # "parallelogram" "octagon"   "trapezoid_2" "rect" "hexagon"
-
+   # [1] "VEE"             "RECTANGLE"       "PARALLELOGRAM"   "DIAMOND"        
+   # [5] "ROUND_RECTANGLE" "ELLIPSE"         "TRIANGLE"        "HEXAGON"        
+   # [9] "OCTAGON" 
 }
 
 \keyword{graph}

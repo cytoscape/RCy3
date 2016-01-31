@@ -6,8 +6,8 @@
   application which are not specific to a particular window. }
 \section{Slots}{
   \describe{
-    \item{\code{uri}:}{An \code{attrData} the address of the Cytoscape
-      XMLRPC server.}
+    \item{\code{uri}:}{An \code{attrData}, the address of the Cytoscape
+      server.}
   }
 }
 
@@ -36,12 +36,12 @@
   }
 }
 
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
-     # create a CytoscapeConnectionClass object by calling the constructor
+  # create a CytoscapeConnectionClass object by calling the constructor
   cy <- CytoscapeConnection (host='localhost', port=1234)
 
 }

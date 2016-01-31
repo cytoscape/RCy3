@@ -7,11 +7,11 @@
 
 \description{
 Once you have designed a visual style, you may wish to duplicate it,
-perhaps in preparation for adding further mapping rules.  Another
+perhaps in preparation for adding further mapping rules. Another
 scenario arises when style rules have been added to the 'default' style,
 and you wish to create a Cytoscape session file with your current
-network and this default style.  However, the default style is not saved
-into a session, only explicitly named styles are.  Use this method to
+network and this default style. However, the default style is not saved
+into a session, only explicitly named styles are. Use this method to
 achieve this.
 }
 \usage{
@@ -21,14 +21,14 @@ copyVisualStyle(obj, from.style, to.style)
   \item{obj}{a \code{CytoscapeConnectionClass} object or CytoscapeWindow
     object. }
   \item{from.style}{a \code{character string} specifying the name of an
-    existing style you wish to copy }
-  \item{to.style}{a \code{character string}, the name of an as yet non-existent style}
+    existing style you wish to copy. }
+  \item{to.style}{a \code{character string}, the name of an as yet non-existent style. }
 }
 
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getVisualStyleNames
@@ -64,8 +64,8 @@ Nothing.
   new.names = getVisualStyleNames (cw)
   setVisualStyle (cw, new.unique.style.name)
 
-   # save the session form the Cytoscape application menu.  the new
-   # style name  will be saved along with the network and its attributes
+   # save the session from the Cytoscape application menu. The new
+   # style name will be saved along with the network and its attributes
 }
 
 \keyword{graph}

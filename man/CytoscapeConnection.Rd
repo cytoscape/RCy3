@@ -28,9 +28,7 @@ CytoscapeConnection (host = "localhost", port = 1234)
 \value{
   An object of the CytoscapeConnection Class.
 }
-\author{
-  Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   ping
@@ -62,7 +60,10 @@ CytoscapeConnection (host = "localhost", port = 1234)
   cy <- CytoscapeConnection ()
   deleteAllWindows (cy)
   getNodeShapes (cy)
-  hidePanel (cy, 'Control')
+  # [1] "DIAMOND"         "OCTAGON"         "TRIANGLE"        "VEE"            
+  # [5] "HEXAGON"         "RECTANGLE"       "PARALLELOGRAM"   "ROUND_RECTANGLE"
+  # [9] "ELLIPSE"  
+  hidePanel (cy, 'control')
 }
 
 \keyword{ graph }

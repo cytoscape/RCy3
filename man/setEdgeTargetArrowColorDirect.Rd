@@ -3,9 +3,8 @@
 \alias{setEdgeTargetArrowColorDirect,CytoscapeWindowClass-method}
 \title{setEdgeTargetArrowColorDirect}
 \description{
-In the specified CytoscapeWindow, set the edgeTargetArrowColor of the specified edge
-or edges.  Low numbers, near zero, are transparent.
-High numbers, near 255, are maximally opaque:  they are fully visible.
+In the specified CytoscapeWindow, set the edge target arrow color of
+the specified edge or edges.
 }
 \usage{
 setEdgeTargetArrowColorDirect(obj, edge.names, new.colors)
@@ -21,11 +20,20 @@ setEdgeTargetArrowColorDirect(obj, edge.names, new.colors)
 \value{
 None.
 }
-\author{Paul Shannon}
-
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeEdgeTargetArrowColorDirect
+  setEdgeTargetArrowRule
+  setDefaultEdgeSourceArrowColor
+  setEdgeSourceArrowColorDirect
+  setEdgeSourceArrowColorRule
+  setEdgeSourceArrowRule
+  setEdgeSourceArrowShapeDirect
+  setEdgeTargetArrowColorRule
+  setEdgeTargetArrowRule
+  setEdgeTargetArrowShapeDirect
+  setDefaultEdgeTargetArrowColor
  }
 
 \examples{
@@ -34,26 +42,23 @@ None.
 
   cw <- CytoscapeWindow ('setEdgeTargetArrowColorDirect.test', graph=makeSimpleGraph ())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
 
-  arrows = c ('Arrow', 'Diamond', 'Circle')
-  edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
+  arrows <- c ('Arrow', 'Diamond', 'Circle')
+  edgeType.values <- c('phosphorylates', 'synthetic lethal', 'undefined')
   setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
   setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
 
-  colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
-  colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
+  colors.1 <- c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
+  colors.2 <- c ("#AA00AA", "#00AAAA", "#0000AA")
 
-  edge.names = as.character (cy2.edge.names (cw@graph)) [1:3]
+  edge.names <- as.character (cy2.edge.names (cw@graph)) [1:3]
 
   for (i in 1:2) {
     setEdgeTargetArrowColorDirect (cw, edge.names, colors.1)
-    redraw (cw)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     setEdgeTargetArrowColorDirect (cw, edge.names, colors.2)
-    redraw (cw)
-    Sys.sleep (1)
+    Sys.sleep (0.3)
     } # for i
 }
 

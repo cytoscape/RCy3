@@ -12,18 +12,30 @@ setNodeFontSizeDirect(obj, node.names, new.sizes)
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{node.names}{one or more \code{String} objects.}
-  \item{new.sizes}{an \code{integer}, in pixel units.}
+  \item{new.sizes}{one or more \code{integers}, in pixel units.}
 }
 
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
-  setNodeWidthDirect
+  setNodeBorderColorDirect
+  setNodeBorderOpacityDirect
+  setNodeBorderWidthDirect
+  setNodeColorDirect
+  setNodeFillOpacityDirect
+  setNodeFontSizeDirect
   setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelColorDirect
+  setNodeLabelDirect
+  setNodeLabelOpacityDirect
+  setNodeOpacityDirect
+  setNodeShapeDirect
   setNodeSizeDirect
+  setNodeWidthDirect
  }
 
 \examples{
@@ -32,11 +44,10 @@ None.
 
   cw <- CytoscapeWindow ('setNodeFontSizeDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'force-directed')
   setNodeFontSizeDirect (cw, 'A', 32)
-  redraw (cw)
+  setNodeFontSizeDirect (cw, c('B', 'C'), 32)
+  setNodeFontSizeDirect (cw, c('A', 'B'), c(10, 15))
 }
-
 
 \keyword{graph}

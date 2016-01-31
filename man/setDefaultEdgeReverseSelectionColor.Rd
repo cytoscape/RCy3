@@ -3,7 +3,7 @@
 \alias{setDefaultEdgeReverseSelectionColor,CytoscapeConnectionClass-method}
 \title{setDefaultEdgeReverseSelectionColor}
 \description{
-Retrieve the default color used to display selected edges.
+Set the default color used to display selected edges.
 }
 \usage{
 setDefaultEdgeReverseSelectionColor(obj, new.color, vizmap.style.name)
@@ -12,13 +12,12 @@ setDefaultEdgeReverseSelectionColor(obj, new.color, vizmap.style.name)
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
   \item{new.color}{a \code{character} object, in quoted hexadecimal format }
   \item{vizmap.style.name}{a \code{character} object, 'default' by default }
-
 }
 
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
@@ -26,8 +25,9 @@ Nothing.
 
   cw = CytoscapeWindow ("demo.setDefaultEdgeReverseSelectionColor", graph=makeSimpleGraph ())
   displayGraph (cw)
-  print (setDefaultEdgeReverseSelectionColor (cw, '#FF0000'))
-  redraw (cw)
+  layoutNetwork (cw)
+  setDefaultEdgeReverseSelectionColor (cw, '#0000FF')
+  # redraw (cw) --> not required anymore
 }
 
 \keyword{graph}

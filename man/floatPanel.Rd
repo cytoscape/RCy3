@@ -3,12 +3,13 @@
 \alias{floatPanel,CytoscapeConnectionClass-method}
 \title{floatPanel}
 \description{
-The specified panel will 'float' detached from its 'home' position in the Cytoscape
-Desktop.  As of this writing (10 aug 2010) the panel will tenaciously
-claim the topmost (visual) position on the screen...  The
-\code{panelName}  parameter is very flexible:  a match is defined as a
-case-independent match of the supplied panelName to any starting
-characters in the actual panelName.  Thus, 'd' and 'DA' both identify 'Data Panel'.
+The specified panel will 'float' detached from its 'home' position in
+the Cytoscape Desktop. The \code{panelName} parameter is very flexible: 
+a match is defined as a case-independent match of the supplied panelName
+to any starting characters in the actual panelName.  Thus, 'd' and 'DA'
+both identify 'Data Panel'. Possible options also include: 'WEST',
+'EAST', 'SOUTH', 'SOUTH_WEST'. The 'SOUTH' panel is the Data Panel
+and the 'WEST' panel is the control panel.
 }
 \usage{
 floatPanel(obj, panelName)
@@ -22,7 +23,7 @@ floatPanel(obj, panelName)
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \seealso{
   hidePanel
   dockPanel
@@ -36,6 +37,8 @@ Nothing.
   floatPanel (cy, 'Control Panel')
     # or with less typing
   floatPanel (cy, 'c')
+  
+  floatPanel (cy, 'SOUTH_WEST')
 }
 
 \keyword{graph}

@@ -15,19 +15,19 @@ getWindowCount(obj)
 \value{
 An integer.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
   cy <- CytoscapeConnection ()
-  count.at.start = getWindowCount (cy)
+  getWindowCount (cy)
+    # [1] 0
   cw2 <- CytoscapeWindow ('getWindowCount.test1', graph=makeSimpleGraph())
   cw3 <- CytoscapeWindow ('getWindowCount.test2', graph=makeSimpleGraph())
   getWindowCount (cy)
-    # should be two greater than 'count.at.start'
+    # [1] 2
 }
-
 
 \keyword{graph}

@@ -175,6 +175,7 @@ export(
    noa,
    eda.names,
    eda,
+   existing.CytoscapeWindow,
    cy2.edge.names,
    getAdjacentEdgeNames,
    makeSimpleGraph,
@@ -196,9 +197,10 @@ importMethodsFrom(graph, edgeData, "edgeData<-", edgeDataDefaults,
                  edgemode, "edgemode<-",
                  addNode, addEdge, edgeSets)
 
+
 importFrom(methods, new)
 importFrom(graph, randomGraph)
 importFrom(RJSONIO, fromJSON, toJSON)
-importFrom(httr, GET, PUT, POST, DELETE)
+importFrom(httr, GET, PUT, POST, DELETE, write_disk)
 importFrom(RCurl, url.exists)
 

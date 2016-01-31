@@ -12,17 +12,18 @@ setEdgeLabelDirect(obj, edge.names, new.value)
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{edge.names}{one or more \code{String} objects, cy2-style edge names.}
-  \item{new.value}{a \code{string} object, the new label.}
+  \item{new.value}{a \code{String} object, the new label.}
 }
 
 \value{
 None.
 }
-\author{Paul Shannon}
-
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
-  setNodeEdgeLabelDirect
+  setNodeLabelDirect
+  setEdgeLabelColorDirect
+  setEdgeFontSizeDirect
  }
 
 \examples{
@@ -31,18 +32,12 @@ None.
 
   cw <- CytoscapeWindow ('setEdgeLabelDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'force-directed')
-  edge.names = as.character (cy2.edge.names (cw@graph)) [1:2]
+  layoutNetwork (cw, 'force-directed')
+  edge.names <- as.character (cy2.edge.names (cw@graph)) [1:2]
   for (i in 1:10) {
     setEdgeLabelDirect (cw, edge.names, 255 - (i * 25))
     redraw (cw)
     }
-  for (i in 1:10) {
-    setEdgeLabelDirect (cw, edge.names, i * 25)
-    redraw (cw)
-    }
-
 }
 
 \keyword{graph}

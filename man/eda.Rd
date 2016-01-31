@@ -20,9 +20,7 @@ The edge.attribute.name may be obtained from the function, eda.names.
 A list, the contents of which are the attribute values, the names of
 which are the names of the edges.
 }
-\author{
-Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \seealso{
  eda.names
 }
@@ -30,14 +28,10 @@ Paul Shannon
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
-g  <- makeSimpleGraph()
-eda (g, 'edgeType')
+  g  <- makeSimpleGraph()
+  eda (g, 'edgeType')
+    #             A|B                B|C                C|A
+    # "phosphorylates" "synthetic lethal"        "undefined"
 
-## The function is currently defined as
-function (graph, edge.attribute.name)
-{
-  unlist (sapply (names (edgeData (graph)), function (n) edgeData (graph)[[n]][[edge.attribute.name]]))
-
-  } # eda
 }
 \keyword{graph}

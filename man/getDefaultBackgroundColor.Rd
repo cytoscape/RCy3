@@ -3,7 +3,7 @@
 \alias{getDefaultBackgroundColor,CytoscapeConnectionClass-method}
 \title{getDefaultBackgroundColor}
 \description{
-Retrieve the default color for the next CytoscapeWindow.
+Retrieve the default background color for the next CytoscapeWindow.
 }
 \usage{
 getDefaultBackgroundColor(obj, vizmap.style.name)
@@ -14,16 +14,17 @@ getDefaultBackgroundColor(obj, vizmap.style.name)
 }
 
 \value{
-A character string, eg "java.awt.Color[r=204,g=204,b=255]"
+A character string, a hexadecimal, e.g. #000000
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
   cy <- CytoscapeConnection ()
-  print (getDefaultBackgroundColor (cy))   # "java.awt.Color[r=204,g=204,b=255]"
+  print (getDefaultBackgroundColor (cy)) # a hex number
+    # [1] "#FFFFFF"
 }
 
 \keyword{graph}

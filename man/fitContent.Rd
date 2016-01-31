@@ -3,8 +3,8 @@
 \alias{fitContent,CytoscapeWindowClass-method}
 \title{fitContent}
 \description{
-  Using all of the available window (the Cytoscape drawing canvas)
-  display the current graph.
+  Display the current graph using all of the available
+  window (the Cytoscape drawing canvas).
 }
 \usage{
 fitContent(obj)
@@ -16,7 +16,7 @@ fitContent(obj)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setZoom

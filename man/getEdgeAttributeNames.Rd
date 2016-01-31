@@ -7,8 +7,7 @@
 \description{
 Node and edge attributes belong to the Cytoscape session as a whole, not
 to a particular window.  Use this method to find out the name of the
-currently definededge attributes.
-
+currently defined edge attributes.
 }
 \usage{
 getEdgeAttributeNames(obj)
@@ -21,7 +20,7 @@ getEdgeAttributeNames(obj)
 \value{
 A list of names.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getEdgeAttribute
@@ -29,16 +28,14 @@ A list of names.
   getNodeAttributeNames
 }
 
-
-
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
-  cw = CytoscapeWindow ('demo.getEdgeAttributeNames', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('demo.getEdgeAttributeNames', graph=makeSimpleGraph())
   displayGraph (cw)
   print (getEdgeAttributeNames (cw))
-
+    # [1] "name"        "interaction" "edgeType"    "score"       "misc"   
 }
 
 \keyword{graph}

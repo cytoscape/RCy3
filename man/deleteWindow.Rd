@@ -3,10 +3,9 @@
 \alias{deleteWindow,CytoscapeConnectionClass-method}
 \title{deleteWindow}
 \description{
-Delete the window associated with the supplied CytoscapeConnection object.  In addition,
-Cytoscape's copy of the network is deleted from Cytoscape's memory
+Delete the window associated with the supplied CytoscapeConnection object.
+In addition, Cytoscape's copy of the network is deleted from Cytoscape's memory
 store, but the R graph object is unaffected.
-
 There are two different ways to use this method.  First, if you call it on a
 CytoscapeWindow object, using the default window.title value of NA, the
 Cytoscape window itself will be deleted.  Alternatively, if you supply a
@@ -25,7 +24,7 @@ deleteWindow(obj, window.title=NA)
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:

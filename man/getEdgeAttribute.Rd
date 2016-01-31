@@ -6,17 +6,16 @@
 \title{getEdgeAttribute}
 \description{
 Node and edge attributes are usually added to a Cytoscape network by
-defined them on the graph used to construct a CytoscapeWindow.  The
-small family of methods described here, however, provide another avenue for adding an
-edge attribute, for learning which are currently defined, and for
-deleting and edge attribute.
+defining them on the graph used to construct a CytoscapeWindow.  The
+small family of methods described here, however, provide another
+avenue for adding an edge attribute, for learning which are
+currently defined, and for deleting an edge attribute.
 
-Note that edge (and node) attibutes are defined, not just for a specific, single
-CytoscapeWindow, but for an entire Cytoscape application session.  Thus if you
-have two nodes (or edges) with the same ID in two
-different windows, adding a node attribute results in both nodes having
-that attribute.
-
+Note that edge (and node) attibutes are defined, not just for a
+specific, single CytoscapeWindow, but for an entire Cytoscape
+application session.Thus if you have two nodes (or edges) with
+the same ID in two different windows, adding a node attribute
+results in both nodes having that attribute.
 }
 \usage{
 getEdgeAttribute(obj, edge.name, attribute.name)
@@ -33,14 +32,12 @@ getEdgeAttribute(obj, edge.name, attribute.name)
 \value{
 The attribute in question, which may be of any scalar type.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getEdgeAttributeNames
   deleteEdgeAttribute
 }
-
-
 
 \examples{
   # first, delete existing windows to save memory:
@@ -55,7 +52,6 @@ The attribute in question, which may be of any scalar type.
 
   score.bc = getEdgeAttribute (cw, "B (synthetic lethal) C", 'score')
   print (paste ("should be -12: ", score.bc))
-
 }
 
 \keyword{graph}

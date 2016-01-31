@@ -16,18 +16,18 @@ clearSelection(obj)
 \value{
 Nothing
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
-  cw<- CytoscapeWindow ('clearSelection.test', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('clearSelection.test', graph=makeSimpleGraph())
   displayGraph (cw)
+  layoutNetwork(cw)
   selectNodes (cw, 'A')
   print (getSelectedNodeCount (cw))   # should be 1
   clearSelection (cw)
   print (getSelectedNodeCount (cw))   # should be 0
-
 }
 
 \keyword{graph}

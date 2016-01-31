@@ -6,17 +6,16 @@
 \title{getNodeAttribute}
 \description{
 Node and node attributes are usually added to a Cytoscape network by
-defined them on the graph used to construct a CytoscapeWindow.  The
-small family of methods described here, however, provide another avenue for adding an
-node attribute, for learning which are currently defined, and for
-deleting and node attribute.
+defining them on the graph used to construct a CytoscapeWindow. The
+small family of methods described here, however, provide another
+avenue for adding an node attribute, for learning which are
+currently defined, and for deleting and node attribute.
 
-Note that node (and node) attibutes are defined, not just for a specific, single
-CytoscapeWindow, but for an entire Cytoscape application session.  Thus if you
-have two nodes (or nodes) with the same ID (the same name) in two
-different windows, adding a node attribute results in both nodes having
-that attribute.
-
+Note that node (and node) attibutes are defined not just for a
+specific, single CytoscapeWindow, but for an entire Cytoscape
+application session.  Thus if you have two nodes (or nodes) with the
+same ID (the same name) in two different windows, adding a node
+attribute results in both nodes having that attribute.
 }
 \usage{
 getNodeAttribute(obj, node.name, attribute.name)
@@ -33,14 +32,12 @@ getNodeAttribute(obj, node.name, attribute.name)
 \value{
 The attribute in question, which may be of any scalar type.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getNodeAttributeNames
   deleteNodeAttribute
 }
-
-
 
 \examples{
   # first, delete existing windows to save memory:
@@ -53,7 +50,8 @@ The attribute in question, which may be of any scalar type.
   layoutNetwork(cw)
 
   count.B = getNodeAttribute (cw, "B", 'count')
-
+  count.B
+    # [1] 30
 }
 
 \keyword{graph}
