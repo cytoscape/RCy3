@@ -3,7 +3,7 @@
 \alias{pluginVersion,CytoscapeConnectionClass-method}
 \title{pluginVersion}
 \description{
-Test the connection to Cytoscape.  
+Get the currently used plugin version number of CyREST.
 }
 \usage{
 pluginVersion(obj)
@@ -13,10 +13,10 @@ pluginVersion(obj)
 }
 
 \value{
-  "A string describing the current version of the CytoscapeRPC plugin."
+  a string describing the current version of the CyREST plugin.
 }
 
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
@@ -24,7 +24,7 @@ pluginVersion(obj)
 
   cy <- CytoscapeConnection ()
   print (pluginVersion (cy))
-    # e.g., "1.7"
+    # e.g. "v1"
 }
 
 \keyword{graph}

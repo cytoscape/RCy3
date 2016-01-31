@@ -15,7 +15,7 @@ getSelectedNodeCount(obj)
 \value{
 An integer.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
@@ -25,7 +25,7 @@ An integer.
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')
   redraw (cw)
-    # in Cytoscape, interactively select two nodes, or
+    # in Cytoscape, interactively select two nodes, or call selectNodes
   selectNodes (cw, c ('A','B'))
   getSelectedNodeCount (cw)
   # [1] 2

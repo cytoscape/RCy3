@@ -4,10 +4,9 @@
 \title{addCyNode}
 \description{
 Given a CytoscapeWindow containing a (possibly empty) graph, this method
-adds a node.  Node attributes are added separately, via successive calls
-to sendNodeAttributesDirect.  The new node must be unique -- not already
+adds a node. Node attributes are added separately, via successive calls
+to sendNodeAttributesDirect. The new node must be unique -- not already
 a member of the graph as known to Cytoscape.
-
 }
 \usage{
 addCyNode(obj, nodeName)
@@ -17,10 +16,9 @@ addCyNode(obj, nodeName)
   \item{nodeName}{a \code{character string} object. }
 }
 
-\value{
-None.
-}
-\author{Paul Shannon}
+\value{None.}
+
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   sendNodeAttributesDirect
@@ -33,11 +31,10 @@ None.
   window.name <- 'demo addCyNode'
   cw <- CytoscapeWindow (window.name, graph=makeSimpleGraph ())
   displayGraph (cw)
+  layoutNetwork (cw)
   addCyNode (cw, 'A NEW NODE')
-  redraw (cw)
-  layoutNetwork(cw)
-
-
+  layoutNetwork (cw)
+  # redraw (cw) --> function no longer required
 }
 
 \keyword{graph}

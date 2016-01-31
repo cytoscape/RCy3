@@ -17,10 +17,10 @@ createWindowFromSelection(obj, new.windowTitle, return.graph)
 
 \value{
 A new CytoscapeWindow object, with the graph slot populated with the new
-selected subgraph, if requested.  If not requested, the graph slot holds
+selected subgraph, if requested. If not requested, the graph slot holds
 an empty graph.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
  selectNodes 
@@ -35,20 +35,13 @@ an empty graph.
 
   cw <- CytoscapeWindow (title, makeSimpleGraph ())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw)
+  layoutNetwork (cw)
   selectNodes (cw, c ('A', 'C'))
  
   new.window.title <- 'NEW WINDOW'
-  if (new.window.title \%in\% as.character (getWindowList (cy)))
-    deleteWindow (cy, new.window.title)
-
-  #c2 <- createWindowFromSelection (cw, new.window.title, TRUE)
-  #redraw (c2)
-  #layoutNetwork(c2)
-
-  #clearSelection (c2)
-  #selectNodes (c2, 'C')
-  #print (getSelectedNodeCount (c2))  # should be 1
+  c2 <- createWindowFromSelection (cw, new.window.title, TRUE)
+  layoutNetwork (c2, 'force-directed')
+  print (getEdgeCount(c2))  # should be 1
 }
+
 \keyword{graph}

@@ -17,7 +17,7 @@ deleteAllWindows(obj)
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   cy <- CytoscapeConnection ()

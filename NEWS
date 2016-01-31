@@ -1,18 +1,25 @@
 NEW RELEASE VERSION 0.99.0
 -------------------------
+PERSISTING ISSUES
+    o direct functions are currently overwritten by rule-based functions.
+      Once CyREST updates, this issue will be fixed.
 
 NEW FEATURES
     o added setDefaultEdgeSourceArrowColor to set the default arrow color
     o added setDefaultEdgeTargetArrowColor to set the default target arrow color
     o added two modes (interpolate and lookup) to setEdgeSourceArrowColorRule
     o added two modes (interpolate and lookup) to setEdgeTargetArrowColorRule
+    o redraw is no longer required as the Cytoscape interface updates automatically.
+    o lockNodeDimensions is no longer required. Functions that required locked node
+      dimensions do this automatically.
     
     
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o removed new.CystoscapeWindow. CytoscapeWindow does the same job now.
-    o removed setEdgeLabelWidthDirect.
-    o removed setEdgeSourceArrowOpacityDirect.
+    o removed setEdgeLabelWidthDirect
+    o removed setEdgeLabelPositionDirect
+    o removed setEdgeSourceArrowOpacityDirect
     o removed setEdgeTargetArrowOpacityDirect
     o removed set.node.or.edge.properties
     o removed getViewCoordinates
@@ -23,9 +30,9 @@ SIGNIFICANT USER-VISIBLE CHANGES
     o removed setTooltipInitialDelay
     o removed clearMsg
     o removed msg
+    o removed createWindowFromSelection
+    o removed setNodeImageDirect
     o new names for features:
-    
-    
 > getNodeShapes(cw)
 [1] "DIAMOND"         "HEXAGON"         "OCTAGON"         "VEE"            
 [5] "TRIANGLE"        "PARALLELOGRAM"   "ELLIPSE"         "RECTANGLE"      

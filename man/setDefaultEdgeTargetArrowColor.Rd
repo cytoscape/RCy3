@@ -3,8 +3,9 @@
 \alias{setDefaultEdgeTargetArrowColor,CytoscapeConnectionClass-method}
 \title{setDefaultEdgeTargetArrowColor}
 \description{
-In the specified CytoscapeConnection, stipulate the color for all edge target arrows
-other than those mentioned in an edge target arrow color rule.
+In the specified CytoscapeConnection, stipulate the default color
+for all edge target arrows other than those mentioned in an edge
+target arrow color rule.
 }
 \usage{
 setDefaultEdgeTargetArrowColor(obj, new.color, vizmap.style.name = "default")
@@ -19,7 +20,7 @@ setDefaultEdgeTargetArrowColor(obj, new.color, vizmap.style.name = "default")
 \value{
 None.
 }
-\author{Tanja Muetze}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
    setDefaultNodeShape
@@ -41,11 +42,10 @@ None.
 
   cw <- CytoscapeWindow ('setDefaultEdgeTargetArrowColor test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'grid')
-  setDefaultEdgeTargetArrowColor (cw, '#FFFFFF') # white edges
-  redraw (cw)
+  layoutNetwork(cw, 'force-directed')
+  setDefaultEdgeTargetArrowColor (cw, '#0F0F0F')
+  setEdgeTargetArrowShapeDirect (cw, c('C (undefined) A', 'B (synthetic lethal) C'), 'ARROW_SHORT')
+  # redraw (cw) --> not required anymore
 }
-
 
 \keyword{graph}

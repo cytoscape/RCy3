@@ -13,32 +13,37 @@ setEdgeTargetArrowRule(obj, edge.attribute.name, attribute.values, arrows, defau
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
-  \item{edge.attribute.name}{the edge attribute whose values will, when this
-rule is applied, determine the targetArrow of each edge.}
-  \item{attribute.values}{A list of scalar, discrete values. For
-  instance, interaction types:  'phosphorylates', 'ubiquinates',
-  'represses', 'activates' }
-\item{arrows}{One arrow type for each of the attribute.values}
-\item{default}{The arrow type to use when an explicit mapping is not provided.}
-
+  \item{edge.attribute.name}{the edge attribute whose values will determine
+        the target arrow of each edge when this rule is applied.}
+  \item{attribute.values}{A list of scalar, discrete values. For instance,
+        interaction types:'phosphorylates', 'ubiquinates', 'represses', 'activates' }
+  \item{arrows}{One arrow type for each of the attribute.values}
+  \item{default}{The arrow type to use when an explicit mapping is not provided.}
 }
 
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
-\seealso{ \code{\link{getArrowShapes}}}
+\seealso{
+  \code{\link{getArrowShapes}}
+  setNodeBorderColorRule (detailed example)
+  setEdgeColorRule
+}
+
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('setEdgeTargetArrowRule.test', graph=makeSimpleGraph())
-  arrows <- c ('Arrow', 'Diamond', 'Circle')
-  edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'undefined')
+  displayGraph (cw)
+  layoutNetwork (cw, 'force-directed')
+  
+  arrows <- c('DIAMOND', 'ARROW', 'CIRCLE')
+  edgeType.values <- c('phosphorylates', 'synthetic lethal', 'undefined')
+  
   setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
-  redraw (cw)
 }
 
 \keyword{graph}
-

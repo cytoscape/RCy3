@@ -7,7 +7,6 @@ Retrieve the names of the currently supported 'arrows' -- the
 decorations can (optionally) appear at the ends of edges, adjacent to
 the nodes they connect, and conveying information about the nature of
 the nodes' relationship.
-of strings.
 }
 \usage{
 getArrowShapes(obj)
@@ -17,9 +16,9 @@ getArrowShapes(obj)
 }
 
 \value{
-A list of character strings, e.g., 'WHITE_DIAMOND', 'BLACK_T'
+A list of character strings, e.g., 'DIAMOND', 'T', 'ARROW'
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
@@ -27,7 +26,10 @@ A list of character strings, e.g., 'WHITE_DIAMOND', 'BLACK_T'
 
   cy <- CytoscapeConnection ()
   getArrowShapes (cy)
-    # [1] "No Arrow" "Diamond" "Delta" "Arrow" "T" "Circle" "Half Arrow Top"  "Half Arrow Bottom"
+    # [1] "DIAMOND_SHORT_1" "HALF_TOP"        "DELTA_SHORT_2"   "DELTA"          
+    # [5] "HALF_BOTTOM"     "CIRCLE"          "DIAMOND"         "DIAMOND_SHORT_2"
+    # [9] "NONE"            "T"               "ARROW"           "ARROW_SHORT"    
+    # [13] "DELTA_SHORT_1"  
 }
 
 \keyword{graph}

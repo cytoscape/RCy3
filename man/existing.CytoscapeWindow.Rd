@@ -14,7 +14,7 @@ existing.CytoscapeWindow (title, host='localhost', port=1234, copy.graph.from.cy
 \arguments{
   \item{title}{
     A character string, this is the name of an existing Cytoscape
-    network window.   This name enables RCytoscape to identify and
+    network window. This name enables RCy3 to identify and
   connect to the proper Cytoscape window and network that it contains.
 }
   \item{host}{
@@ -30,11 +30,9 @@ existing.CytoscapeWindow (title, host='localhost', port=1234, copy.graph.from.cy
 }
 }
 \value{
-  An object of the existing.CytoscapeWindow Class.
+  An object of the existing.CytoscapeWindow class.
 }
-\author{
-  Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 
 \examples{
@@ -44,8 +42,8 @@ existing.CytoscapeWindow (title, host='localhost', port=1234, copy.graph.from.cy
   cy <- CytoscapeConnection ()
   cw <- CytoscapeWindow ('demo.existing', graph=makeSimpleGraph ())
   displayGraph (cw)
-  #cw2 <- existing.CytoscapeWindow ('demo.existing',  copy.graph.from.cytoscape.to.R=TRUE)
-
+  layoutNetwork(cw, 'force-directed')
+  cw2 <- existing.CytoscapeWindow ('demo.existing',  copy.graph.from.cytoscape.to.R=TRUE)
 }
 
 \keyword{ graph }

@@ -6,9 +6,8 @@
 \title{getNodeAttributeNames}
 \description{
 Node and node attributes belong to the Cytoscape session as a whole, not
-to a particular window.  Use this method to find out the name of the
+to a particular window.  Use this method to find out the names of the
 currently defined node attributes.
-
 }
 \usage{
 getNodeAttributeNames(obj)
@@ -21,15 +20,13 @@ getNodeAttributeNames(obj)
 \value{
 A list of names.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   getNodeAttribute
   deleteNodeAttribute
   getEdgeAttributeNames
 }
-
-
 
 \examples{
   # first, delete existing windows to save memory:
@@ -38,7 +35,7 @@ A list of names.
   cw = CytoscapeWindow ('demo.getNodeAttributeNames', graph=makeSimpleGraph())
   displayGraph (cw)
   print (getNodeAttributeNames (cw))
-
+    # [1] "name"  "type"  "lfc"   "label" "count"
 }
 
 \keyword{graph}

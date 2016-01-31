@@ -15,7 +15,7 @@ getSelectedEdges(obj)
 \value{
 A list of character strings.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
@@ -25,9 +25,10 @@ A list of character strings.
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')
   redraw (cw)
-    # in Cytoscape, interactively select two edges
-    # doesn't work yet:  selectEdges (cwe, "A (phosphorylates) B")
+    # in Cytoscape, interactively select an edge or call the selectEdges function
+  selectEdges (cw, "A (phosphorylates) B")
   getSelectedEdges (cw)
+    # [1] "A (phosphorylates) B"
 }
 
 \keyword{graph}

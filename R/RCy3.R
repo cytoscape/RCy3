@@ -2,25 +2,25 @@
 #--------------------------------------------------------------------------------
 # this code is for the Bioconductor build system. You should never need to set or
 # read these environment variables in ordinary use.
-.BBSOverride <- function(host, port) {
-    ret <- list()
-    if ((Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE") != "") &&  (Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE") != "")) {
-      host = Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE")
-      port = as(Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE"),"integer")
-      }
-    if (.Platform$r_arch == "x64") {
-        if ((Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE_64") != "") &&  (Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE_64") != "")) {
-          host = Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE_64")
-          port = as(Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE_64"),"integer")
-          }
-    }
-    #cat(paste("Using host", host, "and port", port, "."))
-
-    ret["host"] <- host
-    ret["port"] <- port
-    ret
-}
-
+# .BBSOverride <- function(host, port) {
+#     ret <- list()
+#     if ((Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE") != "") &&  (Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE") != "")) {
+#       host = Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE")
+#       port = as(Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE"),"integer")
+#       }
+#     if (.Platform$r_arch == "x64") {
+#         if ((Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE_64") != "") &&  (Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE_64") != "")) {
+#           host = Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE_64")
+#           port = as(Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE_64"),"integer")
+#           }
+#     }
+#     #cat(paste("Using host", host, "and port", port, "."))
+# 
+#     ret["host"] <- host
+#     ret["port"] <- port
+#     ret
+# }
+# 
 
 # ------------------------------------------------------------------------------
 printf = function (...) print (noquote (sprintf (...)))
@@ -176,7 +176,7 @@ setGeneric ('setDefaultEdgeReverseSelectionColor',  signature='obj',
                 function (obj, new.color, vizmap.style.name='default') standardGeneric ('setDefaultEdgeReverseSelectionColor'))
 
 setGeneric ('saveImage',                  signature='obj', function (obj, file.name, image.type, scale=1.0) standardGeneric ('saveImage'))
-setGeneric ('saveNetwork',                signature='obj', function (obj, file.name, format='gml') standardGeneric ('saveNetwork'))
+setGeneric ('saveNetwork',                signature='obj', function (obj, file.name, format='cys') standardGeneric ('saveNetwork'))
 
 setGeneric ('setDefaultNodeShape',        signature='obj', function (obj, new.shape, vizmap.style.name='default') standardGeneric ('setDefaultNodeShape'))
 setGeneric ('setDefaultNodeSize',         signature='obj', function (obj, new.size, vizmap.style.name='default') standardGeneric ('setDefaultNodeSize'))
@@ -222,7 +222,7 @@ setGeneric ('setNodeLabelColorDirect',    signature='obj', function (obj, node.n
 setGeneric ('setNodeWidthDirect',         signature='obj', function (obj, node.names, new.widths) standardGeneric ('setNodeWidthDirect'))
 setGeneric ('setNodeHeightDirect',        signature='obj', function (obj, node.names, new.heights) standardGeneric ('setNodeHeightDirect'))
 setGeneric ('setNodeShapeDirect',         signature='obj', function (obj, node.names, new.shapes) standardGeneric ('setNodeShapeDirect'))
-setGeneric ('setNodeImageDirect',         signature='obj', function (obj, node.names, image.urls) standardGeneric ('setNodeImageDirect'))
+setGeneric ('setNodeImageDirect',         signature='obj', function (obj, node.names, image.positions) standardGeneric ('setNodeImageDirect'))
 setGeneric ('setNodeColorDirect',         signature='obj', function (obj, node.names, new.colors) standardGeneric ('setNodeColorDirect'))
 setGeneric ('setNodeBorderWidthDirect',   signature='obj', function (obj, node.names, new.sizes) standardGeneric ('setNodeBorderWidthDirect'))
 setGeneric ('setNodeBorderColorDirect',   signature='obj', function (obj, node.names, new.colors) standardGeneric ('setNodeBorderColorDirect'))
@@ -336,9 +336,7 @@ setGeneric ('lockNodeDimensions',     signature='obj', function (obj, new.state,
 # private methods, for internal use only
 #-----------------------------------------------------------
 setGeneric ('.addNodes',
-            signature='obj', function(obj, other.graph) standardGeneric ('.addNodes'))
-setGeneric ('.addEdges',
-            signature='obj', function(obj, other.graph) standardGeneric ('.addEdges'))
+            signature='obj', function (obj, other.graph) standardGeneric ('.addNodes'))
 setGeneric ('.addEdges', 
             signature='obj', function (obj, other.graph) standardGeneric ('.addEdges'))
 setGeneric ('.getWindowNameFromSUID', 
@@ -369,9 +367,9 @@ setValidity("CytoscapeWindowClass", function(object) {
 # ------------------------------------------------------------------------------
 CytoscapeConnection = function(host='localhost', port=1234) {
 
-    res <- .BBSOverride(host, port)
-    host = res$host
-    port = res$port
+    #res <- .BBSOverride(host, port)
+    #host = res$host
+    #port = res$port
     uri = sprintf('http://%s:%s', host, port)
     cc = new('CytoscapeConnectionClass', uri = uri)
     if (!url.exists(uri)){
@@ -380,7 +378,7 @@ CytoscapeConnection = function(host='localhost', port=1234) {
         write(sprintf('2) that the latest version of CyREST is installed.'), stderr())
         write(sprintf('3) that Cytoscape uses Java 8 (not 7 or below).'), stderr())
         write(sprintf('To help troubleshooting, please check:'), stderr())
-        write(sprintf('https://github.com/cytoscape/cytoscape-scripts/tree/master/system-checker'), stderr())
+        write(sprintf('http://www.cytoscape.org/troubleshooting.html'), stderr())
         return()
     }
     return(cc)
@@ -390,9 +388,9 @@ CytoscapeConnection = function(host='localhost', port=1234) {
 # the 'CytoscapeWindow' class constructor, defined as a simple function
 CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), host='localhost', 
                            port=1234, create.window=TRUE, overwriteWindow=FALSE, collectTimings=FALSE){
-  res <- .BBSOverride(host, port)
-  host = res$host
-  port = res$port
+#     res <- .BBSOverride(host, port)
+#     host = res$host
+#     port = res$port
 	uri = sprintf('http://%s:%s', host, port)
 	
     # new 'CytoscapeConnectionClass' object
@@ -476,16 +474,16 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 existing.CytoscapeWindow = 
     function(title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE) 
         {
-        res <- .BBSOverride(host, port)
-        host <- res$host
-        port <- res$port
+        #res <- .BBSOverride(host, port)
+        #host <- res$host
+        #port <- res$port
         
 		uri <- sprintf('http://%s:%s', host, port)
 		
         # establish a connection to Cytoscape
         cy.conn <- CytoscapeConnection(host, port)
 		
-        if(is.null(cy.conn)) {
+        if (is.null(cy.conn)) {
             write(sprintf("ERROR in existing.CytoscapeWindow():\n\t Cytoscape connection could not be established >> NULL returned"), stderr())
             
             return()
@@ -496,23 +494,35 @@ existing.CytoscapeWindow =
 		existing.window.id = as.character(getWindowID(cy.conn, title))
 		
 		# inform user if the window does not exist
-        if(is.na(existing.window.id)) {
+        if (is.na(existing.window.id)) {
             write(sprintf("ERROR in RCy3::existing.CytoscapeWindow():\n\t no window named '%s' exists in Cytoscape >> choose from the following titles: ", title), stderr())
 			write(as.character(getWindowList(cy.conn)), stderr())
-			
             return(NA)
 		}
 		
 		# get graph from Cytoscape
         cy.window <- new('CytoscapeWindowClass', title=title, window.id=existing.window.id, uri=uri)
-        
-        if(copy.graph.from.cytoscape.to.R) {
+
+        if (copy.graph.from.cytoscape.to.R) {
+            # copy over graph
             g.cy <- getGraphFromCyWindow(cy.window, title)
-            
             cy.window <- setGraph(cy.window, g.cy)
+
+            # copy over obj@suid.name.dict
+            resource.uri <- paste(cy.window@uri, pluginVersion(cy.window), "networks", as.character(cy.window@window.id), sep="/")
+            request.res <- GET(url=resource.uri)
+            request.res <- fromJSON(rawToChar(request.res$content))
+
+            if (length(request.res$elements$nodes) != 0){
+                cy.window@suid.name.dict = lapply(request.res$elements$nodes, function(n) { 
+                    list(name=n$data$name, SUID=n$data$SUID) })
+            }
+            if (length(request.res$elements$edges) != 0){
+                cy.window@edge.suid.name.dict = lapply(request.res$elements$edges, function(e) {
+                    list(name=e$data$name, SUID=e$data$SUID) })
+            }
         }
-        
-        return(cy.window)
+        return (cy.window)
 }
 ## END existing.CytsoscapeWindow
 
@@ -600,19 +610,118 @@ setMethod('createWindow', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('createWindowFromSelection', 'CytoscapeWindowClass',
 
-	function (obj, new.windowTitle, return.graph=FALSE) {
-#		if (getSelectedNodeCount (obj) == 0) {
-#	    write (noquote ('RCy3::createWindowFromSelection error:  no nodes are selected'), stderr ())
-#      return (NA)
-#      }
-#    if (new.windowTitle %in% as.character (getWindowList (obj))) {
-#      msg = sprintf ('RCy3::createWindowFromSelection error:  window "%s" already exists', new.windowTitle)
-#      write (noquote (msg), stderr ())
-#      return (NA)
-#      }
-#      
-#    window.id = xml.rpc (obj@uri, 'Cytoscape.createNetworkFromSelection', obj@window.id, new.windowTitle)
-#    return (existing.CytoscapeWindow (new.windowTitle, copy.graph.from.cytoscape.to.R = return.graph))
+    function (obj, new.windowTitle, return.graph=FALSE) {
+        if (getSelectedNodeCount (obj) == 0) {
+            write (noquote ('RCy3::createWindowFromSelection error:  no nodes are selected'), stderr ())
+            return (NA)
+        }
+
+        if (new.windowTitle %in% as.character (getWindowList (obj))) {
+            msg <- sprintf ('RCy3::createWindowFromSelection error:  window "%s" already exists', new.windowTitle)
+            write (noquote (msg), stderr ())
+            return (NA)
+        }
+        
+        # create new window
+        cy.window <- CytoscapeWindow (new.windowTitle)
+        
+        net.SUID <- as.character(cy.window@window.id)
+        version <- pluginVersion(obj)
+        
+        
+        # copy nodes over
+        selected.nodes <- getSelectedNodes(obj)
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes", sep="/")
+        new.nodes.JSON <- toJSON(selected.nodes)
+        request.res <- POST(url=resource.uri, body=new.nodes.JSON, encode="json")
+        new.node.SUIDs <- unname(fromJSON(rawToChar(request.res$content)))
+        new.node.names <- do.call(rbind, lapply(new.node.SUIDs, data.frame, stringsAsFactors=FALSE))
+        invisible(request.res)
+        
+        
+        # copy node attributes over
+        node.attribute.names <- noa.names(obj@graph)
+        for (attribute.name in node.attribute.names) {
+            printf('sending node attribute "%s"', attribute.name)
+            caller.specified.attribute.class <- attr(nodeDataDefaults(obj@graph, attribute.name), 'class')
+            values <- noa(obj@graph, attribute.name)[selected.nodes]
+            values <- data.frame(values)
+            values["name"] <- rownames(values)
+            node.name.suid.value.df <- merge(new.node.names, values, by='name')
+            
+            # converts the above data frame data in the cyREST [SUID:value]-pairs format
+            node.SUID.value.pairs <- 
+                apply(node.name.suid.value.df[,c('SUID','values')], 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
+            apply(data.frame(new.node.SUIDs, values), 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
+            node.SUID.value.pairs.JSON = toJSON(node.SUID.value.pairs)
+            resource.uri <- 
+                paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns", attribute.name, sep="/")
+            request.res <- PUT(url=resource.uri, body=node.SUID.value.pairs.JSON, encode="json")
+            invisible(request.res)
+        }
+        
+        
+        # copy edges over
+        if (is.classic.graph(obj@graph)) {
+            tbl.edges <- .classicGraphToNodePairTable(obj@graph)
+        } else if (is.multiGraph(obj@graph)) {
+            tbl.edges <- .multiGraphToNodePairTable(obj@graph)
+        }
+        new.tbl.edges <- tbl.edges[tbl.edges$source %in% selected.nodes & tbl.edges$target %in% selected.nodes,]
+        num.edges.to.copy <- nrow(new.tbl.edges)
+        if (num.edges.to.copy > 0) {
+            directed <- rep(TRUE, nrow(new.tbl.edges)) #TODO enable undirected?
+            
+            if (num.edges.to.copy == 1) {
+                # get the SUIDs of the source nodes for the new edges
+                source.node.SUIDs <- new.node.names$SUID[new.node.names$name==new.tbl.edges$source]
+                # get the SUIDs of the target nodes for the new edges
+                target.node.SUIDs <- new.node.names$SUID[new.node.names$name==new.tbl.edges$target]
+            }else{
+                source.node.SUIDs <- new.node.names$SUID[match(new.tbl.edges$source, new.node.names$name)]
+                target.node.SUIDs <- new.node.names$SUID[match(new.tbl.edges$target, new.node.names$name)]
+            }
+            # format the new edges data for sending to Cytoscape
+            edge.tbl.records = 
+                apply(cbind(source.node.SUIDs, target.node.SUIDs, directed, new.tbl.edges$edgeType), MARGIN=1,
+                      FUN=function(r) {list(source=unname(r[[1]]), target=unname(r[[2]]), directed=unname(r[[3]]), interaction=unname(r[[4]]))})
+            edge.tbl.records.JSON = toJSON(edge.tbl.records)
+            resource.uri = paste(cy.window@uri, version, "networks", net.SUID, "edges", sep="/")
+            request.res = POST(url=resource.uri, body=edge.tbl.records.JSON, encode="json")
+            new.edge.SUIDs <- unname(fromJSON(rawToChar(request.res$content)))
+            invisible(request.res)
+        }
+        
+        
+        # copy edge attributes over
+        edge.attribute.names = eda.names(obj@graph)
+        for (attribute.name in edge.attribute.names) {
+            printf('sending edge attribute "%s"', attribute.name)
+            values <- eda(obj@graph, attribute.name)
+
+            if (num.edges.to.copy == 1) {
+                # add edge name to the dataframe
+                edge.name.suid.value.df <- data.frame(rbind(unlist(new.edge.SUIDs)))
+                edge.name.suid.value.df$edgeName <- paste0(new.node.names$name[new.node.names$SUID==edge.name.suid.value.df$source], "|",
+                                                           new.node.names$name[new.node.names$SUID==edge.name.suid.value.df$target])
+                edge.name.suid.value.df$edgeValue <- unname(values)[(names(values)==edge.name.suid.value.df$edgeName)]
+            }else{
+                edge.name.suid.value.df <- data.frame(matrix(unlist(new.edge.SUIDs), nrow=3, byrow = TRUE))
+                names(edge.name.suid.value.df) <-  names(data.frame(rbind(unlist(new.edge.SUIDs[[1]]))))
+                edge.name.suid.value.df$edgeName <- paste0(new.node.names$name[match(edge.name.suid.value.df$source, new.node.names$SUID)], "|",
+                                                           new.node.names$name[match(edge.name.suid.value.df$target, new.node.names$SUID)])
+                edge.name.suid.value.df$edgeValue <- unname(values)[match(edge.name.suid.value.df$edgeName, names(values))]
+            }
+            edge.SUID.value.pairs <- 
+                apply(edge.name.suid.value.df[,c('SUID','edgeValue')], 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
+            edge.SUID.value.pairs.JSON = toJSON(edge.SUID.value.pairs)
+            resource.uri <- 
+                paste(cy.window@uri, version, "networks", net.SUID, "tables/defaultedge/columns", attribute.name, sep="/")
+            request.res <- PUT(url=resource.uri, body=edge.SUID.value.pairs.JSON, encode="json")
+            invisible(request.res)
+        }
+        
+        return (existing.CytoscapeWindow (new.windowTitle, copy.graph.from.cytoscape.to.R = return.graph))
     }) # createWindowFromSelection
 
 # ------------------------------------------------------------------------------
@@ -755,7 +864,6 @@ setMethod('getLayoutNames', 'CytoscapeConnectionClass',
         request.res <- GET(url=request.uri)
         
         available.layouts <- unname(fromJSON(rawToChar(request.res$content)))
-        
         return(available.layouts)
 }) 
 ## END getLayoutNames
@@ -763,7 +871,20 @@ setMethod('getLayoutNames', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('getLayoutNameMapping', 'CytoscapeConnectionClass', 
     function(obj) {
-        message("not yet implemented")
+        layout.names <- getLayoutNames(obj)
+        layout.full.names <- c()
+        
+        # get the English/full name of a layout
+        for (layout.name in layout.names){
+            request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), sep="/")
+            request.res <- GET(url=request.uri)
+            
+            layout.property.names <- unname(fromJSON(rawToChar(request.res$content)))
+            layout.full.names <- c(layout.full.names, layout.property.names[[4]])
+        }
+        names(layout.names) <- layout.full.names
+        
+        return(layout.names)
 })
 ## END getLayoutNameMapping
 
@@ -774,7 +895,6 @@ setMethod('getLayoutPropertyNames', 'CytoscapeConnectionClass',
         request.res <- GET(url=request.uri)
         
         layout.property.names <- unname(fromJSON(rawToChar(request.res$content)))
-        
         return(sapply(layout.property.names, '[[', 1))
 })
 ## END getLayoutPropertyNames
@@ -782,16 +902,13 @@ setMethod('getLayoutPropertyNames', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('getLayoutPropertyType', 'CytoscapeConnectionClass', 
     function(obj, layout.name, property.name) {
-        request.uri <- 
-            paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), sep="/")
-        
-        print(request.uri)
-        
+        request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
         request.res <- GET(url=request.uri)
         
-        # print(request.res)
-        
-        print(unname(fromJSON(rawToChar(request.res$content))))
+        layout.property.list <- unname(fromJSON(rawToChar(request.res$content)))
+        layout.property.names <- sapply(layout.property.list, '[[', 1)
+        position <- layout.property.names == property.name
+        return(sapply(layout.property.list, '[[', 3)[position])
 }) 
 ## END getLayoutPropertyType
 
@@ -799,35 +916,53 @@ setMethod('getLayoutPropertyType', 'CytoscapeConnectionClass',
 setMethod ('getLayoutPropertyValue', 'CytoscapeConnectionClass', 
 
    function (obj, layout.name, property.name) {
-       message("not yet implemented")
-#     return (xml.rpc (obj@uri, 'Cytoscape.getLayoutPropertyValue', layout.name, property.name))
+       request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
+       request.res <- GET(url=request.uri)
+       
+       layout.property.list <- unname(fromJSON(rawToChar(request.res$content)))
+       layout.property.names <- sapply(layout.property.list, '[[', 1)
+       position <- layout.property.names == property.name
+       return(sapply(layout.property.list, '[[', 4)[position])
      }) # getLayoutPropertyValue
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setLayoutProperties', 'CytoscapeConnectionClass', 
 
-   function (obj, layout.name, properties.list) {
-       message("not yet implemented")
-#     all.possible.props = getLayoutPropertyNames (obj, layout.name)   # will throw error if there are no modifiable properties
-#     for (prop in names (properties.list)) {
-#       if (!prop %in% all.possible.props)
-#         write (sprintf ('%s is not a property in layout %s', prop, layout.name), stderr ())
-#       else {
-#         new.value = properties.list [[prop]]
-#         result = xml.rpc (obj@uri, 'Cytoscape.setLayoutPropertyValue', layout.name, prop, as.character (new.value))
-#         } # else
-#       } # for prop
+    function (obj, layout.name, properties.list) {
+        all.possible.props <- getLayoutPropertyNames (obj, layout.name)
+        
+        # set properties iteratively, this could have been done with a single API call
+        for (prop in names (properties.list)) {
+            if (!prop %in% all.possible.props) {
+                write (sprintf ('%s is not a property in layout %s', prop, layout.name), stderr ())
+            } else {
+                new.value <- properties.list [[prop]]
+                new.property.value.list <- list("name"=prop, "value"=new.value)
+                new.property.value.list.JSON <- toJSON(list(new.property.value.list))
+                
+                request.uri <- paste(obj@uri, pluginVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
+                request.res <- PUT(url=request.uri, body= new.property.value.list.JSON, encode="json")
+                if (request.res$status == 200){
+                    write (sprintf ("Successfully updated the property '%s'.", prop), stdout ())
+                } else {
+                    write (sprintf ("Something went wrong. Unable to update property '%s'.", prop), stderr ())
+                }
+                invisible(request.res)
+            }
+        } # for prop
      }) # setLayoutProperties
 
 # ------------------------------------------------------------------------------
 setMethod ('setGraph', 'CytoscapeWindowClass', function(obj, graph) {
-    if(edgemode(graph) == 'undirected'){
+    # copy the graph over
+    loc.obj <- obj
+    if (edgemode(graph) == 'undirected'){
         graph = remove.redundancies.in.undirected.graph (graph)
     }
     
-    obj@graph = graph
+    loc.obj@graph = graph
     
-    return (obj)
+    eval.parent(substitute(obj <- loc.obj))
 })
 
 # ------------------------------------------------------------------------------
@@ -1009,79 +1144,79 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
 
-  function (obj,  window.title) {
-      window.id = NULL
-      # handles the case when 'obj' is 'CytoscapeConnectionClass', instead of 'CytoscapeWindowClass' 
-      if(class(obj) == "CytoscapeConnectionClass") {
-          window.id = as.character(getWindowID(obj, window.title))
-          loc.obj = 
-              new('CytoscapeWindowClass', title=window.title, window.id=window.id, uri=obj@uri)
-      } else {
-          loc.obj = obj
-      }
-      # network id and cyREST plugin version
-      net.SUID = as.character(loc.obj@window.id)
-      version = pluginVersion(loc.obj)
-      
-      if(!is.na(net.SUID)) {
-          # get the graph from Cytoscape
-          resource.uri = paste(loc.obj@uri, version, "networks", net.SUID, sep="/")
-          request.res = GET(url=resource.uri)
-          request.res = fromJSON(rawToChar(request.res$content))
+    function (obj, window.title) {
+        window.id = NULL
+        # handles the case when 'obj' is 'CytoscapeConnectionClass', instead of 'CytoscapeWindowClass' 
+        if (class(obj) == "CytoscapeConnectionClass") {
+            window.id = as.character(getWindowID(obj, window.title))
+            loc.obj = 
+                new('CytoscapeWindowClass', title=window.title, window.id=window.id, uri=obj@uri)
+        } else {
+            loc.obj = obj
+        }
+        # network id and cyREST plugin version
+        net.SUID = as.character(loc.obj@window.id)
+        version = pluginVersion(loc.obj)
+        
+        if (!is.na(net.SUID)) {
+            # get the graph from Cytoscape
+            resource.uri = paste(loc.obj@uri, version, "networks", net.SUID, sep="/")
+            request.res = GET(url=resource.uri)
+            request.res = fromJSON(rawToChar(request.res$content))
+            
+            g = new("graphNEL", edgemode='directed') # create graph object
+            
+            # GET GRAPH NODES
+            g.nodes = request.res$elements$nodes
+            # if there are no nodes in the graph received from Cytoscape, return an empty 'graphNEL' object
+            if(length(g.nodes) == 0) {
+                write(sprintf("NOTICE in RCy3::getGraphFromCyWindow():\n\t returning an empty 'graphNEL'"), stderr())
+                return(g)
+            }
+            
+            # else get the node names and add them to the R graph
+            loc.obj@suid.name.dict = lapply(g.nodes, function(n) { 
+            list(name=n$data$name, SUID=n$data$SUID) })
+            g.node.names = sapply(loc.obj@suid.name.dict, function(n) { n$name })
+            write(sprintf("\t received %d NODES from '%s'", length(g.nodes), window.title), stderr())
+            g = graph::addNode(g.node.names, g)
+            write(sprintf("\t - added %d nodes to the returned graph\n", length(g.node.names)), stderr())
+            
+            # GET NODE ATTRIBUTES (if any)
+            g = copyNodeAttributesFromCyGraph(loc.obj, net.SUID, g)
+            
+            # Bioconductor's 'graph' edges require the 'edgeType' attribute, so its default value is assigned
+            g = initEdgeAttribute (g, 'edgeType', 'char', 'assoc')
+            
+            # GET GRAPH EDGES
+            g.edges = request.res$elements$edges
+            
+            if (length(g.edges) > 0) {
+                regex = ' *[\\(|\\)] *'
+                write(sprintf("\n\t received %d EDGES from '%s'", length(g.edges), window.title), stderr())
+                
+                loc.obj@edge.suid.name.dict = lapply(g.edges, function(e) {
+                    list(name=e$data$name, SUID=e$data$SUID) })
+                g.edge.names = sapply(loc.obj@edge.suid.name.dict, function(e) { e$name })
+                edges.tokens = strsplit(g.edge.names, regex)
+                source.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[1]))
+                target.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[3]))
+                edge.types = unlist(lapply(edges.tokens, function(tokens) tokens[2]))
+                write(sprintf('\t - adding %d edges to the returned graph\n', length(edges.tokens)), stderr())
+                g = addEdge(source.nodes, target.nodes, g)
+                
+                edgeData(g, source.nodes, target.nodes, 'edgeType') = edge.types
+                
+                # GET EDGE ATTRIBUTES (if any)
+                g = copyEdgeAttributesFromCyGraph(loc.obj, window.id, g)
+            }
           
-          g = new("graphNEL", edgemode='directed') # create graph object
-          
-          # GET GRAPH NODES
-          g.nodes = request.res$elements$nodes
-          # if there are no nodes in the graph received from Cytoscape, return an empty 'graphNEL' object
-          if(length(g.nodes) == 0) {
-              write(sprintf("NOTICE in RCy3::getGraphFromCyWindow():\n\t returning an empty 'graphNEL'"), stderr())
-              return(g)
-          }
-          # else get the node names and add them to the R graph
-          loc.obj@suid.name.dict = lapply(g.nodes, function(n) { 
-              list(name=n$data$name, SUID=n$data$SUID) })
-          g.node.names = sapply(loc.obj@suid.name.dict, function(n) { n$name })
-          write(sprintf("\t received %d NODES from '%s'", length(g.nodes), window.title), stderr())
-          g = graph::addNode(g.node.names, g)
-          write(sprintf("\t - added %d nodes to the returned graph\n", length(g.node.names)), stderr())
-          
-          # GET NODE ATTRIBUTES (if any)
-          g = copyNodeAttributesFromCyGraph(loc.obj, net.SUID, g)
-          
-          # Bioconductor's 'graph' edges require the 'edgeType' attribute, so its default value is assigned
-          g = initEdgeAttribute (g, 'edgeType', 'char', 'assoc')
-          
-          # GET GRAPH EDGES
-          g.edges = request.res$elements$edges
-          
-          if(length(g.edges) > 0) {
-              regex = ' *[\\(|\\)] *'
-              write(sprintf("\n\t received %d EDGES from '%s'", length(g.edges), window.title), stderr())
-              
-              loc.obj@edge.suid.name.dict = lapply(g.edges, function(e) { 
-                  list(name=e$data$name, SUID=e$data$SUID) })
-              g.edge.names = sapply(loc.obj@edge.suid.name.dict, function(e) { e$name })
-              edges.tokens = strsplit(g.edge.names, regex)
-              source.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[1]))
-              target.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[3]))
-              edge.types = unlist(lapply(edges.tokens, function(tokens) tokens[2]))
-              write(sprintf('\t - adding %d edges to the returned graph\n', length(edges.tokens)), stderr())
-              g = addEdge(source.nodes, target.nodes, g)
-              
-              edgeData(g, source.nodes, target.nodes, 'edgeType') = edge.types
-              
-              # GET EDGE ATTRIBUTES (if any)
-              g = copyEdgeAttributesFromCyGraph(loc.obj, window.id, g)
-          }
-          
-      } else {
-          write(sprintf("ERROR in RCy3::getGraphFromCyWindow():\n\t there is no graph with name '%s' in Cytoscape", window.title), stderr())
-          
-          return(NA)
-      }
-      
-      return(g)
+        } else {
+            write(sprintf("ERROR in RCy3::getGraphFromCyWindow():\n\t there is no graph with name '%s' in Cytoscape", window.title), stderr())
+            return(NA)
+        }
+        
+        return(g)
   })
 ## END getGraphFromCyWindow
 
@@ -1324,30 +1459,32 @@ setMethod('.edgeSUIDToEdgeName', 'CytoscapeConnectionClass',
 ## END .edgeSUIDToEdgeName
 
 # ------------------------------------------------------------------------------
-setMethod('addCyNode', 'CytoscapeWindowClass', function(obj, nodeName) { 
+setMethod('addCyNode', 'CytoscapeWindowClass', function(obj, nodeName) {
     loc.obj <- obj
 
     if(nodeName %in% getAllNodes(loc.obj)) {
-        write(sprintf('RCy3::addCyNode, %s node already present in Cytoscape graph', nodeName), stderr())
+        write(sprintf('RCy3::addCyNode, node "%s" already present in Cytoscape graph', nodeName), stderr())
         return()
     }
+    
     # get the network suid
     net.suid <- as.character(loc.obj@window.id)
     resource.uri <- paste(loc.obj@uri, pluginVersion(loc.obj), "networks", net.suid, "nodes", sep="/")
-  
     nodename.json = toJSON(c(nodeName))
+    
     # add the node to the Cytoscape graph
     new.cynode.res <- POST(url=resource.uri, body=nodename.json, encode="json")
-
     new.cynode.suid.name <- unname(fromJSON(rawToChar(new.cynode.res$content)))
+    
     # add the new node to the cw@suid.name.dict
     loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict)+1]] <- 
         list(name=new.cynode.suid.name[[1]]$name, SUID=new.cynode.suid.name[[1]]$SUID)
-    # TO DO: add the node to the cw@graph object
-    # cw@graph <- addNode(nodeName, cw@graph)
+    
+    # add the node to the R graph object
+    loc.obj@graph <- addNode(nodeName, loc.obj@graph)
 
     eval.parent(substitute(obj <- loc.obj))
-})
+}) # addCyNode
 
 # ------------------------------------------------------------------------------
 setMethod('addCyEdge', 'CytoscapeWindowClass', 
@@ -1374,7 +1511,6 @@ setMethod('addCyEdge', 'CytoscapeWindowClass',
     }
     
     net.suid <- as.character(loc.obj@window.id)
-    
     resource.uri <- paste(loc.obj@uri, pluginVersion(loc.obj), "networks", net.suid, "edges", sep="/")
     
     node.names.vec <- sapply(loc.obj@suid.name.dict, "[[", 1)
@@ -1385,7 +1521,13 @@ setMethod('addCyEdge', 'CytoscapeWindowClass',
     edge.data.JSON <- toJSON(list(edge.data))
     
     new.cyedge.res <- POST(url=resource.uri, body=edge.data.JSON, encode='json')
-})
+    invisible(new.cyedge.res)
+    
+    # add the edge to the R graph object
+    loc.obj@graph <- addEdge(sourceNode, targetNode, loc.obj@graph)
+    
+    eval.parent(substitute(obj <- loc.obj))
+}) # addCyEdge
 
 #------------------------------------------------------------------------------------------------------------------------
 # This method adds a new graph to an existing graph.
@@ -1397,19 +1539,20 @@ setMethod ('addGraphToGraph', 'CytoscapeWindowClass',
         # RCy3 keeps a dictionary of the network nodes 
         # the below vector stores the indices of the newly added nodes in this dictionary
         new.node.indices = .addNodes(loc.obj, other.graph)
+        
         # RCy3 keeps a dictionary of the network edges
         # the below vector stores the indices of the newly added edges to this dictionary
         new.edge.indices = .addEdges(loc.obj, other.graph)
         
         node.attribute.names = noa.names(other.graph)
         
-        for(attribute.name in node.attribute.names) {
+        for (attribute.name in node.attribute.names) {
             printf('sending noa %s', attribute.name)
             .sendNodeAttributesForGraph(loc.obj, other.graph, attribute.name, new.node.indices)
         }
         
         edge.attribute.names = eda.names(other.graph)
-        for(attribute.name in edge.attribute.names) {
+        for (attribute.name in edge.attribute.names) {
             printf('sending eda %s', attribute.name)
             .sendEdgeAttributesForGraph(loc.obj, other.graph, attribute.name, new.edge.indices)
         }
@@ -1559,39 +1702,43 @@ setMethod ('restoreLayout', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodePosition', 'CytoscapeWindowClass',
 
-  function (obj, node.names, x.coords, y.coords) {
-     unknown.nodes <- setdiff (node.names, getAllNodes (obj))
-     recognized.nodes <- intersect(node.names, getAllNodes(obj))
-     if (length (unknown.nodes) > 0) {
-        node.names = intersect (node.names, nodes (obj@graph))
-        write (sprintf ("Error!  unknown nodes in RCy3::setNodePosition"), stderr ())
-        for (i in 1:length (unknown.nodes)){
-           write (sprintf ("     %s", unknown.nodes [i]), stderr ())
-        } # end for
-        return ()
-      } # end if 
-     
-     indices <- match(recognized.nodes, node.names)
-     node.names <- recognized.nodes
-     
-     x.coords <- x.coords[indices]
-     y.coords <- y.coords[indices]
-     count = length (node.names)
-     #stopifnot (length (x.coords) == count)
-     #stopifnot (length (y.coords) == count)
+    function (obj, node.names, x.coords, y.coords) {
+        unknown.nodes <- setdiff (node.names, getAllNodes (obj))
+        recognized.nodes <- intersect(node.names, getAllNodes(obj))
+        
+        # ensure that nodes were provided
+        if (length (node.names) == 0){
+            return ()
+        }
 
-     if (count == 0){
-        return ()
-     }
-     
-     # TODO we might want to check if the coordinates are valid numbers
-     
-     # set x position
-     setNodePropertyDirect(obj, node.names, x.coords, "NODE_X_LOCATION")
-     
-     # set y position
-     setNodePropertyDirect(obj, node.names, y.coords, "NODE_Y_LOCATION")
-     
+        # throw error if nodes in node.names don't exist in the network
+        if (length (unknown.nodes) > 0) {
+            node.names = intersect (node.names, nodes (obj@graph))
+            write (sprintf ("Error! Unknown nodes in RCy3::setNodePosition"), stderr ())
+            for (i in 1:length (unknown.nodes)){
+                write (sprintf ("     %s", unknown.nodes [i]), stderr ())
+            } # end for
+            return ()
+        } # end if 
+
+        # ensure that node.names, x.coords, y.coords are of the same length
+        if (length(unique(c(length(node.names), length(x.coords), length(y.coords))))>1){
+            write (sprintf ("Error! RCy3::setNodePosition: The node names vector has to be the same length as each of the x and y coordiante vectors."), stderr ())
+            return()
+        }
+        
+        # check if the coordinates are valid numbers
+        if (!any(is.numeric(c(x.coords, y.coords)))){
+            write (sprintf ("Error! RCy3::setNodePosition: x and y coordiante vectors must be numeric."), stderr ())
+            return()
+        }
+            
+        # set x position
+        setNodePropertyDirect(obj, node.names, x.coords, "NODE_X_LOCATION")
+        
+        # set y position
+        setNodePropertyDirect(obj, node.names, y.coords, "NODE_Y_LOCATION")
+        
     }) # setNodePosition
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -1994,7 +2141,9 @@ setMethod('redraw', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('setWindowSize', 'CytoscapeWindowClass', 
     function(obj, width, height) {
-        message("not yet implemented")
+        write(sprintf("WARNING: Method RCy3::setWindowSize() is not implemented in RCy3!"), stderr())
+        
+        return(FALSE)
 })
 ## END setWindowSize
 
@@ -2002,7 +2151,9 @@ setMethod('setWindowSize', 'CytoscapeWindowClass',
 setMethod ('setTooltipInitialDelay', 'CytoscapeConnectionClass',
 
    function (obj, msecs) {
-       message("not yet implemented")
+       write(sprintf("WARNING: Method RCy3::setTooltipInitialDelay() is not implemented in RCy3!"), stderr())
+       return(FALSE)
+       
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.setToolTipInitialDelay', as.integer (msecs)))
      })
 
@@ -2010,43 +2161,51 @@ setMethod ('setTooltipInitialDelay', 'CytoscapeConnectionClass',
 setMethod ('setTooltipDismissDelay', 'CytoscapeConnectionClass',
 
    function (obj, msecs) {
-       message("not yet implemented")
+       write(sprintf("WARNING: Method RCy3::setTooltipDismissDelay() is not implemented in RCy3!"), stderr())
+       return(FALSE)
+       
 #     invisible (xml.rpc (obj@uri, 'Cytoscape.setToolTipDismissDelay', as.integer (msecs)))
      })
 
 # ------------------------------------------------------------------------------
 setMethod('raiseWindow', 'CytoscapeConnectionClass', 
-  function(obj, window.title = NA) {
-      message("not yet implemented")
-    if(is.na(window.title)) {
-      if(class(obj) == 'CytoscapeWindowClass') {
-        window.id = obj@window.id
-      } else {
-        write(sprintf('error in RCy3::raiseWindow(), no window title provided'), stderr())
-        return()
-      }
-    } # no window title
-    # if window title was provided
-    if(!is.na(window.title)) {
-      window.id = getWindowID(obj, window.title)
-      
-      if(is.na(window.id)) {
-        write(sprintf('error in RCy3::raiseWindow(), unrecognized window title: %s', window.title), stderr ())
-        return()
-      }
-      # TO DO: call to raise the view
-      
-    } # window title was provided
-}) # raiseWindow
+    function(obj, window.title = NA) {
+        write(sprintf("WARNING: Method RCy3::raiseWindow() is not implemented in RCy3!"), stderr())
+        return(FALSE)
+        
+#         if (is.na(window.title)) {
+#             if(class(obj) == 'CytoscapeWindowClass') {
+#                 window.id = obj@window.id
+#             } else {
+#                 write(sprintf('error in RCy3::raiseWindow(), no window title provided'), stderr())
+#                 return()
+#             }
+#         } # no window title
+#         
+#         # if window title was provided
+#         if(!is.na(window.title)) {
+#             window.id = getWindowID(obj, window.title)
+#             
+#             if(is.na(window.id)) {
+#                 write(sprintf('error in RCy3::raiseWindow(), unrecognized window title: %s', window.title), stderr ())
+#                 return()
+#             }
+#             # TO DO: call to raise the view
+#         } # window title was provided
+    }) # raiseWindow
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('showGraphicsDetails', 'CytoscapeConnectionClass',
 
-  function (obj, new.value) {
-      message("not yet implemented")
-#    invisible (xml.rpc (obj@uri, 'Cytoscape.setShowGraphicsDetails', new.value))
-#    if (class (obj) == 'CytoscapeWindowClass')
-#      redraw (obj)
+    function (obj, new.value) {
+        resource.uri <- paste(obj@uri, pluginVersion(obj), "ui/lod/", sep="/")
+        request.res <- PUT(resource.uri)
+        invisible (request.res)
+        if (class (obj) == 'CytoscapeWindowClass'){
+            redraw (obj)
+        }
+        write(sprintf('RCy3::showGraphicsDetails(), Switching between show and hide full graphics details.'), stdout())
+        
     })
 
 # ------------------------------------------------------------------------------
@@ -2063,7 +2222,9 @@ setMethod('fitContent', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('fitSelectedContent', 'CytoscapeWindowClass', 
     function(obj) {
-        message("not yet implemented")
+        write(sprintf("WARNING: Method RCy3::fitSelectedContent() is not implemented in RCy3!"), stderr())
+        
+        return(FALSE)
 })
 ## END fitSelectedContent
 
@@ -2114,12 +2275,12 @@ setMethod('setCenter', 'CytoscapeWindowClass',
         
         # set the X-coordinate
         resource.uri <- 
-            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/")
+            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network", sep="/")
         new.x.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_X_LOCATION", value=x)))
         request.res <- PUT(resource.uri, body=new.x.coordinate.JSON, encode="json")
         # set the Y-coordinate
         resource.uri <- 
-            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
+            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network", sep="/")
         new.y.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_Y_LOCATION", value=y)))
         request.res <- PUT(resource.uri, body=new.y.coordinate.JSON, encode="json")
         invisible(request.res)
@@ -2177,7 +2338,9 @@ setMethod('setZoom', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('getViewCoordinates', 'CytoscapeWindowClass', 
     function(obj) {
-        message("pending implementation")
+        write(sprintf("WARNING: Method RCy3::getViewCoordinates() is not implemented in RCy3!"), stderr())
+        
+        return(FALSE)
 })
 ## END getViewCoordinates
 
@@ -2186,10 +2349,13 @@ setMethod('hidePanel', 'CytoscapeConnectionClass',
     function(obj, panelName) {
         version <- pluginVersion(obj)
         
-        if (panelName %in% c('Data Panel', 'd', 'D')){
+        if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
-        }else if (panelName %in% c('Control Panel', 'control', 'c')){
+        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'co')){
             panelName <- 'WEST'
+        }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
+            write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
+            return(NA)
         }
         
         panel.name.state = list(name=panelName, state='HIDE')
@@ -2215,11 +2381,14 @@ setMethod('hideAllPanels', 'CytoscapeConnectionClass',
 setMethod('dockPanel', 'CytoscapeConnectionClass', 
     function(obj, panelName) {
         version <- pluginVersion(obj)
-        
-        if (panelName %in% c('Data Panel', 'd', 'D')){
+
+        if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
-        }else if (panelName %in% c('Control Panel', 'control', 'c')){
+        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'co')){
             panelName <- 'WEST'
+        }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
+            write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
+            return(NA)
         }
         
         panel.name.state = list(name=panelName, state='DOCK')
@@ -2236,10 +2405,13 @@ setMethod('floatPanel', 'CytoscapeConnectionClass',
     function(obj, panelName) {
         version <- pluginVersion(obj)
         
-        if (panelName %in% c('Data Panel', 'd', 'D')){
+        if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
-        }else if (panelName %in% c('Control Panel', 'control', 'c')){
+        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'co')){
             panelName <- 'WEST'
+        }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
+            write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
+            return(NA)
         }
         
         panel.name.state = list(name=panelName, state='FLOAT')
@@ -2254,25 +2426,23 @@ setMethod('floatPanel', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeTooltipRule', 'CytoscapeWindowClass',
 
-      # todo:  prevent the obligatory redraw
-      # Comment TanjaM: the comment above was there already
-
       function (obj, node.attribute.name) {
-          id = as.character (obj@window.id)
+          id <- as.character (obj@window.id)
           viz.style.name = 'default'
           if (!node.attribute.name %in% noa.names (obj@graph)) {
-              write (sprintf ('warning!  setNodeTooltipRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
+              write (sprintf ('Warning! RCy3::setNodeTooltipRule: passed non-existent node attribute: %s', node.attribute.name), stderr ())
               return ()
           }
-          attribute.values = as.character (noa (obj@graph, node.attribute.name))
+          attribute.values = noa (obj@graph, node.attribute.name)
           
           # set default tooltip
           default.tooltip <- list(visualProperty = "NODE_TOOLTIP", value = "")
           setVisualProperty(obj, default.tooltip, viz.style.name)
           
           # define the column type
-          columnType <- findColumnType(typeof(attribute.values[1]))
-          
+          sample.node.attribute <- getNodeAttribute (obj, getAllNodes(obj)[1], node.attribute.name)
+          columnType <- findColumnType(typeof(sample.node.attribute))
+
           # discrete mapping
           discreteMapping(obj, node.attribute.name, attribute.values, attribute.values,
                           visual.property="NODE_TOOLTIP", columnType=columnType, style=viz.style.name)
@@ -2435,7 +2605,7 @@ setMethod ('setNodeOpacityRule', 'CytoscapeWindowClass',
         
         if (aspect.fill == FALSE && aspect.border == FALSE && aspect.label == FALSE) {
             specific.options = 'fill, border, label'
-            msg.1 = "Error! RCy3:setNodeOpacityRule.  apect must be 'all' (the default) "
+            msg.1 = "Error! RCy3:setNodeOpacityRule. Aspect must be 'all' (the default) "
             msg.2 = sprintf ("or some combination, in any order, of %s", specific.options)
             write (msg.1, stderr ())
             write (msg.2, stderr ())
@@ -2574,8 +2744,7 @@ setMethod ('setNodeBorderWidthRule', 'CytoscapeWindowClass',
        setDefaultNodeBorderWidth(obj, default.width, vizmap.style.name)
        
        # define the column type
-       columnType <- findColumnType(typeof(line.widths[1]))
-
+       columnType <- "String" #findColumnType(typeof(line.widths[1]))
        # discrete mapping
        if (mode=="lookup"){
            discreteMapping (obj, node.attribute.name, attribute.values, line.widths,
@@ -2601,9 +2770,12 @@ setMethod('setDefaultNodeShape', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeSize', 'CytoscapeConnectionClass', 
-  function(obj, new.size, vizmap.style.name='default') {
-    style = list(visualProperty = "NODE_SIZE", value = new.size)
-    setVisualProperty(obj, style, vizmap.style.name)
+    function(obj, new.size, vizmap.style.name='default') {
+        # lock node dimensions
+        lockNodeDimensions (obj, TRUE)
+        
+        style <- list(visualProperty = "NODE_SIZE", value = new.size)
+        setVisualProperty(obj, style, vizmap.style.name)
 })
 
 # ------------------------------------------------------------------------------
@@ -2723,6 +2895,9 @@ setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
         
         # define the column type
         columnType <- findColumnType(typeof(control.points[1]))
+
+        # lock node dimensions
+        lockNodeDimensions (obj, TRUE)
         
         # set default
         setDefaultNodeSize (obj, default.size, vizmap.style.name)
@@ -2752,14 +2927,14 @@ setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
             if (!good.args) {
                 write (sprintf ('cp: %d', length (control.points)), stderr ())
                 write (sprintf ('co: %d', length (node.sizes)), stderr ())
-                write ("Error! RCy3:setNodeSizeRule.  Expecting exactly as many node.sizes as control.points in lookup mode.", stderr ())
+                write ("Error! RCy3:setNodeSizeRule. Expecting exactly as many node.sizes as control.points in lookup mode.", stderr ())
                 return ()
             }
             discreteMapping(obj, node.attribute.name, control.points, node.sizes,
                             visual.property="NODE_SIZE",
-                            columnType=columnType, style=vizmap.style.name)    
-            
+                            columnType=columnType, style=vizmap.style.name)
         } # else: !interpolate, aka lookup
+        
     }) # setNodeSizeRule
 #
 #------------------------------------------------------------------------------------------------------------------------
@@ -2909,7 +3084,7 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
         vizmap.style.name = 'default'
         
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
-            write (sprintf ('warning!  setEdgeLineWidthRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+            write (sprintf ('Warning! setEdgeLineWidthRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
             return ()
         }
         
@@ -2918,10 +3093,8 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
         setVisualProperty(obj, default.width.list, vizmap.style.name)
         
         # define the column type
-        # TODO there seems to be an error in Cytoscape. It requires a String rather than a Double.
-        # if we don't say columnType = String, an error occurs or the user has to input the numbers as strings
         #columnType <- findColumnType(typeof(line.widths[1]))
-        columnType <- "String"
+        columnType <- 'String'
         
         # discrete mapping
         discreteMapping (obj, edge.attribute.name, attribute.values, line.widths,
@@ -2936,10 +3109,8 @@ setMethod ('setEdgeTargetArrowRule', 'CytoscapeWindowClass',
         #TODO the style should be passed as a parameter
         vizmap.style.name = 'default'
         
-        
-        
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
-            write (sprintf ('warning!  setEdgeTargetArrowRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+            write (sprintf ('Warning! setEdgeTargetArrowRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
             return ()
         }
         
@@ -2983,53 +3154,52 @@ setMethod ('setEdgeSourceArrowRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass', 
 
-   function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000') {
-       if (!mode %in% c ('interpolate', 'lookup')) {
-           write ("Error! RCy3:setEdgeTargetArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
-           return ()
-       }
-       #TODO Comment TanjaM we should give the user the option to choose the style 
-       # as an input parameter which defaults to default.
-       vizmap.style.name = 'default'
-       
-       #set default
-       setDefaultEdgeTargetArrowColor (obj, default.color, vizmap.style.name)
-       
-       # define the column type
-       columnType <- findColumnType(typeof(control.points[1]))
-       
-       
-       if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
-           if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
-               colors = c (colors [1], colors, colors [length (colors)])
-               write ("RCy3::setEdgeTargetArrowColorRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
-           } 
-           good.args = length (control.points) == (length (colors) - 2)
-           if (!good.args) {
-               write (sprintf ('cp: %d', length (control.points)), stderr ())
-               write (sprintf ('co: %d', length (colors)), stderr ())
-               write ("Error! RCy3:setEdgeTargetArrowColorRule, interpolate mode.", stderr ())
-               write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
-               return ()
+    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000') {
+        if (!mode %in% c ('interpolate', 'lookup')) {
+            write ("Error! RCy3:setEdgeTargetArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+            return ()
+        }
+        #TODO Comment TanjaM we should give the user the option to choose the style 
+        # as an input parameter which defaults to default.
+        vizmap.style.name = 'default'
+        
+        #set default
+        setDefaultEdgeTargetArrowColor (obj, default.color, vizmap.style.name)
+        
+        # define the column type
+        columnType <- findColumnType(typeof(control.points[1]))
+        
+        if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
+            if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
+                colors = c (colors [1], colors, colors [length (colors)])
+                write ("RCy3::setEdgeTargetArrowColorRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
+            } 
+            good.args = length (control.points) == (length (colors) - 2)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (colors)), stderr ())
+                write ("Error! RCy3:setEdgeTargetArrowColorRule, interpolate mode.", stderr ())
+                write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
+                return ()
            }
            
            continuousMapping (obj, edge.attribute.name, control.points, colors,
                               visual.property="EDGE_TARGET_ARROW_UNSELECTED_PAINT",
                               columnType=columnType, style=vizmap.style.name)
-       } # if mode==interpolate
-       else { # use a discrete rule, with no interpolation, mode==lookup
-           good.args = length (control.points) == length (colors)
-           if (!good.args) {
-               write (sprintf ('cp: %d', length (control.points)), stderr ())
-               write (sprintf ('co: %d', length (colors)), stderr ())
-               write ("Error! RCy3:setEdgeTargetArrowColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
-               return ()
-           }
+        } # if mode==interpolate
+        else { # use a discrete rule, with no interpolation, mode==lookup
+            good.args = length (control.points) == length (colors)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (colors)), stderr ())
+                write ("Error! RCy3:setEdgeTargetArrowColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
+                return ()
+            }
            
-           discreteMapping(obj, edge.attribute.name, control.points, colors,
-                           visual.property="EDGE_TARGET_ARROW_UNSELECTED_PAINT",
-                           columnType=columnType, style=vizmap.style.name)
-       } # else: !interpolate, aka lookup
+            discreteMapping(obj, edge.attribute.name, control.points, colors,
+                            visual.property="EDGE_TARGET_ARROW_UNSELECTED_PAINT",
+                            columnType=columnType, style=vizmap.style.name)
+        } # else: !interpolate, aka lookup
     }) # setTargetArrowRule
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3100,49 +3270,58 @@ setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_FILL_COLOR"))
      })
 #------------------------------------------------------------------------------------------------------------------------
-# only works if node dimensions are locked (that is, tied together).  see lockNodeDimensions (T/F)
+# only works if node dimensions are unlocked (that is not tied together).  see lockNodeDimensions (T/F)
 setMethod ('setNodeSizeDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.sizes) {
-      for (current.size in new.sizes){
-         # ensure the sizes are numbers
-         if (!is.double(current.size)) {
-            write (sprintf ('illegal size string "%s" in RCy3::setNodeSizeDirect. It needs to be a number.', current.size), stderr ())
-            return ()
-         }
-      }
-      # set the node properties direct
-      setNodePropertyDirect(obj, node.names, new.sizes, "NODE_WIDTH")
-      setNodePropertyDirect(obj, node.names, new.sizes, "NODE_HEIGHT")
-     })
+    function (obj, node.names, new.sizes) {
+        # unlock node dimensions
+        lockNodeDimensions (obj, FALSE)
+        
+        for (current.size in new.sizes){
+            # ensure the sizes are numbers
+            if (!is.double(current.size)) {
+                write (sprintf ('illegal size string "%s" in RCy3::setNodeSizeDirect. It needs to be a number.', current.size), stderr ())
+                return ()
+            }
+        }
+        # set the node properties direct
+        setNodePropertyDirect(obj, node.names, new.sizes, "NODE_WIDTH")
+        setNodePropertyDirect(obj, node.names, new.sizes, "NODE_HEIGHT")
+    })
 #------------------------------------------------------------------------------------------------------------------------
-# only works if node dimensions are not locked (that is, tied together).  see lockNodeDimensions (T/F)
+# only works if node dimensions are not locked (that is not tied together).  see lockNodeDimensions (T/F)
 setMethod ('setNodeWidthDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.widths) {
-      for (current.width in new.widths){
-         # ensure the width(s) are numbers
-         if (!is.double(current.width)) {
-            write (sprintf ('illegal node width "%s" in RCy3::setNodeWidthDirect. Width needs to be a number.', current.width), stderr ())
-            return ()
-         }
-      }
-      # set the node property direct
-      return(setNodePropertyDirect(obj, node.names, new.widths, "NODE_WIDTH"))
-     })
+    function (obj, node.names, new.widths) {
+        # unlock node dimensions
+        lockNodeDimensions (obj, FALSE)
+        
+        for (current.width in new.widths){
+            # ensure the width(s) are numbers
+            if (!is.double(current.width)) {
+                write (sprintf ('illegal node width "%s" in RCy3::setNodeWidthDirect. Width needs to be a number.', current.width), stderr ())
+                return ()
+            }
+        }
+        # set the node property direct
+        return(setNodePropertyDirect(obj, node.names, new.widths, "NODE_WIDTH"))
+    })
 
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is, tied together).  see lockNodeDimensions (T/F)
 setMethod ('setNodeHeightDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.heights) {
-      for (current.height in new.heights){
-         # ensure the height(s) are numbers
-         if (!is.double(current.height)) {
-            write (sprintf ('illegal height string "%s" in RCy3::setNodeHeightDirect. It needs to be a number.', current.height), stderr ())
-            return ()
-         }
-      }
-      # set the node property direct
-      return(setNodePropertyDirect(obj, node.names, new.heights, "NODE_HEIGHT"))
-     })
+    function (obj, node.names, new.heights) {
+        # unlock node dimensions
+        lockNodeDimensions (obj, FALSE)
+        
+        for (current.height in new.heights){
+            # ensure the height(s) are numbers
+            if (!is.double(current.height)) {
+                write (sprintf ('illegal height string "%s" in RCy3::setNodeHeightDirect. It needs to be a number.', current.height), stderr ())
+                return ()
+            }
+        }
+        # set the node property direct
+        return(setNodePropertyDirect(obj, node.names, new.heights, "NODE_HEIGHT"))
+    })
 
 # ------------------------------------------------------------------------------
 setMethod('setNodeLabelDirect', 'CytoscapeWindowClass', 
@@ -3186,50 +3365,76 @@ setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
-   function (obj, node.names, new.shapes) {
-       if (length (node.names) != length (new.shapes)) {
-           msg = sprintf ('error in RCy3::setNodeShapeDirect.  new.shapes count (%d) is neither 1 nor same as node.names count (%d)',
-                          length (new.shapes), length (node.names))
-           write (msg, stderr ())
-           return ()
-       }
-       
-       # ensure correct node shapes
-       new.shapes <- toupper(new.shapes)
-       unique.node.shapes <- unique(new.shapes)
-       wrong.node.shape <- sapply(unique.node.shapes, function(x) !(x %in% getNodeShapes(obj)))
-       if (any(wrong.node.shape)){
-           write (sprintf ('ERROR in RCy3::setNodeShapeDirect. %s is not a valid shape. For valid ones use getNodeShapes', new.shapes), stderr ())
-           return(NA)
-       }
-       
-       # set the node property direct
-       return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE"))
+    function (obj, node.names, new.shapes) {
+        if (length (node.names) != length (new.shapes)) {
+            if (length(new.shapes) != 1){
+                msg = sprintf ('error in RCy3::setNodeShapeDirect.  new.shapes count (%d) is neither 1 nor same as node.names count (%d)',
+                               length (new.shapes), length (node.names))
+                write (msg, stderr ())
+                return ()
+            }
+        }
+        
+        # convert old to new node shapes
+        new.shapes[new.shapes=='round_rect'] <- 'ROUND_RECTANGLE'
+        new.shapes[new.shapes=='rect'] <- 'RECTANGLE'
+        
+        # ensure correct node shapes
+        new.shapes <- toupper(new.shapes)
+        unique.node.shapes <- unique(new.shapes)
+        wrong.node.shape <- sapply(unique.node.shapes, function(x) !(x %in% getNodeShapes(obj)))
+        if (any(wrong.node.shape)){
+            write (sprintf ('ERROR in RCy3::setNodeShapeDirect. %s is not a valid shape. Please note that some older shapes are no longer available. For valid ones check getNodeShapes.', new.shapes), stderr ())
+            return(NA)
+        }
+        # set the node property direct
+        return(setNodePropertyDirect(obj, node.names, new.shapes, "NODE_SHAPE"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
 
-    function (obj, node.names, image.urls) {
-        return(setNodePropertyDirect(obj, node.names, paste0("org.cytoscape.ding.customgraphics.bitmap.URLImageCustomGraphics,14,bundle:", image.urls, ",bitmap image"), "NODE_CUSTOMGRAPHICS_1"))
-
-#     if (length (image.urls) == 1)
-#       image.urls = rep (image.urls, length (node.names))
-#
-#     if (length (node.names) != length (image.urls)) {
-#       msg = sprintf ('error in RCy3::setNodeImageDirect.  image.urls count (%d) is neither 1 nor same as node.names count (%d)',
-#                      length (image.urls), length (node.names))
-#       write (msg, stderr ())
-#       return ()
-#       }
-#    
-#     id = as.character (obj@window.id)
-#     for (i in 1:length (node.names)) {
-#       setNodeShapeDirect (obj, node.names [i], 'rect')
-#       setNodeLabelDirect (obj, node.names [i], '')
-#       result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names [i], 'Node Custom Graphics 1', image.urls [i])
-#       }
-#     invisible (result)
+    function (obj, node.names, image.positions) {
+        
+        # insert a warning 
+        if (!is.numeric(image.positions)){
+            msg = sprintf ('Error in RCy3::setNodeImageDirect. Note that image urls are no longer supported. Upload your image into the Image Manager in the style tab in the control panel.')
+            write (msg, stderr ())
+            return()
+        }
+        
+        if (length (node.names) != length (image.positions)) {
+            if (length (image.positions) == 1){
+                msg = sprintf ('Error in RCy3::setNodeImageDirect. image.positions count (%d) is neither 1 nor same as node.names count (%d)',
+                               length (image.positions), length (node.names))
+                write (msg, stderr ())
+                return ()
+            }
+        }
+        # only allow for upto 9 custom graphics
+        if ((length(unique(image.positions)))>9){
+            msg = sprintf ('Error in RCy3::setNodeImageDirect. Cytoscape only supports upto 9 custom graphics.')
+            write (msg, stderr ())
+            return()
+        }
+        
+        # pseudo code:
+        # for loop
+        # if is == "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],"
+        # if "NODE_CUSTOMGRAPHICS_9" passed and still not: error message
+        # not working: return(setNodePropertyDirect(obj, node.names, image.urls, "NODE_CUSTOMGRAPHICS_1"))
+        return(setNodePropertyDirect(obj, node.names, paste0("org.cytoscape.ding.customgraphics.bitmap.URLImageCustomGraphics,", image.positions, ",bundle"), "NODE_CUSTOMGRAPHICS_1"))
+        
+        # test code to remove an image
+        # setNodePropertyDirect(obj, node.names, "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],", "NODE_CUSTOMGRAPHICS_1")
+        
+        
+        # the below code is from a previous RCytoscape version
+#         for (i in 1:length (node.names)) {
+#             setNodeShapeDirect (obj, node.names [i], 'rect')
+#             setNodeLabelDirect (obj, node.names [i], '')
+#             result = xml.rpc (obj@uri, "Cytoscape.setNodeProperty", node.names [i], 'Node Custom Graphics 1', image.urls [i])
+#         }
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3243,8 +3448,7 @@ setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
          }
       }
       # set the node property direct
-      print("this method ('setNodeBorderWidthDirect') hangs for a very long time")
-      #return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_BORDER_WIDTH"))
+      return(setNodePropertyDirect(obj, node.names, new.sizes, "NODE_BORDER_WIDTH"))
      })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -3267,7 +3471,7 @@ setMethod ('setNodeOpacityDirect', 'CytoscapeWindowClass',
       for (current.value in new.values){
          # ensure the opacity value is a double and between 0 and 255
          if (! is.double(current.value) || current.value < 0  || current.value > 255) {
-            write (sprintf ('illegal opacity string "%s" in RCy3::setNodeOpacityDirect. It needs to be between 0 and 255.', current.value), stderr ())
+            write (sprintf ('RCy3::setNodeOpacityDirect: illegal opacity string "%s". It needs to be between 0 and 255.', current.value), stderr ())
             return ()
          }
       }
@@ -3371,7 +3575,7 @@ setMethod('setEdgeFontSizeDirect', 'CytoscapeWindowClass',
         
         for(current.size in new.value) {
             # ensure the sizes are valid numbers
-            if(!is.double(current.size)) {
+            if(!is.numeric(current.size)) {
                 write(sprintf ('illegal font string "%s" in RCy3::setEdgeFontSizeDirect():\t\n it needs to be a valid number.', current.size), stderr ())
                 
                 size.type.errors = size.type.errors + 1
@@ -3399,16 +3603,17 @@ setMethod ('setEdgeLabelColorDirect', 'CytoscapeWindowClass',
      })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTooltipDirect', 'CytoscapeWindowClass',
-   function (obj, edge.names, new.values) {
-      if (length (edge.names) != length (new.values)) {
-         msg = sprintf ('error in RCy3::setEdgeTooltipDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
-                        length (new.values), length (edge.names))
-         write (msg, stderr ())
-         return ()
-      }
-      # set the edge property direct
-      return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TOOLTIP"))
-
+    function (obj, edge.names, new.values) {
+        if (length (edge.names) != length (new.values)) {
+            if (length(new.values) != 1){
+                msg = sprintf ('error in RCy3::setEdgeTooltipDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+                               length (new.values), length (edge.names))
+                write (msg, stderr ())
+                return ()
+            }
+        }
+        # set the edge property direct
+        return(setEdgePropertyDirect(obj, edge.names, new.values, "EDGE_TOOLTIP"))
      })
 
 # ------------------------------------------------------------------------------
@@ -3416,7 +3621,7 @@ setMethod('setEdgeLineWidthDirect', 'CytoscapeWindowClass',
     function(obj, edge.names, new.value) {
       for (current.size in new.value){
          # ensure the sizes are numbers
-         if (!is.double(current.size)) {
+         if (!is.numeric(current.size)) {
             write (sprintf ('illegal size string "%s" in RCy3::setEdgeLineWidthDirect. It needs to be a number.', current.size), stderr ())
             return ()
          }
@@ -3898,7 +4103,7 @@ setMethod('getAllNodes', 'CytoscapeWindowClass',
         resource.uri <- paste(loc.obj@uri, version, "networks", net.SUID, "nodes", sep="/")
         # get the SUIDs of the nodes in the Cytoscape graph
         cy.nodes.SUIDs <- fromJSON(rawToChar(GET(resource.uri)$content))
-        
+
         dict.nodes.SUIDs <- sapply(loc.obj@suid.name.dict, "[[", 2)
         
         # check that the nodes presented in Cytoscape & RCy3's session dictionary do match
@@ -3908,15 +4113,17 @@ setMethod('getAllNodes', 'CytoscapeWindowClass',
         if(length(diff.nodes) > 0) {
             write(sprintf("WARNING in RCy3::getAllNodes():\n\t the following node(s) exist in Cytoscape, but don't exist in RCy3's session"), stderr())
             
+            nodes.only.in.cytoscape <- c()
             for(i in 1:length(diff.nodes)) {
                 resource.uri <- 
                     paste(loc.obj@uri, version, "networks", net.SUID, "nodes", as.character(diff.nodes[i]), sep="/")
                 node.name <- fromJSON(rawToChar(GET(resource.uri)$content))$data$name 
-                
+                nodes.only.in.cytoscape <- c(nodes.only.in.cytoscape, node.name)
             #    [GIK, Jul 2015] synch to be implemented
             #    loc.obj@suid.name.dict[[length(loc.obj@suid.name.dict) + 1]] <- 
             #        list(name=node.name, SUID=diff.nodes[i])
             }
+            print(nodes.only.in.cytoscape)
         }
         node.names <- .nodeSUIDToNodeName(obj, cy.nodes.SUIDs[order(cy.nodes.SUIDs)])
         
@@ -3954,6 +4161,10 @@ setMethod('clearSelection', 'CytoscapeWindowClass',
         
         # if any nodes are selected, unselect them
         resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns/selected?default=false", sep="/")
+        request.res <- PUT(url=resource.uri, body=FALSE)
+        
+        # if any edges are selected, unselect them
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/selected?default=false", sep="/")
         request.res <- PUT(url=resource.uri, body=FALSE)
         
         invisible(request.res)
@@ -4025,6 +4236,7 @@ setMethod('getSelectedNodes', 'CytoscapeWindowClass',
         version <- pluginVersion(obj)
         
         if(getSelectedNodeCount(obj) == 0) {
+            write (sprintf ('warning!  No nodes selected.'), stdout ())
             return(NA)
         } else {
             resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
@@ -4041,10 +4253,9 @@ setMethod('getSelectedNodes', 'CytoscapeWindowClass',
 setMethod ('hideSelectedNodes', 'CytoscapeWindowClass',
 
    function (obj) {
-       message("not yet implemented")
-#     id = as.character (obj@window.id)
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.hideSelectedNodes', id, .convert=TRUE))
-     }) # hideSelectedNodes
+       node.names <- getSelectedNodes(obj)
+       setNodePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
+   }) # hideSelectedNodes
    
 # ------------------------------------------------------------------------------
 setMethod('hideNodes', 'CytoscapeWindowClass', 
@@ -4253,19 +4464,19 @@ setMethod ('getSelectedEdges', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('hideSelectedEdges', 'CytoscapeWindowClass',
 
-   function (obj) {
-#     id = as.character (obj@window.id)
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.hideSelectedEdges', id, .convert=TRUE))
+    function (obj) {
+        edge.names <- getSelectedEdges(obj)
+        setEdgePropertyDirect(obj, edge.names, 'false', "EDGE_VISIBLE")
      }) # hideSelectedEdges
    
 # ------------------------------------------------------------------------------
 setMethod('unhideAll', 'CytoscapeWindowClass', 
     function(obj) {
         node.names <- getAllNodes(obj)
+        setNodePropertyDirect(obj, node.names, 'true', "NODE_VISIBLE")
         
-        setNodePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
-        
-        setEdgePropertyDirect(obj, node.names, 'false', "NODE_VISIBLE")
+        edge.names <- getAllEdges(obj)
+        setEdgePropertyDirect(obj, edge.names, 'true', "EDGE_VISIBLE")
 }) 
 ## END unhideAll
    
@@ -4309,17 +4520,20 @@ setMethod ('getFirstNeighbors', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------
 setMethod ('selectFirstNeighborsOfSelectedNodes', 'CytoscapeWindowClass',
 
-   function (obj) {
-       message("not yet implemented")
-#     if (getSelectedNodeCount (obj) > 0) {
-#       currently.selected = getSelectedNodes (obj)
-#       if (length (currently.selected) == 0)
-#         invisible ()
-#       neighbors = getFirstNeighbors (obj, currently.selected)
-#       full.selection = unique (c (currently.selected, neighbors))
-#       selectNodes (obj, full.selection)
-#       invisible (full.selection)
-#       } # if any nodes are already selected
+    function (obj) {
+        if (getSelectedNodeCount (obj) > 0) {
+            currently.selected = getSelectedNodes (obj)
+            if (length (currently.selected) == 0){
+                invisible ()
+            }
+            neighbors = getFirstNeighbors (obj, currently.selected)
+            full.selection = unique (c (currently.selected, neighbors))
+            selectNodes (obj, full.selection)
+            invisible (full.selection)
+        } # if any nodes are already selected
+        else {
+            write (sprintf ('warning!  No nodes selected.'), stdout ())
+        }
      }) # selectFirstNeighborsOfSelectedNodes
 
 # ------------------------------------------------------------------------------
@@ -4463,11 +4677,11 @@ demoSimpleGraph = function ()
     if (window.title %in% as.character (getWindowList (cy)))
     deleteWindow (cy, window.title)
     
-    g.simple = RCy3::makeSimpleGraph ()
+    g.simple = makeSimpleGraph ()
     cws = CytoscapeWindow (window.title, g.simple)
     
     displayGraph (cws)
-    layoutNetwork (cws, 'default')
+    layoutNetwork (cws, 'grid')
     setNodeLabelRule (cws, 'label')
     
     node.attribute.values = c ("kinase",  "transcription factor")
@@ -4478,8 +4692,6 @@ demoSimpleGraph = function ()
     sizes                = c (20, 50, 100)
     setNodeSizeRule (cws, 'count', count.control.points, sizes, mode='interpolate')
     setNodeColorRule (cws, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
-    
-    redraw (cws)
     
     invisible (cws)
 
@@ -4751,20 +4963,38 @@ setMethod('setVisualStyle', 'CytoscapeConnectionClass',
     # change the current style to the new style
     resource.uri <- paste(obj@uri, pluginVersion(obj), "apply/styles", new.style.name, net.SUID, sep="/")
     req.res <- GET(url=resource.uri)
-    write(sprintf('network visual style has been set to (%s)', new.style.name), stderr())
+    write(sprintf('network visual style has been set to "%s"', new.style.name), stdout())
     invisible(req.res)
 })
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('lockNodeDimensions', 'CytoscapeConnectionClass',
 
-   function (obj, new.state, visual.style.name='default') {
-       message("not implemented yet")
-#     if (! visual.style.name %in% getVisualStyleNames (obj)) {
-#       write (sprintf ('Error in RCy3::lockNodeDimensions.  No visual style named "%s"', visual.style.name), stderr ())
-#       return ()
-#       }
-#     invisible (xml.rpc (obj@uri, 'Cytoscape.setNodeSizeLocked', visual.style.name, new.state))
+    function (obj, new.state, visual.style.name='default') {
+        # launch error if visual style name is missing
+        if (! visual.style.name %in% getVisualStyleNames (obj)) {
+            write (sprintf ('Error in RCy3::lockNodeDimensions. No visual style named "%s"', visual.style.name), stdout ())
+            return ()
+        }
+
+        #lock node dimensions
+        resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(visual.style.name), "dependencies", sep="/")
+        style <- list(visualPropertyDependency="nodeSizeLocked", enabled = tolower(new.state))
+        style.JSON <- toJSON(list(style))
+        request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
+
+        # inform the user if the request was a success or failure
+        if (request.res$status == 204){
+            if (new.state==TRUE){
+                write (sprintf ('Locked node dimensions.'), stdout ())
+            }else{
+                write (sprintf ('Unlocked node dimensions.'), stdout ())
+            }
+        }else{
+            write (sprintf ('Error in RCy3::lockNodeDimensions. Could not lock/unlocked node dimensions'), stderr ())
+        }
+        invisible(request.res)
+        
      }) # lockNodeDimensions
 
 # ------------------------------------------------------------------------------
@@ -4829,13 +5059,13 @@ setMethod('setDefaultEdgeSelectionColor', 'CytoscapeConnectionClass',
 setMethod ('getDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 
    function (obj, vizmap.style.name='default') {
-      return(getVisualProperty(obj, vizmap.style.name, 'EDGE_PAINT'))
+      return(getVisualProperty(obj, vizmap.style.name, 'EDGE_STROKE_UNSELECTED_PAINT'))
       })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 
    function (obj, new.color, vizmap.style.name='default') {
-      style = list(visualProperty = "EDGE_PAINT", value = new.color) 
+      style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
       setVisualProperty(obj, style, vizmap.style.name)
       })
 #------------------------------------------------------------------------------------------------------------------------
@@ -4853,8 +5083,8 @@ setMethod ('saveImage', 'CytoscapeWindowClass',
         resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
                               paste0("views/first.", image.type), sep="/")
 
-        #request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type)))
-        #write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
+        request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type), overwrite = TRUE))
+        write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
       }else{
           write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
       }
@@ -4866,9 +5096,9 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
        if (!file.exists(file.name)){
            # TODO currently only saves as cys, enable to save also to other formats incl. glm
            resource.uri <- paste(obj@uri, pluginVersion(obj), "session", sep="/")
-           #request.res <- POST(url=resource.uri, body=NULL, write_disk(paste0(file.name, ".cys")))
-           #write (sprintf ('saving network to file %s.cys', file.name), stderr ())
-           #invisible(request.res)
+           request.res <- POST(url=resource.uri, body=NULL, write_disk(paste0(file.name, ".cys"), overwrite = TRUE))
+           write (sprintf ('saving network to file %s.cys', file.name), stderr ())
+           invisible(request.res)
        }
      })
 
@@ -4975,48 +5205,48 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 is.classic.graph = function(obj)
 {
-  obj.classes = is(obj)
-
-  return ('graph' %in% obj.classes)
-  
+    obj.classes = is(obj)
+    
+    return ('graph' %in% obj.classes)
+    
 } # is.classic.graph
 
 # ------------------------------------------------------------------------------
 is.multiGraph = function(obj)
 {
-  obj.classes = is(obj)
-
-  return('MultiGraph' %in% obj.classes)
-
+    obj.classes = is(obj)
+    
+    return('MultiGraph' %in% obj.classes)
+    
 } # is.multiGraph
 
 # ------------------------------------------------------------------------------
 # capitalizes the first letter of all words in a string
 simpleCap <- function(x) {
-  s <- strsplit(x, " ")[[1]]
-  
-  return(paste(toupper(substring(s, 1, 1)), substring(s, 2), sep="", collapse=""))
+    s <- strsplit(x, " ")[[1]]
+    
+    return(paste(toupper(substring(s, 1, 1)), substring(s, 2), sep="", collapse=""))
 } ### END simpleCap
 
 # ------------------------------------------------------------------------------
 getVisualProperty <- function(obj, vizmap.style.name, property) {
-  resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", property, sep="/")
-  request.res <- GET(url=resource.uri)
-  return(fromJSON(rawToChar(request.res$content))[[2]])
+    resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", property, sep="/")
+    request.res <- GET(url=resource.uri)
+    return(fromJSON(rawToChar(request.res$content))[[2]])
 }
 
 # ------------------------------------------------------------------------------
 setVisualProperty <- function(obj, style.string, vizmap.style.name='default') {
-  resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
-  style.JSON <- toJSON(list(style.string))
-  request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
-  redraw(obj)
+    resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
+    style.JSON <- toJSON(list(style.string))
+    request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
+    invisible(request.res)
 }
 
 # ------------------------------------------------------------------------------
 # obtain every other value for vector : used to resolve CyREST bug with returning column values
 obtainEveryOtherValue <- function(v) {
-  return(v[c(TRUE, FALSE)])
+    return(v[c(TRUE, FALSE)])
 }
 
 # ------------------------------------------------------------------------------
@@ -5031,28 +5261,31 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
     view.SUID <- as.character(net.views.SUIDs[[1]])
     
     node.SUIDs <- .nodeNameToNodeSUID(obj, node.names)
-    
     # 'node.names' and 'new.values' must have the same length
-    if(length(new.values) == 1) {
+    if (length(new.values) == 1) {
         new.values <- rep(new.values, length(node.names))
     }
-    if(length(new.values) != length(node.names)) {
-        write(sprintf("ERROR in setNodePropertyDirect():\n\t the number of nodes [%d] and new values [%d] are not the same >> node(s) attribute couldn't be set", 
+    if (length(new.values) != length(node.names)) {
+        write(sprintf("ERROR in setNodePropertyDirect():\n   the number of nodes [%d] and new values [%d] are not the same >> node(s) attribute couldn't be set", 
                       length(node.names), length(new.values)), stderr())
+        return()
+    } else if (length(node.names)==1){
+        # only one node
+        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", node.SUIDs, sep="/")
+        node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=new.values)))
+        request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
     } else {
-        request.res <- c()
-        
-        for(i in seq(node.SUIDs)) {
+        # multiple nodes
+        for (i in seq(node.SUIDs)) {
             node.SUID <- as.character(node.SUIDs[i])
             current.value <- new.values[i]
             
             resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", node.SUID, sep="/")
             node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
-            
             request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
         } # end for (node.SUID in node.SUIDs)
-        invisible(request.res)
     }
+    invisible(request.res)
 }
 ## END setNodePropertyDirect
 
@@ -5114,15 +5347,14 @@ discreteMapping <- function(obj, attribute.name, control.points, colors, visual.
                              mappingColumnType = columnType, visualProperty=visual.property,
                              map = mapped.content)
     discrete.mapping.json <-toJSON(list(discrete.mapping))
-    #print(discrete.mapping.json)
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
-    #print(request.res)
+    
     # inform the user if the request was a success or failure
     if (request.res$status == 201){
-        write (sprintf ('Successfully set rule.'), stderr ())
+        write (sprintf ('Successfully set rule.'), stdout ())
     }else{
-        write (sprintf ('Error. Could not set rule...'), stderr ())
+        write (sprintf ('Error. Could not set rule...'), stdout ())
     }
     
     invisible (request.res)
@@ -5145,14 +5377,14 @@ continuousMapping <- function(obj, attribute.name, control.points, colors, visua
                                mappingColumnType = columnType, visualProperty=visual.property,
                                points = mapped.content)
     continuous.mapping.json <- toJSON(list(continuous.mapping))
-    
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=continuous.mapping.json, encode="json")
+    
     # inform the user if the request was a success or failure
     if (request.res$status == 201){
-        write (sprintf ('Successfully set rule.'), stderr ())
+        write (sprintf ('Successfully set rule.'), stdout ())
     }else{
-        write (sprintf ('Error. Could not set rule...'), stderr ())
+        write (sprintf ('Error. Could not set rule...'), stdout ())
     }
     invisible (request.res)
 } # continuousMapping

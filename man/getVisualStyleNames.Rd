@@ -20,22 +20,19 @@ getVisualStyleNames(obj)
 \value{
 a \code{list} of character strings.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   copyVisualStyle
   setVisualStyle
 }
 
-
 \examples{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
-
-  cy = CytoscapeConnection ()
+  cy <- CytoscapeConnection ()
   print (getVisualStyleNames (cy))
-
 }
 
 \keyword{graph}

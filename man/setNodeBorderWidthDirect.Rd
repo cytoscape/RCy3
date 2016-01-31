@@ -3,24 +3,38 @@
 \alias{setNodeBorderWidthDirect,CytoscapeWindowClass-method}
 \title{setNodeBorderWidthDirect}
 \description{
-In the specified CytoscapeWindow, set the width of the border of the specified node(s).
+In the specified CytoscapeWindow, set the width of the border of
+the specified node(s).
 }
 \usage{
 setNodeBorderWidthDirect(obj, node.names, new.sizes)
 }
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
-  \item{node.names}{one or more \code{String} objects.}
+  \item{node.names}{one or more \code{String} objects, the node names.}
   \item{new.sizes}{an \code{integer}, in pixel units.}
 }
 
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
+  setNodeBorderColorDirect
+  setNodeBorderOpacityDirect
+  setNodeColorDirect
+  setNodeFillOpacityDirect
+  setNodeFontSizeDirect
+  setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelColorDirect
+  setNodeLabelDirect
+  setNodeLabelOpacityDirect
+  setNodeOpacityDirect
+  setNodeShapeDirect
   setNodeSizeDirect
+  setNodeWidthDirect
  }
 
 \examples{
@@ -29,11 +43,8 @@ None.
 
   cw <- CytoscapeWindow ('setNodeBorderWidthDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
   setNodeBorderWidthDirect (cw, 'A', 10)
-  redraw (cw)
 }
-
 
 \keyword{graph}

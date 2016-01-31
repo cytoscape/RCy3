@@ -3,7 +3,8 @@
 \alias{setDefaultEdgeLineWidth,CytoscapeConnectionClass-method}
 \title{setDefaultEdgeLineWidth}
 \description{
-In the specified CytoscapeConnection, stipulate the line width, in pixels for all edges.
+In the specified CytoscapeConnection, stipulate the default
+line width, in pixels for all edges.
 }
 \usage{
 setDefaultEdgeLineWidth(obj, new.width, vizmap.style.name = "default")
@@ -17,7 +18,7 @@ setDefaultEdgeLineWidth(obj, new.width, vizmap.style.name = "default")
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
    setDefaultNodeShape
@@ -37,11 +38,9 @@ None.
 
   cw <- CytoscapeWindow ('setDefaultEdgeLineWidth.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'force-directed')
   setDefaultEdgeLineWidth (cw, 5) 
-  redraw (cw)
+  #redraw (cw)
 }
-
 
 \keyword{graph}

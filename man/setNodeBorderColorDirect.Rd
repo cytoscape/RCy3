@@ -17,10 +17,23 @@ setNodeBorderColorDirect(obj, node.names, new.colors)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setNodeSizeDirect
+  setNodeBorderOpacityDirect
+  setNodeBorderWidthDirect
+  setNodeColorDirect
+  setNodeFillOpacityDirect
+  setNodeFontSizeDirect
+  setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelColorDirect
+  setNodeLabelDirect
+  setNodeLabelOpacityDirect
+  setNodeOpacityDirect
+  setNodeShapeDirect
+  setNodeWidthDirect
  }
 
 \examples{
@@ -30,11 +43,11 @@ None.
   cw <- CytoscapeWindow ('setNodeBorderColorDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   redraw (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
+  setDefaultNodeBorderWidth(cw, 4)
   setNodeBorderColorDirect (cw, 'A', '#FFFF00')
   setNodeBorderColorDirect (cw, c('A', 'C'), c('#88FF00', '#880000'))
-  redraw (cw)
+  setNodeBorderColorDirect (cw, c('A', 'B'), '#FFFF00')
 }
-
 
 \keyword{graph}

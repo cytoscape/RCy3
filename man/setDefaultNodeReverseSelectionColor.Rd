@@ -3,22 +3,21 @@
 \alias{setDefaultNodeReverseSelectionColor,CytoscapeConnectionClass-method}
 \title{setDefaultNodeReverseSelectionColor}
 \description{
-Retrieve the default color used to display selected nodes.
+Set the default color used to display selected nodes.
 }
 \usage{
 setDefaultNodeReverseSelectionColor(obj, new.color, vizmap.style.name)
 }
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
-  \item{new.color}{a \code{character} object, in quoted hexadecimal format }
-  \item{vizmap.style.name}{a \code{character} object, 'default' by default }
-
+  \item{new.color}{a \code{character} object, in quoted hexadecimal format. }
+  \item{vizmap.style.name}{a \code{character} object, 'default' by default. }
 }
 
 \value{
 Nothing.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
@@ -26,8 +25,9 @@ Nothing.
 
   cw = CytoscapeWindow ("demo.setDefaultNodeReverseSelectionColor", graph=makeSimpleGraph ())
   displayGraph (cw)
-  print (setDefaultNodeReverseSelectionColor (cw, '#FF0000'))
-  redraw (cw)
+  layoutNetwork (cw, 'force-directed')
+  setDefaultNodeReverseSelectionColor (cw, '#AA33FF') # purple
+  # redraw (cw) --> not required anymore
 }
 
 \keyword{graph}

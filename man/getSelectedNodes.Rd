@@ -15,7 +15,7 @@ getSelectedNodes(obj)
 \value{
 A list of character strings.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
@@ -25,7 +25,7 @@ A list of character strings.
   displayGraph (cw)
   layoutNetwork(cw, 'force-directed')
   redraw (cw)
-    # in Cytoscape, interactively select two nodes, or
+    # in Cytoscape, interactively select two nodes, or call selectNodes
   selectNodes (cw, c ('A','B'))
   getSelectedNodes (cw)
   # [1] "A" "B"

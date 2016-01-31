@@ -16,7 +16,7 @@ fitSelectedContent(obj)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   setZoom
@@ -24,6 +24,8 @@ None.
  }
 
 \examples{
+  #WARNING: function currently not supported
+
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 

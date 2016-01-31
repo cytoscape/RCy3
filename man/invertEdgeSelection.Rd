@@ -3,7 +3,8 @@
 \alias{invertEdgeSelection,CytoscapeWindowClass-method}
 \title{invertEdgeSelection}
 \description{
-Invert edge selection, i.e. select all edges that were not selected and deselect all edges that were selected.
+Invert edge selection, i.e. select all edges that were
+not selected and deselect all edges that were selected.
 }
 \usage{
 invertEdgeSelection(obj)
@@ -15,7 +16,7 @@ invertEdgeSelection(obj)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   clearSelection
@@ -27,8 +28,10 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('invertEdgeSelection demo', graph=makeSimpleGraph())
-     # all edges should be selected, since none were before
+  displayGraph (cw)
+  layoutNetwork (cw, 'force-directed')
   invertEdgeSelection (cw)
+    # all edges should be selected, since none were before
 }
 
 \keyword{graph}

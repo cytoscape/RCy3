@@ -15,7 +15,7 @@ unhideAll(obj)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   selectNodes
@@ -33,7 +33,7 @@ None.
   clearSelection (cw)
   selectNodes (cw, 'A')
   hideSelectedNodes (cw)
-  system ('sleep 2')
+  system ('sleep 0.5')
   unhideAll (cw)
 }
 

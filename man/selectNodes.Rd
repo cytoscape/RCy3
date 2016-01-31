@@ -17,7 +17,7 @@ selectNodes(obj, node.names, preserve.current.selection=TRUE)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   clearSelection
@@ -31,6 +31,8 @@ None.
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('selectNodes.test', graph=makeSimpleGraph())
+  displayGraph (cw)
+  layoutNetwork(cw, 'force-directed')
   clearSelection (cw)
   selectNodes (cw, c ('A', 'B'))
   getSelectedNodes (cw)

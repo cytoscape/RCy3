@@ -8,7 +8,7 @@ Retrieve the names of the node attributes in the specified graph.
 These are typically strings like 'type', 'label', 'count', and
 (strongly recommended when you create a graph) 'nodeType'.  Once you are
 reminded of the names of the edge attributes, you can use the method
-'eda' to get all the values of this attribute for the edges in the graph.
+'noa' to get all the values of this attribute for the nodes in the graph.
 }
 \usage{
 noa.names(graph)
@@ -20,12 +20,12 @@ noa.names(graph)
 A list, the contents of which are the attribute values, the names of
 which are the names of the edges.
 }
-\author{
-Paul Shannon
-}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
-  noa, eda, eda.names
+  noa
+  eda
+  eda.names
 }
 
 \examples{

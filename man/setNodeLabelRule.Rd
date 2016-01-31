@@ -4,8 +4,8 @@
 \title{setNodeLabelRule}
 \description{
 Specify the node attribute to be used as the label for each node.
-Non-character attributes are converted to strings before they are used
-as labels.}
+Non-character attributes are converted to strings before they are
+used as labels.}
 
 \usage{
 setNodeLabelRule(obj, node.attribute.name)
@@ -13,14 +13,14 @@ setNodeLabelRule(obj, node.attribute.name)
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
-  \item{node.attribute.name}{the node attribute whose values will, when this
-rule is applied, determine the label on each node.}
+  \item{node.attribute.name}{the node attribute whose values will
+        determine the label on each node when this rule is applied.}
 }
 
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
   # first, delete existing windows to save memory:
@@ -28,17 +28,11 @@ None.
 
   cw <- CytoscapeWindow ('setNodeLabelRule.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  layoutNetwork(cw, 'force-directed')
+  layoutNetwork (cw, 'force-directed')
   setNodeLabelRule (cw, 'label')
-  redraw (cw)
   setNodeLabelRule (cw, 'type')
-  redraw (cw)
   setNodeLabelRule (cw, 'lfc')
-  redraw (cw)
   setNodeLabelRule (cw, 'count')
-  redraw (cw)
-  setNodeLabelRule (cw, 'label')
-  redraw (cw)
 }
 
 \keyword{graph}

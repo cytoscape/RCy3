@@ -16,17 +16,21 @@ raiseWindow(obj, window.title=NA)
 \value{
 None.
 }
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   resizeWindow
 }
 
 \examples{
+  # WARNING: Method RCy3::raiseWindow() is not implemented in RCy3!
+  
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('raiseWindow.test', graph=makeSimpleGraph())
+  cw2 <- CytoscapeWindow ('raiseWindow.test2', graph=makeSimpleGraph())
+  
   raiseWindow (cw)
 }
 

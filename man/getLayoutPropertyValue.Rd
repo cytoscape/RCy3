@@ -3,7 +3,8 @@
 \alias{getLayoutPropertyValue,CytoscapeConnectionClass-method}
 \title{getLayoutPropertyValue}
 \description{
-Returns the appropriately typed value of the specified tunable property for the specified layout.
+Returns the appropriately typed value of the specified
+tunable property for the specified layout.
 }
 \usage{
 getLayoutPropertyValue(obj, layout.name, property.name)
@@ -19,7 +20,7 @@ getLayoutPropertyValue(obj, layout.name, property.name)
   this property for this layout.
 }
 
-\author{Paul Shannon}
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
   layout
@@ -37,13 +38,16 @@ getLayoutPropertyValue(obj, layout.name, property.name)
   cy <- CytoscapeConnection ()
   prop.names <- getLayoutPropertyNames (cy, 'isom')
   print (prop.names)
-    #  "maxEpoch" "sizeFactor" "radiusConstantTime"   "radius"  "minRadius"
-    #  "initialAdaptation"  "minAdaptation" "coolingFactor" 
+    # "maxEpoch"           "radiusConstantTime" "radius"             "minRadius"
+    # "initialAdaptation"  "minAdaptation"      "sizeFactor"         "coolingFactor"
+    # "singlePartition" 
   sapply (prop.names, function (pn) getLayoutPropertyValue (cy, 'isom', 'coolingFactor'))
-    #        maxEpoch         sizeFactor radiusConstantTime             radius
-    #        minRadius  initialAdaptation      minAdaptation      coolingFactor
-    #            2                  2                  2                  2            
-    #            2                  2                  2                  2
-    }
+    # maxEpoch radiusConstantTime             radius          minRadius 
+    #       2                  2                  2                  2 
+    # initialAdaptation      minAdaptation         sizeFactor      coolingFactor 
+    #               2                  2                  2                  2 
+    # singlePartition 
+    #               2 
+}
 
 \keyword{graph}

@@ -3,7 +3,8 @@
 \alias{setNodeBorderOpacityDirect,CytoscapeWindowClass-method}
 \title{setNodeBorderOpacityDirect}
 \description{
-In the specified CytoscapeWindow, set the opacity of the border of the specified node(s).
+In the specified CytoscapeWindow, set the opacity of the border
+of the specified node(s).
 }
 \usage{
 setNodeBorderOpacityDirect(obj, node.names, new.values)
@@ -17,16 +18,24 @@ setNodeBorderOpacityDirect(obj, node.names, new.values)
 \value{
 None.
 }
-\author{Paul Shannon}
-
+\author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
+  setNodeBorderColorRule (detailed example)
+  setNodeBorderColorDirect
+  setNodeBorderWidthDirect
+  setNodeColorDirect
   setNodeFillOpacityDirect
+  setNodeFontSizeDirect
+  setNodeHeightDirect
+  setNodeImageDirect
+  setNodeLabelColorDirect
+  setNodeLabelDirect
   setNodeLabelOpacityDirect
   setNodeOpacityDirect
+  setNodeShapeDirect
+  setNodeSizeDirect
  }
-
-
 
 \examples{
   # first, delete existing windows to save memory:
@@ -34,12 +43,10 @@ None.
 
   cw <- CytoscapeWindow ('setNodeBorderOpacityDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'force-directed')
+  setDefaultNodeBorderWidth (cw, 5)
   setNodeBorderOpacityDirect (cw, 'A', 220)
   setNodeBorderOpacityDirect (cw, c('B', 'C'), c(22, 55))
-  redraw (cw)
 }
-
 
 \keyword{graph}
