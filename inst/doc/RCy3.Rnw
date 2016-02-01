@@ -114,9 +114,9 @@ You can, however, examine these attributes in Cytoscape, using Cytoscape's the '
 
 
 You will encounter one obscurity in the code chunk just below: the explicit initialization of node (and edge) attributes
-for a graph.  This is similar to, but goes a bit further than, calls to \emph{nodeDataDefaults} required for
-Bioconductor graph objects.  In fact, such calls are executed within the RCy3 initNodeAttribute and
-initEdgeAttribute methods.  An additional bit of information is required here: the 'class' or data type of the attribute
+for a graph. This is similar to, but goes a bit further than, calls to \emph{nodeDataDefaults} required for
+Bioconductor graph objects. In fact, such calls are executed within the RCy3 initNodeAttribute and
+initEdgeAttribute methods. An additional bit of information is required here: the 'class' or data type of the attribute
 you are initializing. It can be 'char', 'integer' or 'numeric'.
 
 For instance, the node attribute 'moleculeType' has values which are character strings. The node attribute
