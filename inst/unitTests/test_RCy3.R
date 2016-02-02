@@ -2484,8 +2484,6 @@ test.unmatchedAttributesError = function ()
 
 } # test.unmatchedAttributesError
 #------------------------------------------------------------------------------------------------------------------------
-run.tests ()
-#------------------------------------------------------------------------------------------------------------------------
 #RCy3:::makeRandomGraph ()
 #------------------------------------------------------------------------------------------------------------------------
 # this tests the otherwise invisible method in RCy3.R, called to compensate for the extra edges and edge attributes
@@ -4197,5 +4195,8 @@ test.remove.redundancies.in.undirected.graph = function ()
     # the main test
     checkEquals (length (unlist (edges (gu))), 2 * length (unlist (edges (g.fixed))))
 
-} # test.remove.redundancies.in.undirected.graph 
+} # test.remove.redundancies.in.undirected.graph
 #------------------------------------------------------------------------------------------------------------------------
+run.tests ()
+#------------------------------------------------------------------------------------------------------------------------
+

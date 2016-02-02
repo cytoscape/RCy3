@@ -2042,74 +2042,74 @@ setMethod('setEdgeAttributesDirect', 'CytoscapeWindowClass',
 
 # ------------------------------------------------------------------------------
 setMethod('displayGraph', 'CytoscapeWindowClass', function(obj) {
-  # needed to simulate 'pass-by-reference' behavior in R
-  loc.obj <- obj
-  
-  if(length(nodes(loc.obj@graph)) == 0) {
-    write('RCy3::displayGraph, cannot display empty(0 nodes) graph, returning...', stderr())
-    return()
-  }
-  
-  node.count = length(nodes(loc.obj@graph))
-  edge.count = length(edgeNames(loc.obj@graph))
-  node.attribute.count = length(noa.names(loc.obj@graph)) * node.count
-  edge.attribute.count = length(eda.names(loc.obj@graph)) * edge.count
-  
-  estimated.time = predictTimeToDisplayGraph(loc.obj)
-  # if (execution)time measurement option is turned on, save the current time
-  if(loc.obj@collectTimings) {
-    method.start.time = Sys.time()
-    # start time (for sending nodes to Cytoscape) 
-    stepwise.start.time = Sys.time()
-  }
+    # needed to simulate 'pass-by-reference' behavior in R
+    loc.obj <- obj
     
-  write(sprintf('estimated displayGraph time: %8.1f seconds', estimated.time), stderr())
-  write(sprintf('adding %d nodes...', length(nodes(obj@graph))), stderr())
-  
-  sendNodes(loc.obj)
+    if(length(nodes(loc.obj@graph)) == 0) {
+        write('RCy3::displayGraph, cannot display empty(0 nodes) graph, returning...', stderr())
+        return()
+    }
     
-  if(loc.obj@collectTimings) {
-    current.step.exec.time = difftime(Sys.time(), stepwise.start.time, units='secs')
-    write(sprintf(' *** sendNodes: %f secs', current.step.exec.time, stderr()))
-    # start time (for sending node attributes to Cytoscape)
-    stepwise.start.time = Sys.time()
-  }
-  
-  # sends edges to Cytoscape
-  write (sprintf ('adding %d edges...', length (edgeNames (loc.obj@graph))), stderr ())
-  sendEdges (loc.obj)
-  
-  if (obj@collectTimings) {
-     write (sprintf (' *** sendEdges: %f secs', difftime (Sys.time (), stepwise.start.time, units='secs')), stderr ())
-     stepwise.start.time = Sys.time ()
-  }
-  
-  # sending node attributes
-  write ('adding node attributes...', stderr ())
-  
-  # send node attributes from R to Cytoscape
-  sapply (noa.names (loc.obj@graph), function (name) {print (name); setNodeAttributes (loc.obj, name)})
-  
-  if (obj@collectTimings) {
-     write (sprintf (' *** send node attributes: %f secs', difftime (Sys.time (), stepwise.start.time, units='secs')), stderr ())
-     stepwise.start.time = Sys.time ()
-  }
-  
-  # send edge attributes
-  write ('adding edge attributes...', stderr ())
-  edgeAttributeNames = eda.names (loc.obj@graph)
-  sapply (eda.names (loc.obj@graph), function (name) {print (name); setEdgeAttributes (loc.obj, name)})
-  
-  if (obj@collectTimings) {
-     write (sprintf (' *** send edge attributes: %f secs', difftime (Sys.time (), stepwise.start.time, units='secs')), stderr ())
-     stepwise.start.time = Sys.time ()
-     actual.time = difftime (Sys.time (), method.start.time, units='secs')
-     write (sprintf (' *** leaving displayGraph, predicted duration %f secs,  actual %f secs', as.integer (round (estimated.time)),
-                     as.integer (round (actual.time))), stderr ())
-  } # if collectTimings
+    node.count = length(nodes(loc.obj@graph))
+    edge.count = length(edgeNames(loc.obj@graph))
+    node.attribute.count = length(noa.names(loc.obj@graph)) * node.count
+    edge.attribute.count = length(eda.names(loc.obj@graph)) * edge.count
     
-  # pseudo R 'pass-by-reference': cw now contains the [node suid,node name] pairs
-  eval.parent(substitute(obj <- loc.obj))
+    estimated.time = predictTimeToDisplayGraph(loc.obj)
+    # if (execution)time measurement option is turned on, save the current time
+    if (loc.obj@collectTimings) {
+        method.start.time = Sys.time()
+        # start time (for sending nodes to Cytoscape) 
+        stepwise.start.time = Sys.time()
+    }
+    
+    write(sprintf('estimated displayGraph time: %8.1f seconds', estimated.time), stderr())
+    write(sprintf('adding %d nodes...', length(nodes(obj@graph))), stderr())
+    
+    sendNodes(loc.obj)
+    
+    if(loc.obj@collectTimings) {
+        current.step.exec.time = difftime(Sys.time(), stepwise.start.time, units='secs')
+        write(sprintf(' *** sendNodes: %f secs', current.step.exec.time, stderr()))
+        # start time (for sending node attributes to Cytoscape)
+        stepwise.start.time = Sys.time()
+    }
+    
+    # sends edges to Cytoscape
+    write (sprintf ('adding %d edges...', length (edgeNames (loc.obj@graph))), stderr ())
+    sendEdges (loc.obj)
+    
+    if (obj@collectTimings) {
+        write (sprintf (' *** sendEdges: %f secs', difftime (Sys.time (), stepwise.start.time, units='secs')), stderr ())
+        stepwise.start.time = Sys.time ()
+    }
+    
+    # sending node attributes
+    write ('adding node attributes...', stderr ())
+    
+    # send node attributes from R to Cytoscape
+    sapply (noa.names (loc.obj@graph), function (name) {print (name); setNodeAttributes (loc.obj, name)})
+    
+    if (obj@collectTimings) {
+        write (sprintf (' *** send node attributes: %f secs', difftime (Sys.time (), stepwise.start.time, units='secs')), stderr ())
+        stepwise.start.time = Sys.time ()
+    }
+    
+    # send edge attributes
+    write ('adding edge attributes...', stderr ())
+    edgeAttributeNames = eda.names (loc.obj@graph)
+    sapply (eda.names (loc.obj@graph), function (name) {print (name); setEdgeAttributes (loc.obj, name)})
+    
+    if (obj@collectTimings) {
+        write (sprintf (' *** send edge attributes: %f secs', difftime (Sys.time (), stepwise.start.time, units='secs')), stderr ())
+        stepwise.start.time = Sys.time ()
+        actual.time = difftime (Sys.time (), method.start.time, units='secs')
+        write (sprintf (' *** leaving displayGraph, predicted duration %f secs,  actual %f secs', as.integer (round (estimated.time)),
+                        as.integer (round (actual.time))), stderr ())
+    } # if collectTimings
+    
+    # pseudo R 'pass-by-reference': cw now contains the [node suid,node name] pairs
+    eval.parent(substitute(obj <- loc.obj))
 }) 
 ## END displayGraph
 
