@@ -1409,52 +1409,52 @@ test.setNodeOpacityDirect = function ()
 
 } # test.setNodeOpacityDirect
 #------------------------------------------------------------------------------------------------------------------------
-test.setEdgeOpacityDirect = function ()
-{
-    #DEACTIVATED("too slow for some reason")
-    title = 'test.setEdgeOpacityDirect'
-    window.prep (title)
-    
-    g = RCy3::makeSimpleGraph ()
-    cw = CytoscapeWindow (title, graph=g)
-    setDefaultEdgeLineWidth (cw, 10)
-    displayGraph (cw)
-    layoutNetwork (cw, 'grid')
-    
-    named.edge.names = cy2.edge.names (g)
-    edge.names <- unname(named.edge.names)
-    
-    setEdgeOpacityDirect (cw, edge.names [1], 80)
-    setEdgeOpacityDirect (cw, edge.names [2], 0)
-    setEdgeOpacityDirect (cw, edge.names [3], 255)
-    
-    setEdgeOpacityDirect (cw, edge.names [2], 80)
-    setEdgeOpacityDirect (cw, edge.names [3], 0)
-    setEdgeOpacityDirect (cw, edge.names [1], 255)
-    
-    setEdgeOpacityDirect (cw, edge.names [1], 80)
-    setEdgeOpacityDirect (cw, edge.names [3], 40)
-    setEdgeOpacityDirect (cw, edge.names [2], 255)
-    
-    setEdgeOpacityDirect (cw, edge.names [1], 0)
-    setEdgeOpacityDirect (cw, edge.names [3], 0)
-    setEdgeOpacityDirect (cw, edge.names [2], 0)
-    
-    setEdgeOpacityDirect (cw, edge.names [1], 255)
-    setEdgeOpacityDirect (cw, edge.names [3], 255)
-    setEdgeOpacityDirect (cw, edge.names [2], 255)
-    
-    setEdgeOpacityDirect (cw, edge.names, 0)
-    setEdgeOpacityDirect (cw, edge.names, 255)
-    
-    setEdgeOpacityDirect (cw, edge.names, c (0, 128, 255))
-    setEdgeOpacityDirect (cw, edge.names, c (255, 0, 128))
-    
-    setEdgeOpacityDirect (cw, edge.names, 255)
-    
-    invisible (cw)
-
-} # test.setEdgeOpacityDirect
+# test.setEdgeOpacityDirect = function ()
+# {
+#     #DEACTIVATED("too slow for some reason")
+#     title = 'test.setEdgeOpacityDirect'
+#     window.prep (title)
+#     
+#     g = RCy3::makeSimpleGraph ()
+#     cw = CytoscapeWindow (title, graph=g)
+#     setDefaultEdgeLineWidth (cw, 10)
+#     displayGraph (cw)
+#     layoutNetwork (cw, 'grid')
+#     
+#     named.edge.names = cy2.edge.names (g)
+#     edge.names <- unname(named.edge.names)
+#     
+#     setEdgeOpacityDirect (cw, edge.names [1], 80)
+#     setEdgeOpacityDirect (cw, edge.names [2], 0)
+#     setEdgeOpacityDirect (cw, edge.names [3], 255)
+#     
+#     setEdgeOpacityDirect (cw, edge.names [2], 80)
+#     setEdgeOpacityDirect (cw, edge.names [3], 0)
+#     setEdgeOpacityDirect (cw, edge.names [1], 255)
+#     
+#     setEdgeOpacityDirect (cw, edge.names [1], 80)
+#     setEdgeOpacityDirect (cw, edge.names [3], 40)
+#     setEdgeOpacityDirect (cw, edge.names [2], 255)
+#     
+#     setEdgeOpacityDirect (cw, edge.names [1], 0)
+#     setEdgeOpacityDirect (cw, edge.names [3], 0)
+#     setEdgeOpacityDirect (cw, edge.names [2], 0)
+#     
+#     setEdgeOpacityDirect (cw, edge.names [1], 255)
+#     setEdgeOpacityDirect (cw, edge.names [3], 255)
+#     setEdgeOpacityDirect (cw, edge.names [2], 255)
+#     
+#     setEdgeOpacityDirect (cw, edge.names, 0)
+#     setEdgeOpacityDirect (cw, edge.names, 255)
+#     
+#     setEdgeOpacityDirect (cw, edge.names, c (0, 128, 255))
+#     setEdgeOpacityDirect (cw, edge.names, c (255, 0, 128))
+#     
+#     setEdgeOpacityDirect (cw, edge.names, 255)
+#     
+#     invisible (cw)
+# 
+# } # test.setEdgeOpacityDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeColorDirect = function ()
 {
@@ -1793,24 +1793,24 @@ test.setEdgeTargetArrowColorDirect = function ()
 
 } # test.setEdgeTargetArrowColorDirect
 #------------------------------------------------------------------------------------------------------------------------
-test.setEdgeLabelOpacityDirect = function ()
-{
-    #DEACTIVATED("too slow for some reason")
-    title = 'test.setEdgeLabelOpacityDirect'
-    window.prep (title)
-    
-    g = RCy3::makeSimpleGraph ()
-    cw = CytoscapeWindow (title, graph=g)
-    displayGraph (cw)
-    layoutNetwork (cw, 'grid')
-    redraw (cw)
-    
-    edge.of.interest = cy2.edge.names (g) [1]
-    for (i in 1:5) {
-        setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
-    } # for i
-
-} # test.
+# test.setEdgeLabelOpacityDirect = function () # WORKS PERFECTLY BUT TOO SLOW
+# {
+#     #DEACTIVATED("too slow for some reason")
+#     title = 'test.setEdgeLabelOpacityDirect'
+#     window.prep (title)
+#     
+#     g = RCy3::makeSimpleGraph ()
+#     cw = CytoscapeWindow (title, graph=g)
+#     displayGraph (cw)
+#     layoutNetwork (cw, 'grid')
+#     redraw (cw)
+#     
+#     edge.of.interest = cy2.edge.names (g) [1]
+#     for (i in 1:5) {
+#         setEdgeOpacityDirect (cw, edge.of.interest, i * 30); redraw (cw);
+#     } # for i
+# 
+# } # test.setEdgeLabelOpacityDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeSourceArrowOpacityDirect = function ()
 {
