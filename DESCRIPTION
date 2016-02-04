@@ -8,6 +8,7 @@ Maintainer: Tanja Muetze <tanja.muetze14@imperial.ac.uk>, Georgi Kolishovski <g_
 Depends: R (>= 3.2), graph (>= 1.48.0)
 Imports: httr, methods, RCurl, RJSONIO
 Suggests: BiocGenerics, RUnit
+SystemRequirements: Cytoscape (>= 3.3.0), cyRest (>= 3.3.1)
 Description: Vizualize, analyze and explore graphs, connecting R to Cytoscape (>= 3.3).
 License: Artistic-2.0
 LazyLoad: yes
