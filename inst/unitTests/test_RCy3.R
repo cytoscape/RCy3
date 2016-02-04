@@ -473,7 +473,7 @@ test.getLayoutNameMapping = function ()
 {
     cy = CytoscapeConnection ()
     name.map = getLayoutNameMapping (cy)
-    checkTrue (length (name.map) >= 11)
+    checkTrue (length (name.map) >= 2)  # 20 on (4 mar 2011), 11 and 12 on (4 feb 2016)
     # technically this should be 12 but otherwise failures on the build system happen
     
     checkEquals (name.map [['Attribute Circle Layout']], "attribute-circle")
