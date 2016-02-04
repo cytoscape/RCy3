@@ -458,7 +458,7 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 	cw = new('CytoscapeWindowClass', title=title, graph=graph, uri=uri, 
 					 collectTimings=collectTimings, suid.name.dict = list(), edge.suid.name.dict=list())
 	
-	if(create.window) {
+	if (create.window) {
 		cw@window.id = createWindow(cw)
 	}
 	cw@collectTimings = collectTimings

@@ -6,6 +6,12 @@ library (RUnit)
 #------------------------------------------------------------------------------------------------------------------------
 if (!exists ('cy')){
     cy = CytoscapeConnection ()
+    #to test name.map
+    name.map = getLayoutNameMapping (cy)
+    print(name.map)
+    print(length(name.map))
+    print(length(unname(name.map)))
+    #test end
 }
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -18,6 +24,14 @@ run.tests = function ()
     
     # start with a clean slate, and no windows
     deleteAllWindows (cy)
+    
+    #to test name.map
+    cy = CytoscapeConnection ()
+    name.map = getLayoutNameMapping (cy)
+    print(name.map)
+    print(length(name.map))
+    print(length(unname(name.map)))
+    #test end
     
     # many of the tests modify the default visual style, quite heedless of prior or successor tests.
     # if you wish to restore the initial default style, it is saved here, just once, upon entry to this method
