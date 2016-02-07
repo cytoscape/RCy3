@@ -982,12 +982,12 @@ setMethod ('haveNodeAttribute', 'CytoscapeConnectionClass',
         net.SUID = as.character(obj@window.id)
         version = pluginVersion(obj)
         # check the attribute exists
-        if(attribute.name %in% getNodeAttributeNames(obj)) {
+        if (attribute.name %in% getNodeAttributeNames(obj)) {
         # get the node SUIDs
             node.SUIDs = .nodeNameToNodeSUID(obj, node.names)
             nodes.that.have.attribute = c()
             
-            for(i in 1:length(node.SUIDs)) {
+            for (i in 1:length(node.SUIDs)) {
                 resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/rows", as.character(node.SUIDs[i]), attribute.name, sep="/")
                 request.res = GET(url=resource.uri)
                 node.attribute.value = rawToChar(request.res$content)
@@ -997,7 +997,7 @@ setMethod ('haveNodeAttribute', 'CytoscapeConnectionClass',
                 }
             }
             
-            return(as.character(.nodeSUIDToNodeName(obj, nodes.that.have.attribute)))
+            return (as.character(.nodeSUIDToNodeName(obj, nodes.that.have.attribute)))
             } else {
                 write(sprintf("Error: '%s' is not an existing node attribute name", attribute.name), stderr())
         }
@@ -4033,7 +4033,10 @@ setMethod('getNodeAttributeNames', 'CytoscapeConnectionClass',
         request.res <- unlist(request.res$name)
         # exclude some node attributes
         node.attribute.names <- request.res[! request.res %in% c("SUID", "shared name", "selected")]
-        return(node.attribute.names)
+        if (length(node.attribute.names) <=2 ){
+            write(sprintf('Please ensure that you sent the R graph to Cytoscape before calling this function, e.g. using displayGraph. Otherwise names might not be displayed (correctly).'), stderr())
+        }
+        return (node.attribute.names)
 })
 ## END getNodeAttributeNames
 
