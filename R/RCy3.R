@@ -5306,15 +5306,15 @@ setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property) 
     edge.SUIDs <- .edgeNameToEdgeSUID(obj, edge.names)
     
     # 'edge.names' and 'new.values' must have the same length
-    if(length(new.values) == 1) {
+    if (length(new.values) == 1) {
         new.values <- rep(new.values, length(edge.names))
     }
-    if(length(new.values) != length(edge.names)) {
+    if (length(new.values) != length(edge.names)) {
         write(sprintf("ERROR in setEdgePropertyDirect():\n\t number of edge.names [%d] and new.values [%d] are not the same >> edge(s) attribute could not be set", 
                       length(edge.names), length(new.values)), stderr())
     } else {
         request.res <- c()
-        for(i in seq(edge.SUIDs)) { 
+        for (i in seq(edge.SUIDs)) { 
             edge.SUID <- as.character(edge.SUIDs[i])
             current.value <- new.values[i]
             
