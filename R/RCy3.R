@@ -355,10 +355,10 @@ setGeneric ('cyPlot', function (node.df, edge.df) standardGeneric('cyPlot'))
 
 # ------------------------------------------------------------------------------
 setValidity("CytoscapeWindowClass", function(object) {
-    if(length(object@title) != 1){
+    if (length(object@title) != 1){
         "'title' is not a single string" 
     }
-    else if(!nzchar(object@title)){
+    else if (!nzchar(object@title)){
         "'title' is an empty string"
     }
     validObject(object@graph)
@@ -400,33 +400,33 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 	}
 	check.cytoscape.plugin.version(cy.conn)
 	# if the user has specified, delete already existing window(s) with the same title
-	if(overwriteWindow) {
-        if(title %in% as.character(getWindowList(cy.conn))) {
+	if (overwriteWindow) {
+        if (title %in% as.character(getWindowList(cy.conn))) {
 		    deleteWindow(cy.conn, title)
 		}
 	}
 	
-	if(!is.na(getWindowID(cy.conn, title))) {
+	if (!is.na(getWindowID(cy.conn, title))) {
 		write(sprintf('There is already a window in Cytoscape named "%s".', title), stderr())
 		write(sprintf('Please use a unique name, or set "overwriteWindow=TRUE".'), stderr())
 		stop()
 	}
     
     # add a label to each node if not already present. default label is the node name, the node ID    	
-    if(is.classic.graph(graph)){
-        if(edgemode(graph) == 'undirected') {
+    if (is.classic.graph(graph)){
+        if (edgemode(graph) == 'undirected') {
             graph = remove.redundancies.in.undirected.graph(graph)
         }
     }
 	# are all node attributes properly initialized?
 	node.attributes = noa.names(graph)
-	if(length(node.attributes) > 0) {
+	if (length(node.attributes) > 0) {
 		check.list = list()
-		for(node.attribute in node.attributes) {
+		for (node.attribute in node.attributes) {
 			check.list[[node.attribute]] = properlyInitializedNodeAttribute(graph, node.attribute)
 		}
 		uninitialized.attributes = which(check.list == FALSE)
-		if(length(uninitialized.attributes) > 0) {
+		if (length(uninitialized.attributes) > 0) {
 			write(sprintf("%d uninitialized node attribute/s", length(uninitialized.attributes)), stderr())
 			return()
 		}
@@ -434,22 +434,22 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 
 	# are all edge attributes properly initialized?
 	edge.attributes = eda.names(graph)
-	if(length(edge.attributes) > 0) {
+	if (length(edge.attributes) > 0) {
 		check.list = list()
-		for(edge.attribute in edge.attributes) {
+		for (edge.attribute in edge.attributes) {
 			check.list[[edge.attribute]] = properlyInitializedEdgeAttribute(graph, edge.attribute)
 		}
 		uninitialized.attributes = which(check.list == FALSE)
-		if(length(uninitialized.attributes) > 0) {
+		if (length(uninitialized.attributes) > 0) {
 			write(sprintf("%d uninitialized edge attribute/s", length(uninitialized.attributes)), stderr())
 			return()
 		}
 	} # if edge.attributes
 	
-	if(!'label' %in% noa.names(graph)) {
+	if (!'label' %in% noa.names(graph)) {
 		write('nodes have no label attribute -- adding default labels', stderr())
 		graph = initNodeAttribute(graph, 'label', 'char', 'noLabel')
-		if(length(nodes(graph) > 0)) {
+		if (length(nodes(graph) > 0)) {
 			nodeData(graph, nodes(graph), 'label') = nodes(graph) # nodes(graph) returns strings
 		}
 	}
