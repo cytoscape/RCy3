@@ -32,7 +32,7 @@ None.
   cw <- CytoscapeWindow ('setNodeImageDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork (cw, 'force-directed')
-  setNodeImageDirect (cw, 'C', 'http://rcytoscape.systemsbiology.net/versions/current/images/bioc.png')
+  setNodeImageDirect (cw, 'C', 1 ) # 1 as the position in the image manager
 }
 
 \keyword{graph}
