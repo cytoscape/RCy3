@@ -3396,40 +3396,43 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
 
     function (obj, node.names, image.positions) {
         
-        # insert a warning 
-        if (!is.numeric(image.positions)){
-            msg = sprintf ('Error in RCy3::setNodeImageDirect. Note that image urls are no longer supported. Upload your image into the Image Manager in the style tab in the control panel.')
-            write (msg, stderr ())
-            return()
-        }
+        write(sprintf("WARNING: Method RCy3::setNodeImageDirect() is not implemented in RCy3!"), stderr())
         
-        if (length (node.names) != length (image.positions)) {
-            if (length (image.positions) == 1){
-                msg = sprintf ('Error in RCy3::setNodeImageDirect. image.positions count (%d) is neither 1 nor same as node.names count (%d)',
-                               length (image.positions), length (node.names))
-                write (msg, stderr ())
-                return ()
-            }
-        }
-        # only allow for upto 9 custom graphics
-        if ((length(unique(image.positions)))>9){
-            msg = sprintf ('Error in RCy3::setNodeImageDirect. Cytoscape only supports upto 9 custom graphics.')
-            write (msg, stderr ())
-            return()
-        }
-        
-        # pseudo code:
-        # for loop
-        # if is == "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],"
-        # if "NODE_CUSTOMGRAPHICS_9" passed and still not: error message
-        # not working: return(setNodePropertyDirect(obj, node.names, image.urls, "NODE_CUSTOMGRAPHICS_1"))
-        return(setNodePropertyDirect(obj, node.names, paste0("org.cytoscape.ding.customgraphics.bitmap.URLImageCustomGraphics,", image.positions, ",bundle"), "NODE_CUSTOMGRAPHICS_1"))
-        
-        # test code to remove an image
-        # setNodePropertyDirect(obj, node.names, "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],", "NODE_CUSTOMGRAPHICS_1")
-        
-        
-        # the below code is from a previous RCytoscape version
+        return(FALSE)
+#         # insert a warning 
+#         if (!is.numeric(image.positions)){
+#             msg = sprintf ('Error in RCy3::setNodeImageDirect. Note that image urls are no longer supported. Upload your image into the Image Manager in the style tab in the control panel.')
+#             write (msg, stderr ())
+#             return()
+#         }
+#         
+#         if (length (node.names) != length (image.positions)) {
+#             if (length (image.positions) == 1){
+#                 msg = sprintf ('Error in RCy3::setNodeImageDirect. image.positions count (%d) is neither 1 nor same as node.names count (%d)',
+#                                length (image.positions), length (node.names))
+#                 write (msg, stderr ())
+#                 return ()
+#             }
+#         }
+#         # only allow for upto 9 custom graphics
+#         if ((length(unique(image.positions)))>9){
+#             msg = sprintf ('Error in RCy3::setNodeImageDirect. Cytoscape only supports upto 9 custom graphics.')
+#             write (msg, stderr ())
+#             return()
+#         }
+#         
+#         # pseudo code:
+#         # for loop
+#         # if is == "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],"
+#         # if "NODE_CUSTOMGRAPHICS_9" passed and still not: error message
+#         # not working: return(setNodePropertyDirect(obj, node.names, image.urls, "NODE_CUSTOMGRAPHICS_1"))
+#         return(setNodePropertyDirect(obj, node.names, paste0("org.cytoscape.ding.customgraphics.bitmap.URLImageCustomGraphics,", image.positions, ",bundle"), "NODE_CUSTOMGRAPHICS_1"))
+#         
+#         # test code to remove an image
+#         # setNodePropertyDirect(obj, node.names, "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],", "NODE_CUSTOMGRAPHICS_1")
+#         
+#         
+#         # the below code is from a previous RCytoscape version
 #         for (i in 1:length (node.names)) {
 #             setNodeShapeDirect (obj, node.names [i], 'rect')
 #             setNodeLabelDirect (obj, node.names [i], '')
