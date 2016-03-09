@@ -38,11 +38,7 @@ Nothing.
   layoutNetwork(cw)
 
   styles <- getVisualStyleNames (cw)
-   # now cycle through the currently defined styles
-  for (style in styles) {
-    print (paste ("about to set new style:", style))
-    setVisualStyle (cw, style)
-    }
+  setVisualStyle (cw, styles[5])
 }
 
 \keyword{graph}
