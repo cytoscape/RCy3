@@ -3,8 +3,8 @@
 \alias{setEdgeLabelColorDirect,CytoscapeWindowClass-method}
 \title{setEdgeLabelColorDirect}
 \description{
-In the specified CytoscapeWindow, set the color of the label of the
-specified edge or edges.
+In the specified CytoscapeWindow, set the color of the label of the specified
+edge or edges.
 }
 \usage{
 setEdgeLabelColorDirect(obj, edge.names, new.value)
@@ -37,7 +37,6 @@ None.
   setEdgeLabelDirect (cw, edge.names, 'some label')
   setEdgeLabelColorDirect (cw, edge.names [1:2], '#FF0000')
   setEdgeLabelColorDirect (cw, edge.names, '#00FF00')
-  setEdgeLabelColorDirect (cw, edge.names [3], '#000000')
 }
 
 \keyword{graph}
