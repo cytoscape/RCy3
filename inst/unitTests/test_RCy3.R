@@ -3415,7 +3415,7 @@ test.setVisualStyle = function ()
     layoutNetwork (cw5)
     
     current.names = getVisualStyleNames (cw5)
-    for (style.name in current.names) {
+    for (style.name in current.names[1:5]) {
         setVisualStyle (cw5, style.name)
         Sys.sleep (0.1)
     } # for style.name

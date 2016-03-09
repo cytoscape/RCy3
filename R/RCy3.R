@@ -3421,6 +3421,9 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
             return()
         }
         
+        # TODO check if enough open spaces
+        # get node images from properties
+        
         # pseudo code:
         # for loop
         # if is == "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],"
@@ -5275,7 +5278,7 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
         write(sprintf("ERROR in setNodePropertyDirect():\n   the number of nodes [%d] and new values [%d] are not the same >> node(s) attribute couldn't be set", 
                       length(node.names), length(new.values)), stderr())
         return()
-    } else if (length(node.names)==1){
+    } else if (length(node.names)==1) {
         # only one node
         resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", node.SUIDs, sep="/")
         node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=new.values)))
