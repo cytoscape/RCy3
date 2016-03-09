@@ -32,7 +32,11 @@ None.
   cw <- CytoscapeWindow ('setNodeImageDirect.test', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork (cw, 'force-directed')
-  setNodeImageDirect (cw, 'C', 'http://rcytoscape.systemsbiology.net/versions/current/images/bioc.png')
+  # Before running the next function, upload your image to the Image Manager
+  # and determine the position of the image in the list (start counting from the bottom)
+  # Images are added at the top of the interface but at the end of the list
+  # There are currently 24 default images in the Image Manager
+  setNodeImageDirect (cw, 'C', 1 ) # last image in the Image Manager
 }
 
 \keyword{graph}

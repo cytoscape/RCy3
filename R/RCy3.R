@@ -355,10 +355,10 @@ setGeneric ('cyPlot', function (node.df, edge.df) standardGeneric('cyPlot'))
 
 # ------------------------------------------------------------------------------
 setValidity("CytoscapeWindowClass", function(object) {
-    if(length(object@title) != 1){
+    if (length(object@title) != 1){
         "'title' is not a single string" 
     }
-    else if(!nzchar(object@title)){
+    else if (!nzchar(object@title)){
         "'title' is an empty string"
     }
     validObject(object@graph)
@@ -400,33 +400,33 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 	}
 	check.cytoscape.plugin.version(cy.conn)
 	# if the user has specified, delete already existing window(s) with the same title
-	if(overwriteWindow) {
-        if(title %in% as.character(getWindowList(cy.conn))) {
+	if (overwriteWindow) {
+        if (title %in% as.character(getWindowList(cy.conn))) {
 		    deleteWindow(cy.conn, title)
 		}
 	}
 	
-	if(!is.na(getWindowID(cy.conn, title))) {
+	if (!is.na(getWindowID(cy.conn, title))) {
 		write(sprintf('There is already a window in Cytoscape named "%s".', title), stderr())
 		write(sprintf('Please use a unique name, or set "overwriteWindow=TRUE".'), stderr())
 		stop()
 	}
     
     # add a label to each node if not already present. default label is the node name, the node ID    	
-    if(is.classic.graph(graph)){
-        if(edgemode(graph) == 'undirected') {
+    if (is.classic.graph(graph)){
+        if (edgemode(graph) == 'undirected') {
             graph = remove.redundancies.in.undirected.graph(graph)
         }
     }
 	# are all node attributes properly initialized?
 	node.attributes = noa.names(graph)
-	if(length(node.attributes) > 0) {
+	if (length(node.attributes) > 0) {
 		check.list = list()
-		for(node.attribute in node.attributes) {
+		for (node.attribute in node.attributes) {
 			check.list[[node.attribute]] = properlyInitializedNodeAttribute(graph, node.attribute)
 		}
 		uninitialized.attributes = which(check.list == FALSE)
-		if(length(uninitialized.attributes) > 0) {
+		if (length(uninitialized.attributes) > 0) {
 			write(sprintf("%d uninitialized node attribute/s", length(uninitialized.attributes)), stderr())
 			return()
 		}
@@ -434,22 +434,22 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
 
 	# are all edge attributes properly initialized?
 	edge.attributes = eda.names(graph)
-	if(length(edge.attributes) > 0) {
+	if (length(edge.attributes) > 0) {
 		check.list = list()
-		for(edge.attribute in edge.attributes) {
+		for (edge.attribute in edge.attributes) {
 			check.list[[edge.attribute]] = properlyInitializedEdgeAttribute(graph, edge.attribute)
 		}
 		uninitialized.attributes = which(check.list == FALSE)
-		if(length(uninitialized.attributes) > 0) {
+		if (length(uninitialized.attributes) > 0) {
 			write(sprintf("%d uninitialized edge attribute/s", length(uninitialized.attributes)), stderr())
 			return()
 		}
 	} # if edge.attributes
 	
-	if(!'label' %in% noa.names(graph)) {
+	if (!'label' %in% noa.names(graph)) {
 		write('nodes have no label attribute -- adding default labels', stderr())
 		graph = initNodeAttribute(graph, 'label', 'char', 'noLabel')
-		if(length(nodes(graph) > 0)) {
+		if (length(nodes(graph) > 0)) {
 			nodeData(graph, nodes(graph), 'label') = nodes(graph) # nodes(graph) returns strings
 		}
 	}
@@ -982,12 +982,12 @@ setMethod ('haveNodeAttribute', 'CytoscapeConnectionClass',
         net.SUID = as.character(obj@window.id)
         version = pluginVersion(obj)
         # check the attribute exists
-        if(attribute.name %in% getNodeAttributeNames(obj)) {
+        if (attribute.name %in% getNodeAttributeNames(obj)) {
         # get the node SUIDs
             node.SUIDs = .nodeNameToNodeSUID(obj, node.names)
             nodes.that.have.attribute = c()
             
-            for(i in 1:length(node.SUIDs)) {
+            for (i in 1:length(node.SUIDs)) {
                 resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/rows", as.character(node.SUIDs[i]), attribute.name, sep="/")
                 request.res = GET(url=resource.uri)
                 node.attribute.value = rawToChar(request.res$content)
@@ -997,7 +997,7 @@ setMethod ('haveNodeAttribute', 'CytoscapeConnectionClass',
                 }
             }
             
-            return(as.character(.nodeSUIDToNodeName(obj, nodes.that.have.attribute)))
+            return (as.character(.nodeSUIDToNodeName(obj, nodes.that.have.attribute)))
             } else {
                 write(sprintf("Error: '%s' is not an existing node attribute name", attribute.name), stderr())
         }
@@ -3396,9 +3396,12 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
 
     function (obj, node.names, image.positions) {
         
+#         write(sprintf("WARNING: Method RCy3::setNodeImageDirect() is not implemented in RCy3!"), stderr())
+#         
+#         return(FALSE)
         # insert a warning 
         if (!is.numeric(image.positions)){
-            msg = sprintf ('Error in RCy3::setNodeImageDirect. Note that image urls are no longer supported. Upload your image into the Image Manager in the style tab in the control panel.')
+            msg = sprintf ('Error in RCy3::setNodeImageDirect. Note that image urls are no longer supported. Upload your image into the Image Manager in the style tab in the control panel and report its position in the Image Manager as number.')
             write (msg, stderr ())
             return()
         }
@@ -3418,6 +3421,9 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
             return()
         }
         
+        # TODO check if enough open spaces
+        # get node images from properties
+        
         # pseudo code:
         # for loop
         # if is == "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],"
@@ -3428,8 +3434,8 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
         # test code to remove an image
         # setNodePropertyDirect(obj, node.names, "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],", "NODE_CUSTOMGRAPHICS_1")
         
-        
-        # the below code is from a previous RCytoscape version
+#         
+#         # the below code is from a previous RCytoscape version
 #         for (i in 1:length (node.names)) {
 #             setNodeShapeDirect (obj, node.names [i], 'rect')
 #             setNodeLabelDirect (obj, node.names [i], '')
@@ -4033,7 +4039,10 @@ setMethod('getNodeAttributeNames', 'CytoscapeConnectionClass',
         request.res <- unlist(request.res$name)
         # exclude some node attributes
         node.attribute.names <- request.res[! request.res %in% c("SUID", "shared name", "selected")]
-        return(node.attribute.names)
+        if (length(node.attribute.names) <=2 ){
+            write(sprintf('Please ensure that you sent the R graph to Cytoscape before calling this function, e.g. using displayGraph. Otherwise names might not be displayed (correctly).'), stderr())
+        }
+        return (node.attribute.names)
 })
 ## END getNodeAttributeNames
 
@@ -5269,7 +5278,7 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
         write(sprintf("ERROR in setNodePropertyDirect():\n   the number of nodes [%d] and new values [%d] are not the same >> node(s) attribute couldn't be set", 
                       length(node.names), length(new.values)), stderr())
         return()
-    } else if (length(node.names)==1){
+    } else if (length(node.names)==1) {
         # only one node
         resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", node.SUIDs, sep="/")
         node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=new.values)))
@@ -5303,15 +5312,15 @@ setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property) 
     edge.SUIDs <- .edgeNameToEdgeSUID(obj, edge.names)
     
     # 'edge.names' and 'new.values' must have the same length
-    if(length(new.values) == 1) {
+    if (length(new.values) == 1) {
         new.values <- rep(new.values, length(edge.names))
     }
-    if(length(new.values) != length(edge.names)) {
+    if (length(new.values) != length(edge.names)) {
         write(sprintf("ERROR in setEdgePropertyDirect():\n\t number of edge.names [%d] and new.values [%d] are not the same >> edge(s) attribute could not be set", 
                       length(edge.names), length(new.values)), stderr())
     } else {
         request.res <- c()
-        for(i in seq(edge.SUIDs)) { 
+        for (i in seq(edge.SUIDs)) { 
             edge.SUID <- as.character(edge.SUIDs[i])
             current.value <- new.values[i]
             

@@ -1570,25 +1570,25 @@ test.setEdgeFontSizeDirect = function ()
 
 } # test.setEdgeFontSizeDirect
 #------------------------------------------------------------------------------------------------------------------------
-test.setEdgeLabelColorDirect = function ()
-{
-    #DEACTIVATED("too slow for some reason")
-    title = 'test.setEdgeLabelColorDirect'
-    window.prep (title)
-    
-    g = RCy3::makeSimpleGraph ()
-    cw = CytoscapeWindow (title, graph=g)
-    displayGraph (cw)
-    layoutNetwork (cw, 'grid')
-    redraw (cw)
-    
-    edge.names = cy2.edge.names (g)
-    setEdgeLabelDirect (cw, edge.names, 'some label')
-    setEdgeLabelColorDirect (cw, edge.names [1:2], '#FF0000')
-    setEdgeLabelColorDirect (cw, edge.names, '#00FF00')
-    setEdgeLabelColorDirect (cw, edge.names [3], '#000000')
-
-} # test.setEdgeLabelColorDirect
+# test.setEdgeLabelColorDirect = function () # WORKS BUT IS A BIT SLOW
+# {
+#     #DEACTIVATED("too slow for some reason")
+#     title = 'test.setEdgeLabelColorDirect'
+#     window.prep (title)
+#     
+#     g = RCy3::makeSimpleGraph ()
+#     cw = CytoscapeWindow (title, graph=g)
+#     displayGraph (cw)
+#     layoutNetwork (cw, 'grid')
+#     redraw (cw)
+#     
+#     edge.names = cy2.edge.names (g)
+#     setEdgeLabelDirect (cw, edge.names, 'some label')
+#     setEdgeLabelColorDirect (cw, edge.names [1:2], '#FF0000')
+#     setEdgeLabelColorDirect (cw, edge.names, '#00FF00')
+#     setEdgeLabelColorDirect (cw, edge.names [3], '#000000')
+# 
+# } # test.setEdgeLabelColorDirect
 #------------------------------------------------------------------------------------------------------------------------
 test.setEdgeTooltipDirect = function ()
 {
@@ -3415,7 +3415,7 @@ test.setVisualStyle = function ()
     layoutNetwork (cw5)
     
     current.names = getVisualStyleNames (cw5)
-    for (style.name in current.names) {
+    for (style.name in current.names[1:5]) {
         setVisualStyle (cw5, style.name)
         Sys.sleep (0.1)
     } # for style.name
