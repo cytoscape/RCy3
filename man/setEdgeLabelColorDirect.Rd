@@ -35,8 +35,8 @@ None.
   layoutNetwork(cw, 'force-directed')
   edge.names <- as.character (cy2.edge.names (cw@graph))
   setEdgeLabelDirect (cw, edge.names, 'some label')
-  setEdgeLabelColorDirect (cw, edge.names [1:2], '#FF0000')
   setEdgeLabelColorDirect (cw, edge.names, '#00FF00')
+  setEdgeLabelColorDirect (cw, edge.names [1:2], '#FF0000')
 }
 
 \keyword{graph}
