@@ -27,7 +27,6 @@ None.
 
   cw <- CytoscapeWindow ('hideSelectedEdges.test', graph=makeSimpleGraph())
   displayGraph (cw)
-  redraw (cw)
   layoutNetwork(cw, 'force-directed')
   
   selectEdges (cw, 'B (synthetic lethal) C')

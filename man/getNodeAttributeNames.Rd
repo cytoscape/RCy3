@@ -32,8 +32,10 @@ A list of names.
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
-  cw = CytoscapeWindow ('demo.getNodeAttributeNames', graph=makeSimpleGraph())
+  cw <- CytoscapeWindow ('demo.getNodeAttributeNames', graph=makeSimpleGraph())
   displayGraph (cw)
+  # displayGraph is required. If you do not display the graph,
+  # your R graph data has not been sent to Cytoscape yet.
   print (getNodeAttributeNames (cw))
     # [1] "name"  "type"  "lfc"   "label" "count"
 }

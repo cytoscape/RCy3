@@ -36,9 +36,6 @@ None.
   for (i in 1:10) {
     setEdgeOpacityDirect (cw, edge.names, 255 - (i * 25))
     }
-  for (i in 1:10) {
-    setEdgeOpacityDirect (cw, edge.names, i * 25)
-    }
 }
 
 \keyword{graph}

@@ -40,16 +40,16 @@ None.
     # to increasing values of x, without changing the location of the
     # simple graph
   setCenter (cw, 200, 90)
-  system ('sleep 1')
+  system ('sleep 0.1')
   setCenter (cw, 100, 90)
-  system ('sleep 1')
+  system ('sleep 0.1')
   setCenter (cw, 0, 90)
-  system ('sleep 1')
+  system ('sleep 0.1')
   setCenter (cw, -100, 90)
-  system ('sleep 1')
+  system ('sleep 0.1')
     # and now pan back to the original position
   setCenter (cw, -100, 0)
-  system ('sleep 1')
+  system ('sleep 0.1')
   setCenter (cw, original.center$x, original.center$y)
 }
 
