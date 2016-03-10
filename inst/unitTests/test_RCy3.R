@@ -2488,11 +2488,10 @@ test.unmatchedAttributesError = function ()
     cwe = CytoscapeWindow (title, RCy3::makeSimpleGraph ())
     displayGraph (cwe)
     layoutNetwork (cwe, 'grid')
-    redraw (cwe)
     
     # this works
     count.control.points = c (2, 30, 100)
-    sizes                = c (20, 50, 100)
+    sizes = c (20, 50, 100)
     setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
     
     invisible (cwe)
