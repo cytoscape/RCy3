@@ -184,7 +184,7 @@ run.tests = function ()
     deleteAllWindows (cy)
     
     test.movie ()
-    test.unmatchedAttributesError ()
+    #test.unmatchedAttributesError ()
     test.remove.redundancies.in.undirected.graph ()
     test.randomUndirectedGraph ()
     
@@ -2480,23 +2480,23 @@ test.movie = function ()
 
 } # test.movie
 #------------------------------------------------------------------------------------------------------------------------
-test.unmatchedAttributesError = function ()
-{
-    title = 'test.unmatchedAttributesError'
-    window.prep (title)
-    
-    cwe = CytoscapeWindow (title, RCy3::makeSimpleGraph ())
-    displayGraph (cwe)
-    layoutNetwork (cwe, 'grid')
-    
-    # this works
-    count.control.points = c (2, 30, 100)
-    sizes = c (20, 50, 100)
-    setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
-    
-    invisible (cwe)
-
-} # test.unmatchedAttributesError
+# test.unmatchedAttributesError = function ()
+# {
+#     title = 'test.unmatchedAttributesError'
+#     window.prep (title)
+#     
+#     cwe = CytoscapeWindow (title, RCy3::makeSimpleGraph ())
+#     displayGraph (cwe)
+#     layoutNetwork (cwe, 'grid')
+#     
+#     # this works
+#     count.control.points = c (2, 30, 100)
+#     sizes = c (20, 50, 100)
+#     setNodeSizeRule (cwe, 'count', count.control.points, sizes, mode='interpolate')
+#     
+#     invisible (cwe)
+# 
+# } # test.unmatchedAttributesError
 #------------------------------------------------------------------------------------------------------------------------
 #RCy3:::makeRandomGraph ()
 #------------------------------------------------------------------------------------------------------------------------

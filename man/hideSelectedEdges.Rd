@@ -31,12 +31,10 @@ None.
   
   selectEdges (cw, 'B (synthetic lethal) C')
   hideSelectedEdges (cw)
-  unhideAll (cw)
+  # unhideAll (cw) # makes the edges appear again
    # previously, Cytoscape required that you render these edges,
    # and redo the layout, so that they are visible again.
    # This is no longer required.
-  #redraw (cw)
-  #layoutNetwork(cw, 'force-directed')
 }
 
 \keyword{graph}
