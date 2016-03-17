@@ -165,22 +165,22 @@ run.tests = function ()
     test.selectNodes ()
     test.nodeNeighborReportingAndSelection ()
     
-    deleteAllWindows (cy)
-    
-    test.invertSelection ()
-    test.deleteSelectedNodes ()
-    test.hideNodes ()
-    test.selectEdges ()
-    test.setEdgeLineStyleRule ()
-    
-    deleteAllWindows (cy)
-    
-    test.setEdgeLineWidthRule ()
-    test.setEdgeColorRule ()
-    test.setEdgeTargetArrowRule ()
-    test.setEdgeArrowColorRules ()
-    test.setEdgeSourceArrowRule ()
-    
+#     deleteAllWindows (cy) # to be commented in again
+#     
+#     test.invertSelection ()
+#     test.deleteSelectedNodes ()
+#     test.hideNodes ()
+#     test.selectEdges ()
+#     test.setEdgeLineStyleRule ()
+#     
+#     deleteAllWindows (cy)
+#     
+#     test.setEdgeLineWidthRule ()
+#     test.setEdgeColorRule ()
+#     test.setEdgeTargetArrowRule ()
+#     test.setEdgeArrowColorRules ()
+#     test.setEdgeSourceArrowRule ()
+#     
     deleteAllWindows (cy)
     
     test.movie ()
@@ -234,7 +234,7 @@ run.tests = function ()
     test.getAllEdgeAttributes ()
     test.getVisualStyleNames ()
     test.copyVisualStyle ()
-    test.setVisualStyle ()
+    #test.setVisualStyle () # to be commented in again
     
     deleteAllWindows (cy)
     
