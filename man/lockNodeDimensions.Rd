@@ -35,8 +35,8 @@ None.
   cw <- CytoscapeWindow ('lockNodeDimensions demo', graph=makeSimpleGraph())
   displayGraph (cw)
   layoutNetwork(cw)
-  redraw (cw)
-  lockNodeDimensions (cw, FALSE)
+  lockNodeDimensions (cw, FALSE) # not required anymore as this function
+   # is called by the other functions.
   setNodeWidthDirect (cw, 'A', 100)
   setNodeHeightDirect (cw, 'A', 50)
 }
