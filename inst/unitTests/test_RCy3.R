@@ -245,7 +245,7 @@
 #     
 #     deleteAllWindows (cy)
 #     
-#     test.zoom ()
+#     #test.zoom () # timeout
 #     test.center ()
 #     #test.setNodeSizeDirect ()  #--> too slow
 #     #test.setNodeWidthAndHeightDirect ()  #--> too slow

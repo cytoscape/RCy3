@@ -3308,7 +3308,7 @@ setMethod ('setNodeWidthDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is, tied together).  see lockNodeDimensions (T/F)
 setMethod ('setNodeHeightDirect', 'CytoscapeWindowClass',
-    function (obj, node.names, new.heights) {
+    function (obj, node.names, new.heights) { # Comment Tanja: Could pass in visual style here
         # unlock node dimensions
         lockNodeDimensions (obj, FALSE)
         
@@ -4995,9 +4995,9 @@ setMethod ('lockNodeDimensions', 'CytoscapeConnectionClass',
         # inform the user if the request was a success or failure
         if (request.res$status == 204){
             if (new.state==TRUE){
-                write (sprintf ('Locked node dimensions.'), stdout ())
+                write (sprintf ('Locked node dimensions successfully even if the check box is not ticked.'), stdout ())
             }else{
-                write (sprintf ('Unlocked node dimensions.'), stdout ())
+                write (sprintf ('Unlocked node dimensions successfully even if the check box is not ticked.'), stdout ())
             }
         }else{
             write (sprintf ('Error in RCy3::lockNodeDimensions. Could not lock/unlocked node dimensions'), stderr ())
