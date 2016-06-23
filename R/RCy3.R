@@ -5017,12 +5017,16 @@ setMethod('getDefaultBackgroundColor', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod('setDefaultBackgroundColor', 'CytoscapeConnectionClass', 
-  function(obj, new.color, vizmap.style.name='default') {
-    resource.uri = paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
-    style = list(visualProperty = 'NETWORK_BACKGROUND_PAINT', value = new.color)
-    style.JSON = toJSON(list(style))
-    request.res = PUT(url=resource.uri, body=style.JSON, encode="json")
-    invisible(request.res)
+    function(obj, new.color, vizmap.style.name='default') {
+        if (new.color[1] != "#") {
+            write (sprintf ('Error in RCy3::setDefaultBackgroundColor. Not a valid color. Hex colors only. The number has to start with a #.'), stderr ())
+            return
+            } 
+        resource.uri = paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
+        style = list(visualProperty = 'NETWORK_BACKGROUND_PAINT', value = new.color)
+        style.JSON = toJSON(list(style))
+        request.res = PUT(url=resource.uri, body=style.JSON, encode="json")
+        invisible(request.res)
 })
 
 # ------------------------------------------------------------------------------
