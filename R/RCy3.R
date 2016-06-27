@@ -5444,13 +5444,20 @@ cyPlot <- function (node.df, edge.df) {
 	if (any(grep("factor", edge.class))) {
 		edge.df[, grep("factor", edge.class)] <- sapply(edge.df[, grep("factor", edge.class)], as.character) }
 	edge.class <- sapply (edge.df, class)
+	
 	# Nodes and attributes
+	if (length(grep("character", node.class)) > 1) {
   for (i in 2:length(grep("character", node.class))) {
-	mydata <- initNodeAttribute (graph=mydata,  attribute.name=names(node.class[grep("character", node.class)])[i], attribute.type='char', default.value='undefined') 
-	nodeData (mydata, n=as.character(node.df[, 1]), attr=names(node.class[grep("character", node.class)])[i]) <- as.character(node.df[,grep("character", node.class)[i]])		}
+	mydata <- initNodeAttribute(graph=mydata,  attribute.name=names(node.class[grep("character", node.class)])[i], attribute.type='char', default.value='undefined') 
+	nodeData(mydata, n=as.character(node.df[, 1]), attr=names(node.class[grep("character", node.class)])[i]) <- as.character(node.df[,grep("character", node.class)[i]])		}
+	}
+	
+	if (length(grep("numeric", node.class))){ 
   for (i in 1:length(grep("numeric", node.class))) {	
-  	mydata <- initNodeAttribute (graph=mydata,  attribute.name=names(node.class[grep("numeric", node.class)])[i], attribute.type='numeric', default.value=0.0) 
+  	mydata <- initNodeAttribute(graph=mydata,  attribute.name=names(node.class[grep("numeric", node.class)])[i], attribute.type='numeric', default.value=0.0) 
 	nodeData (mydata, n=as.character(node.df[, 1]), attr=names(node.class[grep("numeric", node.class)])[i]) <- as.numeric(node.df[,grep("numeric", node.class)[i]])	}	
+	}
+	
 	# Edges and attributes
  	mydata = addEdge (as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), mydata)
   for (i in 3:length(grep("character", edge.class))) {
