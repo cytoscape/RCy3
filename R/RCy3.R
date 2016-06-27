@@ -5460,12 +5460,16 @@ cyPlot <- function (node.df, edge.df) {
 	
 	# Edges and attributes
  	mydata = addEdge (as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), mydata)
+ 	if (length(grep("character", edge.class)) > 2){
   for (i in 3:length(grep("character", edge.class))) {
 	mydata <- initEdgeAttribute (graph= mydata, attribute.name=names(edge.df[,grep("character", edge.class)])[i], attribute.type='char', default.value='undefined')
  	edgeData (mydata, as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), attr=names(edge.df[,grep("character", edge.class)])[i]) <- as.character(edge.df[,grep("character", edge.class)[i]])		}
+ 	}
+ 	if (grep("numeric", edge.class)){
   for (i in 1:length(grep("numeric", edge.class))) {	
 	mydata <- initEdgeAttribute(mydata, attribute.name=names(edge.class[grep("numeric", edge.class)])[i], attribute.type = "numeric", default.value = 0)
 	edgeData (mydata, as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), attr=names(edge.class[grep("numeric", edge.class)])[i]) <- as.numeric(edge.df[,grep("numeric", edge.class)[i]])	}	
+ 	}
 	return(mydata)
 }
 # END cyPlot
