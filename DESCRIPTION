@@ -11,6 +11,8 @@ Suggests: BiocGenerics, RUnit
 SystemRequirements: Cytoscape (>= 3.3.0), CyREST (>= 3.3.1), Java (>=8)
 Description: Vizualize, analyze and explore graphs, connecting R to Cytoscape (>= 3.3.0).
 License: Artistic-2.0
+URL: https://github.com/tmuetze/Bioconductor_RCy3_the_new_RCytoscape
+BugReports: https://github.com/tmuetze/Bioconductor_RCy3_the_new_RCytoscape/issues
 LazyLoad: yes
 biocViews: Visualization, GraphAndNetwork, ThirdPartyClient, Network
 Packaged: 2016-04-03 03:18:03 UTC; tmuetze
