@@ -5018,8 +5018,8 @@ setMethod('getDefaultBackgroundColor', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultBackgroundColor', 'CytoscapeConnectionClass', 
     function(obj, new.color, vizmap.style.name='default') {
-        if (new.color[1] != "#") {
-            write (sprintf ('Error in RCy3::setDefaultBackgroundColor. Not a valid color. Hex colors only. The number has to start with a #.'), stderr ())
+        if ((substring(new.color, 1, 1) != "#") || (nchar(new.color) !=7)) {
+            write (sprintf ('Error in RCy3::setDefaultBackgroundColor. Not a valid color. Hex colors only. Has to start with a # and be 7 characters.'), stderr ())
             return
             } 
         resource.uri = paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
