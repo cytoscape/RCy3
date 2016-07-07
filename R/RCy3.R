@@ -5018,10 +5018,9 @@ setMethod('getDefaultBackgroundColor', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultBackgroundColor', 'CytoscapeConnectionClass', 
     function(obj, new.color, vizmap.style.name='default') {
-        if ((substring(new.color, 1, 1) != "#") || (nchar(new.color) !=7)) {
-            write (sprintf ('Error in RCy3::setDefaultBackgroundColor. Not a valid color. Hex colors only. Has to start with a # and be 7 characters.'), stderr ())
+        if (.isNotHexColor(new.color)){
             return
-            } 
+        } 
         resource.uri = paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
         style = list(visualProperty = 'NETWORK_BACKGROUND_PAINT', value = new.color)
         style.JSON = toJSON(list(style))
@@ -5256,6 +5255,14 @@ setVisualProperty <- function(obj, style.string, vizmap.style.name='default') {
     invisible(request.res)
 }
 
+.isNotHexColor <- function(color){
+    if ((substring(color, 1, 1) != "#") || (nchar(color) !=7)) {
+        write (sprintf ('Error. %s is not a valid hexadecimal color (has to begin with # and be 7 characters long).', color), stderr ())
+        return(TRUE)
+    }else{
+        return(FALSE)
+    }
+}
 # ------------------------------------------------------------------------------
 # obtain every other value for vector : used to resolve CyREST bug with returning column values
 obtainEveryOtherValue <- function(v) {
