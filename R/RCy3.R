@@ -2526,8 +2526,15 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
            
            function (obj, node.attribute.name, control.points, colors, mode, default.color='#FFFFFF') {
                if (!mode %in% c ('interpolate', 'lookup')) {
-                   write ("Error! RCy3:setNodeColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+                   write ("Error! RCy3:setNodeColorRule. Mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
                    return ()
+               }
+               
+               # check if colors are formatted correctly
+               for (color in colors){
+                   if (.isNotHexColor(color)){
+                       return()
+                   } 
                }
                
                #TODO Comment TanjaM we should give the user the option to choose the style as an input parameter which defaults to default.
@@ -2684,8 +2691,15 @@ setMethod ('setNodeBorderColorRule', 'CytoscapeWindowClass',
 
     function (obj, node.attribute.name, control.points, colors, mode, default.color='#000000') {
         if (!mode %in% c ('interpolate', 'lookup')) {
-            write ("Error! RCy3:setNodeBorderColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+            write ("Error! RCy3:setNodeBorderColorRule. Mode must be 'interpolate' or 'lookup'.", stderr ())
             return ()
+        }
+        
+        # check if colors are formatted correctly
+        for (color in colors){
+            if (.isNotHexColor(color)){
+                return()
+            } 
         }
         
         #TODO Comment TanjaM we should give the user the option to choose the style as an input parameter which defaults to default.
@@ -2781,6 +2795,9 @@ setMethod('setDefaultNodeSize', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeColor', 'CytoscapeConnectionClass', 
   function(obj, new.color, vizmap.style.name='default') {
+    if (.isNotHexColor(new.color)){
+        return()
+    }
     style = list(visualProperty = "NODE_FILL_COLOR", value = new.color)
     setVisualProperty(obj, style, vizmap.style.name)
 })
@@ -2788,6 +2805,9 @@ setMethod('setDefaultNodeColor', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeBorderColor', 'CytoscapeConnectionClass', 
   function(obj, new.color, vizmap.style.name='default') {
+    if (.isNotHexColor(new.color)){
+      return()
+    }
     style = list(visualProperty = "NODE_BORDER_PAINT", value = new.color)
     setVisualProperty(obj, style, vizmap.style.name)
 })
@@ -2809,6 +2829,9 @@ setMethod('setDefaultNodeFontSize', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeLabelColor', 'CytoscapeConnectionClass', 
   function(obj, new.color, vizmap.style.name='default') {
+    if (.isNotHexColor(new.color)){
+      return()
+    }      
     style = list(visualProperty = "NODE_LABEL_COLOR", value = new.color)
     setVisualProperty(obj, style, vizmap.style.name)
 })
@@ -2823,6 +2846,9 @@ setMethod('setDefaultEdgeLineWidth', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultEdgeColor', 'CytoscapeConnectionClass', 
   function(obj, new.color, vizmap.style.name='default') {
+    if (.isNotHexColor(new.color)){
+      return()
+    }
      # TODO Comment Tanja: maybe change to EDGE_UNSELECTED_PAINT
     style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
     setVisualProperty(obj, style, vizmap.style.name)
@@ -2830,12 +2856,18 @@ setMethod('setDefaultEdgeColor', 'CytoscapeConnectionClass',
 
 setMethod('setDefaultEdgeSourceArrowColor', 'CytoscapeConnectionClass', 
           function(obj, new.color, vizmap.style.name='default') {
+              if (.isNotHexColor(new.color)){
+                  return()
+              }
               style = list(visualProperty = "EDGE_SOURCE_ARROW_UNSELECTED_PAINT", value = new.color) 
               setVisualProperty(obj, style, vizmap.style.name)
           })
 
 setMethod('setDefaultEdgeTargetArrowColor', 'CytoscapeConnectionClass', 
           function(obj, new.color, vizmap.style.name='default') {
+              if (.isNotHexColor(new.color)){
+                  return()
+              }
               style = list(visualProperty = "EDGE_TARGET_ARROW_UNSELECTED_PAINT", value = new.color) 
               setVisualProperty(obj, style, vizmap.style.name)
           })
@@ -2945,6 +2977,14 @@ setMethod ('setEdgeColorRule', 'CytoscapeWindowClass',
             write ("Error! RCy3:setEdgeColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
         }
+        
+        # check if colors are formatted correctly
+        for (color in colors){
+            if (.isNotHexColor(color)){
+                return()
+            } 
+        }
+        
         #TODO Comment TanjaM we should give the user the option to choose the style 
         # as an input parameter which defaults to default.
         vizmap.style.name = 'default'
@@ -3159,6 +3199,14 @@ setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass',
             write ("Error! RCy3:setEdgeTargetArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
         }
+        
+        # check if colors are formatted correctly
+        for (color in colors){
+            if (.isNotHexColor(color)){
+                return()
+            } 
+        }
+        
         #TODO Comment TanjaM we should give the user the option to choose the style 
         # as an input parameter which defaults to default.
         vizmap.style.name = 'default'
@@ -3211,6 +3259,14 @@ setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass',
             write ("Error! RCy3:setEdgeSourceArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
         }
+        
+        # check if colors are formatted correctly
+        for (color in colors){
+            if (.isNotHexColor(color)){
+                return()
+            } 
+        }
+        
         #TODO Comment TanjaM we should give the user the option to choose the style 
         # as an input parameter which defaults to default.
         vizmap.style.name = 'default'
@@ -3261,10 +3317,9 @@ setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.colors) {
       for (current.color in new.colors){
          # ensure the new color string is in correct hexadecimal format
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal node color "%s" in RCy3::setNodeColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
+         if (.isNotHexColor(current.color)){
+             return()
+         } 
       }
       # set the node color direct
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_FILL_COLOR"))
@@ -3353,11 +3408,10 @@ setMethod('setNodeFontSizeDirect', 'CytoscapeWindowClass',
 setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.colors) {
       for (current.color in new.colors){
-         # ensure the color is formated in the correct hexadecimal style
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCy3::setNodeLabelColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
+        # ensure the color is formated in the correct hexadecimal style
+        if (.isNotHexColor(current.color)){
+          return()
+        } 
       }
       # set the node property direct
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_LABEL_COLOR"))
@@ -3396,9 +3450,11 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
 
     function (obj, node.names, image.positions) {
         
-#         write(sprintf("WARNING: Method RCy3::setNodeImageDirect() is not implemented in RCy3!"), stderr())
-#         
-#         return(FALSE)
+        write(sprintf("WARNING: Method RCy3::setNodeImageDirect() is not implemented in RCy3!"), stderr())
+        
+        return(FALSE)
+        
+        #THIS WILL NOT BE EXECUTED
         # insert a warning 
         if (!is.numeric(image.positions)){
             msg = sprintf ('Error in RCy3::setNodeImageDirect. Note that image urls are no longer supported. Upload your image into the Image Manager in the style tab in the control panel and report its position in the Image Manager as number.')
@@ -3460,13 +3516,12 @@ setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeBorderColorDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.colors) {
-      for (current.color in new.colors){
-         # ensure the color is formated in correct hexadecimal style
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCy3::setNodeBorderColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
-      }
+       # ensure the color is formated in correct hexadecimal style
+       for (color in new.colors){
+           if (.isNotHexColor(color)){
+               return()
+           } 
+       }
       # set the node border color direct
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_BORDER_PAINT"))
      })
@@ -3548,13 +3603,12 @@ setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('setEdgeColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
-      for (current.color in new.value){
-         # ensure the color is formated in correct hexadecimal style
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCy3::setEdgeColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
-      }
+       # ensure the color is formated in correct hexadecimal style
+       for (color in new.value){
+           if (.isNotHexColor(color)){
+               return()
+           } 
+       }
       # set the edge color direct
       # TODO maybe this should be EDGE_PAINT
       return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_STROKE_UNSELECTED_PAINT"))
@@ -3599,10 +3653,9 @@ setMethod ('setEdgeLabelColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
       for (current.color in new.value){
          # ensure the color is formated in correct hexadecimal style
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCy3::setEdgeLabelColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
+          if (.isNotHexColor(current.color)){
+              return()
+          }
       }
       # set the edge property direct
       return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_COLOR"))
@@ -3703,10 +3756,8 @@ setMethod('setEdgeSourceArrowColorDirect', 'CytoscapeWindowClass',
     function(obj, edge.names, new.colors) {
         for(current.color in new.colors) {
             # check the color is represented in hexadecimal format
-            if(substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-                write(sprintf("\nERROR in setEdgeSourceArrowColorDirect(): illegal color string '%s'. Color needs to be in hexadecimal", current.color), stderr())
-                
-                return(FALSE)
+            if (.isNotHexColor(current.color)){
+                return()
             }
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
@@ -3718,10 +3769,8 @@ setMethod('setEdgeSourceArrowColorDirect', 'CytoscapeWindowClass',
 setMethod('setEdgeTargetArrowColorDirect', 'CytoscapeWindowClass', 
     function(obj, edge.names, new.colors) {
         for(current.color in new.colors) {
-            if(substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-                write(sprintf("\nERROR in setEdgeTargetArrowColorDirect(): illegal color string '%s'. Color needs to be in hexadecimal", current.color), stderr())
-                
-                return(FALSE)
+            if (.isNotHexColor(current.color)){
+                return()
             }
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
@@ -5019,7 +5068,7 @@ setMethod('getDefaultBackgroundColor', 'CytoscapeConnectionClass',
 setMethod('setDefaultBackgroundColor', 'CytoscapeConnectionClass', 
     function(obj, new.color, vizmap.style.name='default') {
         if (.isNotHexColor(new.color)){
-            return
+            return()
         } 
         resource.uri = paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
         style = list(visualProperty = 'NETWORK_BACKGROUND_PAINT', value = new.color)
@@ -5036,9 +5085,12 @@ setMethod('getDefaultNodeSelectionColor', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeSelectionColor', 'CytoscapeConnectionClass', 
-  function(obj, new.color, vizmap.style.name='default') {
-    style = list(visualProperty = "NODE_SELECTED_PAINT", value = new.color) 
-    setVisualProperty(obj, style, vizmap.style.name)
+    function(obj, new.color, vizmap.style.name='default') {
+        if (.isNotHexColor(new.color)){
+            return()
+        } 
+        style = list(visualProperty = "NODE_SELECTED_PAINT", value = new.color) 
+        setVisualProperty(obj, style, vizmap.style.name)
 })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getDefaultNodeReverseSelectionColor',  'CytoscapeConnectionClass',
@@ -5049,7 +5101,10 @@ setMethod ('getDefaultNodeReverseSelectionColor',  'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setDefaultNodeReverseSelectionColor',  'CytoscapeConnectionClass',
 
-   function (obj, new.color,vizmap.style.name='default') {
+   function (obj, new.color, vizmap.style.name='default') {
+       if (.isNotHexColor(new.color)){
+           return()
+       } 
        style = list(visualProperty = "NODE_PAINT", value = new.color) 
        setVisualProperty(obj, style, vizmap.style.name)
       })
@@ -5062,9 +5117,12 @@ setMethod('getDefaultEdgeSelectionColor', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod('setDefaultEdgeSelectionColor', 'CytoscapeConnectionClass', 
-  function(obj, new.color, vizmap.style.name='default') {
-    style = list(visualProperty = "EDGE_STROKE_SELECTED_PAINT", value = new.color) 
-    setVisualProperty(obj, style, vizmap.style.name)
+    function(obj, new.color, vizmap.style.name='default') {
+        if (.isNotHexColor(new.color)){
+            return()
+        }
+        style = list(visualProperty = "EDGE_STROKE_SELECTED_PAINT", value = new.color) 
+        setVisualProperty(obj, style, vizmap.style.name)
 })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -5077,6 +5135,9 @@ setMethod ('getDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 setMethod ('setDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 
    function (obj, new.color, vizmap.style.name='default') {
+      if (.isNotHexColor(new.color)){
+          return()
+      } 
       style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
       setVisualProperty(obj, style, vizmap.style.name)
       })
