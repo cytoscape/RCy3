@@ -3133,8 +3133,8 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
         setVisualProperty(obj, default.width.list, vizmap.style.name)
         
         # define the column type
-        #columnType <- findColumnType(typeof(line.widths[1]))
-        columnType <- 'String'
+        columnType <- findColumnType(typeof(line.widths[1]))
+        #columnType <- 'String'
         
         # discrete mapping
         discreteMapping (obj, edge.attribute.name, attribute.values, line.widths,
