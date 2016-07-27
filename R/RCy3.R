@@ -1203,12 +1203,19 @@ setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
                 target.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[3]))
                 edge.types = unlist(lapply(edges.tokens, function(tokens) tokens[2]))
                 write(sprintf('\t - adding %d edges to the returned graph\n', length(edges.tokens)), stderr())
-                g = addEdge(source.nodes, target.nodes, g)
+               
+                tryCatch({
+                    g = addEdge(source.nodes, target.nodes, g)
+                    edgeData(g, source.nodes, target.nodes, 'edgeType') = edge.types
+                    
+                    # GET EDGE ATTRIBUTES (if any)
+                    g = copyEdgeAttributesFromCyGraph(loc.obj, window.id, g)
+                },
+                errors ={
+                    write(sprintf("ERROR in RCy3::getGraphFromCyWindow(): Node names cannot contain parentheses.", window.title), stderr())
+                })
                 
-                edgeData(g, source.nodes, target.nodes, 'edgeType') = edge.types
-                
-                # GET EDGE ATTRIBUTES (if any)
-                g = copyEdgeAttributesFromCyGraph(loc.obj, window.id, g)
+
             }
           
         } else {
