@@ -1211,8 +1211,9 @@ setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
                     # GET EDGE ATTRIBUTES (if any)
                     g = copyEdgeAttributesFromCyGraph(loc.obj, window.id, g)
                 },
-                errors ={
+                error = function(cond){
                     write(sprintf("ERROR in RCy3::getGraphFromCyWindow(): Node names cannot contain parentheses.", window.title), stderr())
+                    return(NA)
                 })
                 
 
