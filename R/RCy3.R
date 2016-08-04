@@ -60,6 +60,10 @@ setGeneric ('createWindow',
 	signature='obj', function(obj) standardGeneric('createWindow'))
 setGeneric ('createWindowFromSelection', 
 	signature='obj', function(obj, new.windowTitle, return.graph) standardGeneric ('createWindowFromSelection'))
+setGeneric('copyCytoscapeNetwork',
+  signature = 'obj', function(obj, new_title, copy.graph.to.R = FALSE) standardGeneric('copyCytoscapeNetwork'))
+setGeneric('renameCytoscapeNetwork',	
+  signature = 'obj',function(obj, new_title, copy.graph.to.R = FALSE) standardGeneric('renameCytoscapeNetwork'))
 setGeneric ('getWindowCount', 
 	signature='obj', function(obj) standardGeneric ('getWindowCount'))
 setGeneric ('getWindowList',
@@ -723,6 +727,107 @@ setMethod ('createWindowFromSelection', 'CytoscapeWindowClass',
         
         return (existing.CytoscapeWindow (new.windowTitle, copy.graph.from.cytoscape.to.R = return.graph))
     }) # createWindowFromSelection
+
+#' Copy a Cytoscape Network 
+#'
+#' Makes a copy of a Cytoscape Network with all of its edges and nodes 
+#'
+#' @param object Cytoscape network 
+#' @param new_title New name for the copy
+#' @param copy.graph.to.R Logical whether to copy the graph to a new object in R 
+#' 
+#' @return Connection to new copy of network. 
+#'
+#' @examples 
+#' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
+#' copy_of_your_net <- copyCytoscapeNetwork(cw, "new_copy")
+#'
+#' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
+#' @seealso \code{\link{createWindowFromSelection}}, \code{\link{existing.CytoscapeWindow}}, \code{\link{renameCytoscapeNetwork}}
+#' 
+#' @concept RCy3
+#' @export
+#' 
+#' @importFrom methods setGeneric
+setMethod('copyCytoscapeNetwork',
+          'CytoscapeWindowClass', 
+          function(obj,
+                   new_title,
+                   copy.graph.to.R = FALSE) {
+            if (obj@title == new_title){
+              print("Copy not made. The titles of the original window and its copy are the same. Please pick a new name for the copy.")
+              stderr()
+            }
+            else{
+              selectAllNodes(obj)
+              selectAllEdges(obj)
+              request.uri <- paste(obj@uri,
+                                   pluginVersion(obj),
+                                   "networks",
+                                   obj@window.id,
+                                   sep = "/")
+              
+              request.res <- POST(url = request.uri,
+                                  query = list(title = new_title))
+              
+              invisible(request.res)
+              
+              if (copy.graph.to.R){
+                connect_window <- existing.CytoscapeWindow(new_title,
+                                                           copy.graph.from.cytoscape.to.R = TRUE)
+                print(paste("Cytoscape window",
+                            obj@title,
+                            "successfully copied to",
+                            connect_window@title,
+                            "and the graph was copied to R."))
+              } 
+              else {
+                connect_window <- existing.CytoscapeWindow(new_title,
+                                                           copy.graph.from.cytoscape.to.R = FALSE) 
+                print(paste("Cytoscape window",
+                            obj@title,
+                            "successfully copied to",
+                            connect_window@title,
+                            "and the graph was not copied to the R session."))
+              }
+              
+              return(connect_window)
+            }
+            
+          })
+
+#' Rename a network 
+#'
+#' Renames a Cytoscape Network. 
+#'
+#' @param object Cytoscape network 
+#' @param new_title New name for the copy
+#' @param copy.graph.to.R Logical whether to copy the graph to a new object in R 
+#' 
+#' @return Connection to the renamed network. 
+#'
+#' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
+#' @seealso \code{\link{createWindowFromSelection}}, \code{\link{existing.CytoscapeWindow}}, \code{\link{copyCytoscapeNetwork}}
+#'
+#' @examples 
+#' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
+#' renamed_net <- renameCytoscapeNetwork(cw, "renamed_network")
+#'
+#' @concept RCy3
+#' @export
+#' 
+#' @importFrom methods setGeneric
+setMethod('renameCytoscapeNetwork',
+          'CytoscapeWindowClass', 
+          function(obj,
+                   new_title,
+                   copy.graph.to.R = FALSE) {
+            new_net <- copyCytoscapeNetwork(obj,
+                                            new_title)  
+            deleteWindow(obj,
+                         obj@title)
+            return(new_net)
+          })
 
 # ------------------------------------------------------------------------------
 setMethod('getWindowCount', 'CytoscapeConnectionClass',
