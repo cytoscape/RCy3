@@ -290,6 +290,7 @@ setGeneric ('deleteEdgeAttribute',      signature='obj', function (obj, attribut
 setGeneric ('getAllNodes',              signature='obj', function (obj) standardGeneric ('getAllNodes'))
 setGeneric ('getAllEdges',              signature='obj', function (obj) standardGeneric ('getAllEdges'))
 setGeneric ('selectNodes',              signature='obj', function (obj, node.names, preserve.current.selection=TRUE) standardGeneric ('selectNodes'))
+setGeneric('selectAllNodes',            signature = 'obj',function(obj) standardGeneric('selectAllNodes'))
 setGeneric ('getSelectedNodes',         signature='obj', function (obj) standardGeneric ('getSelectedNodes'))
 setGeneric ('clearSelection',           signature='obj', function (obj) standardGeneric ('clearSelection'))
 setGeneric ('getSelectedNodeCount',     signature='obj', function (obj) standardGeneric ('getSelectedNodeCount'))
@@ -298,11 +299,10 @@ setGeneric ('unhideNodes',              signature='obj', function (obj, node.nam
 setGeneric ('hideSelectedNodes',        signature='obj', function (obj) standardGeneric ('hideSelectedNodes'))
 setGeneric ('invertNodeSelection',      signature='obj', function (obj) standardGeneric ('invertNodeSelection'))
 setGeneric ('deleteSelectedNodes',      signature='obj', function (obj) standardGeneric ('deleteSelectedNodes'))
-
 setGeneric ('selectEdges',              signature='obj', function (obj, edge.names, preserve.current.selection=TRUE) standardGeneric ('selectEdges'))
+setGeneric('selectAllEdges',            signature = 'obj', function(obj) standardGeneric('selectAllEdges'))
 setGeneric ('invertEdgeSelection',      signature='obj', function (obj) standardGeneric ('invertEdgeSelection'))
 setGeneric ('deleteSelectedEdges',      signature='obj', function (obj) standardGeneric ('deleteSelectedEdges'))
-
 setGeneric ('getSelectedEdges',         signature='obj', function (obj) standardGeneric ('getSelectedEdges'))
 setGeneric ('clearSelection',           signature='obj', function (obj) standardGeneric ('clearSelection'))
 setGeneric ('getSelectedEdgeCount',     signature='obj', function (obj) standardGeneric ('getSelectedEdgeCount'))
@@ -4279,6 +4279,56 @@ setMethod('selectNodes', 'CytoscapeWindowClass',
         invisible(request.res)
 }) 
 ## END selectNodes
+
+#' Select all nodes
+#'
+#' Selects all nodes in a Cytoscape Network 
+#'
+#' @param object Cytoscape network  
+#' 
+#' @return Selects all nodes in a specified network. 
+#'
+#' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
+#' @seealso \code{\link{selectNodes}}
+#'
+#' @concept RCy3
+#' @export
+#' 
+#' @examples 
+#' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
+#' selectAllNodes(cw)
+#' 
+#' @importFrom methods setGeneric
+setMethod('selectAllNodes',
+          'CytoscapeWindowClass', 
+          function(obj) {
+            
+            resource.uri <- paste(obj@uri,
+                                  pluginVersion(obj),
+                                  "networks",
+                                  obj@window.id,
+                                  "nodes",
+                                  sep = "/")
+            
+            request.res <- GET(resource.uri) # returns all of the node SUIDs
+            all_node_SUIDs <- fromJSON(rawToChar(request.res$content))
+            SUID.value.pairs <- lapply(all_node_SUIDs,
+                                       function(s) {list('SUID' = s, 'value' = TRUE)})
+            SUID.value.pairs.JSON <- toJSON(SUID.value.pairs)
+            
+            resource.uri <- paste(obj@uri,
+                                  pluginVersion(obj),
+                                  "networks",
+                                  obj@window.id,
+                                  "tables/defaultnode/columns/selected",
+                                  sep = "/")
+            request.res <- PUT(url = resource.uri,
+                               body = SUID.value.pairs.JSON,
+                               encode = "json")
+            invisible(request.res)
+          })
+
+
    
 # ------------------------------------------------------------------------------
 setMethod('getSelectedNodeCount', 'CytoscapeWindowClass', 
@@ -4446,6 +4496,54 @@ setMethod('selectEdges', 'CytoscapeWindowClass',
         invisible(request.res)
 }) 
 ## END selectEdges
+
+#' Select all edges 
+#'
+#' Selects all edges in a Cytoscape Network 
+#'
+#' @param object Cytoscape network  
+#' 
+#' @return Selects all edges in a specified network. 
+#'
+#' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
+#' @seealso \code{\link{selectEdges}}
+#'
+#' @concept RCy3
+#' @export
+#' 
+#' @examples 
+#' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
+#' selectAllEdges(cw)
+#' 
+#' @importFrom methods setGeneric
+setMethod('selectAllEdges',
+          'CytoscapeWindowClass', 
+          function(obj) {
+            
+            resource.uri <- paste(obj@uri,
+                                  pluginVersion(obj),
+                                  "networks",
+                                  obj@window.id,
+                                  "edges",
+                                  sep = "/")
+            
+            request.res_edges <- GET(resource.uri) ## returns all of the edge suids
+            all_edge_SUIDs <- fromJSON(rawToChar(request.res_edges$content))
+            SUID.value.pairs <- lapply(all_edge_SUIDs,
+                                       function(s) {list('SUID' = s, 'value' = TRUE)})
+            SUID.value.pairs.JSON <- toJSON(SUID.value.pairs)
+            
+            resource.uri <- paste(obj@uri,
+                                  pluginVersion(obj),
+                                  "networks",
+                                  obj@window.id,
+                                  "tables/defaultedge/columns/selected",
+                                  sep = "/")
+            request.res <- PUT(url = resource.uri,
+                               body = SUID.value.pairs.JSON,
+                               encode = "json")
+            invisible(request.res)
+          })
  
 # ------------------------------------------------------------------------------
 setMethod('invertEdgeSelection', 'CytoscapeWindowClass', 
