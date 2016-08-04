@@ -9,6 +9,8 @@ exportMethods (
    copyVisualStyle,
    createWindow,
    createWindowFromSelection,
+   copyCytoscapeNetwork,
+   renameCytoscapeNetwork,
    cyPlot,
    deleteAllWindows,
    deleteEdgeAttribute,
