@@ -65,7 +65,7 @@ Alternatively you can download the CyREST plugin as .jar file from Cytoscape's a
 
 Here we create a 3-node graph in R, send it to Cytoscape for display and layout.  For the sake of simplicity, no node attributes, no edges, and no vizmapping is included; those topics are covered in subsequent examples.
 
-<<g0>>=
+<<g0, eval=FALSE>>=
     library(RCy3)
     g <- new ('graphNEL', edgemode='directed')
     g <- graph::addNode ('A', g)
@@ -81,7 +81,7 @@ other windows within the Cytoscape Desktop. This graph needs layout. You can acc
 
 After layout, you will see the structure of this graph: 3 unconnected nodes, unlabeled, small and colored red, and thus not very informative. Fortunately, Cytoscape has some built-in rendering rules in which (and unless instructed otherwise) nodes are rendered round in shape, pale red in color, and labeled with the names supplied when they were added to the graph; edges (if any) are simple blue lines. To get this default rendering, simply type.
 
-<<g1>>=
+<<g1, eval=FALSE>>=
     layoutNetwork (cw, layout.name='grid')
 
 @ 
@@ -128,7 +128,7 @@ one usually creates the structure of a graph -- specify its nodes and edges -- i
 specifies values for those attributes, and only then displays the graph. For tutorial purposes here, the
 already-displayed graph is modified and redisplayed.
 
-<<g2>>=
+<<g2, eval=FALSE>>=
     g <- cw@graph   # created above, in the section  'A minimal example'
     g <- initNodeAttribute (graph=g,  attribute.name='moleculeType',
                             attribute.type='char',
@@ -160,7 +160,7 @@ defauls, like you see below, requires the redraw, but setting rules
 (about which more below) does not. We hope to get more consistency of
 Cytoscape soon.  In the meantime, if you are rendering a larg graph, you may want to call this only when you are sure you need to.
 
-<<defaults>>=
+<<defaults, eval=FALSE>>=
     setDefaultNodeShape (cw, 'OCTAGON')
     setDefaultNodeColor (cw, '#AAFF88')
     setDefaultNodeSize  (cw, 80)
@@ -169,7 +169,7 @@ Cytoscape soon.  In the meantime, if you are rendering a larg graph, you may wan
 
 Now we will add some visual mapping -- \emph {(vizmap)} -- rules.  These rules connect data attributes to visual attributes, thereby giving the eye with additional information about the network.  In our first mapping, we use map from the data attribute `moleculeType' to node shapes to.  To begin, ask Cytoscape for the node shape names it recognizes.  Then query the graph for a list of the data attributes, establishing that `moleculeType' is indeed a current data attribute of all nodes.  Then find out what distinct values are defined for moleculeType across the nodes of the graph.  Finally, define and set the rule.
 
-<<g3>>=
+<<g3, eval=FALSE>>=
     getNodeShapes (cw)   # diamond, ellipse, trapezoid, triangle, etc.
     print (noa.names (getGraph (cw)))  # what data attributes are defined?
     print (noa (getGraph (cw), 'moleculeType'))
@@ -192,14 +192,14 @@ intermediate values are rendered in appropriately interpolated shades of either 
 
 setNodeColorRule and setNodeSizeRule are commonly interpolation rules: use mode=`interpolate'. But they may also be called as lookup rules:  use parameter mode=`lookup' to accomplish this, and provide as many data points and sizes (or colors) needed to cover all possible values of the attribute you are mapping.
 
-<<g4>>=
+<<g4, eval=FALSE>>=
     setNodeColorRule (cw, 'lfc', c (-3.0, 0.0, 3.0),
                       c ('#00AA00', '#00FF00', '#FFFFFF', '#FF0000', '#AA0000'),
                       mode='interpolate')
 @ 
 Note that there \emph{five} colors, but only three control.points. The two additional colors tell the interpolated mapper which colors to use if the stated data attribute (lfc) has a value less than the smallest control point (paint it a darkish green, \#00AA00) or larger than the largets control point (paint it a darkish red, \#AA0000).  These extreme (or out-of-bounds) colors may be omitted:
 
-<<g41>>=
+<<g41, eval=FALSE>>=
     setNodeColorRule (cw, 'lfc', c (-3.0, 0.0, 3.0),
                       c ('#00FF00', '#FFFFFF', '#FF0000'),
                       mode='interpolate')
@@ -209,7 +209,7 @@ in which case RCy3 will resuse the first and last values (green and red) for out
 
 Now, add a node size rule, using `lfc' again as the controlling node attribute.
 
-<<g5>>=
+<<g5, eval=FALSE>>=
     control.points = c (-1.2, 2.0, 4.0)
     node.sizes     = c (10, 20, 50, 200, 205)
     setNodeSizeRule (cw, 'lfc', control.points, node.sizes,
@@ -217,7 +217,7 @@ Now, add a node size rule, using `lfc' again as the controlling node attribute.
 
 @ 
 \section{Add some edges, edge attributes, and some rules for their rendering.}
-<<g6>>=
+<<g6, eval=FALSE>>=
     g <- cw@graph
     g <- initEdgeAttribute (graph=g,  attribute.name='edgeType',
                             attribute.type='char',
@@ -246,7 +246,7 @@ Now, add a node size rule, using `lfc' again as the controlling node attribute.
 
 \section{Hide, Show, and Float Cytoscape Panels}
 If you want to have more of the Cytoscape Desktop devoted to displaying your graph, you can hide the panels which normally occupy the left and bottom proting of that Desktop.  There are related panels for `docking' and `floating' those panels.  To save on typing, your arguments to these functions (see below) can be very terse, and are case-independent.
-<<g7>>=
+<<g7, eval=FALSE>>=
     hidePanel (cw, 'Data Panel')
     floatPanel (cw, 'D')
     dockPanel (cw, 'd')
@@ -259,11 +259,11 @@ If you want to have more of the Cytoscape Desktop devoted to displaying your gra
 
 Let us now try some simple back-and-forth between Cytoscape and R.  In Cytoscape, click the `B' node.  In R:
 
-<<8a, echo=FALSE>>=
+<<8a, echo=FALSE, eval=FALSE>>=
     selectNodes (cw, 'B')
 @
 
-<<g8>>=
+<<g8, eval=FALSE>>=
     getSelectedNodes (cw)
 @ 
 
@@ -275,7 +275,7 @@ Now we wish to extend the selected nodes to include the first neighbors of the a
 
 You will see that all three nodes are now selected. Get their identifers back to R:
 
-<<g10>>=
+<<g10, eval=FALSE>>=
     nodes <- getSelectedNodes (cw)
 @ 
 
@@ -284,7 +284,7 @@ You will see that all three nodes are now selected. Get their identifers back to
 
 Despite its simplicity, RCy3's \emph{\textbf{setNodePosition}} method provides the means to create custom layout algorithms and animations.  Here is a rather nonsensical example, in which the `A' node orbits around a fixed center, with the `B' and `C' nodes left unchanged.
 
-<<position>>=
+<<position, eval=FALSE>>=
     cwe <- CytoscapeWindow ('vignette.setNodePosition',
                             graph=RCy3::makeSimpleGraph (), overwrite=TRUE)
     displayGraph (cwe)
@@ -301,7 +301,7 @@ Despite its simplicity, RCy3's \emph{\textbf{setNodePosition}} method provides t
         y <- center.y + (radius * sin (angle.in.radians))
         setNodePosition (cwe, 'A', x, y)
     }
-    # RCy will not create windows with duplicate names, so clear the decks for a subsequent possible run
+    # RCy3 will not create windows with duplicate names, so clear the decks for a subsequent possible run
 @ 
 
 \section{Movies: explore time course data by animating node color and size}
@@ -310,7 +310,7 @@ Time course microarray expression experiments are commonplace in molecular biolo
 
 We begin with the small sample graph just like that created in the `setNodePosition' example above.  We add some made-up statistical signficicance data into a new node attribute, `pval'.
 
-<<moviePrep>>=
+<<moviePrep, eval=FALSE>>=
     g <- RCy3::makeSimpleGraph ()
     g <- initNodeAttribute (g, 'pval', 'numeric', 1.0)
     
@@ -321,7 +321,7 @@ We begin with the small sample graph just like that created in the `setNodePosit
 
 Now define the node size and node color rules we will use in the animation:
 
-<<movieRules>>=
+<<movieRules, eval=FALSE>>=
     lfc.control.points <- c (-3.0, 0.0, 3.0)
     lfc.colors <- c ('#00AA00', '#00FF00', '#FFFFFF', '#FF0000', '#AA0000')
     setNodeColorRule (cwm, 'lfc', lfc.control.points, lfc.colors,
@@ -333,7 +333,7 @@ Now define the node size and node color rules we will use in the animation:
                      mode='interpolate')
 @ 
 Once the rules are in effect, node color and size will always be a function of each nodes' lfc and pval numeric attributes. Animation is accomplished easily:  all you have to do is to update these two attributes for each node at each time point, and asking Cytoscape to render the nodes following the rules it already has been instructed to follow.  Note that a message is written to the Cytoscape status message bar -- found at the lower left corner of the Cytoscape desktop -- to help keep track of what the current timepoint is.
-<<animate>>=
+<<animate, eval=FALSE>>=
 
     pval.timepoint.1 <- c (0.01, 0.3, 0.05)
     pval.timepoint.2 <- c (0.05, 0.01, 0.01)
@@ -368,7 +368,7 @@ Though this example is very simple and quite without biological meaning, we hope
 
 Finally, delete all the windows from this vignette:
 
-<<deleteWindows>>=
+<<deleteWindows, eval=FALSE>>=
     cy <- CytoscapeConnection ()
     window.names <- c ('vignette', 'vignette.setNodePosition', 'movie')
     for (window.name in window.names){
@@ -401,6 +401,8 @@ Finally, delete all the windows from this vignette:
 \item Keiichiro Ono and Barry Demchak kindly provided CyREST as well as help and support for new functionalities and changes.
 
 \item Mark Grimes kindly provided helpful user feedback.
+
+\item Julia Gustavsen generously developed various use cases/examples for using RCy3 with biological data during GSOC 2016. More detail can be found here: https://github.com/jooolia/gsoc_Rcy3_vignettes/blob/master/blog_post_drafts/final_work_submission.md
 
 
 \end{itemize}
