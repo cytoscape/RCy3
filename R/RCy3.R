@@ -179,7 +179,7 @@ setGeneric ('getDefaultEdgeReverseSelectionColor',  signature='obj',
 setGeneric ('setDefaultEdgeReverseSelectionColor',  signature='obj',
                 function (obj, new.color, vizmap.style.name='default') standardGeneric ('setDefaultEdgeReverseSelectionColor'))
 
-setGeneric ('saveImage',                  signature='obj', function (obj, file.name, image.type, scale=1.0) standardGeneric ('saveImage'))
+setGeneric ('saveImage',                  signature='obj', function (obj, file.name, image.type, h=600) standardGeneric ('saveImage'))
 setGeneric ('saveNetwork',                signature='obj', function (obj, file.name, format='cys') standardGeneric ('saveNetwork'))
 
 setGeneric ('setDefaultNodeShape',        signature='obj', function (obj, new.shape, vizmap.style.name='default') standardGeneric ('setDefaultNodeShape'))
@@ -5354,25 +5354,29 @@ setMethod ('setDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
       })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('saveImage', 'CytoscapeWindowClass',
-
-   function (obj, file.name, image.type, scale=1.0) {
-      image.type = tolower (image.type)
-      stopifnot (image.type %in% c ('png', 'pdf', 'svg'))
-      id = as.character (obj@window.id)
-      
-      if (!file.exists(file.name)){
-        # TODO Comment TanjaM - scaling not possible with the new version -- remove?
-          
-        # get the view image from Cytoscape in PNG, PDF, or SVG format
-        resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
-                              paste0("views/first.", image.type), sep="/")
-
-        request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type), overwrite = TRUE))
-        write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
-      }else{
-          write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
-      }
-     }) # saveImage
+           
+           function (obj, file.name, image.type, h = 600) {
+             image.type = tolower (image.type)
+             stopifnot (image.type %in% c ('png', 'pdf', 'svg'))
+             id = as.character (obj@window.id)
+             
+             if (!file.exists(file.name)){
+               if(image.type=='png'){
+                 
+                 resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
+                                       paste0("views/first.", image.type, "?h=", h), sep="/")  
+               } 
+               else{
+                 # get the view image from Cytoscape in PNG, PDF, or SVG format
+                 resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
+                                       paste0("views/first.", image.type), sep="/")
+               }
+               request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type), overwrite = TRUE))
+               write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
+             }else{
+               write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
+             }
+           }) # saveImage
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('saveNetwork', 'CytoscapeWindowClass',
 
