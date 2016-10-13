@@ -21,6 +21,7 @@ cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 selectAllNodes(cw)
 
 }
+\keyword{graph}
 \author{
 Julia Gustavsen, \email{j.gustavsen@gmail.com}
 }
