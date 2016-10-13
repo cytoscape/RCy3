@@ -7,7 +7,7 @@ Specify how data attributes -- for the specified named attribute -- are
 mapped to node color. There are two modes: 'interpolate' and 'lookup'.
 In the former, you specify data values ('control points') and colors;
 when a node's corresponding data attribute value is exactly that of a
-control point, the specified color is used.  If the node's data attribute
+control point, the specified color is used. If the node's data attribute
 falls between control points, then the color is interpolated. Note! In
 the 'interpolate' mode, you almost always want to provide two additional
 colors: one for node data values falling below the minimum control point,
@@ -62,6 +62,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -78,7 +79,8 @@ None.
     # lookup mode
   data.values <- c("kinase", "transcription factor", "glycoprotein")
   node.colors <- c("#0000AA", "#FFFF00", "#0000AA") 
-  setNodeColorRule (cw, node.attribute.name='type', data.values,   node.colors, mode='lookup', default.color='#AA0000')
+  setNodeColorRule (cw, node.attribute.name='type', data.values, node.colors, mode='lookup', default.color='#AA0000')
 }
 
+}
 \keyword{graph}

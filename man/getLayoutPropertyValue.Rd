@@ -32,6 +32,7 @@ getLayoutPropertyValue(obj, layout.name, property.name)
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -50,4 +51,5 @@ getLayoutPropertyValue(obj, layout.name, property.name)
     #               2 
 }
 
+}
 \keyword{graph}

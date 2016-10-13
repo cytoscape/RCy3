@@ -40,6 +40,7 @@ The attribute in question, which may be of any scalar type.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -54,4 +55,5 @@ The attribute in question, which may be of any scalar type.
   print (paste ("should be -12: ", score.bc))
 }
 
+}
 \keyword{graph}

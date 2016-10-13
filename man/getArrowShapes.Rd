@@ -21,6 +21,7 @@ A list of character strings, e.g., 'DIAMOND', 'T', 'ARROW'
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -32,4 +33,5 @@ A list of character strings, e.g., 'DIAMOND', 'T', 'ARROW'
     # [13] "DELTA_SHORT_1"  
 }
 
+}
 \keyword{graph}

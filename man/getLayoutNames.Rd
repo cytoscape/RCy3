@@ -31,6 +31,7 @@ A list of character strings, e.g., "jgraph-circle" "attribute-circle" "jgraph-an
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -39,4 +40,5 @@ A list of character strings, e.g., "jgraph-circle" "attribute-circle" "jgraph-an
    #  [1] "jgraph-circle" "attribute-circle" "jgraph-annealing"  ...
 }
 
+}
 \keyword{graph}

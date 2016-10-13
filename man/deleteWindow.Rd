@@ -27,6 +27,7 @@ Nothing.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -41,4 +42,5 @@ Nothing.
   deleteWindow (cy, 'demo 2')
 }
 
+}
 \keyword{graph}

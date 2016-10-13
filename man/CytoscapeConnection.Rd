@@ -54,6 +54,7 @@ CytoscapeConnection (host = "localhost", port = 1234)
 
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -66,4 +67,5 @@ CytoscapeConnection (host = "localhost", port = 1234)
   hidePanel (cy, 'control')
 }
 
+}
 \keyword{ graph }

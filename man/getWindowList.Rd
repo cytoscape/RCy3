@@ -19,6 +19,7 @@ the windows; the names of the list are integers.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -31,4 +32,5 @@ the windows; the names of the list are integers.
     # [1] "getWindowList.test2" "getWindowList.test1"
 }
 
+}
 \keyword{graph}

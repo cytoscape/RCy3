@@ -25,6 +25,7 @@ Nothing.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -32,4 +33,5 @@ Nothing.
   hideAllPanels (cy)
 }
 
+}
 \keyword{graph}

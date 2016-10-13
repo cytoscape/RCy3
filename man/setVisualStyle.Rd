@@ -29,6 +29,7 @@ Nothing.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -41,4 +42,5 @@ Nothing.
   setVisualStyle (cw, styles[5])
 }
 
+}
 \keyword{graph}

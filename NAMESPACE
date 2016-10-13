@@ -9,6 +9,8 @@ exportMethods (
    copyVisualStyle,
    createWindow,
    createWindowFromSelection,
+   copyCytoscapeNetwork,
+   renameCytoscapeNetwork,
    cyPlot,
    deleteAllWindows,
    deleteEdgeAttribute,
@@ -81,8 +83,10 @@ exportMethods (
    saveLayout,
    saveNetwork,
    selectEdges,
+   selectAllEdges,
    selectFirstNeighborsOfSelectedNodes,
    selectNodes,
+   selectAllNodes,
    sendEdges,
    sendNodes,
    setCenter,
@@ -203,4 +207,3 @@ importFrom(graph, randomGraph)
 importFrom(RJSONIO, fromJSON, toJSON)
 importFrom(httr, GET, PUT, POST, DELETE, write_disk)
 importFrom(RCurl, url.exists)
-

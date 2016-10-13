@@ -28,6 +28,7 @@ a \code{list} of character strings.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -35,4 +36,5 @@ a \code{list} of character strings.
   print (getVisualStyleNames (cy))
 }
 
+}
 \keyword{graph}

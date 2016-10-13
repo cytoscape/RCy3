@@ -24,6 +24,7 @@ Unless node dimensions are 'unlocked' these two vectors will be identical.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -51,4 +52,5 @@ Unless node dimensions are 'unlocked' these two vectors will be identical.
   print (getNodeSize (cw, 'A'))
 }
 
+}
 \keyword{graph}

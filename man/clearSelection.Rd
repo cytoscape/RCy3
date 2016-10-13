@@ -19,6 +19,7 @@ Nothing
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
   cw <- CytoscapeWindow ('clearSelection.test', graph=makeSimpleGraph())
@@ -30,4 +31,5 @@ Nothing
   print (getSelectedNodeCount (cw))   # should be 0
 }
 
+}
 \keyword{graph}

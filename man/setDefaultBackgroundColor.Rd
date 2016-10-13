@@ -20,6 +20,7 @@ A character string, a hexadecimal, e.g. #000000
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -28,4 +29,5 @@ A character string, a hexadecimal, e.g. #000000
   cw2 <- CytoscapeWindow ('setDefaultBackgroundColor.test2', graph=makeSimpleGraph())
 }
 
+}
 \keyword{graph}

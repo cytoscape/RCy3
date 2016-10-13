@@ -19,6 +19,7 @@ ping(obj)
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -27,4 +28,5 @@ ping(obj)
     # "It works!"   
 }
 
+}
 \keyword{graph}

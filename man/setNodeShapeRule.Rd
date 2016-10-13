@@ -32,6 +32,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -43,4 +44,5 @@ None.
   setNodeShapeRule (cw, node.attribute.name='type', molecule.types, shapes)
 }
 
+}
 \keyword{graph}

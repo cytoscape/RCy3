@@ -20,6 +20,7 @@ A list of character strings, e.g., 'SOLID', 'DOT'
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -28,4 +29,5 @@ A list of character strings, e.g., 'SOLID', 'DOT'
   #  [1] "SOLID" "LONG_DASH" "EQUAL_DASH" ...
 }
 
+}
 \keyword{graph}

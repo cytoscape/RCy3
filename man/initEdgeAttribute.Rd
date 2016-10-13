@@ -32,6 +32,7 @@ Returns the modified graph.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -39,4 +40,5 @@ Returns the modified graph.
   g = initEdgeAttribute (g, 'edgeType', 'char', 'associates with')
 }
 
+}
 \keyword{graph}
