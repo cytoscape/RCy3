@@ -21,7 +21,7 @@ a graphNEL object with nodes, edges, and their attributes
 \author{Mark Grimes}
 
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 

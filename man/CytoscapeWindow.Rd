@@ -56,7 +56,7 @@ CytoscapeWindow(title, graph = new("graphNEL", edgemode='directed'),
   }
 
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
