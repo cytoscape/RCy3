@@ -25,6 +25,7 @@ A named list of four numbers, with these names:  top.x, top.y, bottom.x, bottom.
  }
 
 \examples{
+  dontrun{
   # WARNING: Method RCy3::getViewCoordinates() is not implemented in RCy3!
   
   # first, delete existing windows to save memory:
@@ -38,4 +39,5 @@ A named list of four numbers, with these names:  top.x, top.y, bottom.x, bottom.
   #print (getViewCoordinates (cw))
 }
 
+}
 \keyword{graph}

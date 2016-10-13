@@ -30,6 +30,7 @@ Nothing.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -41,4 +42,5 @@ Nothing.
   floatPanel (cy, 'SOUTH_WEST')
 }
 
+}
 \keyword{graph}

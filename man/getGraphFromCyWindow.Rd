@@ -19,6 +19,7 @@ A Bioconductor graph object.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -29,4 +30,5 @@ A Bioconductor graph object.
   print (g.cy)  # 3 nodes, 3 edges
 }
 
+}
 \keyword{graph}

@@ -26,6 +26,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -39,4 +40,5 @@ None.
   setNodeImageDirect (cw, 'C', 1 ) # last image in the Image Manager
 }
 
+}
 \keyword{graph}

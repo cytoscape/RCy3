@@ -27,6 +27,7 @@ Nothing.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -39,4 +40,5 @@ Nothing.
   layoutNetwork (cw, 'force-directed')
 }
 
+}
 \keyword{graph}

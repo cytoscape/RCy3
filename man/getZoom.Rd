@@ -28,6 +28,7 @@ A names list, x and y.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -39,4 +40,5 @@ A names list, x and y.
   print (getZoom (cw))
 }
 
+}
 \keyword{graph}

@@ -28,6 +28,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -53,4 +54,5 @@ None.
   setCenter (cw, original.center$x, original.center$y)
 }
 
+}
 \keyword{graph}

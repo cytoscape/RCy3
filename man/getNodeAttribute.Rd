@@ -40,6 +40,7 @@ The attribute in question, which may be of any scalar type.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -54,4 +55,5 @@ The attribute in question, which may be of any scalar type.
     # [1] 30
 }
 
+}
 \keyword{graph}

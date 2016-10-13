@@ -39,6 +39,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -51,4 +52,5 @@ None.
   result = setEdgeAttributesDirect (cw, 'misc', 'string', edge.names, edge.values)
 }
 
+}
 \keyword{graph}

@@ -28,6 +28,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -39,4 +40,5 @@ None.
   setNodeSizeDirect (cw, c('A', 'B'), c(30, 40))
 }
 
+}
 \keyword{graph}

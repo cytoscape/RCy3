@@ -27,6 +27,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -40,4 +41,5 @@ None.
   file.exists (paste0(filename, '.cys'))
 }
 
+}
 \keyword{graph}
