@@ -37,6 +37,4 @@ None.
   selectNodes (cw, "B")
   deleteSelectedNodes (cw)
 }
-
-
 \keyword{graph}
