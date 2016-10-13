@@ -20,7 +20,7 @@ Nothing.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
-  dontrun{
+  \dontrun{
   cy <- CytoscapeConnection ()
   cw1 = CytoscapeWindow ('cw1')
   cw2 = CytoscapeWindow ('cw2')

@@ -36,7 +36,7 @@ existing.CytoscapeWindow (title, host='localhost', port=1234, copy.graph.from.cy
 
 
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
