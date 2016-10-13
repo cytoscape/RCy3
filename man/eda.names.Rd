@@ -25,7 +25,7 @@ which are the names of the edges.
  noa, eda, noa.names
 }
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 

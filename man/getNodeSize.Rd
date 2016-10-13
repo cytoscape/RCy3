@@ -24,7 +24,7 @@ Unless node dimensions are 'unlocked' these two vectors will be identical.
 }
 
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
