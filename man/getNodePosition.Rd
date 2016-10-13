@@ -21,6 +21,7 @@ when the graph was created.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -30,4 +31,5 @@ when the graph was created.
   getNodePosition (cw, c ('A', 'B', 'C'))
 }
 
+}
 \keyword{graph}

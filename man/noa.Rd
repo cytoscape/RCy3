@@ -26,6 +26,7 @@ noa.names
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -35,4 +36,5 @@ noa.names
     #      "kinase" "transcription factor"         "glycoprotein" 
 }
 
+}
 \keyword{graph}

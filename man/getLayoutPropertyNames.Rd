@@ -29,6 +29,7 @@ getLayoutPropertyNames(obj, layout.name)
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -40,4 +41,5 @@ getLayoutPropertyNames(obj, layout.name)
     # [9] "singlePartition"  
 }
 
+}
 \keyword{graph}

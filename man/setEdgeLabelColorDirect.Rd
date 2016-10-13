@@ -27,6 +27,7 @@ None.
  }
  
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -39,4 +40,5 @@ None.
   setEdgeLabelColorDirect (cw, edge.names [1:2], '#FF0000')
 }
 
+}
 \keyword{graph}

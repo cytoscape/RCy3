@@ -43,6 +43,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -53,4 +54,5 @@ None.
   setNodeColorDirect (cw, c('A', 'C'), c('#88FF00', '#880000'))
 }
 
+}
 \keyword{graph}

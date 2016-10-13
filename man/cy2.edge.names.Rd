@@ -26,6 +26,7 @@ graph edge names are their names.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -39,4 +40,5 @@ graph edge names are their names.
 
 }
 
+}
 \keyword{graph}%

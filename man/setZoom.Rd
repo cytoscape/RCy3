@@ -30,6 +30,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -44,4 +45,5 @@ None.
   setZoom (cw, 1.0)
 }
 
+}
 \keyword{graph}

@@ -18,6 +18,7 @@ A list of character strings.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -29,4 +30,5 @@ A list of character strings.
   # [1] 3
 }
 
+}
 \keyword{graph}

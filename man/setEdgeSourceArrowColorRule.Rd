@@ -30,6 +30,7 @@ None.
 \seealso{ \code{\link{setEdgeTargetArrowColorRule}}}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -56,4 +57,5 @@ None.
   setEdgeSourceArrowColorRule (cw, 'score', control.points, colors)
 }
 
+}
 \keyword{graph}

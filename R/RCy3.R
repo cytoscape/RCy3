@@ -60,6 +60,10 @@ setGeneric ('createWindow',
 	signature='obj', function(obj) standardGeneric('createWindow'))
 setGeneric ('createWindowFromSelection', 
 	signature='obj', function(obj, new.windowTitle, return.graph) standardGeneric ('createWindowFromSelection'))
+setGeneric('copyCytoscapeNetwork',
+  signature = 'obj', function(obj, new_title, copy.graph.to.R = FALSE) standardGeneric('copyCytoscapeNetwork'))
+setGeneric('renameCytoscapeNetwork',	
+  signature = 'obj',function(obj, new_title, copy.graph.to.R = FALSE) standardGeneric('renameCytoscapeNetwork'))
 setGeneric ('getWindowCount', 
 	signature='obj', function(obj) standardGeneric ('getWindowCount'))
 setGeneric ('getWindowList',
@@ -175,7 +179,7 @@ setGeneric ('getDefaultEdgeReverseSelectionColor',  signature='obj',
 setGeneric ('setDefaultEdgeReverseSelectionColor',  signature='obj',
                 function (obj, new.color, vizmap.style.name='default') standardGeneric ('setDefaultEdgeReverseSelectionColor'))
 
-setGeneric ('saveImage',                  signature='obj', function (obj, file.name, image.type, scale=1.0) standardGeneric ('saveImage'))
+setGeneric ('saveImage',                  signature='obj', function (obj, file.name, image.type, h=600) standardGeneric ('saveImage'))
 setGeneric ('saveNetwork',                signature='obj', function (obj, file.name, format='cys') standardGeneric ('saveNetwork'))
 
 setGeneric ('setDefaultNodeShape',        signature='obj', function (obj, new.shape, vizmap.style.name='default') standardGeneric ('setDefaultNodeShape'))
@@ -290,6 +294,7 @@ setGeneric ('deleteEdgeAttribute',      signature='obj', function (obj, attribut
 setGeneric ('getAllNodes',              signature='obj', function (obj) standardGeneric ('getAllNodes'))
 setGeneric ('getAllEdges',              signature='obj', function (obj) standardGeneric ('getAllEdges'))
 setGeneric ('selectNodes',              signature='obj', function (obj, node.names, preserve.current.selection=TRUE) standardGeneric ('selectNodes'))
+setGeneric('selectAllNodes',            signature = 'obj',function(obj) standardGeneric('selectAllNodes'))
 setGeneric ('getSelectedNodes',         signature='obj', function (obj) standardGeneric ('getSelectedNodes'))
 setGeneric ('clearSelection',           signature='obj', function (obj) standardGeneric ('clearSelection'))
 setGeneric ('getSelectedNodeCount',     signature='obj', function (obj) standardGeneric ('getSelectedNodeCount'))
@@ -298,11 +303,10 @@ setGeneric ('unhideNodes',              signature='obj', function (obj, node.nam
 setGeneric ('hideSelectedNodes',        signature='obj', function (obj) standardGeneric ('hideSelectedNodes'))
 setGeneric ('invertNodeSelection',      signature='obj', function (obj) standardGeneric ('invertNodeSelection'))
 setGeneric ('deleteSelectedNodes',      signature='obj', function (obj) standardGeneric ('deleteSelectedNodes'))
-
 setGeneric ('selectEdges',              signature='obj', function (obj, edge.names, preserve.current.selection=TRUE) standardGeneric ('selectEdges'))
+setGeneric('selectAllEdges',            signature = 'obj', function(obj) standardGeneric('selectAllEdges'))
 setGeneric ('invertEdgeSelection',      signature='obj', function (obj) standardGeneric ('invertEdgeSelection'))
 setGeneric ('deleteSelectedEdges',      signature='obj', function (obj) standardGeneric ('deleteSelectedEdges'))
-
 setGeneric ('getSelectedEdges',         signature='obj', function (obj) standardGeneric ('getSelectedEdges'))
 setGeneric ('clearSelection',           signature='obj', function (obj) standardGeneric ('clearSelection'))
 setGeneric ('getSelectedEdgeCount',     signature='obj', function (obj) standardGeneric ('getSelectedEdgeCount'))
@@ -723,6 +727,107 @@ setMethod ('createWindowFromSelection', 'CytoscapeWindowClass',
         
         return (existing.CytoscapeWindow (new.windowTitle, copy.graph.from.cytoscape.to.R = return.graph))
     }) # createWindowFromSelection
+
+#' Copy a Cytoscape Network 
+#'
+#' Makes a copy of a Cytoscape Network with all of its edges and nodes 
+#'
+#' @param object Cytoscape network 
+#' @param new_title New name for the copy
+#' @param copy.graph.to.R Logical whether to copy the graph to a new object in R 
+#' 
+#' @return Connection to new copy of network. 
+#'
+#' @examples 
+#' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
+#' copy_of_your_net <- copyCytoscapeNetwork(cw, "new_copy")
+#'
+#' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
+#' @seealso \code{\link{createWindowFromSelection}}, \code{\link{existing.CytoscapeWindow}}, \code{\link{renameCytoscapeNetwork}}
+#' 
+#' @concept RCy3
+#' @export
+#' 
+#' @importFrom methods setGeneric
+setMethod('copyCytoscapeNetwork',
+          'CytoscapeWindowClass', 
+          function(obj,
+                   new_title,
+                   copy.graph.to.R = FALSE) {
+            if (obj@title == new_title){
+              print("Copy not made. The titles of the original window and its copy are the same. Please pick a new name for the copy.")
+              stderr()
+            }
+            else{
+              selectAllNodes(obj)
+              selectAllEdges(obj)
+              request.uri <- paste(obj@uri,
+                                   pluginVersion(obj),
+                                   "networks",
+                                   obj@window.id,
+                                   sep = "/")
+              
+              request.res <- POST(url = request.uri,
+                                  query = list(title = new_title))
+              
+              invisible(request.res)
+              
+              if (copy.graph.to.R){
+                connect_window <- existing.CytoscapeWindow(new_title,
+                                                           copy.graph.from.cytoscape.to.R = TRUE)
+                print(paste("Cytoscape window",
+                            obj@title,
+                            "successfully copied to",
+                            connect_window@title,
+                            "and the graph was copied to R."))
+              } 
+              else {
+                connect_window <- existing.CytoscapeWindow(new_title,
+                                                           copy.graph.from.cytoscape.to.R = FALSE) 
+                print(paste("Cytoscape window",
+                            obj@title,
+                            "successfully copied to",
+                            connect_window@title,
+                            "and the graph was not copied to the R session."))
+              }
+              
+              return(connect_window)
+            }
+            
+          })
+
+#' Rename a network 
+#'
+#' Renames a Cytoscape Network. 
+#'
+#' @param object Cytoscape network 
+#' @param new_title New name for the copy
+#' @param copy.graph.to.R Logical whether to copy the graph to a new object in R 
+#' 
+#' @return Connection to the renamed network. 
+#'
+#' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
+#' @seealso \code{\link{createWindowFromSelection}}, \code{\link{existing.CytoscapeWindow}}, \code{\link{copyCytoscapeNetwork}}
+#'
+#' @examples 
+#' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
+#' renamed_net <- renameCytoscapeNetwork(cw, "renamed_network")
+#'
+#' @concept RCy3
+#' @export
+#' 
+#' @importFrom methods setGeneric
+setMethod('renameCytoscapeNetwork',
+          'CytoscapeWindowClass', 
+          function(obj,
+                   new_title,
+                   copy.graph.to.R = FALSE) {
+            new_net <- copyCytoscapeNetwork(obj,
+                                            new_title)  
+            deleteWindow(obj,
+                         obj@title)
+            return(new_net)
+          })
 
 # ------------------------------------------------------------------------------
 setMethod('getWindowCount', 'CytoscapeConnectionClass',
@@ -1203,12 +1308,20 @@ setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
                 target.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[3]))
                 edge.types = unlist(lapply(edges.tokens, function(tokens) tokens[2]))
                 write(sprintf('\t - adding %d edges to the returned graph\n', length(edges.tokens)), stderr())
-                g = addEdge(source.nodes, target.nodes, g)
+               
+                tryCatch({
+                    g = addEdge(source.nodes, target.nodes, g)
+                    edgeData(g, source.nodes, target.nodes, 'edgeType') = edge.types
+                    
+                    # GET EDGE ATTRIBUTES (if any)
+                    g = copyEdgeAttributesFromCyGraph(loc.obj, window.id, g)
+                },
+                error = function(cond){
+                    write(sprintf("ERROR in RCy3::getGraphFromCyWindow(): Node names cannot contain parentheses.", window.title), stderr())
+                    return(NA)
+                })
                 
-                edgeData(g, source.nodes, target.nodes, 'edgeType') = edge.types
-                
-                # GET EDGE ATTRIBUTES (if any)
-                g = copyEdgeAttributesFromCyGraph(loc.obj, window.id, g)
+
             }
           
         } else {
@@ -2526,8 +2639,15 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
            
            function (obj, node.attribute.name, control.points, colors, mode, default.color='#FFFFFF') {
                if (!mode %in% c ('interpolate', 'lookup')) {
-                   write ("Error! RCy3:setNodeColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+                   write ("Error! RCy3:setNodeColorRule. Mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
                    return ()
+               }
+               
+               # check if colors are formatted correctly
+               for (color in colors){
+                   if (.isNotHexColor(color)){
+                       return()
+                   } 
                }
                
                #TODO Comment TanjaM we should give the user the option to choose the style as an input parameter which defaults to default.
@@ -2684,8 +2804,15 @@ setMethod ('setNodeBorderColorRule', 'CytoscapeWindowClass',
 
     function (obj, node.attribute.name, control.points, colors, mode, default.color='#000000') {
         if (!mode %in% c ('interpolate', 'lookup')) {
-            write ("Error! RCy3:setNodeBorderColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+            write ("Error! RCy3:setNodeBorderColorRule. Mode must be 'interpolate' or 'lookup'.", stderr ())
             return ()
+        }
+        
+        # check if colors are formatted correctly
+        for (color in colors){
+            if (.isNotHexColor(color)){
+                return()
+            } 
         }
         
         #TODO Comment TanjaM we should give the user the option to choose the style as an input parameter which defaults to default.
@@ -2781,6 +2908,9 @@ setMethod('setDefaultNodeSize', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeColor', 'CytoscapeConnectionClass', 
   function(obj, new.color, vizmap.style.name='default') {
+    if (.isNotHexColor(new.color)){
+        return()
+    }
     style = list(visualProperty = "NODE_FILL_COLOR", value = new.color)
     setVisualProperty(obj, style, vizmap.style.name)
 })
@@ -2788,6 +2918,9 @@ setMethod('setDefaultNodeColor', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeBorderColor', 'CytoscapeConnectionClass', 
   function(obj, new.color, vizmap.style.name='default') {
+    if (.isNotHexColor(new.color)){
+      return()
+    }
     style = list(visualProperty = "NODE_BORDER_PAINT", value = new.color)
     setVisualProperty(obj, style, vizmap.style.name)
 })
@@ -2809,6 +2942,9 @@ setMethod('setDefaultNodeFontSize', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeLabelColor', 'CytoscapeConnectionClass', 
   function(obj, new.color, vizmap.style.name='default') {
+    if (.isNotHexColor(new.color)){
+      return()
+    }      
     style = list(visualProperty = "NODE_LABEL_COLOR", value = new.color)
     setVisualProperty(obj, style, vizmap.style.name)
 })
@@ -2823,6 +2959,9 @@ setMethod('setDefaultEdgeLineWidth', 'CytoscapeConnectionClass',
 # ------------------------------------------------------------------------------
 setMethod('setDefaultEdgeColor', 'CytoscapeConnectionClass', 
   function(obj, new.color, vizmap.style.name='default') {
+    if (.isNotHexColor(new.color)){
+      return()
+    }
      # TODO Comment Tanja: maybe change to EDGE_UNSELECTED_PAINT
     style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
     setVisualProperty(obj, style, vizmap.style.name)
@@ -2830,12 +2969,18 @@ setMethod('setDefaultEdgeColor', 'CytoscapeConnectionClass',
 
 setMethod('setDefaultEdgeSourceArrowColor', 'CytoscapeConnectionClass', 
           function(obj, new.color, vizmap.style.name='default') {
+              if (.isNotHexColor(new.color)){
+                  return()
+              }
               style = list(visualProperty = "EDGE_SOURCE_ARROW_UNSELECTED_PAINT", value = new.color) 
               setVisualProperty(obj, style, vizmap.style.name)
           })
 
 setMethod('setDefaultEdgeTargetArrowColor', 'CytoscapeConnectionClass', 
           function(obj, new.color, vizmap.style.name='default') {
+              if (.isNotHexColor(new.color)){
+                  return()
+              }
               style = list(visualProperty = "EDGE_TARGET_ARROW_UNSELECTED_PAINT", value = new.color) 
               setVisualProperty(obj, style, vizmap.style.name)
           })
@@ -2945,6 +3090,14 @@ setMethod ('setEdgeColorRule', 'CytoscapeWindowClass',
             write ("Error! RCy3:setEdgeColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
         }
+        
+        # check if colors are formatted correctly
+        for (color in colors){
+            if (.isNotHexColor(color)){
+                return()
+            } 
+        }
+        
         #TODO Comment TanjaM we should give the user the option to choose the style 
         # as an input parameter which defaults to default.
         vizmap.style.name = 'default'
@@ -3093,8 +3246,8 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
         setVisualProperty(obj, default.width.list, vizmap.style.name)
         
         # define the column type
-        #columnType <- findColumnType(typeof(line.widths[1]))
-        columnType <- 'String'
+        columnType <- findColumnType(typeof(line.widths[1]))
+        #columnType <- 'String'
         
         # discrete mapping
         discreteMapping (obj, edge.attribute.name, attribute.values, line.widths,
@@ -3159,6 +3312,14 @@ setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass',
             write ("Error! RCy3:setEdgeTargetArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
         }
+        
+        # check if colors are formatted correctly
+        for (color in colors){
+            if (.isNotHexColor(color)){
+                return()
+            } 
+        }
+        
         #TODO Comment TanjaM we should give the user the option to choose the style 
         # as an input parameter which defaults to default.
         vizmap.style.name = 'default'
@@ -3211,6 +3372,14 @@ setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass',
             write ("Error! RCy3:setEdgeSourceArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
         }
+        
+        # check if colors are formatted correctly
+        for (color in colors){
+            if (.isNotHexColor(color)){
+                return()
+            } 
+        }
+        
         #TODO Comment TanjaM we should give the user the option to choose the style 
         # as an input parameter which defaults to default.
         vizmap.style.name = 'default'
@@ -3261,10 +3430,9 @@ setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.colors) {
       for (current.color in new.colors){
          # ensure the new color string is in correct hexadecimal format
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal node color "%s" in RCy3::setNodeColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
+         if (.isNotHexColor(current.color)){
+             return()
+         } 
       }
       # set the node color direct
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_FILL_COLOR"))
@@ -3353,11 +3521,10 @@ setMethod('setNodeFontSizeDirect', 'CytoscapeWindowClass',
 setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.colors) {
       for (current.color in new.colors){
-         # ensure the color is formated in the correct hexadecimal style
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCy3::setNodeLabelColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
+        # ensure the color is formated in the correct hexadecimal style
+        if (.isNotHexColor(current.color)){
+          return()
+        } 
       }
       # set the node property direct
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_LABEL_COLOR"))
@@ -3396,9 +3563,11 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
 
     function (obj, node.names, image.positions) {
         
-#         write(sprintf("WARNING: Method RCy3::setNodeImageDirect() is not implemented in RCy3!"), stderr())
-#         
-#         return(FALSE)
+        write(sprintf("WARNING: Method RCy3::setNodeImageDirect() is not implemented in RCy3!"), stderr())
+        
+        return(FALSE)
+        
+        #THIS WILL NOT BE EXECUTED
         # insert a warning 
         if (!is.numeric(image.positions)){
             msg = sprintf ('Error in RCy3::setNodeImageDirect. Note that image urls are no longer supported. Upload your image into the Image Manager in the style tab in the control panel and report its position in the Image Manager as number.')
@@ -3460,13 +3629,12 @@ setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeBorderColorDirect', 'CytoscapeWindowClass',
    function (obj, node.names, new.colors) {
-      for (current.color in new.colors){
-         # ensure the color is formated in correct hexadecimal style
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCy3::setNodeBorderColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
-      }
+       # ensure the color is formated in correct hexadecimal style
+       for (color in new.colors){
+           if (.isNotHexColor(color)){
+               return()
+           } 
+       }
       # set the node border color direct
       return(setNodePropertyDirect(obj, node.names, new.colors, "NODE_BORDER_PAINT"))
      })
@@ -3548,13 +3716,12 @@ setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('setEdgeColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
-      for (current.color in new.value){
-         # ensure the color is formated in correct hexadecimal style
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCy3::setEdgeColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
-      }
+       # ensure the color is formated in correct hexadecimal style
+       for (color in new.value){
+           if (.isNotHexColor(color)){
+               return()
+           } 
+       }
       # set the edge color direct
       # TODO maybe this should be EDGE_PAINT
       return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_STROKE_UNSELECTED_PAINT"))
@@ -3599,10 +3766,9 @@ setMethod ('setEdgeLabelColorDirect', 'CytoscapeWindowClass',
    function (obj, edge.names, new.value) {
       for (current.color in new.value){
          # ensure the color is formated in correct hexadecimal style
-         if (substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-            write (sprintf ('illegal color string "%s" in RCy3::setEdgeLabelColorDirect. It needs to be in hexadecimal.', current.color), stderr ())
-            return ()
-         }
+          if (.isNotHexColor(current.color)){
+              return()
+          }
       }
       # set the edge property direct
       return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_COLOR"))
@@ -3703,10 +3869,8 @@ setMethod('setEdgeSourceArrowColorDirect', 'CytoscapeWindowClass',
     function(obj, edge.names, new.colors) {
         for(current.color in new.colors) {
             # check the color is represented in hexadecimal format
-            if(substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-                write(sprintf("\nERROR in setEdgeSourceArrowColorDirect(): illegal color string '%s'. Color needs to be in hexadecimal", current.color), stderr())
-                
-                return(FALSE)
+            if (.isNotHexColor(current.color)){
+                return()
             }
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
@@ -3718,10 +3882,8 @@ setMethod('setEdgeSourceArrowColorDirect', 'CytoscapeWindowClass',
 setMethod('setEdgeTargetArrowColorDirect', 'CytoscapeWindowClass', 
     function(obj, edge.names, new.colors) {
         for(current.color in new.colors) {
-            if(substring(current.color, 1, 1) != "#" || nchar(current.color) != 7) {
-                write(sprintf("\nERROR in setEdgeTargetArrowColorDirect(): illegal color string '%s'. Color needs to be in hexadecimal", current.color), stderr())
-                
-                return(FALSE)
+            if (.isNotHexColor(current.color)){
+                return()
             }
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
@@ -4222,6 +4384,56 @@ setMethod('selectNodes', 'CytoscapeWindowClass',
         invisible(request.res)
 }) 
 ## END selectNodes
+
+#' Select all nodes
+#'
+#' Selects all nodes in a Cytoscape Network 
+#'
+#' @param object Cytoscape network  
+#' 
+#' @return Selects all nodes in a specified network. 
+#'
+#' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
+#' @seealso \code{\link{selectNodes}}
+#'
+#' @concept RCy3
+#' @export
+#' 
+#' @examples 
+#' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
+#' selectAllNodes(cw)
+#' 
+#' @importFrom methods setGeneric
+setMethod('selectAllNodes',
+          'CytoscapeWindowClass', 
+          function(obj) {
+            
+            resource.uri <- paste(obj@uri,
+                                  pluginVersion(obj),
+                                  "networks",
+                                  obj@window.id,
+                                  "nodes",
+                                  sep = "/")
+            
+            request.res <- GET(resource.uri) # returns all of the node SUIDs
+            all_node_SUIDs <- fromJSON(rawToChar(request.res$content))
+            SUID.value.pairs <- lapply(all_node_SUIDs,
+                                       function(s) {list('SUID' = s, 'value' = TRUE)})
+            SUID.value.pairs.JSON <- toJSON(SUID.value.pairs)
+            
+            resource.uri <- paste(obj@uri,
+                                  pluginVersion(obj),
+                                  "networks",
+                                  obj@window.id,
+                                  "tables/defaultnode/columns/selected",
+                                  sep = "/")
+            request.res <- PUT(url = resource.uri,
+                               body = SUID.value.pairs.JSON,
+                               encode = "json")
+            invisible(request.res)
+          })
+
+
    
 # ------------------------------------------------------------------------------
 setMethod('getSelectedNodeCount', 'CytoscapeWindowClass', 
@@ -4389,6 +4601,54 @@ setMethod('selectEdges', 'CytoscapeWindowClass',
         invisible(request.res)
 }) 
 ## END selectEdges
+
+#' Select all edges 
+#'
+#' Selects all edges in a Cytoscape Network 
+#'
+#' @param object Cytoscape network  
+#' 
+#' @return Selects all edges in a specified network. 
+#'
+#' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
+#' @seealso \code{\link{selectEdges}}
+#'
+#' @concept RCy3
+#' @export
+#' 
+#' @examples 
+#' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
+#' selectAllEdges(cw)
+#' 
+#' @importFrom methods setGeneric
+setMethod('selectAllEdges',
+          'CytoscapeWindowClass', 
+          function(obj) {
+            
+            resource.uri <- paste(obj@uri,
+                                  pluginVersion(obj),
+                                  "networks",
+                                  obj@window.id,
+                                  "edges",
+                                  sep = "/")
+            
+            request.res_edges <- GET(resource.uri) ## returns all of the edge suids
+            all_edge_SUIDs <- fromJSON(rawToChar(request.res_edges$content))
+            SUID.value.pairs <- lapply(all_edge_SUIDs,
+                                       function(s) {list('SUID' = s, 'value' = TRUE)})
+            SUID.value.pairs.JSON <- toJSON(SUID.value.pairs)
+            
+            resource.uri <- paste(obj@uri,
+                                  pluginVersion(obj),
+                                  "networks",
+                                  obj@window.id,
+                                  "tables/defaultedge/columns/selected",
+                                  sep = "/")
+            request.res <- PUT(url = resource.uri,
+                               body = SUID.value.pairs.JSON,
+                               encode = "json")
+            invisible(request.res)
+          })
  
 # ------------------------------------------------------------------------------
 setMethod('invertEdgeSelection', 'CytoscapeWindowClass', 
@@ -5017,12 +5277,15 @@ setMethod('getDefaultBackgroundColor', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod('setDefaultBackgroundColor', 'CytoscapeConnectionClass', 
-  function(obj, new.color, vizmap.style.name='default') {
-    resource.uri = paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
-    style = list(visualProperty = 'NETWORK_BACKGROUND_PAINT', value = new.color)
-    style.JSON = toJSON(list(style))
-    request.res = PUT(url=resource.uri, body=style.JSON, encode="json")
-    invisible(request.res)
+    function(obj, new.color, vizmap.style.name='default') {
+        if (.isNotHexColor(new.color)){
+            return()
+        } 
+        resource.uri = paste(obj@uri, pluginVersion(obj), "styles", as.character(vizmap.style.name), "defaults", sep="/")
+        style = list(visualProperty = 'NETWORK_BACKGROUND_PAINT', value = new.color)
+        style.JSON = toJSON(list(style))
+        request.res = PUT(url=resource.uri, body=style.JSON, encode="json")
+        invisible(request.res)
 })
 
 # ------------------------------------------------------------------------------
@@ -5033,9 +5296,12 @@ setMethod('getDefaultNodeSelectionColor', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod('setDefaultNodeSelectionColor', 'CytoscapeConnectionClass', 
-  function(obj, new.color, vizmap.style.name='default') {
-    style = list(visualProperty = "NODE_SELECTED_PAINT", value = new.color) 
-    setVisualProperty(obj, style, vizmap.style.name)
+    function(obj, new.color, vizmap.style.name='default') {
+        if (.isNotHexColor(new.color)){
+            return()
+        } 
+        style = list(visualProperty = "NODE_SELECTED_PAINT", value = new.color) 
+        setVisualProperty(obj, style, vizmap.style.name)
 })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getDefaultNodeReverseSelectionColor',  'CytoscapeConnectionClass',
@@ -5046,7 +5312,10 @@ setMethod ('getDefaultNodeReverseSelectionColor',  'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setDefaultNodeReverseSelectionColor',  'CytoscapeConnectionClass',
 
-   function (obj, new.color,vizmap.style.name='default') {
+   function (obj, new.color, vizmap.style.name='default') {
+       if (.isNotHexColor(new.color)){
+           return()
+       } 
        style = list(visualProperty = "NODE_PAINT", value = new.color) 
        setVisualProperty(obj, style, vizmap.style.name)
       })
@@ -5059,9 +5328,12 @@ setMethod('getDefaultEdgeSelectionColor', 'CytoscapeConnectionClass',
 
 # ------------------------------------------------------------------------------
 setMethod('setDefaultEdgeSelectionColor', 'CytoscapeConnectionClass', 
-  function(obj, new.color, vizmap.style.name='default') {
-    style = list(visualProperty = "EDGE_STROKE_SELECTED_PAINT", value = new.color) 
-    setVisualProperty(obj, style, vizmap.style.name)
+    function(obj, new.color, vizmap.style.name='default') {
+        if (.isNotHexColor(new.color)){
+            return()
+        }
+        style = list(visualProperty = "EDGE_STROKE_SELECTED_PAINT", value = new.color) 
+        setVisualProperty(obj, style, vizmap.style.name)
 })
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -5074,30 +5346,37 @@ setMethod ('getDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 setMethod ('setDefaultEdgeReverseSelectionColor',  'CytoscapeConnectionClass',
 
    function (obj, new.color, vizmap.style.name='default') {
+      if (.isNotHexColor(new.color)){
+          return()
+      } 
       style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
       setVisualProperty(obj, style, vizmap.style.name)
       })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('saveImage', 'CytoscapeWindowClass',
-
-   function (obj, file.name, image.type, scale=1.0) {
-      image.type = tolower (image.type)
-      stopifnot (image.type %in% c ('png', 'pdf', 'svg'))
-      id = as.character (obj@window.id)
-      
-      if (!file.exists(file.name)){
-        # TODO Comment TanjaM - scaling not possible with the new version -- remove?
-          
-        # get the view image from Cytoscape in PNG, PDF, or SVG format
-        resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
-                              paste0("views/first.", image.type), sep="/")
-
-        request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type), overwrite = TRUE))
-        write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
-      }else{
-          write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
-      }
-     }) # saveImage
+           
+           function (obj, file.name, image.type, h = 600) {
+             image.type = tolower (image.type)
+             stopifnot (image.type %in% c ('png', 'pdf', 'svg'))
+             id = as.character (obj@window.id)
+             
+             if (!file.exists(file.name)){
+               if(image.type=='png'){
+                 
+                 resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
+                                       paste0("views/first.", image.type, "?h=", h), sep="/")  
+               } 
+               else{
+                 # get the view image from Cytoscape in PNG, PDF, or SVG format
+                 resource.uri <- paste(obj@uri, pluginVersion(obj), "networks", id,
+                                       paste0("views/first.", image.type), sep="/")
+               }
+               request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type), overwrite = TRUE))
+               write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
+             }else{
+               write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
+             }
+           }) # saveImage
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('saveNetwork', 'CytoscapeWindowClass',
 
@@ -5252,6 +5531,14 @@ setVisualProperty <- function(obj, style.string, vizmap.style.name='default') {
     invisible(request.res)
 }
 
+.isNotHexColor <- function(color){
+    if ((substring(color, 1, 1) != "#") || (nchar(color) !=7)) {
+        write (sprintf ('Error. %s is not a valid hexadecimal color (has to begin with # and be 7 characters long).', color), stderr ())
+        return(TRUE)
+    }else{
+        return(FALSE)
+    }
+}
 # ------------------------------------------------------------------------------
 # obtain every other value for vector : used to resolve CyREST bug with returning column values
 obtainEveryOtherValue <- function(v) {
@@ -5424,37 +5711,79 @@ findColumnType <- function(columnType){
 #########################################################################################
 #
 cyPlot <- function (node.df, edge.df) {
-	edge.nodes <- unique(c(as.character(edge.df[,1]), as.character(edge.df[,2])))		
-	mydata <- new("graphNEL", edgemode='directed', nodes = unique(c(as.character(node.df[, 1]), edge.nodes)))
-#	Set up and load all the node attributes
-	# read class and convert factor to character as required
-	node.df[,1] <- as.character(node.df[,1])
-	edge.df[,1:2] <- sapply(edge.df[,1:2], as.character)
-	node.class <- sapply (node.df, class)
-	if (any(grep("factor", node.class))) {
-		node.df[, grep("factor", node.class)] <- sapply(node.df[, grep("factor", node.class)], as.character) }
-	if (any(grep("integer", node.class))) {
-		node.df[, grep("integer", node.class)] <- sapply(node.df[, grep("integer", node.class)], as.numeric) }
-	node.class <- sapply (node.df, class)
-	edge.class <- sapply (edge.df, class)
-	if (any(grep("factor", edge.class))) {
-		edge.df[, grep("factor", edge.class)] <- sapply(edge.df[, grep("factor", edge.class)], as.character) }
-	edge.class <- sapply (edge.df, class)
-	# Nodes and attributes
-  for (i in 2:length(grep("character", node.class))) {
-	mydata <- initNodeAttribute (graph=mydata,  attribute.name=names(node.class[grep("character", node.class)])[i], attribute.type='char', default.value='undefined') 
-	nodeData (mydata, n=as.character(node.df[, 1]), attr=names(node.class[grep("character", node.class)])[i]) <- as.character(node.df[,grep("character", node.class)[i]])		}
-  for (i in 1:length(grep("numeric", node.class))) {	
-  	mydata <- initNodeAttribute (graph=mydata,  attribute.name=names(node.class[grep("numeric", node.class)])[i], attribute.type='numeric', default.value=0.0) 
-	nodeData (mydata, n=as.character(node.df[, 1]), attr=names(node.class[grep("numeric", node.class)])[i]) <- as.numeric(node.df[,grep("numeric", node.class)[i]])	}	
-	# Edges and attributes
- 	mydata = addEdge (as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), mydata)
-  for (i in 3:length(grep("character", edge.class))) {
-	mydata <- initEdgeAttribute (graph= mydata, attribute.name=names(edge.df[,grep("character", edge.class)])[i], attribute.type='char', default.value='undefined')
- 	edgeData (mydata, as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), attr=names(edge.df[,grep("character", edge.class)])[i]) <- as.character(edge.df[,grep("character", edge.class)[i]])		}
-  for (i in 1:length(grep("numeric", edge.class))) {	
-	mydata <- initEdgeAttribute(mydata, attribute.name=names(edge.class[grep("numeric", edge.class)])[i], attribute.type = "numeric", default.value = 0)
-	edgeData (mydata, as.vector(edge.df[,1], mode="character"), as.vector(edge.df[,2], mode="character"), attr=names(edge.class[grep("numeric", edge.class)])[i]) <- as.numeric(edge.df[,grep("numeric", edge.class)[i]])	}	
-	return(mydata)
+  edge.nodes <- unique(c(as.character(edge.df[,1]),
+                         as.character(edge.df[,2])))		
+  mydata <- new("graphNEL",
+                edgemode = 'directed',
+                nodes = unique(c(as.character(node.df[, 1]),
+                                 edge.nodes)))
+  #	Set up and load all the node attributes
+  # read class and convert factor to character as required
+  node.df[,1] <- as.character(node.df[,1])
+  edge.df[,1:2] <- sapply(edge.df[,1:2],
+                          as.character)
+  node.class <- sapply (node.df,
+                        class)
+  if (any(grep("factor", node.class))) {
+    node.df[, grep("factor", node.class)] <- sapply(node.df[, grep("factor", node.class)],
+                                                    as.character) }
+  
+  if (any(grep("integer", node.class))) {
+    node.df[, grep("integer", node.class)] <- sapply(node.df[, grep("integer", node.class)],
+                                                     as.numeric) }
+  
+  node.class <- sapply(node.df,
+                       class)
+  edge.class <- sapply(edge.df,
+                       class)
+  if (any(grep("factor", edge.class))) {
+    edge.df[, grep("factor", edge.class)] <- sapply(edge.df[, grep("factor", edge.class)],
+                                                    as.character) }
+  edge.class <- sapply(edge.df,
+                       class)
+  
+  # Nodes and attributes
+  if (length(grep("character", node.class)) > 1) {
+    for (i in 2:length(grep("character", node.class))) {
+      mydata <- initNodeAttribute(graph = mydata,
+                                  attribute.name = names(node.class[grep("character", node.class)])[i],
+                                  attribute.type = 'char',
+                                  default.value = 'undefined') 
+      nodeData(mydata, n = as.character(node.df[, 1]), attr = names(node.class[grep("character", node.class)])[i]) <- as.character(node.df[,grep("character", node.class)[i]])		}
+  }
+  
+  if (length(grep("numeric", node.class))){ 
+    for (i in 1:length(grep("numeric", node.class))) {	
+      mydata <- initNodeAttribute(graph = mydata,
+                                  attribute.name = names(node.class[grep("numeric", node.class)])[i],
+                                  attribute.type = 'numeric',
+                                  default.value = 0.0) 
+      nodeData(mydata, n = as.character(node.df[, 1]), attr = names(node.class[grep("numeric", node.class)])[i]) <- as.numeric(node.df[,grep("numeric", node.class)[i]])	}	
+  }
+  
+  # Edges and attributes
+  mydata = addEdge(as.vector(edge.df[,1],
+                             mode = "character"),
+                   as.vector(edge.df[,2],
+                             mode = "character"),
+                   mydata)
+  
+  if (length(grep("character", edge.class)) > 2){
+    for (i in 3:length(grep("character", edge.class))) {
+      mydata <- initEdgeAttribute(graph = mydata,
+                                  attribute.name = names(edge.df[,grep("character", edge.class)])[i],
+                                  attribute.type = 'char',
+                                  default.value = 'undefined')
+      edgeData(mydata, as.vector(edge.df[,1], mode = "character"), as.vector(edge.df[,2], mode = "character"), attr = names(edge.df[,grep("character", edge.class)])[i]) <- as.character(edge.df[,grep("character", edge.class)[i]])		}
+  }
+  if (any(grep("numeric", edge.class))){
+    for (i in 1:length(grep("numeric", edge.class))) {	
+      mydata <- initEdgeAttribute(mydata,
+                                  attribute.name = names(edge.class[grep("numeric", edge.class)])[i],
+                                  attribute.type = "numeric",
+                                  default.value = 0)
+      edgeData(mydata, as.vector(edge.df[,1], mode = "character"), as.vector(edge.df[,2], mode = "character"), attr = names(edge.class[grep("numeric", edge.class)])[i]) <- as.numeric(edge.df[,grep("numeric", edge.class)[i]])	}	
+  }
+  return(mydata)
 }
 # END cyPlot

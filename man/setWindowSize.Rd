@@ -32,6 +32,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # WARNING: Method RCy3::setWindowSize() is not implemented in RCy3!
   
   # first, delete existing windows to save memory:
@@ -49,4 +50,5 @@ None.
   fitContent (cw)
 }
 
+}
 \keyword{graph}

@@ -21,6 +21,7 @@ look at the graph in Cytoscape.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -30,4 +31,5 @@ look at the graph in Cytoscape.
     # [1] "A" "B" "C"
 }
 
+}
 \keyword{graph}

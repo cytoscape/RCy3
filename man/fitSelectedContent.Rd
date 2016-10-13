@@ -24,6 +24,7 @@ None.
  }
 
 \examples{
+  dontrun{
   #WARNING: function currently not supported
 
   # first, delete existing windows to save memory:
@@ -41,4 +42,5 @@ None.
 }
 
 
+}
 \keyword{graph}
