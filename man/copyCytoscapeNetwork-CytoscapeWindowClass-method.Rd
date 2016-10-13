@@ -22,7 +22,7 @@ Connection to new copy of network.
 Makes a copy of a Cytoscape Network with all of its edges and nodes
 }
 \examples{
-  dontrun{
+  \dontrun{
 cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 copy_of_your_net <- copyCytoscapeNetwork(cw, "new_copy")
   }

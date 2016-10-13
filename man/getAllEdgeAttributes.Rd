@@ -34,7 +34,7 @@ A data frame, with a column for each attribute, a row for each edge.
 }
 
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 

@@ -17,7 +17,7 @@ Selects all edges in a specified network.
 Selects all edges in a Cytoscape Network
 }
 \examples{
-  dontrun{
+  \dontrun{
 cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 selectAllEdges(cw)
 

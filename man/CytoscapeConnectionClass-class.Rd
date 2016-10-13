@@ -39,7 +39,7 @@
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
   # create a CytoscapeConnectionClass object by calling the constructor

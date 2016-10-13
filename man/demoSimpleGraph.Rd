@@ -16,7 +16,7 @@ Returns a CytoscapeWindow object for subsequent manipulation
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
   
