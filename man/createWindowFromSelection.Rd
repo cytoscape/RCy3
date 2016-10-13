@@ -27,6 +27,7 @@ an empty graph.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -44,4 +45,5 @@ an empty graph.
   print (getEdgeCount(c2))  # should be 1
 }
 
+}
 \keyword{graph}

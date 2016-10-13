@@ -32,6 +32,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -48,4 +49,5 @@ None.
   setLayoutProperties (cy, 'isom', list (radiusConstantTime=4, radius=20))
 }
 
+}
 \keyword{graph}

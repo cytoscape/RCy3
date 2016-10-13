@@ -37,6 +37,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -67,4 +68,5 @@ None.
   setNodeSizeRule (cw, 'type', molecule.types,  node.sizes, default.size= 5, mode='lookup')
 }
 
+}
 \keyword{graph}

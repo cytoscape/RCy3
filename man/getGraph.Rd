@@ -19,6 +19,7 @@ A graph object.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -27,4 +28,5 @@ A graph object.
   print (getGraph (cw))
 }
 
+}
 \keyword{graph}

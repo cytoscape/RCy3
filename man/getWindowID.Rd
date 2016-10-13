@@ -27,6 +27,7 @@ identifer appears to be an integer.
   }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -36,4 +37,5 @@ identifer appears to be an integer.
   getWindowID (cy, 'getWindowID.test')
 }
 
+}
 \keyword{graph}

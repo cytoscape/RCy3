@@ -24,6 +24,7 @@ Time in seconds.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -34,4 +35,5 @@ Time in seconds.
   layoutNetwork(cw, 'force-directed')
 }
 
+}
 \keyword{graph}

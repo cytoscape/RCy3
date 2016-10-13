@@ -36,6 +36,7 @@ existing.CytoscapeWindow (title, host='localhost', port=1234, copy.graph.from.cy
 
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -46,4 +47,5 @@ existing.CytoscapeWindow (title, host='localhost', port=1234, copy.graph.from.cy
   cw2 <- existing.CytoscapeWindow ('demo.existing',  copy.graph.from.cytoscape.to.R=TRUE)
 }
 
+}
 \keyword{ graph }

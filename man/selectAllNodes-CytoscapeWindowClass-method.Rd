@@ -17,9 +17,11 @@ Selects all nodes in a specified network.
 Selects all nodes in a Cytoscape Network
 }
 \examples{
+  dontrun{
 cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 selectAllNodes(cw)
 
+}
 }
 \keyword{graph}
 \author{

@@ -32,6 +32,7 @@ getLayoutNameMapping(obj)
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -44,4 +45,5 @@ getLayoutNameMapping(obj)
     # [1] "attribute-circle"    "stacked-node-layout" "degree-circle"
 }
 
+}
 \keyword{graph}

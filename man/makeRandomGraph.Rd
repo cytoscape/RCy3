@@ -23,6 +23,7 @@ nodes and edges.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -41,4 +42,5 @@ nodes and edges.
   }
 }
 
+}
 \keyword{graph}

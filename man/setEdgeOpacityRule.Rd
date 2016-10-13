@@ -35,6 +35,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -59,4 +60,5 @@ None.
   setEdgeOpacityRule (cw, 'score',  control.points, opacities, mode='interpolate')  
 }
 
+}
 \keyword{graph}

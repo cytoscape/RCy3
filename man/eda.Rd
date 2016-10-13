@@ -25,6 +25,7 @@ which are the names of the edges.
  eda.names
 }
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -33,5 +34,6 @@ which are the names of the edges.
     #             A|B                B|C                C|A
     # "phosphorylates" "synthetic lethal"        "undefined"
 
+}
 }
 \keyword{graph}

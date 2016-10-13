@@ -39,11 +39,13 @@
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
   # create a CytoscapeConnectionClass object by calling the constructor
   cy <- CytoscapeConnection (host='localhost', port=1234)
 
+}
 }
 \keyword{graphs}
 \keyword{classes}

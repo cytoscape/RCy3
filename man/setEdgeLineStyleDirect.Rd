@@ -45,6 +45,7 @@ None.
   }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -69,4 +70,5 @@ None.
   setEdgeLineStyleDirect (cw, edges.of.interest, 'SOLID')
 }
 
+}
 \keyword{graph}

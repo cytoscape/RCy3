@@ -35,6 +35,7 @@ None.
   setNodeShapeRule
 }
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -60,4 +61,5 @@ None.
   setEdgeTargetArrowColorRule(cw, 'score', control.points, colors)
 }
 
+}
 \keyword{graph}

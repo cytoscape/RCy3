@@ -33,6 +33,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -46,4 +47,5 @@ None.
   setEdgeTargetArrowRule (cw, 'edgeType', edgeType.values, arrows)
 }
 
+}
 \keyword{graph}

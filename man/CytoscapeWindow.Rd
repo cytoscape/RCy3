@@ -56,10 +56,12 @@ CytoscapeWindow(title, graph = new("graphNEL", edgemode='directed'),
   }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
   cw <- CytoscapeWindow ('new.demo', new ('graphNEL'))
 }
 
+}
 \keyword{ graph }

@@ -29,6 +29,7 @@ which are the names of the edges.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -37,4 +38,5 @@ which are the names of the edges.
     #  [1] "type"  "lfc"   "label" "count"
 }
 
+}
 \keyword{graph}

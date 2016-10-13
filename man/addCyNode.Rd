@@ -26,6 +26,7 @@ addCyNode(obj, nodeName)
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
   window.name <- 'demo addCyNode'
@@ -37,4 +38,5 @@ addCyNode(obj, nodeName)
   # redraw (cw) --> function no longer required
 }
 
+}
 \keyword{graph}

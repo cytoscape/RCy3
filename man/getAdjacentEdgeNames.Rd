@@ -26,6 +26,7 @@ Zero or more cy2-style edge names.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -36,4 +37,5 @@ Zero or more cy2-style edge names.
     # [1] "A (phosphorylates) B" "C (undefined) A"  
 }
 
+}
 \keyword{graph}

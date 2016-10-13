@@ -26,6 +26,7 @@ A list of node names.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -38,4 +39,5 @@ A list of node names.
 }
 
 
+}
 \keyword{graph}

@@ -39,6 +39,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -50,4 +51,5 @@ None.
   setNodeFontSizeDirect (cw, c('A', 'B'), c(10, 15))
 }
 
+}
 \keyword{graph}
