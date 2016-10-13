@@ -29,6 +29,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # WARNING: Method RCy3::setTooltipInitialDelay() is not implemented in RCy3!
 
   # first, delete existing windows to save memory:
@@ -49,4 +50,5 @@ None.
   setTooltipDismissDelay (cw, 0)
 }
 
+}
 \keyword{graph}

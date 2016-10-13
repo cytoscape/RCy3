@@ -18,6 +18,7 @@ An integer.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -30,4 +31,5 @@ An integer.
     # [1] 2
 }
 
+}
 \keyword{graph}

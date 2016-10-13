@@ -24,6 +24,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -39,4 +40,5 @@ None.
     # only B and C should be selected
 }
 
+}
 \keyword{graph}

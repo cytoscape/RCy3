@@ -63,6 +63,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -81,4 +82,5 @@ None.
   setNodeBorderColorRule (cw, node.attribute.name='type', data.values, colors, mode='lookup', default.color='#AA0000')
 }
 
+}
 \keyword{graph}

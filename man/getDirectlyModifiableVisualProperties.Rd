@@ -20,6 +20,7 @@ A list of about 106 character strings, e.g., "EDGE_LABEL_FONT_SIZE" and "NODE_SH
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -27,4 +28,5 @@ A list of about 106 character strings, e.g., "EDGE_LABEL_FONT_SIZE" and "NODE_SH
   getDirectlyModifiableVisualProperties (cw, vizmap.style.name="default")
 }
 
+}
 \keyword{graph}

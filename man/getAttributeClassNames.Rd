@@ -22,6 +22,7 @@ A list of character strings group, e.g., "floating|numeric|double",
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -30,4 +31,5 @@ A list of character strings group, e.g., "floating|numeric|double",
    # [1] "floating|numeric|double" "integer|int"             "string|char|character"  
 }
 
+}
 \keyword{graph}

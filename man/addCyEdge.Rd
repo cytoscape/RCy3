@@ -31,6 +31,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
   window.name <- 'demo addCyEdge'
@@ -41,4 +42,5 @@ None.
   addCyEdge (cw, 'A', 'B', 'synthetic rescue', directed)
 }
 
+}
 \keyword{graph}

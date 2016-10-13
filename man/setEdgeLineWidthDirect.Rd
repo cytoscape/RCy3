@@ -43,6 +43,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -57,4 +58,5 @@ None.
  setEdgeLineWidthDirect (cw, edge.names, c(1,3))
 }
 
+}
 \keyword{graph}

@@ -20,6 +20,7 @@ The modified CytoscapeWindow object.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -31,4 +32,5 @@ The modified CytoscapeWindow object.
   print (length (nodes (getGraph (cw))))
 }
 
+}
 \keyword{graph}

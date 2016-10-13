@@ -30,6 +30,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -42,4 +43,5 @@ None.
   setNodeHeightDirect (cw, c('C', 'B'), c(15, 30))
 }
 
+}
 \keyword{graph}

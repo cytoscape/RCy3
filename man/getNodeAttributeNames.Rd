@@ -29,6 +29,7 @@ A list of names.
 }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -40,4 +41,5 @@ A list of names.
     # [1] "name"  "type"  "lfc"   "label" "count"
 }
 
+}
 \keyword{graph}

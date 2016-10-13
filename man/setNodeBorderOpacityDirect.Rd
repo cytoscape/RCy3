@@ -38,6 +38,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -49,4 +50,5 @@ None.
   setNodeBorderOpacityDirect (cw, c('B', 'C'), c(22, 55))
 }
 
+}
 \keyword{graph}

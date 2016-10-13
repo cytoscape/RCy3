@@ -20,6 +20,7 @@ A list of character strings, e.g. 'ELLIPSE', 'RECTANGLE'.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -30,4 +31,5 @@ A list of character strings, e.g. 'ELLIPSE', 'RECTANGLE'.
    # [9] "OCTAGON" 
 }
 
+}
 \keyword{graph}

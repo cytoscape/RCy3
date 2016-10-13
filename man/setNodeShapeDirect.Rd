@@ -25,6 +25,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -37,4 +38,5 @@ None.
   setNodeShapeDirect (cw, c('A', 'B', 'C'), 'PARALLELOGRAM')
 }
 
+}
 \keyword{graph}

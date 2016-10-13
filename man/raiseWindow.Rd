@@ -23,6 +23,7 @@ None.
 }
 
 \examples{
+  dontrun{
   # WARNING: Method RCy3::raiseWindow() is not implemented in RCy3!
   
   # first, delete existing windows to save memory:
@@ -34,4 +35,5 @@ None.
   raiseWindow (cw)
 }
 
+}
 \keyword{graph}

@@ -28,6 +28,7 @@ None.
  }
 
 \examples{
+  dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
@@ -42,4 +43,5 @@ None.
   setEdgeFontSizeDirect (cw, edge.names, 12)
 }
 
+}
 \keyword{graph}
