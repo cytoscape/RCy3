@@ -22,7 +22,7 @@ Connection to the renamed network.
 Renames a Cytoscape Network.
 }
 \examples{
-  dontrun{
+  \dontrun{
 cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 renamed_net <- renameCytoscapeNetwork(cw, "renamed_network")
 

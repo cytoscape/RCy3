@@ -29,7 +29,7 @@ None.
  }
 
 \examples{
-  dontrun{
+  \dontrun{
   # WARNING: Method RCy3::setTooltipDismissDelay() is not implemented in RCy3!
   
   # first, delete existing windows to save memory:

@@ -32,7 +32,7 @@ None.
  }
 
 \examples{
-  dontrun{
+  \dontrun{
   # WARNING: Method RCy3::setWindowSize() is not implemented in RCy3!
   
   # first, delete existing windows to save memory:

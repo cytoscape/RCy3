@@ -26,7 +26,7 @@ None.
  }
 
 \examples{
-  dontrun{
+  \dontrun{
   # WARNING: Method RCy3::setEdgeTargetArrowOpacityDirect() is not implemented in RCy3!
   
   # first, delete existing windows to save memory:

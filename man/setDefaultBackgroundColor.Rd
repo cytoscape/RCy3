@@ -20,7 +20,7 @@ A character string, a hexadecimal, e.g. #000000
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 

@@ -54,7 +54,7 @@ CytoscapeConnection (host = "localhost", port = 1234)
 
 
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 

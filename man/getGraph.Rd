@@ -19,7 +19,7 @@ A graph object.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \examples{
-  dontrun{
+  \dontrun{
   # first, delete existing windows to save memory:
   deleteAllWindows(CytoscapeConnection())
 
