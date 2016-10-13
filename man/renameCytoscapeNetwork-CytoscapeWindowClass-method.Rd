@@ -26,6 +26,7 @@ cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 renamed_net <- renameCytoscapeNetwork(cw, "renamed_network")
 
 }
+\keyword{graph}
 \author{
 Julia Gustavsen, \email{j.gustavsen@gmail.com}
 }
