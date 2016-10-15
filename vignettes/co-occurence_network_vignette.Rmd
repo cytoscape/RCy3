@@ -37,7 +37,7 @@ In this analysis we are using a Tara Ocean data and we have data from the bacter
 We will run this example using RCy3 [@shannon_rcytoscape:_2013] to drive the visualization of these networks in Cytoscape [@shannon_cytoscape:_2003] using CyREST [@ono_cyrest:_2015].
 
 ## Requirements
-```{r, message=FALSE}
+```{r, eval =FALSE, message=FALSE}
 library(RCy3)
 library(igraph)
 library(RColorBrewer)
@@ -46,7 +46,7 @@ To run this example **Cytoscape software must be running**. In Cytoscape we will
 
 To begin we create a connection in R that we can use to manipulate the networks and then we will delete any windows that were already in Cytoscape so that we don't use up all of our memory. 
 
-```{r}
+```{r, eval =FALSE}
 cy <- CytoscapeConnection()
 deleteAllWindows(cy)
 ```
@@ -63,7 +63,7 @@ prok_vir_cor <- read.delim("./data/virus_prok_cor_abundant.tsv")
 There are many different ways to work with graphs in R. We will use both the igraph [@csardi_igraph_2006] and the graph [@gentleman_graph:_2016] package to work with our network with Cytoscape.
 
 The igraph package is used to convert the co-occurrence dataframe into a network that we can send to Cytoscape. In this case our graph is undirected (so "directed = FALSE") since we do not have any information about the direction of the interactions. 
-```{r}
+```{r, eval =FALSE}
 graph_vir_prok <- igraph::simplify(igraph::graph.data.frame(prok_vir_cor,
                                             directed = FALSE))
 ```
@@ -72,7 +72,7 @@ graph_vir_prok <- igraph::simplify(igraph::graph.data.frame(prok_vir_cor,
 
 Since these are data from small, microscopic organisms that were sequenced using shotgun sequencing, we rely on the classification of the sequences to know what kind of organisms are in the samples. In this case the bacterial viruses (bacteriophage), were classified by Basic Local Alignment Search Tool (BLAST http://blast.ncbi.nlm.nih.gov/Blast.cgi) by searching for their closest sequence in the RefSeq database (see methods in @brum_patterns_2015). The prokaryotic taxonomic classifications were determined using the [SILVA database](https://www.arb-silva.de/).
 
-```{r}
+```{r, eval =FALSE}
 phage_id_affiliation <- read.delim("./data/phage_ids_with_affiliation.tsv")
 bac_id_affi <- read.delim("./data/prok_tax_from_silva.tsv")
 ```
@@ -81,7 +81,7 @@ bac_id_affi <- read.delim("./data/prok_tax_from_silva.tsv")
 
 In preparation for sending the networks to Cytoscape we will add in the taxonomic data. Some of the organisms do not have taxonomic classifications associated with them so we have described them as "not_class" for not classified. We do that because we have had problems sending "NA"s to Cytoscape from RCy3. 
 
-```{r}
+```{r, eval =FALSE}
 genenet.nodes <- as.data.frame(igraph::vertex.attributes(graph_vir_prok))
 
 ## not all have classification, so create empty columns
@@ -104,7 +104,7 @@ for (row in seq_along(1:nrow(genenet.nodes))){
 }
 ```
 
-```{r}
+```{r, eval =FALSE}
 ## do the same for proks
 genenet.nodes$prok_king <- rep("not_class", nrow(genenet.nodes))
 genenet.nodes$prok_tax_phylum <- rep("not_class", nrow(genenet.nodes))
@@ -127,7 +127,7 @@ for (row in seq_along(1:nrow(genenet.nodes))){
 
 Add to the network the data related to the connections between the organisms, the edge data, and then prepare to send the nodes and edges to Cytoscape using the function `cyPlot()`.
 
-```{r}
+```{r, eval =FALSE}
 genenet.edges <- data.frame(igraph::as_edgelist(graph_vir_prok))
 names(genenet.edges) <- c("name.1",
                           "name.2")
@@ -144,19 +144,19 @@ ug <- cyPlot(genenet.nodes,genenet.edges)
 
 Now we will send the network from R to Cytoscape.
 
-```{r, message=FALSE}
+```{r, eval =FALSE, message=FALSE}
 cw <- CytoscapeWindow("Tara oceans",
                       graph = ug,
                       overwriteWindow = TRUE)
 ```
 
-```{r, message=FALSE, results="hide"}
+```{r, eval =FALSE, message=FALSE, results="hide"}
 displayGraph(cw)
 layoutNetwork(cw)
 fitContent(cw)
 ```
 
-```{r, echo=FALSE}
+```{r, eval =FALSE, echo=FALSE}
 saveImage(cw,
           "co-occur0",
           "png",
@@ -168,7 +168,7 @@ knitr::include_graphics("./co-occur0.png")
 
 We would like to get an overview of the different phylum of bacteria that are in the network. One way is to colour the different nodes based on their phylum classification. The package Rcolorbrewer will be used to generate a set of good colours for the nodes. 
 
-```{r}
+```{r, eval =FALSE}
 families_to_colour <- unique(genenet.nodes$prok_tax_phylum)
 families_to_colour <- families_to_colour[!families_to_colour %in% "not_class"]
 node.colour <- RColorBrewer::brewer.pal(length(families_to_colour),
@@ -177,7 +177,7 @@ node.colour <- RColorBrewer::brewer.pal(length(families_to_colour),
 
 Use the colours from Rcolorbrewer to colour the nodes in Cytoscape.
 
-```{r}
+```{r, eval =FALSE}
 setNodeColorRule(cw,
                  "prok_tax_phylum",
                  families_to_colour,
@@ -187,13 +187,13 @@ setNodeColorRule(cw,
 ```
 
 
-```{r, message=FALSE, results="hide"}
+```{r, eval =FALSE, message=FALSE, results="hide"}
 displayGraph(cw)
 layoutNetwork(cw)
 fitContent(cw)
 ```
 
-```{r, echo=FALSE}
+```{r, eval =FALSE, echo=FALSE}
 saveImage(cw,
           "co-occur0_1",
           "png",
@@ -204,7 +204,7 @@ knitr::include_graphics("./co-occur0_1.png")
 ## Set node shape to reflect virus or prokaryote
 
 Next we would like to change the shape of the node to reflect whether the nodes are viral or prokaryotic in origin. In this dataset all of the viral node names start with "ph_", thus we can set the viral nodes to be diamond-shaped by looking for all the nodes that start with "ph" in the network. 
-```{r}
+```{r, eval =FALSE}
 shapes_for_nodes <- c("DIAMOND")
 
 phage_names <- grep("ph_",
@@ -216,12 +216,12 @@ setNodeShapeRule(cw,
                  shapes_for_nodes)
 ```
 
-```{r, message=FALSE, results="hide"}
+```{r, eval =FALSE, message=FALSE, results="hide"}
 displayGraph(cw)
 fitContent(cw)
 ```
 
-```{r, echo=FALSE}
+```{r, eval =FALSE, echo=FALSE}
 saveImage(cw,
           "co-occur1",
           "png",
@@ -233,7 +233,7 @@ knitr::include_graphics("./co-occur1.png")
 
 The classification of the viral data was done in a very conservative manner so not many of the viral nodes were identified. However, if we do want to add some of this information to our visualization we can colour the edges of the viral nodes by family. The main families that were identified in this dataset are the *Podoviridae*, the *Siphoviridae* and the *Myoviridae* (for more info see [NCBI Podoviridae](http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=10744&lvl=3&p=7&lin=f&keep=1&srchmode=1&unlock), [NCBI Myoviridae](http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Tree&id=10662&lvl=3&p=7&lin=f&keep=1&srchmode=1&unlock), and [NCBI Siphoviridae](http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Tree&id=10699&lvl=3&p=7&lin=f&keep=1&srchmode=1&unlock))
 
-```{r}
+```{r, eval =FALSE}
 setDefaultNodeBorderWidth(cw, 5)
 families_to_colour <- c(" Podoviridae",
                         " Siphoviridae",
@@ -248,12 +248,12 @@ setNodeBorderColorRule(cw,
                        default.color = "#000000")
 ```
 
-```{r, message=FALSE, results="hide"}
+```{r, eval =FALSE, message=FALSE, results="hide"}
 displayGraph(cw)
 fitContent(cw)
 ```
 
-```{r, echo=FALSE}
+```{r, eval =FALSE, echo=FALSE}
 saveImage(cw,
           "co-occur2",
           "png",
@@ -267,7 +267,7 @@ After doing all of this colouring to the network we would like to layout the net
 
 When using RCy3 to drive Cytoscape, if we are not sure what the current values are for a layout or we are not sure what kinds of values are accepted for the different parameters of our layout, we can investigate using the RCy3 functions `getLayoutPropertyNames()` and then `getLayoutPropertyValue()`.
 
-```{r}
+```{r, eval =FALSE}
 getLayoutNames(cw)
 
 getLayoutPropertyNames(cw, layout.name = "allegro-spring-electric")
@@ -278,7 +278,7 @@ getLayoutPropertyValue(cw, "allegro-spring-electric","noOverlapIterations")
 
 Once we decide on the properties we want, we can go ahead and set them like this:
 
-```{r}
+```{r, eval =FALSE}
 setLayoutProperties(cw,
                     layout.name = "allegro-spring-electric",
                     list(gravity = 100,
@@ -288,7 +288,7 @@ layoutNetwork(cw,
 fitContent(cw)
 ```
 
-```{r, echo=FALSE}
+```{r, eval =FALSE, echo=FALSE}
 
 saveImage(cw,
           "co-occur3",
@@ -301,7 +301,7 @@ knitr::include_graphics("./co-occur3.png")
 
 One thing that might be interesting to visualize is nodes that are connected to many different nodes and nodes that are connected to few other nodes. The number of other nodes to which one node is connected is called degree. We can use a gradient of size to quickly visualize nodes that have high degree. 
 
-```{r}
+```{r, eval =FALSE}
 ## initiate a new node attribute
 ug2 <- initNodeAttribute(graph = ug,
                           "degree",
@@ -317,14 +317,14 @@ cw2 <- CytoscapeWindow("Tara oceans with degree",
                       overwriteWindow = TRUE)
 ```
 
-```{r, message=FALSE, results="hide"}
+```{r, eval =FALSE, message=FALSE, results="hide"}
 displayGraph(cw2)
 layoutNetwork(cw2)
 ```
 
 # Size by degree
 
-```{r}
+```{r, eval =FALSE}
 degree_control_points <- c(min(igraph::degree(graph_vir_prok)),
                            mean(igraph::degree(graph_vir_prok)),
                            max(igraph::degree(graph_vir_prok)))
@@ -346,7 +346,7 @@ layoutNetwork(cw2,
 ```
 
 
-```{r, echo=FALSE}
+```{r, eval =FALSE, echo=FALSE}
 fitContent(cw2)
 Sys.sleep(10) # to make sure content is fit before taking an image
 fitContent(cw2)
@@ -356,7 +356,7 @@ saveImage(cw2,
 ```
 
 
-```{r, echo=FALSE}
+```{r, eval =FALSE, echo=FALSE}
 knitr::include_graphics("./co-occur_degree.png")
 ```
 
@@ -364,7 +364,7 @@ knitr::include_graphics("./co-occur_degree.png")
 
 The visualization displays several different areas where there are highly connected nodes that are in the same bacterial phylum. We will select one of these nodes, all of the nodes connected to this node, its first neighbours, and then the nodes connected to the first neighbours. One node that is in a group of highly connected nodes is the cyanobacterial node "GQ377772". We will select it and its first and second neighbours and then make a new network from these nodes and their connections.
 
-```{r}
+```{r, eval =FALSE}
 selectNodes(cw2,
             "GQ377772") # selects specific nodes
 getSelectedNodes(cw2)
@@ -375,21 +375,21 @@ getSelectedNodes(cw2)
 
 Now select the second neighbours of node "GQ377772".
 
-```{r}
+```{r, eval =FALSE}
 selectFirstNeighborsOfSelectedNodes(cw2)
 getSelectedNodes(cw2)
 ```
 
 Create subnetwork from these nodes and their edges. 
 
-```{r}
+```{r, eval =FALSE}
 newnet <- createWindowFromSelection(cw2,
                                     "subnet",
                                     "TRUE")
 layoutNetwork(newnet, "force-directed")
 ```
 
-```{r, echo=FALSE}
+```{r, eval =FALSE, echo=FALSE}
 fitContent(newnet)
 Sys.sleep(10)
 saveImage(newnet,
@@ -398,7 +398,7 @@ saveImage(newnet,
           h = 1200)
 ```
 
-```{r, echo=FALSE}
+```{r, eval =FALSE, echo=FALSE}
 knitr::include_graphics("./co-occur_subnet.png")
 ```
 
