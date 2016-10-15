@@ -20,7 +20,7 @@ browseVignettes("paxtoolsr")
 In this vignette we will visualize a network retrieved from Pathway Commons, query Pathway commons to find the neighbourhood of a specific gene, look at a subnetwork of a set of proteins, and visualize node metadata associated with the networks. 
 
 To get started, load packages for use in this tutorial
-```{r, message = FALSE}
+```{r, eval=FALSE, message = FALSE}
 library(paxtoolsr)
 library(RCy3)
 library(igraph)
@@ -30,7 +30,7 @@ library(RColorBrewer)
 # Visualize a network using paxtoolsr
 
 We will use paxtoolsr to convert a metabolic pathway file (installed with paxtoolsr) to the Simple Interaction Format (SIF). 
-```{r,}
+```{r, eval=FALSE}
 sif <- paxtoolsr::toSif(system.file("extdata",
                          "biopax3-short-metabolic-pathway.owl",
                          package = "paxtoolsr"))
@@ -38,7 +38,7 @@ sif <- paxtoolsr::toSif(system.file("extdata",
 
 We will use igraph to create a network from the SIF file and then convert that to node and edge lists that can be sent to Cytoscape via RCy3. 
 
-```{r,}
+```{r, eval=FALSE}
 g <- igraph::graph.edgelist(as.matrix(sif[, c(1, 3)]),
                     directed = FALSE)
 
@@ -57,12 +57,12 @@ To run this example **Cytoscape software must be running**. In Cytoscape we will
 
 To begin we create a connection in R that we can use to manipulate the networks and then we will delete any windows that were already in Cytoscape so that we don't use up all of our memory. 
 
-```{r, message=FALSE}
+```{r, eval=FALSE, message=FALSE}
 cy <- CytoscapeConnection()
 deleteAllWindows(cy)
 ```
 
-```{r, message=FALSE}
+```{r, eval=FALSE, message=FALSE}
 cw <- CytoscapeWindow("Metabolic pathway from paxtoolsr",
                       graph = ug,
                       overwriteWindow = TRUE)
@@ -70,14 +70,14 @@ setDefaultNodeFontSize(cw,
                        7)
 ```
 
-```{r, message=FALSE, results="hide"}
+```{r, eval=FALSE, message=FALSE, results="hide"}
 displayGraph(cw)
 layoutNetwork(cw,
               "force-directed")
 fitContent(cw)
 ```
 
-```{r, echo=FALSE}
+```{r, eval=FALSE, echo=FALSE}
 Sys.sleep(10)
 saveImage(cw,
           "paxtools_met_path_1",
@@ -90,7 +90,7 @@ knitr::include_graphics("./paxtools_met_path_1.png")
 
 Paxtoolsr can also be used to query Pathway Commons for the neighbours of a particular gene. In this case we will examine the gene neighbourhood of gene Brain-derived neurotrophic factor(BDNF) which is involved in neuron growth and survival. 
 
-```{r,}
+```{r, eval=FALSE}
 gene <- "BDNF"
 t1 <- paxtoolsr::graphPc(source = gene,
               kind = "neighborhood",
@@ -107,7 +107,7 @@ t2 <- t1[which(t1[, 2] == "controls-state-change-of"), ]
 
 For our example we only want to use a small number of interactions so we will use `filterSIF()` to reduce the number visualized.
 
-```{r,}
+```{r, eval=FALSE}
 ids <- unique(c(t2$PARTICIPANT_A,
                 t2$PARTICIPANT_B))
 t3 <- paxtoolsr::filterSif(t2,
@@ -117,14 +117,14 @@ t3 <- paxtoolsr::filterSif(t2,
 
 We will use this filtered dataframe to create a network using igraph's `graph.edgelist()`
 
-```{r,}
+```{r, eval=FALSE}
 g <- igraph::graph.edgelist(as.matrix(t3[, c(1, 3)]),
                     directed = FALSE)
 ```
 
 Format the graph for sending to Cytoscape.
 
-```{r,}
+```{r, eval=FALSE}
 g.nodes <- as.data.frame(igraph::vertex.attributes(g))
 g.edges <- data.frame(igraph::as_edgelist(g))
 names(g.edges) <- c("name.1",
@@ -137,19 +137,19 @@ ug <- cyPlot(g.nodes,
 ## Send network to Cytoscape using RCy3
 
 Reset the default node size
-```{r,}
+```{r, eval=FALSE}
 setDefaultNodeFontSize(cw,
                        12)
 ```
 
 
-```{r, message=FALSE}
+```{r, eval=FALSE, message=FALSE}
 cw <- CytoscapeWindow("Pathway Commons graph query from paxtoolsr",
                       graph = ug,
                       overwriteWindow = TRUE)
 ```
 
-```{r, message=FALSE, results="hide"}
+```{r, eval=FALSE, message=FALSE, results="hide"}
 displayGraph(cw)
 # setLayoutProperties(cw,
 #                     layout.name = "allegro-spring-electric",
@@ -160,7 +160,7 @@ layoutNetwork(cw,
 fitContent(cw)
 ```
 
-```{r, echo=FALSE}
+```{r, eval=FALSE, echo=FALSE}
 Sys.sleep(10)
 saveImage(cw,
           "pathway_commons_gq",
@@ -173,7 +173,7 @@ knitr::include_graphics("./pathway_commons_gq.png")
 
 We will examine a network composed of the genes AKT serine/threonine kinase 1 ("AKT1"), Insulin receptor substrate 1 ("IRS1"), mechanistic target of rapamycin ("MTOR") and Insulin Like Growth Factor 1 Receptor ("IGF1R"). The paths betwen these genes can represent metabolic and signaling pathways, molecular and genetic interactions or gene regulation.
 
-```{r,}
+```{r, eval=FALSE}
 genes <- c("AKT1",
            "IRS1",
            "MTOR",
@@ -186,20 +186,20 @@ t1 <- paxtoolsr::graphPc(source = genes,
 
 We will again filter our network to visualize interactions where the genes control a reactions that changes the state of the second gene protein ("controls-state-change-of", see more info [here](http://www.pathwaycommons.org/pc2/formats)).  
 
-```{r,}
+```{r, eval=FALSE}
 t2 <- t1[which(t1[, 2] == "controls-state-change-of"),]
 ```
 
 Create graph using igraph.
 
-```{r,}
+```{r, eval=FALSE}
 g <- igraph::graph.edgelist(as.matrix(t2[, c(1, 3)]),
                     directed = FALSE)
 ```
 
 Convert graph to node and edges lists to send to Cytoscape.
 
-```{r,}
+```{r, eval=FALSE}
 g.nodes <- as.data.frame(igraph::vertex.attributes(g))
 g.edges <- data.frame(igraph::as_edgelist(g))
 names(g.edges) <- c("name.1",
@@ -211,19 +211,19 @@ ug <- cyPlot(g.nodes,
 
 ## Send network to Cytoscape using RCy3
 
-```{r, message=FALSE}
+```{r, eval=FALSE, message=FALSE}
 cw <- CytoscapeWindow("Subnetwork of Pathway Commons graph query from paxtoolsr",
                       graph = ug,
                       overwriteWindow = TRUE)
 ```
 
-```{r, message=FALSE, results="hide"}
+```{r, eval=FALSE, message=FALSE, results="hide"}
 displayGraph(cw)
 layoutNetwork(cw,
               layout.name = "force-directed")
 ```
 
-```{r, echo=FALSE}
+```{r, eval=FALSE, echo=FALSE}
 fitContent(cw)
 Sys.sleep(10)
 saveImage(cw,
@@ -237,7 +237,7 @@ knitr::include_graphics("./subnet_pathway_commons_gq.png")
 
 It can be useful to overlay data from experiments or other sources onto the nodes and edges of a network. We will do this by simulating some data that will be used to colour the nodes of the network. 
 
-```{r,}
+```{r, eval=FALSE}
 # Generate a color palette that goes from white to red 
 # that contains 10 colours
 numColors <- 10
@@ -258,7 +258,7 @@ indices <- as.integer(scaledValues)
 
 After the colours and values for the nodes have been generated, we will add this information to the network that we used in the previous section.
 
-```{r,}
+```{r, eval=FALSE}
 g <- cw@graph   
 g <- initNodeAttribute(graph = g,
                        'indices',
@@ -267,7 +267,7 @@ g <- initNodeAttribute(graph = g,
 nodeData(g, nodes(g), "indices") <- indices
 ```
 
-```{r, message = FALSE}
+```{r, eval=FALSE, message = FALSE}
 cw <- CytoscapeWindow("Coloured network paxtoolsr",
                       graph = g,
                       overwriteWindow = TRUE)
@@ -277,14 +277,14 @@ displayGraph(cw) # cw's graph is sent to Cytoscape
 
 ## Send network to Cytoscape using RCy3
 
-```{r, message=FALSE, results="hide"}
+```{r, eval=FALSE, message=FALSE, results="hide"}
 displayGraph(cw)
 fitContent(cw)
 ```
 
 Now use the information contained in the "indices" column to add the colours to the nodes in Cytoscape. 
 
-```{r,}
+```{r, eval=FALSE}
 layoutNetwork(cw,
               layout.name = "force-directed")
 setNodeColorRule(cw,
@@ -296,7 +296,7 @@ setNodeColorRule(cw,
 
 ```
 
-```{r, echo=FALSE}
+```{r, eval=FALSE, echo=FALSE}
 fitContent(cw)
 Sys.sleep(10)
 saveImage(cw,
