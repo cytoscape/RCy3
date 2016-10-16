@@ -227,7 +227,7 @@ colours_for_MOA_classes <- colorRampPalette(brewer.pal(12, "Set3"))(number_of_un
 ```
 
 
-We have `r number_of_unique_MOA` different MOA classes and have used RColorBrewer to generate different colours for the different classes. 
+We have 14 different MOA classes and have used RColorBrewer to generate different colours for the different classes. 
 
 ```{r, eval=FALSE}
 setNodeColorRule(new_cw,
