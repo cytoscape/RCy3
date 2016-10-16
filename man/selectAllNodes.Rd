@@ -17,13 +17,12 @@ Selects all nodes in a specified network.
 Selects all nodes in a Cytoscape Network
 }
 \examples{
-  \dontrun{
+\dontrun{
 cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 selectAllNodes(cw)
+}
 
 }
-}
-\keyword{graph}
 \author{
 Julia Gustavsen, \email{j.gustavsen@gmail.com}
 }

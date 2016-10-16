@@ -101,7 +101,7 @@ t1 <- paxtoolsr::graphPc(source = gene,
 For our network we only want to visualize interaction where BDNF controls a reactions that changes the state of the second protein ("controls-state-change-of", see more info on the binary relations in Pathway commons [here](http://www.pathwaycommons.org/pc2/formats)).  
 
 
-```{r}
+```{r, eval= FALSE}
 t2 <- t1[which(t1[, 2] == "controls-state-change-of"), ]
 ```
 
