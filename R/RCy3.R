@@ -84,6 +84,20 @@ setGeneric ('getLayoutPropertyType',
 	signature='obj', function(obj, layout.name, property.name) standardGeneric ('getLayoutPropertyType'))
 setGeneric ('getLayoutPropertyValue', 
 	signature='obj', function(obj, layout.name, property.name) standardGeneric ('getLayoutPropertyValue'))
+setGeneric('getCommandNames', 
+           signature='obj',
+           function(obj) standardGeneric ('getCommandNames'))
+setGeneric('getCommandsWithinNamespace', 
+           signature = 'obj',
+           function(obj,
+                    namespace) standardGeneric('getCommandsWithinNamespace'))
+setGeneric('setCommandProperties', 
+           signature = 'obj',
+           function(obj,
+                    command.name,
+                    properties.list, 
+                    copy.graph.to.R = FALSE) standardGeneric('setCommandProperties')
+)
 setGeneric ('setLayoutProperties', 
 	signature='obj', function(obj, layout.name, properties.list) standardGeneric ('setLayoutProperties'))
 setGeneric ('getLineStyles', 
@@ -318,6 +332,9 @@ setGeneric ('getFirstNeighbors',        signature='obj', function (obj, node.nam
 setGeneric ('selectFirstNeighborsOfSelectedNodes',
                                         signature='obj', function (obj) standardGeneric ('selectFirstNeighborsOfSelectedNodes'))
 setGeneric ('sfn',                      signature='obj', function (obj) standardGeneric ('sfn'))
+setGeneric ('selectEdgesConnectedBySelectedNodes', 
+            signature='obj', function(obj) standardGeneric ('selectEdgesConnectedBySelectedNodes'))
+
 #-----------------------------------------------------------
 # methods related to transmitting data from Cytoscape to R
 #-----------------------------------------------------------
@@ -327,6 +344,11 @@ setGeneric ('haveEdgeAttribute',             signature='obj', function (obj, edg
 setGeneric ('copyNodeAttributesFromCyGraph', signature='obj', function (obj, window.id, existing.graph) standardGeneric ('copyNodeAttributesFromCyGraph'))
 setGeneric ('copyEdgeAttributesFromCyGraph', signature='obj', function (obj, window.id, existing.graph) standardGeneric ('copyEdgeAttributesFromCyGraph'))
 setGeneric ('getGraphFromCyWindow',          signature='obj', function (obj, window.title) standardGeneric ('getGraphFromCyWindow'))
+setGeneric('connectToNewestCyWindow', 
+           signature = 'obj',
+           function(obj,
+                    copyToR = FALSE) standardGeneric('connectToNewestCyWindow')
+)
 
 #-----------------------------------------------------------
 # methods related to visual styles
@@ -732,15 +754,16 @@ setMethod ('createWindowFromSelection', 'CytoscapeWindowClass',
 #'
 #' Makes a copy of a Cytoscape Network with all of its edges and nodes 
 #'
-#' @param object Cytoscape network 
+#' @param obj Cytoscape network 
 #' @param new_title New name for the copy
 #' @param copy.graph.to.R Logical whether to copy the graph to a new object in R 
 #' 
 #' @return Connection to new copy of network. 
 #'
-#' @examples 
+#' @examples \dontrun{
 #' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 #' copy_of_your_net <- copyCytoscapeNetwork(cw, "new_copy")
+#' }
 #'
 #' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
 #' @seealso \code{\link{createWindowFromSelection}}, \code{\link{existing.CytoscapeWindow}}, \code{\link{renameCytoscapeNetwork}}
@@ -809,10 +832,11 @@ setMethod('copyCytoscapeNetwork',
 #' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
 #' @seealso \code{\link{createWindowFromSelection}}, \code{\link{existing.CytoscapeWindow}}, \code{\link{copyCytoscapeNetwork}}
 #'
-#' @examples 
+#' @examples \dontrun{
 #' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 #' renamed_net <- renameCytoscapeNetwork(cw, "renamed_network")
-#'
+#' }
+#' 
 #' @concept RCy3
 #' @export
 #' 
@@ -915,7 +939,6 @@ setMethod ('deleteAllWindows',	'CytoscapeConnectionClass', function (obj) {
     request.res <- DELETE(resource.uri)
     invisible(request.res)
     })
-
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getNodeShapes', 'CytoscapeConnectionClass', function (obj) {
     resource.uri <- paste(obj@uri, pluginVersion(obj), "styles/visualproperties/NODE_SHAPE/values", sep="/")
@@ -1031,6 +1054,147 @@ setMethod ('getLayoutPropertyValue', 'CytoscapeConnectionClass',
      }) # getLayoutPropertyValue
 
 #------------------------------------------------------------------------------------------------------------------------
+#' Gets commands available from within cytoscape from 
+#' functions within cytoscape and from installed plugins.
+#'
+#' @param obj Cytoscape network where commands are fetched via RCy3 
+#' @return Vector of available commands from all namespaces (e.g. functions and plugins) 
+#'
+#' @concept RCy3
+#' @export
+#' 
+#' @importFrom methods setGeneric
+setMethod('getCommandNames','CytoscapeConnectionClass',
+          function(obj) { 
+            request.uri <- paste(obj@uri,
+                                 pluginVersion(obj),
+                                 "commands",
+                                 sep="/")
+            request.res <- GET(url=request.uri)
+            
+            available.commands <- unlist(strsplit(rawToChar(request.res$content),
+                                                  split="\n\\s*"))
+            ## to remove "Available namespaces" title
+            ## remove the first value
+            available.commands <- available.commands[-1]
+            return(available.commands) 
+          })
+# END getCommandNames
+
+#' Gets commands available from within a namespace in Cytoscape from 
+#' functions within cytoscape and from installed plugins.
+#'
+#' @param obj Cytoscape network where commands are fetched via RCy3 
+#' @param namespace Cytoscape function (e.g. layout or network settings) or Cytoscape plugin function
+#' 
+#' @return Vector of available commands from a specific plugin or Cytoscape function (e.g. namespace)
+#'
+#' @concept RCy3
+#' @export
+#' 
+setMethod('getCommandsWithinNamespace','CytoscapeConnectionClass',
+          function(obj,
+                   namespace) { 
+            request.uri <- paste(obj@uri,
+                                 pluginVersion(obj),
+                                 "commands",
+                                 namespace,
+                                 sep = "/")
+            request.res <- GET(url = request.uri)
+            
+            available.commands <- unlist(strsplit(rawToChar(request.res$content),
+                                                  split = "\n\\s*"))
+            ## remove "Available commands" title
+            available.commands <- available.commands[-1]
+            return(available.commands) })
+
+# END getCommandsWithinNamespace
+
+#' Runs a Cytoscape command (for example from a plugin) with a list of parameters and creates a connection to the network (if a new one is created) so that it can be further manipulated from R. 
+#'
+#' @param obj Cytoscape network where command is run via RCy3 
+#' @param command.name Need more info here - how to specify..
+#' @param properties.list Parameters (e.g. files, p-values, etc) to be used to set to run the command
+#' @param copy.graph.to.R If true this copies the graph information to R. This step can be quite slow. Default is false. 
+#' 
+#' @return Runs in Cytoscape and creates a connection to the Cytoscape window so that it can be further manipulated from R 
+#' 
+#' @examples \dontrun{
+#' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
+#' selectAllNodes(cw)
+#' }
+#'
+#' @concept RCy3
+#' @export
+#' 
+#' @importFrom methods setGeneric
+setMethod('setCommandProperties','CytoscapeConnectionClass', 
+          function(obj,
+                   command.name,
+                   properties.list, 
+                   copy.graph.to.R = FALSE) {
+            all.possible.props <- getCommandsWithinNamespace(obj,
+                                                             command.name)
+            if (all(names(properties.list) %in% all.possible.props) == FALSE) {
+              print('You have included a name which is not in the commands')
+              stderr ()
+            } else {
+              request.uri <- paste(obj@uri,
+                                   pluginVersion(obj),
+                                   "commands",
+                                   as.character(command.name),
+                                   sep = "/")
+              
+              request.res <- GET(url = request.uri,
+                                 query = properties.list)
+              if (request.res$status == 200){
+                print("Successfully built the EnrichmentMap.")
+                stdout ()
+                resource.uri <- paste(obj@uri,
+                                      pluginVersion(obj),
+                                      "networks",
+                                      sep = "/")
+                request.res <- GET(resource.uri)
+                # SUIDs list of the existing Cytoscape networks	
+                cy.networks.SUIDs <- fromJSON(rawToChar(request.res$content))
+                # most recently made enrichment map will have the highest SUID
+                cy.networks.SUIDs.last <- max(cy.networks.SUIDs)
+                
+                res.uri.last <- paste(obj@uri,
+                                      pluginVersion(obj),
+                                      "networks",
+                                      as.character(cy.networks.SUIDs.last),
+                                      sep = "/")
+                result <- GET(res.uri.last)
+                net.name <- fromJSON(rawToChar(result$content))$data$name
+                
+                if (copy.graph.to.R){
+                  connect_window_to_R_session <- existing.CytoscapeWindow(net.name,
+                                                                          copy.graph.from.cytoscape.to.R = TRUE)
+                  print(paste0("Cytoscape window",
+                               net.name,
+                               " successfully connected to R session and graph copied to R."))
+                } 
+                else {
+                  connect_window_to_R_session <- existing.CytoscapeWindow(net.name,
+                                                                          copy.graph.from.cytoscape.to.R = FALSE) 
+                  print(paste0("Cytoscape window ",
+                               net.name,
+                               " successfully connected to R session."))
+                }
+                
+                
+              } else {
+                print("Something went wrong. Unable to run command.")
+                stderr ()
+              }
+              invisible(request.res)
+            }
+            return(connect_window_to_R_session)
+          }) 
+
+# END setCommandProperties
+
 setMethod ('setLayoutProperties', 'CytoscapeConnectionClass', 
 
     function (obj, layout.name, properties.list) {
@@ -1332,6 +1496,46 @@ setMethod ('getGraphFromCyWindow', 'CytoscapeConnectionClass',
         return(g)
   })
 ## END getGraphFromCyWindow
+
+#' Creates a connection to the newest Cytoscape window so that it can be further manipulated from R.
+#'
+#' @param obj Cytoscape network where command is run via RCy3 
+#' @param copyToR If true this copies the graph information to R. This step can be quite slow. Default is false. 
+#' 
+#' @return Creates a connection to the newest Cytoscape window so that it can be further manipulated from R 
+#' 
+#' @concept RCy3
+#' @export
+#' 
+#' @importFrom methods setGeneric
+setMethod('connectToNewestCyWindow',
+          'CytoscapeConnectionClass',
+          function(obj,
+                                    copyToR = FALSE) {
+  resource.uri <- paste(obj@uri,
+                        pluginVersion(obj),
+                        "networks",
+                        sep = "/")
+  request.res <- GET(resource.uri)
+  # SUIDs list of the existing Cytoscape networks
+  cy.networks.SUIDs <- fromJSON(rawToChar(request.res$content))
+  # most recently made enrichment map will have the highest SUID
+  cy.networks.SUIDs.last <- max(cy.networks.SUIDs)
+  
+  res.uri.last <- paste(obj@uri,
+                        pluginVersion(obj),
+                        "networks",
+                        as.character(cy.networks.SUIDs.last),
+                        sep = "/")
+  result <- GET(res.uri.last)
+  net.name <- fromJSON(rawToChar(result$content))$data$name
+  
+  ## to get edges request.res$elements$edges
+  newest_CyWindow <- existing.CytoscapeWindow(net.name,
+                                              copy.graph.from.cytoscape.to.R = copyToR) 
+  return(newest_CyWindow)
+})
+
 
 # ------------------------------------------------------------------------------
 setMethod('sendNodes', 'CytoscapeWindowClass', function(obj) {
@@ -4399,9 +4603,10 @@ setMethod('selectNodes', 'CytoscapeWindowClass',
 #' @concept RCy3
 #' @export
 #' 
-#' @examples 
+#' @examples \dontrun{
 #' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 #' selectAllNodes(cw)
+#' }
 #' 
 #' @importFrom methods setGeneric
 setMethod('selectAllNodes',
@@ -4606,7 +4811,7 @@ setMethod('selectEdges', 'CytoscapeWindowClass',
 #'
 #' Selects all edges in a Cytoscape Network 
 #'
-#' @param object Cytoscape network  
+#' @param obj Cytoscape network  
 #' 
 #' @return Selects all edges in a specified network. 
 #'
@@ -4616,9 +4821,10 @@ setMethod('selectEdges', 'CytoscapeWindowClass',
 #' @concept RCy3
 #' @export
 #' 
-#' @examples 
+#' @examples \dontrun{
 #' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 #' selectAllEdges(cw)
+#' }
 #' 
 #' @importFrom methods setGeneric
 setMethod('selectAllEdges',
@@ -4811,6 +5017,47 @@ setMethod('sfn', 'CytoscapeWindowClass', function (obj) {
 })
 
 #------------------------------------------------------------------------------------------------------------------------
+#' Select the edges connecting selected nodes in Cytoscape Network 
+#'
+#' Selects edges in a Cytoscape Network connecting the selected nodes 
+#'
+#' @param obj Cytoscape network 
+#' 
+#' @return network with edges selected 
+#'
+#' @examples \dontrun{
+#' cw <- CytoscapeWindow('vignette select edges', graph = RCy3::makeSimpleGraph(), overwrite = TRUE)
+#' displayGraph(cw)
+#' selectNodes(cw,"A") # selects specific nodes
+#' getSelectedNodes(cw)
+#' getSelectedEdges(cw)
+#' selectFirstNeighborsOfSelectedNodes(cw)
+#' ## This has only selected the nodes, but not the edges in Cytoscape, so we will need to select all of the edges before we make the new subnetwork.
+#' selectEdgesConnectedBySelectedNodes(cw)
+#' getSelectedNodes(cw)
+#' getSelectedEdges(cw)
+#' }
+#'
+#' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
+#' @seealso \code{\link{createWindowFromSelection}}, \code{\link{selectEdgesConnectedBySelectedNodes}}, \code{\link{renameCytoscapeNetwork}}
+#' 
+#' @concept RCy3
+#' @export
+#' 
+#' @importFrom methods setGeneric
+selectEdgesConnectedBySelectedNodes <- function(obj) {
+  selectedNodes = getSelectedNodes(obj)
+  if (length (selectedNodes) == 1 && is.na (selectedNodes))
+    return ()
+  graphEdges <- getAllEdges(obj)  
+  selectedEdges <- unlist(mapply(function(x) return(graphEdges [grep(x, graphEdges)]), selectedNodes)) 
+  if (length (selectedEdges) > 0)
+    selectEdges(obj, selectedEdges)
+}
+# END selectEdgesConnectedBySelectedNodes	
+
+
+
 noa.names = function(graph)
 {
   return(names(nodeDataDefaults(graph)))
