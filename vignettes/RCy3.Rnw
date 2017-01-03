@@ -402,7 +402,7 @@ Finally, delete all the windows from this vignette:
 
 \item Mark Grimes kindly provided helpful user feedback.
 
-\item Julia Gustavsen generously developed various use cases/examples for using RCy3 with biological data during GSOC 2016. More detail can be found here: https://github.com/jooolia/gsoc_Rcy3_vignettes/blob/master/blog_post_drafts/final_work_submission.md
+\item Julia Gustavsen generously developed various use cases/examples for using RCy3 with biological data during GSOC 2016. More detail can be found here: \url{https://github.com/jooolia/gsoc_Rcy3_vignettes/blob/master/blog_post_drafts/final_work_submission.md}
 
 
 \end{itemize}
