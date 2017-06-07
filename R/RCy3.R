@@ -216,7 +216,7 @@ setGeneric ('setNodeLabelRule',         signature='obj', function (obj, node.att
 setGeneric ('setEdgeLabelRule',         signature='obj', function (obj, edge.attribute.name) standardGeneric ('setEdgeLabelRule'))
 
 setGeneric ('setNodeColorRule',         signature='obj', 
-    function (obj, node.attribute.name, control.points, colors, mode, default.color='#FFFFFF') standardGeneric ('setNodeColorRule'))
+    function (obj, node.attribute.name, control.points, colors, mode, default.color='#FFFFFF', vizmap.style.name = 'default') standardGeneric ('setNodeColorRule'))
 
 setGeneric ('setNodeBorderColorRule',   signature='obj', 
     function (obj, node.attribute.name, control.points, colors, mode, default.color='#000000') standardGeneric ('setNodeBorderColorRule'))
@@ -1319,7 +1319,6 @@ setMethod ('copyNodeAttributesFromCyGraph', 'CytoscapeConnectionClass',
             nodes.with.attribute = haveNodeAttribute(obj, known.node.names, attribute.name)
             if(length(nodes.with.attribute) > 0) {
                 attribute.type = getNodeAttributeType(obj, attribute.name)
-                
                 write(sprintf("\t retrieving attribute '%s' values for %d nodes", attribute.name, length(nodes.with.attribute)), stderr())
                 # write(sprintf("\t retrieving %s '%s' attribute for %d nodes", attribute.type, attribute.name, length(nodes.with.attribute)), stderr())
                 if(attribute.type == 'Integer') {
@@ -1331,8 +1330,11 @@ setMethod ('copyNodeAttributesFromCyGraph', 'CytoscapeConnectionClass',
                 } else if(attribute.type == 'Double') {
                     attribute.type = 'numeric'
                     default.value = as.numeric(0.0)
+                } else if(attribute.type == 'Long') {
+                    attribute.type = 'integer'
+                    default.value = as.integer(0)
                 } else if(attribute.type == 'Boolean') {
-                    attribute.value = 'boolean'
+                    attribute.type = 'boolean'
                     default.value = as.logical(FALSE)
                 } else {
                     write(sprintf('RCy3::copyNodeAttributesFromCyGraph, no support yet for attributes of type %s', attribute.type), stderr())
@@ -2841,7 +2843,7 @@ setMethod ('setEdgeLabelRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
            
-           function (obj, node.attribute.name, control.points, colors, mode, default.color='#FFFFFF') {
+           function (obj, node.attribute.name, control.points, colors, mode, default.color='#FFFFFF', vizmap.style.name = 'default') {
                if (!mode %in% c ('interpolate', 'lookup')) {
                    write ("Error! RCy3:setNodeColorRule. Mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
                    return ()
@@ -2855,7 +2857,7 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                }
                
                #TODO Comment TanjaM we should give the user the option to choose the style as an input parameter which defaults to default.
-               vizmap.style.name = 'default'
+               #vizmap.style.name = 'default'
                
                #set default
                setDefaultNodeColor (obj, default.color, vizmap.style.name)
@@ -5336,13 +5338,15 @@ remove.redundancies.in.undirected.graph = function(gu)
 #------------------------------------------------------------------------------------------------------------------------
 initNodeAttribute = function (graph, attribute.name, attribute.type, default.value)
 {
-  stopifnot (attribute.type %in% c ('char', 'integer', 'numeric'))
+  stopifnot (attribute.type %in% c ('char', 'integer', 'numeric', 'boolean'))
   if (attribute.type == 'char')
     attribute.type = 'STRING'
   else if (attribute.type == 'integer')
     attribute.type = 'INTEGER'
   else if (attribute.type == 'numeric')
     attribute.type = 'FLOATING'
+  else if (attribute.type == 'boolean')
+      attribute.type = 'BOOLEAN'
 
   nodeDataDefaults (graph, attr=attribute.name) = default.value
   attr (nodeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
