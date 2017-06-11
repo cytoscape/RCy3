@@ -1321,18 +1321,15 @@ setMethod ('copyNodeAttributesFromCyGraph', 'CytoscapeConnectionClass',
                 attribute.type = getNodeAttributeType(obj, attribute.name)
                 write(sprintf("\t retrieving attribute '%s' values for %d nodes", attribute.name, length(nodes.with.attribute)), stderr())
                 # write(sprintf("\t retrieving %s '%s' attribute for %d nodes", attribute.type, attribute.name, length(nodes.with.attribute)), stderr())
-                if(attribute.type == 'Integer') {
+                if(attribute.type == 'Integer' || attribute.type == 'Long') {
                     attribute.type = 'integer'
                     default.value = as.integer(0)
                 } else if(attribute.type == 'String') {
                     attribute.type = 'char'
                     default.value = as.character('unassigned')
-                } else if(attribute.type == 'Double') {
+                } else if(attribute.type == 'Double' || attribute.type == 'Float') {
                     attribute.type = 'numeric'
                     default.value = as.numeric(0.0)
-                } else if(attribute.type == 'Long') {
-                    attribute.type = 'integer'
-                    default.value = as.integer(0)
                 } else if(attribute.type == 'Boolean') {
                     attribute.type = 'boolean'
                     default.value = as.logical(FALSE)
@@ -1373,15 +1370,18 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'CytoscapeConnectionClass',
                 attribute.type = getEdgeAttributeType(obj, attribute.name) 
                 
                 write(sprintf("\t retrieving attribute '%s' values for %d edges", attribute.name, length(edges.with.attribute)), stderr())
-                if(attribute.type == 'Integer') {
-                    attribute.type = 'integer' 
-                    default.value = 0
+                if(attribute.type == 'Integer' || attribute.type == 'Long') {
+                    attribute.type = 'integer'
+                    default.value = as.integer(0)
                 } else if(attribute.type == 'String') {
                     attribute.type = 'char'
-                    default.value = 'unassigned'
-                } else if(attribute.type == 'Double') {
-                    attribute.type = 'numeric' 
+                    default.value = as.character('unassigned')
+                } else if(attribute.type == 'Double' || attribute.type == 'Float') {
+                    attribute.type = 'numeric'
                     default.value = as.numeric(0.0)
+                } else if(attribute.type == 'Boolean') {
+                    attribute.type = 'boolean'
+                    default.value = as.logical(FALSE)
                 } else {
                     write(sprintf('RCy3::copyEdgeAttributesFromCyGraph, no support yet for attributes of type %s', attribute.type), stderr())
                     next()
