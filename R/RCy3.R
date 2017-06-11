@@ -5357,13 +5357,15 @@ initNodeAttribute = function (graph, attribute.name, attribute.type, default.val
 #------------------------------------------------------------------------------------------------------------------------
 initEdgeAttribute = function (graph, attribute.name, attribute.type, default.value)
 {
-  stopifnot (attribute.type %in% c ('char', 'integer', 'numeric'))
-  if (attribute.type == 'char')
-    attribute.type = 'STRING'
-  else if (attribute.type == 'integer')
-    attribute.type = 'INTEGER'
-  else if (attribute.type == 'numeric')
-    attribute.type = 'FLOATING'
+    stopifnot (attribute.type %in% c ('char', 'integer', 'numeric', 'boolean'))
+    if (attribute.type == 'char')
+        attribute.type = 'STRING'
+    else if (attribute.type == 'integer')
+        attribute.type = 'INTEGER'
+    else if (attribute.type == 'numeric')
+        attribute.type = 'FLOATING'
+    else if (attribute.type == 'boolean')
+        attribute.type = 'BOOLEAN'
 
   edgeDataDefaults (graph, attr=attribute.name) = default.value
   attr (edgeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
