@@ -7,7 +7,8 @@ Specify how data attributes -- for the specified named attribute -- is
 mapped to edge opacity.}
 
 \usage{
-setEdgeOpacityRule(obj, edge.attribute.name, control.points, opacities, mode)
+setEdgeOpacityRule(obj, edge.attribute.name, control.points, opacities, mode,
+                  vizmap.style.name = 'default')
 }
 
 \arguments{
@@ -19,6 +20,7 @@ setEdgeOpacityRule(obj, edge.attribute.name, control.points, opacities, mode)
   \item{opacities}{a list of opacity values, integers between 0 (invisible)
         and 255 (completely visible)}
   \item{mode}{either 'interpolate' or 'lookup'.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
@@ -32,6 +34,7 @@ None.
   setNodeShapeRule
   setEdgeLineStyleRule
   setNodeColorRule
+  getVisualStyleNames
 }
 
 \examples{
