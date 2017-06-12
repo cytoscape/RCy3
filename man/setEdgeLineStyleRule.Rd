@@ -7,7 +7,8 @@ Specify how data attributes -- for the specified named attribute -- are
 mapped to edge line style.}
 
 \usage{
-setEdgeLineStyleRule(obj, edge.attribute.name, attribute.values, line.styles, default.style='SOLID')
+setEdgeLineStyleRule(obj, edge.attribute.name, attribute.values, line.styles,
+                     default.style='SOLID', vizmap.style.name = 'default')
 }
 
 \arguments{
@@ -20,6 +21,7 @@ setEdgeLineStyleRule(obj, edge.attribute.name, attribute.values, line.styles, de
   \item{line.styles}{One line style for each of the attribute.values}
   \item{default.style}{The style to use when an explicit mapping is
         not provided.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
@@ -30,6 +32,7 @@ None.
 \seealso{
   \code{\link{getLineStyles}}
   \code{\link{setNodeBorderColorRule}} (detailed example)
+  \code{\link{getVisualStyleNames}}
 }
 
 \examples{
