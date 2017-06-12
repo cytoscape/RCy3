@@ -7,13 +7,14 @@ Specify the edge attribute to be used as the label displayed on each edge.
 Non-character attributes are converted to strings before they are used.}
 
 \usage{
-setEdgeLabelRule(obj, edge.attribute.name)
+setEdgeLabelRule(obj, edge.attribute.name, vizmap.style.name = 'default')
 }
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{edge.attribute.name}{the edge attribute whose values will
         determine the edge label on each edge, when this rule is applied.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
