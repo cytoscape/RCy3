@@ -7,7 +7,8 @@ Specify how data attributes -- for the specified named attribute -- is
 mapped to edge color.}
 
 \usage{
-setEdgeColorRule(obj, edge.attribute.name, control.points, colors, mode, default.color='#FFFFFF')
+setEdgeColorRule(obj, edge.attribute.name, control.points, colors, mode,
+                 default.color='#FFFFFF', vizmap.style.name = 'default')
 }
 
 \arguments{
@@ -21,11 +22,13 @@ setEdgeColorRule(obj, edge.attribute.name, control.points, colors, mode, default
   \item{mode}{either 'interpolate' or 'lookup'.}
   \item{default.color}{a \code{String} object, expressed in 
       hexadecimal RGB in this format: "#RRGGBB"}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
 None.
 }
+                                              
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 \seealso{
   setNodeShapeRule (detailed example)
