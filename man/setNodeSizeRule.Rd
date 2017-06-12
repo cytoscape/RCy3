@@ -5,8 +5,10 @@
 \description{
 Specify how data attributes -- the specified node attribute values --
 determine the node size.}
+
 \usage{
-setNodeSizeRule (obj, node.attribute.name, control.points, node.sizes,mode, default.size=40)
+setNodeSizeRule (obj, node.attribute.name, control.points, node.sizes, mode,
+                 default.size=40, vizmap.style.name = 'default')
 }
 
 \arguments{
@@ -25,6 +27,7 @@ setNodeSizeRule (obj, node.attribute.name, control.points, node.sizes,mode, defa
         the nodes which do not appear in your list, they will displayed in
         the default size.}
   \item{default.size}{the size of nodes not otherwise specified.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
