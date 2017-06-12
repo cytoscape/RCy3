@@ -10,7 +10,8 @@ interpolated mapping will be added in the future.
 }
 
 \usage{
-setEdgeLineWidthRule(obj, edge.attribute.name, attribute.values, line.widths, default.width)
+setEdgeLineWidthRule(obj, edge.attribute.name, attribute.values, line.widths,
+                     default.width, vizmap.style.name = 'default')
 }
 
 \arguments{
@@ -20,6 +21,7 @@ setEdgeLineWidthRule(obj, edge.attribute.name, attribute.values, line.widths, de
   \item{attribute.values}{observed values of the specified attribute on the edges.}
   \item{line.widths}{the corresponding widths.}
   \item{default.width}{use this where the rule fails to apply}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
