@@ -210,27 +210,27 @@ setGeneric ('setDefaultEdgeSourceArrowColor',        signature='obj', function (
 setGeneric ('setDefaultEdgeTargetArrowColor',        signature='obj', function (obj, new.color, vizmap.style.name='default') standardGeneric ('setDefaultEdgeTargetArrowColor'))
 setGeneric ('setDefaultEdgeFontSize',     signature='obj', function (obj, new.size, vizmap.style.name='default') standardGeneric ('setDefaultEdgeFontSize'))
 
-setGeneric ('setNodeTooltipRule',       signature='obj', function (obj, node.attribute.name) standardGeneric ('setNodeTooltipRule'))
-setGeneric ('setEdgeTooltipRule',       signature='obj', function (obj, edge.attribute.name) standardGeneric ('setEdgeTooltipRule'))
-setGeneric ('setNodeLabelRule',         signature='obj', function (obj, node.attribute.name) standardGeneric ('setNodeLabelRule'))
-setGeneric ('setEdgeLabelRule',         signature='obj', function (obj, edge.attribute.name) standardGeneric ('setEdgeLabelRule'))
+setGeneric ('setNodeTooltipRule',       signature='obj', function (obj, node.attribute.name, vizmap.style.name = 'default') standardGeneric ('setNodeTooltipRule'))
+setGeneric ('setEdgeTooltipRule',       signature='obj', function (obj, edge.attribute.name, vizmap.style.name = 'default') standardGeneric ('setEdgeTooltipRule'))
+setGeneric ('setNodeLabelRule',         signature='obj', function (obj, node.attribute.name, vizmap.style.name = 'default') standardGeneric ('setNodeLabelRule'))
+setGeneric ('setEdgeLabelRule',         signature='obj', function (obj, edge.attribute.name, vizmap.style.name = 'default') standardGeneric ('setEdgeLabelRule'))
 
 setGeneric ('setNodeColorRule',         signature='obj', 
     function (obj, node.attribute.name, control.points, colors, mode, default.color='#FFFFFF', vizmap.style.name = 'default') standardGeneric ('setNodeColorRule'))
 
 setGeneric ('setNodeBorderColorRule',   signature='obj', 
-    function (obj, node.attribute.name, control.points, colors, mode, default.color='#000000') standardGeneric ('setNodeBorderColorRule'))
+    function (obj, node.attribute.name, control.points, colors, mode, default.color='#000000', vizmap.style.name = 'default') standardGeneric ('setNodeBorderColorRule'))
 
 setGeneric ('setNodeBorderWidthRule',   signature='obj', 
-    function (obj, node.attribute.name, attribute.values, line.widths, default.width=1) standardGeneric ('setNodeBorderWidthRule'))
+    function (obj, node.attribute.name, attribute.values, line.widths, default.width=1, vizmap.style.name = 'default') standardGeneric ('setNodeBorderWidthRule'))
 
 setGeneric ('setNodeShapeRule',         signature='obj', 
-    function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ELLIPSE') standardGeneric ('setNodeShapeRule'))
+    function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ELLIPSE', vizmap.style.name = 'default') standardGeneric ('setNodeShapeRule'))
 setGeneric ('setNodeSizeRule',          signature='obj', 
-    function (obj, node.attribute.name, control.points, node.sizes, mode, default.size=40) standardGeneric ('setNodeSizeRule'))
+    function (obj, node.attribute.name, control.points, node.sizes, mode, default.size=40, vizmap.style.name = 'default') standardGeneric ('setNodeSizeRule'))
 
 setGeneric ('setNodeOpacityRule',          signature='obj', 
-    function (obj, node.attribute.name, control.points, opacities, mode, aspect='all') standardGeneric ('setNodeOpacityRule'))
+    function (obj, node.attribute.name, control.points, opacities, mode, aspect='all', vizmap.style.name = 'default') standardGeneric ('setNodeOpacityRule'))
 
 
 setGeneric ('setNodeSizeDirect',          signature='obj', function (obj, node.names, new.sizes) standardGeneric ('setNodeSizeDirect'))
@@ -271,26 +271,26 @@ setGeneric ('setEdgeTargetArrowOpacityDirect', signature='obj', function (obj, e
 
 
 setGeneric ('setEdgeLineStyleRule',     signature='obj', 
-    function (obj, edge.attribute.name, attribute.values, line.styles, default.style='SOLID') standardGeneric ('setEdgeLineStyleRule'))
+    function (obj, edge.attribute.name, attribute.values, line.styles, default.style='SOLID', vizmap.style.name = 'default') standardGeneric ('setEdgeLineStyleRule'))
 
 setGeneric ('setEdgeLineWidthRule', signature='obj', 
-    function (obj, edge.attribute.name, attribute.values, line.widths, default.width='1') standardGeneric ('setEdgeLineWidthRule'))
+    function (obj, edge.attribute.name, attribute.values, line.widths, default.width='1', vizmap.style.name = 'default') standardGeneric ('setEdgeLineWidthRule'))
 
 setGeneric ('setEdgeTargetArrowRule',   signature='obj', 
-    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW') standardGeneric ('setEdgeTargetArrowRule'))
+    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW', vizmap.style.name = 'default') standardGeneric ('setEdgeTargetArrowRule'))
 setGeneric ('setEdgeSourceArrowRule',   signature='obj', 
-    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW') standardGeneric ('setEdgeSourceArrowRule'))
+    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW', vizmap.style.name = 'default') standardGeneric ('setEdgeSourceArrowRule'))
 
 setGeneric ('setEdgeTargetArrowColorRule',   signature='obj', 
-    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000') standardGeneric ('setEdgeTargetArrowColorRule'))
+    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000', vizmap.style.name = 'default') standardGeneric ('setEdgeTargetArrowColorRule'))
 setGeneric ('setEdgeSourceArrowColorRule',   signature='obj', 
-    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000') standardGeneric ('setEdgeSourceArrowColorRule'))
+    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000', vizmap.style.name = 'default') standardGeneric ('setEdgeSourceArrowColorRule'))
 
 setGeneric ('setEdgeColorRule',         signature='obj',
-    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#FFFFFF') standardGeneric ('setEdgeColorRule'))
+    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#FFFFFF', vizmap.style.name = 'default') standardGeneric ('setEdgeColorRule'))
 
 setGeneric ('setEdgeOpacityRule',          signature='obj', 
-    function (obj, edge.attribute.name, control.points, opacities, mode) standardGeneric ('setEdgeOpacityRule'))
+    function (obj, edge.attribute.name, control.points, opacities, mode, vizmap.style.name = 'default') standardGeneric ('setEdgeOpacityRule'))
 
 
 setGeneric ('getNodeCount',             signature='obj', function (obj) standardGeneric ('getNodeCount'))
@@ -2745,9 +2745,9 @@ setMethod('floatPanel', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeTooltipRule', 'CytoscapeWindowClass',
 
-      function (obj, node.attribute.name) {
+      function (obj, node.attribute.name, vizmap.style.name = 'default') {
           id <- as.character (obj@window.id)
-          viz.style.name = 'default'
+          
           if (!node.attribute.name %in% noa.names (obj@graph)) {
               write (sprintf ('Warning! RCy3::setNodeTooltipRule: passed non-existent node attribute: %s', node.attribute.name), stderr ())
               return ()
@@ -2795,9 +2795,9 @@ setMethod ('setEdgeTooltipRule', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeLabelRule', 'CytoscapeWindowClass',
-    function (obj, node.attribute.name) {
+    function (obj, node.attribute.name, vizmap.style.name = 'default') {
         id = as.character (obj@window.id)
-        vizmap.style.name = 'default'
+        
         if (!node.attribute.name %in% noa.names (obj@graph)) {
             write (sprintf ('warning!  setNodeLabelRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
             return ()
@@ -2819,9 +2819,9 @@ setMethod ('setNodeLabelRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLabelRule', 'CytoscapeWindowClass',
 
-    function (obj, edge.attribute.name) {
+    function (obj, edge.attribute.name, vizmap.style.name = 'default') {
         id = as.character (obj@window.id)
-        vizmap.style.name = 'default'
+        
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
             write (sprintf ('warning!  setEdgeLabelRule passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
             return ()
@@ -2855,11 +2855,8 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
                        return()
                    } 
                }
-               
-               #TODO Comment TanjaM we should give the user the option to choose the style as an input parameter which defaults to default.
-               #vizmap.style.name = 'default'
-               
-               #set default
+
+               # set default
                setDefaultNodeColor (obj, default.color, vizmap.style.name)
                
                # define the column type
@@ -2902,15 +2899,11 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
 
 setMethod ('setNodeOpacityRule', 'CytoscapeWindowClass',
 
-    function (obj, node.attribute.name, control.points, opacities, mode, aspect='all') {
+    function (obj, node.attribute.name, control.points, opacities, mode, aspect='all', vizmap.style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
             write ("Error! RCy3:setNodeOpacityRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
         }
-        
-        #TODO Comment TanjaM we should give the user the option to choose the style 
-        # as an input parameter which defaults to default.
-        vizmap.style.name = 'default'
 
         # define the column type
         columnType <- findColumnType(typeof(control.points[1]))
@@ -3008,7 +3001,7 @@ setMethod ('setNodeOpacityRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeBorderColorRule', 'CytoscapeWindowClass',
 
-    function (obj, node.attribute.name, control.points, colors, mode, default.color='#000000') {
+    function (obj, node.attribute.name, control.points, colors, mode, default.color='#000000', vizmap.style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
             write ("Error! RCy3:setNodeBorderColorRule. Mode must be 'interpolate' or 'lookup'.", stderr ())
             return ()
@@ -3020,9 +3013,6 @@ setMethod ('setNodeBorderColorRule', 'CytoscapeWindowClass',
                 return()
             } 
         }
-        
-        #TODO Comment TanjaM we should give the user the option to choose the style as an input parameter which defaults to default.
-        vizmap.style.name = 'default'
         
         # set default
         setDefaultNodeBorderColor (obj, default.color, vizmap.style.name)
@@ -3062,10 +3052,9 @@ setMethod ('setNodeBorderColorRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeBorderWidthRule', 'CytoscapeWindowClass',
 
-   function (obj, node.attribute.name, attribute.values, line.widths, default.width=1) {
+   function (obj, node.attribute.name, attribute.values, line.widths, default.width=1, vizmap.style.name = 'default') {
        id = as.character (obj@window.id)
-       #TODO the style should be passed as a parameter
-       vizmap.style.name = 'default'
+       
        #TODO we should add interpolate as mode in the function
        mode = "lookup"
        if (!node.attribute.name %in% noa.names (obj@graph)) {
@@ -3200,11 +3189,8 @@ setMethod('setDefaultEdgeFontSize', 'CytoscapeConnectionClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeShapeRule', 'CytoscapeWindowClass',
 
-    function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ELLIPSE') {
+    function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ELLIPSE', vizmap.style.name = 'default') {
         id = as.character (obj@window.id)
-        
-        #TODO the style should be passed as a parameter
-        vizmap.style.name = 'default'
 
         if (!node.attribute.name %in% noa.names (obj@graph)) {
             write (sprintf ('Error in RCy3::setNodeShapeRule. Passed non-existent node attribute: %s', node.attribute.name), stderr ())
@@ -3234,15 +3220,11 @@ setMethod ('setNodeShapeRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
 
-    function (obj, node.attribute.name, control.points, node.sizes, mode, default.size=40) {
+    function (obj, node.attribute.name, control.points, node.sizes, mode, default.size=40, vizmap.style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
             write ("Error! RCy3:setNodeSizeRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
         }
-
-        #TODO Comment TanjaM we should give the user the option to choose the style 
-        # as an input parameter which defaults to default.
-        vizmap.style.name = 'default'
         
         # define the column type
         columnType <- findColumnType(typeof(control.points[1]))
@@ -3291,7 +3273,7 @@ setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeColorRule', 'CytoscapeWindowClass',
 
-    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#FFFFFF') {
+    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#FFFFFF', vizmap.style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
             write ("Error! RCy3:setEdgeColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
@@ -3303,10 +3285,6 @@ setMethod ('setEdgeColorRule', 'CytoscapeWindowClass',
                 return()
             } 
         }
-        
-        #TODO Comment TanjaM we should give the user the option to choose the style 
-        # as an input parameter which defaults to default.
-        vizmap.style.name = 'default'
         
         #set default
         setDefaultEdgeColor (obj, default.color, vizmap.style.name)
@@ -3350,18 +3328,14 @@ setMethod ('setEdgeColorRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeOpacityRule', 'CytoscapeWindowClass',
 
-    function (obj, edge.attribute.name, control.points, opacities, mode) {
+    function (obj, edge.attribute.name, control.points, opacities, mode, vizmap.style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
             write ("Error! RCy3:setEdgeOpacityRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
         }
         
-        #TODO Comment TanjaM we should give the user the option to choose the style 
-        # as an input parameter which defaults to default.
-        vizmap.style.name = 'default'
-        
-        # set default # Comment TanjaM: Current version does not set default
-        #setDefaultEdgeOpacity (obj, default.opacity, vizmap.style.name)
+        # set default
+        setDefaultEdgeOpacity (obj, default.opacity, vizmap.style.name)
         
         # define the column type
         columnType <- findColumnType(typeof(control.points[1]))
@@ -3403,10 +3377,8 @@ setMethod ('setEdgeOpacityRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLineStyleRule', 'CytoscapeWindowClass',
 
-    function (obj, edge.attribute.name, attribute.values, line.styles, default.style='SOLID') {
+    function (obj, edge.attribute.name, attribute.values, line.styles, default.style='SOLID', vizmap.style.name = 'default') {
         id = as.character (obj@window.id)
-        #TODO the style should be passed as a parameter
-        vizmap.style.name = 'default'
         
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
             write (sprintf ('warning!  setEdgeLineStyleRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
@@ -3437,10 +3409,8 @@ setMethod ('setEdgeLineStyleRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
 
-    function (obj, edge.attribute.name, attribute.values, line.widths, default.width=1) {
+    function (obj, edge.attribute.name, attribute.values, line.widths, default.width=1, vizmap.style.name = 'default') {
         id = as.character (obj@window.id)
-        #TODO the style should be passed as a parameter
-        vizmap.style.name = 'default'
         
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
             write (sprintf ('Warning! setEdgeLineWidthRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
@@ -3463,10 +3433,8 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTargetArrowRule', 'CytoscapeWindowClass', 
 
-    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW') {
+    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW', vizmap.style.name = 'default') {
         id = as.character (obj@window.id)
-        #TODO the style should be passed as a parameter
-        vizmap.style.name = 'default'
         
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
             write (sprintf ('Warning! setEdgeTargetArrowRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
@@ -3488,10 +3456,8 @@ setMethod ('setEdgeTargetArrowRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeSourceArrowRule', 'CytoscapeWindowClass', 
 
-    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW') {
+    function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW', vizmap.style.name = 'default') {
         id = as.character (obj@window.id)
-        #TODO the style should be passed as a parameter
-        vizmap.style.name = 'default'
         
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
             write (sprintf ('warning!  setEdgeSourceArrowRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
@@ -3513,7 +3479,7 @@ setMethod ('setEdgeSourceArrowRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass', 
 
-    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000') {
+    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000', vizmap.style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
             write ("Error! RCy3:setEdgeTargetArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
             return ()
@@ -3525,10 +3491,6 @@ setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass',
                 return()
             } 
         }
-        
-        #TODO Comment TanjaM we should give the user the option to choose the style 
-        # as an input parameter which defaults to default.
-        vizmap.style.name = 'default'
         
         #set default
         setDefaultEdgeTargetArrowColor (obj, default.color, vizmap.style.name)
@@ -3572,7 +3534,7 @@ setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass', 
 
-    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000') {
+    function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000', vizmap.style.name = 'default') {
 
         if (!mode %in% c ('interpolate', 'lookup')) {
             write ("Error! RCy3:setEdgeSourceArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
@@ -3585,10 +3547,6 @@ setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass',
                 return()
             } 
         }
-        
-        #TODO Comment TanjaM we should give the user the option to choose the style 
-        # as an input parameter which defaults to default.
-        vizmap.style.name = 'default'
         
         #set default
         setDefaultEdgeSourceArrowColor (obj, default.color, vizmap.style.name)
