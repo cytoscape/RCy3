@@ -17,7 +17,8 @@ and all kinases nearly invisible.
 }
 
 \usage{
-setNodeOpacityRule(obj, node.attribute.name, control.points, opacities, mode, aspect='all', vizmap.style.name = 'default')
+setNodeOpacityRule(obj, node.attribute.name, control.points, opacities, mode,
+                   aspect='all', vizmap.style.name = 'default')
 }
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
@@ -46,7 +47,8 @@ setNodeOpacityRule(obj, node.attribute.name, control.points, opacities, mode, as
         'all' implies that all elements (border, label and fill) will be operated
         upon, equally, by this rule. If you want, for instance, the node label
         (its displayed name) to be visible even if the border and fill are dim,
-        then use 'border, fill' as the aspect.
+        then use 'border, fill' as the aspect.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
