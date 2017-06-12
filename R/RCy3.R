@@ -205,6 +205,7 @@ setGeneric ('setDefaultNodeFontSize',     signature='obj', function (obj, new.si
 setGeneric ('setDefaultNodeLabelColor',   signature='obj', function (obj, new.color, vizmap.style.name='default') standardGeneric ('setDefaultNodeLabelColor'))
 
 setGeneric ('setDefaultEdgeLineWidth',    signature='obj', function (obj, new.width, vizmap.style.name='default') standardGeneric ('setDefaultEdgeLineWidth'))
+setGeneric ('setDefaultEdgeLineStyle',    signature='obj', function (obj, new.line.style, vizmap.style.name='default') standardGeneric ('setDefaultEdgeLineStyle'))
 setGeneric ('setDefaultEdgeColor',        signature='obj', function (obj, new.color, vizmap.style.name='default') standardGeneric ('setDefaultEdgeColor'))
 setGeneric ('setDefaultEdgeSourceArrowColor',        signature='obj', function (obj, new.color, vizmap.style.name='default') standardGeneric ('setDefaultEdgeSourceArrowColor'))
 setGeneric ('setDefaultEdgeTargetArrowColor',        signature='obj', function (obj, new.color, vizmap.style.name='default') standardGeneric ('setDefaultEdgeTargetArrowColor'))
@@ -3150,6 +3151,13 @@ setMethod('setDefaultEdgeLineWidth', 'CytoscapeConnectionClass',
     style = list(visualProperty = "EDGE_WIDTH", value = new.width) 
     setVisualProperty(obj, style, vizmap.style.name)
 })
+
+# ------------------------------------------------------------------------------
+setMethod('setDefaultEdgeLineStyle', 'CytoscapeConnectionClass', 
+          function(obj, new.line.style, vizmap.style.name='default') {
+              style = list(visualProperty = "EDGE_LINE_TYPE", value = new.line.style) 
+              setVisualProperty(obj, style, vizmap.style.name)
+          })
 
 # ------------------------------------------------------------------------------
 setMethod('setDefaultEdgeColor', 'CytoscapeConnectionClass', 
