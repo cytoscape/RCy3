@@ -17,7 +17,7 @@ and all kinases nearly invisible.
 }
 
 \usage{
-setNodeOpacityRule(obj, node.attribute.name, control.points, opacities, mode, aspect='all')
+setNodeOpacityRule(obj, node.attribute.name, control.points, opacities, mode, aspect='all', vizmap.style.name = 'default')
 }
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
