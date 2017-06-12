@@ -8,7 +8,8 @@ Specify how data attributes -- for the specified named attribute -- are
 mapped to the target arrow type.}
 
 \usage{
-setEdgeTargetArrowRule(obj, edge.attribute.name, attribute.values, arrows, default='ARROW')
+setEdgeTargetArrowRule(obj, edge.attribute.name, attribute.values, arrows,
+                       default='ARROW', vizmap.style.name = 'default')
 }
 
 \arguments{
@@ -19,6 +20,7 @@ setEdgeTargetArrowRule(obj, edge.attribute.name, attribute.values, arrows, defau
         interaction types:'phosphorylates', 'ubiquinates', 'represses', 'activates' }
   \item{arrows}{One arrow type for each of the attribute.values}
   \item{default}{The arrow type to use when an explicit mapping is not provided.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
