@@ -8,7 +8,9 @@ attribute -- control the color of the target arrow, found at the end of
 an edge, where it connects to the target node.}
 
 \usage{
-setEdgeTargetArrowColorRule(obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000')
+setEdgeTargetArrowColorRule(obj, edge.attribute.name, control.points, colors, 
+                            mode="interpolate", default.color='#000000',
+                            vizmap.style.name = 'default')
 }
 
 \arguments{
@@ -21,6 +23,7 @@ setEdgeTargetArrowColorRule(obj, edge.attribute.name, control.points, colors, mo
   \item{mode}{either 'interpolate' or 'lookup'.}
   \item{default.color}{The color to use when an explicit mapping is not
         provided.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
@@ -29,10 +32,10 @@ None.
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
 
 \seealso{
-  setNodeBorderColorRule (detailed example)
+  \code{\link{setNodeBorderColorRule}} (detailed example)
   \code{\link{setEdgeSourceArrowColorRule}}
-  setEdgeColorRule
-  setNodeShapeRule
+  \code{\link{setEdgeColorRule}}
+  \code{\link{setNodeShapeRule}}
 }
 \examples{
   \dontrun{
