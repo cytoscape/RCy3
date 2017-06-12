@@ -8,13 +8,14 @@ Non-character attributes are converted to strings before they are
 used as labels.}
 
 \usage{
-setNodeLabelRule(obj, node.attribute.name)
+setNodeLabelRule(obj, node.attribute.name, vizmap.style.name = 'default')
 }
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{node.attribute.name}{the node attribute whose values will
         determine the label on each node when this rule is applied.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
