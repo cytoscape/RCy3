@@ -9,7 +9,8 @@ mapping. An interpolated mapping will be added in the future.
 }
 
 \usage{
-setNodeBorderWidthRule(obj, node.attribute.name, attribute.values, line.widths, default.width)
+setNodeBorderWidthRule(obj, node.attribute.name, attribute.values, line.widths,
+                       default.width, vizmap.style.name = 'default')
 }
 
 \arguments{
@@ -20,6 +21,7 @@ setNodeBorderWidthRule(obj, node.attribute.name, attribute.values, line.widths, 
         on the nodes.}
   \item{line.widths}{the corresponding widths.}
   \item{default.width}{use this where the rule fails to apply}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
@@ -29,6 +31,7 @@ None.
 
 \seealso{
   setNodeBorderColorRule (detailed example)
+  getVisualstyleNames
  }
   
 \examples{
