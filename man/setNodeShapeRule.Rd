@@ -5,9 +5,10 @@
 \description{
 Specify how data attributes -- the specified node attribute values --
 determine the node shape.}
+
 \usage{
-setNodeShapeRule (obj, node.attribute.name=, attribute.values,
-node.shapes, default.shape)
+setNodeShapeRule (obj, node.attribute.name=, attribute.values, node.shapes,
+                  default.shape, vizmap.style.name = 'default')
 }
 
 \arguments{
@@ -19,6 +20,7 @@ node.shapes, default.shape)
   \item{node.shapes}{A list of nodes selected from among those supported.}
   \item{default.shape}{A single \code{String}, the shape used if no explicit
         mapping is provided.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
