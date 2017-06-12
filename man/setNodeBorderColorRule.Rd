@@ -25,7 +25,8 @@ kinases in dark red.
 }
 
 \usage{
-setNodeBorderColorRule(obj, node.attribute.name, control.points, colors, mode, default.color='#000000')
+setNodeBorderColorRule(obj, node.attribute.name, control.points, colors, mode,
+                       default.color='#000000', vizmap.style.name = 'default')
 }
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
@@ -51,6 +52,7 @@ setNodeBorderColorRule(obj, node.attribute.name, control.points, colors, mode, d
   \item{default.color}{'#000000' (black) by default, to catch your eye.
         Used primarily in mode=='lookup' and in mode='interpolate' if you
         fail to specify 'above' and 'below' values.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
