@@ -4369,7 +4369,7 @@ setMethod('getNodeAttributeNames', 'CytoscapeConnectionClass',
         # request result
         request.res <- GET(url=resource.uri)
         request.res <- fromJSON(rawToChar(request.res$content))
-        request.res <- data.frame(t(sapply(request.res, c)))
+        request.res <- data.frame(t(sapply(request.res, base::c)))
         request.res <- unlist(request.res$name)
         # exclude some node attributes
         node.attribute.names <- request.res[! request.res %in% c("SUID", "shared name", "selected")]
@@ -4389,7 +4389,7 @@ setMethod('getEdgeAttributeNames', 'CytoscapeConnectionClass',
         # request result
         request.res <- GET(url=resource.uri)
         request.res <- fromJSON(rawToChar(request.res$content))
-        request.res <- data.frame(t(sapply(request.res, c)))
+        request.res <- data.frame(t(sapply(request.res, base::c)))
         request.res <- unlist(request.res$name)
         # exclude some edge attributes
         edge.attribute.names <- request.res[! request.res %in% c("SUID", "shared name", "shared interaction", "selected")]
