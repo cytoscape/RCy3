@@ -8,13 +8,14 @@ Non-character attributes are converted to strings before they are used
 as tooltips.}
 
 \usage{
-setEdgeTooltipRule(obj, edge.attribute.name)
+setEdgeTooltipRule(obj, edge.attribute.name, vizmap.style.name = 'default')
 }
 
 \arguments{
   \item{obj}{a \code{CytoscapeWindowClass} object. }
   \item{edge.attribute.name}{the edge attribute whose values will
         determine the tooltip on each edge when this rule is applied.}
+  \item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
