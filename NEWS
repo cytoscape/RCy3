@@ -1,4 +1,18 @@
-NEW RELEASE VERSION 0.99.0
+
+NEW RELEASE
+    o updated the edge and node attributes to include boolean variables
+    o updated rule based functions: you can now apply them to any visual
+      style using the parameter vizmap.style.name
+    o created function setDefaultEdgeLineStyle.Rd
+    o CyREST bug whereby rule-based functions overwrite direct functions
+      got fixed from CyREST 3.5.0+ 
+
+
+------------------------------------------------------------------------
+OLD RELEASES
+
+
+RELEASE VERSION 0.99.0
 -------------------------
 PERSISTING ISSUES
     o direct functions are currently overwritten by rule-based functions.
