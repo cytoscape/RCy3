@@ -8,7 +8,9 @@ attribute -- control the color of the source arrow, found at the end of
 an edge, where it connects to the source node.}
 
 \usage{
-setEdgeSourceArrowColorRule(obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000')
+setEdgeSourceArrowColorRule(obj, edge.attribute.name, control.points, colors,
+                            mode="interpolate", default.color='#000000',
+                            vizmap.style.name = 'default')
 }
 
 \arguments{
@@ -20,6 +22,7 @@ setEdgeSourceArrowColorRule(obj, edge.attribute.name, control.points, colors, mo
 \item{colors}{A color for each of the attribute.values}
 \item{mode}{either 'interpolate' or 'lookup'.}
 \item{default.color}{The color to use when an explicit mapping is not provided.}
+\item{vizmap.style.name}{visual style name, defaults to the style 'default'.}
 }
 
 \value{
