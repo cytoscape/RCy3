@@ -94,6 +94,7 @@ exportMethods (
    setDefaultEdgeColor,
    setDefaultEdgeFontSize,
    setDefaultEdgeLineWidth,
+   setDefaultEdgeLineStyle,
    setDefaultEdgeReverseSelectionColor,
    setDefaultEdgeSelectionColor,
    setDefaultEdgeSourceArrowColor,
