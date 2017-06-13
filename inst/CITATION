@@ -1,19 +1,4 @@
 citEntry(entry = "Article",
-         "author" = "Paul T Shannon, Mark Grimes, Burak Kutlu, Jan J. Bot, and David J. Galas",
-         "title" = "RCytoscape: tools for exploratory network analysis",
-         journal = "BMC Bioinformatics",
-         volume = "14",
-         number = "1",
-         year = "2013",
-         issn = "1471-2105",
-         pages = "217--315",
-         doi = "http://dx.doi.org/10.1186/1471-2105-14-217",
-         publisher = "Oxford University Press",
-         address = "Oxford, UK",
-         textVersion = "Shannon, Paul T., Mark Grimes, Burak Kutlu, Jan J. Bot, and David J. Galas. RCytoscape: tools for exploratory network analysis. BMC Bioinformatics 14, no. 1 (2013): 217."
-         )
-
-citEntry(entry = "Article",
          "author" = "Keiichiro Ono, Tanja Muetze, Georgi Kolishovski, Paul Shannon, Barry Demchak",
          "title" = "CyREST: Turbocharging Cytoscape Access for External Tools via a RESTful API [version 1; referees: 2 approved]",
          journal = "F1000Research",
