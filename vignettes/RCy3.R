@@ -17,8 +17,8 @@
 ### code chunk number 2: g1
 ###################################################
     layoutNetwork (cw, layout.name='grid')
-
-
+    layoutNetwork(layout.name = 'force-directed')
+    layoutNetwork()
 
 ###################################################
 ### code chunk number 3: g2
@@ -231,14 +231,14 @@
         system ('sleep 0.2')
     }
 
-
 ###################################################
 ### code chunk number 19: deleteWindows
 ###################################################
-    cy <- CytoscapeConnection ()
-    window.names <- c ('vignette', 'vignette.setNodePosition', 'movie')
+    window.names <- c('vignette', 'vignette.setNodePosition', 'movie')
     for (window.name in window.names){
-        if (window.name %in% as.character (getWindowList (cy))){
-            deleteWindow (cy, window.name)
+        if (window.name %in% as.character (getWindowList())){
+            deleteWindow(window.title=window.name)
         }
     }
+    #or, 
+    #deleteAllWindows()
