@@ -195,6 +195,12 @@ export(
    getNetworkName
    )
 
+#Deprecated
+export(
+    getWindowList,
+    deleteWindow
+)
+
 importClassesFrom(graph, graph, graphBase)
 
 importClassesFrom(methods, character, integer)

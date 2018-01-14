@@ -234,10 +234,11 @@
 ###################################################
 ### code chunk number 19: deleteWindows
 ###################################################
+    cy <- CytoscapeConnection ()
     window.names <- c('vignette', 'vignette.setNodePosition', 'movie')
     for (window.name in window.names){
-        if (window.name %in% as.character (getNetworkList())){
-            deleteNetwork(title=window.name)
+        if (window.name %in% as.character (getWindowList(cy))){
+            deleteWindow(cy,window.title=window.name)
         }
     }
     #or, 
