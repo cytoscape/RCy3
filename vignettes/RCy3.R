@@ -236,8 +236,8 @@
 ###################################################
     window.names <- c('vignette', 'vignette.setNodePosition', 'movie')
     for (window.name in window.names){
-        if (window.name %in% as.character (getWindowList())){
-            deleteWindow(window.title=window.name)
+        if (window.name %in% as.character (getNetworkList())){
+            deleteNetwork(title=window.name)
         }
     }
     #or, 
