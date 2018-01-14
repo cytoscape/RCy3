@@ -60,9 +60,9 @@ exportMethods (
    getSelectedNodes,
    getViewCoordinates,
    getVisualStyleNames,
-   getWindowCount,
-   getWindowID,
-   getWindowList,
+   getNetworkCount,
+   getNetworkSuid,
+   getNetworkList,
    getZoom,
    hideAllPanels,
    hideNodes,
@@ -188,7 +188,11 @@ export(
    makeRandomGraph,
    initNodeAttribute,
    initEdgeAttribute,
-   cyPlot
+   cyPlot,
+   command2query,
+   commandRun,
+   commandHelp,
+   getNetworkName
    )
 
 importClassesFrom(graph, graph, graphBase)
