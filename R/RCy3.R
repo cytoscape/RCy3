@@ -88,7 +88,7 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
     # new 'CytoscapeConnectionClass' object
     cy.conn = CytoscapeConnection(host, port)
     if (is.null(cy.conn)){
-        write(sprintf("ERROR in existing.CytoscapeWindow():\n\t Cytoscape connection could not be established >> NULL returned"), stderr())
+        write(sprintf("ERROR in CytoscapeWindowFromNetwork():\n\t Cytoscape connection could not be established >> NULL returned"), stderr())
         return()
     }
     # ensure the script is using the latest cyREST plugin version 
@@ -177,11 +177,11 @@ setGeneric ('apiVersion',
 setGeneric ('createNetwork', 
 	signature='obj', function(obj) standardGeneric('createNetwork'))
 setGeneric ('createNetworkFromSelection', 
-	signature='obj', function(obj=existing.CytoscapeWindow(), new.title, return.graph=FALSE, exclude.edges=FALSE) standardGeneric ('createNetworkFromSelection'))
+	signature='obj', function(obj=CytoscapeWindowFromNetwork(), new.title, return.graph=FALSE, exclude.edges=FALSE) standardGeneric ('createNetworkFromSelection'))
 setGeneric('copyCytoscapeNetwork',
-  signature = 'obj', function(obj=existing.CytoscapeWindow(), new.title, return.graph = FALSE) standardGeneric('copyCytoscapeNetwork'))
+  signature = 'obj', function(obj=CytoscapeWindowFromNetwork(), new.title, return.graph = FALSE) standardGeneric('copyCytoscapeNetwork'))
 setGeneric('renameCytoscapeNetwork',	
-  signature = 'obj',function(obj=existing.CytoscapeWindow(), new.title, return.graph = FALSE) standardGeneric('renameCytoscapeNetwork'))
+  signature = 'obj',function(obj=CytoscapeWindowFromNetwork(), new.title, return.graph = FALSE) standardGeneric('renameCytoscapeNetwork'))
 setGeneric ('getNetworkCount', 
 	signature='obj', function(obj=CytoscapeConnection()) standardGeneric ('getNetworkCount'))
 setGeneric ('getNetworkList',
@@ -257,7 +257,7 @@ setGeneric ('displayGraph',
 setGeneric ('predictTimeToDisplayGraph', 
 	signature='obj', function(obj) standardGeneric ('predictTimeToDisplayGraph'))
 setGeneric ('layoutNetwork', 
-	signature='obj', function(obj=existing.CytoscapeWindow(), layout.name='grid') standardGeneric ('layoutNetwork'))
+	signature='obj', function(obj=CytoscapeWindowFromNetwork(), layout.name='grid') standardGeneric ('layoutNetwork'))
 setGeneric ('saveLayout', 
 	signature='obj', function(obj, filename, timestamp.in.filename=FALSE) standardGeneric ('saveLayout'))
 setGeneric ('restoreLayout', 
@@ -266,7 +266,7 @@ setGeneric ('setNodePosition',
 	signature='obj', function (obj, node.names, x.coords, y.coords) standardGeneric ('setNodePosition'))
 setGeneric ('getNodePosition',				signature='obj', function (obj, node.names) standardGeneric ('getNodePosition'))
 setGeneric ('getNodeSize',					signature='obj', function (obj, node.names) standardGeneric ('getNodeSize'))
-setGeneric ('redraw',							signature='obj', function (obj) standardGeneric ('redraw'))
+setGeneric ('redraw',							signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('redraw'))
 setGeneric ('hidePanel',						signature='obj', function (obj=CytoscapeConnection(), panelName) standardGeneric ('hidePanel'))
 setGeneric ('hideAllPanels',					signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('hideAllPanels'))
 setGeneric ('dockPanel',						signature='obj', function (obj=CytoscapeConnection(), panelName) standardGeneric ('dockPanel'))
@@ -462,7 +462,7 @@ setGeneric ('haveNodeAttribute',             signature='obj', function (obj=Cyto
 setGeneric ('haveEdgeAttribute',             signature='obj', function (obj=CytoscapeConnection(), edge.names, attribute.name) standardGeneric ('haveEdgeAttribute'))
 setGeneric ('copyNodeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyNodeAttributesFromCyGraph'))
 setGeneric ('copyEdgeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyEdgeAttributesFromCyGraph'))
-setGeneric ('getGraphFromCyWindow',          signature='obj', function (obj=CytoscapeConnection(), window.title) standardGeneric ('getGraphFromCyWindow'))
+setGeneric ('getGraphFromNetwork',          signature='obj', function (obj=CytoscapeConnection(), window.title) standardGeneric ('getGraphFromNetwork'))
 setGeneric('connectToNewestCyWindow', 
            signature = 'obj',
            function(obj=CytoscapeConnection(),
@@ -500,7 +500,7 @@ setGeneric ('cyPlot', function (node.df, edge.df) standardGeneric('cyPlot'))
 
 
 # ------------------------------------------------------------------------------
-existing.CytoscapeWindow = 
+CytoscapeWindowFromNetwork = 
     function(title=NA, host='localhost', port=1234, return.graph=FALSE) 
         {
         res <- .BBSOverride(host, port)
@@ -509,7 +509,7 @@ existing.CytoscapeWindow =
         # establish a connection to Cytoscape
         cy.conn <- CytoscapeConnection(host, port)
         if (is.null(cy.conn)) {
-            write(sprintf("ERROR in existing.CytoscapeWindow():\n\t Cytoscape connection could not be established >> NULL returned"), stderr())
+            write(sprintf("ERROR in CytoscapeWindowFromNetwork():\n\t Cytoscape connection could not be established >> NULL returned"), stderr())
             return()
         }
         # ensure the script is using the latest cyREST plugin version 
@@ -522,7 +522,7 @@ existing.CytoscapeWindow =
 		
 		# inform user if the window does not exist
         if (is.na(existing.suid)) {
-            write(sprintf("ERROR in RCy3::existing.CytoscapeWindow():\n\t no network named '%s' exists in Cytoscape >> choose from the following titles: ", title), stderr())
+            write(sprintf("ERROR in RCy3::CytoscapeWindowFromNetwork():\n\t no network named '%s' exists in Cytoscape >> choose from the following titles: ", title), stderr())
 			write(as.character(getNetworkList(cy.conn)), stderr())
             return(NA)
         }
@@ -539,7 +539,7 @@ existing.CytoscapeWindow =
         # optionally, get graph from Cytoscape
         if (return.graph) {
             # copy over graph
-            g.cy <- getGraphFromCyWindow(cy.window, title)
+            g.cy <- getGraphFromNetwork(cy.window, title)
             cy.window <- setGraph(cy.window, g.cy)
 
             # copy over obj@node.suid.name.dict
@@ -557,7 +557,7 @@ existing.CytoscapeWindow =
             }
         }
         return (cy.window)
-} # END existing.CytsoscapeWindow
+} # END CytoscapeWindowFromNetwork
 
 # ------------------------------------------------------------------------------
 check.api.version = function(cyCon=CytoscapeConnection()) 
@@ -592,7 +592,7 @@ getServerStatus = function(uri,api) {
 #------------------------------------------------------------------------------------------------------------------------
 setMethod('ping', signature = 'OptionalCyObjClass',
 	function(obj) {
-		conn.str <- paste(obj@uri, apiVersion(obj), sep="/")
+		conn.str <- paste(obj@uri, obj@api, sep="/")
 		res <- GET(conn.str)
 		apiVersion <- fromJSON(rawToChar(res$content))$apiVersion
 		
@@ -633,7 +633,7 @@ setMethod('createNetwork', 'CytoscapeWindowClass',
 		graph.elements = list(nodes = list(), edges = list())
 		
 		cygraph <- toJSON(list(data = graph.attributes, elements = graph.elements))
-		resource.uri <- paste(obj@uri, apiVersion(obj), "networks", sep="/")
+		resource.uri <- paste(obj@uri, obj@api, "networks", sep="/")
 		request.res <- POST(url = resource.uri, body = cygraph, encode = "json")
 		suid <- unname(fromJSON(rawToChar(request.res$content)))
 		
@@ -676,7 +676,7 @@ setMethod ('createNetworkFromSelection', 'OptionalCyWinClass',
         response <- POST(url=url,body=sub, encode="json",content_type_json())
         subnetwork.suid=unname(fromJSON(rawToChar(response$content)))[[1]][[1]]
         cat(sprintf("Subnetwork SUID is : %i \n", subnetwork.suid))
-        sub.cw<-existing.CytoscapeWindow(new.title,return.graph=return.graph)
+        sub.cw<-CytoscapeWindowFromNetwork(new.title,return.graph=return.graph)
         return(sub.cw)
 }) # createNetworkFromSelection
 
@@ -696,7 +696,7 @@ setMethod ('createNetworkFromSelection', 'OptionalCyWinClass',
 #' }
 #'
 #' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
-#' @seealso \code{\link{createNetworkFromSelection}}, \code{\link{existing.CytoscapeWindow}}, \code{\link{renameCytoscapeNetwork}}
+#' @seealso \code{\link{createNetworkFromSelection}}, \code{\link{CytoscapeWindowFromNetwork}}, \code{\link{renameCytoscapeNetwork}}
 #' 
 #' @concept RCy3
 #' @export
@@ -715,7 +715,7 @@ setMethod('copyCytoscapeNetwork',
               selectAllNodes(obj)
               selectAllEdges(obj)
               request.uri <- paste(obj@uri,
-                                   apiVersion(obj),
+                                   obj@api,
                                    "networks",
                                    obj@suid,
                                    sep = "/")
@@ -726,7 +726,7 @@ setMethod('copyCytoscapeNetwork',
               invisible(request.res)
               
               if (return.graph){
-                connect_window <- existing.CytoscapeWindow(new.title,
+                connect_window <- CytoscapeWindowFromNetwork(new.title,
                                                            return.graph = TRUE)
                 print(paste("Cytoscape window",
                             obj@title,
@@ -735,7 +735,7 @@ setMethod('copyCytoscapeNetwork',
                             "and the graph was copied to R."))
               } 
               else {
-                connect_window <- existing.CytoscapeWindow(new.title,
+                connect_window <- CytoscapeWindowFromNetwork(new.title,
                                                            return.graph = FALSE) 
                 print(paste("Cytoscape window",
                             obj@title,
@@ -760,7 +760,7 @@ setMethod('copyCytoscapeNetwork',
 #' @return Connection to the renamed network. 
 #'
 #' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
-#' @seealso \code{\link{createNetworkFromSelection}}, \code{\link{existing.CytoscapeWindow}}, \code{\link{copyCytoscapeNetwork}}
+#' @seealso \code{\link{createNetworkFromSelection}}, \code{\link{CytoscapeWindowFromNetwork}}, \code{\link{copyCytoscapeNetwork}}
 #'
 #' @examples \dontrun{
 #' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
@@ -797,7 +797,7 @@ setMethod('renameCytoscapeNetwork',
 # ------------------------------------------------------------------------------
 setMethod('getNetworkCount', 'OptionalCyObjClass',
 	function(obj) {
-		resource.uri <- paste(obj@uri, apiVersion(obj), "networks/count", sep="/")
+		resource.uri <- paste(obj@uri, obj@api, "networks/count", sep="/")
 		res <- GET(url=resource.uri)
 		num.cytoscape.windows <- unname(fromJSON(rawToChar(res$content)))
 		return(as.integer(num.cytoscape.windows))
@@ -814,7 +814,7 @@ setMethod('getNetworkSuid', 'OptionalCyObjClass',
     	    return(network.suid)
 	    }
 		# get all window suids and associates names
-		resource.uri <- paste(obj@uri, apiVersion(obj), "networks", sep="/")
+		resource.uri <- paste(obj@uri, obj@api, "networks", sep="/")
 		request.res <- GET(resource.uri)
 		# SUIDs list of the existing Cytoscape networks	
 		cy.networks.SUIDs <- fromJSON(rawToChar(request.res$content))
@@ -822,7 +822,7 @@ setMethod('getNetworkSuid', 'OptionalCyObjClass',
 		cy.networks.names = c()
 		
 		for(net.SUID in cy.networks.SUIDs)	{
-			 res.uri <- paste(obj@uri, apiVersion(obj), "networks", as.character(net.SUID), sep="/")
+			 res.uri <- paste(obj@uri, obj@api, "networks", as.character(net.SUID), sep="/")
 			 result <- GET(res.uri)
 			 net.name <- fromJSON(rawToChar(result$content))$data$name
 			 cy.networks.names <- c(cy.networks.names, net.name)
@@ -845,7 +845,7 @@ setMethod('getNetworkList', 'OptionalCyObjClass',
 		if(getNetworkCount(obj) == 0) {
 			return(c())
 		}
-		resource.uri <- paste(obj@uri, apiVersion(obj), "networks", sep="/")
+		resource.uri <- paste(obj@uri, obj@api, "networks", sep="/")
 		request.res <- GET(resource.uri)
 		# SUIDs list of the existing Cytoscape networks	
 		cy.networks.SUIDs <- fromJSON(rawToChar(request.res$content))
@@ -853,7 +853,7 @@ setMethod('getNetworkList', 'OptionalCyObjClass',
 		cy.networks.names = c()
 		
 		for(net.SUID in cy.networks.SUIDs)	{
-			res.uri <- paste(obj@uri, apiVersion(obj), "networks", as.character(net.SUID), sep="/")
+			res.uri <- paste(obj@uri, obj@api, "networks", as.character(net.SUID), sep="/")
 			result <- GET(res.uri)
 			net.name <- fromJSON(rawToChar(result$content))$data$name
 			cy.networks.names <- c(cy.networks.names, net.name)
@@ -872,7 +872,7 @@ setMethod('deleteNetwork', 'OptionalCyObjClass',
 		else { # current network will be deleted
 		    suid = getNetworkSuid(obj, title)
 		}
-		resource.uri = paste(obj@uri, apiVersion(obj), "networks", suid, sep="/")
+		resource.uri = paste(obj@uri, obj@api, "networks", suid, sep="/")
 		request.res = DELETE(url=resource.uri)
 		invisible(request.res)
 })
@@ -880,13 +880,13 @@ setMethod('deleteNetwork', 'OptionalCyObjClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('deleteAllNetworks',	'OptionalCyObjClass', function (obj) {
     # deletes all networks and associated windows in Cytoscape
-    resource.uri <- paste(obj@uri, apiVersion(obj), "networks", sep="/")
+    resource.uri <- paste(obj@uri, obj@api, "networks", sep="/")
     request.res <- DELETE(resource.uri)
     invisible(request.res)
     })
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getNodeShapes', 'OptionalCyObjClass', function (obj) {
-    resource.uri <- paste(obj@uri, apiVersion(obj), "styles/visualproperties/NODE_SHAPE/values", sep="/")
+    resource.uri <- paste(obj@uri, obj@api, "styles/visualproperties/NODE_SHAPE/values", sep="/")
     request.res <- GET(resource.uri)
     request.res <- fromJSON(rawToChar(request.res$content))
     return(request.res$values)
@@ -895,7 +895,7 @@ setMethod ('getNodeShapes', 'OptionalCyObjClass', function (obj) {
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getDirectlyModifiableVisualProperties', 'OptionalCyObjClass',
     function (obj, style.name="default") {
-        resource.uri = paste(obj@uri, apiVersion(obj), "styles", as.character(style.name), "defaults", sep="/")
+        resource.uri = paste(obj@uri, obj@api, "styles", as.character(style.name), "defaults", sep="/")
         request.res = GET(url=resource.uri)
         visual.properties <- unname(fromJSON(rawToChar(request.res$content))[[1]])
         visual.properties <- sapply(visual.properties, '[[', 1)
@@ -911,7 +911,7 @@ setMethod ('getAttributeClassNames', 'OptionalCyObjClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getLineStyles', 'OptionalCyObjClass', function (obj) {
-    resource.uri <- paste(obj@uri, apiVersion(obj), "styles/visualproperties/EDGE_LINE_TYPE/values", sep="/")
+    resource.uri <- paste(obj@uri, obj@api, "styles/visualproperties/EDGE_LINE_TYPE/values", sep="/")
 	request.res <- GET(resource.uri)
     request.res <- fromJSON(rawToChar(request.res$content))
     return(request.res$values)
@@ -920,9 +920,9 @@ setMethod ('getLineStyles', 'OptionalCyObjClass', function (obj) {
 # ------------------------------------------------------------------------------
 setMethod('getArrowShapes', 'OptionalCyObjClass', 
     function(obj) {
-        version <- apiVersion(obj)
         
-        resource.uri <- paste(obj@uri, version, "styles/visualproperties/EDGE_TARGET_ARROW_SHAPE/values", sep="/")
+        
+        resource.uri <- paste(obj@uri, obj@api, "styles/visualproperties/EDGE_TARGET_ARROW_SHAPE/values", sep="/")
         # TanjaM: EDGE_SOURCE_ARROW_SHAPE rather than TARGET returns the same results as of April 2015
         request.res <- GET(resource.uri)
         request.res <- fromJSON(rawToChar(request.res$content))
@@ -933,7 +933,7 @@ setMethod('getArrowShapes', 'OptionalCyObjClass',
 # ------------------------------------------------------------------------------
 setMethod('getLayoutNames', 'OptionalCyObjClass', 
 	function(obj) {
-        request.uri <- paste(obj@uri, apiVersion(obj), "apply/layouts", sep="/")
+        request.uri <- paste(obj@uri, obj@api, "apply/layouts", sep="/")
         request.res <- GET(url=request.uri)
         
         available.layouts <- unname(fromJSON(rawToChar(request.res$content)))
@@ -949,7 +949,7 @@ setMethod('getLayoutNameMapping', 'OptionalCyObjClass',
         
         # get the English/full name of a layout
         for (layout.name in layout.names){
-            request.uri <- paste(obj@uri, apiVersion(obj), "apply/layouts", as.character(layout.name), sep="/")
+            request.uri <- paste(obj@uri, obj@api, "apply/layouts", as.character(layout.name), sep="/")
             request.res <- GET(url=request.uri)
             
             layout.property.names <- unname(fromJSON(rawToChar(request.res$content)))
@@ -964,7 +964,7 @@ setMethod('getLayoutNameMapping', 'OptionalCyObjClass',
 # ------------------------------------------------------------------------------
 setMethod('getLayoutPropertyNames', 'OptionalCyObjClass', 
     function(obj, layout.name) {
-        request.uri <- paste(obj@uri, apiVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
+        request.uri <- paste(obj@uri, obj@api, "apply/layouts", as.character(layout.name), "parameters/", sep="/")
         request.res <- GET(url=request.uri)
         
         layout.property.names <- unname(fromJSON(rawToChar(request.res$content)))
@@ -975,7 +975,7 @@ setMethod('getLayoutPropertyNames', 'OptionalCyObjClass',
 # ------------------------------------------------------------------------------
 setMethod('getLayoutPropertyType', 'OptionalCyObjClass', 
     function(obj, layout.name, property.name) {
-        request.uri <- paste(obj@uri, apiVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
+        request.uri <- paste(obj@uri, obj@api, "apply/layouts", as.character(layout.name), "parameters/", sep="/")
         request.res <- GET(url=request.uri)
         
         layout.property.list <- unname(fromJSON(rawToChar(request.res$content)))
@@ -989,7 +989,7 @@ setMethod('getLayoutPropertyType', 'OptionalCyObjClass',
 setMethod ('getLayoutPropertyValue', 'OptionalCyObjClass', 
 
    function (obj, layout.name, property.name) {
-       request.uri <- paste(obj@uri, apiVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
+       request.uri <- paste(obj@uri, obj@api, "apply/layouts", as.character(layout.name), "parameters/", sep="/")
        request.res <- GET(url=request.uri)
        
        layout.property.list <- unname(fromJSON(rawToChar(request.res$content)))
@@ -1013,7 +1013,7 @@ setMethod ('setLayoutProperties', 'OptionalCyObjClass',
                 new.property.value.list <- list("name"=prop, "value"=new.value)
                 new.property.value.list.JSON <- toJSON(list(new.property.value.list))
                 
-                request.uri <- paste(obj@uri, apiVersion(obj), "apply/layouts", as.character(layout.name), "parameters/", sep="/")
+                request.uri <- paste(obj@uri, obj@api, "apply/layouts", as.character(layout.name), "parameters/", sep="/")
                 request.res <- PUT(url=request.uri, body= new.property.value.list.JSON, encode="json")
                 if (request.res$status == 200){
                     write (sprintf ("Successfully updated the property '%s'.", prop), stdout ())
@@ -1054,7 +1054,6 @@ setMethod ('haveNodeAttribute', 'OptionalCyObjClass',
     function(obj, node.names, attribute.name) {
     
         net.SUID = as.character(obj@suid)
-        version = apiVersion(obj)
         # check the attribute exists
         if (attribute.name %in% getNodeAttributeNames(obj)) {
         # get the node SUIDs
@@ -1062,7 +1061,7 @@ setMethod ('haveNodeAttribute', 'OptionalCyObjClass',
             nodes.that.have.attribute = c()
             
             for (i in 1:length(node.SUIDs)) {
-                resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/rows", as.character(node.SUIDs[i]), attribute.name, sep="/")
+                resource.uri = paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/rows", as.character(node.SUIDs[i]), attribute.name, sep="/")
                 request.res = GET(url=resource.uri)
                 node.attribute.value = rawToChar(request.res$content)
                 
@@ -1087,14 +1086,13 @@ setMethod ('haveEdgeAttribute', 'OptionalCyObjClass',
 
     function (obj, edge.names, attribute.name) {
         net.SUID = as.character(obj@suid)
-        version = apiVersion(obj)
         
         if(attribute.name %in% getEdgeAttributeNames(obj)) {
             edge.SUIDs = .edgeNameToEdgeSUID(obj, edge.names)
             edges.that.have.attribute = c()
             
             for(i in 1:length(edge.SUIDs)) {
-                resource.uri = paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/rows", as.character(edge.SUIDs[i]), attribute.name, sep="/")
+                resource.uri = paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/rows", as.character(edge.SUIDs[i]), attribute.name, sep="/")
                 request.res = GET(url=resource.uri)
                 edge.attribute.value = rawToChar(request.res$content)
                 
@@ -1113,8 +1111,6 @@ setMethod ('haveEdgeAttribute', 'OptionalCyObjClass',
 setMethod ('copyNodeAttributesFromCyGraph', 'OptionalCyObjClass',
 
     function (obj, suid, existing.graph) {
-        net.SUID = as.character(obj@suid)
-        version = apiVersion(obj)
         
         node.attribute.names = getNodeAttributeNames(obj)
         
@@ -1161,9 +1157,6 @@ setMethod ('copyNodeAttributesFromCyGraph', 'OptionalCyObjClass',
 setMethod ('copyEdgeAttributesFromCyGraph', 'OptionalCyObjClass',
 
     function (obj, suid, existing.graph) {
-        net.SUID = as.character(obj@suid)
-        version = apiVersion(obj)
-        
         edge.attribute.names = getEdgeAttributeNames(obj)
         
         cy2.edgenames = as.character(cy2.edge.names(existing.graph)) # < 2 seconds for > 9000 edges
@@ -1218,7 +1211,7 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'OptionalCyObjClass',
     }) # END copyEdgeAttributesFromCyGraph
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('getGraphFromCyWindow', 'OptionalCyObjClass',
+setMethod ('getGraphFromNetwork', 'OptionalCyObjClass',
 
     function (obj, window.title) {
         suid = NULL
@@ -1230,13 +1223,12 @@ setMethod ('getGraphFromCyWindow', 'OptionalCyObjClass',
         } else {
             loc.obj = obj
         }
-        # network id and cyREST plugin version
+        # network id 
         net.SUID = as.character(loc.obj@suid)
-        version = apiVersion(loc.obj)
         
         if (!is.na(net.SUID)) {
             # get the graph from Cytoscape
-            resource.uri = paste(loc.obj@uri, version, "networks", net.SUID, sep="/")
+            resource.uri = paste(loc.obj@uri, obj@api, "networks", net.SUID, sep="/")
             request.res = GET(url=resource.uri)
             request.res = fromJSON(rawToChar(request.res$content))
             
@@ -1246,7 +1238,7 @@ setMethod ('getGraphFromCyWindow', 'OptionalCyObjClass',
             g.nodes = request.res$elements$nodes
             # if there are no nodes in the graph received from Cytoscape, return an empty 'graphNEL' object
             if(length(g.nodes) == 0) {
-                write(sprintf("NOTICE in RCy3::getGraphFromCyWindow():\n\t returning an empty 'graphNEL'"), stderr())
+                write(sprintf("NOTICE in RCy3::getGraphFromNetwork():\n\t returning an empty 'graphNEL'"), stderr())
                 return(g)
             }
             
@@ -1288,7 +1280,7 @@ setMethod ('getGraphFromCyWindow', 'OptionalCyObjClass',
                     g = copyEdgeAttributesFromCyGraph(loc.obj, suid, g)
                 },
                 error = function(cond){
-                    write(sprintf("ERROR in RCy3::getGraphFromCyWindow(): Node names cannot contain parentheses.", window.title), stderr())
+                    write(sprintf("ERROR in RCy3::getGraphFromNetwork(): Node names cannot contain parentheses.", window.title), stderr())
                     return(NA)
                 })
                 
@@ -1296,13 +1288,13 @@ setMethod ('getGraphFromCyWindow', 'OptionalCyObjClass',
             }
           
         } else {
-            write(sprintf("ERROR in RCy3::getGraphFromCyWindow():\n\t there is no graph with name '%s' in Cytoscape", window.title), stderr())
+            write(sprintf("ERROR in RCy3::getGraphFromNetwork():\n\t there is no graph with name '%s' in Cytoscape", window.title), stderr())
             return(NA)
         }
         
         return(g)
   })
-## END getGraphFromCyWindow
+## END getGraphFromNetwork
 
 #' Creates a connection to the newest Cytoscape window so that it can be further manipulated from R.
 #'
@@ -1320,7 +1312,7 @@ setMethod('connectToNewestCyWindow',
           function(obj,
                                     copyToR = FALSE) {
   resource.uri <- paste(obj@uri,
-                        apiVersion(obj),
+                        obj@api,
                         "networks",
                         sep = "/")
   request.res <- GET(resource.uri)
@@ -1330,7 +1322,7 @@ setMethod('connectToNewestCyWindow',
   cy.networks.SUIDs.last <- max(cy.networks.SUIDs)
   
   res.uri.last <- paste(obj@uri,
-                        apiVersion(obj),
+                        obj@api,
                         "networks",
                         as.character(cy.networks.SUIDs.last),
                         sep = "/")
@@ -1338,7 +1330,7 @@ setMethod('connectToNewestCyWindow',
   net.name <- fromJSON(rawToChar(result$content))$data$name
   
   ## to get edges request.res$elements$edges
-  newest_CyWindow <- existing.CytoscapeWindow(net.name,
+  newest_CyWindow <- CytoscapeWindowFromNetwork(net.name,
                                               return.graph = copyToR) 
   return(newest_CyWindow)
 })
@@ -1358,9 +1350,8 @@ setMethod('sendNodes', 'CytoscapeWindowClass', function(obj) {
     # if new nodes need to be added
     if(length(diff.nodes) > 0) {
         net.SUID = as.character(loc.obj@suid)
-        version = apiVersion(loc.obj)
         
-        resource.uri = paste(loc.obj@uri, version, "networks", net.SUID, "nodes", sep="/")
+        resource.uri = paste(loc.obj@uri, obj@api, "networks", net.SUID, "nodes", sep="/")
         diff.nodes.JSON = toJSON(diff.nodes)
         
         write(sprintf('sending %d node(s)', length(diff.nodes)), stderr())
@@ -1397,9 +1388,8 @@ setMethod ('.addNodes', signature (obj='CytoscapeWindowClass'),
         
         if(length(new.node.indices) > 0) {
             net.SUID = as.character(loc.obj@suid)
-            version = apiVersion(loc.obj)
             
-            resource.uri = paste(loc.obj@uri, version, "networks", net.SUID, "nodes", sep="/")
+            resource.uri = paste(loc.obj@uri, obj@api, "networks", net.SUID, "nodes", sep="/")
             new.nodes.JSON = toJSON(new.nodes)
             
             request.res = POST(url=resource.uri, body=new.nodes.JSON, encode="json")
@@ -1423,7 +1413,6 @@ setMethod ('.addEdges', signature (obj='CytoscapeWindowClass'),
     function (obj, other.graph) {
         loc.obj <- obj
         net.SUID = as.character(loc.obj@suid)
-        version = apiVersion(loc.obj)
         
         if(length(edgeNames(other.graph)) == 0) {
             write("NOTICE in RCy3::.addEdges():\n\t no edges in graph >> function returns", stderr())
@@ -1466,7 +1455,7 @@ setMethod ('.addEdges', signature (obj='CytoscapeWindowClass'),
                 apply(cbind(source.node.SUIDs, target.node.SUIDs, directed, edge.type), MARGIN=1,
                       FUN=function(r) {list(source=unname(r[[1]]), target=unname(r[[2]]), directed=unname(r[[3]]), interaction=unname(r[[4]]))})
             edge.tbl.records.JSON = toJSON(edge.tbl.records)
-            resource.uri = paste(loc.obj@uri, apiVersion(loc.obj), "networks", net.SUID, "edges", sep="/")
+            resource.uri = paste(loc.obj@uri, loc.obj@api, "networks", net.SUID, "edges", sep="/")
             request.res = POST(url=resource.uri, body=edge.tbl.records.JSON, encode="json")
             
             # request.res.edge.SUIDs contains 
@@ -1511,7 +1500,7 @@ setMethod ('.addEdges', signature (obj='CytoscapeWindowClass'),
 setMethod('.getWindowNameFromSUID', 'OptionalCyObjClass', 
     function(obj, win.suid) {
         suid <- as.character(win.suid)
-        resource.uri <- paste(obj@uri, apiVersion(obj), "networks", suid, sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", suid, sep="/")
         request.res <- GET(url=resource.uri)
         win.name <- fromJSON(rawToChar(request.res$content))$data$name
         return(win.name)
@@ -1524,7 +1513,7 @@ setMethod('.getNetworkViews', 'OptionalCyObjClass',
     function(obj) {
         net.SUID <- as.character(obj@suid)
         
-        resource.uri <- paste(obj@uri, apiVersion(obj), "networks", net.SUID, "views", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", sep="/")
         request.res <- GET(url=resource.uri)
         network.view.SUIDs <- unname(fromJSON(rawToChar(request.res$content)))
         return(network.view.SUIDs)
@@ -1593,7 +1582,7 @@ setMethod('addCyNode', 'CytoscapeWindowClass', function(obj, nodeName) {
     
     # get the network suid
     net.suid <- as.character(loc.obj@suid)
-    resource.uri <- paste(loc.obj@uri, apiVersion(loc.obj), "networks", net.suid, "nodes", sep="/")
+    resource.uri <- paste(loc.obj@uri, loc.obj@api, "networks", net.suid, "nodes", sep="/")
     nodename.json = toJSON(c(nodeName))
     
     # add the node to the Cytoscape graph
@@ -1635,7 +1624,7 @@ setMethod('addCyEdge', 'CytoscapeWindowClass',
     }
     
     net.suid <- as.character(loc.obj@suid)
-    resource.uri <- paste(loc.obj@uri, apiVersion(loc.obj), "networks", net.suid, "edges", sep="/")
+    resource.uri <- paste(loc.obj@uri, loc.obj@api, "networks", net.suid, "edges", sep="/")
     
     node.names.vec <- sapply(loc.obj@node.suid.name.dict, "[[", 1)
     edge.data <- list(source = loc.obj@node.suid.name.dict[[which(node.names.vec %in% sourceNode)]]$SUID, 
@@ -1690,7 +1679,6 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
   function(obj) {
       loc.obj <- obj
       net.SUID = as.character(loc.obj@suid)
-      version = apiVersion(loc.obj)
       # check that there are edges in the graph
       if(length(edgeNames(loc.obj@graph)) == 0) {
           write('NOTICE in RCy3::sendEdges():\n\t no edges in graph >> function returns', stderr())
@@ -1745,7 +1733,7 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
               apply(cbind(source.node.SUIDs, target.node.SUIDs, directed, edge.type), MARGIN=1,
                     FUN=function(r) {list(source=unname(r[[1]]), target=unname(r[[2]]), directed=unname(r[[3]]), interaction=unname(r[[4]]))})
           edge.tbl.records.JSON = toJSON(edge.tbl.records)
-          resource.uri = paste(loc.obj@uri, apiVersion(loc.obj), "networks", net.SUID, "edges", sep="/")
+          resource.uri = paste(loc.obj@uri, loc.obj@api, "networks", net.SUID, "edges", sep="/")
           request.res = POST(url=resource.uri, body=edge.tbl.records.JSON, encode="json")
           
           # request.res.edge.SUIDs contains 
@@ -1790,7 +1778,7 @@ setMethod('layoutNetwork', 'OptionalCyWinClass',
     }
     id = as.character(obj@suid)
     
-    api.str <- paste(obj@uri, apiVersion(obj), "apply/layouts", layout.name, id, sep = "/")
+    api.str <- paste(obj@uri, obj@api, "apply/layouts", layout.name, id, sep = "/")
     
     res <- GET(api.str)
     invisible(res)
@@ -1869,10 +1857,9 @@ setMethod ('setNodePosition', 'CytoscapeWindowClass',
 setMethod ('getNodePosition', 'CytoscapeWindowClass',
   function (obj, node.names) {
       net.suid = as.character(obj@suid)
-      # cyREST API version
-      version = apiVersion(obj)
+
       # get the views for the given network model
-      resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", sep="/")
+      resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "views", sep="/")
       request.res <- GET(resource.uri)
       net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
       
@@ -1891,13 +1878,13 @@ setMethod ('getNodePosition', 'CytoscapeWindowClass',
           query.node = sapply(obj@node.suid.name.dict[dict.indices], function(i) {i$SUID})
           
           # get node x coordinate
-          resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_X_LOCATION", sep="/")
+          resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_X_LOCATION", sep="/")
           request.res <- GET(resource.uri)
           node.x.position <- fromJSON(rawToChar(request.res$content))
           node.x.position <- node.x.position[[2]]
           
           # get node y coordinate
-          resource.uri <- paste(obj@uri, version, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_Y_LOCATION", sep="/")
+          resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_Y_LOCATION", sep="/")
           request.res <- GET(resource.uri)
           node.y.position <- fromJSON(rawToChar(request.res$content))
           node.y.position <- node.y.position[[2]]
@@ -1912,12 +1899,11 @@ setMethod ('getNodePosition', 'CytoscapeWindowClass',
 setMethod ('getNodeSize', 'CytoscapeWindowClass',
 
   function (obj, node.names) {
-     # get network ID and version
+     # get network ID 
      net.SUID = as.character(obj@suid)
-     version = apiVersion(obj)
      
      # get the views for the given network model
-     resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", sep="/")
+     resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", sep="/")
      request.res <- GET(resource.uri)
      net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
      view.SUID <- as.character(net.views.SUIDs[[1]])
@@ -1933,7 +1919,7 @@ setMethod ('getNodeSize', 'CytoscapeWindowClass',
         node.SUID <- sapply(obj@node.suid.name.dict[dict.indices], function(i) {i$SUID})
         
         # request 
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
     
         # request result
         request.res <- GET(resource.uri)
@@ -2026,7 +2012,6 @@ setMethod('setNodeAttributes', 'CytoscapeWindowClass',
 setMethod('setNodeAttributesDirect', 'CytoscapeWindowClass', 
     function(obj, attribute.name, attribute.type, node.names, values) {
         net.SUID = as.character(obj@suid)
-        version = apiVersion(obj)
         
         caller.specified.attribute.class = tolower(attribute.type)
         # the switch-block ensures the attribute values have the correct data type
@@ -2057,7 +2042,7 @@ setMethod('setNodeAttributesDirect', 'CytoscapeWindowClass',
             tbl.col = list(name=attribute.name, type=caller.specified.attribute.class)
             tbl.col.JSON = toJSON(tbl.col)
             resource.uri = 
-                paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
+                paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
             request.res = POST(url=resource.uri, body=tbl.col.JSON, encode="json")
         }
         
@@ -2075,7 +2060,7 @@ setMethod('setNodeAttributesDirect', 'CytoscapeWindowClass',
                 node.SUID.value.pairs.JSON = toJSON(node.SUID.value.pairs)
                 
                 resource.uri = 
-                    paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns", attribute.name, sep="/")
+                    paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/columns", attribute.name, sep="/")
                 request.res = PUT(url=resource.uri, body=node.SUID.value.pairs.JSON, encode="json")
                 invisible(request.res)
             }
@@ -2111,7 +2096,6 @@ setMethod('setEdgeAttributes', 'CytoscapeWindowClass',
 setMethod('setEdgeAttributesDirect', 'CytoscapeWindowClass', 
     function(obj, attribute.name, attribute.type, edge.names, values) {
         net.SUID = as.character(obj@suid)
-        version = apiVersion(obj)
         
         if(length(edge.names) > 0) {
             if(length(edge.names) != length(values)) {
@@ -2145,7 +2129,7 @@ setMethod('setEdgeAttributesDirect', 'CytoscapeWindowClass',
                     tbl.col = list(name=attribute.name, type=caller.specified.attribute.class)
                     tbl.col.JSON = toJSON(tbl.col)
                     resource.uri = 
-                        paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
+                        paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
                     request.res = POST(url=resource.uri, body=tbl.col.JSON, encode="json")
                 }
                 
@@ -2156,7 +2140,7 @@ setMethod('setEdgeAttributesDirect', 'CytoscapeWindowClass',
                     apply(edge.name.suid.value.df[,c('edge.SUIDs','values')], 1, function(x) {list(SUID=unname(x[1]), value=unname(x[2]))})
                 edge.SUID.value.pairs.JSON = toJSON(edge.SUID.value.pairs)
                 resource.uri = 
-                    paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns", attribute.name, sep="/")
+                    paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns", attribute.name, sep="/")
                 request.res = PUT(url=resource.uri, body=edge.SUID.value.pairs.JSON, encode="json")
                 invisible(request.res)        
             }
@@ -2251,12 +2235,10 @@ setMethod('predictTimeToDisplayGraph', 'CytoscapeWindowClass',
 ## END predictTimeToDisplayGraph
 
 # ------------------------------------------------------------------------------
-setMethod('redraw', 'CytoscapeWindowClass', 
+setMethod('redraw', 'OptionalCyWinClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
-        
-        resource.uri <- paste(obj@uri, version, "apply/styles", "default", net.SUID, sep = "/")
+        resource.uri <- paste(obj@uri, obj@api, "apply/styles", "default", net.SUID, sep = "/")
         request.res <- GET(url=resource.uri)
         invisible(request.res)
 }) 
@@ -2322,7 +2304,7 @@ setMethod('raiseWindow', 'OptionalCyObjClass',
 setMethod ('showGraphicsDetails', 'OptionalCyObjClass',
 
     function (obj, new.value) {
-        resource.uri <- paste(obj@uri, apiVersion(obj), "ui/lod/", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "ui/lod/", sep="/")
         request.res <- PUT(resource.uri)
         invisible (request.res)
         if (class (obj) == 'CytoscapeWindowClass'){
@@ -2337,7 +2319,7 @@ setMethod ('showGraphicsDetails', 'OptionalCyObjClass',
 setMethod('fitContent', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        resource.uri <- paste(obj@uri, apiVersion(obj), "apply/fit", net.SUID, sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "apply/fit", net.SUID, sep="/")
         request.res <- GET(url=resource.uri)
         invisible(request.res)
 })
@@ -2356,7 +2338,6 @@ setMethod('fitSelectedContent', 'CytoscapeWindowClass',
 setMethod('getCenter', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
         
         # get all Cytoscape views belonging to that network
         net.views.SUIDs <- .getNetworkViews(obj)
@@ -2368,12 +2349,12 @@ setMethod('getCenter', 'CytoscapeWindowClass',
         }
         # get the X-coordinate
         resource.uri <- 
-            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/")
+            paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/")
         request.res <- GET(resource.uri)
         x.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
         # get the Y-coordinate
         resource.uri <- 
-            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
+            paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
         request.res <- GET(resource.uri)
         y.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
         
@@ -2387,7 +2368,6 @@ setMethod('getCenter', 'CytoscapeWindowClass',
 setMethod('setCenter', 'CytoscapeWindowClass', 
     function(obj, x, y) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
         
         net.views.SUIDs <- .getNetworkViews(obj)
         view.SUID <- as.character(net.views.SUIDs[[1]])
@@ -2399,12 +2379,12 @@ setMethod('setCenter', 'CytoscapeWindowClass',
         
         # set the X-coordinate
         resource.uri <- 
-            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network", sep="/")
+            paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network", sep="/")
         new.x.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_X_LOCATION", value=x)))
         request.res <- PUT(resource.uri, body=new.x.coordinate.JSON, encode="json")
         # set the Y-coordinate
         resource.uri <- 
-            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network", sep="/")
+            paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network", sep="/")
         new.y.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_Y_LOCATION", value=y)))
         request.res <- PUT(resource.uri, body=new.y.coordinate.JSON, encode="json")
         invisible(request.res)
@@ -2415,7 +2395,6 @@ setMethod('setCenter', 'CytoscapeWindowClass',
 setMethod('getZoom', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
         
         # get the existing views for the given network model
         net.views.SUIDs <- .getNetworkViews(obj)
@@ -2427,7 +2406,7 @@ setMethod('getZoom', 'CytoscapeWindowClass',
         }
         
         resource.uri <- 
-            paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network/NETWORK_SCALE_FACTOR", sep="/")
+            paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network/NETWORK_SCALE_FACTOR", sep="/")
         request.res <- GET(resource.uri)
         zoom.level <- fromJSON(rawToChar(request.res$content))$value[[1]]
         
@@ -2439,7 +2418,6 @@ setMethod('getZoom', 'CytoscapeWindowClass',
 setMethod('setZoom', 'CytoscapeWindowClass', 
     function(obj, new.level) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
         
         net.views.SUIDs <- .getNetworkViews(obj)
         view.SUID <- as.character(net.views.SUIDs[[1]])
@@ -2452,7 +2430,7 @@ setMethod('setZoom', 'CytoscapeWindowClass',
         view.zoom.value <- list(visualProperty='NETWORK_SCALE_FACTOR', value=new.level)
         view.zoom.value.JSON <- toJSON(list(view.zoom.value))
         
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "network", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network", sep="/")
         request.res <- PUT(url=resource.uri, body=view.zoom.value.JSON, encode="json")
         
         invisible(request.res)
@@ -2471,7 +2449,7 @@ setMethod('getViewCoordinates', 'CytoscapeWindowClass',
 # ------------------------------------------------------------------------------
 setMethod('hidePanel', 'OptionalCyObjClass', 
     function(obj, panelName) {
-        version <- apiVersion(obj)
+        
         
         if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
@@ -2484,7 +2462,7 @@ setMethod('hidePanel', 'OptionalCyObjClass',
         
         panel.name.state = list(name=panelName, state='HIDE')
         
-        resource.uri <- paste(obj@uri, version, "ui/panels", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "ui/panels", sep="/")
         request.res <- PUT(url=resource.uri, body=toJSON(list(panel.name.state)), encoding="json")
         
         invisible(request.res)
@@ -2504,7 +2482,7 @@ setMethod('hideAllPanels', 'OptionalCyObjClass',
 # ------------------------------------------------------------------------------
 setMethod('dockPanel', 'OptionalCyObjClass', 
     function(obj, panelName) {
-        version <- apiVersion(obj)
+        
 
         if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
@@ -2517,7 +2495,7 @@ setMethod('dockPanel', 'OptionalCyObjClass',
         
         panel.name.state = list(name=panelName, state='DOCK')
         
-        resource.uri <- paste(obj@uri, version, "ui/panels", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "ui/panels", sep="/")
         request.res <- PUT(url=resource.uri, body=toJSON(list(panel.name.state)), encoding="json")
         
         invisible(request.res)
@@ -2527,7 +2505,7 @@ setMethod('dockPanel', 'OptionalCyObjClass',
 # ------------------------------------------------------------------------------
 setMethod('floatPanel', 'OptionalCyObjClass', 
     function(obj, panelName) {
-        version <- apiVersion(obj)
+        
         
         if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
             panelName <- 'SOUTH'
@@ -2540,7 +2518,7 @@ setMethod('floatPanel', 'OptionalCyObjClass',
         
         panel.name.state = list(name=panelName, state='FLOAT')
         
-        resource.uri <- paste(obj@uri, version, "ui/panels", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "ui/panels", sep="/")
         request.res <- PUT(url=resource.uri, body=toJSON(list(panel.name.state)), encoding="json")
         
         invisible(request.res)
@@ -3914,9 +3892,8 @@ setMethod('setEdgeTargetArrowOpacityDirect', 'CytoscapeWindowClass',
 setMethod('getNodeCount', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
         
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes/count", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "nodes/count", sep="/")
         request.res <- GET(resource.uri)
         node.count <- unname(fromJSON(rawToChar(request.res$content)))
         
@@ -3928,9 +3905,8 @@ setMethod('getNodeCount', 'CytoscapeWindowClass',
 setMethod('getEdgeCount', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
         
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "edges/count", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "edges/count", sep="/")
         request.res <- GET(resource.uri)
         edge.count <- unname(fromJSON(rawToChar(request.res$content)))
         
@@ -3942,7 +3918,7 @@ setMethod('getEdgeCount', 'CytoscapeWindowClass',
 setMethod('getNodeAttribute', 'OptionalCyObjClass', 
     function(obj, node.name, attribute.name) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
+        
         
         node.SUID <- as.character(.nodeNameToNodeSUID(obj, node.name))
         
@@ -3955,7 +3931,7 @@ setMethod('getNodeAttribute', 'OptionalCyObjClass',
             
             if(length(node.attribute.type) > 0) {
                 resource.uri <- 
-                    paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/rows", node.SUID, attribute.name, sep="/")
+                    paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/rows", node.SUID, attribute.name, sep="/")
                 request.res <- GET(url=resource.uri)
                 
                 node.attribute.value <- unname(rawToChar(request.res$content))
@@ -3983,11 +3959,11 @@ setMethod('getNodeAttribute', 'OptionalCyObjClass',
 setMethod('getNodeAttributeType', 'CytoscapeWindowClass', 
     function(obj, attribute.name) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
+        
         
         if(attribute.name %in% getNodeAttributeNames(obj)) {
             resource.uri <- 
-                paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
+                paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
             request.res <- GET(url=resource.uri)
             
             node.attributes.info <- fromJSON(rawToChar(request.res$content))
@@ -4044,7 +4020,7 @@ setMethod('getAllNodeAttributes', 'CytoscapeWindowClass',
 setMethod('getEdgeAttribute', 'OptionalCyObjClass', 
     function(obj, edge.name, attribute.name) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
+        
         
         edge.SUID <- as.character(.edgeNameToEdgeSUID(obj, edge.name))
         
@@ -4057,7 +4033,7 @@ setMethod('getEdgeAttribute', 'OptionalCyObjClass',
             
             if(length(edge.attribute.type) > 0) {
                 resource.uri <- 
-                    paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/rows", edge.SUID, attribute.name, sep="/")
+                    paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/rows", edge.SUID, attribute.name, sep="/")
                 request.res <- GET(url=resource.uri)
                 
                 edge.attribute.value <- unname(rawToChar(request.res$content))
@@ -4086,10 +4062,10 @@ setMethod('getEdgeAttribute', 'OptionalCyObjClass',
 setMethod('getEdgeAttributeType', 'CytoscapeWindowClass', 
     function(obj, attribute.name) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
+        
         
         if(attribute.name %in% getEdgeAttributeNames(obj)) {
-            resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
+            resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
             request.res <- GET(url=resource.uri)
             
             edge.attributes.info <- fromJSON(rawToChar(request.res$content))
@@ -4169,7 +4145,7 @@ setMethod('getNodeAttributeNames', 'OptionalCyObjClass',
         net.SUID <- as.character(obj@suid)
         
         resource.uri <- 
-            paste(obj@uri, apiVersion(obj), "networks", net.SUID, "tables/defaultnode/columns", sep="/")
+            paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
         # request result
         request.res <- GET(url=resource.uri)
         request.res <- fromJSON(rawToChar(request.res$content))
@@ -4189,7 +4165,7 @@ setMethod('getEdgeAttributeNames', 'OptionalCyObjClass',
     function(obj) {
         net.SUID <- as.character(obj@suid)
         resource.uri <- 
-            paste(obj@uri, apiVersion(obj), "networks", net.SUID, "tables/defaultedge/columns", sep="/")
+            paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
         # request result
         request.res <- GET(url=resource.uri)
         request.res <- fromJSON(rawToChar(request.res$content))
@@ -4206,7 +4182,7 @@ setMethod('getEdgeAttributeNames', 'OptionalCyObjClass',
 setMethod('deleteNodeAttribute', 'OptionalCyObjClass', 
   function(obj, attribute.name) {
      if (attribute.name %in% getNodeAttributeNames(obj)){
-        resource.uri <- paste(obj@uri, apiVersion(obj), "networks", as.character(obj@suid), "tables/defaultnode/columns", as.character(attribute.name), sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", as.character(obj@suid), "tables/defaultnode/columns", as.character(attribute.name), sep="/")
         result <- DELETE(url= resource.uri)
         write(sprintf('Attribute "%s" has been deleted...', attribute.name), stderr())
         invisible(result)
@@ -4221,7 +4197,7 @@ setMethod('deleteNodeAttribute', 'OptionalCyObjClass',
 setMethod('deleteEdgeAttribute', 'OptionalCyObjClass', 
   function(obj, attribute.name) {
      if (attribute.name %in% getEdgeAttributeNames(obj)){
-        resource.uri <- paste(obj@uri, apiVersion(obj), "networks", as.character(obj@suid), "tables/defaultedge/columns", as.character(attribute.name), sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", as.character(obj@suid), "tables/defaultedge/columns", as.character(attribute.name), sep="/")
         request.res <- DELETE(url= resource.uri)
         write(sprintf('Attribute "%s" has been deleted...', attribute.name), stderr())
         invisible(request.res)
@@ -4235,8 +4211,6 @@ setMethod('deleteEdgeAttribute', 'OptionalCyObjClass',
 setMethod('getAllNodes', 'CytoscapeWindowClass', 
     function(obj) {
         loc.obj <- obj      
-        # CyREST version
-        version = apiVersion(loc.obj)
         # network suid
         net.SUID <- as.character(loc.obj@suid)
         
@@ -4247,7 +4221,7 @@ setMethod('getAllNodes', 'CytoscapeWindowClass',
         }
         
         # get SUIDs of existing (in Cytoscape) nodes
-        resource.uri <- paste(loc.obj@uri, version, "networks", net.SUID, "nodes", sep="/")
+        resource.uri <- paste(loc.obj@uri, obj@api, "networks", net.SUID, "nodes", sep="/")
         # get the SUIDs of the nodes in the Cytoscape graph
         cy.nodes.SUIDs <- fromJSON(rawToChar(GET(resource.uri)$content))
 
@@ -4263,7 +4237,7 @@ setMethod('getAllNodes', 'CytoscapeWindowClass',
             nodes.only.in.cytoscape <- c()
             for(i in 1:length(diff.nodes)) {
                 resource.uri <- 
-                    paste(loc.obj@uri, version, "networks", net.SUID, "nodes", as.character(diff.nodes[i]), sep="/")
+                    paste(obj@uri, obj@api, "networks", net.SUID, "nodes", as.character(diff.nodes[i]), sep="/")
                 node.name <- fromJSON(rawToChar(GET(resource.uri)$content))$data$name 
                 nodes.only.in.cytoscape <- c(nodes.only.in.cytoscape, node.name)
             #    [GIK, Jul 2015] synch to be implemented
@@ -4284,7 +4258,7 @@ setMethod('getAllNodes', 'CytoscapeWindowClass',
 setMethod('getAllEdges', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
+        
         
         count <- getEdgeCount(obj)
         if(count == 0) {
@@ -4292,7 +4266,7 @@ setMethod('getAllEdges', 'CytoscapeWindowClass',
         }
         
         # get edge name column and return its values
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/name", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns/name", sep="/")
         request.res <- GET(url=resource.uri)
         request.res <- fromJSON(rawToChar(request.res$content))
         names <- request.res$values
@@ -4304,14 +4278,14 @@ setMethod('getAllEdges', 'CytoscapeWindowClass',
 setMethod('clearSelection', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
+        
         
         # if any nodes are selected, unselect them
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns/selected?default=false", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/columns/selected?default=false", sep="/")
         request.res <- PUT(url=resource.uri, body=FALSE)
         
         # if any edges are selected, unselect them
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/selected?default=false", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns/selected?default=false", sep="/")
         request.res <- PUT(url=resource.uri, body=FALSE)
         
         invisible(request.res)
@@ -4322,7 +4296,7 @@ setMethod('clearSelection', 'CytoscapeWindowClass',
 setMethod('selectNodes', 'CytoscapeWindowClass', 
     function(obj, node.names, preserve.current.selection = TRUE) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
+        
         
         if(preserve.current.selection) {
             if(getSelectedNodeCount(obj) > 0) {
@@ -4354,7 +4328,7 @@ setMethod('selectNodes', 'CytoscapeWindowClass',
         SUID.value.pairs <- lapply(node.SUIDs, function(s) {list('SUID'=s, 'value'=TRUE)})
         SUID.value.pairs.JSON <- toJSON(SUID.value.pairs)
         
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultnode/columns/selected", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/columns/selected", sep="/")
         request.res <- PUT(url=resource.uri, body=SUID.value.pairs.JSON, encode="json")
         
         invisible(request.res)
@@ -4386,7 +4360,7 @@ setMethod('selectAllNodes',
           function(obj) {
             
             resource.uri <- paste(obj@uri,
-                                  apiVersion(obj),
+                                  obj@api,
                                   "networks",
                                   obj@suid,
                                   "nodes",
@@ -4399,7 +4373,7 @@ setMethod('selectAllNodes',
             SUID.value.pairs.JSON <- toJSON(SUID.value.pairs)
             
             resource.uri <- paste(obj@uri,
-                                  apiVersion(obj),
+                                  obj@api,
                                   "networks",
                                   obj@suid,
                                   "tables/defaultnode/columns/selected",
@@ -4416,9 +4390,9 @@ setMethod('selectAllNodes',
 setMethod('getSelectedNodeCount', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
         
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
+        
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
         request.res <- GET(url=resource.uri)
         
         num.selected.nodes <- length(fromJSON(rawToChar(request.res$content)))
@@ -4431,13 +4405,13 @@ setMethod('getSelectedNodeCount', 'CytoscapeWindowClass',
 setMethod('getSelectedNodes', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
+        
         
         if(getSelectedNodeCount(obj) == 0) {
             write (sprintf ('warning!  No nodes selected.'), stdout ())
             return(NA)
         } else {
-            resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
+            resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
             request.res <- GET(url=resource.uri)
             
             selected.node.SUIDs <- fromJSON(rawToChar(request.res$content))
@@ -4474,9 +4448,9 @@ setMethod('unhideNodes', 'CytoscapeWindowClass',
 setMethod('invertNodeSelection', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
         
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "nodes?column=selected&query=false", sep="/")
+        
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "nodes?column=selected&query=false", sep="/")
         request.res <- GET(url=resource.uri)
         unselected.node.SUIDs <- fromJSON(rawToChar(request.res$content))
         
@@ -4494,7 +4468,6 @@ setMethod('deleteSelectedNodes', 'CytoscapeWindowClass',
         loc.obj <- obj
         
         net.SUID <- as.character(loc.obj@suid)
-        version <- apiVersion(loc.obj)
         
         selected.node.names <- getSelectedNodes(loc.obj)
         selected.node.SUIDs <- .nodeNameToNodeSUID(loc.obj, selected.node.names)
@@ -4515,7 +4488,7 @@ setMethod('deleteSelectedNodes', 'CytoscapeWindowClass',
                     sapply(loc.obj@edge.node.suid.name.dict[source.bound.edge.indices], function(e) { e$SUID })
                 # delete all edges, whose source node is to-be deleted
                 for(k in 1:length(source.bound.edges)) {
-                    resource.uri <- paste(loc.obj@uri, version, "networks", net.SUID, "edges", as.character(source.bound.edges[k]), sep="/")
+                    resource.uri <- paste(loc.obj@uri, obj@api, "networks", net.SUID, "edges", as.character(source.bound.edges[k]), sep="/")
                     
                     request.res <- DELETE(url=resource.uri)
                     # [GIK] TO-DO: delete the edge row/entry from Cytoscape's Edge table
@@ -4533,7 +4506,7 @@ setMethod('deleteSelectedNodes', 'CytoscapeWindowClass',
                     sapply(loc.obj@edge.node.suid.name.dict[target.bound.edge.indices], function(e) { e$SUID })
                 # delete all edges, whose target node is to-be deleted
                 for(k in 1:length(target.bound.edges)) {
-                    resource.uri <- paste(loc.obj@uri, version, "networks", net.SUID, "edges", as.character(target.bound.edges[k]), sep="/")
+                    resource.uri <- paste(loc.obj@uri, obj@api, "networks", net.SUID, "edges", as.character(target.bound.edges[k]), sep="/")
                     
                     request.res <- DELETE(url=resource.uri)
                     # [GIK] TO-DO: delete the edge row/entry from Cytoscape's Edge table
@@ -4544,7 +4517,7 @@ setMethod('deleteSelectedNodes', 'CytoscapeWindowClass',
             
             # delete the node from the Cytoscape network
             resource.uri <- 
-                paste(loc.obj@uri, version, "networks", net.SUID, "nodes", as.character(node.SUID), sep="/")
+                paste(loc.obj@uri, obj@api, "networks", net.SUID, "nodes", as.character(node.SUID), sep="/")
             request.res <- DELETE(url=resource.uri)
         
             # [GIK] TO-DO: delete the node row/entry in the Cytoscape node table
@@ -4562,7 +4535,7 @@ setMethod('deleteSelectedNodes', 'CytoscapeWindowClass',
 setMethod('selectEdges', 'CytoscapeWindowClass', 
     function(obj, edge.names, preserve.current.selection=TRUE) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
+        
         # keep the currently selected edges
         if(preserve.current.selection) {
             edge.names <- unique(c(getSelectedEdges(obj), edge.names))
@@ -4572,7 +4545,7 @@ setMethod('selectEdges', 'CytoscapeWindowClass',
         SUID.value.pairs <- lapply(edge.SUIDs, function(s) {list('SUID'=s, 'value'=TRUE)})
         SUID.value.pairs.JSON <- toJSON(SUID.value.pairs)
         
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/selected", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns/selected", sep="/")
         request.res <- PUT(url=resource.uri, body=SUID.value.pairs.JSON, encode="json")
         
         invisible(request.res)
@@ -4604,7 +4577,7 @@ setMethod('selectAllEdges',
           function(obj) {
             
             resource.uri <- paste(obj@uri,
-                                  apiVersion(obj),
+                                  obj@api,
                                   "networks",
                                   obj@suid,
                                   "edges",
@@ -4617,7 +4590,7 @@ setMethod('selectAllEdges',
             SUID.value.pairs.JSON <- toJSON(SUID.value.pairs)
             
             resource.uri <- paste(obj@uri,
-                                  apiVersion(obj),
+                                  obj@api,
                                   "networks",
                                   obj@suid,
                                   "tables/defaultedge/columns/selected",
@@ -4632,13 +4605,13 @@ setMethod('selectAllEdges',
 setMethod('invertEdgeSelection', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
         
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "edges?column=selected&query=false", sep="/")
+        
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "edges?column=selected&query=false", sep="/")
         request.res <- GET(url=resource.uri)
         unselected.edges.SUIDs <- fromJSON(rawToChar(request.res$content))
         # if any edges are selected, unselect them (nodes have clearSelection function) 
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "tables/defaultedge/columns/selected?default=false", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns/selected?default=false", sep="/")
         request.res <- PUT(url=resource.uri, body=FALSE)
         
         to.be.selected.edges <- lapply(unselected.edges.SUIDs, function(s) {list('SUID'=s, 'value'=TRUE)})
@@ -4655,14 +4628,13 @@ setMethod('deleteSelectedEdges', 'CytoscapeWindowClass',
         loc.obj <- obj
         
         net.SUID = as.character(loc.obj@suid)
-        version = apiVersion(loc.obj)
         
         selected.edge.names = getSelectedEdges(loc.obj)
         selected.edge.SUIDs = .edgeNameToEdgeSUID(loc.obj, selected.edge.names)
         
         for(i in 1:length(selected.edge.SUIDs)) {
             edge.SUID = selected.edge.SUIDs[i]
-            resource.uri = paste(loc.obj@uri, version, "networks", net.SUID, "edges", edge.SUID, sep="/")
+            resource.uri = paste(loc.obj@uri, obj@api, "networks", net.SUID, "edges", edge.SUID, sep="/")
             # delete edge from canvas / view
             request.res = DELETE(url=resource.uri)
             
@@ -4680,9 +4652,9 @@ setMethod('deleteSelectedEdges', 'CytoscapeWindowClass',
 setMethod('getSelectedEdgeCount', 'CytoscapeWindowClass', 
     function(obj) {
         net.SUID <- as.character(obj@suid)
-        version <- apiVersion(obj)
         
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "edges?column=selected&query=true", sep="/")
+        
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "edges?column=selected&query=true", sep="/")
         request.res <- GET(url=resource.uri)
         
         num.selected.edges <- length(fromJSON(rawToChar(request.res$content)))
@@ -4695,11 +4667,10 @@ setMethod ('getSelectedEdges', 'CytoscapeWindowClass',
 
     function (obj) {
         net.SUID = as.character(obj@suid)
-        version = apiVersion(obj)
         if(getSelectedEdgeCount(obj) == 0) {
             return (NA)
         } else {
-            resource.uri = paste(obj@uri, version, "networks", net.SUID, "edges?column=selected&query=true", sep="/")
+            resource.uri = paste(obj@uri, obj@api, "networks", net.SUID, "edges?column=selected&query=true", sep="/")
             request.res = GET(url=resource.uri)
             selected.edges.SUIDs = fromJSON(rawToChar(request.res$content))
             selected.edges = .edgeSUIDToEdgeName(obj, selected.edges.SUIDs)
@@ -4738,9 +4709,8 @@ setMethod ('getFirstNeighbors', 'CytoscapeWindowClass',
          dict.indices = which(sapply(obj@node.suid.name.dict, function(s) { s$name }) %in% node.names)
          node.SUIDs = sapply(obj@node.suid.name.dict[dict.indices], function(i) {i$SUID})
          
-         # network ID and cyREST API version
+         # network ID 
          net.suid = as.character(obj@suid)
-         version = apiVersion(obj)
          
          # get first neighbors
          # TODO at some later point it might be nice to return the first neighbors as nested lists
@@ -4748,7 +4718,7 @@ setMethod ('getFirstNeighbors', 'CytoscapeWindowClass',
          
          for (node.SUID in node.SUIDs){
             # get first neighbors for each node
-            resource.uri <- paste(obj@uri, version, "networks", net.suid, "nodes", as.character(node.SUID), "neighbors", sep="/")
+            resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "nodes", as.character(node.SUID), "neighbors", sep="/")
             request.res <- GET(resource.uri)
             first.neighbors.SUIDs <- fromJSON(rawToChar(request.res$content))
             
@@ -5216,7 +5186,7 @@ initEdgeAttribute = function (graph, attribute.name, attribute.type, default.val
 # ------------------------------------------------------------------------------
 setMethod('getVisualStyleNames', 'OptionalCyObjClass', 
   function(obj) {
-    resource.uri = paste(obj@uri, apiVersion(obj), "apply/styles", sep="/")
+    resource.uri = paste(obj@uri, obj@api, "apply/styles", sep="/")
     request.res = GET(url=resource.uri)
     visual.style.names = unname(fromJSON(rawToChar(request.res$content)))
     return(visual.style.names)
@@ -5230,14 +5200,14 @@ setMethod('copyVisualStyle', 'OptionalCyObjClass',
         stop (sprintf ('Cannot copy from a non-existent visual style (%s)', from.style))
      }
      # get the current style from Cytoscape
-     resource.uri <- paste(obj@uri, apiVersion(obj), "styles", from.style, sep="/")
+     resource.uri <- paste(obj@uri, obj@api, "styles", from.style, sep="/")
      from.style.JSON <- GET(url=resource.uri)
      from.style <- fromJSON(rawToChar(from.style.JSON$content))
      from.style[1] <- as.character(to.style)
      
      # and send it to Cytoscape as a new style with a new name
      to.style.JSON <- toJSON(from.style)
-     resource.uri <- paste(obj@uri, apiVersion(obj), "styles", sep="/")
+     resource.uri <- paste(obj@uri, obj@api, "styles", sep="/")
      request.res <- POST(url = resource.uri, body = to.style.JSON, encode = "json")
      invisible(request.res)
 })
@@ -5253,7 +5223,7 @@ setMethod('setVisualStyle', 'CytoscapeWindowClass',
       stop(sprintf('Cannot call setVisualStyle on a non-existent visual style (%s)', new.style.name))
     }
     # change the current style to the new style
-    resource.uri <- paste(obj@uri, apiVersion(obj), "apply/styles", new.style.name, net.SUID, sep="/")
+    resource.uri <- paste(obj@uri, obj@api, "apply/styles", new.style.name, net.SUID, sep="/")
     req.res <- GET(url=resource.uri)
     write(sprintf('network visual style has been set to "%s"', new.style.name), stdout())
     invisible(req.res)
@@ -5270,7 +5240,7 @@ setMethod ('lockNodeDimensions', 'OptionalCyObjClass',
         }
 
         #lock node dimensions
-        resource.uri <- paste(obj@uri, apiVersion(obj), "styles", as.character(visual.style.name), "dependencies", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "styles", as.character(visual.style.name), "dependencies", sep="/")
         style <- list(visualPropertyDependency="nodeSizeLocked", enabled = tolower(new.state))
         style.JSON <- toJSON(list(style))
         request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
@@ -5292,7 +5262,7 @@ setMethod ('lockNodeDimensions', 'OptionalCyObjClass',
 # ------------------------------------------------------------------------------
 setMethod('getDefaultBackgroundColor', 'OptionalCyObjClass', 
   function(obj, style.name='default') {
-    resource.uri = paste(obj@uri, apiVersion(obj), "styles", as.character(style.name), "defaults/NETWORK_BACKGROUND_PAINT", sep="/")
+    resource.uri = paste(obj@uri, obj@api, "styles", as.character(style.name), "defaults/NETWORK_BACKGROUND_PAINT", sep="/")
     request.res = GET(url=resource.uri)
     def.background.color = fromJSON(rawToChar(request.res$content))[[2]]
     return(def.background.color)
@@ -5304,7 +5274,7 @@ setMethod('setDefaultBackgroundColor', 'OptionalCyObjClass',
         if (.isNotHexColor(new.color)){
             return()
         } 
-        resource.uri = paste(obj@uri, apiVersion(obj), "styles", as.character(style.name), "defaults", sep="/")
+        resource.uri = paste(obj@uri, obj@api, "styles", as.character(style.name), "defaults", sep="/")
         style = list(visualProperty = 'NETWORK_BACKGROUND_PAINT', value = new.color)
         style.JSON = toJSON(list(style))
         request.res = PUT(url=resource.uri, body=style.JSON, encode="json")
@@ -5386,12 +5356,12 @@ setMethod ('saveImage', 'CytoscapeWindowClass',
              if (!file.exists(file.name)){
                if(image.type=='png'){
                  
-                 resource.uri <- paste(obj@uri, apiVersion(obj), "networks", id,
+                 resource.uri <- paste(obj@uri, obj@api, "networks", id,
                                        paste0("views/first.", image.type, "?h=", h), sep="/")  
                } 
                else{
                  # get the view image from Cytoscape in PNG, PDF, or SVG format
-                 resource.uri <- paste(obj@uri, apiVersion(obj), "networks", id,
+                 resource.uri <- paste(obj@uri, obj@api, "networks", id,
                                        paste0("views/first.", image.type), sep="/")
                }
                request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type), overwrite = TRUE))
@@ -5406,7 +5376,7 @@ setMethod ('saveNetwork', 'CytoscapeWindowClass',
    function (obj, file.name, format='cys') {
        if (!file.exists(file.name)){
            # TODO currently only saves as cys, enable to save also to other formats incl. glm
-           resource.uri <- paste(obj@uri, apiVersion(obj), "session", sep="/")
+           resource.uri <- paste(obj@uri, obj@api, "session", sep="/")
            request.res <- POST(url=resource.uri, body=NULL, write_disk(paste0(file.name, ".cys"), overwrite = TRUE))
            write (sprintf ('saving network to file %s.cys', file.name), stderr ())
            invisible(request.res)
@@ -5541,14 +5511,14 @@ simpleCap <- function(x) {
 
 # ------------------------------------------------------------------------------
 getVisualProperty <- function(obj, style.name, property) {
-    resource.uri <- paste(obj@uri, apiVersion(obj), "styles", as.character(style.name), "defaults", property, sep="/")
+    resource.uri <- paste(obj@uri, obj@api, "styles", as.character(style.name), "defaults", property, sep="/")
     request.res <- GET(url=resource.uri)
     return(fromJSON(rawToChar(request.res$content))[[2]])
 }
 
 # ------------------------------------------------------------------------------
 setVisualProperty <- function(obj, style.string, style.name='default') {
-    resource.uri <- paste(obj@uri, apiVersion(obj), "styles", as.character(style.name), "defaults", sep="/")
+    resource.uri <- paste(obj@uri, obj@api, "styles", as.character(style.name), "defaults", sep="/")
     style.JSON <- toJSON(list(style.string))
     request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
     invisible(request.res)
@@ -5570,9 +5540,9 @@ obtainEveryOtherValue <- function(v) {
 
 # ------------------------------------------------------------------------------
 setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) {
-    # get network ID and version
+    # get network ID 
     net.SUID <- as.character(obj@suid)
-    version <- apiVersion(obj)
+    
     
     # cyREST allows for multiple views per network
     # get all views that associate with this network and select the first one
@@ -5590,7 +5560,7 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
         return()
     } else if (length(node.names)==1) {
         # only one node
-        resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", node.SUIDs, sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "nodes", node.SUIDs, sep="/")
         node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=new.values)))
         request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
     } else {
@@ -5599,7 +5569,7 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
             node.SUID <- as.character(node.SUIDs[i])
             current.value <- new.values[i]
             
-            resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "nodes", node.SUID, sep="/")
+            resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "nodes", node.SUID, sep="/")
             node.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
             request.res <- PUT(resource.uri, body=node.SUID.JSON, encode="json")
         } # end for (node.SUID in node.SUIDs)
@@ -5610,9 +5580,9 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
 
 # ------------------------------------------------------------------------------
 setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property) {
-    # get network ID and version
+    # get network ID 
     net.SUID <- as.character(obj@suid)
-    version <- apiVersion(obj)
+    
     
     # cyREST allows for multiple views per network
     # get all views that exist for this network and select the first one
@@ -5634,7 +5604,7 @@ setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property) 
             edge.SUID <- as.character(edge.SUIDs[i])
             current.value <- new.values[i]
             
-            resource.uri <- paste(obj@uri, version, "networks", net.SUID, "views", view.SUID, "edges", edge.SUID, sep="/")
+            resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "edges", edge.SUID, sep="/")
             edge.SUID.JSON <- toJSON(list(list(visualProperty=visual.property, value=current.value)))
             request.res <- PUT(url=resource.uri, body=edge.SUID.JSON, encode="json")
         }
@@ -5646,7 +5616,7 @@ setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property) 
 # ------------------------------------------------------------------------------
 getEdgeNamesAndSUIDS <- function(obj){
     # map edge names to edge SUIDs
-    resource.uri <- paste(obj@uri, apiVersion(obj), "networks", as.character(obj@suid), "tables/defaultedge", sep="/")
+    resource.uri <- paste(obj@uri, obj@api, "networks", as.character(obj@suid), "tables/defaultedge", sep="/")
     request.res <- GET(url=resource.uri)
     request.res <- fromJSON(rawToChar(request.res$content))
     # get the row information from the edge table
@@ -5666,7 +5636,7 @@ discreteMapping <- function(obj, attribute.name, control.points, colors, visual.
                              mappingColumnType = columnType, visualProperty=visual.property,
                              map = mapped.content)
     discrete.mapping.json <-toJSON(list(discrete.mapping))
-    resource.uri <- paste(obj@uri, apiVersion(obj), "styles", style, "mappings", sep="/")
+    resource.uri <- paste(obj@uri, obj@api, "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
     
     # inform the user if the request was a success or failure
@@ -5696,7 +5666,7 @@ continuousMapping <- function(obj, attribute.name, control.points, colors, visua
                                mappingColumnType = columnType, visualProperty=visual.property,
                                points = mapped.content)
     continuous.mapping.json <- toJSON(list(continuous.mapping))
-    resource.uri <- paste(obj@uri, apiVersion(obj), "styles", style, "mappings", sep="/")
+    resource.uri <- paste(obj@uri, obj@api, "styles", style, "mappings", sep="/")
     request.res <- POST(url=resource.uri, body=continuous.mapping.json, encode="json")
     
     # inform the user if the request was a success or failure
