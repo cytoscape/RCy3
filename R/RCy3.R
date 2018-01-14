@@ -98,12 +98,12 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
     
     # if the user has specified, delete already existing window(s) with the same title
     if (overwriteWindow) {
-        if (title %in% as.character(getWindowList(cy.conn))) {
+        if (title %in% as.character(getNetworkList(cy.conn))) {
             deleteNetwork(cy.conn, title)
         }
     }
     
-    if (!is.na(getWindowID(cy.conn, title))) {
+    if (!is.na(getNetworkSuid(cy.conn, title))) {
         write(sprintf('There is already a window in Cytoscape named "%s".', title), stderr())
         write(sprintf('Please use a unique name, or set "overwriteWindow=TRUE".'), stderr())
         stop()
@@ -182,10 +182,10 @@ setGeneric('copyCytoscapeNetwork',
   signature = 'obj', function(obj=existing.CytoscapeWindow(), new.title, return.graph = FALSE) standardGeneric('copyCytoscapeNetwork'))
 setGeneric('renameCytoscapeNetwork',	
   signature = 'obj',function(obj=existing.CytoscapeWindow(), new.title, return.graph = FALSE) standardGeneric('renameCytoscapeNetwork'))
-setGeneric ('getWindowCount', 
-	signature='obj', function(obj=CytoscapeConnection()) standardGeneric ('getWindowCount'))
-setGeneric ('getWindowList',
-            signature='obj', function(obj=CytoscapeConnection()) standardGeneric ('getWindowList'))
+setGeneric ('getNetworkCount', 
+	signature='obj', function(obj=CytoscapeConnection()) standardGeneric ('getNetworkCount'))
+setGeneric ('getNetworkList',
+            signature='obj', function(obj=CytoscapeConnection()) standardGeneric ('getNetworkList'))
 setGeneric ('deleteNetwork', 
 	signature='obj', function(obj=CytoscapeConnection(), title=NA) standardGeneric ('deleteNetwork'))
 setGeneric ('deleteAllNetworks', 
@@ -457,7 +457,7 @@ setGeneric ('selectEdgesConnectedBySelectedNodes',
 #-----------------------------------------------------------
 # methods related to transmitting data from Cytoscape to R
 #-----------------------------------------------------------
-setGeneric ('getWindowID',                   signature='obj', function (obj=CytoscapeConnection(), window.title=NA) standardGeneric ('getWindowID'))
+setGeneric ('getNetworkSuid',                   signature='obj', function (obj=CytoscapeConnection(), window.title=NA) standardGeneric ('getNetworkSuid'))
 setGeneric ('haveNodeAttribute',             signature='obj', function (obj=CytoscapeConnection(), node.names, attribute.name) standardGeneric ('haveNodeAttribute'))
 setGeneric ('haveEdgeAttribute',             signature='obj', function (obj=CytoscapeConnection(), edge.names, attribute.name) standardGeneric ('haveEdgeAttribute'))
 setGeneric ('copyNodeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyNodeAttributesFromCyGraph'))
@@ -518,12 +518,12 @@ existing.CytoscapeWindow =
         api<- cy.conn@api
         
         # if title=NA, will return current network in Cytoscape
-		existing.suid = as.character(getWindowID(cy.conn,title))
+		existing.suid = as.character(getNetworkSuid(cy.conn,title))
 		
 		# inform user if the window does not exist
         if (is.na(existing.suid)) {
             write(sprintf("ERROR in RCy3::existing.CytoscapeWindow():\n\t no network named '%s' exists in Cytoscape >> choose from the following titles: ", title), stderr())
-			write(as.character(getWindowList(cy.conn)), stderr())
+			write(as.character(getNetworkList(cy.conn)), stderr())
             return(NA)
         }
 		
@@ -649,7 +649,7 @@ setMethod ('createNetworkFromSelection', 'OptionalCyWinClass',
             return (NA)
         }
 
-        if (new.title %in% as.character (getWindowList (obj))) {
+        if (new.title %in% as.character (getNetworkList (obj))) {
             msg <- sprintf ('RCy3::createNetworkFromSelection error:  window "%s" already exists', new.title)
             write (noquote (msg), stderr ())
             return (NA)
@@ -776,29 +776,38 @@ setMethod('renameCytoscapeNetwork',
           function(obj,
                    new.title,
                    return.graph = FALSE) {
-            new_net <- copyCytoscapeNetwork(obj,
-                                            new.title)  
-            deleteNetwork(obj,
-                         obj@title)
-            return(new_net)
-          })
+              key_value_pairs <- c()
+              current <- list( id = paste(obj@suid),name = new.title)
+              key_value_pairs <- c(key_value_pairs,list(current))
+              selection <- list( key = "SUID", dataKey="id", data = key_value_pairs)
+              selection <- toJSON(selection)
+              update.name.url <- paste(obj@uri,obj@api,"networks",obj@suid,"tables/defaultnetwork",sep="/")
+              
+              invisible(PUT(url=update.name.url,
+                            body=selection, encode="json"))    
+              obj@title<-new.title
+              write(sprintf("Warning: Cytoscape Window object title should also been updated to '%s'. 
+Be sure to assign the returned (updated) object to your working instance. 
+For example: cw <- renameCytoscapeNetwork(cw,new.title)", new.title), stderr())
+              return(obj)
+})
 
 # ------------------------------------------------------------------------------
-setMethod('getWindowCount', 'OptionalCyObjClass',
+setMethod('getNetworkCount', 'OptionalCyObjClass',
 	function(obj) {
 		resource.uri <- paste(obj@uri, apiVersion(obj), "networks/count", sep="/")
 		res <- GET(url=resource.uri)
 		num.cytoscape.windows <- unname(fromJSON(rawToChar(res$content)))
 		return(as.integer(num.cytoscape.windows))
-}) # END getWindowCount
+}) # END getNetworkCount
 
 # ------------------------------------------------------------------------------
-setMethod('getWindowID', 'OptionalCyObjClass', 
+setMethod('getNetworkSuid', 'OptionalCyObjClass', 
 	function(obj, window.title=NA) {
 	    #AP if window.title=NA, then get ID of current network
 	    if(is.na(window.title)){
 	        cmd<-paste0('network get attribute network=current namespace="default" columnList="SUID"')
-    	    res <- commandRun(cmd,base.url=paste(obj@uri,apiVersion(obj),sep='/'))
+    	    res <- commandRun(cmd,obj)
     	    network.suid <- gsub("\\{SUID:|\\}","",res)
     	    return(network.suid)
 	    }
@@ -829,9 +838,9 @@ setMethod('getWindowID', 'OptionalCyObjClass',
 })
 
 # ------------------------------------------------------------------------------
-setMethod('getWindowList', 'OptionalCyObjClass', 
+setMethod('getNetworkList', 'OptionalCyObjClass', 
 	function(obj) {
-		if(getWindowCount(obj) == 0) {
+		if(getNetworkCount(obj) == 0) {
 			return(c())
 		}
 		resource.uri <- paste(obj@uri, apiVersion(obj), "networks", sep="/")
@@ -855,11 +864,11 @@ setMethod('getWindowList', 'OptionalCyObjClass',
 setMethod('deleteNetwork', 'OptionalCyObjClass',
 	function (obj, title=NA) {
 		if(!is.na(title))
-			suid = getWindowID(obj, title)
+			suid = getNetworkSuid(obj, title)
 		else if(class(obj) == 'CytoscapeWindowClass')
 			suid = as.character(obj@suid)
 		else { # current network will be deleted
-		    suid = getWindowID(obj, title)
+		    suid = getNetworkSuid(obj, title)
 		}
 		resource.uri = paste(obj@uri, apiVersion(obj), "networks", suid, sep="/")
 		request.res = DELETE(url=resource.uri)
@@ -988,147 +997,6 @@ setMethod ('getLayoutPropertyValue', 'OptionalCyObjClass',
      }) # getLayoutPropertyValue
 
 #------------------------------------------------------------------------------------------------------------------------
-#' Gets commands available from within cytoscape from 
-#' functions within cytoscape and from installed plugins.
-#'
-#' @param obj Cytoscape network where commands are fetched via RCy3 
-#' @return Vector of available commands from all namespaces (e.g. functions and plugins) 
-#'
-#' @concept RCy3
-#' @export
-#' 
-#' @importFrom methods setGeneric
-setMethod('getCommandNames','OptionalCyObjClass',
-          function(obj) { 
-            request.uri <- paste(obj@uri,
-                                 apiVersion(obj),
-                                 "commands",
-                                 sep="/")
-            request.res <- GET(url=request.uri)
-            
-            available.commands <- unlist(strsplit(rawToChar(request.res$content),
-                                                  split="\n\\s*"))
-            ## to remove "Available namespaces" title
-            ## remove the first value
-            available.commands <- available.commands[-1]
-            return(available.commands) 
-          })
-# END getCommandNames
-
-#' Gets commands available from within a namespace in Cytoscape from 
-#' functions within cytoscape and from installed plugins.
-#'
-#' @param obj Cytoscape network where commands are fetched via RCy3 
-#' @param namespace Cytoscape function (e.g. layout or network settings) or Cytoscape plugin function
-#' 
-#' @return Vector of available commands from a specific plugin or Cytoscape function (e.g. namespace)
-#'
-#' @concept RCy3
-#' @export
-#' 
-setMethod('getCommandsWithinNamespace','OptionalCyObjClass',
-          function(obj,
-                   namespace) { 
-            request.uri <- paste(obj@uri,
-                                 apiVersion(obj),
-                                 "commands",
-                                 namespace,
-                                 sep = "/")
-            request.res <- GET(url = request.uri)
-            
-            available.commands <- unlist(strsplit(rawToChar(request.res$content),
-                                                  split = "\n\\s*"))
-            ## remove "Available commands" title
-            available.commands <- available.commands[-1]
-            return(available.commands) })
-
-# END getCommandsWithinNamespace
-
-#' Runs a Cytoscape command (for example from a plugin) with a list of parameters and creates a connection to the network (if a new one is created) so that it can be further manipulated from R. 
-#'
-#' @param obj Cytoscape network where command is run via RCy3 
-#' @param command.name Need more info here - how to specify..
-#' @param properties.list Parameters (e.g. files, p-values, etc) to be used to set to run the command
-#' @param return.graph If true this copies the graph information to R. This step can be quite slow. Default is false. 
-#' 
-#' @return Runs in Cytoscape and creates a connection to the Cytoscape window so that it can be further manipulated from R 
-#' 
-#' @examples \dontrun{
-#' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
-#' selectAllNodes(cw)
-#' }
-#'
-#' @concept RCy3
-#' @export
-#' 
-#' @importFrom methods setGeneric
-setMethod('setCommandProperties','OptionalCyObjClass', 
-          function(obj,
-                   command.name,
-                   properties.list, 
-                   return.graph = FALSE) {
-            all.possible.props <- getCommandsWithinNamespace(obj,
-                                                             command.name)
-            if (all(names(properties.list) %in% all.possible.props) == FALSE) {
-              print('You have included a name which is not in the commands')
-              stderr ()
-            } else {
-              request.uri <- paste(obj@uri,
-                                   apiVersion(obj),
-                                   "commands",
-                                   as.character(command.name),
-                                   sep = "/")
-              
-              request.res <- GET(url = request.uri,
-                                 query = properties.list)
-              if (request.res$status == 200){
-                print("Successfully built the EnrichmentMap.")
-                stdout ()
-                resource.uri <- paste(obj@uri,
-                                      apiVersion(obj),
-                                      "networks",
-                                      sep = "/")
-                request.res <- GET(resource.uri)
-                # SUIDs list of the existing Cytoscape networks	
-                cy.networks.SUIDs <- fromJSON(rawToChar(request.res$content))
-                # most recently made enrichment map will have the highest SUID
-                cy.networks.SUIDs.last <- max(cy.networks.SUIDs)
-                
-                res.uri.last <- paste(obj@uri,
-                                      apiVersion(obj),
-                                      "networks",
-                                      as.character(cy.networks.SUIDs.last),
-                                      sep = "/")
-                result <- GET(res.uri.last)
-                net.name <- fromJSON(rawToChar(result$content))$data$name
-                
-                if (return.graph){
-                  connect_window_to_R_session <- existing.CytoscapeWindow(net.name,
-                                                                          return.graph = TRUE)
-                  print(paste0("Cytoscape window",
-                               net.name,
-                               " successfully connected to R session and graph copied to R."))
-                } 
-                else {
-                  connect_window_to_R_session <- existing.CytoscapeWindow(net.name,
-                                                                          return.graph = FALSE) 
-                  print(paste0("Cytoscape window ",
-                               net.name,
-                               " successfully connected to R session."))
-                }
-                
-                
-              } else {
-                print("Something went wrong. Unable to run command.")
-                stderr ()
-              }
-              invisible(request.res)
-            }
-            return(connect_window_to_R_session)
-          }) 
-
-# END setCommandProperties
-
 setMethod ('setLayoutProperties', 'OptionalCyObjClass', 
 
     function (obj, layout.name, properties.list) {
@@ -1353,7 +1221,7 @@ setMethod ('getGraphFromCyWindow', 'OptionalCyObjClass',
         suid = NULL
         # handles the case when 'obj' is 'CytoscapeConnectionClass', instead of 'CytoscapeWindowClass' 
         if (class(obj) == "CytoscapeConnectionClass") {
-            suid = as.character(getWindowID(obj, window.title))
+            suid = as.character(getNetworkSuid(obj, window.title))
             loc.obj = 
                 new('CytoscapeWindowClass', title=window.title, suid=suid, uri=obj@uri)
         } else {
@@ -2437,7 +2305,7 @@ setMethod('raiseWindow', 'OptionalCyObjClass',
 #         
 #         # if window title was provided
 #         if(!is.na(window.title)) {
-#             suid = getWindowID(obj, window.title)
+#             suid = getNetworkSuid(obj, window.title)
 #             
 #             if(is.na(suid)) {
 #                 write(sprintf('error in RCy3::raiseWindow(), unrecognized window title: %s', window.title), stderr ())
@@ -5091,7 +4959,7 @@ demoSimpleGraph = function ()
 {
     window.title = 'demo.simpleGraph'
     cy = CytoscapeConnection ()
-    if (window.title %in% as.character (getWindowList (cy)))
+    if (window.title %in% as.character (getNetworkList (cy)))
     deleteNetwork (cy, window.title)
     
     g.simple = makeSimpleGraph ()
@@ -5940,6 +5808,42 @@ cyPlot <- function (node.df, edge.df) {
 }
 # END cyPlot
 
+# ------------------------------------------------------------------------------
+#' Command Help
+#'
+#' @description Using the same syntax as Cytoscape's Command Line Dialog,
+#' this function returns a list of available commands or args.
+#' @details Works with or without 'help' command prefix. Note that if you ask about a command that doesn't
+#' have any arguments, this function will run the command!
+#' @param cmd.string (char) command
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return List of available commands or args
+#' @export
+#' @examples
+#' \donttest{
+#' commandHelp()
+#' commandHelp('node')
+#' commandHelp('node get attribute')
+#' }
+#' @import XML
+#' @import httr
+#' @importFrom utils head
+#' @importFrom utils tail
+
+commandHelp<-function(cmd.string='help', obj=CytoscapeConnection()){
+    s=sub('help *','',cmd.string)
+    cmds = GET(command2query(s,obj))
+    cmds.html = htmlParse(rawToChar(cmds$content), asText=TRUE)
+    cmds.elem = xpathSApply(cmds.html, "//p", xmlValue)
+    cmds.list = cmds.elem
+    if (length(cmds.elem)==1){
+        cmds.list = unlist(strsplit(cmds.elem[1],"\n\\s*"))
+    }
+    print(head(cmds.list,1))
+    tail(cmds.list,-1)
+}
+
+# ------------------------------------------------------------------------------
 #' Command Run
 #'
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
@@ -5956,10 +5860,10 @@ cyPlot <- function (node.df, edge.df) {
 #' @import XML
 #' @import httr
 
-commandRun<-function(cmd.string, base.url='http://localhost:1234/v1'){
+commandRun<-function(cmd.string, obj=CytoscapeConnection()){
     
     ##TODO use POST or leave alone for "GET friendly" queries, i.e., guaranteed to be short urls?
-    res = GET(command2query(cmd.string,base.url))
+    res = GET(command2query(cmd.string,obj))
     res.html = htmlParse(rawToChar(res$content), asText=TRUE)
     res.elem = xpathSApply(res.html, "//p", xmlValue)
     if(startsWith(res.elem[1],"[")){
@@ -5973,6 +5877,7 @@ commandRun<-function(cmd.string, base.url='http://localhost:1234/v1'){
     res.list
 }
 
+# ------------------------------------------------------------------------------
 #' Command string to CyREST query URL
 #'
 #' @description Converts a command string to a CyREST query url.
@@ -5986,7 +5891,8 @@ commandRun<-function(cmd.string, base.url='http://localhost:1234/v1'){
 #' }
 #' @importFrom utils URLencode
 
-command2query<-function(cmd.string, base.url='http://localhost:1234/v1'){
+command2query<-function(cmd.string, obj=CytoscapeConnection()){
+    base.url = paste(obj@uri,obj@api,sep="/")
     cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     cmd = cmdargs[1]
@@ -6014,9 +5920,10 @@ command2query<-function(cmd.string, base.url='http://localhost:1234/v1'){
     }
 }
 
+# ------------------------------------------------------------------------------
 #' Get the name of a network
 #'
-#' @param network.suid SUID of the network; default is "current" network
+#' @param network.suid SUID of the network; default is current network
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return network viewid
 #' @export
@@ -6026,9 +5933,10 @@ command2query<-function(cmd.string, base.url='http://localhost:1234/v1'){
 #' getNetworkName(1111)
 #' }
 
-getNetworkName <- function(network.suid='current', base.url='http://localhost:1234/v1'){
-    if(network.suid=='current')
-        network.suid = getWindowID()
+getNetworkName <- function(network.suid=NA, obj=CytoscapeConnection()){
+    base.url = paste(obj@uri,obj@api,sep="/")
+    if(is.na(network.suid))
+        network.suid = getNetworkSuid(obj)
     
     url <- paste0(base.url,"/networks.names?column=suid&query=",network.suid)
     response <- GET(url=url)
