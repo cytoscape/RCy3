@@ -188,11 +188,20 @@ export(
    makeRandomGraph,
    initNodeAttribute,
    initEdgeAttribute,
-   cyPlot,
+   cyPlot
+)
+
+#Ported from r2cytoscape
+export(
+   checkCytoscapeVersion,
+   createNetworkFromDataFrames,
+   createVisualStyle,
    command2query,
    commandRun,
    commandHelp,
-   getNetworkName
+   getNetworkName,
+   mapVisualProperty,
+   openCySwagger
    )
 
 #Deprecated

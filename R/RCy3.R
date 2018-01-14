@@ -474,7 +474,7 @@ setGeneric('connectToNewestCyWindow',
 #-----------------------------------------------------------
 setGeneric ('getVisualStyleNames',    signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getVisualStyleNames'))
 setGeneric ('copyVisualStyle',        signature='obj', function (obj=CytoscapeConnection(), from.style, to.style) standardGeneric ('copyVisualStyle'))
-setGeneric ('setVisualStyle',         signature='obj', function (obj, new.style.name) standardGeneric ('setVisualStyle'))
+setGeneric ('setVisualStyle',         signature='obj', function (obj=CytoscapeWindowFromNetwork(), style.name) standardGeneric ('setVisualStyle'))
 setGeneric ('lockNodeDimensions',     signature='obj', function (obj=CytoscapeConnection(), new.state, visual.style.name='default') standardGeneric ('lockNodeDimensions'))
 
 #-----------------------------------------------------------
@@ -530,7 +530,7 @@ CytoscapeWindowFromNetwork =
 		# if title=NA, fill in value from current network retrieved above
 		if(is.na(title)){
 		    title = getNetworkName(existing.suid)
-		    write(sprintf("Retrieved current network named '%s'", title), stderr())
+		    #write(sprintf("Connecting to current network named '%s'", title), stderr())
 		}
 		
 		# create minimal Cytoscape Window
@@ -5163,18 +5163,19 @@ setMethod('copyVisualStyle', 'OptionalCyObjClass',
 
 # ------------------------------------------------------------------------------
 # apply visual style to network
-setMethod('setVisualStyle', 'CytoscapeWindowClass', 
-  function(obj, new.style.name) {
+setMethod('setVisualStyle', 'OptionalCyWinClass', 
+  function(obj, style.name) {
+      
     net.SUID = as.character(obj@suid)
     current.names = getVisualStyleNames(obj)
     # inform user if they want to set style that does not exist 
-    if(!new.style.name %in% current.names) { 
-      stop(sprintf('Cannot call setVisualStyle on a non-existent visual style (%s)', new.style.name))
+    if(!style.name %in% current.names) { 
+      stop(sprintf('Cannot call setVisualStyle on a non-existent visual style (%s)', style.name))
     }
-    # change the current style to the new style
-    resource.uri <- paste(obj@uri, obj@api, "apply/styles", new.style.name, net.SUID, sep="/")
+    # apply style
+    resource.uri <- paste(obj@uri, obj@api, "apply/styles", style.name, net.SUID, sep="/")
     req.res <- GET(url=resource.uri)
-    write(sprintf('network visual style has been set to "%s"', new.style.name), stdout())
+    write(sprintf('network visual style has been set to "%s"', style.name), stdout())
     invisible(req.res)
 })
 
@@ -5730,6 +5731,260 @@ cyPlot <- function (node.df, edge.df) {
 }
 # END cyPlot
 
+#########################
+# ported from r2cytoscape 
+#########################
+# ------------------------------------------------------------------------------
+#' Check the version of Cytoscape
+#'
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return Cytoscape version
+#' @export
+#' @import httr
+#' @import RJSONIO
+
+checkCytoscapeVersion<-function(obj=CytoscapeConnection()){
+    checkversion.url = paste(obj@uri, obj@api, "version", sep="/")
+    res = GET(checkversion.url)
+    cytoscape.version = fromJSON(rawToChar(res$content))[2][[1]]
+    return(cytoscape.version)
+}
+
+# ------------------------------------------------------------------------------
+#' Create a network from data frames
+#'
+#' @description Takes data frames for nodes and edges, as well as naming parameters to
+#' generate the JSON data format required by the "networks" POST operation via CyREST.
+#' Returns the network.suid and applies the perferred layout set in Cytoscape preferences.
+#' @details NODES should contain a column named: id. This name can be overridden by
+#' the arg: node.id.list. Additional columns are loaded as node attributes.
+#' EDGES should contain columns named: source, target and interaction. These names can be overridden by
+#' args: source.id.list, target.id.list, interaction.type.list. Additional columns
+#' are loaded as edge attributes. The 'interaction' list can contain a single
+#' value to apply to all rows; and if excluded altogether, the interaction type
+#' wiil be set to "interacts with". NOTE: attribute values of types (num) and (int) will be imported
+#' as (Double); (chr) as (String); and (logical) as (Boolean).
+#' @param nodes (data.frame) see details and examples below; default NULL to derive nodes from edge sources and targets
+#' @param edges (data.frame) see details and examples below; default NULL for disconnected set of nodes
+#' @param network.name (char) network name
+#' @param collection.name (char) network collection name
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @param ... params for nodeSet2JSON() and edgeSet2JSON()
+#' @return (int) network SUID
+#' @export
+#' @import RJSONIO
+#' @seealso createSubnetwork
+#' @examples
+#' \donttest{
+#' nodes <- data.frame(id=c("node 0","node 1","node 2","node 3"),
+#'            group=c("A","A","B","B"), # optional
+#'            stringsAsFactors=FALSE)
+#' edges <- data.frame(source=c("node 0","node 0","node 0","node 2"),
+#'            target=c("node 1","node 2","node 3","node 3"),
+#'            interaction=c("inhibits","interacts","activates","interacts"),  # optional
+#'            weight=c(5,3,5,9), # optional
+#'            stringsAsFactors=FALSE)
+#'
+#' createNetworkFromDataFrames(nodes,edges)
+#' }
+
+createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,network.name="MyNetwork",
+                          collection.name="MyNetworkCollection",obj=CytoscapeConnection(),...) {
+    
+    base.url=paste(obj@uri, obj@api, sep = "/")
+    
+    #defining variable names to be used globally later on (to avoid devtools::check() NOTES)
+    RCy3.CreateNetworkFromDataFrames.temp.global.counter <- NULL
+    RCy3.CreateNetworkFromDataFrames.temp.global.size <- NULL
+    RCy3.CreateNetworkFromDataFrames.temp.global.json_set <- NULL
+    
+    if (is.null(nodes)) {
+        if (!is.null(edges)) {
+            nodes = data.frame(id=c(edges$source,edges$target),stringsAsFactors = FALSE)
+        }else
+            return("Create Network Failed: Must provide either nodes or edges")
+    }
+    
+    json_nodes <- nodeSet2JSON(nodes,...)
+    # cleanup global environment variables (which can be quite large)
+    remove(RCy3.CreateNetworkFromDataFrames.temp.global.counter, envir = globalenv())
+    remove(RCy3.CreateNetworkFromDataFrames.temp.global.size, envir = globalenv())
+    remove(RCy3.CreateNetworkFromDataFrames.temp.global.json_set, envir = globalenv())
+    
+    json_edges<-c()
+    
+    if(!is.null(edges)){
+        json_edges <- edgeSet2JSON(edges,...)
+        # cleanup global environment variables (which can be quite large)
+        remove(RCy3.CreateNetworkFromDataFrames.temp.global.counter, envir = globalenv())
+        remove(RCy3.CreateNetworkFromDataFrames.temp.global.size, envir = globalenv())
+        remove(RCy3.CreateNetworkFromDataFrames.temp.global.json_set, envir = globalenv())
+    } else {
+        json_edges <- "[]" #fake empty array
+    }
+    
+    json_network <- list(
+        data=list(name=network.name),
+        elements=c(nodes=list(json_nodes),edges=list(json_edges))
+    )
+    
+    network <- toJSON(json_network)
+    
+    #swap any spaces in names
+    network.name <- gsub(" ","%20",network.name)
+    collection.name <- gsub(" ","%20",collection.name)
+    
+    url<- sprintf("%s/networks?title=%s&collection=%s",
+                  base.url,network.name,collection.name,sep="")
+    
+    response <- POST(url=url,body=network, encode="json",content_type_json())
+    
+    network.suid <- unname(fromJSON(rawToChar(response$content)))
+    if(is.numeric(network.suid))
+        cat(sprintf("Network SUID is : %i \n", network.suid))
+    else
+        return(response)
+    
+    cat("Applying default style\n")
+    commandRun('vizmap apply styles="default"')
+    
+    cat(sprintf("Applying %s layout\n", invisible(commandRun('layout get preferred network="current"'))))
+    commandRun('layout apply preferred networkSelected="current')
+    
+    return(network.suid)
+}
+
+# Convert edges to JSON format needed for CyRest network creation
+#
+# @param edge_set (data.frame) Rows contain pairwise interactions.
+# @param source.id.list (char) override default list name for source node ids
+# @param target.id.list (char) override default list name for target node ids
+# @param interaction.type.list (char) override default list name for interaction types
+#
+edgeSet2JSON <- function(edge_set, source.id.list = 'source',
+                         target.id.list = 'target', interaction.type.list='interaction',...){
+    
+    #using global environment variables for performance
+    .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter<-0
+    .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.size<-1
+    .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set<-c()
+    #json_edges <- c()
+    
+    if(!(interaction.type.list %in% names(edge_set)))
+        edge_set[,interaction.type.list] = rep('interacts with')
+    
+    computed_name <- paste(edge_set[,source.id.list], paste('(',edge_set[,interaction.type.list],')',sep=''),
+                           edge_set[,target.id.list],sep=" ")
+    
+    for(i in 1:dim(edge_set)[1]){
+        rest <- list()
+        rest[["name"]] = computed_name[i]
+        for(j in 1:dim(edge_set)[2]){
+            rest[[colnames(edge_set)[j]]] = edge_set[i,j]
+        }
+        current_edge = list("data"=rest)
+        #json_edges[[i]] <- current_edge
+        FastAppendListGlobal(current_edge)
+    }
+    return(.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set[1:.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter])
+}
+
+# Creates a table of nodes to CyREST JSON
+#
+# @param node.set (data.frame) each row is a node and columns contain node attributes
+# @param node.id.list (char) override default list name for node ids
+# Adapted from Ruth Isserlin's CellCellINteractions_utility_functions.R
+nodeSet2JSON <- function(node.set, node.id.list='id',...){
+    
+    #using global environment variables for performance
+    .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter<-0
+    .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.size<-1
+    .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set<-c()
+    #json_nodes <- c()
+    
+    for(i in 1:dim(node.set)[1]){
+        rest <- list()
+        for(j in 1:dim(node.set)[2]){
+            rest[[colnames(node.set)[j]]] = node.set[i,j]
+        }
+        current_node = list("data"=rest)
+        #json_nodes[[i]] <- current_node
+        FastAppendListGlobal(current_node)
+    }
+    return(.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set[1:.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter])
+}
+
+# FastAppendListGlobal
+# Appends lists at high performance using global variables explictly
+#  Note: relies on managing gloval environment variables: initializing and removing
+#  https://stackoverflow.com/questions/17046336/here-we-go-again-append-an-element-to-a-list-in-r
+#
+FastAppendListGlobal <- function(item)
+{
+    if( .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter == .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.size )
+        length(.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set) <- .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.size <- .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.size * 2
+    
+    .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter <- .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter + 1
+    .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set[[.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter]] <- item
+}
+
+# ------------------------------------------------------------------------------
+#' Create a visual style from components
+#'
+#' @description Creates a style from defaults and predefined mappings.
+#' @details Requires attribute mappings to be previously created, see mapVisualProperty.
+#' @param style.name (char) name for style
+#' @param defaults (list) key-value pairs for default mappings.
+#' @param mappings (list) visual property mappings, see mapVisualProperty
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return None
+#' @export
+#' @import RJSONIO
+#' @import httr
+#' @examples
+#' \donttest{
+#' #first there has to be a network to apply style to
+#' example(createNetwork)
+#'
+#' #then prepare style variables
+#' style.name = "myStyle"
+#' defaults <- list(NODE_SHAPE="diamond",
+#'                  NODE_SIZE=30,
+#'                  EDGE_TRANSPARENCY=120,
+#'                  NODE_LABEL_POSITION="W,E,c,0.00,0.00")
+#' nodeLabels <- mapVisualProperty('node label','id','p')
+#' nodeFills <- mapVisualProperty('node fill color','group','d',c("A","B"), c("#FF9900","#66AAAA"))
+#' arrowShapes <- mapVisualProperty('Edge Target Arrow Shape','interaction','d',
+#'                                  c("activates","inhibits","interacts"),c("Arrow","T","None"))
+#' edgeWidth <- mapVisualProperty('edge width','weight','p')
+#'
+#' #and then create the style
+#' createVisualStyle(style.name, defaults, list(nodeLabels,nodeFills,arrowShapes,edgeWidth))
+#'
+#' #finsh by applying the style
+#' example(applyStyle)
+#' }
+#' @seealso applyStyle, mapVisualProperty
+
+createVisualStyle <- function(style.name, defaults, mappings, obj=CytoscapeConnection()) {
+    
+    base.url=paste(obj@uri,obj@api,sep = "/")
+    
+    if(missing(mappings))
+        mappings <- list()
+    
+    styleDef <- list()
+    if(!missing(defaults)){
+        for (i in 1:length(defaults)) {
+            styleDef[[i]] <- list(visualProperty=names(defaults)[i], value=defaults[[i]])
+        }
+    }
+    style <- list(title=style.name, defaults=styleDef,mappings=mappings)
+    jsonStyle <- toJSON(style)
+    style.url <- paste(base.url,'styles', sep = '/')
+    invisible(POST(url=style.url,body=jsonStyle, encode="json"))
+}
+
 # ------------------------------------------------------------------------------
 #' Command Help
 #'
@@ -5867,6 +6122,153 @@ getNetworkName <- function(network.suid=NA, obj=CytoscapeConnection()){
     return(network.name)
 }
 
+# ------------------------------------------------------------------------------
+#' Creates a mapping between an attribute and a visual property
+#'
+#' @description Generates the appropriate data structure for the "mapping" parameter
+#' in setStyleMappings and createStyle.
+#' @details The paired list of values must be of the same length or mapping will fail.
+#' Mapping will also fail if the data type of table.column.values does not match that of
+#' the existing table.column. Note that all imported numeric data are stored as Doubles in
+#' Cytosacpe tables; and character or mixed data are stored as Strings.
+#' @param visual.prop (char) name of visual property to map
+#' @param table.column (char) name of table column to map
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p)
+#' @param table.column.values (list) list of values paired with visual.prop.values; skip for passthrough mapping
+#' @param visual.prop.values (list) list of values paired with table.column.values; skip for passthrough mapping
+#' @param network name or suid of the network; default is "current" network
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return (obj) ready to convert into JSON by style mapping operations
+#' @export
+#' @seealso setStyleMappings createStyle
+#' @examples
+#' \donttest{
+#' mapVisualProperty('node fill color','score','c',c(-4.0,0.0,9.0),c('#99CCFF','#FFFFFF','#FF7777'))
+#' mapVisualProperty('node shape','type','d',c('protein','metabolite'),c('ellipse','rectangle'))
+#' mapVisualProperty('node label','alias','p')
+#' }
+#' @section List of visual properties:
+#' \tabular{lll}{
+#' Node Border Line Type \tab Edge Bend \tab Network Background Paint \cr
+#' Node Border Paint \tab Edge Curved \tab Network Center X Location \cr
+#' Node Border Transparency \tab Edge Label \tab Network Center Y Location \cr
+#' Node Border Width \tab Edge Label Color \tab Network Center Z Location \cr
+#' Node CustomGraphics 1-9 \tab Edge Label Font Face \tab Network Depth \cr
+#' Node CustomGraphics Position 1-9 \tab Edge Label Font Size \tab Network Edge Selection \cr
+#' Node CustomGraphics Size 1-9 \tab Edge Label Transparency \tab Network Height \cr
+#' Node CustomPaint 1-9 \tab Edge Label Width \tab Network Node Selection \cr
+#' Node Depth \tab Edge Line Type \tab Network Scale Factor \cr
+#' Node Fill Color \tab Edge Paint \tab Network Size \cr
+#' Node Height \tab Edge Selected \tab Network Title \cr
+#' Node Label \tab Edge Selected Paint \tab Network Width \cr
+#' Node Label Color \tab Edge Source Arrow Selected Paint \tab  \cr
+#' Node Label Font Face \tab Edge Source Arrow Shape \tab  \cr
+#' Node Label Font Size \tab Edge Source Arrow Size \tab  \cr
+#' Node Label Position \tab Edge Source Arrow Unselected Paint \tab  \cr
+#' Node Label Transparency \tab Edge Stroke Selected Paint \tab  \cr
+#' Node Label Width \tab Edge Stroke Unselected Paint \tab  \cr
+#' Node Network Image Visible \tab Edge Target Arrow Selected Paint \tab  \cr
+#' Node Paint \tab Edge Target Arrow Shape \tab  \cr
+#' Node Selected \tab Edge Target Arrow Size \tab  \cr
+#' Node Selected Paint \tab Edge Target Arrow Unselected Paint \tab  \cr
+#' Node Shape \tab Edge Tooltip \tab  \cr
+#' Node Size \tab Edge Transparency \tab  \cr
+#' Node Tooltip \tab Edge Unselected Paint \tab  \cr
+#' Node Transparency \tab Edge Visible \tab  \cr
+#' Node Visible \tab Edge Visual Property \tab  \cr
+#' Node Width \tab Edge Width \tab  \cr
+#' Node X Location \tab  \tab  \cr
+#' Node Y Location \tab  \tab  \cr
+#' Node Z Location \tab  \tab  \cr
+#' }
+
+mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.column.values,
+                              visual.prop.values, obj=CytoscapeWindowFromNetwork()){
+    
+    base.url=paste(obj@uri,obj@api,sep = "/")
+    
+    #process mapping type
+    mapping.type.name = switch(mapping.type, 'c'='continuous','d'='discrete','p'='passthrough',mapping.type)
+    
+    #processs visual property, including common alternatives for vp names :)
+    visual.prop.name = toupper(gsub("\\s+","_",visual.prop))
+    visual.prop.name = switch(visual.prop.name,
+                              'EDGE_COLOR'='EDGE_STROKE_UNSELECTED_PAINT',
+                              'EDGE_THICKNESS'='EDGE_WIDTH',
+                              'NODE_BORDER_COLOR'='NODE_BORDER_PAINT',
+                              visual.prop.name)
+    
+    #check mapping column and get type
+    tp = tolower(strsplit(visual.prop.name,"_")[[1]][1])
+    table = paste0('default',tp)
+    t.url = paste(base.url,'networks',obj@suid,'tables',table,'columns',sep='/')
+    res <- GET(url=t.url)
+    t.res <- unname(fromJSON(rawToChar(res$content)))
+    table.column.type = NULL
+    for(i in 1:length(t.res)){
+        if(t.res[[i]]$name==table.column){
+            table.column.type = t.res[[i]]$type
+            break
+        }
+    }
+    if(is.null(table.column.type))
+        print(paste0('Error: Could not find ',table.column,' column in ',table,' table of network: ',obj@title,'.'))
+    
+    #construct visual property map
+    visual.prop.map <- list(
+        mappingType=mapping.type.name,
+        mappingColumn=table.column,
+        mappingColumnType=table.column.type,
+        visualProperty=visual.prop.name
+    )
+    
+    if(mapping.type.name=='discrete'){
+        map <- list()
+        for (i in 1:length(table.column.values)) {
+            map[[i]] <- list(key=table.column.values[i], value=visual.prop.values[i])
+        }
+        visual.prop.map$map=map
+    }else if(mapping.type.name=='continuous'){
+        points <- list()
+        for (i in 1:length(table.column.values)) {
+            points[[i]] <- list(value=table.column.values[i],
+                                lesser=visual.prop.values[i],
+                                equal=visual.prop.values[i],
+                                greater=visual.prop.values[i])
+        }
+        visual.prop.map$points=points
+    }
+    
+    return(visual.prop.map)
+}
+
+# ------------------------------------------------------------------------------
+#' Open CySwagger docs in browser
+#'
+#' @description Opens swagger docs in default browser for a live
+#' instance of CyREST or CyREST-supported operations.
+#' @param domain (char) documentation domain or scope
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return Web page
+#' @export
+#' @examples
+#' \donttest{
+#' openCySwagger()
+#' openCySwagger('commands')
+#' }
+#' @importFrom utils browseURL
+
+openCySwagger<-function(domain='cyrest', obj=CytoscapeConnection()){
+    
+    base.url=paste(obj@uri,obj@api,sep = "/")
+    
+    if(domain=='cyrest'){
+        domain = ''
+    }else{
+        domain = paste('/',domain,sep='')
+    }
+    browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,domain,'/swagger.json#/',sep=""))
+}
 ######################
 # DEPRECATED
 ######################
