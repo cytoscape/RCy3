@@ -5917,3 +5917,15 @@ getNetworkName <- function(network.suid=NA, obj=CytoscapeConnection()){
     network.name <- network.name[[1]]$name
     return(network.name)
 }
+
+######################
+# DEPRECATED
+######################
+getWindowList<-function(obj){
+    .Deprecated("getNetworkList")
+    getNetworkList(obj=obj)
+}
+deleteWindow<-function(obj,window.title){
+    .Deprecated("deleteNetwork(obj,title)")
+    deleteNetwork(obj=obj,title=window.title)
+}
