@@ -1,0 +1,102 @@
+---
+title: "Introduction"
+author: "Alex Pico"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette will show you how to connect to Cytoscape from R using CyREST.  It will cover the installation of required packages and demonstrate some basic functionality of CyREST, commands and r2cytoscape.
+
+It is recommended that your run this vignette *prior* to Cytoscape Automation workshops to mitigate troubleshooting time.
+
+### Installation
+```{r, echo=F, eval=F}
+source("https://bioconductor.org/biocLite.R")
+biocLite("r2cytoscape")
+```
+
+### Required Software
+The whole point of r2cytoscape is to connect with Cytoscape. You will need to install and launch Cytoscape: 
+
+* [Download Cytoscape](http://www.cytoscape.org/download.php) 
+* Complete installation wizard
+* Launch Cytoscape 
+
+### First Contact
+This function is a convenient way to verify a connection to Cytoscape. It is also helpful for logging the versions of CyREST and Cytoscape in your scripts.
+
+```{r, eval=F}
+checkCytoscapeVersion()
+```
+
+### My First Network
+Let's create a Cytoscape network from some basic R objects
+```{r, eval=F}
+mynodes <- data.frame(id=c("node 0","node 1","node 2","node 3"), 
+                      group=c("A","A","B","B"), # optional
+                      stringsAsFactors=FALSE)
+myedges <- data.frame(source=c("node 0","node 0","node 0","node 2"), 
+                      target=c("node 1","node 2","node 3","node 3"),
+                      interaction=c("inhibits","interacts","activates","interacts"),  # optional
+                      weight=c(5,3,5,9), # optional
+                      stringsAsFactors=FALSE)
+network.name = "myNetwork"
+collection.name = "myCollection"
+
+network.suid <- createNetworkFromDataFrames(mynodes,myedges,network.name,collection.name)
+```
+
+### Switch Styles
+Check out the marquee style!
+```{r, eval=F}
+setVisualStyle(style.name='Marquee')
+```
+
+### My Own Style
+Create your own style with node attribute fill mappings and some defaults
+```{r, eval=F}
+style.name = "myStyle"
+defaults <- list(NODE_SHAPE="diamond",
+                 NODE_SIZE=30,
+                 EDGE_TRANSPARENCY=120,
+                 NODE_LABEL_POSITION="W,E,c,0.00,0.00")
+nodeLabels <- mapVisualProperty('node label','id','p')
+nodeFills <- mapVisualProperty('node fill color','group','d',c("A","B"), c("#FF9900","#66AAAA"))
+arrowShapes <- mapVisualProperty('Edge Target Arrow Shape','interaction','d',c("activates","inhibits","interacts"),c("Arrow","T","None"))
+edgeWidth <- mapVisualProperty('edge width','weight','p')
+
+createVisualStyle(style.name, defaults, list(nodeLabels,nodeFills,arrowShapes,edgeWidth))
+setVisualStyle(style.name=style.name)
+```
+
+### Browse Available Commands and Arguments
+r2cytoscape helper functions
+```{r, eval=F}
+help(package=RCy3)
+```
+
+Open swagger docs for live instances of CyREST API and CyREST-supported commands:
+```{r,eval=F}
+openCySwagger()  # CyREST API
+openCySwagger("commands")  # CyREST Commands API
+```
+
+List available commands and arguments in R. Use "help" to list top level:
+```{r, eval=F}
+commandHelp("help")  
+```
+
+List **network** commands. Note that "help" is optional:
+```{r, eval=F}
+commandHelp("help network")  
+```
+
+List arguments for the **network select** command:
+```{r, eval=F}
+commandHelp("help network select") 
+```
+
+Those are the basics. You are now ready to work with some real data! See [other basic and advanced R tutorials](https://github.com/cytoscape/cytoscape-automation/tree/master/for-scripters/R).

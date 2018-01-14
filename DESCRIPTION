@@ -1,16 +1,16 @@
 Package: RCy3
 Type: Package
-Title: Display and manipulate graphs in Cytoscape >= 3.3.0
-Version: 1.5.3
-Date: 2017-06-11
+Title: Display and manipulate graphs in Cytoscape >= 3.6.0
+Version: 2.0.0
+Date: 2018-02-01
 Author: Tanja Muetze, Georgi Kolishovski, Paul Shannon
 Maintainer: Tanja Muetze <tanja.muetze14@alumni.imperial.ac.uk>, Georgi Kolishovski <g_kolishv@yahoo.com>, Paul Shannon <pshannon@systemsbiology.org> 
 Depends: R (>= 3.2), graph (>= 1.48.0)
 Imports: httr, methods, RCurl, RJSONIO, XML,igraph,utils
 Suggests: BiocGenerics, RUnit, knitr, igraph, RColorBrewer, paxtoolsr,
     rmarkdown
-SystemRequirements: Cytoscape (>= 3.3.0), CyREST (>= 3.5.0), Java (>=8)
-Description: Vizualize, analyze and explore graphs, connecting R to Cytoscape (>= 3.3.0).
+SystemRequirements: Cytoscape (>= 3.6.0), CyREST (>= 3.6.0), Java (>=8)
+Description: Vizualize, analyze and explore graphs, connecting R to Cytoscape (>= 3.6.0).
 License: Artistic-2.0
 URL: https://github.com/tmuetze/Bioconductor_RCy3_the_new_RCytoscape
 BugReports: https://github.com/tmuetze/Bioconductor_RCy3_the_new_RCytoscape/issues
