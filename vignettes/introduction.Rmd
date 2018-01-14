@@ -8,7 +8,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette will show you how to connect to Cytoscape from R using CyREST.  It will cover the installation of required packages and demonstrate some basic functionality of CyREST, commands and r2cytoscape.
+This vignette will show you how to connect to Cytoscape from R using CyREST.  It will cover the installation of required packages and demonstrate some basic functionality of CyREST, commands and RCy3
 
 It is recommended that your run this vignette *prior* to Cytoscape Automation workshops to mitigate troubleshooting time.
 
@@ -18,7 +18,7 @@ biocLite("RCy3")
 
 
 ### Required Software
-The whole point of r2cytoscape is to connect with Cytoscape. You will need to install and launch Cytoscape: 
+The whole point of RCy3 is to connect with Cytoscape. You will need to install and launch Cytoscape: 
 
 * [Download Cytoscape](http://www.cytoscape.org/download.php) 
 * Complete installation wizard
@@ -72,7 +72,7 @@ setVisualStyle(style.name=style.name)
 ```
 
 ### Browse Available Commands and Arguments
-r2cytoscape helper functions
+RCy3 helper functions
 ```{r, eval=F}
 help(package=RCy3)
 ```
