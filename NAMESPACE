@@ -197,8 +197,16 @@ export(
 
 #Deprecated
 export(
+    createWindow,
+    createWindowFromSelection,
+    deleteAllWindows,
+    deleteWindow,
+    existing.CytoscapeWindow,
+    getGraphFromCyWindow,
+    getWindowCount,
+    getWindowID,
     getWindowList,
-    deleteWindow
+    pluginVersion
 )
 
 importClassesFrom(graph, graph, graphBase)
