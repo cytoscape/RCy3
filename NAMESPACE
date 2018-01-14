@@ -200,6 +200,9 @@ export(
    commandRun,
    commandHelp,
    getNetworkName,
+   getTableColumns,
+   listTableColumns,
+   loadTableData,
    mapVisualProperty,
    openCySwagger
    )

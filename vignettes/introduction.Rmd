@@ -13,10 +13,9 @@ This vignette will show you how to connect to Cytoscape from R using CyREST.  It
 It is recommended that your run this vignette *prior* to Cytoscape Automation workshops to mitigate troubleshooting time.
 
 ### Installation
-```{r, echo=F, eval=F}
 source("https://bioconductor.org/biocLite.R")
-biocLite("r2cytoscape")
-```
+biocLite("RCy3")
+
 
 ### Required Software
 The whole point of r2cytoscape is to connect with Cytoscape. You will need to install and launch Cytoscape: 
