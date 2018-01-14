@@ -457,12 +457,12 @@ setGeneric ('selectEdgesConnectedBySelectedNodes',
 #-----------------------------------------------------------
 # methods related to transmitting data from Cytoscape to R
 #-----------------------------------------------------------
-setGeneric ('getNetworkSuid',                   signature='obj', function (obj=CytoscapeConnection(), window.title=NA) standardGeneric ('getNetworkSuid'))
+setGeneric ('getNetworkSuid',                   signature='obj', function (obj=CytoscapeConnection(), title=NA) standardGeneric ('getNetworkSuid'))
 setGeneric ('haveNodeAttribute',             signature='obj', function (obj=CytoscapeConnection(), node.names, attribute.name) standardGeneric ('haveNodeAttribute'))
 setGeneric ('haveEdgeAttribute',             signature='obj', function (obj=CytoscapeConnection(), edge.names, attribute.name) standardGeneric ('haveEdgeAttribute'))
 setGeneric ('copyNodeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyNodeAttributesFromCyGraph'))
 setGeneric ('copyEdgeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyEdgeAttributesFromCyGraph'))
-setGeneric ('getGraphFromNetwork',          signature='obj', function (obj=CytoscapeConnection(), window.title) standardGeneric ('getGraphFromNetwork'))
+setGeneric ('getGraphFromNetwork',          signature='obj', function (obj=CytoscapeConnection(), title) standardGeneric ('getGraphFromNetwork'))
 setGeneric('connectToNewestCyWindow', 
            signature = 'obj',
            function(obj=CytoscapeConnection(),
@@ -805,9 +805,9 @@ setMethod('getNetworkCount', 'OptionalCyObjClass',
 
 # ------------------------------------------------------------------------------
 setMethod('getNetworkSuid', 'OptionalCyObjClass', 
-	function(obj, window.title=NA) {
-	    #AP if window.title=NA, then get ID of current network
-	    if(is.na(window.title)){
+	function(obj, title=NA) {
+	    #AP if title=NA, then get ID of current network
+	    if(is.na(title)){
 	        cmd<-paste0('network get attribute network=current namespace="default" columnList="SUID"')
     	    res <- commandRun(cmd,obj)
     	    network.suid <- gsub("\\{SUID:|\\}","",res)
@@ -828,12 +828,12 @@ setMethod('getNetworkSuid', 'OptionalCyObjClass',
 			 cy.networks.names <- c(cy.networks.names, net.name)
 		}
 
-		if(!window.title %in% as.character(cy.networks.names)) {
-			write(sprintf("Cytoscape window named '%s' does not exist yet", window.title), stderr())
+		if(!title %in% as.character(cy.networks.names)) {
+			write(sprintf("Cytoscape window named '%s' does not exist yet", title), stderr())
 			return (NA)
-		} # if unrecognized window.title
+		} # if unrecognized title
 		
-		window.entry = which(as.character(cy.networks.names) == window.title)
+		window.entry = which(as.character(cy.networks.names) == title)
 		suid = as.character(cy.networks.SUIDs[window.entry])
 		
 		return(suid)
@@ -1213,13 +1213,13 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'OptionalCyObjClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getGraphFromNetwork', 'OptionalCyObjClass',
 
-    function (obj, window.title) {
+    function (obj,title) {
         suid = NULL
         # handles the case when 'obj' is 'CytoscapeConnectionClass', instead of 'CytoscapeWindowClass' 
         if (class(obj) == "CytoscapeConnectionClass") {
-            suid = as.character(getNetworkSuid(obj, window.title))
+            suid = as.character(getNetworkSuid(obj,title))
             loc.obj = 
-                new('CytoscapeWindowClass', title=window.title, suid=suid, uri=obj@uri)
+                new('CytoscapeWindowClass', title=title, suid=suid, uri=obj@uri)
         } else {
             loc.obj = obj
         }
@@ -1246,7 +1246,7 @@ setMethod ('getGraphFromNetwork', 'OptionalCyObjClass',
             loc.obj@node.suid.name.dict = lapply(g.nodes, function(n) { 
             list(name=n$data$name, SUID=n$data$SUID) })
             g.node.names = sapply(loc.obj@node.suid.name.dict, function(n) { n$name })
-            write(sprintf("\t received %d NODES from '%s'", length(g.nodes), window.title), stderr())
+            write(sprintf("\t received %d NODES from '%s'", length(g.nodes), title), stderr())
             g = graph::addNode(g.node.names, g)
             write(sprintf("\t - added %d nodes to the returned graph\n", length(g.node.names)), stderr())
             
@@ -1261,7 +1261,7 @@ setMethod ('getGraphFromNetwork', 'OptionalCyObjClass',
             
             if (length(g.edges) > 0) {
                 regex = ' *[\\(|\\)] *'
-                write(sprintf("\n\t received %d EDGES from '%s'", length(g.edges), window.title), stderr())
+                write(sprintf("\n\t received %d EDGES from '%s'", length(g.edges), title), stderr())
                 
                 loc.obj@edge.node.suid.name.dict = lapply(g.edges, function(e) {
                     list(name=e$data$name, SUID=e$data$SUID) })
@@ -1280,7 +1280,7 @@ setMethod ('getGraphFromNetwork', 'OptionalCyObjClass',
                     g = copyEdgeAttributesFromCyGraph(loc.obj, suid, g)
                 },
                 error = function(cond){
-                    write(sprintf("ERROR in RCy3::getGraphFromNetwork(): Node names cannot contain parentheses.", window.title), stderr())
+                    write(sprintf("ERROR in RCy3::getGraphFromNetwork(): Node names cannot contain parentheses.", title), stderr())
                     return(NA)
                 })
                 
@@ -1288,7 +1288,7 @@ setMethod ('getGraphFromNetwork', 'OptionalCyObjClass',
             }
           
         } else {
-            write(sprintf("ERROR in RCy3::getGraphFromNetwork():\n\t there is no graph with name '%s' in Cytoscape", window.title), stderr())
+            write(sprintf("ERROR in RCy3::getGraphFromNetwork():\n\t there is no graph with name '%s' in Cytoscape", title), stderr())
             return(NA)
         }
         
@@ -5921,11 +5921,43 @@ getNetworkName <- function(network.suid=NA, obj=CytoscapeConnection()){
 ######################
 # DEPRECATED
 ######################
-getWindowList<-function(obj){
-    .Deprecated("getNetworkList")
-    getNetworkList(obj=obj)
+createWindow<-function(obj){
+    .Deprecated("createNetwork(obj)")
+    createNetwork(obj=obj)
+}
+createWindowFromSelection<-function(obj,new.windowTitle,return.graph){
+    .Deprecated("createNetworkFromSelection(obj, new.title, return.graph, exclude.edges=FALSE)")
+    createNetworkFromSelection(obj=obj, new.title=new.windowTitle, return.graph=return.graph, exclude.edges=FALSE)
+}
+deleteAllWindows<-function(obj){
+    .Deprecated("deleteAllNetworks(obj)")
+    deleteAllNetworks(obj=obj)
 }
 deleteWindow<-function(obj,window.title){
     .Deprecated("deleteNetwork(obj,title)")
     deleteNetwork(obj=obj,title=window.title)
+}
+existing.CytoscapeWindow<-function(title, host, port, copy.graph.from.cytoscape.to.R){
+    .Deprecated("CytoscapeWindowFromNetwork(title,host,port,return.graph")
+    CytoscapeWindowFromNetwork(title = title,host = host,port = port,return.graph = copy.graph.from.cytoscape.to.R)
+}
+getGraphFromCyWindow<-function(obj,window.title){
+    .Deprecated("getGraphFromNetwork(obj,title)")
+    getGraphFromNetwork(obj=obj,title=window.title)
+}
+getWindowCount<-function(obj){
+    .Deprecated("getNetworkCount")
+    getNetworkCount(obj=obj)
+}
+getWindowID<-function(obj,window.title){
+    .Deprecated("getNetworkSuid(obj,title")
+    getNetworkSuid(obj=obj,title=window.title)
+}
+getWindowList<-function(obj){
+    .Deprecated("getNetworkList")
+    getNetworkList(obj=obj)
+}
+pluginVersion<-function(obj){
+    .Deprecated("apiVersion(obj)")
+    apiVersion(obj=obj)
 }
