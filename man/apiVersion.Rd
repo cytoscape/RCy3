@@ -1,19 +1,19 @@
-\name{pluginVersion}
-\alias{pluginVersion}
-\alias{pluginVersion,CytoscapeConnectionClass-method}
-\title{pluginVersion}
+\name{apiVersion}
+\alias{apiVersion}
+\alias{apiVersion,CytoscapeConnectionClass-method}
+\title{apiVersion}
 \description{
 Get the currently used plugin version number of CyREST.
 }
 \usage{
-pluginVersion(obj)
+apiVersion(obj)
 }
 \arguments{
   \item{obj}{a \code{CytoscapeConnectionClass} object. }
 }
 
 \value{
-  a string describing the current version of the CyREST plugin.
+  a string describing the current version of the CyREST app.
 }
 
 \author{Tanja Muetze, Georgi Kolishovski, Paul Shannon}
@@ -24,7 +24,7 @@ pluginVersion(obj)
   deleteAllWindows(CytoscapeConnection())
 
   cy <- CytoscapeConnection ()
-  print (pluginVersion (cy))
+  print (apiVersion (cy))
     # e.g. "v1"
 }
 

@@ -6,7 +6,7 @@ Date: 2017-06-11
 Author: Tanja Muetze, Georgi Kolishovski, Paul Shannon
 Maintainer: Tanja Muetze <tanja.muetze14@alumni.imperial.ac.uk>, Georgi Kolishovski <g_kolishv@yahoo.com>, Paul Shannon <pshannon@systemsbiology.org> 
 Depends: R (>= 3.2), graph (>= 1.48.0)
-Imports: httr, methods, RCurl, RJSONIO
+Imports: httr, methods, RCurl, RJSONIO, XML,igraph,utils
 Suggests: BiocGenerics, RUnit, knitr, igraph, RColorBrewer, paxtoolsr,
     rmarkdown
 SystemRequirements: Cytoscape (>= 3.3.0), CyREST (>= 3.5.0), Java (>=8)
