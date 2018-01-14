@@ -166,18 +166,19 @@ knitr::include_graphics("./co-occur2.png")
 ## ------------------------------------------------------------------------
 getLayoutNames(cw)
 
-getLayoutPropertyNames(cw, layout.name = "allegro-spring-electric")
-getLayoutPropertyValue(cw, "allegro-spring-electric","gravity") 
-getLayoutPropertyValue(cw, "allegro-spring-electric","maxIterations")  
-getLayoutPropertyValue(cw, "allegro-spring-electric","noOverlapIterations")
+# Note: allegro-spring-electric layout is no longer available
+getLayoutPropertyNames(cw, layout.name = "force-directed")
+getLayoutPropertyValue(cw, "force-directed","defaultSpringCoefficient") 
+getLayoutPropertyValue(cw, "force-directed","defaultSpringLength")  
+getLayoutPropertyValue(cw, "force-directed","defaultNodeMass")
 
 ## ------------------------------------------------------------------------
 setLayoutProperties(cw,
-                    layout.name = "allegro-spring-electric",
-                    list(gravity = 100,
-                         scale = 6))
+                    layout.name = "force-directed",
+                    list(defaultSpringCoefficient = 0.00006,
+                         defaultSpringLength = 80))
 layoutNetwork(cw,
-              layout.name = "allegro-spring-electric")
+              layout.name = "force-directed")
 fitContent(cw)
 
 ## ---- echo=FALSE---------------------------------------------------------
@@ -230,7 +231,6 @@ layoutNetwork(cw2,
 ## ---- echo=FALSE---------------------------------------------------------
 fitContent(cw2)
 Sys.sleep(10) # to make sure content is fit before taking an image
-fitContent(cw2)
 saveImage(cw2,
           "co-occur_degree",
           "png", h=1200)
