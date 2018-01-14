@@ -112,7 +112,7 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
     # add a label to each node if not already present. default label is the node name, the node ID    	
     if (is.classic.graph(graph)){
         if (edgemode(graph) == 'undirected') {
-            graph = remove.redundancies.in.undirected.graph(graph)
+            graph = remove.redundancies.in.undirected.graph(graph) #AP: not sure this is needed anymore...
         }
     }
     # are all node attributes properly initialized?
@@ -1031,7 +1031,7 @@ setMethod ('setGraph', 'CytoscapeWindowClass',
     # copy the graph over
     loc.obj <- obj
     if (edgemode(graph) == 'undirected'){
-        graph = remove.redundancies.in.undirected.graph (graph)
+        graph = remove.redundancies.in.undirected.graph (graph) #AP: not sure this is needed anymore...
     }
     
     loc.obj@graph = graph
@@ -2539,7 +2539,7 @@ setMethod ('setNodeTooltipRule', 'CytoscapeWindowClass',
           
           # set default tooltip
           default.tooltip <- list(visualProperty = "NODE_TOOLTIP", value = "")
-          setVisualProperty(obj, default.tooltip, viz.style.name)
+          setVisualProperty(obj, default.tooltip, style.name)
           
           # define the column type
           sample.node.attribute <- getNodeAttribute (obj, getAllNodes(obj)[1], node.attribute.name)
@@ -2547,7 +2547,7 @@ setMethod ('setNodeTooltipRule', 'CytoscapeWindowClass',
 
           # discrete mapping
           discreteMapping(obj, node.attribute.name, attribute.values, attribute.values,
-                          visual.property="NODE_TOOLTIP", columnType=columnType, style=viz.style.name)
+                          visual.property="NODE_TOOLTIP", columnType=columnType, style=style.name)
           
     })  # END setNodeTooltipRule
 
@@ -2556,7 +2556,7 @@ setMethod ('setEdgeTooltipRule', 'CytoscapeWindowClass',
 
     function (obj, edge.attribute.name) {
         id = as.character (obj@suid)
-        viz.style.name = 'default'
+        style.name = 'default'
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
             write (sprintf ('warning!  setEdgeTooltipRule passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
             return ()
@@ -2565,14 +2565,14 @@ setMethod ('setEdgeTooltipRule', 'CytoscapeWindowClass',
         
         # set default tooltip
         default.tooltip <- list(visualProperty = "EDGE_TOOLTIP", value = "")
-        setVisualProperty(obj, default.tooltip, viz.style.name)
+        setVisualProperty(obj, default.tooltip, style.name)
         
         # define the column type
         columnType <- findColumnType(typeof(attribute.values[1]))
         
         # discrete mapping
         discreteMapping(obj, edge.attribute.name, attribute.values, attribute.values,
-                        visual.property="EDGE_TOOLTIP", columnType=columnType, style=viz.style.name)
+                        visual.property="EDGE_TOOLTIP", columnType=columnType, style=style.name)
 
     })  # setEdgeTooltipRule
 
@@ -4968,57 +4968,6 @@ makeRandomGraph = function(node.count=12, seed=123)
   return(g)
 } # makeRandomGraph
 
-#------------------------------------------------------------------------------------------------------------------------
-# see Robert Flight's replacement below (pshannon, 20 jul 2012)
-# the bioconductor graph class stores undirected graph edge attributes redundantly.  bioc's nishant says (email, 2 sep 2010):
-#
-# The people who started the graph package decided to return duplicate edge attributes / weights for the undirected
-# case. ie if you have an edge a-b and the graph is undirected, methods such as edgeWeights, edgeData etc will end up
-# returning duplicate values for the attribute for a-b and b-a.  That was a design decision taken by the creators of the
-# package and I do not think it will be possible to change that now.  I guess the solution might be to create your own
-# edgeWeights and edgeData methods in your package that retrieve only the non-duplicated attributes for the undirected
-# case.
-#
-remove.redundancies.in.undirected.graph.old = function (gu)
-{
-  if (length (nodes (gu)) == 0)
-    return (new ('graphNEL', edgemode='directed'))
-
-  g = new ('graphNEL', edgemode='directed')
-
-  if (length (edgeDataDefaults (gu)) > 0)
-    edgeDataDefaults (g) = edgeDataDefaults (gu)
-
-  if (length (nodeDataDefaults (gu)) > 0)
-    nodeDataDefaults (g) = nodeDataDefaults (gu)
-
-  g = addNode (nodes (gu), g)
-  for (node in nodes (g)) {
-    for (noa.name in noa.names (gu)) {
-      nodeData (g, node, noa.name) = nodeData (gu, node, noa.name)
-      } # for noa.name
-    } # for node
-
-  if (length (edges (gu)) == 0)
-    return (g)
-
-  edge.names = edgeNames (gu)
-  edge.node.pairs = strsplit (edge.names, '\\~')
-  eda.names = eda.names (gu)
-
-  for (node.pair in edge.node.pairs) {
-    source.node = node.pair [1]
-    target.node = node.pair [2]
-    #printf ('create edge from %s to %s', source.node, target.node)
-    g = addEdge (source.node, target.node, g)
-    for (eda.name in eda.names (gu)) {
-      edgeData (g, source.node, target.node, eda.name) = edgeData (gu, source.node, target.node, eda.name)
-      } # for eda.name
-    } # for node.pair
-
-  return (g)
-
-} # remove.redundancies.in.undirected.graph.old
 #------------------------------------------------------------------------------------------------------------------------
 # Robert Flight offered this replacement, having encountered painfully slow execution with a 5k edge undirected graph
 # this fast version, likes its slow predecessor, compensates for the (in my view) flawed implementation of undirected
