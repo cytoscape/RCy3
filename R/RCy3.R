@@ -785,11 +785,13 @@ setMethod('renameCytoscapeNetwork',
               
               invisible(PUT(url=update.name.url,
                             body=selection, encode="json"))    
-              obj@title<-new.title
-              write(sprintf("Warning: Cytoscape Window object title should also been updated to '%s'. 
-Be sure to assign the returned (updated) object to your working instance. 
-For example: cw <- renameCytoscapeNetwork(cw,new.title)", new.title), stderr())
-              return(obj)
+   
+              # if object was provided, then update its title as well
+              if(!missing(obj)){
+                 loc.obj <- obj
+                 loc.obj@title<-new.title
+                 eval.parent(substitute(obj <- loc.obj))
+              }
 })
 
 # ------------------------------------------------------------------------------
@@ -1024,7 +1026,8 @@ setMethod ('setLayoutProperties', 'OptionalCyObjClass',
      }) # setLayoutProperties
 
 # ------------------------------------------------------------------------------
-setMethod ('setGraph', 'CytoscapeWindowClass', function(obj, graph) {
+setMethod ('setGraph', 'CytoscapeWindowClass', 
+           function(obj, graph) {
     # copy the graph over
     loc.obj <- obj
     if (edgemode(graph) == 'undirected'){
