@@ -17,8 +17,7 @@
 ### code chunk number 2: g1
 ###################################################
     layoutNetwork (cw, layout.name='grid')
-    layoutNetwork(layout.name = 'force-directed')
-    layoutNetwork()
+
 
 ###################################################
 ### code chunk number 3: g2
