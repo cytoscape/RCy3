@@ -359,7 +359,7 @@ setGeneric ('setNodeSizeRule',          signature='obj', function (obj=Cytoscape
 setGeneric ('setNodeOpacityRule',       signature='obj', function (obj=CytoscapeConnection(), node.attribute.name, control.points, opacities, mode, aspect='all', style.name = 'default') standardGeneric ('setNodeOpacityRule'))
 
 setGeneric ('setEdgeLineStyleRule',        signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, attribute.values, line.styles, default.style='SOLID', style.name = 'default') standardGeneric ('setEdgeLineStyleRule'))
-setGeneric ('setEdgeLineWidthRule',        signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, attribute.values, line.widths, default.width='1', style.name = 'default') standardGeneric ('setEdgeLineWidthRule'))
+setGeneric ('setEdgeLineWidthRule',        signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, attribute.values, line.widths, mode, default.width='1', style.name = 'default') standardGeneric ('setEdgeLineWidthRule'))
 setGeneric ('setEdgeTargetArrowRule',      signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, attribute.values, arrows, default='ARROW', style.name = 'default') standardGeneric ('setEdgeTargetArrowRule'))
 setGeneric ('setEdgeSourceArrowRule',      signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, attribute.values, arrows, default='ARROW', style.name = 'default') standardGeneric ('setEdgeSourceArrowRule'))
 setGeneric ('setEdgeTargetArrowColorRule', signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000', style.name = 'default') standardGeneric ('setEdgeTargetArrowColorRule'))
@@ -1239,7 +1239,7 @@ setMethod ('getGraphFromNetwork', 'OptionalCyObjClass',
                     g = copyEdgeAttributesFromCyGraph(loc.obj, suid, g)
                 },
                 error = function(cond){
-                    write(sprintf("ERROR in RCy3::getGraphFromNetwork(): Node names cannot contain parentheses.", title), stderr())
+                    write(sprintf("ERROR in RCy3::getGraphFromNetwork(): '%s'", cond), stderr())
                     return(NA)
                 })
                 
@@ -3108,13 +3108,16 @@ setMethod ('setEdgeLineStyleRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
 
-    function (obj, edge.attribute.name, attribute.values, line.widths, default.width=1, style.name = 'default') {
+    function (obj, edge.attribute.name, attribute.values, line.widths, mode="interpolate", default.width=1, style.name = 'default') {
         id = as.character (obj@suid)
         
         if (!edge.attribute.name %in% eda.names (obj@graph)) {
-            write (sprintf ('Warning! setEdgeLineWidthRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+            write (sprintf ('Warning! setEdgeLineWidthRule passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
             return ()
         }
+        
+        # unconventional arg.name
+        control.points = attribute.values
         
         # set default
         default.width.list <- list(visualProperty = "EDGE_WIDTH", value = default.width)
@@ -3124,9 +3127,37 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
         columnType <- findColumnType(typeof(line.widths[1]))
         #columnType <- 'String'
         
-        # discrete mapping
-        discreteMapping (obj, edge.attribute.name, attribute.values, line.widths,
-                         visual.property="EDGE_WIDTH", columnType=columnType, style=style.name)
+        if (mode=='interpolate') {  # need a 'below' width and an 'above' width  so there should be two more width than control.points
+            if (length (control.points) == length (line.widths)) { # caller did not supply 'below' and 'above' values; manufacture them
+                line.widths = c (line.widths [1], line.widths, line.widths [length (line.widths)])
+                write ("RCy3::setEdgeLineWidthRule, no 'below' or 'above' widths specified.  Inferred from supplied widths.", stderr ());
+            } 
+            good.args = length (control.points) == (length (line.widths) - 2)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (line.widths)), stderr ())
+                write ("Error! RCy3:setEdgeLineWidthRule, interpolate mode.", stderr ())
+                write ("Expecting 1 widths for each control.point, one for 'above' widths, one for 'below' widths", stderr ())
+                return ()
+            }
+            
+            continuousMapping (obj, edge.attribute.name, control.points, line.widths,
+                               visual.property="EDGE_WIDTH",
+                               columnType=columnType, style=style.name)
+        } 
+        else { # use a discrete rule, with no interpolation, mode==lookup
+            good.args = length (control.points) == length (line.widths)
+            if (!good.args) {
+                write (sprintf ('cp: %d', length (control.points)), stderr ())
+                write (sprintf ('co: %d', length (line.widths)), stderr ())
+                write ("Error! RCy3:setEdgeLineWidthRule.  Expecting exactly as many widths as control.points in lookup mode.", stderr ())
+                return ()
+            }
+            
+            discreteMapping (obj, edge.attribute.name, control.points, line.widths,
+                             visual.property="EDGE_WIDTH", columnType=columnType, style=style.name)
+
+        } 
      })
 
 #------------------------------------------------------------------------------------------------------------------------
