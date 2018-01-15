@@ -6638,7 +6638,7 @@ updateStyleDefaults <- function(style.name,defaults,obj=CytoscapeConnection()){
                               value=defaults[[i]])
     }
     
-    style.url <- paste(base.url,'styles', style.name,'defaults', sep = '/')
+    style.url <- URLencode(paste(base.url,'styles', style.name,'defaults', sep = '/'))
     map.body <- toJSON(def.list)
     invisible(PUT(url=style.url,body=map.body, encode="json"))
     
@@ -6673,7 +6673,7 @@ updateStyleDependencies <- function(style.name,dependencies,obj=CytoscapeConnect
                               enabled=dependencies[[i]])
     }
     
-    style.url <- paste(base.url,'styles', style.name,'dependencies', sep = '/')
+    style.url <- URLencode(paste(base.url,'styles', style.name,'dependencies', sep = '/'))
     map.body <- toJSON(dep.list)
     
     cat("PUT-ing style\n")
@@ -6708,7 +6708,7 @@ updateStyleMapping <- function(style.name, mapping, obj=CytoscapeConnection()){
     
     # check if vp exists already
     exists = FALSE
-    check.url <- paste(base.url,'styles', style.name,'mappings',sep = '/')
+    check.url <- URLencode(paste(base.url,'styles', style.name,'mappings',sep = '/'))
     res <- GET(check.url)
     res.elem <- fromJSON(rawToChar(res$content))
     for(re in res.elem){
@@ -6718,7 +6718,7 @@ updateStyleMapping <- function(style.name, mapping, obj=CytoscapeConnection()){
     }
     
     if(exists){     #if yes...
-        style.url <- paste(base.url,'styles', style.name,'mappings',visual.prop.name, sep = '/')
+        style.url <- URLencode(paste(base.url,'styles', style.name,'mappings',visual.prop.name, sep = '/'))
         map.body <- toJSON(list(mapping))
         invisible(PUT(url=style.url,body=map.body, encode="json"))
         invisible(PUT(url=style.url,body=map.body, encode="json"))    # have to run it twice!? omg...
