@@ -829,7 +829,7 @@ setMethod('deleteNetwork', 'OptionalCyObjClass',
 		else if(class(obj) == 'CytoscapeWindowClass')
 			suid = as.character(obj@suid)
 		else { # a CyConn was provided, but no title, so just get current network 
-		    suid = getNetworkSuid()
+		    suid = getNetworkSuid(obj)
 		}
 		resource.uri = paste(obj@uri, obj@api, "networks", suid, sep="/")
 		request.res = DELETE(url=resource.uri)
@@ -5733,6 +5733,93 @@ command2query<-function(cmd.string, obj=CytoscapeConnection()){
 }
 
 # ------------------------------------------------------------------------------
+#' Create an igraph network from a Cytoscape network
+#'
+#' @description Takes a Cytoscape network and generates data frames for vertices and edges to
+#' send to the graph_from_data_frame function.
+#' Returns the network.suid and applies the perferred layout set in Cytoscape preferences.
+#' @details Nodes and edges from the Cytoscape network will be translated into vertices and edges
+#' in igraph. Associated table columns will also be passed to igraph as vertiex and edge attributes.
+#' @param network name or suid of the network; default is "current" network
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return (igraph) an igraph network
+#' @export
+#' @import igraph
+#' @examples
+#' \donttest{
+#' createNetworkFromIgraph(g)
+#' }
+#' @seealso createNetwork, createIgraphFromNetwork
+
+createIgraphFromNetwork <- function(title=NA, obj=CytoscapeWindowFromNetwork(), ...){
+    
+    if(!is.na(title))
+        obj<-CytoscapeWindowFromNetwork(title)
+    else if(class(obj) == 'CytoscapeConnectionClass'){
+        obj<-CytoscapeWindowFromNetwork()
+    }
+    network = obj@suid
+    
+    #get dataframes
+    cyedges <- getTableColumns('edge',obj=obj)
+    cynodes <- getTableColumns('node',obj=obj)
+    
+    #check for source and target columns
+    if(!"source" %in% colnames(cyedges)||(!"target" %in% colnames(cyedges))){
+        st=data.frame(do.call('rbind',strsplit(cyedges$name,"\ \\(.*\\)\ ")))
+        colnames(st) <- c("source","target")
+        cyedges <- cbind(st,cyedges)
+    }
+    
+    #setup columns for igraph construction
+    colnames(cyedges)[colnames(cyedges)=="source"]<-"from"
+    colnames(cyedges)[colnames(cyedges)=="target"]<-"to"
+    cyedges2=cbind(cyedges[c("from","to")], cyedges[ ,!(names(cyedges) %in% c("from","to"))])
+    cynodes2=cbind(cynodes["name"], cynodes[ ,!(names(cynodes)=="name")])
+    
+    #ship
+    graph_from_data_frame(cyedges2, directed=TRUE, vertices=cynodes2)
+}
+
+# ------------------------------------------------------------------------------
+#' Create a Cytoscape network from an igraph network
+#'
+#' @description Takes an igraph network and generates data frames for nodes and edges to
+#' send to the createNetwork function.
+#' Returns the network.suid and applies the perferred layout set in Cytoscape preferences.
+#' @details Vertices and edges from the igraph network will be translated into nodes and edges
+#' in Cytoscape. Associated attributes will also be passed to Cytoscape as node and edge table columns.
+#' @param igraph (igraph) igraph network object
+#' @param new.title (char) network name
+#' @param collection.title (char) network collection name
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @param ... params for nodeSet2JSON() and edgeSet2JSON(); see createNetwork
+#' @return (int) network SUID
+#' @export
+#' @import igraph
+#' @examples
+#' \donttest{
+#' createNetworkFromIgraph(g)
+#' }
+#' @seealso createNetwork, createIgraphFromNetwork
+
+createNetworkFromIgraph <- function(igraph, new.title="MyNetwork",
+                                    collection.title="myNetworkCollection",return.graph=FALSE, obj=CytoscapeConnection(),...) {
+    
+    #extract dataframes
+    igedges = as_data_frame(igraph, what="edges")
+    ignodes = as_data_frame(igraph, what="vertices")
+    
+    #setup columns for Cytoscape import
+    ignodes$id <- row.names(ignodes)
+    colnames(igedges)[colnames(igedges)=="from"]<-"source"
+    colnames(igedges)[colnames(igedges)=="to"]<-"target"
+    
+    #ship
+    createNetworkFromDataFrames(ignodes,igedges,new.title,collection.title,return.graph,obj)
+}
+
+# ------------------------------------------------------------------------------
 #' Create a network from data frames
 #'
 #' @description Takes data frames for nodes and edges, as well as naming parameters to
@@ -5748,8 +5835,8 @@ command2query<-function(cmd.string, obj=CytoscapeConnection()){
 #' as (Double); (chr) as (String); and (logical) as (Boolean).
 #' @param nodes (data.frame) see details and examples below; default NULL to derive nodes from edge sources and targets
 #' @param edges (data.frame) see details and examples below; default NULL for disconnected set of nodes
-#' @param network.name (char) network name
-#' @param collection.name (char) network collection name
+#' @param new.title (char) network name
+#' @param collection.title (char) network collection name
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @param ... params for nodeSet2JSON() and edgeSet2JSON()
 #' @return (int) network SUID
@@ -5770,8 +5857,10 @@ command2query<-function(cmd.string, obj=CytoscapeConnection()){
 #' createNetworkFromDataFrames(nodes,edges)
 #' }
 
-createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,network.name="MyNetwork",
-                          collection.name="MyNetworkCollection",obj=CytoscapeConnection(),...) {
+createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,new.title="MyNetwork",
+                          collection.title="MyNetworkCollection",return.graph=FALSE, obj=CytoscapeConnection(),...) {
+    
+    base.url=paste(obj@uri,obj@api,sep = "/")
     
     #defining variable names to be used globally later on (to avoid devtools::check() NOTES)
     RCy3.CreateNetworkFromDataFrames.temp.global.counter <- NULL
@@ -5804,18 +5893,18 @@ createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,network.name="MyNe
     }
     
     json_network <- list(
-        data=list(name=network.name),
+        data=list(name=new.title),
         elements=c(nodes=list(json_nodes),edges=list(json_edges))
     )
     
     network <- toJSON(json_network)
     
     #swap any spaces in names
-    network.name <- gsub(" ","%20",network.name)
-    collection.name <- gsub(" ","%20",collection.name)
+    new.title <- gsub(" ","%20",new.title)
+    collection.title <- gsub(" ","%20",collection.title)
     
     url<- sprintf("%s/networks?title=%s&collection=%s",
-                  base.url,network.name,collection.name,sep="")
+                  base.url,new.title,collection.title,sep="")
     
     response <- POST(url=url,body=network, encode="json",content_type_json())
     
@@ -5831,7 +5920,9 @@ createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,network.name="MyNe
     cat(sprintf("Applying %s layout\n", invisible(commandRun('layout get preferred network="current"'))))
     commandRun('layout apply preferred networkSelected="current',obj)
     
-    return(network.suid)
+    net.title = getNetworkName(network.suid)
+    net.cw<-CytoscapeWindowFromNetwork(net.title,return.graph=return.graph)
+    return(net.cw)
 }
 
 # Convert edges to JSON format needed for CyRest network creation
@@ -6015,7 +6106,7 @@ createSubnetwork <- function(nodes,nodes.by.col='name',edges,edges.by.col='name'
 #' @examples
 #' \donttest{
 #' #first there has to be a network to apply style to
-#' example(createNetwork)
+#' example(createNetworkFromDataFrame)
 #'
 #' #then prepare style variables
 #' style.name = "myStyle"
@@ -6098,7 +6189,7 @@ getNetworkName <- function(network.suid=NA, obj=CytoscapeConnection()){
 #' @importFrom utils URLencode
 #' @examples
 #' \donttest{
-#' example(createNetwork)
+#' example(createNetworkFromDataFrames)
 #'
 #' getTableColumns('node','group')
 #' }
