@@ -9,8 +9,8 @@ exportMethods (
    copyVisualStyle,
    createNetwork,
    createNetworkFromSelection,
-   copyCytoscapeNetwork,
-   renameCytoscapeNetwork,
+   cloneNetwork,
+   renameNetwork,
    cyPlot,
    deleteAllNetworks,
    deleteEdgeAttribute,
@@ -84,7 +84,6 @@ exportMethods (
    saveNetwork,
    selectEdges,
    selectAllEdges,
-   selectFirstNeighborsOfSelectedNodes,
    selectNodes,
    selectAllNodes,
    sendEdges,
@@ -168,7 +167,6 @@ exportMethods (
    setVisualStyle,
    setWindowSize,
    setZoom,
-   sfn,
    showGraphicsDetails,
    unhideAll
    )
@@ -194,21 +192,30 @@ export(
 #Ported from r2cytoscape
 export(
    checkCytoscapeVersion,
-   createNetworkFromDataFrames,
-   createVisualStyle,
    command2query,
    commandRun,
    commandHelp,
+   createNetworkFromDataFrames,
+   createSubnetwork,
+   createVisualStyle,
    getNetworkName,
    getTableColumns,
    listTableColumns,
    loadTableData,
    mapVisualProperty,
-   openCySwagger
+   openCySwagger,
+   saveSession,
+   saveVisualStyle,
+   selectFirstNeighbors,
+   setCurrentNetwork,
+   updateStyleDefaults,
+   updateStyleDependencies,
+   updateStyleMapping
    )
 
 #Deprecated
 export(
+    copyCytoscapeNetwork,
     createWindow,
     createWindowFromSelection,
     deleteAllWindows,
@@ -218,7 +225,10 @@ export(
     getWindowCount,
     getWindowID,
     getWindowList,
-    pluginVersion
+    pluginVersion,
+    renameCytoscapeNetwork,
+    selectFirstNeighborsOfSelectedNodes,
+    sfn
 )
 
 importClassesFrom(graph, graph, graphBase)
