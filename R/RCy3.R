@@ -4204,7 +4204,7 @@ setMethod('selectNodes', 'OptionalCyWinClass',
         network=obj@title
 
         if (!preserve.current.selection )
-            clearSelection(network=network,base.url=base.url)
+            clearSelection(obj)
 
         node.list.str = NULL
         for (n in node.names){
@@ -4340,17 +4340,7 @@ setMethod('unhideNodes', 'OptionalCyWinClass',
 # select all nodes that were not selected and deselect all nodes that were selected
 setMethod('invertNodeSelection', 'OptionalCyWinClass', 
     function(obj) {
-        net.SUID <- as.character(obj@suid)
-        
-        
-        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "nodes?column=selected&query=false", sep="/")
-        request.res <- GET(url=resource.uri)
-        unselected.node.SUIDs <- fromJSON(rawToChar(request.res$content))
-        
-        # clear selection
-        clearSelection(obj)
-        
-        selectNodes(obj, .nodeSUIDToNodeName(obj, unselected.node.SUIDs), FALSE)
+        commandRun(paste0('network select invert=nodes network=',obj@title), obj)
 }) 
 ## END invertNodeSelection
  
@@ -4358,6 +4348,10 @@ setMethod('invertNodeSelection', 'OptionalCyWinClass',
 # [GIK - Jul, 2015] function might break if self-loops exist in the graph
 setMethod('deleteSelectedNodes', 'OptionalCyWinClass', 
     function(obj) {
+        
+        if(missing(obj))
+            commandRun(paste0('network delete nodeList=selected network=',obj@title), obj)
+        
         loc.obj <- obj
         
         net.SUID <- as.character(loc.obj@suid)
@@ -4507,27 +4501,17 @@ setMethod('selectAllEdges',
 # ------------------------------------------------------------------------------
 setMethod('invertEdgeSelection', 'OptionalCyWinClass', 
     function(obj) {
-        net.SUID <- as.character(obj@suid)
-        
-        
-        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "edges?column=selected&query=false", sep="/")
-        request.res <- GET(url=resource.uri)
-        unselected.edges.SUIDs <- fromJSON(rawToChar(request.res$content))
-        # if any edges are selected, unselect them (nodes have clearSelection function) 
-        resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns/selected?default=false", sep="/")
-        request.res <- PUT(url=resource.uri, body=FALSE)
-        
-        to.be.selected.edges <- lapply(unselected.edges.SUIDs, function(s) {list('SUID'=s, 'value'=TRUE)})
-        to.be.selected.edges.JSON <- toJSON(to.be.selected.edges)
-        
-        unselected.edges.names <- .edgeSUIDToEdgeName(obj, unselected.edges.SUIDs)
-        selectEdges(obj, unselected.edges.names, FALSE)
+        commandRun(paste0('network select invert=edges network=',obj@title), obj)
 }) 
 ## END invertEdgeSelection
  
 # ------------------------------------------------------------------------------
 setMethod('deleteSelectedEdges', 'OptionalCyWinClass', 
     function(obj) {
+        
+        if(missing(obj))
+            commandRun(paste0('network delete edgeList=selected network=',obj@title), obj)
+        
         loc.obj <- obj
         
         net.SUID = as.character(loc.obj@suid)

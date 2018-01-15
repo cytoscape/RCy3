@@ -185,7 +185,7 @@ run.tests = function ()
 
     test.movie ()
     #test.unmatchedAttributesError ()
-    test.remove.redundancies.in.undirected.graph ()
+    #test.remove.redundancies.in.undirected.graph ()
     test.randomUndirectedGraph ()
 
     deleteAllWindows (cy)
