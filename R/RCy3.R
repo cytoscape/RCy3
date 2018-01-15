@@ -5044,7 +5044,7 @@ setMethod('copyVisualStyle', 'OptionalCyObjClass',
      }
      # get the current style from Cytoscape
      resource.uri <- paste(obj@uri, obj@api, "styles", from.style, sep="/")
-     from.style.JSON <- GET(url=resource.uri)
+     from.style.JSON <- GET(url=URLencode(resource.uri))
      from.style <- fromJSON(rawToChar(from.style.JSON$content))
      from.style[1] <- as.character(to.style)
      
@@ -5068,7 +5068,7 @@ setMethod('setVisualStyle', 'OptionalCyWinClass',
     }
     # apply style
     resource.uri <- paste(obj@uri, obj@api, "apply/styles", style.name, net.SUID, sep="/")
-    req.res <- GET(url=resource.uri)
+    req.res <- GET(url=URLencode(resource.uri))
     write(sprintf('network visual style has been set to "%s"', style.name), stdout())
     invisible(req.res)
 })
@@ -6753,7 +6753,7 @@ deleteWindow<-function(obj,window.title){
     .Deprecated("deleteNetwork(obj,title)")
     deleteNetwork(obj=obj,title=window.title)
 }
-existing.CytoscapeWindow<-function(title, host, port, copy.graph.from.cytoscape.to.R){
+existing.CytoscapeWindow<-function(title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE){
     .Deprecated("CytoscapeWindowFromNetwork(title,host,port,return.graph")
     CytoscapeWindowFromNetwork(title = title,host = host,port = port,return.graph = copy.graph.from.cytoscape.to.R)
 }
