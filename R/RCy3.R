@@ -428,10 +428,7 @@ setGeneric ('getGraph', 	             signature='obj', function (obj) standardGe
 setGeneric ('sendNodes',	             signature='obj', function (obj) standardGeneric ('sendNodes'))
 setGeneric ('sendEdges',	             signature='obj', function (obj) standardGeneric ('sendEdges'))
 setGeneric ('setNodeAttributes',         signature='obj', function (obj, attribute.name) standardGeneric ('setNodeAttributes'))
-setGeneric ('setNodeAttributesDirect',   signature='obj', function (obj, attribute.name, attribute.type, node.names, values) standardGeneric ('setNodeAttributesDirect'))
 setGeneric ('setEdgeAttributes', 	     signature='obj', function (obj, attribute.name) standardGeneric ('setEdgeAttributes'))
-setGeneric ('setEdgeAttributesDirect', 	 signature='obj', function (obj, attribute.name, attribute.type, edge.names, values) standardGeneric ('setEdgeAttributesDirect'))
-setGeneric ('getNodeSize',				 signature='obj', function (obj, node.names) standardGeneric ('getNodeSize'))
 
 #--- AP:TODO: refactor these --------------------------------
 setGeneric ('setNodeTooltipRule',       signature='obj', function (obj, node.attribute.name, style.name = 'default') standardGeneric ('setNodeTooltipRule'))
@@ -440,6 +437,9 @@ setGeneric ('getAllNodeAttributes',      signature='obj', function (obj=Cytoscap
 setGeneric ('getAllEdgeAttributes',      signature='obj', function (obj=CytoscapeWindowFromNetwork(), onlySelectedEdges=FALSE) standardGeneric ('getAllEdgeAttributes'))
 setGeneric ('getNodeAttribute',          signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.name, attribute.name) standardGeneric ('getNodeAttribute'))
 setGeneric ('getEdgeAttribute',          signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.name, attribute.name) standardGeneric ('getEdgeAttribute'))
+setGeneric ('setEdgeAttributesDirect', 	 signature='obj', function (obj, attribute.name, attribute.type, edge.names, values) standardGeneric ('setEdgeAttributesDirect'))
+setGeneric ('setNodeAttributesDirect',   signature='obj', function (obj, attribute.name, attribute.type, node.names, values) standardGeneric ('setNodeAttributesDirect'))
+setGeneric ('getNodeSize',				 signature='obj', function (obj, node.names) standardGeneric ('getNodeSize'))
 
 #-----------------------------------------------------------
 # private methods, for internal use only; dependent on 
@@ -1776,7 +1776,7 @@ setMethod ('setNodePosition', 'OptionalCyWinClass',
 
         # throw error if nodes in node.names don't exist in the network
         if (length (unknown.nodes) > 0) {
-            node.names = intersect (node.names, nodes (obj@graph))
+            node.names = intersect (node.names, nodes (obj@graph)) #AP TODO: refactor for alt to graph obj
             write (sprintf ("Error! Unknown nodes in RCy3::setNodePosition"), stderr ())
             for (i in 1:length (unknown.nodes)){
                 write (sprintf ("     %s", unknown.nodes [i]), stderr ())
