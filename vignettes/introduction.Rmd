@@ -42,10 +42,10 @@ myedges <- data.frame(source=c("node 0","node 0","node 0","node 2"),
                       interaction=c("inhibits","interacts","activates","interacts"),  # optional
                       weight=c(5,3,5,9), # optional
                       stringsAsFactors=FALSE)
-network.name = "myNetwork"
-collection.name = "myCollection"
+network.title = "myNetwork"
+collection.title = "myCollection"
 
-network.suid <- createNetworkFromDataFrames(mynodes,myedges,network.name,collection.name)
+network.suid <- createNetworkFromDataFrames(mynodes,myedges,network.title,collection.title)
 ```
 
 ### Switch Styles
