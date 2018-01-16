@@ -368,40 +368,40 @@ setGeneric ('setEdgeColorRule',            signature='obj', function (obj=Cytosc
 setGeneric ('setEdgeOpacityRule',          signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, control.points, opacities, mode, style.name = 'default') standardGeneric ('setEdgeOpacityRule'))
 
 #--- bypasses ---------------------------------------------
-setGeneric ('setNodeSizeDirect',          signature='obj', function (obj=CytoscapeConnection(), node.names, new.sizes) standardGeneric ('setNodeSizeDirect'))
-setGeneric ('setNodeLabelDirect',         signature='obj', function (obj=CytoscapeConnection(), node.names, new.labels) standardGeneric ('setNodeLabelDirect'))
-setGeneric ('setNodeFontSizeDirect',      signature='obj', function (obj=CytoscapeConnection(), node.names, new.sizes) standardGeneric ('setNodeFontSizeDirect'))
-setGeneric ('setNodeLabelColorDirect',    signature='obj', function (obj=CytoscapeConnection(), node.names, new.colors) standardGeneric ('setNodeLabelColorDirect'))
-setGeneric ('setNodeWidthDirect',         signature='obj', function (obj=CytoscapeConnection(), node.names, new.widths) standardGeneric ('setNodeWidthDirect'))
-setGeneric ('setNodeHeightDirect',        signature='obj', function (obj=CytoscapeConnection(), node.names, new.heights) standardGeneric ('setNodeHeightDirect'))
-setGeneric ('setNodeShapeDirect',         signature='obj', function (obj=CytoscapeConnection(), node.names, new.shapes) standardGeneric ('setNodeShapeDirect'))
-setGeneric ('setNodeImageDirect',         signature='obj', function (obj=CytoscapeConnection(), node.names, image.positions) standardGeneric ('setNodeImageDirect'))
-setGeneric ('setNodeColorDirect',         signature='obj', function (obj=CytoscapeConnection(), node.names, new.colors) standardGeneric ('setNodeColorDirect'))
-setGeneric ('setNodeBorderWidthDirect',   signature='obj', function (obj=CytoscapeConnection(), node.names, new.sizes) standardGeneric ('setNodeBorderWidthDirect'))
-setGeneric ('setNodeBorderColorDirect',   signature='obj', function (obj=CytoscapeConnection(), node.names, new.colors) standardGeneric ('setNodeBorderColorDirect'))
-setGeneric ('setNodeOpacityDirect',       signature='obj', function (obj=CytoscapeConnection(), node.names, new.values) standardGeneric ('setNodeOpacityDirect'))
-setGeneric ('setNodeFillOpacityDirect',   signature='obj', function (obj=CytoscapeConnection(), node.names, new.values) standardGeneric ('setNodeFillOpacityDirect'))
-setGeneric ('setNodeLabelOpacityDirect',  signature='obj', function (obj=CytoscapeConnection(), node.names, new.values) standardGeneric ('setNodeLabelOpacityDirect'))
-setGeneric ('setNodeBorderOpacityDirect', signature='obj', function (obj=CytoscapeConnection(), node.names, new.values) standardGeneric ('setNodeBorderOpacityDirect'))
-setGeneric ('setEdgeOpacityDirect',       signature='obj', function (obj=CytoscapeConnection(), edge.names, new.values) standardGeneric ('setEdgeOpacityDirect'))
+setGeneric ('setNodeSizeDirect',          signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.sizes) standardGeneric ('setNodeSizeDirect'))
+setGeneric ('setNodeLabelDirect',         signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.labels) standardGeneric ('setNodeLabelDirect'))
+setGeneric ('setNodeFontSizeDirect',      signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.sizes) standardGeneric ('setNodeFontSizeDirect'))
+setGeneric ('setNodeLabelColorDirect',    signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.colors) standardGeneric ('setNodeLabelColorDirect'))
+setGeneric ('setNodeWidthDirect',         signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.widths) standardGeneric ('setNodeWidthDirect'))
+setGeneric ('setNodeHeightDirect',        signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.heights) standardGeneric ('setNodeHeightDirect'))
+setGeneric ('setNodeShapeDirect',         signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.shapes) standardGeneric ('setNodeShapeDirect'))
+setGeneric ('setNodeImageDirect',         signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, image.positions) standardGeneric ('setNodeImageDirect'))
+setGeneric ('setNodeColorDirect',         signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.colors) standardGeneric ('setNodeColorDirect'))
+setGeneric ('setNodeBorderWidthDirect',   signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.sizes) standardGeneric ('setNodeBorderWidthDirect'))
+setGeneric ('setNodeBorderColorDirect',   signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.colors) standardGeneric ('setNodeBorderColorDirect'))
+setGeneric ('setNodeOpacityDirect',       signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.values) standardGeneric ('setNodeOpacityDirect'))
+setGeneric ('setNodeFillOpacityDirect',   signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.values) standardGeneric ('setNodeFillOpacityDirect'))
+setGeneric ('setNodeLabelOpacityDirect',  signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.values) standardGeneric ('setNodeLabelOpacityDirect'))
+setGeneric ('setNodeBorderOpacityDirect', signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.values) standardGeneric ('setNodeBorderOpacityDirect'))
+setGeneric ('setEdgeOpacityDirect',       signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.values) standardGeneric ('setEdgeOpacityDirect'))
 
-setGeneric ('setEdgeColorDirect',              signature='obj', function (obj=CytoscapeConnection(), edge.names, new.value) standardGeneric ('setEdgeColorDirect'))
-setGeneric ('setEdgeLabelDirect',              signature='obj', function (obj=CytoscapeConnection(), edge.names, new.value) standardGeneric ('setEdgeLabelDirect'))
-setGeneric ('setEdgeFontFaceDirect',           signature='obj', function (obj=CytoscapeConnection(), edge.names, new.value) standardGeneric ('setEdgeFontFaceDirect'))
-setGeneric ('setEdgeFontSizeDirect',           signature='obj', function (obj=CytoscapeConnection(), edge.names, new.value) standardGeneric ('setEdgeFontSizeDirect'))
-setGeneric ('setEdgeLabelColorDirect',         signature='obj', function (obj=CytoscapeConnection(), edge.names, new.value) standardGeneric ('setEdgeLabelColorDirect'))
-setGeneric ('setEdgeTooltipDirect',            signature='obj', function (obj=CytoscapeConnection(), edge.names, new.values) standardGeneric ('setEdgeTooltipDirect'))
-setGeneric ('setEdgeLineWidthDirect',          signature='obj', function (obj=CytoscapeConnection(), edge.names, new.value) standardGeneric ('setEdgeLineWidthDirect'))
-setGeneric ('setEdgeLineStyleDirect',          signature='obj', function (obj=CytoscapeConnection(), edge.names, new.values) standardGeneric ('setEdgeLineStyleDirect'))
-setGeneric ('setEdgeSourceArrowShapeDirect',   signature='obj', function (obj=CytoscapeConnection(), edge.names, new.values) standardGeneric ('setEdgeSourceArrowShapeDirect'))
-setGeneric ('setEdgeTargetArrowShapeDirect',   signature='obj', function (obj=CytoscapeConnection(), edge.names, new.values) standardGeneric ('setEdgeTargetArrowShapeDirect'))
-setGeneric ('setEdgeSourceArrowColorDirect',   signature='obj', function (obj=CytoscapeConnection(), edge.names, new.colors) standardGeneric ('setEdgeSourceArrowColorDirect'))
-setGeneric ('setEdgeTargetArrowColorDirect',   signature='obj', function (obj=CytoscapeConnection(), edge.names, new.colors) standardGeneric ('setEdgeTargetArrowColorDirect'))
-setGeneric ('setEdgeLabelOpacityDirect',       signature='obj', function (obj=CytoscapeConnection(), edge.names, new.value) standardGeneric ('setEdgeLabelOpacityDirect'))
-setGeneric ('setEdgeSourceArrowOpacityDirect', signature='obj', function (obj=CytoscapeConnection(), edge.names, new.values) standardGeneric ('setEdgeSourceArrowOpacityDirect'))
-setGeneric ('setEdgeTargetArrowOpacityDirect', signature='obj', function (obj=CytoscapeConnection(), edge.names, new.values) standardGeneric ('setEdgeTargetArrowOpacityDirect'))
-#setGeneric ('setEdgeLabelPositionDirect',      signature='obj', function (obj=CytoscapeConnection(), edge.names, new.value) standardGeneric ('setEdgeLabelPositionDirect'))
-#setGeneric ('setEdgeLabelWidthDirect',         signature='obj', function (obj=CytoscapeConnection(), edge.names, new.value) standardGeneric ('setEdgeLabelWidthDirect'))
+setGeneric ('setEdgeColorDirect',              signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.value) standardGeneric ('setEdgeColorDirect'))
+setGeneric ('setEdgeLabelDirect',              signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.value) standardGeneric ('setEdgeLabelDirect'))
+setGeneric ('setEdgeFontFaceDirect',           signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.value) standardGeneric ('setEdgeFontFaceDirect'))
+setGeneric ('setEdgeFontSizeDirect',           signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.value) standardGeneric ('setEdgeFontSizeDirect'))
+setGeneric ('setEdgeLabelColorDirect',         signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.value) standardGeneric ('setEdgeLabelColorDirect'))
+setGeneric ('setEdgeTooltipDirect',            signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.values) standardGeneric ('setEdgeTooltipDirect'))
+setGeneric ('setEdgeLineWidthDirect',          signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.value) standardGeneric ('setEdgeLineWidthDirect'))
+setGeneric ('setEdgeLineStyleDirect',          signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.values) standardGeneric ('setEdgeLineStyleDirect'))
+setGeneric ('setEdgeSourceArrowShapeDirect',   signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.values) standardGeneric ('setEdgeSourceArrowShapeDirect'))
+setGeneric ('setEdgeTargetArrowShapeDirect',   signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.values) standardGeneric ('setEdgeTargetArrowShapeDirect'))
+setGeneric ('setEdgeSourceArrowColorDirect',   signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.colors) standardGeneric ('setEdgeSourceArrowColorDirect'))
+setGeneric ('setEdgeTargetArrowColorDirect',   signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.colors) standardGeneric ('setEdgeTargetArrowColorDirect'))
+setGeneric ('setEdgeLabelOpacityDirect',       signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.value) standardGeneric ('setEdgeLabelOpacityDirect'))
+setGeneric ('setEdgeSourceArrowOpacityDirect', signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.values) standardGeneric ('setEdgeSourceArrowOpacityDirect'))
+setGeneric ('setEdgeTargetArrowOpacityDirect', signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.values) standardGeneric ('setEdgeTargetArrowOpacityDirect'))
+#setGeneric ('setEdgeLabelPositionDirect',      signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.value) standardGeneric ('setEdgeLabelPositionDirect'))
+#setGeneric ('setEdgeLabelWidthDirect',         signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names, new.value) standardGeneric ('setEdgeLabelWidthDirect'))
 
 
 #-----------------------------------------------------------
@@ -448,14 +448,11 @@ setGeneric ('getNodeSize',				 signature='obj', function (obj, node.names) stand
 setGeneric ('.addNodes',              signature='obj', function (obj, other.graph) standardGeneric ('.addNodes'))
 setGeneric ('.addEdges',              signature='obj', function (obj, other.graph) standardGeneric ('.addEdges'))
 setGeneric ('.getNetworkViews',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('.getNetworkViews'))
+setGeneric ('.nodeNameToNodeSUID',    signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names) standardGeneric ('.nodeNameToNodeSUID'))
+setGeneric ('.edgeNameToEdgeSUID',    signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.names) standardGeneric ('.edgeNameToEdgeSUID'))
+setGeneric ('.nodeSUIDToNodeName',    signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.suids) standardGeneric ('.nodeSUIDToNodeName'))
+setGeneric ('.edgeSUIDToEdgeName',    signature='obj', function (obj=CytoscapeWindowFromNetwork(), edge.suids) standardGeneric ('.edgeSUIDToEdgeName'))
 setGeneric ('cyPlot',                                  function (node.df, edge.df) standardGeneric('cyPlot'))
-
-#--- AP:TODO: refactor these --------------------------------
-setGeneric ('.nodeNameToNodeSUID',    signature='obj', function (obj, node.names) standardGeneric ('.nodeNameToNodeSUID'))
-setGeneric ('.edgeNameToEdgeSUID',    signature='obj', function (obj, edge.names) standardGeneric ('.edgeNameToEdgeSUID'))
-setGeneric ('.nodeSUIDToNodeName',    signature='obj', function (obj, node.suids) standardGeneric ('.nodeSUIDToNodeName'))
-setGeneric ('.edgeSUIDToEdgeName',    signature='obj', function (obj, edge.suids) standardGeneric ('.edgeSUIDToEdgeName'))
-
 
 # ------------------------------------------------------------------------------
 CytoscapeWindowFromNetwork = 
@@ -1468,8 +1465,15 @@ setMethod('.getNetworkViews', 'OptionalCyObjClass',
 ## END .getNetworkViews
 
 # ------------------------------------------------------------------------------
-setMethod('.nodeNameToNodeSUID', 'CytoscapeWindowClass', 
+setMethod('.nodeNameToNodeSUID', 'OptionalCyWinClass', 
     function(obj, node.names) {
+        
+        if(length(obj@node.suid.name.dict)==0){  # i.e., no obj dictionary
+                dict <- getTableColumns('node',c('SUID','name'),obj=obj)
+                node.SUIDs <- dict[which(dict$name  %in% node.names),'SUID']
+                return(node.SUIDs)
+        }
+        
         # initial source used 'which', but it did not return SUIDs in the input names order  
         # dict.indices = which(node.names %in% sapply(obj@node.suid.name.dict, function(n) { n$name}))
         # 'match' achieves this desired behavior
@@ -1483,8 +1487,15 @@ setMethod('.nodeNameToNodeSUID', 'CytoscapeWindowClass',
 ## END .nodeNamesToNodeSUID
 
 # ------------------------------------------------------------------------------
-setMethod('.nodeSUIDToNodeName', 'CytoscapeWindowClass', 
+setMethod('.nodeSUIDToNodeName', 'OptionalCyWinClass', 
     function(obj, node.suids) {
+        
+        if(length(obj@node.suid.name.dict)==0){  # i.e., no obj dictionary
+            dict <- getTableColumns('node',c('SUID','name'),obj=obj)
+            node.names <- dict[which(dict$SUID  %in% node.suids),'name']
+            return(node.names)
+        }
+        
         dict.node.SUIDs <- sapply(obj@node.suid.name.dict, function(s) {s$SUID})
         dict.indices <- match(node.suids, dict.node.SUIDs)
         
@@ -1495,8 +1506,15 @@ setMethod('.nodeSUIDToNodeName', 'CytoscapeWindowClass',
 ## END .nodeSUIDToNodeName
 
 # ------------------------------------------------------------------------------
-setMethod('.edgeNameToEdgeSUID', 'CytoscapeWindowClass', 
+setMethod('.edgeNameToEdgeSUID', 'OptionalCyWinClass', 
     function(obj, edge.names) {
+        
+        if(length(obj@edge.node.suid.name.dict)==0){  # i.e., no obj dictionary
+            dict <- getTableColumns('edge',c('SUID','name'),obj=obj)
+            edge.SUIDs <- dict[which(dict$name  %in% edge.names),'SUID']
+            return(edge.SUIDs)
+        }
+        
         dict.edge.names <- sapply(obj@edge.node.suid.name.dict, function(e) {e$name})
         dict.indices <- match(edge.names, dict.edge.names)
         
@@ -1507,8 +1525,15 @@ setMethod('.edgeNameToEdgeSUID', 'CytoscapeWindowClass',
 ## END .edgeNamesToEdgeSUID
 
 # ------------------------------------------------------------------------------
-setMethod('.edgeSUIDToEdgeName', 'CytoscapeWindowClass', 
+setMethod('.edgeSUIDToEdgeName', 'OptionalCyWinClass', 
     function(obj, edge.suids) {
+        
+        if(length(obj@edge.node.suid.name.dict)==0){  # i.e., no obj dictionary
+            dict <- getTableColumns('edge',c('SUID','name'),obj=obj)
+            edge.names <- dict[which(dict$name  %in% edge.suids),'name']
+            return(edge.names)
+        }
+        
         dict.edge.SUIDs = sapply(obj@edge.node.suid.name.dict, function(s) {s$SUID})
         dict.indices = match(edge.suids, dict.edge.SUIDs)
         
@@ -3333,7 +3358,7 @@ setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
      })
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are unlocked (that is not tied together).  see lockNodeDimensions (T/F)
-setMethod ('setNodeSizeDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeSizeDirect', 'OptionalCyWinClass',
     function (obj, node.names, new.sizes) {
         # unlock node dimensions
         lockNodeDimensions (obj, FALSE)
@@ -3351,7 +3376,7 @@ setMethod ('setNodeSizeDirect', 'CytoscapeWindowClass',
     })
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is not tied together).  see lockNodeDimensions (T/F)
-setMethod ('setNodeWidthDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeWidthDirect', 'OptionalCyWinClass',
     function (obj, node.names, new.widths) {
         # unlock node dimensions
         lockNodeDimensions (obj, FALSE)
@@ -3369,7 +3394,7 @@ setMethod ('setNodeWidthDirect', 'CytoscapeWindowClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is, tied together).  see lockNodeDimensions (T/F)
-setMethod ('setNodeHeightDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeHeightDirect', 'OptionalCyWinClass',
     function (obj, node.names, new.heights) { # Comment Tanja: Could pass in visual style here
         # unlock node dimensions
         lockNodeDimensions (obj, FALSE)
@@ -3386,14 +3411,14 @@ setMethod ('setNodeHeightDirect', 'CytoscapeWindowClass',
     })
 
 # ------------------------------------------------------------------------------
-setMethod('setNodeLabelDirect', 'CytoscapeWindowClass', 
+setMethod('setNodeLabelDirect', 'OptionalCyWinClass', 
     function(obj, node.names, new.labels) {
         setNodePropertyDirect(obj, node.names, new.labels, "NODE_LABEL")
 })
 ## END setNodeLabelDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setNodeFontSizeDirect', 'CytoscapeWindowClass', 
+setMethod('setNodeFontSizeDirect', 'OptionalCyWinClass', 
     function(obj, node.names, new.sizes) {
         size.type.errors = 0
         
@@ -3412,7 +3437,7 @@ setMethod('setNodeFontSizeDirect', 'CytoscapeWindowClass',
 ## END setNodeFontSizeDirect
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeLabelColorDirect', 'OptionalCyWinClass',
    function (obj, node.names, new.colors) {
       for (current.color in new.colors){
         # ensure the color is formated in the correct hexadecimal style
@@ -3425,7 +3450,7 @@ setMethod ('setNodeLabelColorDirect', 'CytoscapeWindowClass',
      })
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeShapeDirect', 'OptionalCyWinClass',
     function (obj, node.names, new.shapes) {
         if (length (node.names) != length (new.shapes)) {
             if (length(new.shapes) != 1){
@@ -3453,7 +3478,7 @@ setMethod ('setNodeShapeDirect', 'CytoscapeWindowClass',
      })
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeImageDirect', 'OptionalCyWinClass',
 
     function (obj, node.names, image.positions) {
         
@@ -3507,7 +3532,7 @@ setMethod ('setNodeImageDirect', 'CytoscapeWindowClass',
      })
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeBorderWidthDirect', 'OptionalCyWinClass',
    function (obj, node.names, new.sizes) {
       for (current.size in new.sizes){
          # ensure the widths are numbers
@@ -3521,7 +3546,7 @@ setMethod ('setNodeBorderWidthDirect', 'CytoscapeWindowClass',
      })
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeBorderColorDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeBorderColorDirect', 'OptionalCyWinClass',
    function (obj, node.names, new.colors) {
        # ensure the color is formated in correct hexadecimal style
        for (color in new.colors){
@@ -3534,7 +3559,7 @@ setMethod ('setNodeBorderColorDirect', 'CytoscapeWindowClass',
      })
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeOpacityDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeOpacityDirect', 'OptionalCyWinClass',
    function (obj, node.names, new.values) {
       for (current.value in new.values){
          # ensure the opacity value is a double and between 0 and 255
@@ -3548,7 +3573,7 @@ setMethod ('setNodeOpacityDirect', 'CytoscapeWindowClass',
       setNodePropertyDirect(obj, node.names, new.values, "NODE_LABEL_TRANSPARENCY")
     })
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeFillOpacityDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeFillOpacityDirect', 'OptionalCyWinClass',
    function (obj, node.names, new.values) {
       for (current.value in new.values){
          # ensure the opacity value is between 0 and 255
@@ -3562,7 +3587,7 @@ setMethod ('setNodeFillOpacityDirect', 'CytoscapeWindowClass',
      })
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeBorderOpacityDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeBorderOpacityDirect', 'OptionalCyWinClass',
    function (obj, node.names, new.values) {
       for (current.value in new.values){
          # ensure the opacity value is a double and between 0 and 255
@@ -3576,7 +3601,7 @@ setMethod ('setNodeBorderOpacityDirect', 'CytoscapeWindowClass',
      })
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeLabelOpacityDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeLabelOpacityDirect', 'OptionalCyWinClass',
 
    function (obj, node.names, new.values) {
       for (current.value in new.values){
@@ -3591,7 +3616,7 @@ setMethod ('setNodeLabelOpacityDirect', 'CytoscapeWindowClass',
      })
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
+setMethod ('setEdgeOpacityDirect', 'OptionalCyWinClass',
 
    function (obj, edge.names, new.values) {
       for (current.value in new.values){
@@ -3608,7 +3633,7 @@ setMethod ('setEdgeOpacityDirect', 'CytoscapeWindowClass',
      })
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeColorDirect', 'CytoscapeWindowClass',
+setMethod('setEdgeColorDirect', 'OptionalCyWinClass',
    function (obj, edge.names, new.value) {
        # ensure the color is formated in correct hexadecimal style
        for (color in new.value){
@@ -3622,21 +3647,21 @@ setMethod('setEdgeColorDirect', 'CytoscapeWindowClass',
 })
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeLabelDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeLabelDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.value) {
         setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL")
 })
 ## END setEdgeLabelDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeFontFaceDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeFontFaceDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.value) {
         setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_FONT_FACE")
 })
 ## END setEdgeFontFaceDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeFontSizeDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeFontSizeDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.value) {
         size.type.errors = 0
         
@@ -3656,7 +3681,7 @@ setMethod('setEdgeFontSizeDirect', 'CytoscapeWindowClass',
 ## END setEdgeFontSizeDirect
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeLabelColorDirect', 'CytoscapeWindowClass',
+setMethod ('setEdgeLabelColorDirect', 'OptionalCyWinClass',
    function (obj, edge.names, new.value) {
       for (current.color in new.value){
          # ensure the color is formated in correct hexadecimal style
@@ -3668,7 +3693,7 @@ setMethod ('setEdgeLabelColorDirect', 'CytoscapeWindowClass',
       return(setEdgePropertyDirect(obj, edge.names, new.value, "EDGE_LABEL_COLOR"))
      })
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeTooltipDirect', 'CytoscapeWindowClass',
+setMethod ('setEdgeTooltipDirect', 'OptionalCyWinClass',
     function (obj, edge.names, new.values) {
         if (length (edge.names) != length (new.values)) {
             if (length(new.values) != 1){
@@ -3683,7 +3708,7 @@ setMethod ('setEdgeTooltipDirect', 'CytoscapeWindowClass',
      })
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeLineWidthDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeLineWidthDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.value) {
       for (current.size in new.value){
          # ensure the sizes are numbers
@@ -3698,7 +3723,7 @@ setMethod('setEdgeLineWidthDirect', 'CytoscapeWindowClass',
 })
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeLineStyleDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeLineStyleDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.values) {
         unique.new.values <- unique(new.values)
         
@@ -3719,7 +3744,7 @@ setMethod('setEdgeLineStyleDirect', 'CytoscapeWindowClass',
 ## END setEdgeLineStyleDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeSourceArrowShapeDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.values) {
         unique.new.values <- unique(new.values)
         
@@ -3739,7 +3764,7 @@ setMethod('setEdgeSourceArrowShapeDirect', 'CytoscapeWindowClass',
 ## END setEdgeSourceArrowShapeDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeTargetArrowShapeDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeTargetArrowShapeDirect', 'OptionalCyWinClass', 
     function (obj, edge.names, new.values) {
         unique.new.values <- unique(new.values)
         
@@ -3759,7 +3784,7 @@ setMethod('setEdgeTargetArrowShapeDirect', 'CytoscapeWindowClass',
 ## END setEdgeTargetArrowShapeDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeSourceArrowColorDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeSourceArrowColorDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.colors) {
         for(current.color in new.colors) {
             # check the color is represented in hexadecimal format
@@ -3773,7 +3798,7 @@ setMethod('setEdgeSourceArrowColorDirect', 'CytoscapeWindowClass',
 ## END setEdgeSourceArrowColorDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeTargetArrowColorDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeTargetArrowColorDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.colors) {
         for(current.color in new.colors) {
             if (.isNotHexColor(current.color)){
@@ -3786,7 +3811,7 @@ setMethod('setEdgeTargetArrowColorDirect', 'CytoscapeWindowClass',
 ## END setEdgeTargetArrowColorDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeLabelOpacityDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeLabelOpacityDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.value) {
         for(current.value in new.value) {
             # check that the opacity value is DOUBLE number between 0 and 255
@@ -3802,7 +3827,7 @@ setMethod('setEdgeLabelOpacityDirect', 'CytoscapeWindowClass',
 ## END setEdgeLabelOpacityDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeSourceArrowOpacityDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeSourceArrowOpacityDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.values) {
         write(sprintf("WARNING: Method RCy3::setEdgeSourceArrowOpacityDirect() is not implemented in RCy3!"), stderr())
         
@@ -3811,7 +3836,7 @@ setMethod('setEdgeSourceArrowOpacityDirect', 'CytoscapeWindowClass',
 ## END setEdgeSourceArrowOpacityDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeTargetArrowOpacityDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeTargetArrowOpacityDirect', 'OptionalCyWinClass', 
     function(obj, edge.names, new.values) {
         write(sprintf("WARNING: Method RCy3::setEdgeTargetArrowOpacityDirect() is not implemented in RCy3!"), stderr())
         
@@ -3820,7 +3845,7 @@ setMethod('setEdgeTargetArrowOpacityDirect', 'CytoscapeWindowClass',
 ## END setEdgeTargetArrowOpacityDirect
 
 #------------------------------------------------------------------------------------------------------------------------
-#setMethod ('setEdgeLabelPositionDirect', 'CytoscapeWindowClass',
+#setMethod ('setEdgeLabelPositionDirect', 'OptionalCyWinClass',
 #   function (obj, edge.names, new.value) {
 #     id = as.character (obj@suid)
 #     for (edge.name in edge.names)
@@ -5389,11 +5414,9 @@ obtainEveryOtherValue <- function(v) {
 }
 
 # ------------------------------------------------------------------------------
-#AP TODO: refactor this to not rely on full obj; will fix all *Direct methods!
-setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) {
+setNodePropertyDirect <- function(obj=CytoscapeWindowFromNetwork(), node.names, new.values, visual.property) {
     # get network ID 
     net.SUID <- as.character(obj@suid)
-    
     
     # cyREST allows for multiple views per network
     # get all views that associate with this network and select the first one
@@ -5430,7 +5453,7 @@ setNodePropertyDirect <- function(obj, node.names, new.values, visual.property) 
 ## END setNodePropertyDirect
 
 # ------------------------------------------------------------------------------
-setEdgePropertyDirect <- function(obj, edge.names, new.values, visual.property) {
+setEdgePropertyDirect <- function(obj=CytoscapeWindowFromNetwork(), edge.names, new.values, visual.property) {
     # get network ID 
     net.SUID <- as.character(obj@suid)
     
