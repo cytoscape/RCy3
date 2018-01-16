@@ -367,7 +367,7 @@ setGeneric ('setNodeOpacityRule',       signature='obj', function (obj=Cytoscape
 setGeneric ('setNodeTooltipRule',       signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.attribute.name, style.name = 'default') standardGeneric ('setNodeTooltipRule'))
 
 setGeneric ('setEdgeLineStyleRule',        signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, attribute.values, line.styles, default.style='SOLID', style.name = 'default') standardGeneric ('setEdgeLineStyleRule'))
-setGeneric ('setEdgeLineWidthRule',        signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, attribute.values, line.widths, mode, default.width='1', style.name = 'default') standardGeneric ('setEdgeLineWidthRule'))
+setGeneric ('setEdgeLineWidthRule',        signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, attribute.values, line.widths, mode="interpolate", default.width='1', style.name = 'default') standardGeneric ('setEdgeLineWidthRule'))
 setGeneric ('setEdgeTargetArrowRule',      signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, attribute.values, arrows, default='ARROW', style.name = 'default') standardGeneric ('setEdgeTargetArrowRule'))
 setGeneric ('setEdgeSourceArrowRule',      signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, attribute.values, arrows, default='ARROW', style.name = 'default') standardGeneric ('setEdgeSourceArrowRule'))
 setGeneric ('setEdgeTargetArrowColorRule', signature='obj', function (obj=CytoscapeConnection(), edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000', style.name = 'default') standardGeneric ('setEdgeTargetArrowColorRule'))
@@ -1549,7 +1549,7 @@ setMethod('.edgeSUIDToEdgeName', 'OptionalCyWinClass',
 # ------------------------------------------------------------------------------
 setMethod('addCyNode', 'OptionalCyWinClass', function(obj, nodeName) {
 
-    if(nodeName %in% getAllNodes(loc.obj)) {
+    if(nodeName %in% getAllNodes(obj)) {
         write(sprintf('RCy3::addCyNode, node "%s" already present in Cytoscape graph', nodeName), stderr())
         return()
     }
@@ -1851,29 +1851,28 @@ setMethod ('getNodePosition', 'OptionalCyWinClass',
       # get node position for each node
       for (node.name in node.names){
           # convert node name into node SUID
-          #dict.indices = which(sapply(obj@node.suid.name.dict, function(s) { s$name }) %in% node.name)
-          #query.node = sapply(obj@node.suid.name.dict[dict.indices], function(i) {i$SUID})
+          query.node = .nodeNameToNodeSUID(obj,node.name)
           
           # get node x coordinate
-          # resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_X_LOCATION", sep="/")
-          # request.res <- GET(resource.uri)
-          # node.x.position <- fromJSON(rawToChar(request.res$content))
-          # node.x.position <- node.x.position[[2]]
-          node.x.position <- commandRun(paste0('node get properties network="',obj@title,'" nodeList=',node.name,' propertyList="X LOCATION"'))
-          node.x.position <- gsub("}","",node.x.position)
-          node.x.position <- unlist(strsplit(node.x.position,":"))[4]
+          resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_X_LOCATION", sep="/")
+          request.res <- GET(resource.uri)
+          node.x.position <- fromJSON(rawToChar(request.res$content))
+          node.x.position <- node.x.position[[2]]
+          # node.x.position <- commandRun(paste0('node get properties network="',obj@title,'" nodeList="',node.name,'" propertyList="X LOCATION"'))
+          # node.x.position <- gsub("}","",node.x.position)
+          # node.x.position <- unlist(strsplit(node.x.position,":"))[4]
           
           # get node y coordinate
-          # resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_Y_LOCATION", sep="/")
-          # request.res <- GET(resource.uri)
-          # node.y.position <- fromJSON(rawToChar(request.res$content))
-          # node.y.position <- node.y.position[[2]]
-          node.y.position <- commandRun(paste0('node get properties network="',obj@title,'" nodeList=',node.name,' propertyList="Y LOCATION"'))
-          node.y.position <- gsub("}","",node.y.position)
-          node.y.position <- unlist(strsplit(node.y.position,":"))[4]
+          resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_Y_LOCATION", sep="/")
+          request.res <- GET(resource.uri)
+          node.y.position <- fromJSON(rawToChar(request.res$content))
+          node.y.position <- node.y.position[[2]]
+          # node.y.position <- commandRun(paste0('node get properties network="',obj@title,'" nodeList="',node.name,'" propertyList="Y LOCATION"'))
+          # node.y.position <- gsub("}","",node.y.position)
+          # node.y.position <- unlist(strsplit(node.y.position,":"))[4]
           
           # add x and y coordinates to the coordinates list
-          coordinates.list[[node.name]] <- list(x= node.x.position, y=node.y.position)
+          coordinates.list[[node.name]] <- list(x= as.numeric(node.x.position), y=as.numeric(node.y.position))
       }
       return(coordinates.list)
     }) # getNodePosition
@@ -1896,9 +1895,7 @@ setMethod ('getNodeSize', 'OptionalCyWinClass',
      
      node.SUIDs <- .nodeNameToNodeSUID(obj,node.names)
      
-     for (pos in seq(node.SUIDs)){
-        node.SUID <- node.SUIDs[pos]
-        
+     for (node.SUID in node.SUIDs){
         # request 
         resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
     
@@ -1938,7 +1935,7 @@ setMethod('setNodeAttributes', 'CytoscapeWindowClass',
 ## END setNodeAttributes
 
 # ------------------------------------------------------------------------------
-setMethod('setNodeAttributesDirect', 'CytoscapeWindowClass', 
+setMethod('setNodeAttributesDirect', 'OptionalCyWinClass', 
     function(obj, attribute.name, attribute.type, node.names, values) {
         net.SUID = as.character(obj@suid)
         
@@ -2022,7 +2019,7 @@ setMethod('setEdgeAttributes', 'CytoscapeWindowClass',
 ## END setEdgeAttributes
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeAttributesDirect', 'CytoscapeWindowClass', 
+setMethod('setEdgeAttributesDirect', 'OptionalCyWinClass', 
     function(obj, attribute.name, attribute.type, edge.names, values) {
         net.SUID = as.character(obj@suid)
         
@@ -2516,15 +2513,20 @@ setMethod ('setEdgeTooltipRule', 'OptionalCyWinClass',
     })  # setEdgeTooltipRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeLabelRule', 'CytoscapeWindowClass',
+setMethod ('setNodeLabelRule', 'OptionalCyWinClass',
     function (obj, node.attribute.name, style.name = 'default') {
         id = as.character (obj@suid)
         
-        if (!node.attribute.name %in% noa.names (obj@graph)) {
-            write (sprintf ('warning!  setNodeLabelRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
+        if (!node.attribute.name %in% getNodeAttributeNames(obj)) {
+            write (sprintf ('Warning! RCy3::setNodeLabelRule: passed non-existent node attribute: %s', node.attribute.name), stderr ())
             return ()
         }
-        attribute.values = as.character (noa (obj@graph, node.attribute.name))
+        
+        if(length(nodes(obj@graph))==0){ #i.e., empty obj@graph 
+            attribute.values <- getTableColumns('node',node.attribute.name)[,node.attribute.name]
+        } else {
+            attribute.values = noa (obj@graph, node.attribute.name)
+        }
         
         # set default label
         default.label <- list(visualProperty = "NODE_LABEL", value = "")
@@ -2539,16 +2541,21 @@ setMethod ('setNodeLabelRule', 'CytoscapeWindowClass',
     })  # setNodeLabelRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeLabelRule', 'CytoscapeWindowClass',
+setMethod ('setEdgeLabelRule', 'OptionalCyWinClass',
 
     function (obj, edge.attribute.name, style.name = 'default') {
         id = as.character (obj@suid)
         
-        if (!edge.attribute.name %in% eda.names (obj@graph)) {
-            write (sprintf ('warning!  setEdgeLabelRule passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
+        if (!edge.attribute.name %in% getEdgeAttributeNames(obj)) {
+            write (sprintf ('Warning! RCy3::setEdgeLabelRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
             return ()
         }
-        attribute.values = as.character (eda (obj@graph, edge.attribute.name))
+        
+        if(length(edgeL(obj@graph))==0){ #i.e., empty obj@graph 
+            attribute.values <- getTableColumns('edge',edge.attribute.name)[,edge.attribute.name]
+        } else {
+            attribute.values = noa (obj@graph, edge.attribute.name)
+        }
         
         # set default label
         default.label <- list(visualProperty = "EDGE_LABEL", value = "")
@@ -2563,7 +2570,7 @@ setMethod ('setEdgeLabelRule', 'CytoscapeWindowClass',
     })  # setEdgeLabelRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
+setMethod ('setNodeColorRule', 'OptionalCyWinClass',
            
            function (obj, node.attribute.name, control.points, colors, mode, default.color='#FFFFFF', style.name = 'default') {
                if (!mode %in% c ('interpolate', 'lookup')) {
@@ -2619,7 +2626,7 @@ setMethod ('setNodeColorRule', 'CytoscapeWindowClass',
 #------------------------------------------------------------------------------------------------------------------------
 # Cytoscape distinguishes between Node Opacity, Node Border Opacity, and Node Label Opacity.  we call this 'aspect' here.
 
-setMethod ('setNodeOpacityRule', 'CytoscapeWindowClass',
+setMethod ('setNodeOpacityRule', 'OptionalCyWinClass',
 
     function (obj, node.attribute.name, control.points, opacities, mode, aspect='all', style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
@@ -2721,7 +2728,7 @@ setMethod ('setNodeOpacityRule', 'CytoscapeWindowClass',
      }) # setNodeOpacityRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeBorderColorRule', 'CytoscapeWindowClass',
+setMethod ('setNodeBorderColorRule', 'OptionalCyWinClass',
 
     function (obj, node.attribute.name, control.points, colors, mode, default.color='#000000', style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
@@ -2772,15 +2779,16 @@ setMethod ('setNodeBorderColorRule', 'CytoscapeWindowClass',
      }) # setNodeBorderColorRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeBorderWidthRule', 'CytoscapeWindowClass',
+setMethod ('setNodeBorderWidthRule', 'OptionalCyWinClass',
 
    function (obj, node.attribute.name, attribute.values, line.widths, default.width=1, style.name = 'default') {
        id = as.character (obj@suid)
        
        #TODO we should add interpolate as mode in the function
        mode = "lookup"
-       if (!node.attribute.name %in% noa.names (obj@graph)) {
-           write (sprintf ('warning!  setNodeBorderWidthRule passed non-existent node attribute: %s', node.attribute.name), stderr ())
+       
+       if (!node.attribute.name %in% getNodeAttributeNames(obj)) {
+           write (sprintf ('Warning! RCy3::setNodeBorderWidthRule: passed non-existent node attribute: %s', node.attribute.name), stderr ())
            return ()
        }
        
@@ -2916,13 +2924,13 @@ setMethod('setDefaultEdgeFontSize', 'OptionalCyObjClass',
 })
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeShapeRule', 'CytoscapeWindowClass',
+setMethod ('setNodeShapeRule', 'OptionalCyWinClass',
 
     function (obj, node.attribute.name, attribute.values, node.shapes, default.shape='ELLIPSE', style.name = 'default') {
         id = as.character (obj@suid)
 
-        if (!node.attribute.name %in% noa.names (obj@graph)) {
-            write (sprintf ('Error in RCy3::setNodeShapeRule. Passed non-existent node attribute: %s', node.attribute.name), stderr ())
+        if (!node.attribute.name %in% getNodeAttributeNames(obj)) {
+            write (sprintf ('Warning! RCy3::setNodeShapeRule: passed non-existent node attribute: %s', node.attribute.name), stderr ())
             return ()
         }
         
@@ -2947,7 +2955,7 @@ setMethod ('setNodeShapeRule', 'CytoscapeWindowClass',
      }) # setNodeShapeRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
+setMethod ('setNodeSizeRule', 'OptionalCyWinClass',
 
     function (obj, node.attribute.name, control.points, node.sizes, mode, default.size=40, style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
@@ -3000,7 +3008,7 @@ setMethod ('setNodeSizeRule', 'CytoscapeWindowClass',
     }) # setNodeSizeRule
 #
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeColorRule', 'CytoscapeWindowClass',
+setMethod ('setEdgeColorRule', 'OptionalCyWinClass',
 
     function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#FFFFFF', style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
@@ -3055,7 +3063,7 @@ setMethod ('setEdgeColorRule', 'CytoscapeWindowClass',
      }) # setEdgeColorRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeOpacityRule', 'CytoscapeWindowClass',
+setMethod ('setEdgeOpacityRule', 'OptionalCyWinClass',
 
     function (obj, edge.attribute.name, control.points, opacities, mode, style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
@@ -3104,13 +3112,13 @@ setMethod ('setEdgeOpacityRule', 'CytoscapeWindowClass',
      }) # setEdgeColorRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeLineStyleRule', 'CytoscapeWindowClass',
+setMethod ('setEdgeLineStyleRule', 'OptionalCyWinClass',
 
     function (obj, edge.attribute.name, attribute.values, line.styles, default.style='SOLID', style.name = 'default') {
         id = as.character (obj@suid)
         
-        if (!edge.attribute.name %in% eda.names (obj@graph)) {
-            write (sprintf ('warning!  setEdgeLineStyleRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+        if (!edge.attribute.name %in% getEdgeAttributeNames(obj)) {
+            write (sprintf ('Warning! RCy3::setEdgeLineStyleRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
             return ()
         }
         
@@ -3136,13 +3144,12 @@ setMethod ('setEdgeLineStyleRule', 'CytoscapeWindowClass',
      }) # setEdgeLineStyleRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
-
+setMethod ('setEdgeLineWidthRule', 'OptionalCyWinClass',
     function (obj, edge.attribute.name, attribute.values, line.widths, mode="interpolate", default.width=1, style.name = 'default') {
         id = as.character (obj@suid)
         
-        if (!edge.attribute.name %in% eda.names (obj@graph)) {
-            write (sprintf ('Warning! setEdgeLineWidthRule passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
+        if (!edge.attribute.name %in% getEdgeAttributeNames(obj)) {
+            write (sprintf ('Warning! RCy3::setEdgeLineWidthRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
             return ()
         }
         
@@ -3191,13 +3198,13 @@ setMethod ('setEdgeLineWidthRule', 'CytoscapeWindowClass',
      })
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeTargetArrowRule', 'CytoscapeWindowClass', 
+setMethod ('setEdgeTargetArrowRule', 'OptionalCyWinClass', 
 
     function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW', style.name = 'default') {
         id = as.character (obj@suid)
         
-        if (!edge.attribute.name %in% eda.names (obj@graph)) {
-            write (sprintf ('Warning! setEdgeTargetArrowRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+        if (!edge.attribute.name %in% getEdgeAttributeNames(obj)) {
+            write (sprintf ('Warning! RCy3::setEdgeTargetArrowRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
             return ()
         }
         
@@ -3214,13 +3221,13 @@ setMethod ('setEdgeTargetArrowRule', 'CytoscapeWindowClass',
      }) # setTargetArrowRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeSourceArrowRule', 'CytoscapeWindowClass', 
+setMethod ('setEdgeSourceArrowRule', 'OptionalCyWinClass', 
 
     function (obj, edge.attribute.name, attribute.values, arrows, default='ARROW', style.name = 'default') {
         id = as.character (obj@suid)
         
-        if (!edge.attribute.name %in% eda.names (obj@graph)) {
-            write (sprintf ('warning!  setEdgeSourceArrowRule passed non-existent node attribute: %s', edge.attribute.name), stderr ())
+        if (!edge.attribute.name %in% getEdgeAttributeNames(obj)) {
+            write (sprintf ('Warning! RCy3::setEdgeSourceArrowRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
             return ()
         }
         
@@ -3237,7 +3244,7 @@ setMethod ('setEdgeSourceArrowRule', 'CytoscapeWindowClass',
     }) # setTargetArrowRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass', 
+setMethod ('setEdgeTargetArrowColorRule', 'OptionalCyWinClass', 
 
     function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000', style.name = 'default') {
         if (!mode %in% c ('interpolate', 'lookup')) {
@@ -3292,7 +3299,7 @@ setMethod ('setEdgeTargetArrowColorRule', 'CytoscapeWindowClass',
     }) # setTargetArrowRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass', 
+setMethod ('setEdgeSourceArrowColorRule', 'OptionalCyWinClass', 
 
     function (obj, edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000', style.name = 'default') {
 
@@ -3350,7 +3357,7 @@ setMethod ('setEdgeSourceArrowColorRule', 'CytoscapeWindowClass',
      }) # setEdgeSourceArrowColorRule
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodeColorDirect', 'CytoscapeWindowClass',
+setMethod ('setNodeColorDirect', 'OptionalCyWinClass',
    function (obj, node.names, new.colors) {
       for (current.color in new.colors){
          # ensure the new color string is in correct hexadecimal format
@@ -3900,23 +3907,33 @@ setMethod('getNodeAttribute', 'OptionalCyWinClass',
             node.attribute.type <- getNodeAttributeType(obj, attribute.name)
             
             if(length(node.attribute.type) > 0) {
-                resource.uri <- 
-                    paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/rows", node.SUID, attribute.name, sep="/")
-                request.res <- GET(url=resource.uri)
-                
-                node.attribute.value <- unname(rawToChar(request.res$content))
+                res=commandRun(paste0('node get attribute nodeList=',node.name,' columnList=',attribute.name))
+                res <- gsub("}","",res)
+                node.attribute.value <- unlist(strsplit(res,":"))[4]
+                # resource.uri <- 
+                #     paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/rows", node.SUID, attribute.name, sep="/")
+                # request.res <- GET(url=resource.uri)
+                # node.attribute.value <- unname(rawToChar(request.res$content))
                 
                 switch(node.attribute.type, 
                     "Double"={
+                        if(is.na(node.attribute.value))
+                            node.attribute.value = 0.0
                         return(as.numeric(node.attribute.value))
                     },
                     "Long"=,
                     "Integer"={
+                        if(is.na(node.attribute.value))
+                            node.attribute.value = 0
                         return(as.integer(node.attribute.value))
                     },
                     "Boolean"={
+                        if(is.na(node.attribute.value))
+                            node.attribute.value = FALSE
                         return(as.logical(node.attribute.value))
                     },{
+                        if(is.na(node.attribute.value))
+                            node.attribute.value = ''
                         return(as.character(node.attribute.value))
                     }
                 )
