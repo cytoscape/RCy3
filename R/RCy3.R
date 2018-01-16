@@ -6713,11 +6713,12 @@ updateStyleMapping <- function(style.name, mapping, obj=CytoscapeConnection()){
     res.elem <- fromJSON(rawToChar(res$content))
     for(re in res.elem){
         if(class(re)=='list')
-            if(re$visualProperty==visual.prop.name)
-                exists = TRUE
+            if(!is.null(re$visualProperty))
+                if(re$visualProperty==visual.prop.name)
+                    exists = TRUE
     }
     
-    if(exists){     #if yes...
+    if(exists==TRUE){     #if yes...
         style.url <- URLencode(paste(base.url,'styles', style.name,'mappings',visual.prop.name, sep = '/'))
         map.body <- toJSON(list(mapping))
         invisible(PUT(url=style.url,body=map.body, encode="json"))
