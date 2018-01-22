@@ -156,7 +156,7 @@ CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), ho
              collectTimings=collectTimings, node.suid.name.dict = list(), edge.node.suid.name.dict=list())
     
     if (create.window) {
-        cw@suid = createNetwork(cw)
+        cw@suid = createNetworkFromGraph(cw)
     }
     # let user know that a new window was created
     write(sprintf('New window named "%s" was created in Cytoscape.', title), stderr())
@@ -236,16 +236,13 @@ setGeneric ('getLayoutNameMapping',	     signature='obj', function (obj=Cytoscap
 setGeneric ('getLayoutPropertyNames',    signature='obj', function (obj=CytoscapeConnection(), layout.name) standardGeneric ('getLayoutPropertyNames'))
 setGeneric ('getLayoutPropertyType',     signature='obj', function (obj=CytoscapeConnection(), layout.name, property.name) standardGeneric ('getLayoutPropertyType'))
 setGeneric ('getLayoutPropertyValue',    signature='obj', function (obj=CytoscapeConnection(), layout.name, property.name) standardGeneric ('getLayoutPropertyValue'))
-setGeneric ('getCommandNames',           signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getCommandNames'))
-setGeneric ('getCommandsWithinNamespace',signature='obj', function (obj=CytoscapeConnection(), namespace) standardGeneric('getCommandsWithinNamespace'))
-setGeneric ('setCommandProperties',      signature='obj', function (obj=CytoscapeConnection(), command.name, properties.list, return.graph = FALSE) standardGeneric('setCommandProperties'))
 setGeneric ('setLayoutProperties',       signature='obj', function (obj=CytoscapeConnection(), layout.name, properties.list) standardGeneric ('setLayoutProperties'))
 setGeneric ('getLineStyles',             signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getLineStyles'))
 setGeneric ('getNodeShapes',             signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNodeShapes'))
-setGeneric ('hidePanel',				 signature='obj', function (obj=CytoscapeConnection(), panelName) standardGeneric ('hidePanel'))
+setGeneric ('hidePanel',				 signature='obj', function (obj=CytoscapeConnection(), panel.name) standardGeneric ('hidePanel'))
 setGeneric ('hideAllPanels',			 signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('hideAllPanels'))
-setGeneric ('dockPanel',				 signature='obj', function (obj=CytoscapeConnection(), panelName) standardGeneric ('dockPanel'))
-setGeneric ('floatPanel',				 signature='obj', function (obj=CytoscapeConnection(), panelName) standardGeneric ('floatPanel'))
+setGeneric ('dockPanel',				 signature='obj', function (obj=CytoscapeConnection(), panel.name) standardGeneric ('dockPanel'))
+setGeneric ('floatPanel',				 signature='obj', function (obj=CytoscapeConnection(), panel.name) standardGeneric ('floatPanel'))
 setGeneric ('setTooltipInitialDelay',	 signature='obj', function (obj=CytoscapeConnection(), msecs) standardGeneric ('setTooltipInitialDelay'))
 setGeneric ('setTooltipDismissDelay',	 signature='obj', function (obj=CytoscapeConnection(), msecs) standardGeneric ('setTooltipDismissDelay'))
 setGeneric ('getDirectlyModifiableVisualProperties',    
@@ -260,8 +257,8 @@ setGeneric ('cloneNetwork',              signature='obj', function (obj=Cytoscap
 setGeneric ('deleteNetwork',  	         signature='obj', function (obj=CytoscapeWindowFromNetwork(), title=NA) standardGeneric ('deleteNetwork'))
 setGeneric ('renameNetwork',             signature='obj', function (obj=CytoscapeWindowFromNetwork(), new.title, return.graph = FALSE) standardGeneric('renameNetwork'))
 setGeneric ('getAttributeClassNames', 	 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getAttributeClassNames'))
-setGeneric ('addCyNode',                 signature='obj', function (obj=CytoscapeWindowFromNetwork(), nodeName) standardGeneric ('addCyNode'))
-setGeneric ('addCyEdge',	             signature='obj', function (obj=CytoscapeWindowFromNetwork(), sourceNode, targetNode, edgeType, directed) standardGeneric ('addCyEdge'))
+setGeneric ('addCyNode',                 signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.name) standardGeneric ('addCyNode'))
+setGeneric ('addCyEdge',	             signature='obj', function (obj=CytoscapeWindowFromNetwork(), source.node.name, target.node.name, edgeType, directed) standardGeneric ('addCyEdge'))
 setGeneric ('layoutNetwork',             signature='obj', function (obj=CytoscapeWindowFromNetwork(), layout.name='grid') standardGeneric ('layoutNetwork'))
 setGeneric ('saveLayout',           	 signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename, timestamp.in.filename=FALSE) standardGeneric ('saveLayout'))
 setGeneric ('restoreLayout',        	 signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename) standardGeneric ('restoreLayout'))
@@ -279,8 +276,8 @@ setGeneric ('setCenter',				 signature='obj', function (obj=CytoscapeWindowFromN
 setGeneric ('getZoom',					 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getZoom'))
 setGeneric ('setZoom',					 signature='obj', function (obj=CytoscapeWindowFromNetwork(), new.level) standardGeneric ('setZoom'))
 setGeneric ('getViewCoordinates',		 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getViewCoordinates'))
-setGeneric ('saveImage',                 signature='obj', function (obj=CytoscapeWindowFromNetwork(), file.name, image.type, h=600) standardGeneric ('saveImage'))
-setGeneric ('saveNetwork',               signature='obj', function (obj=CytoscapeWindowFromNetwork(), file.name, type='cys') standardGeneric ('saveNetwork'))
+setGeneric ('saveImage',                 signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename, image.type, h=600) standardGeneric ('saveImage'))
+setGeneric ('saveNetwork',               signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename, type='cys') standardGeneric ('saveNetwork'))
 setGeneric ('getNodeCount',              signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getNodeCount'))
 setGeneric ('getEdgeCount',              signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getEdgeCount'))
 setGeneric ('getNodeAttributeType',      signature='obj', function (obj=CytoscapeWindowFromNetwork(), attribute.name) standardGeneric ('getNodeAttributeType'))
@@ -326,7 +323,7 @@ setGeneric ('selectEdgesConnectedBySelectedNodes',
 setGeneric ('setVisualStyle',         signature='obj', function (obj=CytoscapeWindowFromNetwork(), style.name) standardGeneric ('setVisualStyle'))
 setGeneric ('getVisualStyleNames',    signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getVisualStyleNames'))
 setGeneric ('copyVisualStyle',        signature='obj', function (obj=CytoscapeConnection(), from.style, to.style) standardGeneric ('copyVisualStyle'))
-setGeneric ('lockNodeDimensions',     signature='obj', function (obj=CytoscapeConnection(), new.state, visual.style.name='default') standardGeneric ('lockNodeDimensions'))
+setGeneric ('lockNodeDimensions',     signature='obj', function (obj=CytoscapeConnection(), new.state, style.name='default') standardGeneric ('lockNodeDimensions'))
 
 #--- defaults ----------------------------------------------
 setGeneric ('getDefaultBackgroundColor',	        signature='obj', function (obj=CytoscapeConnection(), style.name='default') standardGeneric ('getDefaultBackgroundColor'))
@@ -428,16 +425,16 @@ setGeneric ('connectToNewestCyWindow',       signature='obj', function (obj=Cyto
 # methods related to transmitting data from obj@graph to 
 # Cytoscape thus requiring a full CytoscapeWindowClass obj
 #-----------------------------------------------------------
-setGeneric ('createNetwork',             signature='obj', function (obj) standardGeneric('createNetwork'))
-setGeneric ('displayGraph',              signature='obj', function (obj) standardGeneric ('displayGraph'))
-setGeneric ('predictTimeToDisplayGraph', signature='obj', function (obj) standardGeneric ('predictTimeToDisplayGraph'))
-setGeneric ('addGraphToGraph',           signature='obj', function (obj, other.graph) standardGeneric ('addGraphToGraph'))
-setGeneric ('setGraph', 	             signature='obj', function (obj, graph) standardGeneric ('setGraph'))
-setGeneric ('getGraph', 	             signature='obj', function (obj) standardGeneric ('getGraph'))
-setGeneric ('sendNodes',	             signature='obj', function (obj) standardGeneric ('sendNodes'))
-setGeneric ('sendEdges',	             signature='obj', function (obj) standardGeneric ('sendEdges'))
-setGeneric ('setNodeAttributes',         signature='obj', function (obj, attribute.name) standardGeneric ('setNodeAttributes'))
-setGeneric ('setEdgeAttributes', 	     signature='obj', function (obj, attribute.name) standardGeneric ('setEdgeAttributes'))
+setGeneric ('createNetworkFromGraph',     signature='obj', function (obj=CytoscapeConnection(), graph=NA) standardGeneric('createNetworkFromGraph'))
+setGeneric ('displayGraph',               signature='obj', function (obj) standardGeneric ('displayGraph'))
+setGeneric ('predictTimeToDisplayGraph',  signature='obj', function (obj) standardGeneric ('predictTimeToDisplayGraph'))
+setGeneric ('addGraphToGraph',            signature='obj', function (obj, other.graph) standardGeneric ('addGraphToGraph'))
+setGeneric ('setGraph', 	              signature='obj', function (obj, graph) standardGeneric ('setGraph'))
+setGeneric ('getGraph', 	              signature='obj', function (obj) standardGeneric ('getGraph'))
+setGeneric ('sendNodeAttributesFromGraph',signature='obj', function (obj, attribute.name) standardGeneric ('sendNodeAttributesFromGraph'))
+setGeneric ('sendEdgeAttributesFromGraph',signature='obj', function (obj, attribute.name) standardGeneric ('sendEdgeAttributesFromGraph'))
+setGeneric ('sendNodesFromGraph',	      signature='obj', function (obj) standardGeneric ('sendNodesFromGraph'))
+setGeneric ('sendEdgesFromGraph',	      signature='obj', function (obj) standardGeneric ('sendEdgesFromGraph'))
 
 #-----------------------------------------------------------
 # private methods, for internal use only; dependent on 
@@ -580,10 +577,22 @@ setMethod('apiVersion', 'OptionalCyObjClass',
 
 # ------------------------------------------------------------------------------
 # Create network from a graph (obj@graph)
-setMethod('createNetwork', 'CytoscapeWindowClass', 
-	function(obj) {
-		obj@graph@graphData$name <- obj@title
-		graph.attributes <- obj@graph@graphData
+setMethod('createNetworkFromGraph', 'OptionalCyObjClass', 
+	function(obj, graph=NA) {
+	    
+	    if (!'graph' %in% slotNames(obj)){ # CC
+	        if(is.na(graph)){
+	            write("ERROR: No graph provided.")
+	            return();
+	        } else{
+	            g = graph
+	        }
+	    } else {
+	        g = obj@graph
+	    }
+	    
+		g@graphData$name <- obj@title
+		graph.attributes <- g@graphData
 		graph.elements = list(nodes = list(), edges = list())
 		
 		cygraph <- toJSON(list(data = graph.attributes, elements = graph.elements))
@@ -1296,7 +1305,7 @@ setMethod('connectToNewestCyWindow',
 
 
 # ------------------------------------------------------------------------------
-setMethod('sendNodes', 'CytoscapeWindowClass', function(obj) {
+setMethod('sendNodesFromGraph', 'CytoscapeWindowClass', function(obj) {
     loc.obj <- obj
     # returns the nodes currently stored in the graph object
     graph.network.nodes = nodes(loc.obj@graph)
@@ -1322,7 +1331,7 @@ setMethod('sendNodes', 'CytoscapeWindowClass', function(obj) {
             loc.obj@node.suid.name.dict[[length(loc.obj@node.suid.name.dict)+1]] = new.node.SUIDs[[i]]
         }
     } else {
-        write('CytoscapeWindow.sendNodes(), no new nodes to send, returning', stderr())
+        write('CytoscapeWindow.sendNodesFromGraph(), no new nodes to send, returning', stderr())
         return()
     }
     
@@ -1398,11 +1407,6 @@ setMethod ('.addEdges', signature (obj='CytoscapeWindowClass'),
             # edge types vector
             edge.type = tbl.edges$edgeType[new.edge.indices]
             directed = rep(TRUE, length(source.nodes))
-            
-            # convert the [node.SUID, node.name] dict(list) to data frame object
-            node.suid.name.dict.df = 
-                data.frame(matrix(unlist(loc.obj@node.suid.name.dict), nrow=length(loc.obj@node.suid.name.dict), byrow=TRUE), stringsAsFactors=FALSE)
-            colnames(node.suid.name.dict.df) <- c("name", "SUID")
             
             # get the SUIDs of the source nodes for the new edges
             source.node.SUIDs = .nodeNameToNodeSUID(loc.obj, source.nodes)
@@ -1547,17 +1551,17 @@ setMethod('.edgeSUIDToEdgeName', 'OptionalCyWinClass',
 ## END .edgeSUIDToEdgeName
 
 # ------------------------------------------------------------------------------
-setMethod('addCyNode', 'OptionalCyWinClass', function(obj, nodeName) {
+setMethod('addCyNode', 'OptionalCyWinClass', function(obj,node.name) {
 
-    if(nodeName %in% getAllNodes(obj)) {
-        write(sprintf('RCy3::addCyNode, node "%s" already present in Cytoscape graph', nodeName), stderr())
+    if(node.name %in% getAllNodes(obj)) {
+        write(sprintf('RCy3::addCyNode, node "%s" already present in Cytoscape graph', node.name), stderr())
         return()
     }
     
     # get the network suid
     net.suid <- as.character(obj@suid)
     resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "nodes", sep="/")
-    nodename.json = toJSON(c(nodeName))
+    nodename.json = toJSON(c(node.name))
     
     # add the node to the Cytoscape graph
     new.cynode.res <- POST(url=resource.uri, body=nodename.json, encode="json")
@@ -1568,7 +1572,7 @@ setMethod('addCyNode', 'OptionalCyWinClass', function(obj, nodeName) {
     if(!missing(obj)){
         loc.obj <- obj
         # add the node to the R graph object
-        loc.obj@graph <- addNode(nodeName, loc.obj@graph)
+        loc.obj@graph <- addNode(node.name, loc.obj@graph)
         # add the new node to the cw@node.suid.name.dict
         loc.obj@node.suid.name.dict[[length(loc.obj@node.suid.name.dict)+1]] <- 
             list(name=new.cynode.suid.name[[1]]$name, SUID=new.cynode.suid.name[[1]]$SUID)
@@ -1578,22 +1582,22 @@ setMethod('addCyNode', 'OptionalCyWinClass', function(obj, nodeName) {
 
 # ------------------------------------------------------------------------------
 setMethod('addCyEdge', 'OptionalCyWinClass', 
-  function (obj, sourceNode, targetNode, edgeType, directed) {
+  function (obj, source.node.name, target.node.name, edgeType, directed) {
     
     good.args = TRUE
     # confirm that the user has provided exactly one source and one target nodes
-    if(length(sourceNode) > 1 || length(targetNode) > 1) {
+    if(length(source.node.name) > 1 || length(target.node.name) > 1) {
       good.args = FALSE
       write(sprintf('RCy3::addEdge can have only one source and one target nodes'), stderr())
     }
     
-    if(!sourceNode %in% getAllNodes(obj)) {
+    if(!source.node.name %in% getAllNodes(obj)) {
       good.args = FALSE
-      write(sprintf('RCy3::addEdge. Error: source node %s does not exist in the Cytoscape graph. Edge cannot be created.', sourceNode), stderr())
+      write(sprintf('RCy3::addEdge. Error: source node %s does not exist in the Cytoscape graph. Edge cannot be created.', source.node.name), stderr())
     }
-    if(!targetNode %in% getAllNodes(obj)) {
+    if(!target.node.name %in% getAllNodes(obj)) {
       good.args = FALSE
-      write(sprintf('RCy3::addEdge. Error: source node %s does not exist in the Cytoscape graph. Edge cannot be created.', targetNode), stderr())
+      write(sprintf('RCy3::addEdge. Error: source node %s does not exist in the Cytoscape graph. Edge cannot be created.', target.node.name), stderr())
     }
     if(!good.args) {
       return()
@@ -1603,8 +1607,8 @@ setMethod('addCyEdge', 'OptionalCyWinClass',
     resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "edges", sep="/")
     
     node.names.vec <- sapply(obj@node.suid.name.dict, "[[", 1)
-    edge.data <- list(source = obj@node.suid.name.dict[[which(node.names.vec %in% sourceNode)]]$SUID, 
-                      target = obj@node.suid.name.dict[[which(node.names.vec %in% targetNode)]]$SUID, 
+    edge.data <- list(source = obj@node.suid.name.dict[[which(node.names.vec %in% source.node.name)]]$SUID, 
+                      target = obj@node.suid.name.dict[[which(node.names.vec %in% target.node.name)]]$SUID, 
                       directed = directed, interaction = edgeType)
     
     edge.data.JSON <- toJSON(list(edge.data))
@@ -1616,7 +1620,7 @@ setMethod('addCyEdge', 'OptionalCyWinClass',
     if(!missing(obj)){
         loc.obj <- obj
         # add the edge to the R graph object
-        loc.obj@graph <- addEdge(sourceNode, targetNode, loc.obj@graph)
+        loc.obj@graph <- addEdge(source.node.name, target.node.name, loc.obj@graph)
         eval.parent(substitute(obj <- loc.obj))
     }
 }) # addCyEdge
@@ -1654,7 +1658,7 @@ setMethod ('addGraphToGraph', 'CytoscapeWindowClass',
     }) # END addGraphToGraph
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod('sendEdges', 'CytoscapeWindowClass',
+setMethod('sendEdgesFromGraph', 'CytoscapeWindowClass',
   function(obj) {
       loc.obj <- obj
       net.SUID = as.character(loc.obj@suid)
@@ -1682,7 +1686,7 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
       
       # get the list of edges to be send to Cytoscape
       in.graph.edge.names = unname(cy2.edge.names(loc.obj@graph))
-      # get the list of currently existing esges (from dict)
+      # get the list of currently existing edges (from dict)
       existing.edge.names = 
           sapply(loc.obj@edge.node.suid.name.dict, function(n) {return(n$name)})
       
@@ -1698,10 +1702,6 @@ setMethod('sendEdges', 'CytoscapeWindowClass',
           edge.type = tbl.edges$edgeType
           directed = rep(TRUE, length(source.nodes))
           
-          # convert the [node.SUID, node.name] dict(list) to data frame object 
-          node.suid.name.dict.df = 
-              data.frame(matrix(unlist(loc.obj@node.suid.name.dict), nrow=length(loc.obj@node.suid.name.dict), byrow=TRUE), stringsAsFactors=FALSE)
-          colnames(node.suid.name.dict.df) <- c("name", "SUID")
           # get the SUIDs of the source nodes for the new edges
           source.node.SUIDs = .nodeNameToNodeSUID(loc.obj, source.nodes)
           # get the SUIDs of the target nodes for the new edges
@@ -1914,7 +1914,7 @@ setMethod ('getNodeSize', 'OptionalCyWinClass',
 
 # ------------------------------------------------------------------------------
 # Sets node attributes from graph (obj@graph)
-setMethod('setNodeAttributes', 'CytoscapeWindowClass', 
+setMethod('sendNodeAttributesFromGraph', 'CytoscapeWindowClass', 
     function(obj, attribute.name) { 
         # it might be the case that 'obj@graph' contains nodes that do NOT exist in Cytoscape
         # the below line identifies the indices of those graph nodes, which DO exist in Cytoscape
@@ -1995,7 +1995,7 @@ setMethod('setNodeAttributesDirect', 'OptionalCyWinClass',
 ## END setNodeAttributesDirect
 
 # ------------------------------------------------------------------------------
-setMethod('setEdgeAttributes', 'CytoscapeWindowClass', 
+setMethod('sendEdgeAttributesFromGraph', 'CytoscapeWindowClass', 
     function(obj, attribute.name) {
         cyrest.edge.names = as.character(cy2.edge.names(obj@graph))
         # user might have entered the names of edges that do NOT exist
@@ -2100,7 +2100,7 @@ setMethod('displayGraph', 'CytoscapeWindowClass', function(obj) {
     write(sprintf('estimated displayGraph time: %8.1f seconds', estimated.time), stderr())
     write(sprintf('adding %d nodes...', length(nodes(obj@graph))), stderr())
     
-    sendNodes(loc.obj)
+    sendNodesFromGraph(loc.obj)
     
     if(loc.obj@collectTimings) {
         current.step.exec.time = difftime(Sys.time(), stepwise.start.time, units='secs')
@@ -2111,7 +2111,7 @@ setMethod('displayGraph', 'CytoscapeWindowClass', function(obj) {
     
     # sends edges to Cytoscape
     write (sprintf ('adding %d edges...', length (edgeNames (loc.obj@graph))), stderr ())
-    sendEdges (loc.obj)
+    sendEdgesFromGraph (loc.obj)
     
     if (obj@collectTimings) {
         write (sprintf (' *** sendEdges: %f secs', difftime (Sys.time (), stepwise.start.time, units='secs')), stderr ())
@@ -2374,19 +2374,19 @@ setMethod('getViewCoordinates', 'OptionalCyWinClass',
 
 # ------------------------------------------------------------------------------
 setMethod('hidePanel', 'OptionalCyObjClass', 
-    function(obj, panelName) {
+    function(obj, panel.name) {
         
         
-        if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
-            panelName <- 'SOUTH'
-        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'co')){
-            panelName <- 'WEST'
-        }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
+        if (tolower(panel.name) %in% c('data panel', 'd', 'data', 'da')){
+            panel.name <- 'SOUTH'
+        }else if (tolower(panel.name) %in% c('control panel', 'control', 'c', 'co')){
+            panel.name <- 'WEST'
+        }else if (!(panel.name %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
             write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
             return(NA)
         }
         
-        panel.name.state = list(name=panelName, state='HIDE')
+        panel.name.state = list(name=panel.name, state='HIDE')
         
         resource.uri <- paste(obj@uri, obj@api, "ui/panels", sep="/")
         request.res <- PUT(url=resource.uri, body=toJSON(list(panel.name.state)), encoding="json")
@@ -2407,19 +2407,19 @@ setMethod('hideAllPanels', 'OptionalCyObjClass',
 
 # ------------------------------------------------------------------------------
 setMethod('dockPanel', 'OptionalCyObjClass', 
-    function(obj, panelName) {
+    function(obj, panel.name) {
         
 
-        if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
-            panelName <- 'SOUTH'
-        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'co')){
-            panelName <- 'WEST'
-        }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
+        if (tolower(panel.name) %in% c('data panel', 'd', 'data', 'da')){
+            panel.name <- 'SOUTH'
+        }else if (tolower(panel.name) %in% c('control panel', 'control', 'c', 'co')){
+            panel.name <- 'WEST'
+        }else if (!(panel.name %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
             write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
             return(NA)
         }
         
-        panel.name.state = list(name=panelName, state='DOCK')
+        panel.name.state = list(name=panel.name, state='DOCK')
         
         resource.uri <- paste(obj@uri, obj@api, "ui/panels", sep="/")
         request.res <- PUT(url=resource.uri, body=toJSON(list(panel.name.state)), encoding="json")
@@ -2430,19 +2430,19 @@ setMethod('dockPanel', 'OptionalCyObjClass',
 
 # ------------------------------------------------------------------------------
 setMethod('floatPanel', 'OptionalCyObjClass', 
-    function(obj, panelName) {
+    function(obj, panel.name) {
         
         
-        if (tolower(panelName) %in% c('data panel', 'd', 'data', 'da')){
-            panelName <- 'SOUTH'
-        }else if (tolower(panelName) %in% c('control panel', 'control', 'c', 'co')){
-            panelName <- 'WEST'
-        }else if (!(panelName %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
+        if (tolower(panel.name) %in% c('data panel', 'd', 'data', 'da')){
+            panel.name <- 'SOUTH'
+        }else if (tolower(panel.name) %in% c('control panel', 'control', 'c', 'co')){
+            panel.name <- 'WEST'
+        }else if (!(panel.name %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
             write (sprintf ('ERROR! Define a valid panel name.'), stderr ())
             return(NA)
         }
         
-        panel.name.state = list(name=panelName, state='FLOAT')
+        panel.name.state = list(name=panel.name, state='FLOAT')
         
         resource.uri <- paste(obj@uri, obj@api, "ui/panels", sep="/")
         request.res <- PUT(url=resource.uri, body=toJSON(list(panel.name.state)), encoding="json")
@@ -5043,7 +5043,7 @@ initEdgeAttribute = function (graph, attribute.name, attribute.type, default.val
 # pre-existing attributes in the old graph are therefore not affected.
 # the strategy:  identify the new edges, use the standard method 'setEdgeAttributesDirect' to send them to cytoscape
 # oddities: edge naming is a tricky business.  cytoscape lablels edges like this:
-#    <sourceNode> (interactionType) <targetNode>
+#    <sourceNode> (interactionType) <target.node.name>
 # RCy3 provide a utility function for retrieving them from an R graph object,   cy2.edge.names (g)
 # which uses the edgeNames (g) method to get the R names
 # edgeNames (g2)  # [1] "A~E" "A~B" "D~E"
@@ -5086,8 +5086,8 @@ setMethod('getVisualStyleNames', 'OptionalCyObjClass',
   function(obj) {
     resource.uri = paste(obj@uri, obj@api, "apply/styles", sep="/")
     request.res = GET(url=resource.uri)
-    visual.style.names = unname(fromJSON(rawToChar(request.res$content)))
-    return(visual.style.names)
+    style.names = unname(fromJSON(rawToChar(request.res$content)))
+    return(style.names)
 })
 
 # ------------------------------------------------------------------------------
@@ -5131,15 +5131,15 @@ setMethod('setVisualStyle', 'OptionalCyWinClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('lockNodeDimensions', 'OptionalCyObjClass',
 
-    function (obj, new.state, visual.style.name='default') {
+    function (obj, new.state, style.name='default') {
         # launch error if visual style name is missing
-        if (! visual.style.name %in% getVisualStyleNames (obj)) {
-            write (sprintf ('Error in RCy3::lockNodeDimensions. No visual style named "%s"', visual.style.name), stdout ())
+        if (! style.name %in% getVisualStyleNames (obj)) {
+            write (sprintf ('Error in RCy3::lockNodeDimensions. No visual style named "%s"', style.name), stdout ())
             return ()
         }
 
         #lock node dimensions
-        resource.uri <- paste(obj@uri, obj@api, "styles", as.character(visual.style.name), "dependencies", sep="/")
+        resource.uri <- paste(obj@uri, obj@api, "styles", as.character(style.name), "dependencies", sep="/")
         style <- list(visualPropertyDependency="nodeSizeLocked", enabled = tolower(new.state))
         style.JSON <- toJSON(list(style))
         request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
@@ -5247,12 +5247,12 @@ setMethod ('setDefaultEdgeReverseSelectionColor',  'OptionalCyObjClass',
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('saveImage', 'OptionalCyWinClass',
            
-           function (obj, file.name, image.type, h = 600) {
+           function (obj, filename, image.type, h = 600) {
              image.type = tolower (image.type)
              stopifnot (image.type %in% c ('png', 'pdf', 'svg'))
              id = as.character (obj@suid)
              
-             if (!file.exists(file.name)){
+             if (!file.exists(filename)){
                if(image.type=='png'){
                  
                  resource.uri <- paste(obj@uri, obj@api, "networks", id,
@@ -5263,28 +5263,28 @@ setMethod ('saveImage', 'OptionalCyWinClass',
                  resource.uri <- paste(obj@uri, obj@api, "networks", id,
                                        paste0("views/first.", image.type), sep="/")
                }
-               request.res <- GET(resource.uri, write_disk(paste0(file.name,".", image.type), overwrite = TRUE))
-               write (sprintf ('saving image to %s.%s', file.name, image.type), stderr ())
+               request.res <- GET(resource.uri, write_disk(paste0(filename,".", image.type), overwrite = TRUE))
+               write (sprintf ('saving image to %s.%s', filename, image.type), stderr ())
              }else{
-               write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
+               write (sprintf ('choose another filename. File exists: %s', filename), stderr ())
              }
            }) # saveImage
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('saveNetwork', 'OptionalCyWinClass',
 
-   function (obj, file.name, type='cys') {
-       if (!file.exists(file.name)){
+   function (obj, filename, type='cys') {
+       if (!file.exists(filename)){
            type=toupper(type)
            if(type=='CYS'){ # save entire session
-               saveSession(file.name = file.name, obj = obj)
+               saveSession(filename = filename, obj = obj)
            }
            else { #e.g., CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive)
                if(type=="GRAPHML") #fix case for exceptions
                    type = 'GraphML'
-               commandRun(paste0('network export options=',type,' OutputFile="',file.name,'"'),obj)
+               commandRun(paste0('network export options=',type,' OutputFile="',filename,'"'),obj)
            }
        }else{
-           write (sprintf ('choose another filename. File exists: %s', file.name), stderr ())
+           write (sprintf ('choose another filename. File exists: %s', filename), stderr ())
        }
      })
 
@@ -5833,7 +5833,7 @@ command2query<-function(cmd.string, obj=CytoscapeConnection()){
 #' \donttest{
 #' createNetworkFromIgraph(g)
 #' }
-#' @seealso createNetwork, createIgraphFromNetwork
+#' @seealso createNetworkFromDataFrames, createIgraphFromNetwork
 
 createIgraphFromNetwork <- function(title=NA, obj=CytoscapeWindowFromNetwork(), ...){
     
@@ -5885,7 +5885,7 @@ createIgraphFromNetwork <- function(title=NA, obj=CytoscapeWindowFromNetwork(), 
 #' \donttest{
 #' createNetworkFromIgraph(g)
 #' }
-#' @seealso createNetwork, createIgraphFromNetwork
+#' @seealso createNetworkFromDataFrames, createIgraphFromNetwork
 
 createNetworkFromIgraph <- function(igraph, new.title="MyNetwork",
                                     collection.title="myNetworkCollection",return.graph=FALSE, obj=CytoscapeConnection(),...) {
@@ -6110,7 +6110,7 @@ FastAppendListGlobal <- function(item)
 #' createSubnetwork(c("AKT1","TP53","PIK3CA"),"display name")
 #' createSubnetwork(edges="all") #subnetwork of all connected nodes
 #' }
-#' @seealso createNetwork
+#' @seealso createNetworkFromDataFrames
 
 createSubnetwork <- function(nodes,nodes.by.col='name',edges,edges.by.col='name',
                              exclude.edges='F',new.title, return.graph=FALSE, obj=CytoscapeWindowFromNetwork()){
@@ -6190,7 +6190,7 @@ createSubnetwork <- function(nodes,nodes.by.col='name',edges,edges.by.col='name'
 #' @examples
 #' \donttest{
 #' #first there has to be a network to apply style to
-#' example(createNetworkFromDataFrame)
+#' example(createNetworkFromDataFrames)
 #'
 #' #then prepare style variables
 #' style.name = "myStyle"
@@ -6584,8 +6584,8 @@ openCySwagger<-function(domain='cyrest', obj=CytoscapeConnection()){
 #' saveSession('myFirstSession')
 #' }
 
-saveSession<-function(file.name,obj=CytoscapeConnection()){
-    commandRun(paste0('session save as file="',file.name,'"'),obj)
+saveSession<-function(filename,obj=CytoscapeConnection()){
+    commandRun(paste0('session save as file="',filename,'"'),obj)
 }
 
 # ------------------------------------------------------------------------------
@@ -6601,8 +6601,8 @@ saveSession<-function(file.name,obj=CytoscapeConnection()){
 #' saveVisualStyle('myStyle','JSON')
 #' }
 
-saveVisualStyle<-function(file.name,type,obj=CytoscapeConnection()){
-    commandRun(paste0('vizmap export options=',type,' OutputFile="',file.name,'"'),obj)
+saveVisualStyle<-function(filename,type,obj=CytoscapeConnection()){
+    commandRun(paste0('vizmap export options=',type,' OutputFile="',filename,'"'),obj)
 }
 
 # ------------------------------------------------------------------------------
@@ -6792,8 +6792,8 @@ copyCytoscapeNetwork<-function(obj,new.title,return.graph = FALSE) {
     cloneNetwork(obj=obj,new.title=new.title,return.graph=return.graph)
 }
 createWindow<-function(obj){
-    .Deprecated("createNetwork(obj)")
-    createNetwork(obj=obj)
+    .Deprecated("createNetworkFromGraph(obj)")
+    createNetworkFromGraph(obj=obj)
 }
 createWindowFromSelection<-function(obj,new.windowTitle,return.graph){
     .Deprecated("createNetworkFromSelection(obj, new.title, return.graph, exclude.edges=FALSE)")
@@ -6840,5 +6840,21 @@ selectFirstNeighborsOfSelectedNodes<-function (obj) {
 }
 sfn<-function (obj) {
     selectFirstNeighbors(obj=obj)
+}
+sendNodes<-function(obj){
+    .Deprecated("sendNodesFromGraph(obj)")
+    sendNodesFromGraph(obj=obj)
+}
+sendEdges<-function(obj){
+    .Deprecated("sendEdgesFromGraph(obj)")
+    sendEdgesFromGraph(obj=obj)
+}
+setNodeAttributes<-function(obj, attribute.name){
+    .Deprecated("sendNodeAttributesFromGraph(obj)")
+    sendNodeAttributesFromGraph(obj=obj, attribute.name=attribute.name)
+}
+setEdgeAttributes<-function(obj, attribute.name){
+    .Deprecated("sendEdgeAttributesFromGraph(obj)")
+    sendEdgeAttributesFromGraph(obj=obj, attribute.name=attribute.name)
 }
 

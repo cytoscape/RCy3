@@ -7,7 +7,7 @@ exportMethods (
    clearSelection,
    clearSelection,
    copyVisualStyle,
-   createNetwork,
+   createNetworkFromGraph,
    createNetworkFromSelection,
    cloneNetwork,
    renameNetwork,
@@ -86,8 +86,10 @@ exportMethods (
    selectAllEdges,
    selectNodes,
    selectAllNodes,
-   sendEdges,
-   sendNodes,
+   sendEdgesFromGraph,
+   sendNodesFromGraph,
+   sendEdgeAttributesFromGraph,
+   sendNodeAttributesFromGraph,
    setCenter,
    setDefaultBackgroundColor,
    setDefaultEdgeColor,
@@ -107,7 +109,6 @@ exportMethods (
    setDefaultNodeSelectionColor,
    setDefaultNodeShape,
    setDefaultNodeSize,
-   setEdgeAttributes,
    setEdgeAttributesDirect,
    setEdgeColorDirect,
    setEdgeColorRule,
@@ -136,7 +137,6 @@ exportMethods (
    setEdgeTooltipRule,
    setGraph,
    setLayoutProperties,
-   setNodeAttributes,
    setNodeAttributesDirect,
    setNodeBorderColorDirect,
    setNodeBorderColorRule,
@@ -230,7 +230,11 @@ export(
     pluginVersion,
     renameCytoscapeNetwork,
     selectFirstNeighborsOfSelectedNodes,
-    sfn
+    sfn,
+    sendNodes,
+    sendEdges,
+    setEdgeAttributes,
+    setNodeAttributes
 )
 
 importClassesFrom(graph, graph, graphBase)
