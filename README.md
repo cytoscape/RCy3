@@ -31,5 +31,5 @@ take these steps from within a running R session:
 They take about 4 minutes to run.
 
 ## Former Repo
-The entire commit history has been preserved during this transition, but you can find the repo for RCy3 1.5.3 and earlier
+The entire commit history has been preserved during this transition, but you can find the repo for RCy3 v1.5.3 and earlier
 at https://github.com/tmuetze/Bioconductor_RCy3_the_new_RCytoscape.
