@@ -7,7 +7,7 @@
 selectEdgesConnectedBySelectedNodes(obj)
 }
 \arguments{
-\item{object}{Cytoscape network}
+\item{obj}{Cytoscape network}
 }
 \value{
 network with edges selected
@@ -30,13 +30,12 @@ getSelectedEdges(cw)
 }
 
 }
+\seealso{
+\code{\link{createNetworkFromSelection}}, \code{\link{selectEdgesConnectedBySelectedNodes}}, \code{\link{renameNetwork}}
+}
 \author{
 Julia Gustavsen, \email{j.gustavsen@gmail.com}
-}
-\seealso{
-\code{\link{createWindowFromSelection}}, \code{\link{selectEdgesConnectedBySelectedNodes}}, \code{\link{renameCytoscapeNetwork}}
 }
 \concept{
 RCy3
 }
-
