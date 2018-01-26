@@ -19,3 +19,4 @@ biocViews: Visualization, GraphAndNetwork, ThirdPartyClient, Network
 Packaged: 2017-06-1 22:18:03 UTC; tmuetze
 NeedsCompilation: no
 VignetteBuilder: knitr
+RoxygenNote: 6.0.1

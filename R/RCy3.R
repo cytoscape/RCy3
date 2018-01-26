@@ -1,231 +1,8 @@
-# RCy3.R
-#--------------------------------------------------------------------------------
-# this code is for the Bioconductor build system. You should never need to set or
-# read these environment variables in ordinary use.
-.BBSOverride <- function(host, port) {
-    ret <- list()
-    if ((Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE") != "") &&  (Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE") != "")) {
-      host = Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE")
-      port = as(Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE"),"integer")
-      }
-    if (.Platform$r_arch == "x64") {
-        if ((Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE_64") != "") &&  (Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE_64") != "")) {
-          host = Sys.getenv("RCYTOSCAPE3_HOST_OVERRIDE_64")
-          port = as(Sys.getenv("RCYTOSCAPE3_PORT_OVERRIDE_64"),"integer")
-          }
-    }
-    #cat(paste("Using host", host, "and port", port, "."))
-
-    ret["host"] <- host
-    ret["port"] <- port
-    ret
-}
-
-
-# ------------------------------------------------------------------------------
-printf = function (...) print (noquote (sprintf (...)))
-
-# ------------------------------------------------------------------------------
-setClass("CytoscapeConnectionClass", 
-	slots = c(uri="character",api="character"), 
-	prototype = prototype(uri="http://localhost:1234", api="v1")
-)
-# Constructor
-CytoscapeConnection = function(host='localhost', port=1234) {
-    res <- .BBSOverride(host, port)
-    host = res$host
-    port = res$port
-    uri = sprintf('http://%s:%s', host, port)
-    cc = new('CytoscapeConnectionClass', uri = uri)
-    if (!url.exists(uri)){
-        write(sprintf('Connection failed.'), stderr())
-        write(sprintf('To troubleshoot: 1) Please ensure that you have Cytoscape open'), stderr())
-        write(sprintf('2) that the latest version of CyREST is installed.'), stderr())
-        write(sprintf('3) that Cytoscape uses Java 8 (not 7 or below).'), stderr())
-        write(sprintf('To help troubleshooting, please check:'), stderr())
-        write(sprintf('http://www.cytoscape.org/troubleshooting.html'), stderr())
-        return()
-    }
-    cc@api = apiVersion(cc)
-    return(cc)
-} # END CytoscapeConnection
-
-# ------------------------------------------------------------------------------
-setClass("CytoscapeWindowClass", 
-	slots = c(
-		title="character", 
-		suid='character', 
-		graph="graphBase", 
-		collectTimings="logical",
-		node.suid.name.dict="list",
-		edge.node.suid.name.dict="list",
-                view.id='numeric'), 
-	contains = 'CytoscapeConnectionClass', 
-	prototype = prototype(
-	    title="R graph", 
-	    uri="http://localhost:1234",
-	    api="v1",
-		graph=new("graphNEL", edgemode='directed'), 
-		collectTimings=FALSE, 
-		node.suid.name.dict=list(),
-		edge.node.suid.name.dict=list())
-)
-setValidity("CytoscapeWindowClass", function(object) {
-    if (length(object@title) != 1){
-        "'title' is not a single string" 
-    }
-    else if (!nzchar(object@title)){
-        "'title' is an empty string"
-    }
-    validObject(object@graph)
-}) 
-# Constructor
-CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), host='localhost', 
-                           port=1234, create.window=TRUE, overwriteWindow=FALSE, collectTimings=FALSE){
-    res <- .BBSOverride(host, port)
-    host = res$host
-    port = res$port
-    # new 'CytoscapeConnectionClass' object
-    cy.conn = CytoscapeConnection(host, port)
-    if (is.null(cy.conn)){
-        write(sprintf("ERROR in CytoscapeWindowFromNetwork():\n\t Cytoscape connection could not be established >> NULL returned"), stderr())
-        return()
-    }
-    # ensure the script is using the latest cyREST plugin version 
-    check.api.version(cy.conn)
-    uri = cy.conn@uri
-    api = cy.conn@api
-    
-    # if the user has specified, delete already existing window(s) with the same title
-    if (overwriteWindow) {
-        if (title %in% as.character(getNetworkList(cy.conn))) {
-            deleteNetwork(cy.conn, title)
-        }
-    }
-    
-    if (!is.na(getNetworkSuid(cy.conn, title))) {
-        write(sprintf('There is already a window in Cytoscape named "%s".', title), stderr())
-        write(sprintf('Please use a unique name, or set "overwriteWindow=TRUE".'), stderr())
-        stop()
-    }
-    
-    # add a label to each node if not already present. default label is the node name, the node ID    	
-    if (is.classic.graph(graph)){
-        if (edgemode(graph) == 'undirected') {
-            graph = remove.redundancies.in.undirected.graph(graph) #AP: not sure this is needed anymore...
-        }
-    }
-    # are all node attributes properly initialized?
-    node.attributes = noa.names(graph)
-    if (length(node.attributes) > 0) {
-        check.list = list()
-        for (node.attribute in node.attributes) {
-            check.list[[node.attribute]] = properlyInitializedNodeAttribute(graph, node.attribute)
-        }
-        uninitialized.attributes = which(check.list == FALSE)
-        if (length(uninitialized.attributes) > 0) {
-            write(sprintf("%d uninitialized node attribute/s", length(uninitialized.attributes)), stderr())
-            return()
-        }
-    } # if node.attributes
-    
-    # are all edge attributes properly initialized?
-    edge.attributes = eda.names(graph)
-    if (length(edge.attributes) > 0) {
-        check.list = list()
-        for (edge.attribute in edge.attributes) {
-            check.list[[edge.attribute]] = properlyInitializedEdgeAttribute(graph, edge.attribute)
-        }
-        uninitialized.attributes = which(check.list == FALSE)
-        if (length(uninitialized.attributes) > 0) {
-            write(sprintf("%d uninitialized edge attribute/s", length(uninitialized.attributes)), stderr())
-            return()
-        }
-    } # if edge.attributes
-    
-    if (!'label' %in% noa.names(graph)) {
-        write('nodes have no label attribute -- adding default labels', stderr())
-        graph = initNodeAttribute(graph, 'label', 'char', 'noLabel')
-        if (length(nodes(graph) > 0)) {
-            nodeData(graph, nodes(graph), 'label') = nodes(graph) # nodes(graph) returns strings
-        }
-    }
-    
-    # create new 'CytoscapeWindow' object
-    cw = new('CytoscapeWindowClass', title=title, graph=graph, uri=uri, api=api,
-             collectTimings=collectTimings, node.suid.name.dict = list(), edge.node.suid.name.dict=list())
-    
-    if (create.window) {
-        cw@suid = createNetworkFromGraph(cw)
-    }
-    # let user know that a new window was created
-    write(sprintf('New window named "%s" was created in Cytoscape.', title), stderr())
-    
-    return (cw)
-    
-} # END 'CytoscapeWindow' constructor
-
-#------------------------------------------------------------------------------------------------------------------------
-properlyInitializedNodeAttribute = function (graph, attribute.name) {
-    
-    if (length (nodes (graph)) == 0)
-        return (TRUE)
-    
-    caller.specified.attribute.class = attr (nodeDataDefaults (graph, attribute.name), 'class')
-    
-    if (is.null (caller.specified.attribute.class)) {
-        msg1 = sprintf ('Error!  Node attribute not initialized "%s"', attribute.name)
-        msg2 = sprintf ('        You should call:')
-        msg3 = sprintf ('        initNodeAttribute (graph, attribute.name, attribute.type, default.value)')
-        msg4 = sprintf ('        where attribute type is one of "char", "integer", or "numeric".')
-        msg5 = sprintf ('        example:  g <- initNodeAttribute (g, "nodeType", "char", "molecule")')
-        msg6 = sprintf ('             or:  g <- initNodeAttribute (g, "pValue", "numeric", 1.0)')
-        write (msg1, stderr ())
-        write (msg2, stderr ())
-        write (msg3, stderr ())
-        write (msg4, stderr ())
-        write (msg5, stderr ())
-        write (msg6, stderr ())
-        return (FALSE)
-    }
-    return (TRUE)
-    
-} # properlyInitializedNodeAttribute
-#------------------------------------------------------------------------------------------------------------------------
-properlyInitializedEdgeAttribute = function (graph, attribute.name) {
-    
-    if (length (edgeNames (graph)) == 0)
-        return (TRUE)
-    
-    caller.specified.attribute.class = attr (edgeDataDefaults (graph, attribute.name), 'class')
-    
-    if (is.null (caller.specified.attribute.class)) {
-        msg1 = sprintf ('Error!  "%s" edge attribute not initialized.', attribute.name)
-        msg2 = sprintf ('        You should call:')
-        msg3 = sprintf ('        initEdgeAttribute (graph, attribute.name, attribute.type, default.value)')
-        msg4 = sprintf ('        where attribute type is one of "char", "integer", or "numeric".')
-        msg5 = sprintf ('        example:  g <- initEdgeAttribute (g, "edgeType", "char", "molecule")')
-        msg6 = sprintf ('             or:  g <- initEdgeAttribute (g, "pValue", "numeric", 1.0)')
-        write (msg1, stderr ())
-        write (msg2, stderr ())
-        write (msg3, stderr ())
-        write (msg4, stderr ())
-        write (msg5, stderr ())
-        write (msg6, stderr ())
-        return (FALSE)
-    }
-    return (TRUE)
-    
-} # properlyInitializedEdgeAttribute
-
-# ------------------------------------------------------------------------------
-setClassUnion('OptionalCyWinClass', c('missing', 'CytoscapeWindowClass'))
-setClassUnion('OptionalCyObjClass', c('missing', 'CytoscapeWindowClass','CytoscapeConnectionClass'))
 
 #-----------------------------------------------------------
 # methods taking an optional CytoscapeConnectionClass
 #-----------------------------------------------------------
-setGeneric ('ping', 	 	             signature='obj', function (obj=CytoscapeConnection()) standardGeneric('ping'))
+setGeneric ('ping', 	 	             function (obj) standardGeneric('ping'))
 setGeneric ('apiVersion', 	             signature='obj', function (obj=CytoscapeConnection()) standardGeneric('apiVersion'))
 setGeneric ('getNetworkCount',	         signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNetworkCount'))
 setGeneric ('getNetworkList',            signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNetworkList'))
@@ -418,14 +195,14 @@ setGeneric ('haveNodeAttribute',             signature='obj', function (obj=Cyto
 setGeneric ('haveEdgeAttribute',             signature='obj', function (obj=CytoscapeConnection(), edge.names, attribute.name) standardGeneric ('haveEdgeAttribute'))
 setGeneric ('copyNodeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyNodeAttributesFromCyGraph'))
 setGeneric ('copyEdgeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyEdgeAttributesFromCyGraph'))
-setGeneric ('getGraphFromNetwork',           signature='obj', function (obj=CytoscapeConnection(), title) standardGeneric ('getGraphFromNetwork'))
+setGeneric ('getGraphFromNetwork',           function (obj, title=NA) standardGeneric ('getGraphFromNetwork'))
 setGeneric ('connectToNewestCyWindow',       signature='obj', function (obj=CytoscapeConnection(), copyToR = FALSE) standardGeneric('connectToNewestCyWindow'))
 
 #-----------------------------------------------------------
 # methods related to transmitting data from obj@graph to 
 # Cytoscape thus requiring a full CytoscapeWindowClass obj
 #-----------------------------------------------------------
-setGeneric ('createNetworkFromGraph',     signature='obj', function (obj=CytoscapeConnection(), graph=NA) standardGeneric('createNetworkFromGraph'))
+setGeneric ('sendNetworkFromGraph',               function (obj) standardGeneric('sendNetworkFromGraph'))
 setGeneric ('displayGraph',               signature='obj', function (obj) standardGeneric ('displayGraph'))
 setGeneric ('predictTimeToDisplayGraph',  signature='obj', function (obj) standardGeneric ('predictTimeToDisplayGraph'))
 setGeneric ('addGraphToGraph',            signature='obj', function (obj, other.graph) standardGeneric ('addGraphToGraph'))
@@ -434,6 +211,7 @@ setGeneric ('getGraph', 	              signature='obj', function (obj) standardG
 setGeneric ('sendNodeAttributesFromGraph',signature='obj', function (obj, attribute.name) standardGeneric ('sendNodeAttributesFromGraph'))
 setGeneric ('sendEdgeAttributesFromGraph',signature='obj', function (obj, attribute.name) standardGeneric ('sendEdgeAttributesFromGraph'))
 setGeneric ('sendNodesFromGraph',	      signature='obj', function (obj) standardGeneric ('sendNodesFromGraph'))
+setGeneric ('sendEdgesFromGraph',	      signature='obj', function (obj) standardGeneric ('sendEdgesFromGraph'))
 setGeneric ('sendEdgesFromGraph',	      signature='obj', function (obj) standardGeneric ('sendEdgesFromGraph'))
 
 #-----------------------------------------------------------
@@ -451,21 +229,15 @@ setGeneric ('cyPlot',                                  function (node.df, edge.d
 
 # ------------------------------------------------------------------------------
 CytoscapeWindowFromNetwork = 
-    function(title=NA, host='localhost', port=1234, return.graph=FALSE) 
+    function(obj, title=NA, return.graph=FALSE) 
         {
-        res <- .BBSOverride(host, port)
-        host <- res$host
-        port <- res$port
+
         # establish a connection to Cytoscape
-        cy.conn <- CytoscapeConnection(host, port)
+        cy.conn <- new ('CytoscapeConnectionClass',uri=obj@uri, api=obj@api)
         if (is.null(cy.conn)) {
             write(sprintf("ERROR in CytoscapeWindowFromNetwork():\n\t Cytoscape connection could not be established >> NULL returned"), stderr())
             return()
         }
-        # ensure the script is using the latest cyREST plugin version 
-        check.api.version()
-        uri<- cy.conn@uri
-        api<- cy.conn@api
         
         # if title=NA, will return current network in Cytoscape
 		existing.suid = as.character(getNetworkSuid(cy.conn,title))
@@ -484,7 +256,7 @@ CytoscapeWindowFromNetwork =
 		}
 		
 		# create minimal Cytoscape Window
-        cy.window <- new('CytoscapeWindowClass', title=title, suid=existing.suid, uri=uri, api=api)
+        cy.window <- new('CytoscapeWindowClass', title=title, suid=existing.suid, uri=obj@uri, api=obj@api)
 
         # optionally, get graph from Cytoscape
         if (return.graph) {
@@ -540,7 +312,28 @@ getServerStatus = function(uri,api) {
 } 
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod('ping', signature = 'OptionalCyObjClass',
+#' Ping Cytoscape
+#' 
+#' @description Test the connection to Cytoscape via CyREST 
+#' @param obj a \code{CytoscapeConnectionClass} object (optional)
+#' @return "It works!"
+#' @author Tanja Muetze, Georgi Kolishovski, Paul Shannon
+#' @examples \donttest{
+#' ping()
+#' 
+#' cy <- CytoscapeConnection ()
+#' ping (cy)
+#' }
+#' @export
+
+#' @rdname ping
+setMethod('ping','missing', 
+function() {
+    ping(CytoscapeConnection());
+});
+
+#' @rdname ping
+setMethod('ping', 'CytoscapeConnectionClass',
 	function(obj) {
 		conn.str <- paste(obj@uri, obj@api, sep="/")
 		res <- GET(conn.str)
@@ -576,21 +369,10 @@ setMethod('apiVersion', 'OptionalCyObjClass',
 	}) # END apiVersion
 
 # ------------------------------------------------------------------------------
-# Create network from a graph (obj@graph)
-setMethod('createNetworkFromGraph', 'OptionalCyObjClass', 
-	function(obj, graph=NA) {
-	    
-	    if (!'graph' %in% slotNames(obj)){ # CC
-	        if(is.na(graph)){
-	            write("ERROR: No graph provided.")
-	            return();
-	        } else{
-	            g = graph
-	        }
-	    } else {
-	        g = obj@graph
-	    }
-	    
+# Send a window from a CWnetwork from a graph (obj@graph)
+setMethod('sendNetworkFromGraph', 'CytoscapeWindowClass', 
+	function(obj) {
+	    g = obj@graph
 		g@graphData$name <- obj@title
 		graph.attributes <- g@graphData
 		graph.elements = list(nodes = list(), edges = list())
@@ -605,7 +387,6 @@ setMethod('createNetworkFromGraph', 'OptionalCyObjClass',
 
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('createNetworkFromSelection', 'OptionalCyWinClass',
-
     function (obj, new.title, return.graph=FALSE, exclude.edges=FALSE) {
         if (getSelectedNodeCount (obj) == 0) {
             write (noquote ('RCy3::createNetworkFromSelection error:  no nodes are selected'), stderr ())
@@ -639,7 +420,7 @@ setMethod ('createNetworkFromSelection', 'OptionalCyWinClass',
         response <- POST(url=url,body=sub, encode="json",content_type_json())
         subnetwork.suid=unname(fromJSON(rawToChar(response$content)))[[1]][[1]]
         cat(sprintf("Subnetwork SUID is : %i \n", subnetwork.suid))
-        sub.cw<-CytoscapeWindowFromNetwork(new.title,return.graph=return.graph)
+        sub.cw<-CytoscapeWindowFromNetwork(obj,new.title,return.graph=return.graph)
         return(sub.cw)
 }) # createNetworkFromSelection
 
@@ -689,7 +470,7 @@ setMethod('cloneNetwork',
               invisible(request.res)
               
               if (return.graph){
-                connect_window <- CytoscapeWindowFromNetwork(new.title,
+                connect_window <- CytoscapeWindowFromNetwork(obj,new.title,
                                                            return.graph = TRUE)
                 print(paste("Cytoscape window",
                             obj@title,
@@ -698,7 +479,7 @@ setMethod('cloneNetwork',
                             "and the graph was copied to R."))
               } 
               else {
-                connect_window <- CytoscapeWindowFromNetwork(new.title,
+                connect_window <- CytoscapeWindowFromNetwork(obj,new.title,
                                                            return.graph = FALSE) 
                 print(paste("Cytoscape window",
                             obj@title,
@@ -1179,20 +960,52 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'OptionalCyObjClass',
     }) # END copyEdgeAttributesFromCyGraph
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('getGraphFromNetwork', 'OptionalCyObjClass',
+#' getGraphFromNetwork
+#' 
+#' @description Returns the Cytoscape network as a Bioconductor graph.
+#' @return A Bioconductor graph object.
+#' @author Tanja Muetze, Georgi Kolishovski, Paul Shannon
+#' @examples 
+#' \dontrun{
+#' g.net <- getGraphFromNetwork() #current network
+#' 
+#' g.net1 <- getGraphFromNetwork('network1')
+#' 
+#' cc <- CytoscapeConnection()
+#' g.net2 <- getGraphFromNetwork(cc, 'network2')
+#' 
+#' cw <- CytoscapeWindow('network3', graph=makeSimpleGraph())
+#' displayGraph(cw)
+#' layoutNetwork(cw)
+#' g.net3 <- getGraphFromNetwork(cw)
+#'
+#' }
+#' @export
 
-    function (obj,title) {
-        suid = NULL
-        # handles the case when 'obj' is 'CytoscapeConnectionClass', instead of 'CytoscapeWindowClass' 
-        if (class(obj) == "CytoscapeConnectionClass") {
-            suid = as.character(getNetworkSuid(obj,title))
-            loc.obj = 
-                new('CytoscapeWindowClass', title=title, suid=suid, uri=obj@uri)
-        } else {
-            loc.obj = obj
-        }
+#' @rdname getGraphFromNetwork
+setMethod ('getGraphFromNetwork', 'missing',
+           function (title = NA) {
+               if (is.na(title))
+                   title=getNetworkName() #current network
+               cc<-CytoscapeConnection() #default connection
+               obj = CytoscapeWindowFromNetwork(cc,title=title)
+               getGraphFromNetwork(obj)
+           });
+#' @rdname getGraphFromNetwork
+setMethod ('getGraphFromNetwork', 'CytoscapeConnectionClass',
+        function (obj,title= NA) {
+            if (is.na(title))
+                title=getNetworkName() #current network
+            loc.obj = CytoscapeWindowFromNetwork(obj,title=title)
+            getGraphFromNetwork(loc.obj)
+           });
+#' @rdname getGraphFromNetwork
+setMethod ('getGraphFromNetwork', 'CytoscapeWindowClass',
+    function (obj) {
+        loc.obj = obj
         # network id 
         net.SUID = as.character(loc.obj@suid)
+        title = as.character(loc.obj@title)
         
         if (!is.na(net.SUID)) {
             # get the graph from Cytoscape
@@ -1261,7 +1074,7 @@ setMethod ('getGraphFromNetwork', 'OptionalCyObjClass',
         }
         
         return(g)
-  })
+  });
 ## END getGraphFromNetwork
 
 #' Creates a connection to the newest Cytoscape window so that it can be further manipulated from R.
@@ -1298,7 +1111,7 @@ setMethod('connectToNewestCyWindow',
   net.name <- fromJSON(rawToChar(result$content))$data$name
   
   ## to get edges request.res$elements$edges
-  newest_CyWindow <- CytoscapeWindowFromNetwork(net.name,
+  newest_CyWindow <- CytoscapeWindowFromNetwork(obj,net.name,
                                               return.graph = copyToR) 
   return(newest_CyWindow)
 })
@@ -5977,8 +5790,8 @@ createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,new.title="MyNetwo
     }
     
     json_network <- list(
-        data=list(name=new.title),
-        elements=c(nodes=list(json_nodes),edges=list(json_edges))
+        data<-list(name=new.title),
+        elements<-c(nodes=list(json_nodes),edges=list(json_edges))
     )
     
     network <- toJSON(json_network)
@@ -6791,9 +6604,9 @@ copyCytoscapeNetwork<-function(obj,new.title,return.graph = FALSE) {
     .Deprecated("cloneNetwork")
     cloneNetwork(obj=obj,new.title=new.title,return.graph=return.graph)
 }
-createWindow<-function(obj){
-    .Deprecated("createNetworkFromGraph(obj)")
-    createNetworkFromGraph(obj=obj)
+createWindow<-function(obj) {
+    .Deprecated("sendNetworkFromGraph")
+    sendNetworkFromGraph(obj=obj)
 }
 createWindowFromSelection<-function(obj,new.windowTitle,return.graph){
     .Deprecated("createNetworkFromSelection(obj, new.title, return.graph, exclude.edges=FALSE)")
@@ -6809,7 +6622,8 @@ deleteWindow<-function(obj,window.title){
 }
 existing.CytoscapeWindow<-function(title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE){
     .Deprecated("CytoscapeWindowFromNetwork(title,host,port,return.graph")
-    CytoscapeWindowFromNetwork(title = title,host = host,port = port,return.graph = copy.graph.from.cytoscape.to.R)
+    cc<-CytoscapeConnection(host=host,port=port)
+    CytoscapeWindowFromNetwork(cc,title = title,return.graph = copy.graph.from.cytoscape.to.R)
 }
 getGraphFromCyWindow<-function(obj,window.title){
     .Deprecated("getGraphFromNetwork(obj,title)")

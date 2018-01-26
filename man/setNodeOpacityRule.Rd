@@ -42,7 +42,7 @@ setNodeOpacityRule(obj, node.attribute.name, control.points, opacities, mode,
         on the nodes which do not appear in your list, they will be displayed
         in the default opacity.}
   \item{aspect}{a character string, with one or more of these values: 'border',
-        'label', 'fill', 'all'}. The first three aspects describe elements of
+        'label', 'fill', 'all'. The first three aspects describe elements of
         the displayed node: its border, its text label, and its body (or 'fill').
         'all' implies that all elements (border, label and fill) will be operated
         upon, equally, by this rule. If you want, for instance, the node label
