@@ -4,7 +4,7 @@
 \name{RCy3}
 \alias{RCy3}
 \alias{RCy3-package}
-\title{RCy3: Display and manipulate graphs in Cytoscape >= 3.3.0}
+\title{RCy3: Display and manipulate graphs in Cytoscape >= 3.6.0}
 \description{
 The RCy3 package provides functions to run Cytoscape from R.
 }
