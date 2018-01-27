@@ -2,7 +2,7 @@
 #-----------------------------------------------------------
 # methods taking an optional CytoscapeConnectionClass
 #-----------------------------------------------------------
-setGeneric ('ping', 	 	             function (obj) standardGeneric('ping'))
+setGeneric ('ping', 	 	             signature='obj', function (obj) standardGeneric('ping'))
 setGeneric ('apiVersion', 	             signature='obj', function (obj=CytoscapeConnection()) standardGeneric('apiVersion'))
 setGeneric ('getNetworkCount',	         signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNetworkCount'))
 setGeneric ('getNetworkList',            signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNetworkList'))
@@ -71,7 +71,7 @@ setGeneric ('setNodeAttributesDirect',   signature='obj', function (obj=Cytoscap
 setGeneric ('setEdgeAttributesDirect', 	 signature='obj', function (obj=CytoscapeWindowFromNetwork(), attribute.name, attribute.type, edge.names, values) standardGeneric ('setEdgeAttributesDirect'))
 setGeneric ('getAllNodes',               signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getAllNodes'))
 setGeneric ('getAllEdges',               signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getAllEdges'))
-setGeneric ('selectNodes',               signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, by.col='name', preserve.current.selection=TRUE) standardGeneric ('selectNodes'))
+setGeneric ('selectNodes',               signature='obj', function (obj, node.names, by.col='name', preserve.current.selection=TRUE) standardGeneric ('selectNodes'))
 setGeneric ('selectAllNodes',            signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric('selectAllNodes'))
 setGeneric ('getSelectedNodes',          signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getSelectedNodes'))
 setGeneric ('clearSelection',            signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('clearSelection'))
@@ -90,7 +90,8 @@ setGeneric ('clearSelection',            signature='obj', function (obj=Cytoscap
 setGeneric ('getSelectedEdgeCount',      signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getSelectedEdgeCount'))
 setGeneric ('hideSelectedEdges',         signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('hideSelectedEdges'))
 setGeneric ('unhideAll',                 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('unhideAll'))
-setGeneric ('getFirstNeighbors',         signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, as.nested.list=FALSE) standardGeneric ('getFirstNeighbors'))
+setGeneric ('getFirstNeighbors',         signature='obj', function (obj, node.names, as.nested.list=FALSE) standardGeneric ('getFirstNeighbors'))
+setGeneric ('selectFirstNeighbors',      signature='obj', function (obj, direction='any') standardGeneric ('selectFirstNeighbors'))
 setGeneric ('selectEdgesConnectedBySelectedNodes', 
                                          signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('selectEdgesConnectedBySelectedNodes'))
 
@@ -195,7 +196,7 @@ setGeneric ('haveNodeAttribute',             signature='obj', function (obj=Cyto
 setGeneric ('haveEdgeAttribute',             signature='obj', function (obj=CytoscapeConnection(), edge.names, attribute.name) standardGeneric ('haveEdgeAttribute'))
 setGeneric ('copyNodeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyNodeAttributesFromCyGraph'))
 setGeneric ('copyEdgeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyEdgeAttributesFromCyGraph'))
-setGeneric ('getGraphFromNetwork',           function (obj, title=NA) standardGeneric ('getGraphFromNetwork'))
+setGeneric ('getGraphFromNetwork',           signature='obj', function (obj, title=NA) standardGeneric ('getGraphFromNetwork'))
 setGeneric ('connectToNewestCyWindow',       signature='obj', function (obj=CytoscapeConnection(), copyToR = FALSE) standardGeneric('connectToNewestCyWindow'))
 
 #-----------------------------------------------------------
@@ -229,23 +230,18 @@ setGeneric ('cyPlot',                                  function (node.df, edge.d
 
 # ------------------------------------------------------------------------------
 CytoscapeWindowFromNetwork = 
-    function(obj, title=NA, return.graph=FALSE) 
-        {
-
-        # establish a connection to Cytoscape
-        cy.conn <- new ('CytoscapeConnectionClass',uri=obj@uri, api=obj@api)
-        if (is.null(cy.conn)) {
-            write(sprintf("ERROR in CytoscapeWindowFromNetwork():\n\t Cytoscape connection could not be established >> NULL returned"), stderr())
-            return()
-        }
+    function(obj, title=NA, return.graph=FALSE) {
         
+        if(missing(obj))
+            obj<-CytoscapeConnection()
+
         # if title=NA, will return current network in Cytoscape
-		existing.suid = as.character(getNetworkSuid(cy.conn,title))
+		existing.suid = as.character(getNetworkSuid(obj,title))
 		
 		# inform user if the window does not exist
         if (is.na(existing.suid)) {
             write(sprintf("ERROR in RCy3::CytoscapeWindowFromNetwork():\n\t no network named '%s' exists in Cytoscape >> choose from the following titles: ", title), stderr())
-			write(as.character(getNetworkList(cy.conn)), stderr())
+			write(as.character(getNetworkList(obj)), stderr())
             return(NA)
         }
 		
@@ -965,20 +961,17 @@ setMethod ('copyEdgeAttributesFromCyGraph', 'OptionalCyObjClass',
 #' @description Returns the Cytoscape network as a Bioconductor graph.
 #' @return A Bioconductor graph object.
 #' @author Tanja Muetze, Georgi Kolishovski, Paul Shannon
-#' @examples 
-#' \dontrun{
-#' g.net <- getGraphFromNetwork() #current network
-#' 
-#' g.net1 <- getGraphFromNetwork('network1')
-#' 
-#' cc <- CytoscapeConnection()
-#' g.net2 <- getGraphFromNetwork(cc, 'network2')
-#' 
-#' cw <- CytoscapeWindow('network3', graph=makeSimpleGraph())
+#' @examples \donttest{cw <- CytoscapeWindow('network', graph=makeSimpleGraph())
 #' displayGraph(cw)
 #' layoutNetwork(cw)
-#' g.net3 <- getGraphFromNetwork(cw)
-#'
+#' g.net1 <- getGraphFromNetwork(cw)
+#' 
+#' cc <- CytoscapeConnection()
+#' g.net2 <- getGraphFromNetwork(cc, 'network')
+#' 
+#' g.net3 <- getGraphFromNetwork('network') #default connection
+#' 
+#' g.net4 <- getGraphFromNetwork() #current network
 #' }
 #' @export
 
@@ -3950,7 +3943,8 @@ setMethod ('getAllEdgeAttributes', 'OptionalCyWinClass',
 # ------------------------------------------------------------------------------
 setMethod('getNodeAttributeNames', 'OptionalCyWinClass', 
     function(obj) {
-        net.SUID <- as.character(obj@suid)
+        
+        net.SUID <- getNetworkSuid(obj)
         
         resource.uri <- 
             paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
@@ -3971,7 +3965,7 @@ setMethod('getNodeAttributeNames', 'OptionalCyWinClass',
 # ------------------------------------------------------------------------------
 setMethod('getEdgeAttributeNames', 'OptionalCyWinClass', 
     function(obj) {
-        net.SUID <- as.character(obj@suid)
+        net.SUID <- getNetworkSuid(obj)
         resource.uri <- 
             paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
         # request result
@@ -4018,7 +4012,7 @@ setMethod('deleteEdgeAttribute', 'OptionalCyObjClass',
 # ------------------------------------------------------------------------------
 setMethod('getAllNodes', 'OptionalCyWinClass', 
     function(obj) {
-        net.SUID <- as.character(obj@suid)
+        net.SUID <- getNetworkSuid(obj)
         
         n.count <- getNodeCount(obj)
         
@@ -4061,7 +4055,7 @@ setMethod('getAllNodes', 'OptionalCyWinClass',
 # ------------------------------------------------------------------------------
 setMethod('getAllEdges', 'OptionalCyWinClass', 
     function(obj) {
-        net.SUID <- as.character(obj@suid)
+        net.SUID <- getNetworkSuid(obj)
         
         
         count <- getEdgeCount(obj)
@@ -4081,7 +4075,7 @@ setMethod('getAllEdges', 'OptionalCyWinClass',
 # ------------------------------------------------------------------------------
 setMethod('clearSelection', 'OptionalCyWinClass', 
     function(obj) {
-        net.SUID <- as.character(obj@suid)
+        net.SUID <- getNetworkSuid(obj)
         
         
         # if any nodes are selected, unselect them
@@ -4097,7 +4091,17 @@ setMethod('clearSelection', 'OptionalCyWinClass',
 ## END clearSelection
    
 # ------------------------------------------------------------------------------
-setMethod('selectNodes', 'OptionalCyWinClass', 
+setMethod('selectNodes', 'missing', 
+          function(node.names, by.col='name', preserve.current.selection = TRUE) {
+              cw<-CytoscapeWindowFromNetwork()
+              selectNodes(obj=cw,node.names,by.col,preserve.current.selection)
+          });
+setMethod('selectNodes', 'CytoscapeConnectionClass', 
+          function(obj, node.names, by.col='name', preserve.current.selection = TRUE) {
+              cw<-CytoscapeWindowFromNetwork(obj)
+              selectNodes(obj=cw,node.names,by.col,preserve.current.selection)
+          });
+setMethod('selectNodes', 'CytoscapeWindowClass', 
     function(obj, node.names, by.col='name', preserve.current.selection = TRUE) {
         base.url=paste(obj@uri,obj@api,sep = "/")
         network=obj@title
@@ -4181,7 +4185,7 @@ setMethod('selectAllNodes',
 # ------------------------------------------------------------------------------
 setMethod('getSelectedNodeCount', 'OptionalCyWinClass', 
     function(obj) {
-        net.SUID <- as.character(obj@suid)
+        net.SUID <- getNetworkSuid(obj)
         
         
         resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "nodes?column=selected&query=true", sep="/")
@@ -4194,9 +4198,19 @@ setMethod('getSelectedNodeCount', 'OptionalCyWinClass',
 ## END getSelectedNodeCount
    
 # ------------------------------------------------------------------------------
-setMethod('getSelectedNodes', 'OptionalCyWinClass', 
+setMethod('getSelectedNodes', 'missing', 
+          function() {
+              cw<-CytoscapeWindowFromNetwork()
+              getSelectedNodes(cw)
+          });
+setMethod('getSelectedNodes', 'CytoscapeConnectionClass', 
+          function(obj) {
+              cw<-CytoscapeWindowFromNetwork(obj)
+              getSelectedNodes(cw)
+          });
+setMethod('getSelectedNodes', 'CytoscapeWindowClass', 
     function(obj) {
-        net.SUID <- as.character(obj@suid)
+        net.SUID <- getNetworkSuid(obj)
         
         
         if(getSelectedNodeCount(obj) == 0) {
@@ -4437,7 +4451,7 @@ setMethod('deleteSelectedEdges', 'OptionalCyWinClass',
 # ------------------------------------------------------------------------------
 setMethod('getSelectedEdgeCount', 'OptionalCyWinClass', 
     function(obj) {
-        net.SUID <- as.character(obj@suid)
+        net.SUID <- getNetworkSuid(obj)
         
         
         resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "edges?column=selected&query=true", sep="/")
@@ -4450,9 +4464,8 @@ setMethod('getSelectedEdgeCount', 'OptionalCyWinClass',
    
 #------------------------------------------------------------------------------------------------------------------------
 setMethod ('getSelectedEdges', 'OptionalCyWinClass',
-
     function (obj) {
-        net.SUID = as.character(obj@suid)
+        net.SUID = getNetworkSuid(obj)
         if(getSelectedEdgeCount(obj) == 0) {
             return (NA)
         } else {
@@ -4485,39 +4498,52 @@ setMethod('unhideAll', 'OptionalCyWinClass',
 ## END unhideAll
    
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('getFirstNeighbors', 'OptionalCyWinClass',
 
+#' @rdname getFirstNeighbors
+setMethod ('getFirstNeighbors', 'missing',
+           function (node.names, as.nested.list=FALSE) {
+               if (length (node.names) == 0)
+                   return()
+               
+               cw<-CytoscapeWindowFromNetwork()
+               getFirstNeighbors(cw,node.names = node.names,as.nested.list = as.nested.list)
+           });
+#' @rdname getFirstNeighbors
+setMethod ('getFirstNeighbors', 'CytoscapeConnectionClass',
+           function (obj, node.names, as.nested.list=FALSE) {
+               if (length (node.names) == 0)
+                   return()
+               
+               cw<-CytoscapeWindowFromNetwork(obj)
+               getFirstNeighbors(cw,node.names = node.names,as.nested.list = as.nested.list)
+           });
+
+#' @rdname getFirstNeighbors
+setMethod ('getFirstNeighbors', 'CytoscapeWindowClass',
    function (obj, node.names, as.nested.list=FALSE) {
-      if (length (node.names) == 0){
+      if (length (node.names) == 0)
          return()
-      }else{
-         # map node names to node SUIDs
-         dict.indices = which(sapply(obj@node.suid.name.dict, function(s) { s$name }) %in% node.names)
-         node.SUIDs = sapply(obj@node.suid.name.dict[dict.indices], function(i) {i$SUID})
-         
-         # network ID 
-         net.suid = as.character(obj@suid)
-         
-         # get first neighbors
-         # TODO at some later point it might be nice to return the first neighbors as nested lists
-         neighbor.names <- c()
-         
-         for (node.SUID in node.SUIDs){
-            # get first neighbors for each node
-            resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "nodes", as.character(node.SUID), "neighbors", sep="/")
-            request.res <- GET(resource.uri)
-            first.neighbors.SUIDs <- fromJSON(rawToChar(request.res$content))
-            
-            # map node SUIDs to node names
-            dict.indices <- which(sapply(obj@node.suid.name.dict, function(s) { s$SUID }) %in% first.neighbors.SUIDs)
-            if (as.nested.list){
-                neighbor.names <- append(neighbor.names, list(c(neighbor.names, sapply(obj@node.suid.name.dict[dict.indices], function(i) {i$name}))))
-            }else{
-                neighbor.names <- c(neighbor.names, sapply(obj@node.suid.name.dict[dict.indices], function(i) {i$name}))
-            }
-         }
-         return (neighbor.names)
-      }
+       
+       net.suid = as.character(obj@suid)
+       neighbor.names <- c()
+       
+       for (node.name in node.names){
+           # get first neighbors for each node
+           node.SUID = .nodeNameToNodeSUID(obj,node.name)
+           resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "nodes", as.character(node.SUID), "neighbors", sep="/")
+           request.res <- GET(resource.uri)
+           first.neighbors.SUIDs <- fromJSON(rawToChar(request.res$content))
+           
+           if (as.nested.list){
+               neighbor.names <- append(neighbor.names, list(c(node.name, list(.nodeSUIDToNodeName(obj,first.neighbors.SUIDs)))))
+           }else{
+               neighbor.names <- c(neighbor.names, .nodeSUIDToNodeName(obj,first.neighbors.SUIDs))
+               neighbor.names <- unique(unlist(neighbor.names, use.names = FALSE))
+           }
+           
+       }
+       return (neighbor.names)
+       
       })  # getFirstNeighbors
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -6436,12 +6462,26 @@ saveVisualStyle<-function(filename,type,obj=CytoscapeConnection()){
 #' selectFirstNeighors('incoming')
 #' }
 
-selectFirstNeighbors <- function(direction='any', obj=CytoscapeWindowFromNetwork()){
-    network = obj@title
-    cmd<-paste0('network select firstNeighbors="',direction,'" network="',network,'"')
-    res <- commandRun(cmd,obj)
-    return(res[-1])
-}
+#' @rdname  selectFirstNeighbors
+setMethod( 'selectFirstNeighbors', 'missing',
+           function(direction='any'){
+               cw<-CytoscapeWindowFromNetwork()
+               selectFirstNeighbors(cw,direction)               
+           });
+#' @rdname  selectFirstNeighbors
+setMethod( 'selectFirstNeighbors', 'CytoscapeConnectionClass',
+           function(obj, direction='any'){
+               cw<-CytoscapeWindowFromNetwork(obj)
+               selectFirstNeighbors(cw,direction)
+           });
+#' @rdname  selectFirstNeighbors
+setMethod( 'selectFirstNeighbors', 'CytoscapeWindowClass',
+           function(obj, direction='any'){
+               network = obj@title
+               cmd<-paste0('network select firstNeighbors="',direction,'" network="',network,'"')
+               res <- commandRun(cmd,obj)
+               return(res[-1])
+           });
 
 # ------------------------------------------------------------------------------
 #' @title Set current network

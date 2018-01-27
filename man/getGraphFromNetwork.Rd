@@ -20,19 +20,17 @@ A Bioconductor graph object.
 Returns the Cytoscape network as a Bioconductor graph.
 }
 \examples{
-\dontrun{
-g.net <- getGraphFromNetwork() #current network
-
-g.net1 <- getGraphFromNetwork('network1')
-
-cc <- CytoscapeConnection()
-g.net2 <- getGraphFromNetwork(cc, 'network2')
-
-cw <- CytoscapeWindow('network3', graph=makeSimpleGraph())
+\donttest{cw <- CytoscapeWindow('network', graph=makeSimpleGraph())
 displayGraph(cw)
 layoutNetwork(cw)
-g.net3 <- getGraphFromNetwork(cw)
+g.net1 <- getGraphFromNetwork(cw)
 
+cc <- CytoscapeConnection()
+g.net2 <- getGraphFromNetwork(cc, 'network')
+
+g.net3 <- getGraphFromNetwork('network') #default connection
+
+g.net4 <- getGraphFromNetwork() #current network
 }
 }
 \author{
