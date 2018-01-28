@@ -311,7 +311,7 @@ getServerStatus = function(uri,api) {
 #' Ping Cytoscape
 #' 
 #' @description Test the connection to Cytoscape via CyREST 
-#' @param obj a \code{CytoscapeConnectionClass} object (optional)
+#' @param obj (optional) \code{CytoscapeConnection} 
 #' @return "It works!"
 #' @author Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
@@ -420,28 +420,26 @@ setMethod ('createNetworkFromSelection', 'OptionalCyWinClass',
         return(sub.cw)
 }) # createNetworkFromSelection
 
-#' Copy a Cytoscape Network 
+#' Clone a Cytoscape Network 
 #'
-#' Makes a copy of a Cytoscape Network with all of its edges and nodes 
-#'
-#' @param obj Cytoscape network 
-#' @param new.title New name for the copy
-#' @param return.graph Logical whether to copy the graph to a new object in R 
-#' 
-#' @return Connection to new copy of network. 
-#'
+#' @description Makes a copy of a Cytoscape Network with all of its edges and nodes. 
+#' @param obj (optional) \code{CytoscapeConnection} or \code{CytoscapeWindow} 
+#' @param new.title Name for the new network
+#' @param return.graph \code{logical} Whether to include the \code{graphNEL} representation 
+#' of the network as part of the returned \code{CytoscapeWindow}. Warning: this is slow.
+#' @return A \code{CytoscapeWindow} object associated with the new network 
 #' @examples \dontrun{
 #' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 #' copy_of_your_net <- cloneNetwork(cw, "new_copy")
 #' }
-#'
-#' @author Julia Gustavsen, \email{j.gustavsen@@gmail.com}
-#' @seealso \code{\link{createNetworkFromSelection}}, \code{\link{CytoscapeWindowFromNetwork}}, \code{\link{renameNetwork}}
-#' 
-#' @concept RCy3
+#' @author Alexander Pico, Julia Gustavsen
+#' @seealso 
+#' \code{\link{createNetworkFromSelection}}, 
+#' \code{\link{CytoscapeWindowFromNetwork}}, 
+#' \code{\link{renameNetwork}}
 #' @export
 #' 
-#' @importFrom methods setGeneric
+#' @rdname cloneNetwork
 setMethod('cloneNetwork',
           'OptionalCyWinClass', 
           function(obj,
@@ -493,7 +491,7 @@ setMethod('cloneNetwork',
 #'
 #' Renames a Cytoscape Network. 
 #'
-#' @param object Cytoscape network 
+#' @param obj (optional) \code{CytoscapeConnection} or \code{CytoscapeWindow} 
 #' @param new.title New name for the copy
 #' @param return.graph Logical whether to copy the graph to a new object in R 
 #' 
@@ -4135,7 +4133,7 @@ setMethod('selectNodes', 'CytoscapeWindowClass',
 #'
 #' Selects all nodes in a Cytoscape Network 
 #'
-#' @param object Cytoscape network  
+#' @param obj (optional) \code{CytoscapeConnection} or \code{CytoscapeWindow} 
 #' 
 #' @return Selects all nodes in a specified network. 
 #'
@@ -4366,7 +4364,7 @@ setMethod('selectEdges', 'OptionalCyWinClass',
 #'
 #' Selects all edges in a Cytoscape Network 
 #'
-#' @param obj Cytoscape network  
+#' @param obj (optional) \code{CytoscapeConnection} or \code{CytoscapeWindow} 
 #' 
 #' @return Selects all edges in a specified network. 
 #'
@@ -4499,6 +4497,30 @@ setMethod('unhideAll', 'OptionalCyWinClass',
    
 #------------------------------------------------------------------------------------------------------------------------
 
+#' Get list of nodes neighboring provided list
+#' 
+#' @description Returns a non-redundan list of first
+#' neighbors of the supplied list of nodes.
+#' @param obj (optional) \code{CytoscapeConnection} or \code{CytoscapeWindow} 
+#' @param node.names A \code{list} of node names from the \code{name} column of the \code{node table}
+#' @param as.nested.list \code{logical} Whether to return lists of neighbors per query node
+#' @return A list of unique node names, optionally nested per query node name.
+#' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon 
+#' @seealso 
+#' selectNodes  
+#' selectFirstNeighbors
+#' @examples /dontrun {
+#' # first, delete existing windows to save memory:
+#' deleteAllWindows(CytoscapeConnection())
+#' 
+#' cw <- CytoscapeWindow ('getFirstNeighbors.test', graph=makeSimpleGraph())
+#' displayGraph (cw)
+#' redraw (cw)
+#' layoutNetwork(cw, 'grid')
+#' print (getFirstNeighbors (cw, 'A'))
+#' selectNodes (cw, getFirstNeighbors (cw, 'A'))  # note that A is not selected
+#' }
+
 #' @rdname getFirstNeighbors
 setMethod ('getFirstNeighbors', 'missing',
            function (node.names, as.nested.list=FALSE) {
@@ -4551,7 +4573,7 @@ setMethod ('getFirstNeighbors', 'CytoscapeWindowClass',
 #'
 #' Selects edges in a Cytoscape Network connecting the selected nodes 
 #'
-#' @param obj Cytoscape network 
+#' @param obj (optional) \code{CytoscapeConnection} or \code{CytoscapeWindow} 
 #' 
 #' @return network with edges selected 
 #'
@@ -6640,6 +6662,15 @@ updateStyleMapping <- function(style.name, mapping, obj=CytoscapeConnection()){
 ######################
 # DEPRECATED
 ######################
+
+#' Deprecated: copyCytoscapeNetwork
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage Use the replacement function instead:
+#' \code{\link[RCy3]{cloneNetwork}}
+#' @export
+#' @rdname ping-deprecated
 copyCytoscapeNetwork<-function(obj,new.title,return.graph = FALSE) {
     .Deprecated("cloneNetwork")
     cloneNetwork(obj=obj,new.title=new.title,return.graph=return.graph)
