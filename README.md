@@ -13,6 +13,19 @@ that includes:
   * [py2cytoscape](https://github.com/cytoscape/py2cytoscape)
   * [RCyjs](http://bioconductor.org/packages/release/bioc/html/RCyjs.html)
 
+## How to install
+_Official bioconductor releases_ (recommended)
+```
+source("https://bioconductor.org/biocLite.R")
+biocLite("RCy3")
+```
+
+_Unstable development code from this repo_ (at your own risk)
+```
+install_github('cytoscape/RCy3')
+library(RCy3)
+```
+
 ## How to contribute
 This is a public, open source project. Come on in! You can contribute at multiple levels:
 
@@ -29,6 +42,9 @@ take these steps from within a running R session:
   2) run.tests ()
 
 They take about 4 minutes to run.
+
+## Bioconductor
+While this is the primary development repository for the RCy3 project, we also make regular pushes to official bioconductor repository from which the official releases are generated. This is the correct repo for all coding and bug reporting interests. The tagged releases here correspond to the bioconductor releases via a manual syncing process. The `master` branch here corresponds to the latest code in development and not yet released. 
 
 ## Former Repo
 The entire commit history has been preserved during this transition, but you can find the repo for RCy3 v1.5.3 and earlier
