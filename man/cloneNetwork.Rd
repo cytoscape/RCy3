@@ -14,7 +14,7 @@
 
 \item{new.title}{Name for the new network}
 
-\item{return.graph}{\code{Boolean} Whether to include the \code{graphNEL} representation 
+\item{return.graph}{\code{logical} Whether to include the \code{graphNEL} representation 
 of the network as part of the returned \code{CytoscapeWindow}. Warning: this is slow.}
 }
 \value{
