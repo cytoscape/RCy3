@@ -7,7 +7,7 @@
 selectEdgesConnectedBySelectedNodes(obj)
 }
 \arguments{
-\item{obj}{Cytoscape network}
+\item{obj}{(optional) \code{CytoscapeConnection} or \code{CytoscapeWindow}}
 }
 \value{
 network with edges selected

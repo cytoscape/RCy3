@@ -10,11 +10,11 @@
   new.title, return.graph = FALSE)
 }
 \arguments{
+\item{obj}{(optional) \code{CytoscapeConnection} or \code{CytoscapeWindow}}
+
 \item{new.title}{New name for the copy}
 
 \item{return.graph}{Logical whether to copy the graph to a new object in R}
-
-\item{object}{Cytoscape network}
 }
 \value{
 Connection to the renamed network.
