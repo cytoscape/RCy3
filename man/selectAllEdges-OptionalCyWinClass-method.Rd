@@ -9,7 +9,7 @@
   \S4method{selectAllEdges}{OptionalCyWinClass}(obj = CytoscapeWindowFromNetwork())
 }
 \arguments{
-\item{obj}{Cytoscape network}
+\item{obj}{(optional) \code{CytoscapeConnection} or \code{CytoscapeWindow}}
 }
 \value{
 Selects all edges in a specified network.

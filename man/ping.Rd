@@ -11,7 +11,7 @@
 \S4method{ping}{CytoscapeConnectionClass}(obj)
 }
 \arguments{
-\item{obj}{a \code{CytoscapeConnectionClass} object (optional)}
+\item{obj}{(optional) \code{CytoscapeConnection}}
 }
 \value{
 "It works!"
