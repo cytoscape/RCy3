@@ -14,7 +14,7 @@ that includes:
   * [RCyjs](http://bioconductor.org/packages/release/bioc/html/RCyjs.html)
 
 ## How to install
-_Official bioconductor releases_ (recommended)
+__Official bioconductor releases_ (recommended)_
 ```
 source("https://bioconductor.org/biocLite.R")
 biocLite("RCy3")
