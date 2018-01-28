@@ -18,7 +18,7 @@
 \arguments{
 \item{node.names}{A \code{list} of node names from the \code{name} column of the \code{node table}}
 
-\item{as.nested.list}{\code{Boolean} Whether to return lists of neighbors per query node}
+\item{as.nested.list}{\code{logical} Whether to return lists of neighbors per query node}
 
 \item{obj}{(optional) \code{CytoscapeConnection} or \code{CytoscapeWindow}}
 }
