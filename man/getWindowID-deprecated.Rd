@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{getWindowID}
 \alias{getWindowID}
-\title{Deprecated: getWindowID}
+\title{DEPRECATED: getWindowID}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{getNetworkSuid}}

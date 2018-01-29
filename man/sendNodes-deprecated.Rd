@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{sendNodes}
 \alias{sendNodes}
-\title{Deprecated: sendNodes}
+\title{DEPRECATED: sendNodes}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{sendNodesFromGraph}}

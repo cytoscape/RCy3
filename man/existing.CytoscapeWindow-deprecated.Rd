@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{existing.CytoscapeWindow}
 \alias{existing.CytoscapeWindow}
-\title{Deprecated: existing.CytoscapeWindow}
+\title{DEPRECATED: existing.CytoscapeWindow}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{CytoscapeWindowFromNetwork}}

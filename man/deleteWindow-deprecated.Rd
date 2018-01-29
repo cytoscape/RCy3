@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{deleteWindow}
 \alias{deleteWindow}
-\title{Deprecated: deleteWindow}
+\title{DEPRECATED: deleteWindow}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{deleteNetwork}}

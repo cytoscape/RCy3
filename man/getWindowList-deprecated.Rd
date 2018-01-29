@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{getWindowList}
 \alias{getWindowList}
-\title{Deprecated: getWindowList}
+\title{DEPRECATED: getWindowList}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{getNetworkList}}

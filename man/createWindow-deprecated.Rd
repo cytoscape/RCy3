@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{createWindow}
 \alias{createWindow}
-\title{Deprecated: createWindow}
+\title{DEPRECATED: createWindow}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{sendNetworkFromGraph}}

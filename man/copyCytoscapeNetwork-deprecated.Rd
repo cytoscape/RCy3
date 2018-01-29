@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{copyCytoscapeNetwork}
 \alias{copyCytoscapeNetwork}
-\title{Deprecated: copyCytoscapeNetwork}
+\title{DEPRECATED: copyCytoscapeNetwork}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{cloneNetwork}}

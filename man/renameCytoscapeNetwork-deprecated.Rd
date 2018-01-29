@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{renameCytoscapeNetwork}
 \alias{renameCytoscapeNetwork}
-\title{Deprecated: renameCytoscapeNetwork}
+\title{DEPRECATED: renameCytoscapeNetwork}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{renameNetwork}}
