@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{getWindowCount}
 \alias{getWindowCount}
-\title{Deprecated: getWindowCount}
+\title{DEPRECATED: getWindowCount}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{getNetworkCount}}

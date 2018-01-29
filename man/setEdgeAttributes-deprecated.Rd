@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{setEdgeAttributes}
 \alias{setEdgeAttributes}
-\title{Deprecated: setEdgeAttributes}
+\title{DEPRECATED: setEdgeAttributes}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{sendEdgeAttributesFromGraph}}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{sendEdges}
 \alias{sendEdges}
-\title{Deprecated: sendEdges}
+\title{DEPRECATED: sendEdges}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{sendEdgesFromGraph}}

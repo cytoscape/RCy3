@@ -1,0 +1,20 @@
+#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R Internal.R
+NULL
+
+# ------------------------------------------------------------------------------
+#' Saves the current Cytoscape session
+#'
+#' @details Saves session as a CYS file.
+#' @param filename (char) name of the session file to save
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return server response
+#' @export
+#' @examples
+#' \donttest{
+#' saveSession('myFirstSession')
+#' }
+
+saveSession<-function(filename,obj=CytoscapeConnection()){
+    commandRun(paste0('session save as file="',filename,'"'),obj)
+}
+

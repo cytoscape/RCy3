@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{getGraphFromCyWindow}
 \alias{getGraphFromCyWindow}
-\title{Deprecated: getGraphFromCyWindow}
+\title{DEPRECATED: getGraphFromCyWindow}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{getGraphFromNetwork}}

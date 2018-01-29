@@ -1,3 +1,5 @@
+#' @include CytoscapeConnectionClass.R Internal.R 
+
 # ------------------------------------------------------------------------------
 setClass("CytoscapeWindowClass", 
          slots = c(

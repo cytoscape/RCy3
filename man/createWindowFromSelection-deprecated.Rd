@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{createWindowFromSelection}
 \alias{createWindowFromSelection}
-\title{Deprecated: createWindowFromSelection}
+\title{DEPRECATED: createWindowFromSelection}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{createNetworkFromSelection}}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{deleteAllWindows}
 \alias{deleteAllWindows}
-\title{Deprecated: deleteAllWindows}
+\title{DEPRECATED: deleteAllWindows}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{deleteAllNetworks}}
