@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{setNodeAttributes}
 \alias{setNodeAttributes}
-\title{Deprecated: setNodeAttributes}
+\title{DEPRECATED: setNodeAttributes}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{sendNodeAttributesFromGraph}}

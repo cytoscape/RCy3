@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{sfn}
 \alias{sfn}
-\title{Deprecated: sfn}
+\title{DEPRECATED: sfn}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{selectFirstNeighbors}}

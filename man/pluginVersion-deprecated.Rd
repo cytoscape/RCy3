@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{pluginVersion}
 \alias{pluginVersion}
-\title{Deprecated: pluginVersion}
+\title{DEPRECATED: pluginVersion}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{apiVersion}}

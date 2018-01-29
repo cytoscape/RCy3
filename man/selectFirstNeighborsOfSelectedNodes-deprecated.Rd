@@ -2,7 +2,7 @@
 % Please edit documentation in R/Deprecated.R
 \name{selectFirstNeighborsOfSelectedNodes}
 \alias{selectFirstNeighborsOfSelectedNodes}
-\title{Deprecated: selectFirstNeighborsOfSelectedNodes}
+\title{DEPRECATED: selectFirstNeighborsOfSelectedNodes}
 \usage{
 Use the replacement function instead:
 \code{\link[RCy3]{selectFirstNeighbors}}

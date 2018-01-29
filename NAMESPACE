@@ -3,7 +3,6 @@ exportClasses (CytoscapeWindowClass, CytoscapeConnectionClass)
 exportMethods (
    addCyEdge,
    addCyNode,
-   addGraphToGraph,
    clearSelection,
    clearSelection,
    copyVisualStyle,
@@ -75,7 +74,6 @@ exportMethods (
    ping,
    apiVersion,
    predictTimeToDisplayGraph,
-   raiseWindow,
    redraw,
    restoreLayout,
    saveImage,
@@ -162,10 +160,7 @@ exportMethods (
    setNodeSizeRule,
    setNodeTooltipRule,
    setNodeWidthDirect,
-   setTooltipDismissDelay,
-   setTooltipInitialDelay,
    setVisualStyle,
-   setWindowSize,
    setZoom,
    showGraphicsDetails,
    unhideAll
@@ -202,6 +197,7 @@ export(
    createVisualStyle,
    getNetworkName,
    getTableColumns,
+   getVersionInfo,
    listTableColumns,
    loadTableData,
    mapVisualProperty,
@@ -218,6 +214,7 @@ export(
 
 #Deprecated
 export(
+    addGraphToGraph,
     copyCytoscapeNetwork,
     createWindow,
     createWindowFromSelection,
