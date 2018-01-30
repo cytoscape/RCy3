@@ -1,5 +1,3 @@
-#' @include Internal.R 
-
 # ------------------------------------------------------------------------------
 setClass("CytoscapeConnectionClass", 
          slots = c(uri="character",api="character"), 
