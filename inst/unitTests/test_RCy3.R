@@ -242,7 +242,6 @@ run.tests = function ()
     deleteAllWindows (cy)
 
     test.defaultColors ()
-    #test.setWindowSizeRaiseWindow ()
     test.fitContent ()
     #test.windowCoordinates ()
 
@@ -1502,7 +1501,6 @@ test.setEdgeSourceArrowShapeDirect = function ()
     cw = CytoscapeWindow ('test.setEdgeSourceArrowShapeDirect', graph=makeSimpleGraph())
     displayGraph (cw)
     layoutNetwork (cw, 'grid')
-    #setWindowSize (cw, 800, 800)
     fitContent (cw)
 
     edges.of.interest = as.character (cy2.edge.names (g))
@@ -1687,7 +1685,6 @@ test.setEdgeSourceArrowShapeDirect = function ()
     displayGraph (cw)
     layoutNetwork (cw, 'grid')
     redraw (cw)
-    setWindowSize (cw, 800, 800)
     fitContent (cw)
 
     edges.of.interest = as.character (cy2.edge.names (g))
@@ -1791,7 +1788,6 @@ test.setEdgeTargetArrowColorDirect = function ()
     displayGraph (cw)
     layoutNetwork (cw, 'grid')
     redraw (cw)
-    #setWindowSize (cw, 800, 800)
     fitContent (cw)
 
     arrows = c ('Arrow', 'Diamond', 'Circle')
@@ -3453,40 +3449,6 @@ test.defaultColors = function ()
 
 } # test.defaultColors
 #------------------------------------------------------------------------------------------------------------------------
-# test.setWindowSizeRaiseWindow = function ()
-# {
-#     title = 'test.setWindowSizeRaiseWindow'
-#     window.prep (title)
-#
-#     cw = CytoscapeWindow (title, graph=makeSimpleGraph ())
-#     raiseWindow (cw)
-#
-#     displayGraph (cw)
-#     redraw (cw)
-#     layoutNetwork (cw)
-#     for (i in 1:3) {
-#         setWindowSize (cw, 200, 200)
-#         setWindowSize (cw, 400, 400)
-#     } # for i
-#
-#     # now raise a few random windows by name
-#     if (!exists ('cy')){
-#         cy = CytoscapeConnection ()
-#     }
-#     window.names = as.character (getWindowList (cy))
-#
-#     if (length (window.names) > 2) {  # only if there are multiple windows
-#         for (i in 1:3) {
-#             index = as.integer (runif (1, 1, length (window.names)))
-#             raiseWindow (cy, window.names [index])
-#             raiseWindow (cw)
-#         } # for i
-#     } # if 3 or more windows are open
-#
-#     invisible (cw)
-#
-# } # test.setWindowSizeRaiseWindow
-#------------------------------------------------------------------------------------------------------------------------
 test.fitContent = function ()
 {
     title = 'test.fitContent'
@@ -3533,7 +3495,6 @@ test.zoom = function ()
     redraw (cw)
     layoutNetwork (cw)
 
-    #setWindowSize (cw, 1200, 800)
     fitContent (cw)
 
     smaller = 0.5
@@ -3560,7 +3521,6 @@ test.center = function ()
     redraw (cw)
     layoutNetwork (cw)
 
-    #setWindowSize (cw, 1200, 800)
     fitContent (cw)
     setZoom (cw, 0.5 * getZoom (cw))
 
@@ -3980,110 +3940,6 @@ hiddenTest.saveNetwork = function ()
     invisible (cw)
 
 } # test.saveNetwork
-#------------------------------------------------------------------------------------------------------------------------
-# test.setNodeImageDirect = function (apply.viz.rules=FALSE)
-# {
-#     #DEACTIVATED("may be too slow?")
-#     title = 'test.imageUrl'
-#     window.prep (title)
-#
-#     cw = CytoscapeWindow (title, makeSimpleGraph ())
-#     displayGraph (cw)
-#     layoutNetwork (cw, 'grid')
-#     setNodeLabelRule (cw, 'label')
-#
-#     setNodeImageDirect (cw, 'A', 'http://rcytoscape.systemsbiology.net/versions/current/images/isb.png')
-#     setNodeImageDirect (cw, 'B', 'http://rcytoscape.systemsbiology.net/versions/current/images/tudelft.jpg')
-#     setNodeImageDirect (cw, 'C', 'http://rcytoscape.systemsbiology.net/versions/current/images/bioc.tiff')
-#
-#     setNodeColorDirect (cw, 'A', '#0000FF')
-#     setNodeColorDirect (cw, 'B', '#FF00FF')
-#     setNodeColorDirect (cw, 'C', '#FF0000')
-#
-#     redraw (cw)
-#     #setWindowSize (cw, 800, 800)
-#     fitContent (cw)
-#
-#     invisible (cw)
-#
-# } # test.setNodeImageDirect
-#------------------------------------------------------------------------------------------------------------------------
-# test.validity = function ()
-# {
-#     title = 'test.validity error #1'
-#     window.prep (title)
-#
-#     g.undirected = new ('graphNEL', edgemode='undirected')
-#     g.undirected = graph::addNode ('A', g.undirected)
-#     g.undirected = graph::addNode ('B', g.undirected)
-#     g.undirected = graph::addEdge ('A', 'B', g.undirected)
-#     g.undirected = initEdgeAttribute (g.undirected, 'edgeType', 'char', 'unspecified')
-#     edgeData (g.undirected, 'A', 'B', 'edgeType') = 'reciprocal'
-#
-#
-#     # should not fail, but warning should be given
-#     cw = CytoscapeWindow (title, g.undirected)
-#     checkEquals (validCyWin (cw), TRUE)
-#
-#     # fix the edgeType complaint
-#
-#     window.prep (title)
-#     g = new ('graphNEL', edgemode='directed')
-#
-#     # should fail with 'You must provide an 'edgeType' edge attribute, which will be mapped to Cytoscape's crucial ...
-#     cw = CytoscapeWindow (title, g)
-#     checkEquals (validCyWin (cw), FALSE)
-#
-#     # fix the edgeType complaint
-#     title = 'test.validity fixed'
-#     g = initEdgeAttribute (g, 'edgeType', 'char', 'unspecified')
-#     window.prep (title)
-#     cw = CytoscapeWindow (title, g)
-#     print (checkTrue (validCyWin (cw)))
-#
-#     # add a new node attribute the old-fashioned R graph way, make sure the failure to properly initialize is caught
-#     nodeDataDefaults (g, attr='pval') = 1.0
-#     title = 'test.validity error #2'
-#     window.prep (title)
-#     cw = CytoscapeWindow (title, g)
-#     checkTrue (!validCyWin (cw))
-#
-#     # add a new edge attribute the old-fashioned R graph way, make sure the failure to properly initialize is caught
-#     title = 'test.validity error #3'
-#     edgeDataDefaults (g, attr='score') = 0.0
-#     window.prep (title)
-#     cw = CytoscapeWindow (title, g)
-#     checkTrue (!validCyWin (cw))
-#
-#     # now fix them both
-#     title = 'test.validity fix all'
-#     g = initNodeAttribute (g, 'pval', 'numeric', 1.0)
-#     g = initEdgeAttribute (g, 'score', 'numeric', 0)
-#     window.prep (title)
-#     cw = CytoscapeWindow (title, g)
-#     print (checkTrue (validCyWin (cw)))
-#
-#     invisible (cw)
-#
-# } # test.validity
-#------------------------------------------------------------------------------------------------------------------------
-# not really an automated test, except of syntax.  cut and paste these commands into your R session to see that
-# they really perform as expected.
-
-# test.tooltip.delays = function ()
-# {
-#     cw = demoSimpleGraph ()
-#
-#     # display immediately, stay up until mouse moves away
-#     setTooltipInitialDelay (cw, 0)
-#     setTooltipDismissDelay (cw, 0)
-#
-#     # display after 1 second, for 1 second
-#     setTooltipInitialDelay (cw, 1000)
-#     setTooltipDismissDelay (cw, 1000)
-#
-# } # test.tooltip.delays
-#------------------------------------------------------------------------------------------------------------------------
 # also not an automated test, though exception testing could accomplish that
 test.detectUnitializedNodeAttributes = function ()
 {
