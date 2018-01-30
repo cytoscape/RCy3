@@ -1,6 +1,9 @@
 #' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R
 
-#-----------------------------------------------------------------------------------------------------------------------
+#------ Package Variables ----------------------------------------------------------------------------------------------
+.defaultBaseUrl <- 'http://localhost:1234/v1'
+
+#------ Package Functions ----------------------------------------------------------------------------------------------
 .classicGraphToNodePairTable = function (g)
 {
     edges.g <- edges(g)

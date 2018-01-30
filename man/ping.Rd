@@ -3,15 +3,15 @@
 \docType{methods}
 \name{ping,missing-method}
 \alias{ping,missing-method}
-\alias{ping,CytoscapeConnectionClass-method}
+\alias{ping,character-method}
 \title{Ping Cytoscape}
 \usage{
 \S4method{ping}{missing}()
 
-\S4method{ping}{CytoscapeConnectionClass}(obj)
+\S4method{ping}{character}(base.url)
 }
 \arguments{
-\item{obj}{(optional) \code{CytoscapeConnection}}
+\item{base.url}{(optional) URL prefix for CyREST calls}
 }
 \value{
 status message
@@ -23,8 +23,8 @@ Test the connection to Cytoscape via CyREST
 \donttest{
 ping()
 
-cy <- CytoscapeConnection()
-ping(cy)
+base.url <- 'http://localhost:1234/v1'
+ping(base.url)
 }
 }
 \author{
