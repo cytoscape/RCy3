@@ -1,4 +1,4 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R Internal.R
+#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
 #-----------------------------------------------------------
 # methods related to transmitting data from Cytoscape to R

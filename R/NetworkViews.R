@@ -1,4 +1,4 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R Internal.R
+#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
 # ------------------------------------------------------------------------------
 setGeneric ('setNodePosition',           signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, x.coords, y.coords) standardGeneric ('setNodePosition'))

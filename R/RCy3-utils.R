@@ -1,3 +1,5 @@
+#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R
+
 #-----------------------------------------------------------------------------------------------------------------------
 .classicGraphToNodePairTable = function (g)
 {

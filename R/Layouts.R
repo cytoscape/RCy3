@@ -1,4 +1,4 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R Internal.R
+#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
 # ------------------------------------------------------------------------------
 setGeneric ('getLayoutNames', 	         signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getLayoutNames'))

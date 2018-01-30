@@ -1,4 +1,4 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R Internal.R
+#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
 #--- mappings --------------------------------------------
 setGeneric ('setNodeLabelRule',         signature='obj', function (obj=CytoscapeConnection(), node.attribute.name, style.name = 'default') standardGeneric ('setNodeLabelRule'))

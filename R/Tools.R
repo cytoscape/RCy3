@@ -1,4 +1,4 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R Internal.R
+#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
 # ------ TODO -----------------------------------------------------------------
 #http://localhost:1234/diffusion/v1/52/views/772/diffuse

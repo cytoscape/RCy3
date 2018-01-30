@@ -1,4 +1,4 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R Internal.R
+#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R
 
 # ------ TODO -----------------------------------------------------------------
 #http://localhost:1234/v1/networks/52/groups/count
