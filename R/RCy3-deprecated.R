@@ -7,6 +7,15 @@ NULL
 # 3. Remove .Defunct functions on next release
 # ===================================================================================
 
+# ======== Deprecation Notes  =======================================================
+# # Extract base.url string from CytoscapeConnection and CytoscapeWindow objects 
+# base.url <- paste(obj@uri, obj@api, sep="/")
+#
+# # Extract network title or suid from CytoscapeWindow objects
+# title = obj@title
+# suid = obj@suid
+# ===================================================================================
+
 #' DEPRECATED: copyCytoscapeNetwork
 #' 
 #' @description This function is only provided for compatibility with older
@@ -137,8 +146,8 @@ getWindowList<-function(obj){
 #' @export
 #' @rdname pluginVersion-deprecated
 pluginVersion<-function(obj){
-    .Deprecated("apiVersion(obj)")
-    apiVersion(obj=obj)
+    .Deprecated("getVersionInfo(obj)[['apiVersion']]")
+    getVersionInfo(obj)[['apiVersion']]
 }
 #' DEPRECATED: renameCytoscapeNetwork
 #' 
