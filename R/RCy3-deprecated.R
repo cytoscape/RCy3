@@ -147,7 +147,7 @@ getWindowList<-function(obj){
 #' @rdname pluginVersion-deprecated
 pluginVersion<-function(obj){
     .Deprecated("getVersionInfo(obj)[['apiVersion']]")
-    getVersionInfo(obj)[['apiVersion']]
+    cytoscapeVersionInfo(obj)[['apiVersion']]
 }
 #' DEPRECATED: renameCytoscapeNetwork
 #' 
