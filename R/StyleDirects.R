@@ -1,4 +1,4 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R Internal.R
+#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
 #--- bypasses ---------------------------------------------
 setGeneric ('setNodeSizeDirect',          signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, new.sizes) standardGeneric ('setNodeSizeDirect'))

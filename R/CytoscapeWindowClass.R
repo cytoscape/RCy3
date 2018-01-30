@@ -1,4 +1,4 @@
-#' @include CytoscapeConnectionClass.R Internal.R 
+#' @include CytoscapeConnectionClass.R 
 
 # ------------------------------------------------------------------------------
 setClass("CytoscapeWindowClass", 

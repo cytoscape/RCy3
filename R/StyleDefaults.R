@@ -1,4 +1,4 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R Internal.R
+#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
 #--- defaults ----------------------------------------------
 setGeneric ('getDefaultBackgroundColor',	        signature='obj', function (obj=CytoscapeConnection(), style.name='default') standardGeneric ('getDefaultBackgroundColor'))
