@@ -19,7 +19,7 @@ CytoscapeConnection = function(host='localhost', port=1234) {
         write(sprintf('http://www.cytoscape.org/troubleshooting.html'), stderr())
         stop(sprintf('CyREST connection problem. RCy3 can not continue!'))
     }
-    cc@api = apiVersion(cc)
+    cc@api = "v1"
     return(cc)
 } # END CytoscapeConnection
 

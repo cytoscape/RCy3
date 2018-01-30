@@ -58,7 +58,7 @@ CytoscapeWindowFromNetwork =
             cy.window <- setGraph(cy.window, g.cy)
 
             # copy over obj@node.suid.name.dict
-            resource.uri <- paste(cy.window@uri, apiVersion(cy.window), "networks", as.character(cy.window@suid), sep="/")
+            resource.uri <- paste(cy.window@uri, cy.window@api, "networks", as.character(cy.window@suid), sep="/")
             request.res <- GET(url=resource.uri)
             request.res <- fromJSON(rawToChar(request.res$content))
 
@@ -73,36 +73,6 @@ CytoscapeWindowFromNetwork =
         }
         return (cy.window)
 } # END CytoscapeWindowFromNetwork
-
-# ------------------------------------------------------------------------------
-check.api.version = function(cyCon=CytoscapeConnection()) 
-{
-	api.version.string = apiVersion(cyCon)
-	string.tmp1 = strsplit(api.version.string, ' ')[[1]][1]
-	string.tmp2 = gsub('[a-z]', '', string.tmp1)
-	string.tmp3 = gsub('[A-Z]', '', string.tmp2)
-	api.version = as.numeric(string.tmp3)
-	
-	# SET MINIMUM REQUIRED API VERSION FOR RCY3 HERE
-	expected.version = 1
-	
-	if(api.version < expected.version) { 
-		write(' ', stderr())
-		write(sprintf('This version of the RCy3 package requires CyREST version %s or greater.', expected.version), 
-					stderr ())
-		write(sprintf('However, you are using version %s. You must upgrade.', api.version), stderr ())
-		write('Please visit the app page at http://apps.cytoscape.org/apps/cyrest.', stderr ())
-		write(' ', stderr())
-		stop('Wrong CyREST version.')
-	}
-} # END check.api.version
-
-# ------------------------------------------------------------------------------
-getServerStatus = function(uri,api) { 
-    request.uri = paste(uri, api, sep="/")
-    request.res = GET(url=request.uri)
-    return(request.res)
-} 
 
 # ------------------------------------------------------------------------------
 # Send a window from a CWnetwork from a graph (obj@graph)
