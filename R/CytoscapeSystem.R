@@ -1,12 +1,12 @@
 #' @include CytoscapeConnectionClass.R
 
 # ------------------------------------------------------------------------------
-setGeneric ('ping', 	 	            function (base.url) standardGeneric('ping'))
-setGeneric ('cytoscapeVersionInfo',           function (base.url) standardGeneric('cytoscapeVersionInfo'))
-setGeneric ('availableApiVersions', 	    function (base.url) standardGeneric('availableApiVersions'))
-setGeneric ('cytoscapeNumberOfCores',         function (base.url) standardGeneric('cytoscapeNumberOfCores'))
-setGeneric ('cytoscapeMemoryStatus',          function (base.url) standardGeneric('cytoscapeMemoryStatus'))
-setGeneric ('cytoscapeFreeMemory', function (base.url) standardGeneric('cytoscapeFreeMemory'))
+setGeneric ('ping', 	 	          function (base.url) standardGeneric('ping'))
+setGeneric ('cytoscapeVersionInfo',   function (base.url) standardGeneric('cytoscapeVersionInfo'))
+setGeneric ('availableApiVersions',   function (base.url) standardGeneric('availableApiVersions'))
+setGeneric ('cytoscapeNumberOfCores', function (base.url) standardGeneric('cytoscapeNumberOfCores'))
+setGeneric ('cytoscapeMemoryStatus',  function (base.url) standardGeneric('cytoscapeMemoryStatus'))
+setGeneric ('cytoscapeFreeMemory',    function (base.url) standardGeneric('cytoscapeFreeMemory'))
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Ping Cytoscape
@@ -17,9 +17,7 @@ setGeneric ('cytoscapeFreeMemory', function (base.url) standardGeneric('cytoscap
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
 #' ping()
-#' 
-#' base.url <- 'http://localhost:1234/v1'
-#' ping(base.url)
+#' # [1] "You are connected to Cytoscape!"
 #' }
 #' @export
 
@@ -40,14 +38,6 @@ setMethod('ping', 'character',
                   stop()
               }
           })
-# DEPRECATED
-setMethod('ping', 'CytoscapeConnectionClass',
-          function(base.url) {
-              .Deprecated('character or default argument')
-              loc.base.url <- paste(base.url@uri, base.url@api,sep="/")
-              ping(base.url = loc.base.url)
-          })
-
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Cytoscape and CyREST API Versions
@@ -58,9 +48,8 @@ setMethod('ping', 'CytoscapeConnectionClass',
 #' @author Alexander Pico
 #' @examples \donttest{
 #' cytoscapeVersionInfo()
-#' 
-#' base.url <- 'http://localhost:1234/v1'
-#' cytoscapeVersionInfo(base.url)
+#'  # apiVersion cytoscapeVersion 
+#'  #       "v1" "3.7.0-SNAPSHOT" 
 #' }
 #' @export
 
@@ -82,13 +71,6 @@ setMethod('cytoscapeVersionInfo', 'character',
               }
               return(versions)
           }) 
-# DEPRECATED
-setMethod('cytoscapeVersionInfo', 'CytoscapeConnectionClass',
-          function(base.url) {
-              .Deprecated('character or default argument')
-              loc.base.url <- paste(base.url@uri, base.url@api,sep="/")
-              cytoscapeVersionInfo(base.url = loc.base.url)
-          }) 
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Available CyREST API Versions 
@@ -99,9 +81,7 @@ setMethod('cytoscapeVersionInfo', 'CytoscapeConnectionClass',
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
 #' availableApiVersions()
-#' 
-#' base.url <- 'http://localhost:1234/v1'
-#' availableApiVersions(base.url)
+#' # [1] "v1"
 #' }
 #' @export
 
@@ -118,13 +98,6 @@ setMethod('availableApiVersions', 'character',
               available.api.versions <- fromJSON(rawToChar(res$content))$availableApiVersion
               return(available.api.versions)
           }) 
-#DEPRECATED
-setMethod('availableApiVersions', 'CytoscapeConnectionClass', 
-          function(base.url) {
-              .Deprecated('character or default argument')
-              loc.base.url <- paste(base.url@uri, base.url@api,sep="/")
-              availableApiVersions(base.url = loc.base.url)
-          })
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Number of Processors Available to Cytoscape
@@ -135,9 +108,7 @@ setMethod('availableApiVersions', 'CytoscapeConnectionClass',
 #' @author Alexander Pico
 #' @examples \donttest{
 #' cytoscapeNumberOfCores()
-#' 
-#' base.url <- 'http://localhost:1234/v1'
-#' cytoscapeNumberOfCores(base.url)
+#' # [1] 8
 #' }
 #' @export
 
@@ -160,13 +131,6 @@ setMethod('cytoscapeNumberOfCores', 'character',
                   stop()
               }
           }) 
-# DEPRECATED
-setMethod('cytoscapeNumberOfCores', 'CytoscapeConnectionClass',
-          function(base.url) {
-              .Deprecated('character or default argument')
-              loc.base.url <- paste(base.url@uri, base.url@api,sep="/")
-              cytoscapeNumberOfCores(base.url = loc.base.url)
-          }) 
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Memory Available to Cytoscape
@@ -177,9 +141,8 @@ setMethod('cytoscapeNumberOfCores', 'CytoscapeConnectionClass',
 #' @author Alexander Pico
 #' @examples \donttest{
 #' cytoscapeMemoryStatus()
-#' 
-#' base.url <- 'http://localhost:1234/v1'
-#' cytoscapeMemoryStatus(base.url)
+#' #  usedMemory  freeMemory totalMemory   maxMemory 
+#' #         181        2624        2805       13653 
 #' }
 #' @export
 
@@ -202,13 +165,6 @@ setMethod('cytoscapeMemoryStatus', 'character',
                   stop()
               }
           }) 
-# DEPRECATED
-setMethod('cytoscapeMemoryStatus', 'CytoscapeConnectionClass',
-          function(base.url) {
-              .Deprecated('character or default argument')
-              loc.base.url <- paste(base.url@uri, base.url@api,sep="/")
-              cytoscapeMemoryStatus(base.url = loc.base.url)
-          }) 
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Free Up Unused Memory for Cytoscape
@@ -220,9 +176,7 @@ setMethod('cytoscapeMemoryStatus', 'CytoscapeConnectionClass',
 #' @author Alexander Pico
 #' @examples \donttest{
 #' cytoscapeFreeMemory()
-#' 
-#' base.url <- 'http://localhost:1234/v1'
-#' cytoscapeFreeMemory(base.url)
+#' # [1] "Unused memory freed up."
 #' }
 #' @export
 
@@ -243,14 +197,5 @@ setMethod('cytoscapeFreeMemory', 'character',
                   stop()
               }
           })
-# DEPRECATED
-setMethod('cytoscapeFreeMemory', 'CytoscapeConnectionClass',
-          function(base.url) {
-              .Deprecated('character or default argument')
-              loc.base.url <- paste(base.url@uri, base.url@api,sep="/")
-              cytoscapeFreeMemory(base.url = loc.base.url)
-          })
-
-
 
 

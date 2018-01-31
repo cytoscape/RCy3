@@ -1,7 +1,7 @@
 #' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
 # ------------------------------------------------------------------------------
-setGeneric ('getLayoutNames', 	         signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getLayoutNames'))
+setGeneric ('getLayoutNames', 	         function (base.url) standardGeneric ('getLayoutNames'))
 setGeneric ('getLayoutNameMapping',	     signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getLayoutNameMapping'))
 setGeneric ('getLayoutPropertyNames',    signature='obj', function (obj=CytoscapeConnection(), layout.name) standardGeneric ('getLayoutPropertyNames'))
 setGeneric ('getLayoutPropertyType',     signature='obj', function (obj=CytoscapeConnection(), layout.name, property.name) standardGeneric ('getLayoutPropertyType'))
@@ -13,15 +13,34 @@ setGeneric ('restoreLayout',        	 signature='obj', function (obj=CytoscapeWi
 
 
 # ------------------------------------------------------------------------------
-setMethod('getLayoutNames', 'OptionalCyObjClass', 
-          function(obj) {
-              request.uri <- paste(obj@uri, obj@api, "apply/layouts", sep="/")
+#' Get Layout Names
+#' @description Retrieve the names of the currently supported layout algorithms.  These
+#' may be used in subsequent calls to the 'layoutNetwork' function.  Note that
+#' some of the more attractive layout options, from yFiles, cannot be
+#' run except from the user interface; their names do not appear here.
+#' @return A \code{list} of \code{character} strings, e.g., "force-directed" "circular" "grid"
+#' @authors Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
+#' @export
+#' @examples \donttest {
+#' getLayoutNames()
+#' # [1] "degree-circle"                    "attributes-layout"                "kamada-kawai"                    
+#' # [4] "force-directed"                   "cose"                             "hierarchical"                    
+#' # [7] "attribute-circle"                 "stacked-node-layout"              "circular"
+#' }
+#' @rdname getLayoutNames
+setMethod('getLayoutNames', 'missing', 
+          function() {
+              getLayoutNames(.defaultBaseUrl)
+              })
+#' @rdname getLayoutNames
+setMethod('getLayoutNames', 'character', 
+          function(base.url) {
+              request.uri <- paste(base.url, "apply/layouts", sep="/")
               request.res <- GET(url=request.uri)
               
               available.layouts <- unname(fromJSON(rawToChar(request.res$content)))
               return(available.layouts)
           }) 
-## END getLayoutNames
 
 # ------------------------------------------------------------------------------
 setMethod('getLayoutNameMapping', 'OptionalCyObjClass', 

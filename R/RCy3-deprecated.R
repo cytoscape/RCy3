@@ -16,6 +16,20 @@ NULL
 # suid = obj@suid
 # ===================================================================================
 
+#' DEPRECATED: CytoscapeConnection
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage Use the replacement variable instead:
+#' \code{base.url}
+#' Rely on the default value or overwrite with custom host and port details.
+#' @export
+#' @rdname CytoscapeConnection-deprecated
+CytoscapeConnection<-function(host, port){
+    .Deprecated("default value of base.url or overwrite with custom host and port details")
+    return(.defaultBaseUrl)
+}
+
 #' DEPRECATED: copyCytoscapeNetwork
 #' 
 #' @description This function is only provided for compatibility with older
