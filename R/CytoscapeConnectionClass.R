@@ -4,7 +4,7 @@ setClass("CytoscapeConnectionClass",
          prototype = prototype(uri="http://localhost:1234", api="v1")
 )
 # Constructor
-CytoscapeConnection = function(host='localhost', port=1234) {
+CytoscapeConnection_DEAD = function(host='localhost', port=1234) {
     res <- .BBSOverride(host, port)
     host = res$host
     port = res$port
