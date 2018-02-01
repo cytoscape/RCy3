@@ -4,7 +4,7 @@
 \alias{commandRun}
 \title{Command Run}
 \usage{
-commandRun(cmd.string, obj = CytoscapeConnection())
+commandRun(cmd.string, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{cmd.string}{(char) command}

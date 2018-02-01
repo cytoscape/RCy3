@@ -4,7 +4,7 @@
 \alias{commandHelp}
 \title{Command Help}
 \usage{
-commandHelp(cmd.string = "help", obj = CytoscapeConnection())
+commandHelp(cmd.string = "help", base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{cmd.string}{(char) command}
