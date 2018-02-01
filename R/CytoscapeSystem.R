@@ -1,18 +1,17 @@
-#' @include CytoscapeConnectionClass.R
 
 # ------------------------------------------------------------------------------
-setGeneric ('ping', 	 	          function (base.url) standardGeneric('ping'))
-setGeneric ('cytoscapeVersionInfo',   function (base.url) standardGeneric('cytoscapeVersionInfo'))
-setGeneric ('availableApiVersions',   function (base.url) standardGeneric('availableApiVersions'))
-setGeneric ('cytoscapeNumberOfCores', function (base.url) standardGeneric('cytoscapeNumberOfCores'))
-setGeneric ('cytoscapeMemoryStatus',  function (base.url) standardGeneric('cytoscapeMemoryStatus'))
-setGeneric ('cytoscapeFreeMemory',    function (base.url) standardGeneric('cytoscapeFreeMemory'))
+#setGeneric ('ping', 	 	          function (base.url) standardGeneric('ping'))
+#setGeneric ('cytoscapeVersionInfo',   function (base.url) standardGeneric('cytoscapeVersionInfo'))
+#setGeneric ('availableApiVersions',   function (base.url) standardGeneric('availableApiVersions'))
+#setGeneric ('cytoscapeNumberOfCores', function (base.url) standardGeneric('cytoscapeNumberOfCores'))
+#setGeneric ('cytoscapeMemoryStatus',  function (base.url) standardGeneric('cytoscapeMemoryStatus'))
+#setGeneric ('cytoscapeFreeMemory',    function (base.url) standardGeneric('cytoscapeFreeMemory'))
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Ping Cytoscape
 #' 
 #' @description Test the connection to Cytoscape via CyREST 
-#' @param base.url (optional) URL prefix for CyREST calls
+#' @param base.url (optional)  URL prefix for CyREST calls
 #' @return status message
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
@@ -21,14 +20,7 @@ setGeneric ('cytoscapeFreeMemory',    function (base.url) standardGeneric('cytos
 #' }
 #' @export
 
-#' @rdname ping
-setMethod('ping','missing', 
-          function() {
-              ping(base.url=.defaultBaseUrl);
-          })
-#' @rdname ping
-setMethod('ping', 'character',
-          function(base.url) {
+ping<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url, 'version', sep="/")
               res <- GET(conn.str)
               if(res$status_code == 200) {
@@ -37,7 +29,7 @@ setMethod('ping', 'character',
                   write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
                   stop()
               }
-          })
+          }
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Cytoscape and CyREST API Versions
@@ -52,16 +44,7 @@ setMethod('ping', 'character',
 #'  #       "v1" "3.7.0-SNAPSHOT" 
 #' }
 #' @export
-
-#' @rdname cytoscapeVersionInfo
-setMethod('cytoscapeVersionInfo','missing', 
-          function() {
-              cytoscapeVersionInfo(base.url=.defaultBaseUrl);
-          })
-
-#' @rdname cytoscapeVersionInfo
-setMethod('cytoscapeVersionInfo', 'character',
-          function(base.url) {
+cytoscapeVersionInfo<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url, 'version', sep="/")
               res <- GET(conn.str)
               versions <- fromJSON(rawToChar(res$content))
@@ -70,7 +53,7 @@ setMethod('cytoscapeVersionInfo', 'character',
                   stop()
               }
               return(versions)
-          }) 
+          }
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Available CyREST API Versions 
@@ -84,20 +67,12 @@ setMethod('cytoscapeVersionInfo', 'character',
 #' # [1] "v1"
 #' }
 #' @export
-
-#' @rdname availableApiVersions
-setMethod('availableApiVersions', 'missing', 
-          function() {
-              availableApiVersions(base.url = .defaultBaseUrl)
-          })
-#' @rdname availableApiVersions
-setMethod('availableApiVersions', 'character', 
-          function(base.url) {
+availableApiVersions<-function(base.url=.defaultBaseUrl) {
               uri <- strsplit(base.url,'/v')[[1]][1]
               res <- GET(uri)
               available.api.versions <- fromJSON(rawToChar(res$content))$availableApiVersion
               return(available.api.versions)
-          }) 
+          }
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Number of Processors Available to Cytoscape
@@ -111,16 +86,7 @@ setMethod('availableApiVersions', 'character',
 #' # [1] 8
 #' }
 #' @export
-
-#' @rdname cytoscapeNumberOfCores
-setMethod('cytoscapeNumberOfCores','missing', 
-          function() {
-              cytoscapeNumberOfCores(base.url=.defaultBaseUrl);
-          })
-
-#' @rdname cytoscapeNumberOfCores
-setMethod('cytoscapeNumberOfCores', 'character',
-          function(base.url) {
+cytoscapeNumberOfCores<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url)
               res <- GET(conn.str)
               if(res$status_code == 200) {
@@ -130,7 +96,7 @@ setMethod('cytoscapeNumberOfCores', 'character',
                   write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
                   stop()
               }
-          }) 
+          }
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Memory Available to Cytoscape
@@ -145,16 +111,7 @@ setMethod('cytoscapeNumberOfCores', 'character',
 #' #         181        2624        2805       13653 
 #' }
 #' @export
-
-#' @rdname cytoscapeMemoryStatus
-setMethod('cytoscapeMemoryStatus','missing', 
-          function() {
-              cytoscapeMemoryStatus(base.url=.defaultBaseUrl);
-          })
-
-#' @rdname cytoscapeMemoryStatus
-setMethod('cytoscapeMemoryStatus', 'character',
-          function(base.url) {
+cytoscapeMemoryStatus<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url)
               res <- GET(conn.str)
               if(res$status_code == 200) {
@@ -164,7 +121,7 @@ setMethod('cytoscapeMemoryStatus', 'character',
                   write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
                   stop()
               }
-          }) 
+          }
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Free Up Unused Memory for Cytoscape
@@ -179,15 +136,7 @@ setMethod('cytoscapeMemoryStatus', 'character',
 #' # [1] "Unused memory freed up."
 #' }
 #' @export
-
-#' @rdname cytoscapeFreeMemory
-setMethod('cytoscapeFreeMemory','missing', 
-          function() {
-              cytoscapeFreeMemory(base.url=.defaultBaseUrl);
-          })
-#' @rdname cytoscapeFreeMemory
-setMethod('cytoscapeFreeMemory', 'character',
-          function(base.url) {
+cytoscapeFreeMemory<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url, 'gc', sep="/")
               res <- GET(conn.str)
               if(res$status_code == 204) {
@@ -196,6 +145,6 @@ setMethod('cytoscapeFreeMemory', 'character',
                   write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
                   stop()
               }
-          })
+          }
 
 

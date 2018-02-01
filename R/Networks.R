@@ -8,7 +8,7 @@ setGeneric ('getNetworkAsCx', function (obj) standardGeneric('getNetworkAsCx'))
 setGeneric ('createNetworkFromSelection',signature='obj', function (obj=CytoscapeWindowFromNetwork(), new.title, return.graph=FALSE, exclude.edges=FALSE) standardGeneric ('createNetworkFromSelection'))
 setGeneric ('saveNetwork',               signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename, type='cys') standardGeneric ('saveNetwork'))
 setGeneric ('getNetworkName',            signature='obj', function (network.suid=NA,obj=CytoscapeConnection()) standardGeneric ('getNetworkName'))
-setGeneric ('getNetworkSuid',            signature='obj', function (obj=CytoscapeConnection(), title=NA) standardGeneric ('getNetworkSuid'))
+#setGeneric ('getNetworkSuid',            signature='obj', function (obj=CytoscapeConnection(), title=NA) standardGeneric ('getNetworkSuid'))
 setGeneric ('getNetworkCount',	         signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNetworkCount'))
 setGeneric ('getNetworkList',            signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNetworkList'))
 setGeneric ('deleteAllNetworks',	     signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('deleteAllNetworks'))
@@ -294,45 +294,29 @@ setMethod('getNetworkName', 'OptionalCyObjClass',
 });
 
 # ------------------------------------------------------------------------------
-setMethod('getNetworkSuid', 'OptionalCyObjClass', 
-          function(obj, title=NA) {
-              
-              if(is.na(title)){
-                  if(class(obj) == 'CytoscapeWindowClass'){
-                      title = obj@title
-                  } else { # a CyConn was provided, but no title, so just get current network 
-                      cmd<-paste0('network get attribute network=current namespace="default" columnList="SUID"')
-                      res <- commandRun(cmd,obj)
-                      network.suid <- gsub("\\{SUID:|\\}","",res)
-                      return(network.suid)
-                  }
-              }
-              
-              # get all window suids and associates names
-              resource.uri <- paste(obj@uri, obj@api, "networks", sep="/")
-              request.res <- GET(resource.uri)
-              # SUIDs list of the existing Cytoscape networks	
-              cy.networks.SUIDs <- fromJSON(rawToChar(request.res$content))
-              # names list of the existing Cytoscape networks
-              cy.networks.names = c()
-              
-              for(net.SUID in cy.networks.SUIDs)	{
-                  res.uri <- paste(obj@uri, obj@api, "networks", as.character(net.SUID), sep="/")
-                  result <- GET(res.uri)
-                  net.name <- fromJSON(rawToChar(result$content))$data$name
-                  cy.networks.names <- c(cy.networks.names, net.name)
-              }
-              
-              if(!title %in% as.character(cy.networks.names)) {
-                  write(sprintf("Cytoscape window named '%s' does not exist yet", title), stderr())
-                  return (NA)
-              } # if unrecognized title
-              
-              window.entry = which(as.character(cy.networks.names) == title)
-              suid = as.character(cy.networks.SUIDs[window.entry])
-              
-              return(suid)
-          })
+#' Get the SUID of a network
+#'
+#' @param network.name Name of the network; default is "current" network
+#' @param base.url (optional)  URL prefix for CyREST calls
+#' @return (\code{numeric}) Network suid
+#' @author Alexander Pico
+#' @examples
+#' \donttest{
+#' getNetworkSuid()
+#' getNetworkSuid("myNetwork")
+#' # 80
+#' }
+#' @export
+getNetworkSuid <- function(title=NULL, base.url = .defaultBaseUrl) {
+    
+    if(is.null(title))
+        title= 'current'
+    
+    cmd<-paste0('network get attribute network="',title,'" namespace="default" columnList="SUID"')
+    res <- commandRun(cmd,base.url)
+    suid <- gsub("\\{SUID:|\\}","",res)
+    return(as.numeric(suid))
+}
 
 # ------------------------------------------------------------------------------
 setMethod('getNetworkList', 'OptionalCyObjClass', 

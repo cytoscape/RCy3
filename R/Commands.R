@@ -30,9 +30,9 @@ setGeneric ('quitCytoscape', function (obj, message) standardGeneric('quitCytosc
 #' @importFrom utils head
 #' @importFrom utils tail
 
-commandHelp<-function(cmd.string='help', obj=CytoscapeConnection()){
+commandHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
-    cmds = GET(command2query(s,obj))
+    cmds = GET(command2query(s,base.url))
     cmds.html = htmlParse(rawToChar(cmds$content), asText=TRUE)
     cmds.elem = xpathSApply(cmds.html, "//p", xmlValue)
     cmds.list = cmds.elem
@@ -60,10 +60,10 @@ commandHelp<-function(cmd.string='help', obj=CytoscapeConnection()){
 #' @import XML
 #' @import httr
 
-commandRun<-function(cmd.string, obj=CytoscapeConnection()){
+commandRun<-function(cmd.string, base.url = .defaultBaseUrl){
     
     ##TODO use POST or leave alone for "GET friendly" queries, i.e., guaranteed to be short urls?
-    res = GET(command2query(cmd.string,obj))
+    res = GET(command2query(cmd.string,base.url))
     res.html = htmlParse(rawToChar(res$content), asText=TRUE)
     res.elem = xpathSApply(res.html, "//p", xmlValue)
     if(startsWith(res.elem[1],"[")){
@@ -91,8 +91,7 @@ commandRun<-function(cmd.string, obj=CytoscapeConnection()){
 #' }
 #' @importFrom utils URLencode
 
-command2query<-function(cmd.string, obj=CytoscapeConnection()){
-    base.url = paste(obj@uri,obj@api,sep="/")
+command2query<-function(cmd.string, base.url = .defaultBaseUrl){
     cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     cmd = cmdargs[1]

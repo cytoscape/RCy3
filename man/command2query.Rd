@@ -4,7 +4,7 @@
 \alias{command2query}
 \title{Command string to CyREST query URL}
 \usage{
-command2query(cmd.string, obj = CytoscapeConnection())
+command2query(cmd.string, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{cmd.string}{(char) command}
