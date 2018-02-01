@@ -1,8 +1,4 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
-
-# ------- TODO ------------------------------------------------------------------
-# layoutEdgeBundling
-
+# TODO: layoutEdgeBundling
 
 # ------------------------------------------------------------------------------
 #' Get Layout Names
