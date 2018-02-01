@@ -1,12 +1,4 @@
 
-# ------------------------------------------------------------------------------
-#setGeneric ('ping', 	 	          function (base.url) standardGeneric('ping'))
-#setGeneric ('cytoscapeVersionInfo',   function (base.url) standardGeneric('cytoscapeVersionInfo'))
-#setGeneric ('availableApiVersions',   function (base.url) standardGeneric('availableApiVersions'))
-#setGeneric ('cytoscapeNumberOfCores', function (base.url) standardGeneric('cytoscapeNumberOfCores'))
-#setGeneric ('cytoscapeMemoryStatus',  function (base.url) standardGeneric('cytoscapeMemoryStatus'))
-#setGeneric ('cytoscapeFreeMemory',    function (base.url) standardGeneric('cytoscapeFreeMemory'))
-
 #------------------------------------------------------------------------------------------------------------------------
 #' Ping Cytoscape
 #' 
