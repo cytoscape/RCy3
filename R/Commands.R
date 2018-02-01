@@ -1,12 +1,6 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
-
-# ------ TODO -----------------------------------------------------------------
-#http://localhost:1234/v1/commands/command/pause
-setGeneric ('pauseDialog', function (obj, message) standardGeneric('pauseDialog'))
-#http://localhost:1234/v1/commands/command/sleep
-setGeneric ('pauseTimer', function (obj, message) standardGeneric('pauseTimer'))
-#http://localhost:1234/v1/commands/command/quit 
-setGeneric ('quitCytoscape', function (obj, message) standardGeneric('quitCytoscape'))
+# TODO: pauseDialog(message, base.url) http://localhost:1234/v1/commands/command/pause
+# TODO: pauseTimer(message, base.url) http://localhost:1234/v1/commands/command/sleep
+# TODO: quitCytoscape(base.url) http://localhost:1234/v1/commands/command/quit 
 
 # ------------------------------------------------------------------------------
 #' Command Help
@@ -29,7 +23,6 @@ setGeneric ('quitCytoscape', function (obj, message) standardGeneric('quitCytosc
 #' @import httr
 #' @importFrom utils head
 #' @importFrom utils tail
-
 commandHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
     cmds = GET(command2query(s,base.url))
@@ -59,7 +52,6 @@ commandHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' }
 #' @import XML
 #' @import httr
-
 commandRun<-function(cmd.string, base.url = .defaultBaseUrl){
     
     ##TODO use POST or leave alone for "GET friendly" queries, i.e., guaranteed to be short urls?
@@ -90,7 +82,6 @@ commandRun<-function(cmd.string, base.url = .defaultBaseUrl){
 #' command2query('layout get preferred')
 #' }
 #' @importFrom utils URLencode
-
 command2query<-function(cmd.string, base.url = .defaultBaseUrl){
     cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
