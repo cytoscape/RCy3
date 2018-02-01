@@ -12,11 +12,11 @@ layoutNetwork(layout.name = NULL, network = NULL,
 
 \item{base.url}{(optional)  URL prefix for CyREST calls}
 
-\item{layout}{(char) name of the layut, run commandHelp('layout') to see available list of layouts.
+\item{layout}{(char) Name of the layut, run commandHelp('layout') to see available list of layouts.
 Feel free to include parameters along with the layout name, space delimited. See example.}
 }
 \value{
-server response
+None
 }
 \description{
 Apply a layout to a network

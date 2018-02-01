@@ -16,6 +16,49 @@ NULL
 # suid = obj@suid
 # ===================================================================================
 
+#' DEFUNCT: getNodePosition
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @usage Use the replacement function instead:
+#' \code{layoutCopycat}
+#' @export
+#' @rdname getNodePosition-defunct
+getNodePosition <- function (obj, node.names) {
+    .Defunct("layoutCopycat")
+}
+
+#' DEFUNCT: setNodePosition
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @usage Use the replacement function instead:
+#' \code{layoutCopycat}
+#' @export
+#' @rdname setNodePosition-defunct
+setNodePosition <- function (obj, node.names) {
+    .Defunct("layoutCopycat")
+}
+
+#' DEFUNCT: saveLayout
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @usage Use the replacement function instead:
+#' \code{layoutCopycat}
+#' @export
+#' @rdname saveLayout-defunct
+saveLayout<- function (obj, filename, timestamp.in.filename=FALSE) {
+}
+
+#' DEFUNCT: restoreLayout
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @usage Use the replacement function instead:
+#' \code{layoutCopycat}
+#' @export
+#' @rdname restoreLayout-defunct
+restoreLayout<-function (obj, filename) {
+}
+
+# --------------------------------------------------------------------------
 #' DEPRECATED: CytoscapeConnection
 #' 
 #' @description This function is only provided for compatibility with older
