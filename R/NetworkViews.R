@@ -1,8 +1,6 @@
 #' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
 # ------------------------------------------------------------------------------
-setGeneric ('setNodePosition',           signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names, x.coords, y.coords) standardGeneric ('setNodePosition'))
-setGeneric ('getNodePosition',			 signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names) standardGeneric ('getNodePosition'))
 setGeneric ('getNodeSize',				 signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names) standardGeneric ('getNodeSize'))
 setGeneric ('fitContent',				 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('fitContent'))
 setGeneric ('fitSelectedContent',		 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('fitSelectedContent'))
@@ -14,94 +12,6 @@ setGeneric ('getViewCoordinates',		 signature='obj', function (obj=CytoscapeWind
 setGeneric ('saveImage',                 signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename, image.type, h=600) standardGeneric ('saveImage'))
 
 setGeneric ('.getNetworkViews',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('.getNetworkViews'))
-
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('setNodePosition', 'OptionalCyWinClass',
-           
-           function (obj, node.names, x.coords, y.coords) {
-               unknown.nodes <- setdiff (node.names, getAllNodes (obj))
-               recognized.nodes <- intersect(node.names, getAllNodes(obj))
-               
-               # ensure that nodes were provided
-               if (length (node.names) == 0){
-                   return ()
-               }
-               
-               # throw error if nodes in node.names don't exist in the network
-               if (length (unknown.nodes) > 0) {
-                   for (i in 1:length (unknown.nodes)){
-                       write (sprintf ("     %s", unknown.nodes [i]), stderr ())
-                   } # end for
-                   return ()
-               } # end if 
-               
-               # ensure that node.names, x.coords, y.coords are of the same length
-               if (length(unique(c(length(node.names), length(x.coords), length(y.coords))))>1){
-                   write (sprintf ("Error! RCy3::setNodePosition: The node names vector has to be the same length as each of the x and y coordiante vectors."), stderr ())
-                   return()
-               }
-               
-               # check if the coordinates are valid numbers
-               if (!any(is.numeric(c(x.coords, y.coords)))){
-                   write (sprintf ("Error! RCy3::setNodePosition: x and y coordiante vectors must be numeric."), stderr ())
-                   return()
-               }
-               
-               # set x position
-               setNodePropertyDirect(obj, node.names, x.coords, "NODE_X_LOCATION")
-               
-               # set y position
-               setNodePropertyDirect(obj, node.names, y.coords, "NODE_Y_LOCATION")
-               
-           }) # setNodePosition
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('getNodePosition', 'OptionalCyWinClass',
-           function (obj, node.names) {
-               net.suid = as.character(obj@suid)
-               
-               # get the views for the given network model
-               resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "views", sep="/")
-               request.res <- GET(resource.uri)
-               net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
-               
-               view.SUID <- as.character(net.views.SUIDs[[1]])
-               
-               # if multiple views are found, inform the user about it
-               if(length(net.views.SUIDs) > 1) {
-                   write(sprintf("RCy3::getNodePosition() - %d views found... getting node coordinates of the first one", length(net.views.SUIDs)), stderr())
-               }
-               
-               coordinates.list <- list()
-               # get node position for each node
-               for (node.name in node.names){
-                   # convert node name into node SUID
-                   query.node = .nodeNameToNodeSUID(obj,node.name)
-                   
-                   # get node x coordinate
-                   resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_X_LOCATION", sep="/")
-                   request.res <- GET(resource.uri)
-                   node.x.position <- fromJSON(rawToChar(request.res$content))
-                   node.x.position <- node.x.position[[2]]
-                   # node.x.position <- commandRun(paste0('node get properties network="',obj@title,'" nodeList="',node.name,'" propertyList="X LOCATION"'))
-                   # node.x.position <- gsub("}","",node.x.position)
-                   # node.x.position <- unlist(strsplit(node.x.position,":"))[4]
-                   
-                   # get node y coordinate
-                   resource.uri <- paste(obj@uri, obj@api, "networks", net.suid, "views", view.SUID, "nodes", as.character(query.node) ,"NODE_Y_LOCATION", sep="/")
-                   request.res <- GET(resource.uri)
-                   node.y.position <- fromJSON(rawToChar(request.res$content))
-                   node.y.position <- node.y.position[[2]]
-                   # node.y.position <- commandRun(paste0('node get properties network="',obj@title,'" nodeList="',node.name,'" propertyList="Y LOCATION"'))
-                   # node.y.position <- gsub("}","",node.y.position)
-                   # node.y.position <- unlist(strsplit(node.y.position,":"))[4]
-                   
-                   # add x and y coordinates to the coordinates list
-                   coordinates.list[[node.name]] <- list(x= as.numeric(node.x.position), y=as.numeric(node.y.position))
-               }
-               return(coordinates.list)
-           }) # getNodePosition
 
 # ------------------------------------------------------------------------------
 setMethod ('getNodeSize', 'OptionalCyWinClass',
