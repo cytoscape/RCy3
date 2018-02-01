@@ -1,15 +1,7 @@
 #' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
-# ------------------------------------------------------------------------------
-#setGeneric ('getLayoutNames', 	         function (base.url) standardGeneric ('getLayoutNames'))
-#setGeneric ('getLayoutNameMapping',	     signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getLayoutNameMapping'))
-#setGeneric ('getLayoutPropertyNames',    signature='obj', function (obj=CytoscapeConnection(), layout.name) standardGeneric ('getLayoutPropertyNames'))
-#setGeneric ('getLayoutPropertyType',     signature='obj', function (obj=CytoscapeConnection(), layout.name, property.name) standardGeneric ('getLayoutPropertyType'))
-#setGeneric ('getLayoutPropertyValue',    signature='obj', function (obj=CytoscapeConnection(), layout.name, property.name) standardGeneric ('getLayoutPropertyValue'))
-#setGeneric ('setLayoutProperties',       signature='obj', function (obj=CytoscapeConnection(), layout.name, properties.list) standardGeneric ('setLayoutProperties'))
-#setGeneric ('layoutNetwork',             signature='obj', function (obj=CytoscapeWindowFromNetwork(), layout.name=NA) standardGeneric ('layoutNetwork'))
-setGeneric ('saveLayout',           	 signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename, timestamp.in.filename=FALSE) standardGeneric ('saveLayout'))
-setGeneric ('restoreLayout',        	 signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename) standardGeneric ('restoreLayout'))
+# ------- TODO ------------------------------------------------------------------
+# layoutEdgeBundling
 
 
 # ------------------------------------------------------------------------------
@@ -27,7 +19,8 @@ setGeneric ('restoreLayout',        	 signature='obj', function (obj=CytoscapeWi
 #' # [7] "attribute-circle"                 "stacked-node-layout"              "circular"
 #' }
 #' @export
-getLayoutNames<-function(base.url=.defaultBaseUrl) {
+#' @title getLayoutNames
+getLayoutNames <- function(base.url=.defaultBaseUrl) {
     request.uri <- paste(base.url, "apply/layouts", sep="/")
     request.res <- GET(url=request.uri)
     
@@ -184,17 +177,17 @@ setLayoutProperties <- function (layout.name, properties.list, base.url = .defau
 # ------------------------------------------------------------------------------
 #' Apply a layout to a network
 #'
-#' @param layout (char) name of the layut, run commandHelp('layout') to see available list of layouts.
+#' @param layout (char) Name of the layut, run commandHelp('layout') to see available list of layouts.
 #' Feel free to include parameters along with the layout name, space delimited. See example.
 #' @details Run \link{getLayoutNames} to list available layouts. 
 #' @param layout.name (\code{character}) Name of the layout. If not specified, then the preferred layout set in the Cytoscape UI is applied.
 #' @param base.url (optional)  URL prefix for CyREST calls
-#' @return server response
-#' @export
+#' @return None
 #' @examples
 #' \donttest{
 #' layoutNetwork('force-directed defaultSpringCoefficient=.00006 defaultSpringLength=80')
 #' }
+#' @export
 layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaultBaseUrl) {
     if(is.null(network)){
         suid = getNetworkSuid()
@@ -218,30 +211,37 @@ layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaul
     }
 }
 
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('saveLayout', 'OptionalCyWinClass',
-           
-           function (obj, filename, timestamp.in.filename=FALSE) {
-               
-               custom.layout <- RCy3::getNodePosition (obj,  getAllNodes (obj))
-               if (timestamp.in.filename) {
-                   dateString <- format (Sys.time (), "%a.%b.%d.%Y-%H.%M.%S")
-                   stem <- strsplit (filename, '\\.RData')[[1]]
-                   filename <- sprintf ('%s.%s.RData', stem, dateString)
-                   write (sprintf ('saving layout to %s\n', filename), stderr ())
-               }
-               save (custom.layout, file=filename)
-           }) # save.layout
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('restoreLayout', 'OptionalCyWinClass',
-           
-           function (obj, filename) {
-               custom.layout <- local({x=load(filename); get(x)})
-               node.names <- names (custom.layout)
-               node.names.filtered <- intersect (node.names, getAllNodes (obj))
-               x <- as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$x)))
-               y <- as.integer (sapply (node.names.filtered, function (node.name) return (custom.layout [[node.name]]$y)))
-               setNodePosition (obj, node.names.filtered, x, y)
-           }) # restoreLayout
-
+# ------------------------------------------------------------------------------
+#' Copy a layout from one network to another
+#'
+#' @description Sets the coordinates for each node in the target network to the 
+#' coordinates of a matching node in the source network.
+#' @details Optional parameters such as \code{gridUnmapped} and \code{selectUnmapped} 
+#' determine the behavior of target network nodes that could not be matched.
+#' @param sourceNetwork (\code{character}) The name of network to get node coordinates from 
+#' @param targetNetwork (\code{character}) The name of the network to apply coordinates to
+#' @param sourceColumn (optional \code{character}) The name of column in the sourceNetwork node 
+#' table used to match nodes; default is 'name'
+#' @param targetColumn (optional \code{character}) The name of column in the targetNetwork node 
+#' table used to match nodes; default is 'name'
+#' @param gridUnmapped (optional \code{character}) If this is set to true, any nodes in the target 
+#' network that could not be matched to a node in the source network will be laid out in a grid; 
+#' default is TRUE
+#' @param selectUnmapped optional \code{character}) If this is set to true, any nodes in the target network 
+#' that could not be matched to a node in the source network will be selected in the target network; 
+#' default is TRUE
+#' @param base.url (optional)  URL prefix for CyREST calls
+#' @return None
+#' @examples
+#' \donttest{
+#' layoutCopycat('network1','network2')
+#' }
+#' @export
+layoutCopycat <- function(sourceNetwork, targetNetwork, sourceColumn='name', targetColumn='name', 
+              gridUnmapped=TRUE, selectUnmapped=TRUE, base.url=.defaultBaseUrl){
+    res<-commandRun(paste0('layout copycat sourceNetwork="', sourceNetwork,'" targetNetwork="',
+                           targetNetwork,'" sourceColumn="',sourceColumn,'" targetColumn="',
+                           targetColumn,'" gridUnmapped="',gridUnmapped,'" selectUnmapped="',
+                           selectUnmapped), base.url)
+    invisible(res)
+}

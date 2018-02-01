@@ -21,6 +21,7 @@ Get the SUID of a network
 \donttest{
 getNetworkSuid()
 getNetworkSuid("myNetwork")
+# 80
 }
 }
 \author{
