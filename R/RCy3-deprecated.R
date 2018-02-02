@@ -58,6 +58,17 @@ saveLayout<- function (obj, filename, timestamp.in.filename=FALSE) {
 restoreLayout<-function (obj, filename) {
 }
 
+#' DEFUNCT: getGraph
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @usage Use the replacement function instead:
+#' \code{createGraphFromNetwork}
+#' @export
+#' @rdname restoreLayout-defunct
+getGraph <- function(obj) {
+    .Defunct("createGraphFromNetwork")
+}
+
 # --------------------------------------------------------------------------
 #' DEPRECATED: CytoscapeConnection
 #' 
@@ -71,6 +82,22 @@ restoreLayout<-function (obj, filename) {
 CytoscapeConnection<-function(host, port){
     .Deprecated("default value of base.url or overwrite with custom host and port details")
     return(.defaultBaseUrl)
+}
+
+# --------------------------------------------------------------------------
+#' DEPRECATED: CytoscapeWindow
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage Use the replacement function instead:
+#' \code{createNetworkFromGraph}
+#' Rely on the default value or overwrite with custom host and port details.
+#' @export
+#' @rdname CytoscapeWindow-deprecated
+CytoscapeWindow<-function(title, graph=new('graphNEL', edgemode='directed'), uri="http://localhost:1234", api="v1",
+                          create.window=TRUE, overwriteWindow=FALSE, collectTimings=FALSE){
+    .Deprecated("createNetworkFromGraph")
+    createNetworkFromGraph()
 }
 
 #' DEPRECATED: copyCytoscapeNetwork
@@ -106,8 +133,8 @@ createWindow<-function(obj) {
 #' @export
 #' @rdname createWindowFromSelection-deprecated
 createWindowFromSelection<-function(obj,new.windowTitle,return.graph){
-    .Deprecated("createNetworkFromSelection(obj, new.title, return.graph, exclude.edges=FALSE)")
-    createNetworkFromSelection(obj=obj, new.title=new.windowTitle, return.graph=return.graph, exclude.edges=FALSE)
+    .Deprecated("createSubnetwork(obj, new.title, return.graph, exclude.edges=FALSE)")
+    createSubnetwork(nodes="selected",subnetwork.title=new.windowTitle)
 }
 #' DEPRECATED: deleteAllWindows
 #' 
@@ -138,25 +165,24 @@ deleteWindow<-function(obj,window.title){
 #' @description This function is only provided for compatibility with older
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' @usage Use the replacement function instead:
-#' \code{\link[RCy3]{CytoscapeWindowFromNetwork}}
+#' \code{\link[RCy3]{getNetworkSuid}}
 #' @export
 #' @rdname existing.CytoscapeWindow-deprecated
 existing.CytoscapeWindow<-function(title, host='localhost', port=1234, copy.graph.from.cytoscape.to.R=FALSE){
-    .Deprecated("CytoscapeWindowFromNetwork(title,host,port,return.graph")
-    cc<-CytoscapeConnection(host=host,port=port)
-    CytoscapeWindowFromNetwork(cc,title = title,return.graph = copy.graph.from.cytoscape.to.R)
+    .Deprecated("getNetworkSuid(title,host,port,return.graph")
+    getNetworkSuid(title = title)
 }
 #' DEPRECATED: getGraphFromCyWindow
 #' 
 #' @description This function is only provided for compatibility with older
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' @usage Use the replacement function instead:
-#' \code{\link[RCy3]{getGraphFromNetwork}}
+#' \code{\link[RCy3]{createGraphFromNetwork}}
 #' @export
 #' @rdname getGraphFromCyWindow-deprecated
 getGraphFromCyWindow<-function(obj,window.title){
-    .Deprecated("getGraphFromNetwork(obj,title)")
-    getGraphFromNetwork(obj=obj,title=window.title)
+    .Deprecated("createGraphFromNetwork")
+    createGraphFromNetwork(title=window.title)
 }
 #' DEPRECATED: getWindowCount
 #' 
@@ -179,8 +205,8 @@ getWindowCount<-function(obj){
 #' @export
 #' @rdname getWindowID-deprecated
 getWindowID<-function(obj,window.title){
-    .Deprecated("getNetworkSuid(obj,title")
-    getNetworkSuid(obj=obj,title=window.title)
+    .Deprecated("getNetworkSuid")
+    getNetworkSuid(title=window.title)
 }
 #' DEPRECATED: getWindowList
 #' 
@@ -192,19 +218,19 @@ getWindowID<-function(obj,window.title){
 #' @rdname getWindowList-deprecated
 getWindowList<-function(obj){
     .Deprecated("getNetworkList")
-    getNetworkList(obj=obj)
+    getNetworkList()
 }
 #' DEPRECATED: pluginVersion
 #' 
 #' @description This function is only provided for compatibility with older
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' @usage Use the replacement function instead:
-#' \code{\link[RCy3]{apiVersion}}
+#' \code{\link[RCy3]{cytoscapeVersionInfo}}
 #' @export
 #' @rdname pluginVersion-deprecated
 pluginVersion<-function(obj){
-    .Deprecated("getVersionInfo(obj)[['apiVersion']]")
-    cytoscapeVersionInfo(obj)[['apiVersion']]
+    .Deprecated("getVersionInfo")
+    cytoscapeVersionInfo()[['apiVersion']]
 }
 #' DEPRECATED: renameCytoscapeNetwork
 #' 

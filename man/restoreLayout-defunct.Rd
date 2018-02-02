@@ -2,11 +2,17 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{restoreLayout}
 \alias{restoreLayout}
+\alias{getGraph}
 \title{DEFUNCT: restoreLayout}
 \usage{
 Use the replacement function instead:
 \code{layoutCopycat}
+
+Use the replacement function instead:
+\code{createGraphFromNetwork}
 }
 \description{
+This function is defunct and will be removed in the next release.
+
 This function is defunct and will be removed in the next release.
 }

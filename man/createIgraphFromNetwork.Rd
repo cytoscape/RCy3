@@ -4,7 +4,7 @@
 \alias{createIgraphFromNetwork}
 \title{Create an igraph network from a Cytoscape network}
 \usage{
-createIgraphFromNetwork(title = NA, obj = CytoscapeWindowFromNetwork(), ...)
+createIgraphFromNetwork(network = NULL, base.url = .defaultBaseUrl, ...)
 }
 \arguments{
 \item{network}{name or suid of the network; default is "current" network}
@@ -25,9 +25,9 @@ in igraph. Associated table columns will also be passed to igraph as vertiex and
 }
 \examples{
 \donttest{
-createNetworkFromIgraph(g)
+createIgraphFromNetwork('myNetwork')
 }
 }
 \seealso{
-createNetworkFromDataFrames, createIgraphFromNetwork
+createNetworkFromDataFrames, createNetworkFromIgraph
 }

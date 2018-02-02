@@ -4,8 +4,8 @@
 \alias{listTableColumns}
 \title{List names of all columns in a table}
 \usage{
-listTableColumns(table = "node", namespace = "default",
-  obj = CytoscapeWindowFromNetwork())
+listTableColumns(table = "node", namespace = "default", network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{table}{name of table, e.g., node, edge, network; default is "node"}
