@@ -1,7 +1,7 @@
 # TODO: layoutEdgeBundling
 
 # ------------------------------------------------------------------------------
-#' Get Layout Names
+#' @title Get Layout Names
 #' 
 #' @description Retrieve the names of the currently supported layout algorithms.  These
 #' may be used in subsequent calls to the 'layoutNetwork' function.  
@@ -15,7 +15,6 @@
 #' # [7] "attribute-circle"                 "stacked-node-layout"              "circular"
 #' }
 #' @export
-#' @title getLayoutNames
 getLayoutNames <- function(base.url=.defaultBaseUrl) {
     request.uri <- paste(base.url, "apply/layouts", sep="/")
     request.res <- GET(url=request.uri)

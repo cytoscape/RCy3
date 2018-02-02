@@ -53,6 +53,3 @@ edges <- data.frame(source=c("node 0","node 0","node 0","node 2"),
 createNetworkFromDataFrames(nodes,edges)
 }
 }
-\seealso{
-createSubnetwork
-}

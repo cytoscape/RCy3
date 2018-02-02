@@ -5,8 +5,8 @@
 \title{Create subnetwork from existing network}
 \usage{
 createSubnetwork(nodes, nodes.by.col = "name", edges, edges.by.col = "name",
-  exclude.edges = "F", new.title, return.graph = FALSE,
-  obj = CytoscapeWindowFromNetwork())
+  exclude.edges = "F", subnetwork.name, network = NULL,
+  base.url = "http://localhost:1234/v1")
 }
 \arguments{
 \item{nodes}{list of node names or keyword: selected, unselected or all}
@@ -19,12 +19,12 @@ createSubnetwork(nodes, nodes.by.col = "name", edges, edges.by.col = "name",
 
 \item{exclude.edges}{(boolean) whether to exclude connecting edges; default is FALSE}
 
-\item{new.title}{name of new subnetwork to be created;
+\item{subnetwork.name}{name of new subnetwork to be created;
 default is to add a numbered suffix to source network name}
 
 \item{network}{name or suid of the source network; default is "current" network}
 
-\item{base.url}{cyrest base url for communicating with cytoscape}
+\item{base.url}{(optional)  URL prefix for CyREST calls}
 }
 \value{
 SUID of new subnetwork
@@ -41,12 +41,9 @@ bring along their source and target nodes.
 \examples{
 \donttest{
 createSubnetwork("selected")
-createSubnetwork("selected",new.title="mySubnetwork")
+createSubnetwork("selected",subnetwork.name="mySubnetwork")
 createSubnetwork(c("node 1","node 2","node 3"))
 createSubnetwork(c("AKT1","TP53","PIK3CA"),"display name")
 createSubnetwork(edges="all") #subnetwork of all connected nodes
 }
-}
-\seealso{
-createNetworkFromDataFrames
 }

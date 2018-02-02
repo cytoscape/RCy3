@@ -3,9 +3,7 @@
 #-----------------------------------------------------------
 # methods related to transmitting data from Cytoscape to R
 #-----------------------------------------------------------
-setGeneric ('copyNodeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyNodeAttributesFromCyGraph'))
-setGeneric ('copyEdgeAttributesFromCyGraph', signature='obj', function (obj=CytoscapeConnection(), suid, existing.graph) standardGeneric ('copyEdgeAttributesFromCyGraph'))
-setGeneric ('getGraphFromNetwork',           signature='obj', function (obj, title=NA) standardGeneric ('getGraphFromNetwork'))
+setGeneric ('createGraphFromNetwork',           signature='obj', function (obj, title=NA) standardGeneric ('createGraphFromNetwork'))
 setGeneric ('connectToNewestCyWindow',       signature='obj', function (obj=CytoscapeConnection(), copyToR = FALSE) standardGeneric('connectToNewestCyWindow'))
 
 #-----------------------------------------------------------
@@ -54,7 +52,7 @@ CytoscapeWindowFromNetwork =
         # optionally, get graph from Cytoscape
         if (return.graph) {
             # copy over graph
-            g.cy <- getGraphFromNetwork(cy.window, title)
+            g.cy <- createGraphFromNetwork(cy.window, title)
             cy.window <- setGraph(cy.window, g.cy)
 
             # copy over obj@node.suid.name.dict
@@ -104,231 +102,6 @@ setMethod ('setGraph', 'CytoscapeWindowClass',
     
     eval.parent(substitute(obj <- loc.obj))
 })
-
-# ------------------------------------------------------------------------------
-setMethod('getGraph', 'CytoscapeWindowClass', 
-  function(obj) {
-    return(obj@graph)
-})
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('copyNodeAttributesFromCyGraph', 'OptionalCyObjClass',
-
-    function (obj, suid, existing.graph) {
-        
-        node.attribute.names = getNodeAttributeNames(obj)
-        
-        for(attribute.name in node.attribute.names) {
-            known.node.names = sapply(obj@node.suid.name.dict, function(n) { n$name })
-            # nodes that store values for this attribute (meaning the value is not empty)
-            nodes.with.attribute = haveNodeAttribute(obj, known.node.names, attribute.name)
-            if(length(nodes.with.attribute) > 0) {
-                attribute.type = getNodeAttributeType(obj, attribute.name)
-                write(sprintf("\t retrieving attribute '%s' values for %d nodes", attribute.name, length(nodes.with.attribute)), stderr())
-                # write(sprintf("\t retrieving %s '%s' attribute for %d nodes", attribute.type, attribute.name, length(nodes.with.attribute)), stderr())
-                if(attribute.type == 'Integer' || attribute.type == 'Long') {
-                    attribute.type = 'integer'
-                    default.value = as.integer(0)
-                } else if(attribute.type == 'String') {
-                    attribute.type = 'char'
-                    default.value = as.character('unassigned')
-                } else if(attribute.type == 'Double' || attribute.type == 'Float') {
-                    attribute.type = 'numeric'
-                    default.value = as.numeric(0.0)
-                } else if(attribute.type == 'Boolean') {
-                    attribute.type = 'boolean'
-                    default.value = as.logical(FALSE)
-                } else {
-                    write(sprintf('RCy3::copyNodeAttributesFromCyGraph, no support yet for attributes of type %s', attribute.type), stderr())
-                    next()
-                }
-                existing.graph = 
-                    initNodeAttribute(existing.graph, attribute.name, attribute.type, default.value)
-                
-                attribute.values = c()
-                
-                for(i in 1:length(nodes.with.attribute)) {
-                    attribute.values = c(attribute.values, getNodeAttribute(obj, nodes.with.attribute[i], attribute.name))
-                }
-                nodeData(existing.graph, nodes.with.attribute, attribute.name) = attribute.values
-            } ## END if there are nodes that have values for the attribute
-        } ## END for loop : looping through each node attribute
-        return(existing.graph)
-    })
-## END copyNodeAttributesFromCyGraph
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('copyEdgeAttributesFromCyGraph', 'OptionalCyObjClass',
-
-    function (obj, suid, existing.graph) {
-        edge.attribute.names = getEdgeAttributeNames(obj)
-        
-        cy2.edgenames = as.character(cy2.edge.names(existing.graph)) # < 2 seconds for > 9000 edges
-        
-        for(attribute.name in edge.attribute.names) {
-            edges.with.attribute = haveEdgeAttribute(obj, cy2.edgenames, attribute.name)
-            
-            if(length(edges.with.attribute) > 0) {
-                attribute.type = getEdgeAttributeType(obj, attribute.name) 
-                
-                write(sprintf("\t retrieving attribute '%s' values for %d edges", attribute.name, length(edges.with.attribute)), stderr())
-                if(attribute.type == 'Integer' || attribute.type == 'Long') {
-                    attribute.type = 'integer'
-                    default.value = as.integer(0)
-                } else if(attribute.type == 'String') {
-                    attribute.type = 'char'
-                    default.value = as.character('unassigned')
-                } else if(attribute.type == 'Double' || attribute.type == 'Float') {
-                    attribute.type = 'numeric'
-                    default.value = as.numeric(0.0)
-                } else if(attribute.type == 'Boolean') {
-                    attribute.type = 'boolean'
-                    default.value = as.logical(FALSE)
-                } else {
-                    write(sprintf('RCy3::copyEdgeAttributesFromCyGraph, no support yet for attributes of type %s', attribute.type), stderr())
-                    next()
-                }
-                existing.graph = 
-                    initEdgeAttribute(existing.graph, attribute.name, attribute.type, default.value)
-                eda.values = c()
-                
-                for(i in 1:length(edges.with.attribute)) {
-                    eda.values = c(eda.values, getEdgeAttribute(obj, edges.with.attribute[i], attribute.name))
-                }
-                
-                regex = ' *[\\(|\\)] *'
-                edges.tokens = strsplit(edges.with.attribute, regex)
-                source.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[1]))
-                target.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[3]))
-                edge.types = unlist(lapply(edges.tokens, function(tokens) tokens[2])) 
-                
-                edgeData(existing.graph, source.nodes, target.nodes, attribute.name) = eda.values
-                
-                # for(i in 1:length(edgeData(existing.graph, from=source.nodes, to=target.nodes, attr=attribute.name))) {
-                #     attr(edgeData(existing.graph, from=source.nodes, to=target.nodes, attr=attribute.name)[[i]], 'class') = 
-                #         getEdgeAttributeType(obj, attribute.name)
-                # }
-            } ## END if
-        } ## END for
-        
-        return(existing.graph)
-    }) # END copyEdgeAttributesFromCyGraph
-
-#------------------------------------------------------------------------------------------------------------------------
-#' getGraphFromNetwork
-#' 
-#' @description Returns the Cytoscape network as a Bioconductor graph.
-#' @return A Bioconductor graph object.
-#' @author Tanja Muetze, Georgi Kolishovski, Paul Shannon
-#' @examples \donttest{cw <- CytoscapeWindow('network', graph=makeSimpleGraph())
-#' displayGraph(cw)
-#' layoutNetwork(cw)
-#' g.net1 <- getGraphFromNetwork(cw)
-#' 
-#' cc <- CytoscapeConnection()
-#' g.net2 <- getGraphFromNetwork(cc, 'network')
-#' 
-#' g.net3 <- getGraphFromNetwork('network') #default connection
-#' 
-#' g.net4 <- getGraphFromNetwork() #current network
-#' }
-#' @export
-
-#' @rdname getGraphFromNetwork
-setMethod ('getGraphFromNetwork', 'missing',
-           function (title = NA) {
-               if (is.na(title))
-                   title=getNetworkName() #current network
-               cc<-CytoscapeConnection() #default connection
-               obj = CytoscapeWindowFromNetwork(cc,title=title)
-               getGraphFromNetwork(obj)
-           });
-#' @rdname getGraphFromNetwork
-setMethod ('getGraphFromNetwork', 'CytoscapeConnectionClass',
-        function (obj,title= NA) {
-            if (is.na(title))
-                title=getNetworkName() #current network
-            loc.obj = CytoscapeWindowFromNetwork(obj,title=title)
-            getGraphFromNetwork(loc.obj)
-           });
-#' @rdname getGraphFromNetwork
-setMethod ('getGraphFromNetwork', 'CytoscapeWindowClass',
-    function (obj) {
-        loc.obj = obj
-        # network id 
-        net.SUID = as.character(loc.obj@suid)
-        title = as.character(loc.obj@title)
-        
-        if (!is.na(net.SUID)) {
-            # get the graph from Cytoscape
-            resource.uri = paste(loc.obj@uri, obj@api, "networks", net.SUID, sep="/")
-            request.res = GET(url=resource.uri)
-            request.res = fromJSON(rawToChar(request.res$content))
-            
-            g = new("graphNEL", edgemode='directed') # create graph object
-            
-            # GET GRAPH NODES
-            g.nodes = request.res$elements$nodes
-            # if there are no nodes in the graph received from Cytoscape, return an empty 'graphNEL' object
-            if(length(g.nodes) == 0) {
-                write(sprintf("NOTICE in RCy3::getGraphFromNetwork():\n\t returning an empty 'graphNEL'"), stderr())
-                return(g)
-            }
-            
-            # else get the node names and add them to the R graph
-            loc.obj@node.suid.name.dict = lapply(g.nodes, function(n) { 
-            list(name=n$data$name, SUID=n$data$SUID) })
-            g.node.names = sapply(loc.obj@node.suid.name.dict, function(n) { n$name })
-            write(sprintf("\t received %d NODES from '%s'", length(g.nodes), title), stderr())
-            g = graph::addNode(g.node.names, g)
-            write(sprintf("\t - added %d nodes to the returned graph\n", length(g.node.names)), stderr())
-            
-            # GET NODE ATTRIBUTES (if any)
-            g = copyNodeAttributesFromCyGraph(loc.obj, net.SUID, g)
-            
-            # Bioconductor's 'graph' edges require the 'edgeType' attribute, so its default value is assigned
-            g = initEdgeAttribute (g, 'edgeType', 'char', 'assoc')
-            
-            # GET GRAPH EDGES
-            g.edges = request.res$elements$edges
-            
-            if (length(g.edges) > 0) {
-                regex = ' *[\\(|\\)] *'
-                write(sprintf("\n\t received %d EDGES from '%s'", length(g.edges), title), stderr())
-                
-                loc.obj@edge.node.suid.name.dict = lapply(g.edges, function(e) {
-                    list(name=e$data$name, SUID=e$data$SUID) })
-                g.edge.names = sapply(loc.obj@edge.node.suid.name.dict, function(e) { e$name })
-                edges.tokens = strsplit(g.edge.names, regex)
-                source.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[1]))
-                target.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[3]))
-                edge.types = unlist(lapply(edges.tokens, function(tokens) tokens[2]))
-                write(sprintf('\t - adding %d edges to the returned graph\n', length(edges.tokens)), stderr())
-               
-                tryCatch({
-                    g = addEdge(source.nodes, target.nodes, g)
-                    edgeData(g, source.nodes, target.nodes, 'edgeType') = edge.types
-                    
-                    # GET EDGE ATTRIBUTES (if any)
-                    g = copyEdgeAttributesFromCyGraph(loc.obj, suid, g)
-                },
-                error = function(cond){
-                    write(sprintf("ERROR in RCy3::getGraphFromNetwork(): '%s'", cond), stderr())
-                    return(NA)
-                })
-                
-
-            }
-          
-        } else {
-            write(sprintf("ERROR in RCy3::getGraphFromNetwork():\n\t there is no graph with name '%s' in Cytoscape", title), stderr())
-            return(NA)
-        }
-        
-        return(g)
-  });
-## END getGraphFromNetwork
-
 
 # ------------------------------------------------------------------------------
 setMethod('sendNodesFromGraph', 'CytoscapeWindowClass', function(obj) {
@@ -681,14 +454,14 @@ makeSimpleGraph = function ()
 {
   g = new ('graphNEL', edgemode='directed')
 
-  g = initNodeAttribute (g, 'type', 'char', 'undefined')
-  g = initNodeAttribute (g, 'lfc', 'numeric', 1.0)
-  g = initNodeAttribute (g, 'label', 'char', 'default node label')
-  g = initNodeAttribute (g, 'count', 'integer', 0)
+  g = .initNodeAttribute (g, 'type', 'char', 'undefined')
+  g = .initNodeAttribute (g, 'lfc', 'numeric', 1.0)
+  g = .initNodeAttribute (g, 'label', 'char', 'default node label')
+  g = .initNodeAttribute (g, 'count', 'integer', 0)
 
-  g = initEdgeAttribute (g, 'edgeType', 'char', 'undefined')
-  g = initEdgeAttribute (g, 'score', 'numeric', 0.0)
-  g = initEdgeAttribute (g, 'misc',   'char', 'default misc')
+  g = .initEdgeAttribute (g, 'edgeType', 'char', 'undefined')
+  g = .initEdgeAttribute (g, 'score', 'numeric', 0.0)
+  g = .initEdgeAttribute (g, 'misc',   'char', 'default misc')
 
   g = graph::addNode ('A', g)
   g = graph::addNode ('B', g)
@@ -820,44 +593,6 @@ remove.redundancies.in.undirected.graph = function(gu)
   return(g)
 
 }  # remove.redundancies.in.undirected.graph
-#------------------------------------------------------------------------------------------------------------------------
-initNodeAttribute = function (graph, attribute.name, attribute.type, default.value)
-{
-  stopifnot (attribute.type %in% c ('char', 'integer', 'numeric', 'boolean'))
-  if (attribute.type == 'char')
-    attribute.type = 'STRING'
-  else if (attribute.type == 'integer')
-    attribute.type = 'INTEGER'
-  else if (attribute.type == 'numeric')
-    attribute.type = 'FLOATING'
-  else if (attribute.type == 'boolean')
-      attribute.type = 'BOOLEAN'
-
-  nodeDataDefaults (graph, attr=attribute.name) = default.value
-  attr (nodeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
-
-  return (graph)
-
-} # initNodeAttribute
-#------------------------------------------------------------------------------------------------------------------------
-initEdgeAttribute = function (graph, attribute.name, attribute.type, default.value)
-{
-    stopifnot (attribute.type %in% c ('char', 'integer', 'numeric', 'boolean'))
-    if (attribute.type == 'char')
-        attribute.type = 'STRING'
-    else if (attribute.type == 'integer')
-        attribute.type = 'INTEGER'
-    else if (attribute.type == 'numeric')
-        attribute.type = 'FLOATING'
-    else if (attribute.type == 'boolean')
-        attribute.type = 'BOOLEAN'
-
-  edgeDataDefaults (graph, attr=attribute.name) = default.value
-  attr (edgeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
-
-  return (graph)
-
-} # initEdgettribute
 
 #------------------------------------------------------------------------------------------------------------------------
 # used when adding a new graph to an existing graph.  we assume (but do not yet here test) that before this method
@@ -871,7 +606,7 @@ initEdgeAttribute = function (graph, attribute.name, attribute.type, default.val
     caller.specified.attribute.class = attr(nodeDataDefaults(other.graph, attribute.name), 'class')
     if(is.null(caller.specified.attribute.class)) {
         msg1 = sprintf('Error! RCytoscape:::.sendNodeAttributesForGraph. You must initialize the "%s" node attribute.', attribute.name)
-        msg2 = sprintf('        example: my.graph = initNodeAttribute(my.graph, attr="moleculeType", "char", "unspecified")')
+        msg2 = sprintf('        example: my.graph = .initNodeAttribute(my.graph, attr="moleculeType", "char", "unspecified")')
         write(msg1, stderr())
         write(msg2, stderr())
         return(NA)
@@ -910,7 +645,7 @@ initEdgeAttribute = function (graph, attribute.name, attribute.type, default.val
     
     if(is.null(caller.specified.attribute.class)) {
         msg1 = sprintf('Error!  RCytoscape:::.sendEdgeAttributesForGraph. You must initialize the "%s" edge attribute.', attribute.name)
-        msg2 = sprintf('        example:  my.graph = initEdgeAttribute (my.graph, attr="edgeType", "char", "unspecified")')
+        msg2 = sprintf('        example:  my.graph = .initEdgeAttribute (my.graph, attr="edgeType", "char", "unspecified")')
         write(msg1, stderr())
         write(msg2, stderr())
         return(NA)
@@ -977,7 +712,7 @@ cyPlot <- function (node.df, edge.df) {
   # Nodes and attributes
   if (length(grep("character", node.class)) > 1) {
     for (i in 2:length(grep("character", node.class))) {
-      mydata <- initNodeAttribute(graph = mydata,
+      mydata <- .initNodeAttribute(graph = mydata,
                                   attribute.name = names(node.class[grep("character", node.class)])[i],
                                   attribute.type = 'char',
                                   default.value = 'undefined') 
@@ -986,7 +721,7 @@ cyPlot <- function (node.df, edge.df) {
   
   if (length(grep("numeric", node.class))){ 
     for (i in 1:length(grep("numeric", node.class))) {	
-      mydata <- initNodeAttribute(graph = mydata,
+      mydata <- .initNodeAttribute(graph = mydata,
                                   attribute.name = names(node.class[grep("numeric", node.class)])[i],
                                   attribute.type = 'numeric',
                                   default.value = 0.0) 
@@ -1002,7 +737,7 @@ cyPlot <- function (node.df, edge.df) {
   
   if (length(grep("character", edge.class)) > 2){
     for (i in 3:length(grep("character", edge.class))) {
-      mydata <- initEdgeAttribute(graph = mydata,
+      mydata <- .initEdgeAttribute(graph = mydata,
                                   attribute.name = names(edge.df[,grep("character", edge.class)])[i],
                                   attribute.type = 'char',
                                   default.value = 'undefined')
@@ -1010,7 +745,7 @@ cyPlot <- function (node.df, edge.df) {
   }
   if (any(grep("numeric", edge.class))){
     for (i in 1:length(grep("numeric", edge.class))) {	
-      mydata <- initEdgeAttribute(mydata,
+      mydata <- .initEdgeAttribute(mydata,
                                   attribute.name = names(edge.class[grep("numeric", edge.class)])[i],
                                   attribute.type = "numeric",
                                   default.value = 0)

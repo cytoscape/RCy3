@@ -2,7 +2,7 @@
 % Please edit documentation in R/Layouts.R
 \name{getLayoutNames}
 \alias{getLayoutNames}
-\title{getLayoutNames}
+\title{Get Layout Names}
 \usage{
 getLayoutNames(base.url = .defaultBaseUrl)
 }

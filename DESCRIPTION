@@ -19,11 +19,11 @@ NeedsCompilation: no
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Collate: 
-    'CytoscapeConnectionClass.R'
-    'CytoscapeWindowClass.R'
     'Collections.R'
     'Commands.R'
+    'CytoscapeConnectionClass.R'
     'CytoscapeSystem.R'
+    'CytoscapeWindowClass.R'
     'Groups.R'
     'Layouts.R'
     'NetworkViews.R'

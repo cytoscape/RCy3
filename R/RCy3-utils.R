@@ -171,73 +171,167 @@ findColumnType <- function(columnType){
     }
 } # findColumnType
 # ------------------------------------------------------------------------------
-.nodeNameToNodeSUID<-function(obj, node.names) {
-    
-    if(length(obj@node.suid.name.dict)==0){  # i.e., no obj dictionary
-        dict <- getTableColumns('node',c('SUID','name'),obj=obj)
+.nodeNameToNodeSUID<-function(node.names, network=NULL, base.url=.defaultBaseUrl) {
+        dict <- getTableColumns('node',c('SUID','name'),'default',network, base.url)
         node.SUIDs <- dict[which(dict$name  %in% node.names),'SUID']
         return(node.SUIDs)
-    }
-    
-    # initial source used 'which', but it did not return SUIDs in the input names order  
-    # dict.indices = which(node.names %in% sapply(obj@node.suid.name.dict, function(n) { n$name}))
-    # 'match' achieves this desired behavior
-    dict.node.names <- sapply(obj@node.suid.name.dict, function(n) {n$name})
-    dict.indices <- match(node.names, dict.node.names)
-    
-    # [dict.indices[!is.na(dict.indices)]] is used to clean any 'NAs' from the vector 
-    node.SUIDs <- sapply(obj@node.suid.name.dict[dict.indices[!is.na(dict.indices)]], function(i) {i$SUID})
-    return(node.SUIDs)
 }
 # ------------------------------------------------------------------------------
-.nodeSUIDToNodeName<-function(obj, node.suids) {
-    
-    if(length(obj@node.suid.name.dict)==0){  # i.e., no obj dictionary
-        dict <- getTableColumns('node',c('SUID','name'),obj=obj)
+.nodeSUIDToNodeName<-function(node.suids, network=NULL, base.url=.defaultBaseUrl) {
+        dict <- getTableColumns('node',c('SUID','name'),'default',network, base.url)
         node.names <- dict[which(dict$SUID  %in% node.suids),'name']
         return(node.names)
-    }
-    
-    dict.node.SUIDs <- sapply(obj@node.suid.name.dict, function(s) {s$SUID})
-    dict.indices <- match(node.suids, dict.node.SUIDs)
-    
-    # [dict.indices[!is.na(dict.indices)]] is used to clean any 'NAs' from the vector
-    node.names <- sapply(obj@node.suid.name.dict[dict.indices[!is.na(dict.indices)]], function(n) {n$name})
-    return(node.names)
 }
 
 # ------------------------------------------------------------------------------
-.edgeNameToEdgeSUID<-function(obj, edge.names) {
-    
-    if(length(obj@edge.node.suid.name.dict)==0){  # i.e., no obj dictionary
-        dict <- getTableColumns('edge',c('SUID','name'),obj=obj)
+.edgeNameToEdgeSUID<-function(edge.names, network=NULL, base.url=.defaultBaseUrl) {
+        dict <- getTableColumns('edge',c('SUID','name'),'default',network, base.url)
         edge.SUIDs <- dict[which(dict$name  %in% edge.names),'SUID']
         return(edge.SUIDs)
-    }
-    
-    dict.edge.names <- sapply(obj@edge.node.suid.name.dict, function(e) {e$name})
-    dict.indices <- match(edge.names, dict.edge.names)
-    
-    # [dict.indices[!is.na(dict.indices)]] is used to clean any 'NAs' from the vector
-    edge.SUIDs <- sapply(obj@edge.node.suid.name.dict[dict.indices[!is.na(dict.indices)]], function(i){ i$SUID })
-    return(edge.SUIDs)
 }
 
 # ------------------------------------------------------------------------------
-.edgeSUIDToEdgeName<-function(obj, edge.suids) {
-    
-    if(length(obj@edge.node.suid.name.dict)==0){  # i.e., no obj dictionary
-        dict <- getTableColumns('edge',c('SUID','name'),obj=obj)
+.edgeSUIDToEdgeName<-function(edge.suids, network=NULL, base.url=.defaultBaseUrl) {
+        dict <- getTableColumns('edge',c('SUID','name'),'default',network, base.url)
         edge.names <- dict[which(dict$SUID  %in% edge.suids),'name']
         return(edge.names)
-    }
-    
-    dict.edge.SUIDs = sapply(obj@edge.node.suid.name.dict, function(s) {s$SUID})
-    dict.indices = match(edge.suids, dict.edge.SUIDs)
-    
-    # [dict.indices[!is.na(dict.indices)]] is used to clean any 'NAs' from the vector
-    edge.names = sapply(obj@edge.node.suid.name.dict[dict.indices[!is.na(dict.indices)]], function(e) {e$name})
-    return(edge.names)
 }
 
+#------------------------------------------------------------------------------------------------------------------------
+.initNodeAttribute = function (graph, attribute.name, attribute.type, default.value)
+{
+    stopifnot (attribute.type %in% c ('char', 'integer', 'numeric', 'boolean'))
+    if (attribute.type == 'char')
+        attribute.type = 'STRING'
+    else if (attribute.type == 'integer')
+        attribute.type = 'INTEGER'
+    else if (attribute.type == 'numeric')
+        attribute.type = 'FLOATING'
+    else if (attribute.type == 'boolean')
+        attribute.type = 'BOOLEAN'
+    
+    nodeDataDefaults (graph, attr=attribute.name) = default.value
+    attr (nodeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
+    
+    return (graph)
+    
+} 
+
+#------------------------------------------------------------------------------------------------------------------------
+.initEdgeAttribute = function (graph, attribute.name, attribute.type, default.value)
+{
+    stopifnot (attribute.type %in% c ('char', 'integer', 'numeric', 'boolean'))
+    if (attribute.type == 'char')
+        attribute.type = 'STRING'
+    else if (attribute.type == 'integer')
+        attribute.type = 'INTEGER'
+    else if (attribute.type == 'numeric')
+        attribute.type = 'FLOATING'
+    else if (attribute.type == 'boolean')
+        attribute.type = 'BOOLEAN'
+    
+    edgeDataDefaults (graph, attr=attribute.name) = default.value
+    attr (edgeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
+    
+    return (graph)
+    
+} 
+
+#------------------------------------------------------------------------------------------------------------------------
+.copyNodeAttributesToGraph <- function (node.suid.name.dict, suid, existing.graph, base.url) {
+    
+    node.attribute.names = getNodeAttributeNames(suid, base.url)
+    
+    for(attribute.name in node.attribute.names) {
+        known.node.names = sapply(node.suid.name.dict, function(n) { n$name })
+        # nodes that store values for this attribute (meaning the value is not empty)
+        nodes.with.attribute = haveNodeAttribute(suid, known.node.names, attribute.name, base.url)
+        if(length(nodes.with.attribute) > 0) {
+            attribute.type = getNodeAttributeType(attribute.name, suid, base.url)
+            write(sprintf("\t retrieving attribute '%s' values for %d nodes", attribute.name, length(nodes.with.attribute)), stderr())
+            # write(sprintf("\t retrieving %s '%s' attribute for %d nodes", attribute.type, attribute.name, length(nodes.with.attribute)), stderr())
+            if(attribute.type == 'Integer' || attribute.type == 'Long') {
+                attribute.type = 'integer'
+                default.value = as.integer(0)
+            } else if(attribute.type == 'String') {
+                attribute.type = 'char'
+                default.value = as.character('unassigned')
+            } else if(attribute.type == 'Double' || attribute.type == 'Float') {
+                attribute.type = 'numeric'
+                default.value = as.numeric(0.0)
+            } else if(attribute.type == 'Boolean') {
+                attribute.type = 'boolean'
+                default.value = as.logical(FALSE)
+            } else {
+                write(sprintf('RCy3::.copyNodeAttributesToGraph, no support yet for attributes of type %s', attribute.type), stderr())
+                next()
+            }
+            existing.graph = 
+                .initNodeAttribute(existing.graph, attribute.name, attribute.type, default.value)
+            
+            attribute.values = c()
+            
+            for(i in 1:length(nodes.with.attribute)) {
+                attribute.values = c(attribute.values, getNodeAttribute(obj, nodes.with.attribute[i], attribute.name))
+            }
+            graph::nodeData(existing.graph, nodes.with.attribute, attribute.name) = attribute.values
+        } ## END if there are nodes that have values for the attribute
+    } ## END for loop : looping through each node attribute
+    return(existing.graph)
+}
+
+#------------------------------------------------------------------------------------------------------------------------
+.copyEdgeAttributesToGraph <- function (suid, existing.graph, base.url) {
+    edge.attribute.names = getEdgeAttributeNames(suid, base.url)
+    
+    cy2.edgenames = as.character(cy2.edge.names(existing.graph)) # < 2 seconds for > 9000 edges
+    
+    for(attribute.name in edge.attribute.names) {
+        edges.with.attribute = haveEdgeAttribute(cy2.edgenames, attribute.name, suid, base.url)
+        
+        if(length(edges.with.attribute) > 0) {
+            attribute.type = getEdgeAttributeType(obj, attribute.name) 
+            
+            write(sprintf("\t retrieving attribute '%s' values for %d edges", attribute.name, length(edges.with.attribute)), stderr())
+            if(attribute.type == 'Integer' || attribute.type == 'Long') {
+                attribute.type = 'integer'
+                default.value = as.integer(0)
+            } else if(attribute.type == 'String') {
+                attribute.type = 'char'
+                default.value = as.character('unassigned')
+            } else if(attribute.type == 'Double' || attribute.type == 'Float') {
+                attribute.type = 'numeric'
+                default.value = as.numeric(0.0)
+            } else if(attribute.type == 'Boolean') {
+                attribute.type = 'boolean'
+                default.value = as.logical(FALSE)
+            } else {
+                write(sprintf('RCy3::.copyEdgeAttributesToGraph, no support yet for attributes of type %s', attribute.type), stderr())
+                next()
+            }
+            existing.graph = 
+                .initEdgeAttribute(existing.graph, attribute.name, attribute.type, default.value)
+            eda.values = c()
+            
+            for(i in 1:length(edges.with.attribute)) {
+                eda.values = c(eda.values, getEdgeAttribute(obj, edges.with.attribute[i], attribute.name))
+            }
+            
+            regex = ' *[\\(|\\)] *'
+            edges.tokens = strsplit(edges.with.attribute, regex)
+            source.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[1]))
+            target.nodes = unlist(lapply(edges.tokens, function(tokens) tokens[3]))
+            edge.types = unlist(lapply(edges.tokens, function(tokens) tokens[2])) 
+            
+            edgeData(existing.graph, source.nodes, target.nodes, attribute.name) = eda.values
+            
+            # for(i in 1:length(edgeData(existing.graph, from=source.nodes, to=target.nodes, attr=attribute.name))) {
+            #     attr(edgeData(existing.graph, from=source.nodes, to=target.nodes, attr=attribute.name)[[i]], 'class') = 
+            #         getEdgeAttributeType(obj, attribute.name)
+            # }
+        } ## END if
+    } ## END for
+    
+    return(existing.graph)
+} 
 

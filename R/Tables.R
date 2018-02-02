@@ -6,15 +6,15 @@ NULL
 setGeneric ('mapIdentifiers', function (obj, title=NA, table=NA, column.name, species, mapFrom, mapTo, force.single=TRUE) standardGeneric('mapIdentifiers'))
 
 # ------------------------------------------------------------------------------
-setGeneric ('haveNodeAttribute',             signature='obj', function (obj=CytoscapeConnection(), node.names, attribute.name) standardGeneric ('haveNodeAttribute'))
-setGeneric ('haveEdgeAttribute',             signature='obj', function (obj=CytoscapeConnection(), edge.names, attribute.name) standardGeneric ('haveEdgeAttribute'))
+#setGeneric ('haveNodeAttribute',             signature='obj', function (obj=CytoscapeConnection(), node.names, attribute.name) standardGeneric ('haveNodeAttribute'))
+#setGeneric ('haveEdgeAttribute',             signature='obj', function (obj=CytoscapeConnection(), edge.names, attribute.name) standardGeneric ('haveEdgeAttribute'))
 setGeneric ('setNodeAttributesDirect',   signature='obj', function (obj=CytoscapeWindowFromNetwork(), attribute.name, attribute.type, node.names, values) standardGeneric ('setNodeAttributesDirect'))
 setGeneric ('setEdgeAttributesDirect', 	 signature='obj', function (obj=CytoscapeWindowFromNetwork(), attribute.name, attribute.type, edge.names, values) standardGeneric ('setEdgeAttributesDirect'))
 setGeneric ('getAttributeClassNames', 	 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getAttributeClassNames'))
-setGeneric ('getNodeAttributeType',      signature='obj', function (obj=CytoscapeWindowFromNetwork(), attribute.name) standardGeneric ('getNodeAttributeType'))
+#setGeneric ('getNodeAttributeType',      signature='obj', function (obj=CytoscapeWindowFromNetwork(), attribute.name) standardGeneric ('getNodeAttributeType'))
 setGeneric ('getEdgeAttributeType',      signature='obj', function (obj=CytoscapeWindowFromNetwork(), attribute.name) standardGeneric ('getEdgeAttributeType'))
 setGeneric ('getNodeAttributeNames',     signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getNodeAttributeNames'))
-setGeneric ('getEdgeAttributeNames',     signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getEdgeAttributeNames'))
+#setGeneric ('getEdgeAttributeNames',     signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getEdgeAttributeNames'))
 setGeneric ('deleteNodeAttribute',       signature='obj', function (obj=CytoscapeWindowFromNetwork(), attribute.name) standardGeneric ('deleteNodeAttribute'))
 setGeneric ('deleteEdgeAttribute',       signature='obj', function (obj=CytoscapeWindowFromNetwork(), attribute.name) standardGeneric ('deleteEdgeAttribute'))
 setGeneric ('getAllNodeAttributes',      signature='obj', function (obj=CytoscapeWindowFromNetwork(), onlySelectedNodes=FALSE) standardGeneric ('getAllNodeAttributes'))
@@ -45,13 +45,13 @@ setGeneric ('getEdgeAttribute',          signature='obj', function (obj=Cytoscap
 #' getTableColumns('node','group')
 #' }
 
-getTableColumns<-function(table,columns=NULL,namespace='default',obj=CytoscapeWindowFromNetwork()){
+getTableColumns<-function(table,columns=NULL,namespace='default',network=NULL,base.url=.defaultBaseUrl){
     
-    base.url = paste(obj@uri,obj@api,sep="/")
+    suid=getNetworkSuid(network)
     
     #all columns
     if(is.null(columns))
-        columns = listTableColumns(table, namespace, obj=obj)
+        columns = listTableColumns(table, namespace, base.url)
     
     #handle comma separated lists and list objects
     col.list = columns
@@ -60,7 +60,7 @@ getTableColumns<-function(table,columns=NULL,namespace='default',obj=CytoscapeWi
     
     #get name column first
     tbl = paste0(namespace,table)
-    cmd = paste(base.url,'networks',obj@suid,'tables',tbl,'columns','name',sep = '/')
+    cmd = paste(base.url,'networks',suid,'tables',tbl,'columns','name',sep = '/')
     res = GET(URLencode(cmd))
     res.html = htmlParse(rawToChar(res$content), asText=TRUE)
     res.elem = xpathSApply(res.html, "//p", xmlValue)
@@ -68,7 +68,7 @@ getTableColumns<-function(table,columns=NULL,namespace='default',obj=CytoscapeWi
     df = data.frame(row.names=names$values)
     
     #retrieve column names
-    table.col.list = listTableColumns(table,namespace,obj)
+    table.col.list = listTableColumns(table,namespace,base.url)
     
     # then append other requested columns
     for (col in col.list){
@@ -79,7 +79,7 @@ getTableColumns<-function(table,columns=NULL,namespace='default',obj=CytoscapeWi
             next()
         }
         
-        cmd = paste(base.url,'networks',obj@suid,'tables',tbl,'columns',col,sep = '/')
+        cmd = paste(base.url,'networks',suid,'tables',tbl,'columns',col,sep = '/')
         res = GET(URLencode(cmd))
         res.html = htmlParse(rawToChar(res$content), asText=TRUE)
         res.elem = xpathSApply(res.html, "//p", xmlValue)
@@ -118,8 +118,9 @@ getTableColumns<-function(table,columns=NULL,namespace='default',obj=CytoscapeWi
 #' listTableColumns('network')
 #' }
 
-listTableColumns<-function(table='node',namespace='default',obj=CytoscapeWindowFromNetwork()){
-    cmd = paste(table,' list attributes network="',obj@title,'" namespace="',namespace,sep='')
+listTableColumns<-function(table='node',namespace='default',network=NULL,base.url=.defaultBaseUrl){
+    title=getNetworkName(network)
+    cmd = paste(table,' list attributes network="',title,'" namespace="',namespace,sep='')
     return(commandRun(cmd,obj))
 }
 
@@ -195,49 +196,45 @@ loadTableData<-function(data, data.key.column='row.names', table='node', table.k
 # will have a specific attribute define on it.  (In R, every node has every attribute)
 # this function returns a list of nodes for which the specified attribute has a value in the corresponding Cytoscape network
 
-setMethod ('haveNodeAttribute', 'OptionalCyObjClass',
-           function(obj, node.names, attribute.name) {
-               
-               net.SUID = as.character(obj@suid)
-               # check the attribute exists
-               if (attribute.name %in% getNodeAttributeNames(obj)) {
-                   # get the node SUIDs
-                   node.SUIDs = .nodeNameToNodeSUID(obj, node.names)
-                   nodes.that.have.attribute = c()
-                   
-                   for (i in 1:length(node.SUIDs)) {
-                       resource.uri = paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/rows", as.character(node.SUIDs[i]), attribute.name, sep="/")
-                       request.res = GET(url=resource.uri)
-                       node.attribute.value = rawToChar(request.res$content)
-                       
-                       if(nchar(node.attribute.value) > 0) {
-                           nodes.that.have.attribute = c(nodes.that.have.attribute, node.SUIDs[i])
-                       }
-                   }
-                   
-                   return (as.character(.nodeSUIDToNodeName(obj, nodes.that.have.attribute)))
-               } else {
-                   write(sprintf("Error: '%s' is not an existing node attribute name", attribute.name), stderr())
-               }
-           })
-## END haveNodeAttribute
+haveNodeAttribute <- function(node.names, attribute.name, network=NULL, base.url=.defaultBaseUrl) {
+    
+    net.SUID = getNetworkSuid(network)
+    # check the attribute exists
+    if (attribute.name %in% getNodeAttributeNames(net.SUID,base.url)) {
+        # get the node SUIDs
+        node.SUIDs = .nodeNameToNodeSUID(node.names, net.SUID, base.url)
+        nodes.that.have.attribute = c()
+        
+        for (i in 1:length(node.SUIDs)) {
+            resource.uri = paste(base.url, "networks", net.SUID, "tables/defaultnode/rows", as.character(node.SUIDs[i]), attribute.name, sep="/")
+            request.res = GET(url=resource.uri)
+            node.attribute.value = rawToChar(request.res$content)
+            
+            if(nchar(node.attribute.value) > 0) {
+                nodes.that.have.attribute = c(nodes.that.have.attribute, node.SUIDs[i])
+            }
+        }
+        
+        return (as.character(.nodeSUIDToNodeName(nodes.that.have.attribute,net.SUID,base.url)))
+    } else {
+        write(sprintf("Error: '%s' is not an existing node attribute name", attribute.name), stderr())
+    }
+}
 
 #------------------------------------------------------------------------------------------------------------------------
 # in Cytoscape, attributes are administered on a global level.  In addition, and in contrast to R, not all nodes in a graph
 # will have a specific attribute define on it.  (In R, every node has every attribute)
 # this function returns a list of nodes for which the specified attribute has a value in the corresponding Cytoscape network
 
-setMethod ('haveEdgeAttribute', 'OptionalCyObjClass',
-           
-           function (obj, edge.names, attribute.name) {
-               net.SUID = as.character(obj@suid)
+haveEdgeAttribute <- function (edge.names, attribute.name, network=NULL, base.url=.defaultBaseUrl) {
+               net.SUID = getNetworkSuid(network)
                
-               if(attribute.name %in% getEdgeAttributeNames(obj)) {
-                   edge.SUIDs = .edgeNameToEdgeSUID(obj, edge.names)
+               if(attribute.name %in% getEdgeAttributeNames(net.SUID, base.url)) {
+                   edge.SUIDs = .edgeNameToEdgeSUID(edge.names,net.SUID,base.url)
                    edges.that.have.attribute = c()
                    
                    for(i in 1:length(edge.SUIDs)) {
-                       resource.uri = paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/rows", as.character(edge.SUIDs[i]), attribute.name, sep="/")
+                       resource.uri = paste(base.url, "networks", net.SUID, "tables/defaultedge/rows", as.character(edge.SUIDs[i]), attribute.name, sep="/")
                        request.res = GET(url=resource.uri)
                        edge.attribute.value = rawToChar(request.res$content)
                        
@@ -246,11 +243,11 @@ setMethod ('haveEdgeAttribute', 'OptionalCyObjClass',
                        }
                    }
                    
-                   return(as.character(.edgeSUIDToEdgeName(obj, edges.that.have.attribute)))
+                   return(as.character(.edgeSUIDToEdgeName(edges.that.have.attribute, net.SUID, base.url)))
                } else {
                    write(sprintf("Error: '%s' is no an existing edge attribute name", attribute.name), stderr())
                }
-           })
+           }
 
 # ------------------------------------------------------------------------------
 setMethod('setNodeAttributesDirect', 'OptionalCyWinClass', 
@@ -427,25 +424,22 @@ setMethod('getNodeAttribute', 'OptionalCyWinClass',
           })
 
 # ------------------------------------------------------------------------------
-setMethod('getNodeAttributeType', 'OptionalCyWinClass', 
-          function(obj, attribute.name) {
-              net.SUID <- as.character(obj@suid)
-              
-              
-              if(attribute.name %in% getNodeAttributeNames(obj)) {
-                  resource.uri <- 
-                      paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
-                  request.res <- GET(url=resource.uri)
-                  
-                  node.attributes.info <- fromJSON(rawToChar(request.res$content))
-                  return(node.attributes.info[[which(lapply(node.attributes.info, function(a) {a$name}) %in% attribute.name)]]$type)
-              } else {
-                  write(sprintf("WARNING in RCy3::getNodeAttributeType():\n\t '%s' could not be recognized as a valid node attribute >> function returns empty value", attribute.name), stderr())
-                  
-                  return("")
-              }
-          }) 
-## END getNodeAttributeType
+getNodeAttributeType <- function(attribute.name, network=NULL, base.url=.defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    
+    if(attribute.name %in% getNodeAttributeNames(net.SUID, base.url)) {
+        resource.uri <- 
+            paste(base.url, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
+        request.res <- GET(url=resource.uri)
+        
+        node.attributes.info <- fromJSON(rawToChar(request.res$content))
+        return(node.attributes.info[[which(lapply(node.attributes.info, function(a) {a$name}) %in% attribute.name)]]$type)
+    } else {
+        write(sprintf("WARNING in RCy3::getNodeAttributeType():\n\t '%s' could not be recognized as a valid node attribute >> function returns empty value", attribute.name), stderr())
+        
+        return("")
+    }
+}
 
 # ------------------------------------------------------------------------------
 setMethod('getAllNodeAttributes', 'OptionalCyWinClass', 
@@ -619,13 +613,12 @@ setMethod ('getAllEdgeAttributes', 'OptionalCyWinClass',
            })
 
 # ------------------------------------------------------------------------------
-setMethod('getNodeAttributeNames', 'OptionalCyWinClass', 
-          function(obj) {
+getNodeAttributeNames <- function(network=NULL, base.url=.defaultBaseUrl) {
               
-              net.SUID <- getNetworkSuid(obj)
+              net.SUID <- getNetworkSuid(network)
               
               resource.uri <- 
-                  paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
+                  paste(base.url, "networks", net.SUID, "tables/defaultnode/columns", sep="/")
               # request result
               request.res <- GET(url=resource.uri)
               request.res <- fromJSON(rawToChar(request.res$content))
@@ -637,15 +630,13 @@ setMethod('getNodeAttributeNames', 'OptionalCyWinClass',
                   write(sprintf('Please ensure that you sent the R graph to Cytoscape before calling this function, e.g. using displayGraph. Otherwise names might not be displayed (correctly).'), stderr())
               }
               return (node.attribute.names)
-          })
-## END getNodeAttributeNames
+          }
 
 # ------------------------------------------------------------------------------
-setMethod('getEdgeAttributeNames', 'OptionalCyWinClass', 
-          function(obj) {
-              net.SUID <- getNetworkSuid(obj)
+getEdgeAttributeNames <- function(network=NULL, base.url=.defaultBaseUrl) {
+              net.SUID <- getNetworkSuid(network)
               resource.uri <- 
-                  paste(obj@uri, obj@api, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
+                  paste(base.url, "networks", net.SUID, "tables/defaultedge/columns", sep="/")
               # request result
               request.res <- GET(url=resource.uri)
               request.res <- fromJSON(rawToChar(request.res$content))
@@ -654,8 +645,7 @@ setMethod('getEdgeAttributeNames', 'OptionalCyWinClass',
               # exclude some edge attributes
               edge.attribute.names <- request.res[! request.res %in% c("SUID", "shared name", "shared interaction", "selected")]
               return(edge.attribute.names)
-          })
-## END getEdgeAttributeNames
+          }
 
 # ------------------------------------------------------------------------------
 # delete node attribute by deleting its column in the node table

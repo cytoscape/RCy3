@@ -5,7 +5,7 @@
 \title{DEPRECATED: existing.CytoscapeWindow}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{CytoscapeWindowFromNetwork}}
+\code{\link[RCy3]{getNetworkSuid}}
 }
 \description{
 This function is only provided for compatibility with older
