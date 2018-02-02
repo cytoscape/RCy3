@@ -30,7 +30,7 @@ setValidity("CytoscapeWindowClass", function(object) {
     validObject(object@graph)
 }) 
 # Constructor
-CytoscapeWindow = function(title, graph=new('graphNEL', edgemode='directed'), uri="http://localhost:1234", api="v1",
+CytoscapeWindow_DEFUNCT = function(title, graph=new('graphNEL', edgemode='directed'), uri="http://localhost:1234", api="v1",
                            create.window=TRUE, overwriteWindow=FALSE, collectTimings=FALSE){
     
     # new 'CytoscapeConnectionClass' object

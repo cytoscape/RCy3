@@ -4,7 +4,7 @@
 \alias{setCurrentNetwork}
 \title{Set current network}
 \usage{
-setCurrentNetwork(obj = CytoscapeConnection(), title = NA)
+setCurrentNetwork(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{network}{name or suid of the network that you want set as current}

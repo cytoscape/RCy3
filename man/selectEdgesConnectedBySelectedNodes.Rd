@@ -30,9 +30,6 @@ getSelectedEdges(cw)
 }
 
 }
-\seealso{
-\code{\link{createNetworkFromSelection}}, \code{\link{selectEdgesConnectedBySelectedNodes}}, \code{\link{renameNetwork}}
-}
 \author{
 Julia Gustavsen, \email{j.gustavsen@gmail.com}
 }

@@ -5,7 +5,7 @@
 \title{Get table column values}
 \usage{
 getTableColumns(table, columns = NULL, namespace = "default",
-  obj = CytoscapeWindowFromNetwork())
+  network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{table}{name of table, e.g., node, edge, network}
