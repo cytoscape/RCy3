@@ -14,15 +14,17 @@ commandRun(cmd.string, method = "POST", base.url = .defaultBaseUrl)
 \item{base.url}{cyrest base url for communicating with cytoscape}
 }
 \value{
-List object
+A \code{list}, \code{named list}, \code{status} or None.
 }
 \description{
 Using the same syntax as Cytoscape's Command Line Dialog,
 this function converts a command string into a CyREST URL, executes a GET
-request, and parses the HTML result content into an R list object.
+or POST request, and parses the result content into an R list object.
 }
 \examples{
 \donttest{
 commandRun('layout get preferred')
+commandRun('network list properties')
+commandRun('layout force-directed defaultNodeMass=1')
 }
 }

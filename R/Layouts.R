@@ -195,7 +195,7 @@ layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaul
     }
     
     if(is.null(layout.name)){
-        res<-commandRun(paste0('layout apply preferred networkSelected="SUID:"',suid), base.url)
+        res<-commandRun(paste0('layout apply preferred networkSelected="SUID:"',suid), base.url=base.url)
         invisible(res)
     } else if(!layout.name %in% getLayoutNames(base.url)) {
         write(sprintf("layout.name '%s' is not recognized; call getLayoutNames(<CytoscapeWindow>) to see those which are supported", layout.name), stderr())
@@ -237,6 +237,6 @@ layoutCopycat <- function(sourceNetwork, targetNetwork, sourceColumn='name', tar
     res<-commandRun(paste0('layout copycat sourceNetwork="', sourceNetwork,'" targetNetwork="',
                            targetNetwork,'" sourceColumn="',sourceColumn,'" targetColumn="',
                            targetColumn,'" gridUnmapped="',gridUnmapped,'" selectUnmapped="',
-                           selectUnmapped), base.url)
+                           selectUnmapped), base.url=base.url)
     invisible(res)
 }

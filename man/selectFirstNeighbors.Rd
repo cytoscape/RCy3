@@ -12,10 +12,10 @@ selectFirstNeighbors(direction = "any", network = NULL,
 
 \item{network}{name or suid of the network; default is "current" network}
 
-\item{base.url}{cyrest base url for communicating with cytoscape}
+\item{base.url}{(optional)  URL prefix for CyREST calls}
 }
 \value{
-list of names of selected nodes, including original selection
+list of suids of selected nodes, including original selection
 }
 \description{
 Select nodes directly connected to currently selected nodes. Can

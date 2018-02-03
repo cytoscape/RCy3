@@ -5,11 +5,11 @@
 setGeneric ('getNetworkAsCx', function (obj) standardGeneric('getNetworkAsCx'))
 
 # ------------------------------------------------------------------------------
-setGeneric ('saveNetwork',               signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename, type='cys') standardGeneric ('saveNetwork'))
+#setGeneric ('saveNetwork',               signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename, type='cys') standardGeneric ('saveNetwork'))
 #setGeneric ('getNetworkName',            signature='obj', function (network.suid=NA,obj=CytoscapeConnection()) standardGeneric ('getNetworkName'))
 #setGeneric ('getNetworkSuid',            signature='obj', function (obj=CytoscapeConnection(), title=NA) standardGeneric ('getNetworkSuid'))
-setGeneric ('getNetworkCount',	         signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNetworkCount'))
-setGeneric ('getNetworkList',            signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNetworkList'))
+#setGeneric ('getNetworkCount',	         signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNetworkCount'))
+#setGeneric ('getNetworkList',            signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('getNetworkList'))
 setGeneric ('deleteAllNetworks',	     signature='obj', function (obj=CytoscapeConnection()) standardGeneric ('deleteAllNetworks'))
 #setGeneric ('cloneNetwork',              signature='obj', function (obj=CytoscapeWindowFromNetwork(), new.title, return.graph = FALSE) standardGeneric('cloneNetwork'))
 setGeneric ('deleteNetwork',  	         signature='obj', function (obj=CytoscapeWindowFromNetwork(), title=NA) standardGeneric ('deleteNetwork'))
@@ -29,10 +29,10 @@ setGeneric ('getSelectedNodes',          signature='obj', function (obj=Cytoscap
 setGeneric ('getSelectedEdges',          signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getSelectedEdges'))
 setGeneric ('getSelectedNodeCount',      signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getSelectedNodeCount'))
 setGeneric ('getSelectedEdgeCount',      signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getSelectedEdgeCount'))
-setGeneric ('invertNodeSelection',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('invertNodeSelection'))
-setGeneric ('invertEdgeSelection',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('invertEdgeSelection'))
-setGeneric ('deleteSelectedNodes',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('deleteSelectedNodes'))
-setGeneric ('deleteSelectedEdges',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('deleteSelectedEdges'))
+#setGeneric ('invertNodeSelection',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('invertNodeSelection'))
+#setGeneric ('invertEdgeSelection',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('invertEdgeSelection'))
+#setGeneric ('deleteSelectedNodes',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('deleteSelectedNodes'))
+#setGeneric ('deleteSelectedEdges',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('deleteSelectedEdges'))
 setGeneric ('getFirstNeighbors',         signature='obj', function (obj, node.names, as.nested.list=FALSE) standardGeneric ('getFirstNeighbors'))
 #setGeneric ('selectFirstNeighbors',      signature='obj', function (obj, direction='any') standardGeneric ('selectFirstNeighbors'))
 setGeneric ('selectEdgesConnectedBySelectedNodes', 
@@ -118,7 +118,7 @@ createSubnetwork <- function(nodes,nodes.by.col='name',edges,edges.by.col='name'
     }
     
     sub <- toJSON(as.list(json_sub))
-    url<- sprintf("%s/commands/network/create", base.url,sep="")
+    url<- sprintf("%s/commands/network/create", base.url,sep="") ##TODO swap with commandRun (POST)?
     response <- POST(url=url,body=sub, encode="json",content_type_json())
     subnetwork.suid=unname(fromJSON(rawToChar(response$content)))[[1]][[1]]
     #cat(sprintf("Subnetwork SUID is : %i \n", subnetwork.suid))
@@ -131,8 +131,8 @@ createSubnetwork <- function(nodes,nodes.by.col='name',edges,edges.by.col='name'
 #' specify connection directionality using the direction param.
 #' @param direction direction of connections to neighbors to follow, e.g., incoming, outgoing, undirected, or any (default)
 #' @param network name or suid of the network; default is "current" network
-#' @param base.url cyrest base url for communicating with cytoscape
-#' @return list of names of selected nodes, including original selection
+#' @param base.url  (optional)  URL prefix for CyREST calls
+#' @return list of suids of selected nodes, including original selection
 #' @examples
 #' \donttest{
 #' selectFirstNeighbors()
@@ -143,8 +143,8 @@ createSubnetwork <- function(nodes,nodes.by.col='name',edges,edges.by.col='name'
 selectFirstNeighbors <- function(direction='any', network=NULL, base.url=.defaultBaseUrl){
     title=getNetworkName(network)
     cmd<-paste0('network select firstNeighbors="',direction,'" network="',title,'"')
-    res <- commandRun(cmd,base.url)
-    return(res[-1])
+    res <- commandRun(cmd,base.url=base.url)
+    return(res['nodes'])
 }
 
 # ------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ selectFirstNeighbors <- function(direction='any', network=NULL, base.url=.defaul
 #'
 #' @description Selects the given network as "current"
 #' @param network name or suid of the network that you want set as current
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url  (optional)  URL prefix for CyREST calls
 #' @return server response
 #' @export
 #' @examples
@@ -163,8 +163,7 @@ selectFirstNeighbors <- function(direction='any', network=NULL, base.url=.defaul
 setCurrentNetwork <- function(network=NULL, base.url=.defaultBaseUrl){
     title = getNetworkName(network)
     cmd<-paste0('network set current network="',title,'"')
-    res <- commandRun(cmd,base.url)
-    return(res)
+    commandRun(cmd,base.url=base.url)
 }
 
 #' Clone a Cytoscape Network 
@@ -172,7 +171,7 @@ setCurrentNetwork <- function(network=NULL, base.url=.defaultBaseUrl){
 #' @description Makes a copy of a Cytoscape Network with all of its edges and nodes. 
 #' @param new.title Name for the new network
 #' @param network name or suid of the network that you want set as current
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url  (optional)  URL prefix for CyREST calls
 #' @return The \code{suid} of the new network 
 #' @examples \dontrun{
 #' cloneNetwork("cloned network")
@@ -181,18 +180,18 @@ setCurrentNetwork <- function(network=NULL, base.url=.defaultBaseUrl){
 #' @export
 
 cloneNetwork <- function(new.title, network=NULL, base.url =.defaultBaseUrl) {
-    title = getNetworkName(suid)
+    title = getNetworkName(network)
     if (title == new.title){
         print("Copy not made. The titles of the original window and its copy are the same. Please pick a new name for the copy.")
         stderr()
     }
     else{
         cmd<-paste0('network clone network="',title,'"')
-        res <- commandRun(cmd,base.url)
-        new.suid <- as.numeric(gsub(")","",unlist(strsplit(tail(res,1),'SUID: '))[2])) # ugly... waiting for proper JSON return
-        #TODO renameNetwork(new.title,new.suid,base.url)
+        res <- commandRun(cmd,base.url=base.url)
+        new.suid <- res['network']
+        Sys.sleep(.2) ## TODO: pray to CyREST gods 
+        renameNetwork(new.title,new.suid,base.url)
         #TODO renameCollection 
-        #TODO renameSharedName
         return(new.suid)
     }
 }
@@ -200,10 +199,10 @@ cloneNetwork <- function(new.title, network=NULL, base.url =.defaultBaseUrl) {
 #' Rename a network 
 #'
 #' @description Sets a new name for this network 
-#' @details Duplicate names are not
+#' @details Duplicate network names are not allowed
 #' @param new.title New name for the network
 #' @param network name or suid of the network that you want set as current
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url  (optional)  URL prefix for CyREST calls
 #' @return None
 #' @author Alexander Pico, Julia Gustavsen
 #' @examples \dontrun{
@@ -213,18 +212,28 @@ cloneNetwork <- function(new.title, network=NULL, base.url =.defaultBaseUrl) {
 renameNetwork <- function(new.title, network=NULL, base.url =.defaultBaseUrl) {
     old.title = getNetworkName(network)
     cmd<-paste0('network rename name="',new.title,'" sourceNetwork="',old.title,'"')
-    res <- commandRun(cmd,base.url)
+    res <- commandRun(cmd,base.url=base.url)
     invisible(res)
 }
 
 # ------------------------------------------------------------------------------
-setMethod('getNetworkCount', 'OptionalCyObjClass',
-          function(obj) {
-              resource.uri <- paste(obj@uri, obj@api, "networks/count", sep="/")
-              res <- GET(url=resource.uri)
-              num.cytoscape.windows <- unname(fromJSON(rawToChar(res$content)))
-              return(as.integer(num.cytoscape.windows))
-          }) # END getNetworkCount
+#' Get the number of Cytoscape networks 
+#'
+#' @description Returns the number of Cytoscape networks in the current Cytoscape session  
+#' @param base.url  (optional)  URL prefix for CyREST calls
+#' @return \code{numeric}
+#' @author Alexander Pico Tanja Muetze, Georgi Kolishovski, Paul Shannon
+#' @examples \dontrun{
+#' getNetworkCount()
+#' # 3
+#' }
+#' @export
+getNetworkCount <- function(base.url =.defaultBaseUrl) {
+    resource.uri <- paste(base.url, "networks/count", sep="/")
+    res <- GET(url=resource.uri)
+    num.cytoscape.windows <- unname(fromJSON(rawToChar(res$content)))
+    return(as.integer(num.cytoscape.windows))
+}
 
 # ------------------------------------------------------------------------------
 #' Get the name of a network
@@ -281,33 +290,43 @@ getNetworkSuid <- function(title=NULL, base.url = .defaultBaseUrl) {
     }
 
     cmd<-paste0('network get attribute network="',network.title,'" namespace="default" columnList="SUID"')
-    res <- commandRun(cmd,base.url)
+    res <- commandRun(cmd,base.url=base.url)
     suid <- gsub("\\{SUID:|\\}","",res)
     return(as.numeric(suid))
 }
 
 # ------------------------------------------------------------------------------
-setMethod('getNetworkList', 'OptionalCyObjClass', 
-          function(obj) {
-              if(getNetworkCount(obj) == 0) {
-                  return(c())
-              }
-              resource.uri <- paste(obj@uri, obj@api, "networks", sep="/")
-              request.res <- GET(resource.uri)
-              # SUIDs list of the existing Cytoscape networks	
-              cy.networks.SUIDs <- fromJSON(rawToChar(request.res$content))
-              # names list of the existing Cytoscape networks
-              cy.networks.names = c()
-              
-              for(suid in cy.networks.SUIDs)	{
-                  res.uri <- paste(obj@uri, obj@api, "networks", as.character(suid), sep="/")
-                  result <- GET(res.uri)
-                  net.name <- fromJSON(rawToChar(result$content))$data$name
-                  cy.networks.names <- c(cy.networks.names, net.name)
-              }
-              
-              return(cy.networks.names)
-          })
+#' Get the list of Cytoscape networks 
+#'
+#' @description Returns the list of Cytoscape network names in the current Cytoscape session  
+#' @param base.url  (optional)  URL prefix for CyREST calls
+#' @return \code{list}
+#' @author Alexander Pico Tanja Muetze, Georgi Kolishovski, Paul Shannon
+#' @examples \dontrun{
+#' getNetworkList()
+#' # 3
+#' }
+#' @export
+getNetworkList <- function(base.url = .defaultBaseUrl) {
+    if(getNetworkCount(base.url) == 0) {
+        return(c())
+    }
+    resource.uri <- paste(base.url, "networks", sep="/")
+    request.res <- GET(resource.uri)
+    # SUIDs list of the existing Cytoscape networks	
+    cy.networks.SUIDs <- fromJSON(rawToChar(request.res$content))
+    # names list of the existing Cytoscape networks
+    cy.networks.names = c()
+    
+    for(suid in cy.networks.SUIDs)	{
+        res.uri <- paste(base.url, "networks", as.character(suid), sep="/")
+        result <- GET(res.uri)
+        net.name <- fromJSON(rawToChar(result$content))$data$name
+        cy.networks.names <- c(cy.networks.names, net.name)
+    }
+    
+    return(cy.networks.names)
+}
 
 # ------------------------------------------------------------------------------
 setMethod('deleteNetwork', 'OptionalCyObjClass',
@@ -653,85 +672,23 @@ setMethod('getSelectedNodes', 'CytoscapeWindowClass',
 
 # ------------------------------------------------------------------------------
 # select all nodes that were not selected and deselect all nodes that were selected
-setMethod('invertNodeSelection', 'OptionalCyWinClass', 
-          function(obj) {
-              commandRun(paste0('network select invert=nodes network=',obj@title), obj)
-          }) 
-## END invertNodeSelection
+#' @export
+invertNodeSelection <- function(network=NULL,base.url=.defaultBaseUrl) {
+    title <- getNetworkName(network)
+    res <- commandRun(paste0('network select invert=nodes network=',title), base.url=base.url)
+    res$nodes
+}
 
 # ------------------------------------------------------------------------------
 # [GIK - Jul, 2015] function might break if self-loops exist in the graph
-setMethod('deleteSelectedNodes', 'OptionalCyWinClass', 
-          function(obj) {
-              
-              if(missing(obj))
-                  commandRun(paste0('network delete nodeList=selected network=',obj@title), obj)
-              
-              loc.obj <- obj
-              
-              net.SUID <- as.character(loc.obj@suid)
-              
-              selected.node.names <- getSelectedNodes(loc.obj)
-              selected.node.SUIDs <- .nodeNameToNodeSUID(loc.obj, selected.node.names)
-              
-              for(i in 1:length(selected.node.SUIDs)) {
-                  node.SUID <- selected.node.SUIDs[i]
-                  # (list of) edges that have this particular node as their source node
-                  source.bound.edges <- list()
-                  # (list of) edges that have this particular node as their target node
-                  target.bound.edges <- list()
-                  
-                  source.bound.edge.indices <- 
-                      which(sapply(loc.obj@edge.node.suid.name.dict, function(n) {n$source.node}) %in% node.SUID)
-                  
-                  if(length(source.bound.edge.indices) > 0) {
-                      # get edge SUIDs
-                      source.bound.edges <- 
-                          sapply(loc.obj@edge.node.suid.name.dict[source.bound.edge.indices], function(e) { e$SUID })
-                      # delete all edges, whose source node is to-be deleted
-                      for(k in 1:length(source.bound.edges)) {
-                          resource.uri <- paste(loc.obj@uri, obj@api, "networks", net.SUID, "edges", as.character(source.bound.edges[k]), sep="/")
-                          
-                          request.res <- DELETE(url=resource.uri)
-                          # [GIK] TO-DO: delete the edge row/entry from Cytoscape's Edge table
-                      }
-                      # also, delete those edges from the session dictionary
-                      loc.obj@edge.node.suid.name.dict[source.bound.edge.indices] <- NULL
-                  }
-                  
-                  target.bound.edge.indices <- 
-                      which(sapply(loc.obj@edge.node.suid.name.dict, function(n) {n$target.node}) %in% node.SUID)
-                  
-                  if(length(target.bound.edge.indices) > 0) {
-                      # get edge SUIDs
-                      target.bound.edges <- 
-                          sapply(loc.obj@edge.node.suid.name.dict[target.bound.edge.indices], function(e) { e$SUID })
-                      # delete all edges, whose target node is to-be deleted
-                      for(k in 1:length(target.bound.edges)) {
-                          resource.uri <- paste(loc.obj@uri, obj@api, "networks", net.SUID, "edges", as.character(target.bound.edges[k]), sep="/")
-                          
-                          request.res <- DELETE(url=resource.uri)
-                          # [GIK] TO-DO: delete the edge row/entry from Cytoscape's Edge table
-                      }
-                      # also, delete those edges from the session dictionary
-                      loc.obj@edge.node.suid.name.dict[target.bound.edge.indices] <- NULL
-                  }
-                  
-                  # delete the node from the Cytoscape network
-                  resource.uri <- 
-                      paste(loc.obj@uri, obj@api, "networks", net.SUID, "nodes", as.character(node.SUID), sep="/")
-                  request.res <- DELETE(url=resource.uri)
-                  
-                  # [GIK] TO-DO: delete the node row/entry in the Cytoscape node table
-                  
-                  # delete the node from the session disctionary
-                  node.index <- 
-                      which(sapply(loc.obj@node.suid.name.dict, function(n) { n$SUID }) %in% node.SUID)
-                  loc.obj@node.suid.name.dict[node.index] <- NULL
-              }
-              eval.parent(substitute(obj <- loc.obj))
-          })
-## END deleteSelectedNodes
+#' @return A \code{named list} of deleted node suids ($nodes) as well as edge suids 
+#' ($edges) deleted as a result of the node deletion
+#' @export
+deleteSelectedNodes <- function(network=NULL,base.url=.defaultBaseUrl) {
+    title=getNetworkName(network)
+    commandRun(paste0('network delete nodeList=selected network=',title), base.url = base.url)
+    
+}
 
 # ------------------------------------------------------------------------------
 setMethod('selectEdges', 'OptionalCyWinClass', 
@@ -814,41 +771,20 @@ setMethod('selectAllEdges',
           })
 
 # ------------------------------------------------------------------------------
-setMethod('invertEdgeSelection', 'OptionalCyWinClass', 
-          function(obj) {
-              commandRun(paste0('network select invert=edges network=',obj@title), obj)
-          }) 
-## END invertEdgeSelection
+#' @export
+invertEdgeSelection <- function(network=NULL,base.url=.defaultBaseUrl) {
+    title <- getNetworkName(network)
+    res <- commandRun(paste0('network select invert=edges network=',title), base.url = base.url)
+    res$edges
+}
 
 # ------------------------------------------------------------------------------
-setMethod('deleteSelectedEdges', 'OptionalCyWinClass', 
-          function(obj) {
-              
-              if(missing(obj))
-                  commandRun(paste0('network delete edgeList=selected network=',obj@title), obj)
-              
-              loc.obj <- obj
-              
-              net.SUID = as.character(loc.obj@suid)
-              
-              selected.edge.names = getSelectedEdges(loc.obj)
-              selected.edge.SUIDs = .edgeNameToEdgeSUID(loc.obj, selected.edge.names)
-              
-              for(i in 1:length(selected.edge.SUIDs)) {
-                  edge.SUID = selected.edge.SUIDs[i]
-                  resource.uri = paste(loc.obj@uri, obj@api, "networks", net.SUID, "edges", edge.SUID, sep="/")
-                  # delete edge from canvas / view
-                  request.res = DELETE(url=resource.uri)
-                  
-                  # delete edge from edge table : NOT possible in the API
-                  
-                  # delete edge record from the session dictionary
-                  loc.obj@edge.node.suid.name.dict[which(sapply(loc.obj@edge.node.suid.name.dict, function(e) { e$SUID }) %in% edge.SUID)] <- NULL
-              }
-              
-              eval.parent(substitute(obj <- loc.obj))
-          }) 
-## END deleteSelectedEdges
+#' @export
+deleteSelectedEdges <- function(network=NULL,base.url=.defaultBaseUrl) {
+    title <- getNetworkName(network)
+    res <- commandRun(paste0('network delete edgeList=selected network=', title), base.url = base.url)
+    res$edges
+}
 
 # ------------------------------------------------------------------------------
 setMethod('getSelectedEdgeCount', 'OptionalCyWinClass', 
@@ -994,25 +930,22 @@ selectEdgesConnectedBySelectedNodes <- function(obj) {
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Save a network in one of mulitple file formats 
-setMethod ('saveNetwork', 'OptionalCyWinClass',
-           
-           function (obj, filename, type='cys') {
-               if (!file.exists(filename)){
-                   type=toupper(type)
-                   if(type=='CYS'){ # save entire session
-                       saveSession(filename = filename, obj = obj)
-                   }
-                   else { #e.g., CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive)
-                       if(type=="GRAPHML") #fix case for exceptions
-                           type = 'GraphML'
-                       commandRun(paste0('network export options=',type,' OutputFile="',filename,'"'),obj)
-                   }
-               }else{
-                   write (sprintf ('choose another filename. File exists: %s', filename), stderr ())
-               }
-           })
-
-
+#' @export
+saveNetwork <- function (filename, type='cys',base.url=.defaultBaseUrl) {
+    if (!file.exists(filename)){
+        type=toupper(type)
+        if(type=='CYS'){ # save entire session
+            saveSession(filename = filename, obj = obj)
+        }
+        else { #e.g., CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive)
+            if(type=="GRAPHML") #fix case for exceptions
+                type = 'GraphML'
+            commandRun(paste0('network export options=',type,' OutputFile="',filename,'"'),base.url = base.url)
+        }
+    }else{
+        write (sprintf ('choose another filename. File exists: %s', filename), stderr ())
+    }
+}
 
 # ------------------------------------------------------------------------------
 #' Create an igraph network from a Cytoscape network
@@ -1241,9 +1174,7 @@ createNetworkFromGraph <- function (graph, title=NULL) {
 #' }
 
 createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,new.title="MyNetwork",
-                                        collection.title="MyNetworkCollection",return.graph=FALSE, obj=CytoscapeConnection(),...) {
-    
-    base.url=paste(obj@uri,obj@api,sep = "/")
+                                        collection.title="MyNetworkCollection",base.url=.defaultBaseUrl,...) {
     
     #defining variable names to be used globally later on (to avoid devtools::check() NOTES)
     RCy3.CreateNetworkFromDataFrames.temp.global.counter <- NULL
@@ -1298,14 +1229,12 @@ createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,new.title="MyNetwo
         return(response)
     
     cat("Applying default style\n")
-    commandRun('vizmap apply styles="default"',obj)
+    commandRun('vizmap apply styles="default"',base.url = base.url)
     
-    cat(sprintf("Applying %s layout\n", invisible(commandRun('layout get preferred network="current"'))))
-    commandRun('layout apply preferred networkSelected="current',obj)
+    cat(sprintf("Applying %s layout\n", invisible(commandRun('layout get preferred network="current"',base.url = base.url))))
+    commandRun('layout apply preferred networkSelected="current',base.url = base.url)
     
-    net.title = getNetworkName(network.suid)
-    net.cw<-CytoscapeWindowFromNetwork(net.title,return.graph=return.graph)
-    return(net.cw)
+    return(network.suid)
 }
 
 # Convert edges to JSON format needed for CyRest network creation
