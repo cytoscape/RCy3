@@ -41,15 +41,17 @@ commandHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #'
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function converts a command string into a CyREST URL, executes a GET
-#' request, and parses the HTML result content into an R list object.
+#' or POST request, and parses the result content into an R list object.
 #' @param cmd.string (char) command
 #' @param method HTTP method to be used, e.g., GET or POST (default)
 #' @param base.url cyrest base url for communicating with cytoscape
-#' @return List object
+#' @return A \code{list}, \code{named list}, \code{status} or None.
 #' @export
 #' @examples
 #' \donttest{
 #' commandRun('layout get preferred')
+#' commandRun('network list properties')
+#' commandRun('layout force-directed defaultNodeMass=1')
 #' }
 #' @import XML
 #' @import httr
@@ -58,13 +60,18 @@ commandRun<-function(cmd.string, method='POST', base.url = .defaultBaseUrl){
     if(method=='POST'){
         post.url = .command2postQueryUrl(cmd.string,base.url)
         post.body = .command2postQueryBody(cmd.string)
-        res = POST(url=post.url, body=post.body, encode="json")
+        res = POST(url=post.url, body=post.body, encode="json", content_type_json())
         if(res$status_code > 204){
             stop(rawToChar(res$content))
         } else {
-            fromJSON(rawToChar(res$content))$data
+            res.data = fromJSON(rawToChar(res$content))$data
+            if(length(res.data)>0){
+                return(res.data)
+            } else{
+                invisible(res.data)
+            }
         }
-    } else { ## GET
+    } else if (method=='GET'){
         res = GET(.command2getQuery(cmd.string,base.url))
         res.html = htmlParse(rawToChar(res$content), asText=TRUE)
         res.elem = xpathSApply(res.html, "//p", xmlValue)
@@ -77,6 +84,8 @@ commandRun<-function(cmd.string, method='POST', base.url = .defaultBaseUrl){
             res.list = res.list[!(res.list=="Finished")]
         }
         res.list
+    } else {
+        stop("Invalid method provided. Check provided values and assumed arg order.")
     }
 }
 
@@ -144,6 +153,7 @@ commandRun<-function(cmd.string, method='POST', base.url = .defaultBaseUrl){
 # Command string to CyREST POST query JSON body.
 #
 # @description Converts a command string to a CyREST POST query JSON body.
+# @details POST requests require at leaset one arg, so a "filler" arg is provided if NULL
 # @param cmd.string (char) command
 # @param base.url cyrest base url for communicating with cytoscape
 # @return CyREST POST JSON body
@@ -159,18 +169,18 @@ commandRun<-function(cmd.string, method='POST', base.url = .defaultBaseUrl){
     cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     args = cmdargs[2]
-    if (is.na(args)){
-        return(NULL)
-    }else{
-        args = gsub("\"","",args)
-        p = "[[:alnum:]]+="
-        m = gregexpr(p,args)
-        args1 = unlist(regmatches(args,m))
-        args1 = gsub('=','',args1)
-        #args1 = unlist(str_extract_all(args,"[[:alnum:]]+(?==)")) # requires stringr lib
-        args2 = unlist(strsplit(args," *[[:alnum:]]+="))
-        args2 = args2[-1]
-        names(args2) <- args1
-        return(args2)
-    }
+    
+    if (is.na(args))
+        args = 'atLeastOneArg=required' #supply a benign "filler" if NULL
+    
+    args = gsub("\"","",args)
+    p = "[[:alnum:]]+="
+    m = gregexpr(p,args)
+    args1 = unlist(regmatches(args,m))
+    args1 = gsub('=','',args1)
+    #args1 = unlist(str_extract_all(args,"[[:alnum:]]+(?==)")) # requires stringr lib
+    args2 = unlist(strsplit(args," *[[:alnum:]]+="))
+    args2 = args2[-1]
+    names(args2) <- args1
+    return(toJSON(args2))
 }

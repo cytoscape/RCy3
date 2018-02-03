@@ -6,7 +6,7 @@
 \usage{
 createNetworkFromDataFrames(nodes = NULL, edges = NULL,
   new.title = "MyNetwork", collection.title = "MyNetworkCollection",
-  return.graph = FALSE, obj = CytoscapeConnection(), ...)
+  base.url = .defaultBaseUrl, ...)
 }
 \arguments{
 \item{nodes}{(data.frame) see details and examples below; default NULL to derive nodes from edge sources and targets}
@@ -17,9 +17,9 @@ createNetworkFromDataFrames(nodes = NULL, edges = NULL,
 
 \item{collection.title}{(char) network collection name}
 
-\item{...}{params for nodeSet2JSON() and edgeSet2JSON()}
-
 \item{base.url}{cyrest base url for communicating with cytoscape}
+
+\item{...}{params for nodeSet2JSON() and edgeSet2JSON()}
 }
 \value{
 (int) network SUID
