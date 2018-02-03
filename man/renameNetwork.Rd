@@ -19,6 +19,9 @@ None
 \description{
 Sets a new name for this network
 }
+\details{
+Duplicate names are not
+}
 \examples{
 \dontrun{
 renameNetwork("renamed network")

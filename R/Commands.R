@@ -25,7 +25,7 @@
 #' @importFrom utils tail
 commandHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
-    cmds = GET(command2query(s,base.url))
+    cmds = GET(.command2getQuery(s,base.url))
     cmds.html = htmlParse(rawToChar(cmds$content), asText=TRUE)
     cmds.elem = xpathSApply(cmds.html, "//p", xmlValue)
     cmds.list = cmds.elem
@@ -43,6 +43,7 @@ commandHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' this function converts a command string into a CyREST URL, executes a GET
 #' request, and parses the HTML result content into an R list object.
 #' @param cmd.string (char) command
+#' @param method HTTP method to be used, e.g., GET or POST (default)
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return List object
 #' @export
@@ -52,37 +53,46 @@ commandHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' }
 #' @import XML
 #' @import httr
-commandRun<-function(cmd.string, base.url = .defaultBaseUrl){
+commandRun<-function(cmd.string, method='POST', base.url = .defaultBaseUrl){
     
-    ##TODO use POST or leave alone for "GET friendly" queries, i.e., guaranteed to be short urls?
-    res = GET(command2query(cmd.string,base.url))
-    res.html = htmlParse(rawToChar(res$content), asText=TRUE)
-    res.elem = xpathSApply(res.html, "//p", xmlValue)
-    if(startsWith(res.elem[1],"[")){
-        res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
-        res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
-        res.list = unlist(strsplit(res.elem2,","))
-    }else {
-        res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
-        res.list = res.list[!(res.list=="Finished")]
+    if(method=='POST'){
+        post.url = .command2postQueryUrl(cmd.string,base.url)
+        post.body = .command2postQueryBody(cmd.string)
+        res = POST(url=post.url, body=post.body, encode="json")
+        if(res$status_code > 204){
+            stop(rawToChar(res$content))
+        } else {
+            fromJSON(rawToChar(res$content))$data
+        }
+    } else { ## GET
+        res = GET(.command2getQuery(cmd.string,base.url))
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        if(startsWith(res.elem[1],"[")){
+            res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
+            res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
+            res.list = unlist(strsplit(res.elem2,","))
+        }else {
+            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+            res.list = res.list[!(res.list=="Finished")]
+        }
+        res.list
     }
-    res.list
 }
 
 # ------------------------------------------------------------------------------
-#' Command string to CyREST query URL
-#'
-#' @description Converts a command string to a CyREST query url.
-#' @param cmd.string (char) command
-#' @param base.url cyrest base url for communicating with cytoscape
-#' @return cyrest url
-#' @export
-#' @examples
-#' \donttest{
-#' command2query('layout get preferred')
-#' }
-#' @importFrom utils URLencode
-command2query<-function(cmd.string, base.url = .defaultBaseUrl){
+# Command string to CyREST GET query URL
+#
+# @description Converts a command string to a CyREST GET query URL.
+# @param cmd.string (char) command
+# @param base.url cyrest base url for communicating with cytoscape
+# @return CyREST GET URL
+# @examples
+# \donttest{
+# command2getQuery('layout get preferred')
+# }
+# @importFrom utils URLencode
+.command2getQuery<-function(cmd.string, base.url = .defaultBaseUrl){
     cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     cmd = cmdargs[1]
@@ -109,4 +119,58 @@ command2query<-function(cmd.string, base.url = .defaultBaseUrl){
         paste(q.cmd,q.args,sep="?")
     }
 }
+# ------------------------------------------------------------------------------
+# Command string to CyREST POST query URL
+#
+# @description Converts a command string to a CyREST POST query URL.
+# @param cmd.string (char) command
+# @param base.url cyrest base url for communicating with cytoscape
+# @return CyREST POST URL
+# @examples
+# \donttest{
+# command2postQueryUrl('network clone network="current"')
+# # http://localhost:1234/v1/commands/network/clone
+# }
+# @importFrom utils URLencode
+.command2postQueryUrl<-function(cmd.string, base.url = .defaultBaseUrl){
+    cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
+    cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
+    cmd = cmdargs[1]
+    if(is.na(cmd)){cmd=""}
+    URLencode(paste(base.url, "commands", sub(" ","/",cmd), sep="/"))
+}
 
+# ------------------------------------------------------------------------------
+# Command string to CyREST POST query JSON body.
+#
+# @description Converts a command string to a CyREST POST query JSON body.
+# @param cmd.string (char) command
+# @param base.url cyrest base url for communicating with cytoscape
+# @return CyREST POST JSON body
+# @examples
+# \donttest{
+# command2postQueryBody('network clone network="current"')
+# # {
+# # "network": "current"
+# # }
+# }
+# @importFrom utils URLencode
+.command2postQueryBody<-function(cmd.string){
+    cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
+    cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
+    args = cmdargs[2]
+    if (is.na(args)){
+        return(NULL)
+    }else{
+        args = gsub("\"","",args)
+        p = "[[:alnum:]]+="
+        m = gregexpr(p,args)
+        args1 = unlist(regmatches(args,m))
+        args1 = gsub('=','',args1)
+        #args1 = unlist(str_extract_all(args,"[[:alnum:]]+(?==)")) # requires stringr lib
+        args2 = unlist(strsplit(args," *[[:alnum:]]+="))
+        args2 = args2[-1]
+        names(args2) <- args1
+        return(args2)
+    }
+}

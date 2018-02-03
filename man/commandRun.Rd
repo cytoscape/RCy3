@@ -4,10 +4,12 @@
 \alias{commandRun}
 \title{Command Run}
 \usage{
-commandRun(cmd.string, base.url = .defaultBaseUrl)
+commandRun(cmd.string, method = "POST", base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{cmd.string}{(char) command}
+
+\item{method}{HTTP method to be used, e.g., GET or POST (default)}
 
 \item{base.url}{cyrest base url for communicating with cytoscape}
 }
