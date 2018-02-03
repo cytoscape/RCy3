@@ -9,7 +9,7 @@ setCurrentNetwork(network = NULL, base.url = .defaultBaseUrl)
 \arguments{
 \item{network}{name or suid of the network that you want set as current}
 
-\item{base.url}{cyrest base url for communicating with cytoscape}
+\item{base.url}{(optional)  URL prefix for CyREST calls}
 }
 \value{
 server response

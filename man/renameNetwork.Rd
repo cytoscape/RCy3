@@ -11,7 +11,7 @@ renameNetwork(new.title, network = NULL, base.url = .defaultBaseUrl)
 
 \item{network}{name or suid of the network that you want set as current}
 
-\item{base.url}{cyrest base url for communicating with cytoscape}
+\item{base.url}{(optional)  URL prefix for CyREST calls}
 }
 \value{
 None
@@ -20,7 +20,7 @@ None
 Sets a new name for this network
 }
 \details{
-Duplicate names are not
+Duplicate network names are not allowed
 }
 \examples{
 \dontrun{
