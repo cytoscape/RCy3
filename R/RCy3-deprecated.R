@@ -325,7 +325,34 @@ setEdgeAttributes<-function(obj, attribute.name){
 #' @rdname saveImage-deprecated
 saveImage<-function(obj, file.name, image.type, h = 600){
     .Deprecated("exportImage")
-    exportImage(file.name, type=image.type ,height=h)
+    exportImage(filename, type=image.type ,height=h)
+}
+
+
+#' DEPRECATED: redraw
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage Use the replacement function instead:
+#' \code{\link[RCy3]{setVisualStyle}}
+#' @export
+#' @rdname redraw-deprecated
+redraw<-function(obj){
+    .Deprecated("setVisualStyle")
+    setVisualStyle(style.name='default')
+}
+
+#' DEPRECATED: getDirectlyModifiableVisualProperties
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage Use the replacement function instead:
+#' \code{\link[RCy3]{getVisualPropertyNames}}
+#' @export
+#' @rdname getDirectlyModifiableVisualProperties-deprecated
+getDirectlyModifiableVisualProperties<-function(obj, style.name){
+    .Deprecated("getVisualPropertyNames")
+    getVisualPropertyNames(style.name=style.name)
 }
 
 
