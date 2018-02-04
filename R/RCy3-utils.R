@@ -122,14 +122,6 @@ is.multiGraph = function(obj)
 } # is.multiGraph
 
 # ------------------------------------------------------------------------------
-# capitalizes the first letter of all words in a string
-simpleCap <- function(x) {
-    s <- strsplit(x, " ")[[1]]
-    
-    return(paste(toupper(substring(s, 1, 1)), substring(s, 2), sep="", collapse=""))
-} ### END simpleCap
-
-
 .isNotHexColor <- function(color){
     if ((substring(color, 1, 1) != "#") || (nchar(color) !=7)) {
         write (sprintf ('Error. %s is not a valid hexadecimal color (has to begin with # and be 7 characters long).', color), stderr ())
@@ -139,27 +131,7 @@ simpleCap <- function(x) {
     }
 }
 # ------------------------------------------------------------------------------
-# obtain every other value for vector : used to resolve CyREST bug with returning column values
-obtainEveryOtherValue <- function(v) {
-    return(v[c(TRUE, FALSE)])
-}
-
-# ------------------------------------------------------------------------------
-getEdgeNamesAndSUIDS <- function(obj){
-    # map edge names to edge SUIDs
-    resource.uri <- paste(obj@uri, obj@api, "networks", as.character(obj@suid), "tables/defaultedge", sep="/")
-    request.res <- GET(url=resource.uri)
-    request.res <- fromJSON(rawToChar(request.res$content))
-    # get the row information from the edge table
-    row.lst <- request.res[[6]]
-    suids <- sapply(row.lst, '[[', "SUID")
-    names <- sapply(row.lst, '[[', "name")
-    edge.dict <- as.data.frame(cbind(names, suids))
-    return (edge.dict)
-}
-
-# ------------------------------------------------------------------------------
-findColumnType <- function(columnType){
+.findColumnType <- function(columnType){
     if (columnType=="double"){
         return("Double")
     } else if (columnType == "integer"){
@@ -234,7 +206,6 @@ findColumnType <- function(columnType){
     attr (edgeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
     
     return (graph)
-    
 } 
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -325,10 +296,6 @@ findColumnType <- function(columnType){
             
             edgeData(existing.graph, source.nodes, target.nodes, attribute.name) = eda.values
             
-            # for(i in 1:length(edgeData(existing.graph, from=source.nodes, to=target.nodes, attr=attribute.name))) {
-            #     attr(edgeData(existing.graph, from=source.nodes, to=target.nodes, attr=attribute.name)[[i]], 'class') = 
-            #         getEdgeAttributeType(obj, attribute.name)
-            # }
         } ## END if
     } ## END for
     

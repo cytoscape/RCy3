@@ -1,6 +1,6 @@
-#' RCy3: Display and manipulate graphs in Cytoscape >= 3.6.0 
+#' RCy3: Functions to Access and Control Cytoscape
 #'
-#' The RCy3 package provides functions to run Cytoscape from R.
+#' Vizualize, analyze and explore networks using Cytoscape via R.
 #' 
 #'#' To learn more about RCy3, start with the vignettes:
 #' \code{browseVignettes(package = "RCy3")}
