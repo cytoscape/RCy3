@@ -95,7 +95,7 @@ setMethod('redraw', 'OptionalCyWinClass',
 #' }
 
 saveVisualStyle<-function(filename,type,obj=CytoscapeConnection()){
-    commandRun(paste0('vizmap export options=',type,' OutputFile="',filename,'"'),obj)
+    commandsPOST(paste0('vizmap export options=',type,' OutputFile="',filename,'"'),obj)
 }
 
 
@@ -133,7 +133,7 @@ updateStyleDependencies <- function(style.name,dependencies,obj=CytoscapeConnect
     
     cat("PUT-ing style\n")
     invisible(PUT(url=style.url,body=map.body, encode="json"))
-    invisible(commandRun(paste('vizmap apply styles',style.name,sep='=')))
+    invisible(commandsPOST(paste('vizmap apply styles',style.name,sep='=')))
 }
 
 

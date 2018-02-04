@@ -2,8 +2,63 @@
 # TODO: pauseTimer(message, base.url) http://localhost:1234/v1/commands/command/sleep
 # TODO: quitCytoscape(base.url) http://localhost:1234/v1/commands/command/quit 
 
+#' @export
+cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
+    q.url <- paste(base.url, operation, sep="/")
+    if(!is.null(parameters)){
+        q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
+    }
+    res <- GET(url=q.url)
+    if(length(res$content)>0){
+        return(fromJSON(rawToChar(res$content)))
+    } else{
+        invisible(res)
+    }
+}
+
+#' @export
+cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
+    q.url <- paste(base.url, operation, sep="/")
+    if(!is.null(parameters)){
+        q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
+    }
+    q.body <- toJSON(body)
+    res <- POST(url=q.url, body=q.body, encode="json", content_type_json())
+    if(res$status_code > 299){
+        stop(rawToChar(res$content))
+    } else {
+        if(length(res$content)>0){
+            return(fromJSON(rawToChar(res$content)))
+        } else{
+            invisible(res)
+        }
+    }
+}
+
+#' @export
+cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultBaseUrl){
+    q.url <- paste(base.url, operation, sep="/")
+    if(!is.null(parameters)){
+        q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
+    }
+    q.body <- toJSON(body)
+    res <- PUT(url=q.url, body=q.body, encode="json", content_type_json())
+    if(res$status_code > 299){
+        stop(rawToChar(res$content))
+    } else {
+        if(length(res$content)>0){
+            return(fromJSON(rawToChar(res$content)))
+        } else{
+            invisible(res)
+        }
+    }
+}
+
 # ------------------------------------------------------------------------------
-#' Command Help
+#' Commands Help
 #'
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function returns a list of available commands or args.
@@ -15,15 +70,15 @@
 #' @export
 #' @examples
 #' \donttest{
-#' commandHelp()
-#' commandHelp('node')
-#' commandHelp('node get attribute')
+#' commandsHelp()
+#' commandsHelp('node')
+#' commandsHelp('node get attribute')
 #' }
 #' @import XML
 #' @import httr
 #' @importFrom utils head
 #' @importFrom utils tail
-commandHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
+commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
     cmds = GET(.command2getQuery(s,base.url))
     cmds.html = htmlParse(rawToChar(cmds$content), asText=TRUE)
@@ -37,55 +92,78 @@ commandHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 }
 
 # ------------------------------------------------------------------------------
-#' Command Run
+#' Commands GET
 #'
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
-#' this function converts a command string into a CyREST URL, executes a GET
-#' or POST request, and parses the result content into an R list object.
+#' this function converts a command string into a CyREST query URL, executes a GET
+#' request, and parses the result content into an R list object.
 #' @param cmd.string (char) command
-#' @param method HTTP method to be used, e.g., GET or POST (default)
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return A \code{list}, \code{status} or None.
+#' @export
+#' @examples
+#' \donttest{
+#' commandsGET('layout get preferred')
+#' commandsGET('network list properties')
+#' commandsGET('layout force-directed defaultNodeMass=1')
+#' }
+#' @import XML
+#' @import httr
+commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
+    res = GET(.command2getQuery(cmd.string,base.url))
+    res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+    res.elem = xpathSApply(res.html, "//p", xmlValue)
+    if(startsWith(res.elem[1],"[")){
+        res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
+        res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
+        res.list = unlist(strsplit(res.elem2,","))
+    }else {
+        res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+        res.list = res.list[!(res.list=="Finished")]
+    }
+    if(length(res.list)>0){
+        res.list
+    } else {
+        invisible(res.list)
+    }
+}
+
+# ------------------------------------------------------------------------------
+#' Commands POST
+#'
+#' @description Using the same syntax as Cytoscape's Command Line Dialog,
+#' this function converts a command string into a CyREST query URL, executes a
+#' POST request, and parses the result content into an R list object.
+#' @param cmd.string (char) command
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return A \code{list}, \code{named list}, \code{status} or None.
 #' @export
 #' @examples
 #' \donttest{
-#' commandRun('layout get preferred')
-#' commandRun('network list properties')
-#' commandRun('layout force-directed defaultNodeMass=1')
+#' commandsPOST('layout get preferred')
+#' commandsPOST('network list properties')
+#' commandsPOST('layout force-directed defaultNodeMass=1')
 #' }
 #' @import XML
 #' @import httr
-commandRun<-function(cmd.string, method='POST', base.url = .defaultBaseUrl){
-    
-    if(method=='POST'){
-        post.url = .command2postQueryUrl(cmd.string,base.url)
-        post.body = .command2postQueryBody(cmd.string)
-        res = POST(url=post.url, body=post.body, encode="json", content_type_json())
-        if(res$status_code > 204){
-            stop(rawToChar(res$content))
-        } else {
+commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
+    post.url = .command2postQueryUrl(cmd.string,base.url)
+    post.body = .command2postQueryBody(cmd.string)
+    res = POST(url=post.url, body=post.body, encode="json", content_type_json())
+    if(res$status_code > 299){
+        stop(rawToChar(res$content))
+    } else {
+        if(length(res$content)>0){
             res.data = fromJSON(rawToChar(res$content))$data
             if(length(res.data)>0){
                 return(res.data)
             } else{
                 invisible(res.data)
             }
-        }
-    } else if (method=='GET'){
-        res = GET(.command2getQuery(cmd.string,base.url))
-        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
-        res.elem = xpathSApply(res.html, "//p", xmlValue)
-        if(startsWith(res.elem[1],"[")){
-            res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
-            res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
-            res.list = unlist(strsplit(res.elem2,","))
         }else {
-            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
-            res.list = res.list[!(res.list=="Finished")]
+            invisible(res)
+            
         }
-        res.list
-    } else {
-        stop("Invalid method provided. Check provided values and assumed arg order.")
     }
 }
 
@@ -119,15 +197,24 @@ commandRun<-function(cmd.string, method='POST', base.url = .defaultBaseUrl){
         #args1 = unlist(str_extract_all(args,"[[:alnum:]]+(?==)")) # requires stringr lib
         args2 = unlist(strsplit(args," *[[:alnum:]]+="))
         args2 = args2[-1]
-        q.args = paste(args1[1],URLencode(args2[1]),sep="=")
-        
-        for (i in seq(args1)[-1]){
-            arg = paste(args1[i],URLencode(args2[i]),sep="=")
-            q.args = paste(q.args,arg,sep="&")
-        }
+        names(args2) <- args1
+        q.args = .prepGetQueryArgs(args2)
         paste(q.cmd,q.args,sep="?")
     }
 }
+
+# takes a named list and makes a string for GET query urls
+.prepGetQueryArgs <- function(named.args){
+    args1 <- names(named.args)
+    args2 <- unlist(unname(named.args))
+    q.args = paste(args1[1],URLencode(args2[1]),sep="=")
+    for (i in seq(args1)[-1]){
+        arg = paste(args1[i],URLencode(args2[i]),sep="=")
+        q.args = paste(q.args,arg,sep="&")
+    }
+    return(q.args)
+}
+
 # ------------------------------------------------------------------------------
 # Command string to CyREST POST query URL
 #

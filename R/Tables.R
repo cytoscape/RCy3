@@ -51,7 +51,7 @@ getTableColumns<-function(table,columns=NULL,namespace='default',network=NULL,ba
     
     #all columns
     if(is.null(columns))
-        columns = listTableColumns(table, namespace, base.url)
+        columns = listTableColumns(table, namespace, network, base.url)
     
     #handle comma separated lists and list objects
     col.list = columns
@@ -68,7 +68,7 @@ getTableColumns<-function(table,columns=NULL,namespace='default',network=NULL,ba
     df = data.frame(row.names=names$values)
     
     #retrieve column names
-    table.col.list = listTableColumns(table,namespace,base.url)
+    table.col.list = listTableColumns(table,namespace,network,base.url)
     
     # then append other requested columns
     for (col in col.list){
@@ -121,7 +121,7 @@ getTableColumns<-function(table,columns=NULL,namespace='default',network=NULL,ba
 listTableColumns<-function(table='node',namespace='default',network=NULL,base.url=.defaultBaseUrl){
     title=getNetworkName(network)
     cmd = paste(table,' list attributes network="',title,'" namespace="',namespace,sep='')
-    return(commandRun(cmd,obj))
+    return(commandsPOST(cmd,base.url=base.url))
 }
 
 # ------------------------------------------------------------------------------
@@ -388,7 +388,7 @@ setMethod('getNodeAttribute', 'OptionalCyWinClass',
                   node.attribute.type <- getNodeAttributeType(obj, attribute.name)
                   
                   if(length(node.attribute.type) > 0) {
-                      res=commandRun(paste0('node get attribute nodeList=',node.name,' columnList=',attribute.name))
+                      res=commandsPOST(paste0('node get attribute nodeList=',node.name,' columnList=',attribute.name))
                       res <- gsub("}","",res)
                       node.attribute.value <- unlist(strsplit(res,":"))[4]
                       # resource.uri <- 

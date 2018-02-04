@@ -7,9 +7,7 @@
 cloneNetwork(new.title, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{new.title}{Name for the new network}
-
-\item{network}{name or suid of the network that you want set as current}
+\item{network}{name or suid of the network you want to clone; default is "current" network}
 
 \item{base.url}{(optional)  URL prefix for CyREST calls}
 }
