@@ -273,7 +273,7 @@ setMethod ('setNodeTooltipRule', 'OptionalCyWinClass',
                
                # define the column type
                sample.node.attribute <- getNodeAttribute (obj, getAllNodes(obj)[1], node.attribute.name)
-               columnType <- findColumnType(typeof(sample.node.attribute))
+               columnType <- .findColumnType(typeof(sample.node.attribute))
                
                # discrete mapping
                discreteMapping(obj, node.attribute.name, attribute.values, attribute.values,
@@ -303,7 +303,7 @@ setMethod ('setEdgeTooltipRule', 'OptionalCyWinClass',
                setVisualProperty(obj, default.tooltip, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(attribute.values[1]))
+               columnType <- .findColumnType(typeof(attribute.values[1]))
                
                # discrete mapping
                discreteMapping(obj, edge.attribute.name, attribute.values, attribute.values,
@@ -332,7 +332,7 @@ setMethod ('setNodeLabelRule', 'OptionalCyWinClass',
                setVisualProperty(obj, default.label, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(attribute.values[1]))
+               columnType <- .findColumnType(typeof(attribute.values[1]))
                
                # discrete mapping
                discreteMapping(obj, node.attribute.name, attribute.values, attribute.values,
@@ -361,7 +361,7 @@ setMethod ('setEdgeLabelRule', 'OptionalCyWinClass',
                setVisualProperty(obj, default.label, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(attribute.values[1]))
+               columnType <- .findColumnType(typeof(attribute.values[1]))
                
                # discrete mapping
                discreteMapping(obj, edge.attribute.name, attribute.values, attribute.values,
@@ -388,7 +388,7 @@ setMethod ('setNodeColorRule', 'OptionalCyWinClass',
                setDefaultNodeColor (obj, default.color, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(control.points[1]))
+               columnType <- .findColumnType(typeof(control.points[1]))
                
                # interpolate
                if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points 
@@ -434,7 +434,7 @@ setMethod ('setNodeOpacityRule', 'OptionalCyWinClass',
                }
                
                # define the column type
-               columnType <- findColumnType(typeof(control.points[1]))
+               columnType <- .findColumnType(typeof(control.points[1]))
                
                # set default # Comment TanjaM: Current version does not set default
                #setDefaultNodeOpacity (obj, default.opacity, style.name)
@@ -546,7 +546,7 @@ setMethod ('setNodeBorderColorRule', 'OptionalCyWinClass',
                setDefaultNodeBorderColor (obj, default.color, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(control.points[1]))
+               columnType <- .findColumnType(typeof(control.points[1]))
                
                # mode==interpolate
                if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points 
@@ -595,7 +595,7 @@ setMethod ('setNodeBorderWidthRule', 'OptionalCyWinClass',
                setDefaultNodeBorderWidth(obj, default.width, style.name)
                
                # define the column type
-               columnType <- "String" #findColumnType(typeof(line.widths[1]))
+               columnType <- "String" #.findColumnType(typeof(line.widths[1]))
                # discrete mapping
                if (mode=="lookup"){
                    discreteMapping (obj, node.attribute.name, attribute.values, line.widths,
@@ -631,7 +631,7 @@ setMethod ('setNodeShapeRule', 'OptionalCyWinClass',
                setDefaultNodeShape (obj, default.shape, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(node.shapes[1]))
+               columnType <- .findColumnType(typeof(node.shapes[1]))
                
                # discrete mapping
                discreteMapping (obj, node.attribute.name, attribute.values, node.shapes,
@@ -648,7 +648,7 @@ setMethod ('setNodeSizeRule', 'OptionalCyWinClass',
                }
                
                # define the column type
-               columnType <- findColumnType(typeof(control.points[1]))
+               columnType <- .findColumnType(typeof(control.points[1]))
                
                # lock node dimensions
                lockNodeDimensions (obj, TRUE)
@@ -711,7 +711,7 @@ setMethod ('setEdgeColorRule', 'OptionalCyWinClass',
                setDefaultEdgeColor (obj, default.color, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(control.points[1]))
+               columnType <- .findColumnType(typeof(control.points[1]))
                
                if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
                    if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
@@ -759,7 +759,7 @@ setMethod ('setEdgeOpacityRule', 'OptionalCyWinClass',
                setDefaultEdgeOpacity (obj, default.opacity, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(control.points[1]))
+               columnType <- .findColumnType(typeof(control.points[1]))
                
                # in a previous Cytoscape version the three elements were set seperately
                #aspects = c ('Edge Opacity', 'Edge Target Arrow Opacity', 'Edge Source Arrow Opacity')
@@ -820,7 +820,7 @@ setMethod ('setEdgeLineStyleRule', 'OptionalCyWinClass',
                setVisualProperty(obj, default.style.list, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(line.styles[1]))
+               columnType <- .findColumnType(typeof(line.styles[1]))
                
                # discrete mapping
                discreteMapping (obj, edge.attribute.name, attribute.values, line.styles,
@@ -845,7 +845,7 @@ setMethod ('setEdgeLineWidthRule', 'OptionalCyWinClass',
                setVisualProperty(obj, default.width.list, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(line.widths[1]))
+               columnType <- .findColumnType(typeof(line.widths[1]))
                #columnType <- 'String'
                
                if (mode=='interpolate') {  # need a 'below' width and an 'above' width  so there should be two more width than control.points
@@ -897,7 +897,7 @@ setMethod ('setEdgeTargetArrowRule', 'OptionalCyWinClass',
                setVisualProperty(obj, default.style.list, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(arrows[1]))
+               columnType <- .findColumnType(typeof(arrows[1]))
                
                # discrete mapping
                discreteMapping (obj, edge.attribute.name, attribute.values, arrows,
@@ -920,7 +920,7 @@ setMethod ('setEdgeSourceArrowRule', 'OptionalCyWinClass',
                setVisualProperty(obj, default.style.list, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(arrows[1]))
+               columnType <- .findColumnType(typeof(arrows[1]))
                
                # discrete mapping
                discreteMapping (obj, edge.attribute.name, attribute.values, arrows,
@@ -947,7 +947,7 @@ setMethod ('setEdgeTargetArrowColorRule', 'OptionalCyWinClass',
                setDefaultEdgeTargetArrowColor (obj, default.color, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(control.points[1]))
+               columnType <- .findColumnType(typeof(control.points[1]))
                
                if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
                    if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
@@ -1003,7 +1003,7 @@ setMethod ('setEdgeSourceArrowColorRule', 'OptionalCyWinClass',
                setDefaultEdgeSourceArrowColor (obj, default.color, style.name)
                
                # define the column type
-               columnType <- findColumnType(typeof(control.points[1]))
+               columnType <- .findColumnType(typeof(control.points[1]))
                
                
                if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
