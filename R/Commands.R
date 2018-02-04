@@ -57,6 +57,21 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
     }
 }
 
+#' @export
+cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
+    q.url <- paste(base.url, operation, sep="/")
+    if(!is.null(parameters)){
+        q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
+    }
+    res <- DELETE(url=q.url)
+    if(length(res$content)>0){
+        return(fromJSON(rawToChar(res$content)))
+    } else{
+        invisible(res)
+    }
+}
+
 # ------------------------------------------------------------------------------
 #' Commands Help
 #'

@@ -315,6 +315,19 @@ setEdgeAttributes<-function(obj, attribute.name){
     sendEdgeAttributesFromGraph(obj=obj, attribute.name=attribute.name)
 }
 
+#' DEPRECATED: saveImage
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage Use the replacement function instead:
+#' \code{\link[RCy3]{exportImage}}
+#' @export
+#' @rdname saveImage-deprecated
+saveImage<-function(obj, file.name, image.type, h = 600){
+    .Deprecated("exportImage")
+    exportImage(file.name, type=image.type ,height=h)
+}
+
 
 #------------------------------------------------------------------------------------------------------------------------
 #' DEPRECATED: addGraphToGraph
