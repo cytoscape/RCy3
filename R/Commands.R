@@ -9,7 +9,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    res <- GET(url=q.url)
+    res <- GET(url=URLencode(q.url))
     if(length(res$content)>0){
         return(fromJSON(rawToChar(res$content)))
     } else{
@@ -25,7 +25,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         q.url <- paste(q.url, q.params, sep="?")
     }
     q.body <- toJSON(body)
-    res <- POST(url=q.url, body=q.body, encode="json", content_type_json())
+    res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json())
     if(res$status_code > 299){
         stop(rawToChar(res$content))
     } else {
@@ -45,7 +45,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
         q.url <- paste(q.url, q.params, sep="?")
     }
     q.body <- toJSON(body)
-    res <- PUT(url=q.url, body=q.body, encode="json", content_type_json())
+    res <- PUT(url=URLencode(q.url), body=q.body, encode="json", content_type_json())
     if(res$status_code > 299){
         stop(rawToChar(res$content))
     } else {
@@ -64,7 +64,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    res <- DELETE(url=q.url)
+    res <- DELETE(url=URLencode(q.url))
     if(length(res$content)>0){
         return(fromJSON(rawToChar(res$content)))
     } else{

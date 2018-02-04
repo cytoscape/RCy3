@@ -1,31 +1,3 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
-
-#--- defaults ----------------------------------------------
-setGeneric ('getDefaultBackgroundColor',	        signature='obj', function (obj=CytoscapeConnection(), style.name='default') standardGeneric ('getDefaultBackgroundColor'))
-setGeneric ('setDefaultBackgroundColor',            signature='obj', function (obj=CytoscapeConnection(), new.color, style.name='default') standardGeneric ('setDefaultBackgroundColor'))
-setGeneric ('getDefaultNodeSelectionColor',         signature='obj', function (obj=CytoscapeConnection(), style.name='default') standardGeneric ('getDefaultNodeSelectionColor'))
-setGeneric ('setDefaultNodeSelectionColor',         signature='obj', function (obj=CytoscapeConnection(), new.color, style.name='default') standardGeneric ('setDefaultNodeSelectionColor'))
-setGeneric ('getDefaultNodeReverseSelectionColor',  signature='obj', function (obj=CytoscapeConnection(), style.name='default') standardGeneric ('getDefaultNodeReverseSelectionColor'))
-setGeneric ('setDefaultNodeReverseSelectionColor',  signature='obj', function (obj=CytoscapeConnection(), new.color, style.name='default') standardGeneric ('setDefaultNodeReverseSelectionColor'))
-setGeneric ('getDefaultEdgeSelectionColor',         signature='obj', function (obj=CytoscapeConnection(), style.name='default') standardGeneric ('getDefaultEdgeSelectionColor'))
-setGeneric ('setDefaultEdgeSelectionColor',         signature='obj', function (obj=CytoscapeConnection(), new.color,  style.name='default') standardGeneric ('setDefaultEdgeSelectionColor'))
-setGeneric ('getDefaultEdgeReverseSelectionColor',  signature='obj', function (obj=CytoscapeConnection(), style.name='default') standardGeneric ('getDefaultEdgeReverseSelectionColor'))
-setGeneric ('setDefaultEdgeReverseSelectionColor',  signature='obj', function (obj=CytoscapeConnection(), new.color, style.name='default') standardGeneric ('setDefaultEdgeReverseSelectionColor'))
-
-setGeneric ('setDefaultNodeShape',        signature='obj', function (obj=CytoscapeConnection(), new.shape, style.name='default') standardGeneric ('setDefaultNodeShape'))
-setGeneric ('setDefaultNodeSize',         signature='obj', function (obj=CytoscapeConnection(), new.size, style.name='default') standardGeneric ('setDefaultNodeSize'))
-setGeneric ('setDefaultNodeColor',        signature='obj', function (obj=CytoscapeConnection(), new.color, style.name='default') standardGeneric ('setDefaultNodeColor'))
-setGeneric ('setDefaultNodeBorderColor',  signature='obj', function (obj=CytoscapeConnection(), new.color, style.name='default') standardGeneric ('setDefaultNodeBorderColor'))
-setGeneric ('setDefaultNodeBorderWidth',  signature='obj', function (obj=CytoscapeConnection(), new.width, style.name='default') standardGeneric ('setDefaultNodeBorderWidth'))
-setGeneric ('setDefaultNodeFontSize',     signature='obj', function (obj=CytoscapeConnection(), new.size, style.name='default') standardGeneric ('setDefaultNodeFontSize'))
-setGeneric ('setDefaultNodeLabelColor',   signature='obj', function (obj=CytoscapeConnection(), new.color, style.name='default') standardGeneric ('setDefaultNodeLabelColor'))
-
-setGeneric ('setDefaultEdgeLineWidth',        signature='obj', function (obj=CytoscapeConnection(), new.width, style.name='default') standardGeneric ('setDefaultEdgeLineWidth'))
-setGeneric ('setDefaultEdgeLineStyle',        signature='obj', function (obj=CytoscapeConnection(), new.line.style, style.name='default') standardGeneric ('setDefaultEdgeLineStyle'))
-setGeneric ('setDefaultEdgeColor',            signature='obj', function (obj=CytoscapeConnection(), new.color, style.name='default') standardGeneric ('setDefaultEdgeColor'))
-setGeneric ('setDefaultEdgeSourceArrowColor', signature='obj', function (obj=CytoscapeConnection(), new.color, style.name='default') standardGeneric ('setDefaultEdgeSourceArrowColor'))
-setGeneric ('setDefaultEdgeTargetArrowColor', signature='obj', function (obj=CytoscapeConnection(), new.color, style.name='default') standardGeneric ('setDefaultEdgeTargetArrowColor'))
-setGeneric ('setDefaultEdgeFontSize',         signature='obj', function (obj=CytoscapeConnection(), new.size, style.name='default') standardGeneric ('setDefaultEdgeFontSize'))
 
 # ------------------------------------------------------------------------------
 #' Updates the default values of visual properties in a style
@@ -39,13 +11,11 @@ setGeneric ('setDefaultEdgeFontSize',         signature='obj', function (obj=Cyt
 #' @examples
 #' \donttest{
 #' updateStyleDefaults('myStyle',list('node fill color'='#0000FF','node size'=50))
-#' }
 #' @export
 #' @seealso mapVisualProperty
 
-updateStyleDefaults <- function(style.name,defaults,obj=CytoscapeConnection()){
+updateStyleDefaults <- function(style.name,defaults,base.url=.defaultBaseUrl){
     
-    base.url=paste(obj@uri,obj@api,sep = "/")
     def.list <- list()
     for (i in 1:length(defaults)) {
         visual.prop.name <- names(defaults)[i]
@@ -58,26 +28,22 @@ updateStyleDefaults <- function(style.name,defaults,obj=CytoscapeConnection()){
         def.list[[i]] <- list(visualProperty=visual.prop.name,
                               value=defaults[[i]])
     }
-    
-    style.url <- URLencode(paste(base.url,'styles', style.name,'defaults', sep = '/'))
-    map.body <- toJSON(def.list)
-    invisible(PUT(url=style.url,body=map.body, encode="json"))
-    
+    invisible(cyrestPUT(url=paste('styles', style.name,'defaults', sep = '/'),
+                        body=def.list, base.url = base.url))
 }
 
 # ------------------------------------------------------------------------------
-getVisualProperty <- function(obj, style.name, property) {
-    resource.uri <- paste(obj@uri, obj@api, "styles", as.character(style.name), "defaults", property, sep="/")
-    request.res <- GET(url=resource.uri)
-    return(fromJSON(rawToChar(request.res$content))[[2]])
+getDefaultVisualProperty <- function(property, style.name='default', base.url=.defaultBaseUrl) {
+    res <- cyrestGET(paste("styles", as.character(style.name), "defaults", property, sep="/"), base.url=base.url)
+    return(res[[2]])
 }
 
 # ------------------------------------------------------------------------------
-setVisualProperty <- function(obj, style.string, style.name='default') {
-    resource.uri <- paste(obj@uri, obj@api, "styles", as.character(style.name), "defaults", sep="/")
-    style.JSON <- toJSON(list(style.string))
-    request.res <- PUT(url=resource.uri, body=style.JSON, encode="json")
-    invisible(request.res)
+setDefaultVisualProperty <- function(style.string, style.name='default', base.url=.defaultBaseUrl) {
+    res <- cyrestPUT(paste("styles", as.character(style.name), "defaults", sep="/"),
+                     body = list(style.string),
+                     base.url=base.url)
+    invisible(res)
 }
 
 
@@ -86,204 +52,193 @@ setVisualProperty <- function(obj, style.string, style.name='default') {
 #==========================
 
 
-# ------------------------------------------------------------------------------
-setMethod('setDefaultNodeShape', 'OptionalCyObjClass', 
-          function(obj, new.shape, style.name='default') {
-              new.shape <- toupper(new.shape)
-              if (new.shape %in% getNodeShapes(obj)){
-                  style = list(visualProperty = "NODE_SHAPE", value = new.shape)
-                  setVisualProperty(obj, style, style.name)
-              }else{
-                  write (sprintf ('%s is not a valid shape. Use getNodeShapes() to find valid values.', new.shape), stderr ())
-              }
-          })
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultNodeSize', 'OptionalCyObjClass', 
-          function(obj, new.size, style.name='default') {
-              # lock node dimensions
-              lockNodeDimensions (obj, TRUE)
-              
-              style <- list(visualProperty = "NODE_SIZE", value = new.size)
-              setVisualProperty(obj, style, style.name)
-          })
+#' @export
+setDefaultNodeShape <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
+    new.shape <- toupper(new.shape)
+    if (new.shape %in% getNodeShapes(base.url)){
+        style = list(visualProperty = "NODE_SHAPE", value = new.shape)
+        setDefaultVisualProperty(style, style.name, base.url)
+    }else{
+        write (sprintf ('%s is not a valid shape. Use getNodeShapes() to find valid values.', new.shape), stderr ())
+    }
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultNodeColor', 'OptionalCyObjClass', 
-          function(obj, new.color, style.name='default') {
-              if (.isNotHexColor(new.color)){
-                  return()
-              }
-              style = list(visualProperty = "NODE_FILL_COLOR", value = new.color)
-              setVisualProperty(obj, style, style.name)
-          })
+#' @export
+setDefaultNodeSize <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
+    lockNodeDimensions(TRUE, style.name, base.url)
+    
+    style <- list(visualProperty = "NODE_SIZE", value = new.size)
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultNodeBorderColor', 'OptionalCyObjClass', 
-          function(obj, new.color, style.name='default') {
-              if (.isNotHexColor(new.color)){
-                  return()
-              }
-              style = list(visualProperty = "NODE_BORDER_PAINT", value = new.color)
-              setVisualProperty(obj, style, style.name)
-          })
+#' @export
+setDefaultNodeColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    }
+    style = list(visualProperty = "NODE_FILL_COLOR", value = new.color)
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod ('setDefaultNodeBorderWidth', 'OptionalCyObjClass', 
-           function(obj, new.width, style.name='default') {
-               style = list(visualProperty = "NODE_BORDER_WIDTH", value = new.width) 
-               setVisualProperty(obj, style, style.name)
-           })
+#' @export
+setDefaultNodeBorderColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    }
+    style = list(visualProperty = "NODE_BORDER_PAINT", value = new.color)
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultNodeFontSize', 'OptionalCyObjClass', 
-          function(obj, new.size, style.name='default') {
-              style = list(visualProperty = "NODE_LABEL_FONT_SIZE", value = new.size)
-              setVisualProperty(obj, style, style.name)
-          })
+#' @export
+setDefaultNodeBorderWidth <-  function(new.width, style.name='default', base.url=.defaultBaseUrl) {
+    style = list(visualProperty = "NODE_BORDER_WIDTH", value = new.width) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultNodeLabelColor', 'OptionalCyObjClass', 
-          function(obj, new.color, style.name='default') {
-              if (.isNotHexColor(new.color)){
-                  return()
-              }      
-              style = list(visualProperty = "NODE_LABEL_COLOR", value = new.color)
-              setVisualProperty(obj, style, style.name)
-          })
+#' @export
+setDefaultNodeFontSize <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
+    style = list(visualProperty = "NODE_LABEL_FONT_SIZE", value = new.size)
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultEdgeLineWidth', 'OptionalCyObjClass', 
-          function(obj, new.width, style.name='default') {
-              style = list(visualProperty = "EDGE_WIDTH", value = new.width) 
-              setVisualProperty(obj, style, style.name)
-          })
+#' @export
+setDefaultNodeLabelColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    }      
+    style = list(visualProperty = "NODE_LABEL_COLOR", value = new.color)
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultEdgeLineStyle', 'OptionalCyObjClass', 
-          function(obj, new.line.style, style.name='default') {
-              style = list(visualProperty = "EDGE_LINE_TYPE", value = new.line.style) 
-              setVisualProperty(obj, style, style.name)
-          })
+#' @export
+setDefaultEdgeLineWidth <- function(new.width, style.name='default', base.url=.defaultBaseUrl) {
+    style = list(visualProperty = "EDGE_WIDTH", value = new.width) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultEdgeColor', 'OptionalCyObjClass', 
-          function(obj, new.color, style.name='default') {
-              if (.isNotHexColor(new.color)){
-                  return()
-              }
-              # TODO Comment Tanja: maybe change to EDGE_UNSELECTED_PAINT
-              style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
-              setVisualProperty(obj, style, style.name)
-          })
-
-setMethod('setDefaultEdgeSourceArrowColor', 'OptionalCyObjClass', 
-          function(obj, new.color, style.name='default') {
-              if (.isNotHexColor(new.color)){
-                  return()
-              }
-              style = list(visualProperty = "EDGE_SOURCE_ARROW_UNSELECTED_PAINT", value = new.color) 
-              setVisualProperty(obj, style, style.name)
-          })
-
-setMethod('setDefaultEdgeTargetArrowColor', 'OptionalCyObjClass', 
-          function(obj, new.color, style.name='default') {
-              if (.isNotHexColor(new.color)){
-                  return()
-              }
-              style = list(visualProperty = "EDGE_TARGET_ARROW_UNSELECTED_PAINT", value = new.color) 
-              setVisualProperty(obj, style, style.name)
-          })
-# ------------------------------------------------------------------------------
-setMethod('setDefaultEdgeFontSize', 'OptionalCyObjClass', 
-          function(obj, new.size, style.name='default') {
-              style = list(visualProperty = "EDGE_LABEL_FONT_SIZE", value = new.size)
-              setVisualProperty(obj, style, style.name)
-          })
+#' @export
+setDefaultEdgeLineStyle <- function(new.line.style, style.name='default', base.url=.defaultBaseUrl) {
+    style = list(visualProperty = "EDGE_LINE_TYPE", value = new.line.style) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('getDefaultBackgroundColor', 'OptionalCyObjClass', 
-          function(obj, style.name='default') {
-              resource.uri = paste(obj@uri, obj@api, "styles", as.character(style.name), "defaults/NETWORK_BACKGROUND_PAINT", sep="/")
-              request.res = GET(url=resource.uri)
-              def.background.color = fromJSON(rawToChar(request.res$content))[[2]]
-              return(def.background.color)
-          })
+#' @export
+setDefaultEdgeColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    }
+    style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
+
+#' @export
+setDefaultEdgeSourceArrowColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    }
+    style = list(visualProperty = "EDGE_SOURCE_ARROW_UNSELECTED_PAINT", value = new.color) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
+
+#' @export
+setDefaultEdgeTargetArrowColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    }
+    style = list(visualProperty = "EDGE_TARGET_ARROW_UNSELECTED_PAINT", value = new.color) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
+# ------------------------------------------------------------------------------
+#' @export
+setDefaultEdgeFontSize <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
+    style = list(visualProperty = "EDGE_LABEL_FONT_SIZE", value = new.size)
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultBackgroundColor', 'OptionalCyObjClass', 
-          function(obj, new.color, style.name='default') {
-              if (.isNotHexColor(new.color)){
-                  return()
-              } 
-              resource.uri = paste(obj@uri, obj@api, "styles", as.character(style.name), "defaults", sep="/")
-              style = list(visualProperty = 'NETWORK_BACKGROUND_PAINT', value = new.color)
-              style.JSON = toJSON(list(style))
-              request.res = PUT(url=resource.uri, body=style.JSON, encode="json")
-              invisible(request.res)
-          })
+#' @export
+getDefaultBackgroundColor <- function(style.name='default', base.url=.defaultBaseUrl) {
+    return(getDefaultVisualProperty('NETWORK_BACKGROUND_PAINT',style.name, base.url))
+}
 
 # ------------------------------------------------------------------------------
-setMethod('getDefaultNodeSelectionColor', 'OptionalCyObjClass', 
-          function(obj, style.name='default') {
-              return(getVisualProperty(obj, style.name, 'NODE_SELECTED_PAINT'))
-          })
+#' @export
+setDefaultBackgroundColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    } 
+    style = list(visualProperty = "NETWORK_BACKGROUND_PAINT", value = new.color) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultNodeSelectionColor', 'OptionalCyObjClass', 
-          function(obj, new.color, style.name='default') {
-              if (.isNotHexColor(new.color)){
-                  return()
-              } 
-              style = list(visualProperty = "NODE_SELECTED_PAINT", value = new.color) 
-              setVisualProperty(obj, style, style.name)
-          })
+#' @export
+getDefaultNodeSelectionColor <- function(style.name='default', base.url=.defaultBaseUrl) {
+    return(getDefaultVisualProperty('NODE_SELECTED_PAINT', style.name, base.url))
+}
+
+# ------------------------------------------------------------------------------
+#' @export
+setDefaultNodeSelectionColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    } 
+    style = list(visualProperty = "NODE_SELECTED_PAINT", value = new.color) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('getDefaultNodeReverseSelectionColor',  'OptionalCyObjClass',
-           
-           function (obj, style.name='default') {
-               return(getVisualProperty(obj, style.name, 'NODE_PAINT'))
-           })
+#' @export
+getDefaultNodeReverseSelectionColor <- function (style.name='default', base.url=.defaultBaseUrl) {
+    return(getDefaultVisualProperty('NODE_PAINT', style.name, base.url))
+}
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setDefaultNodeReverseSelectionColor',  'OptionalCyObjClass',
-           
-           function (obj, new.color, style.name='default') {
-               if (.isNotHexColor(new.color)){
-                   return()
-               } 
-               style = list(visualProperty = "NODE_PAINT", value = new.color) 
-               setVisualProperty(obj, style, style.name)
-           })
+#' @export
+setDefaultNodeReverseSelectionColor <- function (new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    } 
+    style = list(visualProperty = "NODE_PAINT", value = new.color) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('getDefaultEdgeSelectionColor', 'OptionalCyObjClass', 
-          function(obj, style.name='default') {
-              return(getVisualProperty(obj, style.name, 'EDGE_STROKE_SELECTED_PAINT'))
-          })
+#' @export
+getDefaultEdgeSelectionColor <- function(style.name='default', base.url=.defaultBaseUrl) {
+    return(getDefaultVisualProperty('EDGE_STROKE_SELECTED_PAINT',style.name, base.url))
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setDefaultEdgeSelectionColor', 'OptionalCyObjClass', 
-          function(obj, new.color, style.name='default') {
-              if (.isNotHexColor(new.color)){
-                  return()
-              }
-              style = list(visualProperty = "EDGE_STROKE_SELECTED_PAINT", value = new.color) 
-              setVisualProperty(obj, style, style.name)
-          })
+#' @export
+setDefaultEdgeSelectionColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    }
+    style = list(visualProperty = "EDGE_STROKE_SELECTED_PAINT", value = new.color) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
 
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('getDefaultEdgeReverseSelectionColor',  'OptionalCyObjClass',
-           
-           function (obj, style.name='default') {
-               return(getVisualProperty(obj, style.name, 'EDGE_STROKE_UNSELECTED_PAINT'))
-           })
+#' @export
+getDefaultEdgeReverseSelectionColor <- function (style.name='default', base.url=.defaultBaseUrl) {
+    return(getDefaultVisualProperty('EDGE_STROKE_UNSELECTED_PAINT',style.name, base.url))
+}
 #------------------------------------------------------------------------------------------------------------------------
-setMethod ('setDefaultEdgeReverseSelectionColor',  'OptionalCyObjClass',
-           
-           function (obj, new.color, style.name='default') {
-               if (.isNotHexColor(new.color)){
-                   return()
-               } 
-               style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
-               setVisualProperty(obj, style, style.name)
-           })
+#' @export
+setDefaultEdgeReverseSelectionColor <- function (new.color, style.name='default', base.url=.defaultBaseUrl) {
+    if (.isNotHexColor(new.color)){
+        return()
+    } 
+    style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
+    setDefaultVisualProperty(style, style.name, base.url)
+}
