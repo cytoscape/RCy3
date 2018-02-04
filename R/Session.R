@@ -15,6 +15,6 @@ NULL
 #' }
 
 saveSession<-function(filename,obj=CytoscapeConnection()){
-    commandRun(paste0('session save as file="',filename,'"'),obj)
+    commandsPOST(paste0('session save as file="',filename,'"'),obj)
 }
 

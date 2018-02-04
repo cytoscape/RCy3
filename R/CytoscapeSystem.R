@@ -37,15 +37,13 @@ ping<-function(base.url=.defaultBaseUrl) {
 #' }
 #' @export
 cytoscapeVersionInfo<-function(base.url=.defaultBaseUrl) {
-              conn.str <- paste(base.url, 'version', sep="/")
-              res <- GET(conn.str)
-              versions <- fromJSON(rawToChar(res$content))
-              if(length(versions[[1]]) == 0) {
-                  write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
-                  stop()
-              }
-              return(versions)
-          }
+    versions <- cyrestGET('version',base.url = base.url)
+    if(length(versions[[1]]) == 0) {
+        write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
+        stop()
+    }
+    return(versions)
+}
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Available CyREST API Versions 
@@ -60,11 +58,11 @@ cytoscapeVersionInfo<-function(base.url=.defaultBaseUrl) {
 #' }
 #' @export
 availableApiVersions<-function(base.url=.defaultBaseUrl) {
-              uri <- strsplit(base.url,'/v')[[1]][1]
-              res <- GET(uri)
-              available.api.versions <- fromJSON(rawToChar(res$content))$availableApiVersion
-              return(available.api.versions)
-          }
+    uri <- strsplit(base.url,'/v')[[1]][1]
+    res <- GET(uri)
+    available.api.versions <- fromJSON(rawToChar(res$content))$availableApiVersion
+    return(available.api.versions)
+}
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Number of Processors Available to Cytoscape
@@ -79,16 +77,9 @@ availableApiVersions<-function(base.url=.defaultBaseUrl) {
 #' }
 #' @export
 cytoscapeNumberOfCores<-function(base.url=.defaultBaseUrl) {
-              conn.str <- paste(base.url)
-              res <- GET(conn.str)
-              if(res$status_code == 200) {
-                  status <- fromJSON(rawToChar(res$content))
-                  return(status$numberOfCores)
-              } else {
-                  write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
-                  stop()
-              }
-          }
+    res <- cyrestGET(base.url=base.url)
+    return(res$numberOfCores)
+}
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Memory Available to Cytoscape
@@ -104,16 +95,9 @@ cytoscapeNumberOfCores<-function(base.url=.defaultBaseUrl) {
 #' }
 #' @export
 cytoscapeMemoryStatus<-function(base.url=.defaultBaseUrl) {
-              conn.str <- paste(base.url)
-              res <- GET(conn.str)
-              if(res$status_code == 200) {
-                  status <- fromJSON(rawToChar(res$content))
-                  return(status$memoryStatus)
-              } else {
-                  write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
-                  stop()
-              }
-          }
+    res <- cyrestGET(base.url=base.url)
+    return(res$memoryStatus)
+}
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Free Up Unused Memory for Cytoscape
