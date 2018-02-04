@@ -27,5 +27,5 @@ g.net4 <- createGraphFromNetwork() #current network
 }
 }
 \author{
-Tanja Muetze, Georgi Kolishovski, Paul Shannon
+Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 }
