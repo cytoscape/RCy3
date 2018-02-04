@@ -139,7 +139,7 @@ setZoom <- function(new.level, network=NULL, base.url =.defaultBaseUrl) {
 #' Exports the current network view as an image
 #'
 #' @details The image is cropped per the current view in Cytoscape.
-#' @param file.name (\code{character}) Name of the image file to save. By default, the view's title 
+#' @param filename (\code{character}) Name of the image file to save. By default, the view's title 
 #' is used as the file name and the last valid export path from the current session is used.
 #' @param type (\code{character}) Type of image to export, e.g., JPEG, PDF, PNG, PostScript, SVG (case sensitive).
 #' @param resolution (\code{numeric}) The resolution of the exported image, in DPI. Valid 
@@ -161,11 +161,11 @@ setZoom <- function(new.level, network=NULL, base.url =.defaultBaseUrl) {
 #' }
 #' @export
 
-exportImage<-function(file.name=NULL, type=NULL, resolution=NULL, units=NULL, height=NULL, 
+exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, height=NULL, 
                       width=NULL, zoom=NULL, base.url=.defaultBaseUrl){
     cmd.string <- 'view export' # minimum required command
-    if(!is.null(file.name))
-        cmd.string <- paste0(cmd.string,' OutputFile="',file.name,'"')
+    if(!is.null(filename))
+        cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"')
     if(!is.null(type))
         cmd.string <- paste0(cmd.string,' options="',type,'"')
     if(!is.null(resolution))

@@ -2,9 +2,9 @@
 % Please edit documentation in R/Session.R
 \name{saveSession}
 \alias{saveSession}
-\title{Saves the current Cytoscape session}
+\title{Save Session to File}
 \usage{
-saveSession(filename, obj = CytoscapeConnection())
+saveSession(filename = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{filename}{(char) name of the session file to save}
@@ -15,13 +15,16 @@ saveSession(filename, obj = CytoscapeConnection())
 server response
 }
 \description{
-Saves the current Cytoscape session
+Saves the current Cytoscape session as a CYS file.
 }
 \details{
-Saves session as a CYS file.
+If no \code{filename} is provided, then it attempts to
+save to an existing CYS file associated with the session. If 
+\code{filename} already exists, then it is overwritten.
 }
 \examples{
 \donttest{
 saveSession('myFirstSession')
+saveSession() 
 }
 }

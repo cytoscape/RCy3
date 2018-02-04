@@ -1,20 +1,42 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
-NULL
-
 # ------------------------------------------------------------------------------
-#' Saves the current Cytoscape session
+#' Save Session to File
 #'
-#' @details Saves session as a CYS file.
+#' @description Saves the current Cytoscape session as a CYS file. 
+#' @details If no \code{filename} is provided, then it attempts to
+#' save to an existing CYS file associated with the session. If 
+#' \code{filename} already exists, then it is overwritten.
 #' @param filename (char) name of the session file to save
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return server response
-#' @export
 #' @examples
 #' \donttest{
 #' saveSession('myFirstSession')
+#' saveSession() 
 #' }
+#' @export
+saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
+    if(is.null(filename)){
+        filename <- unname(cyrestGET('session/name', base.url=base.url))
+        if(filename=="")
+            stop('Save not completed. Provide a filename the first time you save a session.')
+    }
+    commandsPOST(paste0('session save file="',filename,'"'),base.url=base.url)
+}
 
-saveSession<-function(filename,obj=CytoscapeConnection()){
-    commandsPOST(paste0('session save as file="',filename,'"'),obj)
+#' Open Session File or URL
+#' @param file.location File path or URL (with 'http' prefix)
+#' @export
+openSession<-function(file.location, base.url=.defaultBaseUrl){
+    type = 'file'
+    if(startsWith(file.location,'http'))
+        type = 'url'
+    commandsPOST(paste0('session open ',type,'="',file.location,'"'),base.url=base.url)
+}
+
+#' @export
+closeSession<-function(save.before.closing, filename=NULL, base.url=.defaultBaseUrl){
+    if(save.before.closing)
+        saveSession(filename, base.url = base.url)
+    commandsPOST('session new',base.url=base.url)
 }
 
