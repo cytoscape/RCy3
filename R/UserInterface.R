@@ -9,33 +9,40 @@ setGeneric ('hideAllPanels',			 signature='obj', function (obj=CytoscapeConnecti
 setGeneric ('dockPanel',				 signature='obj', function (obj=CytoscapeConnection(), panel.name) standardGeneric ('dockPanel'))
 setGeneric ('floatPanel',				 signature='obj', function (obj=CytoscapeConnection(), panel.name) standardGeneric ('floatPanel'))
 
-#------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-#' Open CySwagger docs in browser
+#' Open Swagger docs for CyREST API 
 #'
 #' @description Opens swagger docs in default browser for a live
-#' instance of CyREST or CyREST-supported operations.
-#' @param domain (char) documentation domain or scope
+#' instance of CyREST operations.
 #' @param base.url cyrest base url for communicating with cytoscape
-#' @return Web page
+#' @return Web page in browser
 #' @export
 #' @examples
 #' \donttest{
-#' openCySwagger()
-#' openCySwagger('commands')
+#' cyrestAPI()
 #' }
 #' @importFrom utils browseURL
 
-openCySwagger<-function(domain='cyrest', obj=CytoscapeConnection()){
-    
-    base.url=paste(obj@uri,obj@api,sep = "/")
-    
-    if(domain=='cyrest'){
-        domain = ''
-    }else{
-        domain = paste('/',domain,sep='')
-    }
-    browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,domain,'/swagger.json#/',sep=""))
+cyrestAPI<-function(base.url=.defaultBaseUrl){
+    browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/swagger.json#/',sep=""))
+}
+
+# ------------------------------------------------------------------------------
+#' Open Swagger docs for CyREST Commands API 
+#'
+#' @description Opens swagger docs in default browser for a live
+#' instance of Commands available via CyREST.
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return Web page in browser
+#' @export
+#' @examples
+#' \donttest{
+#' commandsAPI()
+#' }
+#' @importFrom utils browseURL
+
+commandsAPI<-function(base.url=.defaultBaseUrl){
+    browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/commands/swagger.json#/',sep=""))
 }
 
 

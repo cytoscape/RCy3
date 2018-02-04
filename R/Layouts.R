@@ -16,10 +16,8 @@
 #' }
 #' @export
 getLayoutNames <- function(base.url=.defaultBaseUrl) {
-    request.uri <- paste(base.url, "apply/layouts", sep="/")
-    request.res <- GET(url=request.uri)
-    
-    available.layouts <- unname(fromJSON(rawToChar(request.res$content)))
+    res <- cyrestGET(paste("apply/layouts", sep="/"),base.url=base.url)
+    available.layouts <- unname(res)
     return(available.layouts)
 }
 
@@ -43,16 +41,13 @@ getLayoutNameMapping <- function(base.url=.defaultBaseUrl) {
     layout.names <- getLayoutNames(base.url)
     layout.full.names <- c()
     
-    # get the English/full name of a layout
+    # get the full name of a layout
     for (layout.name in layout.names){
-        request.uri <- paste(base.url, "apply/layouts", as.character(layout.name), sep="/")
-        request.res <- GET(url=request.uri)
-        
-        layout.property.names <- unname(fromJSON(rawToChar(request.res$content)))
+        res <- cyrestGET(paste("apply/layouts", as.character(layout.name), sep="/"),base.url=base.url)
+        layout.property.names <- unname(res)
         layout.full.names <- c(layout.full.names, layout.property.names[[4]])
     }
     names(layout.names) <- layout.full.names
-    
     return(layout.names)
 }
 
@@ -72,10 +67,8 @@ getLayoutNameMapping <- function(base.url=.defaultBaseUrl) {
 #' }
 #' @export
 getLayoutPropertyNames <- function(layout.name, base.url = .defaultBaseUrl) {
-    request.uri <- paste(base.url, "apply/layouts", as.character(layout.name), "parameters/", sep="/")
-    request.res <- GET(url=request.uri)
-    
-    layout.property.names <- unname(fromJSON(rawToChar(request.res$content)))
+    res <- cyrestGET(paste("apply/layouts", as.character(layout.name), "parameters/", sep="/"),base.url=base.url)
+    layout.property.names <- unname(res)
     return(sapply(layout.property.names, '[[', 1))
 }
 
@@ -95,10 +88,8 @@ getLayoutPropertyNames <- function(layout.name, base.url = .defaultBaseUrl) {
 #' }
 #' @export
 getLayoutPropertyType <- function(layout.name, property.name, base.url = .defaultBaseUrl) {
-    request.uri <- paste(base.url, "apply/layouts", as.character(layout.name), "parameters/", sep="/")
-    request.res <- GET(url=request.uri)
-    
-    layout.property.list <- unname(fromJSON(rawToChar(request.res$content)))
+    res <- cyrestGET(paste("apply/layouts", as.character(layout.name), "parameters/", sep="/"),base.url=base.url)
+    layout.property.list <- unname(res)
     layout.property.names <- sapply(layout.property.list, '[[', 1)
     position <- layout.property.names == property.name
     return(sapply(layout.property.list, '[[', 3)[position])
@@ -120,10 +111,8 @@ getLayoutPropertyType <- function(layout.name, property.name, base.url = .defaul
 #' }
 #' @export
 getLayoutPropertyValue <- function (layout.name, property.name, base.url = .defaultBaseUrl) {
-    request.uri <- paste(base.url, "apply/layouts", as.character(layout.name), "parameters/", sep="/")
-    request.res <- GET(url=request.uri)
-    
-    layout.property.list <- unname(fromJSON(rawToChar(request.res$content)))
+    res <- cyrestGET(paste("apply/layouts", as.character(layout.name), "parameters", sep="/"),base.url = base.url)
+    layout.property.list <- unname(res)
     layout.property.names <- sapply(layout.property.list, '[[', 1)
     position <- layout.property.names == property.name
     return(sapply(layout.property.list, '[[', 4)[position])
@@ -148,60 +137,45 @@ getLayoutPropertyValue <- function (layout.name, property.name, base.url = .defa
 setLayoutProperties <- function (layout.name, properties.list, base.url = .defaultBaseUrl) {
     all.possible.props <- getLayoutPropertyNames (layout.name, base.url)
     
-    # set properties iteratively, this could have been done with a single API call
+    # collect properties and values into nested named list
+    all.properties = list()
     for (prop in names (properties.list)) {
         if (!prop %in% all.possible.props) {
             write (sprintf ('%s is not a property in layout %s', prop, layout.name), stderr ())
         } else {
             new.value <- properties.list [[prop]]
-            new.property.value.list <- list("name"=prop, "value"=new.value)
-            new.property.value.list.JSON <- toJSON(list(new.property.value.list))
-            
-            request.uri <- paste(base.url, "apply/layouts", as.character(layout.name), "parameters/", sep="/")
-            request.res <- PUT(url=request.uri, body= new.property.value.list.JSON, encode="json")
-            if (request.res$status == 200){
-                write (sprintf ("Successfully updated the property '%s'.", prop), stdout ())
-            } else {
-                write (sprintf ("Something went wrong. Unable to update property '%s'.", prop), stderr ())
-            }
-            invisible(request.res)
+            all.properties <- list(unlist(all.properties), list("name"=prop, "value"=new.value))
         }
-    } # for prop
+    }
+    res <- cyrestPUT(paste("apply/layouts", as.character(layout.name), "parameters", sep="/"),
+                     body=all.properties, 
+                     base.url=base.url)
+    invisible(res)
+    
 }
 
 # ------------------------------------------------------------------------------
 #' Apply a layout to a network
 #'
-#' @param layout (char) Name of the layut, run commandHelp('layout') to see available list of layouts.
-#' Feel free to include parameters along with the layout name, space delimited. See example.
 #' @details Run \link{getLayoutNames} to list available layouts. 
-#' @param layout.name (\code{character}) Name of the layout. If not specified, then the preferred layout set in the Cytoscape UI is applied.
+#' @param layout.name (\code{character}) Name of the layout (with optional parameters). 
+#' If not specified, then the preferred layout set in the Cytoscape UI is applied.
 #' @param base.url (optional)  URL prefix for CyREST calls
 #' @return None
 #' @examples
 #' \donttest{
+#' layoutNetwork()
+#' layoutNetwork('force-directed')
 #' layoutNetwork('force-directed defaultSpringCoefficient=.00006 defaultSpringLength=80')
 #' }
 #' @export
 layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaultBaseUrl) {
-    if(is.null(network)){
-        suid = getNetworkSuid()
-    }else if(class(network)=='character'){
-        suid = getNetworkSuid(title=network)
-    } else if(class(network)=='numeric'){
-        suid = network
-    } else {
-        stop("ERROR: Invalid network. Provide network name, suid or NULL for current network.")
-    }
-    
+    suid <- getNetworkSuid(network)
     if(is.null(layout.name)){
-        res<-commandRun(paste0('layout apply preferred networkSelected="SUID:"',suid), base.url=base.url)
+        res<-commandsPOST(paste0('layout apply preferred networkSelected="SUID:',suid,'"'), base.url=base.url)
         invisible(res)
-    } else if(!layout.name %in% getLayoutNames(base.url)) {
-        write(sprintf("layout.name '%s' is not recognized; call getLayoutNames(<CytoscapeWindow>) to see those which are supported", layout.name), stderr())
     } else {
-        api.str <- paste(base.url, "apply/layouts", layout.name, suid, sep = "/")
-        res <- GET(api.str)
+        res <- commandsPOST(paste0('layout ',layout.name,' network="SUID:',suid,'"'),base.url=base.url)
         invisible(res)
     }
 }
@@ -234,7 +208,7 @@ layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaul
 #' @export
 layoutCopycat <- function(sourceNetwork, targetNetwork, sourceColumn='name', targetColumn='name', 
               gridUnmapped=TRUE, selectUnmapped=TRUE, base.url=.defaultBaseUrl){
-    res<-commandRun(paste0('layout copycat sourceNetwork="', sourceNetwork,'" targetNetwork="',
+    res<-commandsPOST(paste0('layout copycat sourceNetwork="', sourceNetwork,'" targetNetwork="',
                            targetNetwork,'" sourceColumn="',sourceColumn,'" targetColumn="',
                            targetColumn,'" gridUnmapped="',gridUnmapped,'" selectUnmapped="',
                            selectUnmapped), base.url=base.url)

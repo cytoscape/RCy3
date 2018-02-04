@@ -9,7 +9,7 @@ renameNetwork(new.title, network = NULL, base.url = .defaultBaseUrl)
 \arguments{
 \item{new.title}{New name for the network}
 
-\item{network}{name or suid of the network that you want set as current}
+\item{network}{name or suid of the network that you want to rename; default is "current" network}
 
 \item{base.url}{(optional)  URL prefix for CyREST calls}
 }
