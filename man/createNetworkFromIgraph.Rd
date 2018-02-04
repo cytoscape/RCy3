@@ -6,7 +6,7 @@
 \usage{
 createNetworkFromIgraph(igraph, new.title = "MyNetwork",
   collection.title = "myNetworkCollection", return.graph = FALSE,
-  obj = CytoscapeConnection(), ...)
+  base.url = .defaultBaseUrl, ...)
 }
 \arguments{
 \item{igraph}{(igraph) igraph network object}
@@ -15,9 +15,9 @@ createNetworkFromIgraph(igraph, new.title = "MyNetwork",
 
 \item{collection.title}{(char) network collection name}
 
-\item{...}{params for nodeSet2JSON() and edgeSet2JSON(); see createNetwork}
-
 \item{base.url}{cyrest base url for communicating with cytoscape}
+
+\item{...}{params for nodeSet2JSON() and edgeSet2JSON(); see createNetwork}
 }
 \value{
 (int) network SUID

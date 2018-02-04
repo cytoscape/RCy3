@@ -4,7 +4,7 @@
 \alias{cloneNetwork}
 \title{Clone a Cytoscape Network}
 \usage{
-cloneNetwork(new.title, network = NULL, base.url = .defaultBaseUrl)
+cloneNetwork(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{network}{name or suid of the network you want to clone; default is "current" network}

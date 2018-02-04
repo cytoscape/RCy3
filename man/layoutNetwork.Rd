@@ -8,12 +8,10 @@ layoutNetwork(layout.name = NULL, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{layout.name}{(\code{character}) Name of the layout. If not specified, then the preferred layout set in the Cytoscape UI is applied.}
+\item{layout.name}{(\code{character}) Name of the layout (with optional parameters). 
+If not specified, then the preferred layout set in the Cytoscape UI is applied.}
 
 \item{base.url}{(optional)  URL prefix for CyREST calls}
-
-\item{layout}{(char) Name of the layut, run commandHelp('layout') to see available list of layouts.
-Feel free to include parameters along with the layout name, space delimited. See example.}
 }
 \value{
 None
@@ -26,6 +24,8 @@ Run \link{getLayoutNames} to list available layouts.
 }
 \examples{
 \donttest{
+layoutNetwork()
+layoutNetwork('force-directed')
 layoutNetwork('force-directed defaultSpringCoefficient=.00006 defaultSpringLength=80')
 }
 }

@@ -22,5 +22,5 @@ getNetworkCount()
 }
 }
 \author{
-Alexander Pico Tanja Muetze, Georgi Kolishovski, Paul Shannon
+Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 }
