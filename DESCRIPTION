@@ -35,6 +35,7 @@ Collate:
     'Session.R'
     'Style.R'
     'StyleDefaults.R'
+    'StyleDependencies.R'
     'StyleDirects.R'
     'StyleRules.R'
     'Tables.R'
