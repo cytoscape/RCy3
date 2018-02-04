@@ -352,7 +352,7 @@ redraw<-function(obj){
 #' @rdname getDirectlyModifiableVisualProperties-deprecated
 getDirectlyModifiableVisualProperties<-function(obj, style.name){
     .Deprecated("getVisualPropertyNames")
-    getVisualPropertyNames(style.name=style.name)
+    getVisualPropertyNames()
 }
 
 

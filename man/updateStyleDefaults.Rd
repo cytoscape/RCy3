@@ -4,7 +4,7 @@
 \alias{updateStyleDefaults}
 \title{Updates the default values of visual properties in a style}
 \usage{
-updateStyleDefaults(style.name, defaults, obj = CytoscapeConnection())
+updateStyleDefaults(style.name, defaults, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{style.name}{(char) name for style}
@@ -19,11 +19,6 @@ server response
 \description{
 Updates visual property defaults, overriding any prior settings. See mapVisualProperty for
 the list of visual properties.
-}
-\examples{
-\donttest{
-updateStyleDefaults('myStyle',list('node fill color'='#0000FF','node size'=50))
-}
 }
 \seealso{
 mapVisualProperty

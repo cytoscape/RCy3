@@ -29,28 +29,28 @@ updateStyleDependencies <- function(style.name,dependencies,base.url=.defaultBas
         dep.list[[i]] <- list(visualPropertyDependency=names(dependencies)[i],
                               enabled=dependencies[[i]])
     }
-    cyrestPUT(paste('styles', style.name,'dependencies', sep = '/'),
+    cyrestPUT(paste('styles', style.name, 'dependencies', sep = '/'),
               body=dep.list,base.url = base.url)
     invisible(commandsPOST(paste0('vizmap apply styles="',style.name,'"')))
 }
 
 #------------------------------------------------------------------------------------------------------------------------
 #' @export
-matchArrowColorToEdge <- function (new.state, style.name, base.url=.defaultBaseUrl) {
+matchArrowColorToEdge <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
     updateStyleDependencies(style.name = style.name, 
                             dependencies = list(arrowColorMatchesEdge=new.state),
                             base.url = base.url)
 }
 
 #' @export
-lockNodeDimensions <- function (new.state, style.name, base.url=.defaultBaseUrl) {
+lockNodeDimensions <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
     updateStyleDependencies(style.name = style.name, 
                             dependencies = list(nodeSizeLocked=new.state),
                             base.url = base.url)
 }
 
 #' @export
-syncNodeCustomGraphicsSize <- function (new.state, style.name, base.url=.defaultBaseUrl) {
+syncNodeCustomGraphicsSize <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
     updateStyleDependencies(style.name = style.name, 
                             dependencies = list(nodeCustomGraphicsSizeSync=new.state),
                             base.url = base.url)
