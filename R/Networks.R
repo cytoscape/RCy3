@@ -296,17 +296,15 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #' @export
 deleteNetwork <- function (network=NULL, base.url=.defaultBaseUrl) {
     suid = getNetworkSuid(network)
-    resource.uri = paste(base.url, "networks", suid, sep="/")
-    request.res = DELETE(url=resource.uri)
-    invisible(request.res)
+    res = cyrestDELETE(paste("networks", suid, sep="/"),base.url=base.url)
+    invisible(res)
 }
 
 #------------------------------------------------------------------------------------------------------------------------
 #' @export
 deleteAllNetworks <- function (base.url=.defaultBaseUrl) {
-    resource.uri <- paste(base.url, "networks", sep="/")
-    request.res <- DELETE(resource.uri)
-    invisible(request.res)
+    res = cyrestDELETE("networks", base.url=base.url)
+    invisible(res)
 }
 
 # ------------------------------------------------------------------------------

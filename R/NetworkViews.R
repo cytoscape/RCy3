@@ -1,221 +1,191 @@
 #' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
 
 # ------------------------------------------------------------------------------
-setGeneric ('getNodeSize',				 signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names) standardGeneric ('getNodeSize'))
-setGeneric ('fitContent',				 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('fitContent'))
-setGeneric ('fitSelectedContent',		 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('fitSelectedContent'))
-setGeneric ('getCenter',				 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getCenter'))
+#setGeneric ('getNodeSize',				 signature='obj', function (obj=CytoscapeWindowFromNetwork(), node.names) standardGeneric ('getNodeSize'))
+#setGeneric ('fitContent',				 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('fitContent'))
+#setGeneric ('fitSelectedContent',		 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('fitSelectedContent'))
+#setGeneric ('getCenter',				 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getCenter'))
 setGeneric ('setCenter',				 signature='obj', function (obj=CytoscapeWindowFromNetwork(), x, y) standardGeneric ('setCenter'))
 setGeneric ('getZoom',					 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getZoom'))
 setGeneric ('setZoom',					 signature='obj', function (obj=CytoscapeWindowFromNetwork(), new.level) standardGeneric ('setZoom'))
 setGeneric ('getViewCoordinates',		 signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('getViewCoordinates'))
 setGeneric ('saveImage',                 signature='obj', function (obj=CytoscapeWindowFromNetwork(), filename, image.type, h=600) standardGeneric ('saveImage'))
 
-setGeneric ('.getNetworkViews',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('.getNetworkViews'))
+#setGeneric ('.getNetworkViews',       signature='obj', function (obj=CytoscapeWindowFromNetwork()) standardGeneric ('.getNetworkViews'))
 
 # ------------------------------------------------------------------------------
-setMethod ('getNodeSize', 'OptionalCyWinClass',
-           
-           function (obj, node.names) {
-               # get network ID 
-               net.SUID = as.character(obj@suid)
-               
-               # get the views for the given network model
-               resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", sep="/")
-               request.res <- GET(resource.uri)
-               net.views.SUIDs <- fromJSON(rawToChar(request.res$content))
-               view.SUID <- as.character(net.views.SUIDs[[1]])
-               
-               widths <- c()
-               heights <- c()
-               
-               node.SUIDs <- .nodeNameToNodeSUID(obj,node.names)
-               
-               for (node.SUID in node.SUIDs){
-                   # request 
-                   resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/")
-                   
-                   # request result
-                   request.res <- GET(resource.uri)
-                   request.res <- fromJSON(rawToChar(request.res$content))
-                   visual.properties <- sapply(request.res, '[[', "visualProperty")
-                   visual.values <- sapply(request.res, '[[', "value")
-                   widths <- c(widths, as.integer(visual.values[which(visual.properties =="NODE_WIDTH")]))
-                   heights <- c(heights, as.integer(visual.values[which(visual.properties =="NODE_HEIGHT")]))         
-               } # end for (node.name in node.names)
-               
-               invisible(request.res)
-               return (list (width=widths, height=heights))
-           }) # getNodeSize
+#' @export
+getNodeSize <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+    net.SUID = getNetworkSuid(network)
+    net.views.SUIDs <- cyrestGET(paste("networks", net.SUID, "views", sep="/"),base.url=base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    
+    widths <- c()
+    heights <- c()
+    if(is.null(node.names))
+        node.names <- getAllNodes()
+    node.SUIDs <- .nodeNameToNodeSUID(node.names, net.SUID, base.url)
+    for (node.SUID in node.SUIDs){
+        # request 
+        res <- cyrestGET(
+            paste("networks", net.SUID, "views", view.SUID, "nodes", as.character(node.SUID), sep="/"),
+            base.url = base.url)
+        visual.properties <- sapply(res, '[[', "visualProperty")
+        visual.values <- sapply(res, '[[', "value")
+        widths <- c(widths, as.integer(visual.values[which(visual.properties =="NODE_WIDTH")]))
+        heights <- c(heights, as.integer(visual.values[which(visual.properties =="NODE_HEIGHT")]))         
+    } 
+    return (list (nodes=node.names, width=widths, height=heights))
+}
 
 # ------------------------------------------------------------------------------
-# display the graph using all of the available window space (the Cytoscape drawing canvas)
-setMethod('fitContent', 'OptionalCyWinClass', 
-          function(obj) {
-              net.SUID <- as.character(obj@suid)
-              resource.uri <- paste(obj@uri, obj@api, "apply/fit", net.SUID, sep="/")
-              request.res <- GET(url=resource.uri)
-              invisible(request.res)
-          })
-## END fitContent
+#' @export
+fitContent <- function(network=NULL, base.url =.defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    res <- cyrestGET(paste("apply/fit", net.SUID, sep="/"),base.url = base.url)
+    invisible(res)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('fitSelectedContent', 'OptionalCyWinClass', 
-          function(obj) {
-              write(sprintf("WARNING: Method RCy3::fitSelectedContent() is not implemented in RCy3!"), stderr())
-              
-              return(FALSE)
-          })
-## END fitSelectedContent
+#' @export
+fitSelectedContent <- function(network=NULL, base.url =.defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    cur.SUID <- getNetworkSuid('current')
+    commandsPOST(paste0('view set current network=SUID:"',net.SUID,'"'), base.url = base.url)
+    commandsPOST('view fit selected', base.url = base.url)
+    commandsPOST(paste0('view set current network=SUID:"',cur.SUID,'"'), base.url = base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('getCenter', 'OptionalCyWinClass', 
-          function(obj) {
-              net.SUID <- as.character(obj@suid)
-              
-              # get all Cytoscape views belonging to that network
-              net.views.SUIDs <- .getNetworkViews(obj)
-              view.SUID <- as.character(net.views.SUIDs[[1]])
-              
-              # if multiple views are found, inform the user about it
-              if(length(net.views.SUIDs) > 1) {
-                  write(sprintf("RCy3::getCenter() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
-              }
-              # get the X-coordinate
-              resource.uri <- 
-                  paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/")
-              request.res <- GET(resource.uri)
-              x.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
-              # get the Y-coordinate
-              resource.uri <- 
-                  paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/")
-              request.res <- GET(resource.uri)
-              y.coordinate <- fromJSON(rawToChar(request.res$content))$value[[1]]
-              
-              return(list(x = x.coordinate, y = y.coordinate))
-          })
-## END getCenter
+#' @export
+getCenter <- function(network=NULL, base.url =.defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    
+    # get all Cytoscape views belonging to that network
+    net.views.SUIDs <- getNetworkViews(net.SUID,base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    
+    # if multiple views are found, inform the user about it
+    if(length(net.views.SUIDs) > 1) {
+        write(sprintf("RCy3::getCenter() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
+    }
+    
+    x.coordinate <- cyrestGET(
+        paste("networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_X_LOCATION", sep="/"),
+        base.url = base.url)$value[[1]]
+    y.coordinate <- cyrestGET(
+        paste("networks", net.SUID, "views", view.SUID, "network/NETWORK_CENTER_Y_LOCATION", sep="/"),
+        base.url = base.url)$value[[1]]
+    return(list(x = x.coordinate, y = y.coordinate))
+}
 
 # ------------------------------------------------------------------------------
 # this method could be used to pan and scroll the Cytoscape canvas, which is adjusted(moved) 
 # so that the specified x and y coordinates are at the center of the visible window.
-setMethod('setCenter', 'OptionalCyWinClass', 
-          function(obj, x, y) {
-              net.SUID <- as.character(obj@suid)
-              
-              net.views.SUIDs <- .getNetworkViews(obj)
-              view.SUID <- as.character(net.views.SUIDs[[1]])
-              
-              # if multiple views are found, inform the user about it
-              if(length(net.views.SUIDs) > 1) {
-                  write(sprintf("RCy3::setCenter() - %d views found... setting coordinates of the first one", length(net.views.SUIDs)), stderr())
-              }
-              
-              # set the X-coordinate
-              resource.uri <- 
-                  paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network", sep="/")
-              new.x.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_X_LOCATION", value=x)))
-              request.res <- PUT(resource.uri, body=new.x.coordinate.JSON, encode="json")
-              # set the Y-coordinate
-              resource.uri <- 
-                  paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network", sep="/")
-              new.y.coordinate.JSON <- toJSON(list(list(visualProperty="NETWORK_CENTER_Y_LOCATION", value=y)))
-              request.res <- PUT(resource.uri, body=new.y.coordinate.JSON, encode="json")
-              invisible(request.res)
-          })
-## END setCenter
+#' @export
+setCenter <- function(x, y, network=NULL, base.url =.defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    
+    # if multiple views are found, inform the user about it
+    if(length(net.views.SUIDs) > 1) {
+        write(sprintf("RCy3::setCenter() - %d views found... setting coordinates of the first one", length(net.views.SUIDs)), stderr())
+    }
+    
+    cyrestPUT( 
+        paste("networks", net.SUID, "views", view.SUID, "network", sep="/"),
+        body = list(list(visualProperty="NETWORK_CENTER_X_LOCATION", value=x),
+             list(visualProperty="NETWORK_CENTER_Y_LOCATION", value=y)),
+        base.url = base.url)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('getZoom', 'OptionalCyWinClass', 
-          function(obj) {
-              net.SUID <- as.character(obj@suid)
-              
-              # get the existing views for the given network model
-              net.views.SUIDs <- .getNetworkViews(obj)
-              view.SUID <- as.character(net.views.SUIDs[[1]])
-              
-              # if multiple views are found, inform the user about it
-              if(length(net.views.SUIDs) > 1) {
-                  write(sprintf("RCy3::getZoom() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
-              }
-              
-              resource.uri <- 
-                  paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network/NETWORK_SCALE_FACTOR", sep="/")
-              request.res <- GET(resource.uri)
-              zoom.level <- fromJSON(rawToChar(request.res$content))$value[[1]]
-              
-              return(zoom.level)
-          })
-## END getZoom
+#' @export
+getZoom <- function(network=NULL, base.url =.defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    
+    # if multiple views are found, inform the user about it
+    if(length(net.views.SUIDs) > 1) {
+        write(sprintf("RCy3::getZoom() - %d views found... returning coordinates of the first one", length(net.views.SUIDs)), stderr())
+    }
+    
+    res <- cyrestGET(
+        paste("networks", net.SUID, "views", view.SUID, "network/NETWORK_SCALE_FACTOR", sep="/"),
+        base.url = base.url)
+    return(res$value[[1]])
+}
 
 # ------------------------------------------------------------------------------
-setMethod('setZoom', 'OptionalCyWinClass', 
-          function(obj, new.level) {
-              net.SUID <- as.character(obj@suid)
-              
-              net.views.SUIDs <- .getNetworkViews(obj)
-              view.SUID <- as.character(net.views.SUIDs[[1]])
-              
-              # if multiple views are found, inform the user about it
-              if(length(net.views.SUIDs) > 1) {
-                  write(sprintf("RCy3::getZoom() - %d views found... returning coordinates of the first view", length(net.views.SUIDs)), stderr())
-              }
-              
-              view.zoom.value <- list(visualProperty='NETWORK_SCALE_FACTOR', value=new.level)
-              view.zoom.value.JSON <- toJSON(list(view.zoom.value))
-              
-              resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", view.SUID, "network", sep="/")
-              request.res <- PUT(url=resource.uri, body=view.zoom.value.JSON, encode="json")
-              
-              invisible(request.res)
-          })
-## END setZoom
+#' @export
+setZoom <- function(new.level, network=NULL, base.url =.defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    
+    # if multiple views are found, inform the user about it
+    if(length(net.views.SUIDs) > 1) {
+        write(sprintf("RCy3::getZoom() - %d views found... returning coordinates of the first view", length(net.views.SUIDs)), stderr())
+    }
+    
+    cyrestPUT( 
+        paste("networks", net.SUID, "views", view.SUID, "network", sep="/"),
+        body = list(list(visualProperty='NETWORK_SCALE_FACTOR', value=new.level)),
+        base.url = base.url)
+}
+
+#' Exports the current network view as an image
+#'
+#' @details The image is cropped per the current view in Cytoscape.
+#' @param file.name (\code{character}) Name of the image file to save. By default, the view's title 
+#' is used as the file name and the last valid export path from the current session is used.
+#' @param type (\code{character}) Type of image to export, e.g., JPEG, PDF, PNG, PostScript, SVG (case sensitive).
+#' @param resolution (\code{numeric}) The resolution of the exported image, in DPI. Valid 
+#' only for bitmap formats, when the selected width and height 'units' is inches. The 
+#' possible values are: 72 (default), 100, 150, 300, 600. 
+#' @param units (\code{character}) The units for the 'width' and 'height' values. Valid 
+#' only for bitmap formats, such as PNG and JPEG. The possible values are: pixels (default), inches.
+#' @param height (\code{numeric}) The height of the exported image. Valid only for bitmap 
+#' formats, such as PNG and JPEG. 
+#' @param width (\code{numeric}) The width of the exported image. Valid only for bitmap 
+#' formats, such as PNG and JPEG. 
+#' @param zoom (\code{numeric}) The zoom value to proportionally scale the image. The default 
+#' value is 100.0. Valid only for bitmap formats, such as PNG and JPEG
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return server response
+#' @examples
+#' \donttest{
+#' exportImage('myNetwork','PDF')
+#' }
+#' @export
+
+exportImage<-function(file.name=NULL, type=NULL, resolution=NULL, units=NULL, height=NULL, 
+                      width=NULL, zoom=NULL, base.url=.defaultBaseUrl){
+    cmd.string <- 'view export' # minimum required command
+    if(!is.null(file.name))
+        cmd.string <- paste0(cmd.string,' OutputFile="',file.name,'"')
+    if(!is.null(type))
+        cmd.string <- paste0(cmd.string,' options="',type,'"')
+    if(!is.null(resolution))
+        cmd.string <- paste0(cmd.string,' Resolution="',resolution,'"')
+    if(!is.null(units))
+        cmd.string <- paste0(cmd.string,' Units="',units,'"')
+    if(!is.null(height))
+        cmd.string <- paste0(cmd.string,' Height="',height,'"')
+    if(!is.null(width))
+        cmd.string <- paste0(cmd.string,' Width="',width,'"')
+    if(!is.null(zoom))
+        cmd.string <- paste0(cmd.string,' Zoom="',zoom,'"')
+    
+    commandsPOST(cmd.string)
+}
 
 # ------------------------------------------------------------------------------
-setMethod('getViewCoordinates', 'OptionalCyWinClass', 
-          function(obj) {
-              write(sprintf("WARNING: Method RCy3::getViewCoordinates() is not implemented in RCy3!"), stderr())
-              
-              return(FALSE)
-          })
-## END getViewCoordinates
-
-#------------------------------------------------------------------------------------------------------------------------
-setMethod ('saveImage', 'OptionalCyWinClass',
-           
-           function (obj, filename, image.type, h = 600) {
-               image.type = tolower (image.type)
-               stopifnot (image.type %in% c ('png', 'pdf', 'svg'))
-               id = as.character (obj@suid)
-               
-               if (!file.exists(filename)){
-                   if(image.type=='png'){
-                       
-                       resource.uri <- paste(obj@uri, obj@api, "networks", id,
-                                             paste0("views/first.", image.type, "?h=", h), sep="/")  
-                   } 
-                   else{
-                       # get the view image from Cytoscape in PNG, PDF, or SVG format
-                       resource.uri <- paste(obj@uri, obj@api, "networks", id,
-                                             paste0("views/first.", image.type), sep="/")
-                   }
-                   request.res <- GET(resource.uri, write_disk(paste0(filename,".", image.type), overwrite = TRUE))
-                   write (sprintf ('saving image to %s.%s', filename, image.type), stderr ())
-               }else{
-                   write (sprintf ('choose another filename. File exists: %s', filename), stderr ())
-               }
-           }) # saveImage
-#------------------------------------------------------------------------------------------------------------------------
-
-# ------------------------------------------------------------------------------
-# helper function: returns the SUIDs of all views belonging to specific network
-setMethod('.getNetworkViews', 'OptionalCyObjClass', 
-          function(obj) {
-              net.SUID <- as.character(obj@suid)
-              
-              resource.uri <- paste(obj@uri, obj@api, "networks", net.SUID, "views", sep="/")
-              request.res <- GET(url=resource.uri)
-              network.view.SUIDs <- unname(fromJSON(rawToChar(request.res$content)))
-              return(network.view.SUIDs)
-          }) 
-## END .getNetworkViews
+#' @export
+getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    res <- cyrestGET(paste("networks", net.SUID, "views", sep="/"),base.url = base.url)
+    return(res)
+}
