@@ -4,7 +4,7 @@
 \alias{saveVisualStyle}
 \title{Saves the current visual style as a data file}
 \usage{
-saveVisualStyle(filename, type, obj = CytoscapeConnection())
+saveVisualStyle(filename, type, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{filename}{(char) name of the style file to save}

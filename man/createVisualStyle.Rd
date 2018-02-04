@@ -4,7 +4,7 @@
 \alias{createVisualStyle}
 \title{Create a visual style from components}
 \usage{
-createVisualStyle(style.name, defaults, mappings, obj = CytoscapeConnection())
+createVisualStyle(style.name, defaults, mappings, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{style.name}{(char) name for style}
