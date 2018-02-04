@@ -97,8 +97,8 @@ getNodeShapes <- function (base.url=.defaultBaseUrl) {
 
 #------------------------------------------------------------------------------------------------------------------------
 #' @export
-getVisualPropertyNames <- function (style.name="default",base.url=.defaultBaseUrl) {
-    res <- cyrestGET(paste("styles", as.character(style.name), "defaults", sep="/"), base.url = base.url)
+getVisualPropertyNames <- function (base.url=.defaultBaseUrl) {
+    res <- cyrestGET("styles/default/defaults", base.url = base.url)
     visual.properties <- unname(res[[1]])
     visual.properties <- sapply(visual.properties, '[[', 1)
     return(visual.properties)
@@ -112,20 +112,32 @@ getVisualStyleNames <- function(base.url=.defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
-#' Saves the current visual style as a data file
+#' Save Visual Styles
 #'
-#' @param filename (char) name of the style file to save
-#' @param type (char) type of data file to export, e.g., XML, JSON (case sensitive)
+#' @description Saves one or more visual styles to file
+#' @param filename (char) name of the style file to save. Default is "styles.xml"
+#' @param type (char) type of data file to export, e.g., XML, JSON (case sensitive). Default is XML.
+#' @param styles (optional) The styles to be exported, listed as a comma-separated string. 
+#' If no styles are specified, only the current one is exported.
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return server response
 #' @export
 #' @examples
 #' \donttest{
-#' saveVisualStyle('myStyle','JSON')
+#' saveVisualStyles()
+#' saveVisualStyles('myStyle', type = 'JSON')
+#' saveVisualStyles('myStyle', style = 'Minimal,default,Directed')
 #' }
 
-saveVisualStyle<-function(filename,type,base.url=.defaultBaseUrl){
-    commandsPOST(paste0('vizmap export options=',type,' OutputFile="',filename,'"'),base.url = base.url)
+saveVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.defaultBaseUrl){
+    cmd.string <- 'vizmap export'  # minmum command
+    if(!is.null(filename))
+        cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"')
+    if(!is.null(type))
+        cmd.string <- paste0(cmd.string,' options="',type,'"')
+    if(!is.null(styles))
+        cmd.string <- paste0(cmd.string,' styles="',styles,'"')
+    commandsPOST(cmd.string, base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
