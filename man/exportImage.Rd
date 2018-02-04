@@ -4,15 +4,33 @@
 \alias{exportImage}
 \title{Exports the current network view as an image}
 \usage{
-exportImage(file.name, type, resolution = 300, units = "inches",
-  height = 600, width = 800, zoom = 200, base.url = .defaultBaseUrl)
+exportImage(filename = NULL, type = NULL, resolution = NULL,
+  units = NULL, height = NULL, width = NULL, zoom = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{type}{(char) type of image to export, e.g., JPEG, PDF, PNG, PostScript, SVG (case sensitive)}
+\item{filename}{(\code{character}) Name of the image file to save. By default, the view's title 
+is used as the file name and the last valid export path from the current session is used.}
+
+\item{type}{(\code{character}) Type of image to export, e.g., JPEG, PDF, PNG, PostScript, SVG (case sensitive).}
+
+\item{resolution}{(\code{numeric}) The resolution of the exported image, in DPI. Valid 
+only for bitmap formats, when the selected width and height 'units' is inches. The 
+possible values are: 72 (default), 100, 150, 300, 600.}
+
+\item{units}{(\code{character}) The units for the 'width' and 'height' values. Valid 
+only for bitmap formats, such as PNG and JPEG. The possible values are: pixels (default), inches.}
+
+\item{height}{(\code{numeric}) The height of the exported image. Valid only for bitmap 
+formats, such as PNG and JPEG.}
+
+\item{width}{(\code{numeric}) The width of the exported image. Valid only for bitmap 
+formats, such as PNG and JPEG.}
+
+\item{zoom}{(\code{numeric}) The zoom value to proportionally scale the image. The default 
+value is 100.0. Valid only for bitmap formats, such as PNG and JPEG}
 
 \item{base.url}{cyrest base url for communicating with cytoscape}
-
-\item{filename}{(char) name of the image file to save}
 }
 \value{
 server response

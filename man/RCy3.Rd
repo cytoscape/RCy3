@@ -4,9 +4,9 @@
 \name{RCy3}
 \alias{RCy3}
 \alias{RCy3-package}
-\title{RCy3: Display and manipulate graphs in Cytoscape >= 3.6.0}
+\title{RCy3: Functions to Access and Control Cytoscape}
 \description{
-The RCy3 package provides functions to run Cytoscape from R.
+Vizualize, analyze and explore networks using Cytoscape via R.
 }
 \details{
 #' To learn more about RCy3, start with the vignettes:
