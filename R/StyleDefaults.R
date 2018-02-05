@@ -11,6 +11,7 @@
 #' @examples
 #' \donttest{
 #' updateStyleDefaults('myStyle',list('node fill color'='#0000FF','node size'=50))
+#' }
 #' @export
 #' @seealso mapVisualProperty
 
