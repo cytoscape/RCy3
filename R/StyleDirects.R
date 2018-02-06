@@ -11,6 +11,18 @@
 # ==============================================================================
 # I. General Functions
 # ------------------------------------------------------------------------------
+#' @title Set Node Property Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param visual.property DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodePropertyDirect()
+#' }
 #' @export
 setNodePropertyDirect <-
     function(node.names,
@@ -65,8 +77,18 @@ setNodePropertyDirect <-
             }
         }
     }
-## END setNodePropertyDirect
-
+# ------------------------------------------------------------------------------
+#' @title Clear Node Property Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param visual.property DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' clearNodePropertyDirect()
+#' }
 #' @export
 clearNodePropertyDirect <-
     function(node.names,
@@ -101,6 +123,18 @@ clearNodePropertyDirect <-
     }
 
 # ------------------------------------------------------------------------------
+#' @title Set Edge Property Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param visual.property DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgePropertyDirect()
+#' }
 #' @export
 setEdgePropertyDirect <-
     function(edge.names,
@@ -154,8 +188,18 @@ setEdgePropertyDirect <-
             }
         }
     }
-## END setEdgePropertyDirect
-
+# ------------------------------------------------------------------------------
+#' @title Clear Edge Property Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param visual.property DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' clearEdgePropertyDirect()
+#' }
 #' @export
 clearEdgePropertyDirect <-
     function(edge.names,
@@ -195,13 +239,18 @@ clearEdgePropertyDirect <-
 # II.a. NODE PROPERTIES
 # Pattern: (1) validate input value, (2) call setNodePropertyDirect()
 #
-#-------------------------------------------------------------------------------
-#' @param node.names
+# ------------------------------------------------------------------------------
+#' @title Set Node Color Direct
 #'
-#' @param new.colors
-#' @param network
-#' @param base.url
-#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.colors DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeColorDirect()
+#' }
 #' @export
 setNodeColorDirect <-
     function (node.names,
@@ -228,6 +277,18 @@ setNodeColorDirect <-
 #-------------------------------------------------------------------------------
 # only works if node dimensions are unlocked (that is not tied together).
 # See lockNodeDimensions (T/F)
+# ------------------------------------------------------------------------------
+#' @title Set Node Size Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.sizes DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeSizeDirect()
+#' }
 #' @export
 setNodeSizeDirect <- function (node.names,
                                new.sizes,
@@ -257,6 +318,18 @@ setNodeSizeDirect <- function (node.names,
 #-------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is not tied together).
 # See lockNodeDimensions (T/F)
+# ------------------------------------------------------------------------------
+#' @title Set Node Width Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.widths DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeWidthDirect()
+#' }
 #' @export
 setNodeWidthDirect <-
     function (node.names,
@@ -288,6 +361,18 @@ setNodeWidthDirect <-
 #-------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is, tied together).
 # See lockNodeDimensions (T/F)
+# ------------------------------------------------------------------------------
+#' @title Set Node Height Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.heights DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeHeightDirect()
+#' }
 #' @export
 setNodeHeightDirect <-
     function (node.names,
@@ -319,6 +404,17 @@ setNodeHeightDirect <-
     }
 
 # ------------------------------------------------------------------------------
+#' @title Set Node Label Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.labels DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeLabelDirect()
+#' }
 #' @export
 setNodeLabelDirect <-
     function(node.names,
@@ -327,9 +423,19 @@ setNodeLabelDirect <-
              base.url = .defaultBaseUrl) {
         setNodePropertyDirect(node.names, new.labels, "NODE_LABEL", network, base.url)
     }
-## END setNodeLabelDirect
 
 # ------------------------------------------------------------------------------
+#' @title Set Node Font Size Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.sizes DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeFontSizeDirect()
+#' }
 #' @export
 setNodeFontSizeDirect <-
     function(node.names,
@@ -361,9 +467,19 @@ setNodeFontSizeDirect <-
                                   base.url)
         }
     }
-## END setNodeFontSizeDirect
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Set Node Label Color Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.colors DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeLabelColorDirect()
+#' }
 #' @export
 setNodeLabelColorDirect <-
     function (node.names,
@@ -388,7 +504,18 @@ setNodeLabelColorDirect <-
         )
     }
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Set Node Shape Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.shapes DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeShapeDirect()
+#' }
 #' @export
 setNodeShapeDirect <-
     function (node.names,
@@ -435,8 +562,18 @@ setNodeShapeDirect <-
                                      network, base.url))
     }
 
-
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Set Node Border Width Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.sizes DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeBorderWidthDirect()
+#' }
 #' @export
 setNodeBorderWidthDirect <-
     function (node.names,
@@ -469,7 +606,18 @@ setNodeBorderWidthDirect <-
         )
     }
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Set Node Border Color Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.colors DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeBorderColorDirect()
+#' }
 #' @export
 setNodeBorderColorDirect <-
     function (node.names,
@@ -494,7 +642,18 @@ setNodeBorderColorDirect <-
         )
     }
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Set Node Opacity Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeOpacityDirect()
+#' }
 #' @export
 setNodeOpacityDirect <-
     function (node.names,
@@ -532,7 +691,19 @@ setNodeOpacityDirect <-
                               network,
                               base.url)
     }
-#-------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Fill Opacity Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeFillOpacityDirect()
+#' }
 #' @export
 setNodeFillOpacityDirect <-
     function (node.names,
@@ -566,7 +737,18 @@ setNodeFillOpacityDirect <-
         )
     }
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Set Node Border Opacity Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeBorderOpacityDirect()
+#' }
 #' @export
 setNodeBorderOpacityDirect <-
     function (node.names,
@@ -600,7 +782,18 @@ setNodeBorderOpacityDirect <-
         )
     }
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Set Node Label Opacity Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeLabelOpacityDirect()
+#' }
 #' @export
 setNodeLabelOpacityDirect <-
     function (node.names,
@@ -634,7 +827,16 @@ setNodeLabelOpacityDirect <-
         )
     }
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Hide Selected Nodes
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' hideSelectedNodes()
+#' }
 #' @export
 hideSelectedNodes <-
     function (network = NULL, base.url = .defaultBaseUrl) {
@@ -643,6 +845,16 @@ hideSelectedNodes <-
     }
 
 # ------------------------------------------------------------------------------
+#' @title Hide Nodes
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' hideNodes()
+#' }
 #' @export
 hideNodes <-
     function(node.names,
@@ -652,6 +864,16 @@ hideNodes <-
     }
 
 # ------------------------------------------------------------------------------
+#' @title Unhide Nodes
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' unhideNodes()
+#' }
 #' @export
 unhideNodes <-
     function(node.names,
@@ -664,7 +886,18 @@ unhideNodes <-
 # II.a. EDGE PROPERTIES
 # Pattern: (1) validate input value, (2) call setEdgePropertyDirect()
 #
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Set Edge Opacity Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeOpacityDirect()
+#' }
 #' @export
 setEdgeOpacityDirect <-
     function (edge.names,
@@ -701,6 +934,18 @@ setEdgeOpacityDirect <-
 
 # ------------------------------------------------------------------------------
 # Sets both edge color properties, independent on arrowColorMatchesEdge setting.
+# ------------------------------------------------------------------------------
+#' @title Set Edge Color Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.value DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeColorDirect()
+#' }
 #' @export
 setEdgeColorDirect <-
     function (edge.names,
@@ -725,6 +970,17 @@ setEdgeColorDirect <-
     }
 
 # ------------------------------------------------------------------------------
+#' @title Set Edge Label Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.value DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeLabelDirect()
+#' }
 #' @export
 setEdgeLabelDirect <-
     function(edge.names,
@@ -733,9 +989,19 @@ setEdgeLabelDirect <-
              base.url = .defaultBaseUrl) {
         setEdgePropertyDirect(edge.names, new.value, "EDGE_LABEL", network, base.url)
     }
-## END setEdgeLabelDirect
 
 # ------------------------------------------------------------------------------
+#' @title Set Edge Font Face Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.value DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeFontFaceDirect()
+#' }
 #' @export
 setEdgeFontFaceDirect <-
     function(edge.names,
@@ -748,9 +1014,19 @@ setEdgeFontFaceDirect <-
                               network,
                               base.url)
     }
-## END setEdgeFontFaceDirect
 
 # ------------------------------------------------------------------------------
+#' @title Set Edge Font Size Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.value DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeFontSizeDirect()
+#' }
 #' @export
 setEdgeFontSizeDirect <-
     function(edge.names,
@@ -782,9 +1058,19 @@ setEdgeFontSizeDirect <-
                                   base.url)
         }
     }
-## END setEdgeFontSizeDirect
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Set Edge Label Color Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.value DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeLabelColorDirect()
+#' }
 #' @export
 setEdgeLabelColorDirect <-
     function (edge.names,
@@ -808,7 +1094,19 @@ setEdgeLabelColorDirect <-
             )
         )
     }
-#-------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+#' @title Set Edge Tooltip Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeTooltipDirect()
+#' }
 #' @export
 setEdgeTooltipDirect <-
     function (edge.names,
@@ -833,6 +1131,17 @@ setEdgeTooltipDirect <-
     }
 
 # ------------------------------------------------------------------------------
+#' @title Set Edge Line Width Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.value DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeLineWidthDirect()
+#' }
 #' @export
 setEdgeLineWidthDirect <-
     function(edge.names,
@@ -858,6 +1167,17 @@ setEdgeLineWidthDirect <-
     }
 
 # ------------------------------------------------------------------------------
+#' @title Set Edge Line Style Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeLineStyleDirect()
+#' }
 #' @export
 setEdgeLineStyleDirect <-
     function(edge.names,
@@ -900,9 +1220,19 @@ setEdgeLineStyleDirect <-
             )
         )
     }
-## END setEdgeLineStyleDirect
 
 # ------------------------------------------------------------------------------
+#' @title Set Edge Source Arrow Shape Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeSourceArrowShapeDirect()
+#' }
 #' @export
 setEdgeSourceArrowShapeDirect <-
     function(edge.names,
@@ -945,9 +1275,19 @@ setEdgeSourceArrowShapeDirect <-
             )
         )
     }
-## END setEdgeSourceArrowShapeDirect
 
 # ------------------------------------------------------------------------------
+#' @title Set Edge Target Arrow Shape Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.values DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeTargetArrowShapeDirect()
+#' }
 #' @export
 setEdgeTargetArrowShapeDirect <-
     function (edge.names,
@@ -989,9 +1329,19 @@ setEdgeTargetArrowShapeDirect <-
             )
         )
     }
-## END setEdgeTargetArrowShapeDirect
 
 # ------------------------------------------------------------------------------
+#' @title Set Edge Source Arrow Color Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.colors DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeSourceArrowColorDirect()
+#' }
 #' @export
 setEdgeSourceArrowColorDirect <-
     function(edge.names,
@@ -1015,9 +1365,19 @@ setEdgeSourceArrowColorDirect <-
             )
         )
     }
-## END setEdgeSourceArrowColorDirect
 
 # ------------------------------------------------------------------------------
+#' @title Set Edge Target Arrow Color Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.colors DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeTargetArrowColorDirect()
+#' }
 #' @export
 setEdgeTargetArrowColorDirect <-
     function(edge.names,
@@ -1041,9 +1401,18 @@ setEdgeTargetArrowColorDirect <-
         )
     }
 
-## END setEdgeTargetArrowColorDirect
-
 # ------------------------------------------------------------------------------
+#' @title Set Edge Label Opacity Direct
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param new.value DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeLabelOpacityDirect()
+#' }
 #' @export
 setEdgeLabelOpacityDirect <-
     function(edge.names,
@@ -1077,15 +1446,32 @@ setEdgeLabelOpacityDirect <-
             )
         )
     }
-## END setEdgeLabelOpacityDirect
-#-------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+#' @title Hide Selected Edges
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' hideSelectedEdges()
+#' }
 #' @export
 hideSelectedEdges <- function (base.url = .defaultBaseUrl) {
     edge.names <- getSelectedEdges(base.url)
     setEdgePropertyDirect(edge.names, 'false', "EDGE_VISIBLE", network, base.url)
-} # hideSelectedEdges
+} 
 
 # ------------------------------------------------------------------------------
+#' @title Unhide All
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' unhideAll()
+#' }
 #' @export
 unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
     suid <- getNetworkSuid(network)
@@ -1095,4 +1481,3 @@ unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
     edge.names <- getAllEdges(suid, base.url)
     setEdgePropertyDirect(edge.names, 'true', "EDGE_VISIBLE", network, base.url)
 }
-## END unhideAll
