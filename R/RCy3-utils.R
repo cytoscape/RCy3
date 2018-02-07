@@ -1,5 +1,3 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R
-
 #------ Package Variables ----------------------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://localhost:1234/v1'
 
