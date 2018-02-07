@@ -30,8 +30,6 @@ copyVisualStyle <- function (from.style, to.style, base.url=.defaultBaseUrl) {
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return None
 #' @export
-#' @import RJSONIO
-#' @import httr
 #' @examples
 #' \donttest{
 #' #first there has to be a network to apply style to

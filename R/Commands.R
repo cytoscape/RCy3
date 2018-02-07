@@ -2,6 +2,9 @@
 # TODO: pauseTimer(message, base.url) http://localhost:1234/v1/commands/command/sleep
 # TODO: quitCytoscape(base.url) http://localhost:1234/v1/commands/command/quit 
 
+#' @importFrom RJSONIO fromJSON
+#' @importFrom httr GET
+#' @importFrom utils URLencode
 #' @export
 cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
     q.url <- paste(base.url, operation, sep="/")
@@ -17,6 +20,11 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     }
 }
 
+#' @importFrom RJSONIO fromJSON
+#' @importFrom RJSONIO toJSON
+#' @importFrom httr POST
+#' @importFrom httr content_type_json
+#' @importFrom utils URLencode
 #' @export
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
     q.url <- paste(base.url, operation, sep="/")
@@ -37,6 +45,11 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
     }
 }
 
+#' @importFrom RJSONIO fromJSON
+#' @importFrom RJSONIO toJSON
+#' @importFrom httr PUT
+#' @importFrom httr content_type_json
+#' @importFrom utils URLencode
 #' @export
 cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultBaseUrl){
     q.url <- paste(base.url, operation, sep="/")
@@ -57,6 +70,9 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
     }
 }
 
+#' @importFrom RJSONIO fromJSON
+#' @importFrom httr DELETE
+#' @importFrom utils URLencode
 #' @export
 cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
     q.url <- paste(base.url, operation, sep="/")
@@ -82,17 +98,18 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' @param cmd.string (char) command
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return List of available commands or args
-#' @export
 #' @examples
 #' \donttest{
 #' commandsHelp()
 #' commandsHelp('node')
 #' commandsHelp('node get attribute')
 #' }
-#' @import XML
-#' @import httr
+#' @importFrom XML htmlParse
+#' @importFrom XML xpathSApply
+#' @importFrom httr GET
 #' @importFrom utils head
 #' @importFrom utils tail
+#' @export
 commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
     cmds = GET(.command2getQuery(s,base.url))
@@ -115,15 +132,16 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' @param cmd.string (char) command
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return A \code{list}, \code{status} or None.
-#' @export
 #' @examples
 #' \donttest{
 #' commandsGET('layout get preferred')
 #' commandsGET('network list properties')
 #' commandsGET('layout force-directed defaultNodeMass=1')
 #' }
-#' @import XML
-#' @import httr
+#' @importFrom XML htmlParse
+#' @importFrom XML xpathSApply
+#' @importFrom httr GET
+#' @export
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
     res = GET(.command2getQuery(cmd.string,base.url))
     res.html = htmlParse(rawToChar(res$content), asText=TRUE)
@@ -152,15 +170,16 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 #' @param cmd.string (char) command
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return A \code{list}, \code{named list}, \code{status} or None.
-#' @export
 #' @examples
 #' \donttest{
 #' commandsPOST('layout get preferred')
 #' commandsPOST('network list properties')
 #' commandsPOST('layout force-directed defaultNodeMass=1')
 #' }
-#' @import XML
-#' @import httr
+#' @importFrom RJSONIO fromJSON
+#' @importFrom httr POST
+#' @importFrom httr content_type_json
+#' @export
 commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     post.url = .command2postQueryUrl(cmd.string,base.url)
     post.body = .command2postQueryBody(cmd.string)
@@ -191,9 +210,9 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 # @return CyREST GET URL
 # @examples
 # \donttest{
-# command2getQuery('layout get preferred')
+# .command2getQuery('layout get preferred')
 # }
-# @importFrom utils URLencode
+#' @importFrom utils URLencode
 .command2getQuery<-function(cmd.string, base.url = .defaultBaseUrl){
     cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
@@ -219,6 +238,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 }
 
 # takes a named list and makes a string for GET query urls
+#' @importFrom utils URLencode
 .prepGetQueryArgs <- function(named.args){
     args1 <- names(named.args)
     args2 <- unlist(unname(named.args))
@@ -239,10 +259,10 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 # @return CyREST POST URL
 # @examples
 # \donttest{
-# command2postQueryUrl('network clone network="current"')
+# .command2postQueryUrl('network clone network="current"')
 # # http://localhost:1234/v1/commands/network/clone
 # }
-# @importFrom utils URLencode
+#' @importFrom utils URLencode
 .command2postQueryUrl<-function(cmd.string, base.url = .defaultBaseUrl){
     cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
@@ -261,12 +281,12 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 # @return CyREST POST JSON body
 # @examples
 # \donttest{
-# command2postQueryBody('network clone network="current"')
+# .command2postQueryBody('network clone network="current"')
 # # {
 # # "network": "current"
 # # }
 # }
-# @importFrom utils URLencode
+#' @importFrom RJSONIO toJSON
 .command2postQueryBody<-function(cmd.string){
     cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))

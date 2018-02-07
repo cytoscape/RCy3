@@ -708,13 +708,16 @@ saveNetwork <- function (filename, type='cys',base.url=.defaultBaseUrl) {
 #' @param network name or suid of the network; default is "current" network
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return (igraph) an igraph network
-#' @export
-#' @import igraph
 #' @examples
 #' \donttest{
 #' createIgraphFromNetwork('myNetwork')
 #' }
 #' @seealso createNetworkFromDataFrames, createNetworkFromIgraph
+#' @importFrom igraph graph_from_data_frame
+#' @importFrom BiocGenerics do.call
+#' @importFrom BiocGenerics cbind
+#' @importFrom BiocGenerics colnames
+#' @export
 
 createIgraphFromNetwork <- function(network=NULL, base.url=.defaultBaseUrl, ...){
     suid = getNetworkSuid(network) 
@@ -753,13 +756,14 @@ createIgraphFromNetwork <- function(network=NULL, base.url=.defaultBaseUrl, ...)
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @param ... params for nodeSet2JSON() and edgeSet2JSON(); see createNetwork
 #' @return (int) network SUID
-#' @export
-#' @import igraph
 #' @examples
 #' \donttest{
 #' createNetworkFromIgraph(g)
 #' }
 #' @seealso createNetworkFromDataFrames, createIgraphFromNetwork
+#' @importFrom igraph as_data_frame
+#' @importFrom BiocGenerics colnames
+#' @export
 
 createNetworkFromIgraph <- function(igraph, new.title="MyNetwork",
                                     collection.title="myNetworkCollection",
@@ -901,8 +905,6 @@ createNetworkFromGraph <- function (graph, title=NULL) {
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @param ... params for nodeSet2JSON() and edgeSet2JSON()
 #' @return (int) network SUID
-#' @export
-#' @import RJSONIO
 #' @examples
 #' \donttest{
 #' nodes <- data.frame(id=c("node 0","node 1","node 2","node 3"),
@@ -916,6 +918,7 @@ createNetworkFromGraph <- function (graph, title=NULL) {
 #'
 #' createNetworkFromDataFrames(nodes,edges)
 #' }
+#' @export
 
 createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,new.title="MyNetwork",
                                         collection.title="MyNetworkCollection",base.url=.defaultBaseUrl,...) {
@@ -955,22 +958,15 @@ createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,new.title="MyNetwo
         elements<-c(nodes=list(json_nodes),edges=list(json_edges))
     )
     
-    network <- toJSON(json_network)
+    network.suid <- cyrestPOST('networks',
+                               parameters=list(title=new.title,collection=collection.title),
+                               body=json_network,
+                               base.url = base.url)
     
-    #swap any spaces in names
-    new.title <- gsub(" ","%20",new.title)
-    collection.title <- gsub(" ","%20",collection.title)
-    
-    url<- sprintf("%s/networks?title=%s&collection=%s",
-                  base.url,new.title,collection.title,sep="")
-    
-    response <- POST(url=url,body=network, encode="json",content_type_json())
-    
-    network.suid <- unname(fromJSON(rawToChar(response$content)))
     if(is.numeric(network.suid))
         cat(sprintf("Network SUID is : %i \n", network.suid))
     else
-        return(response)
+        return(network.suid)
     
     cat("Applying default style\n")
     commandsPOST('vizmap apply styles="default"',base.url = base.url)
@@ -981,13 +977,13 @@ createNetworkFromDataFrames <- function(nodes=NULL,edges=NULL,new.title="MyNetwo
     return(network.suid)
 }
 
-# Convert edges to JSON format needed for CyRest network creation
-#
-# @param edge_set (data.frame) Rows contain pairwise interactions.
-# @param source.id.list (char) override default list name for source node ids
-# @param target.id.list (char) override default list name for target node ids
-# @param interaction.type.list (char) override default list name for interaction types
-#
+#' Convert edges to JSON format needed for CyRest network creation
+#'
+#' @param edge_set (data.frame) Rows contain pairwise interactions.
+#' @param source.id.list (char) override default list name for source node ids
+#' @param target.id.list (char) override default list name for target node ids
+#' @param interaction.type.list (char) override default list name for interaction types
+#' @importFrom BiocGenerics colnames
 edgeSet2JSON <- function(edge_set, source.id.list = 'source',
                          target.id.list = 'target', interaction.type.list='interaction',...){
     
@@ -1016,11 +1012,12 @@ edgeSet2JSON <- function(edge_set, source.id.list = 'source',
     return(.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set[1:.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter])
 }
 
-# Creates a table of nodes to CyREST JSON
-#
-# @param node.set (data.frame) each row is a node and columns contain node attributes
-# @param node.id.list (char) override default list name for node ids
-# Adapted from Ruth Isserlin's CellCellINteractions_utility_functions.R
+#' Creates a table of nodes to CyREST JSON
+#'
+#' @param node.set (data.frame) each row is a node and columns contain node attributes
+#' @param node.id.list (char) override default list name for node ids
+#' Adapted from Ruth Isserlin's CellCellINteractions_utility_functions.R
+#' @importFrom BiocGenerics colnames
 nodeSet2JSON <- function(node.set, node.id.list='id',...){
     
     #using global environment variables for performance

@@ -367,18 +367,15 @@ getDirectlyModifiableVisualProperties<-function(obj, style.name){
 # This method adds a new graph to an existing graph.
 # First the new nodes, then the new edges, then node attributes, then edge attributes
 addGraphToGraph <- function (obj, other.graph) {
-    .Deprecated("No replacement")
-    loc.obj <- obj
-    # RCy3 keeps a dictionary of the network nodes 
-    # the below vector stores the indices of the newly added nodes in this dictionary
-    new.node.indices = .addNodes(loc.obj, other.graph)
+    .Deprecated("addGraphToNetwork")
+    addGraphToNetwork(graph=other.graph, network=obj.suid, base.url=.defaultBaseUrl)
+}
+addGraphToNetwork <- function(graph, network=NULL, base.url=.defaultBaseUrl){
+    net.suid <- getNetworkSuid(network)
+    new.node.indices = .addNodes(graph, net.suid, base.url)
+    new.edge.indices = .addEdges(graph, net.suid, base.url)
     
-    # RCy3 keeps a dictionary of the network edges
-    # the below vector stores the indices of the newly added edges to this dictionary
-    new.edge.indices = .addEdges(loc.obj, other.graph)
-    
-    node.attribute.names = noa.names(other.graph)
-    
+    node.attribute.names = noa.names(graph)
     for (attribute.name in node.attribute.names) {
         sprintf('sending noa %s', attribute.name)
         .sendNodeAttributesForGraph(loc.obj, other.graph, attribute.name, new.node.indices)
@@ -406,12 +403,11 @@ addGraphToGraph <- function (obj, other.graph) {
     
     if(length(new.node.indices) > 0) {
         net.SUID = as.character(loc.obj@suid)
-        
-        resource.uri = paste(loc.obj@uri, obj@api, "networks", net.SUID, "nodes", sep="/")
-        new.nodes.JSON = toJSON(new.nodes)
-        
-        request.res = POST(url=resource.uri, body=new.nodes.JSON, encode="json")
-        new.node.SUIDs = unname(fromJSON(rawToChar(request.res$content)))
+
+        res = cyrestPOST(paste("networks", net.SUID, "nodes", sep="/"), 
+                                 body=new.nodes.JSON, 
+                                 base.url = base.url)
+        new.node.SUIDs = unname(res)
         
         for(i in 1:length(new.node.SUIDs)) {
             loc.obj@node.suid.name.dict[[length(loc.obj@node.suid.name.dict)+1]] = new.node.SUIDs[[i]]
