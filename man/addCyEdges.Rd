@@ -10,14 +10,9 @@ addCyEdges(source.target.list, edgeType = "interacts with",
 \description{
 Add CyEdges
 }
-\details{
-NOTE: If providing more than one source, target pair, then you
-MUST use \code{list} and not \code{c}. See examples.
-}
 \examples{
 \donttest{
 addCyEdges(c('sourceNode','targetNode'))
-addCyEdges(list('sourceNode','targetNode'))
-addCyEdges(list(list('s1','t1'),list('s2','t2')))
+addCyEdges(list(c('s1','t1'),c('s2','t2')))
 }
 }
