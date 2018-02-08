@@ -4,7 +4,7 @@
 \alias{createNetworkFromGraph}
 \title{createNetworkFromGraph}
 \usage{
-createNetworkFromGraph(graph, title = NULL)
+createNetworkFromGraph(graph, title = NULL, base.url = .defaultBaseUrl)
 }
 \value{
 A Bioconductor graph object.

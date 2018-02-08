@@ -7,7 +7,7 @@
 createIgraphFromNetwork(network = NULL, base.url = .defaultBaseUrl, ...)
 }
 \arguments{
-\item{network}{name or suid of the network; default is "current" network}
+\item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}
 
 \item{base.url}{cyrest base url for communicating with cytoscape}
 }
