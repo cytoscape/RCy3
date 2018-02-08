@@ -2,7 +2,7 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{addGraphToGraph}
 \alias{addGraphToGraph}
-\title{DEPRECATED: addGraphToGraph}
+\title{DEFUNCT: addGraphToGraph}
 \usage{
 No replacement
 }

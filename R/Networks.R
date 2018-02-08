@@ -308,55 +308,66 @@ deleteAllNetworks <- function (base.url=.defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
+#' @importFrom BiocGenerics setdiff
 #' @export
-addCyNode <- function(node.name, network=NULL, base.url = .defaultBaseUrl) {
+addCyNodes <- function(node.names, skip.duplicate.names=TRUE, 
+                       network=NULL, base.url = .defaultBaseUrl) {
     net.suid <- getNetworkSuid(network)
     
-    if(node.name %in% getAllNodes(net.suid, base.url)) {
-        write(sprintf('RCy3::addCyNode, node "%s" already present in Cytoscape graph', node.name), stderr())
-        return()
-    }
-    
-    resource.uri <- paste(base.url, "networks", net.suid, "nodes", sep="/")
-    nodename.json = toJSON(c(node.name))
-    invisible(POST(url=resource.uri, body=nodename.json, encode="json"))
+    if(skip.duplicate.names)
+        node.names <- setdiff(node.names, getAllNodes(net.suid, base.url))
+
+    res <-cyrestPOST(paste("networks", net.suid, "nodes", sep="/"), 
+                         body=node.names, 
+                         base.url=base.url)
+    return(res)
 }
 
 # ------------------------------------------------------------------------------
+#' Add CyEdges
+#' 
+#' @details NOTE: If providing more than one source, target pair, then you
+#' MUST use \code{list} and not \code{c}. See examples. 
+#' @examples \donttest{
+#' addCyEdges(c('sourceNode','targetNode'))
+#' addCyEdges(list('sourceNode','targetNode'))
+#' addCyEdges(list(list('s1','t1'),list('s2','t2')))
+#' }
 #' @export
-addCyEdge <- function (source.node.name, target.node.name, edgeType='pp', directed=FALSE, 
-                       network=NULL, base.url=.defaultBaseUrl) {
-    
-    good.args = TRUE
-    # confirm that the user has provided exactly one source and one target nodes
-    if(length(source.node.name) > 1 || length(target.node.name) > 1) {
-        good.args = FALSE
-        write(sprintf('RCy3::addEdge can have only one source and one target nodes'), stderr())
-    }
+addCyEdges <- function (source.target.list, edgeType='interacts with', 
+                        directed=FALSE, network=NULL, base.url=.defaultBaseUrl){
     
     net.suid <- getNetworkSuid(network)
-    source.node.suid <- .nodeNameToNodeSUID(source.node.name, net.suid, base.url)
-    target.node.suid <- .nodeNameToNodeSUID(target.node.name, net.suid, base.url)
     
-    if(!source.node.name %in% getAllNodes(net.suid, base.url)) {
-        good.args = FALSE
-        write(sprintf('RCy3::addEdge. Error: source node %s does not exist. Edge cannot be created.', source.node.name), stderr())
+    # swap with node suids
+    if(is.list(unlist(source.target.list,recursive=F))){ # list of lists
+        edge.suid.list <- lapply(source.target.list, function(x) 
+               lapply(x, function(y) .nodeNameToNodeSUID(y,net.suid,base.url)))
+        
+    } else { # just single edge pair
+        edge.suid.list <- list(
+            lapply(source.target.list, 
+               function(y) .nodeNameToNodeSUID(y,net.suid,base.url)))
     }
-    if(!target.node.name %in% getAllNodes(net.suid, base.url)) {
-        good.args = FALSE
-        write(sprintf('RCy3::addEdge. Error: source node %s does not exist. Edge cannot be created.', target.node.name), stderr())
-    }
-    if(!good.args) {
+    
+    # check for unique node name<->suid mappings
+    max.mapping <- lapply(edge.suid.list, function(x) 
+        lapply(x, function(y) max(length(y))))
+    if(as.integer(max(unlist(max.mapping))) > 1){
+        write('RCy3::addCyEdges, more than one node found for a given source or target node name. No edges added.', stderr())
         return()
     }
+    
+    # add other fields
+    edge.data <- lapply(edge.suid.list, 
+                        function(y) c(setNames(as.list(unlist(y)),c("source","target")),
+                                   directed = directed,
+                                   interaction = edgeType))
 
-    edge.data <- list(list(source = source.node.suid, 
-                      target = target.node.suid, 
-                      directed = directed, interaction = edgeType))
     res <- cyrestPOST(paste("networks", net.suid, "edges", sep="/"),
                       body=edge.data,
                       base.url=base.url)
-    invisible(res)
+    return(res)
 }
 
 # ------------------------------------------------------------------------------

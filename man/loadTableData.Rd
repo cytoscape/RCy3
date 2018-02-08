@@ -5,7 +5,7 @@
 \title{Loads data into Cytoscape tables keyed by row}
 \usage{
 loadTableData(data, data.key.column = "row.names", table = "node",
-  table.key.column = "name", obj = CytoscapeWindowFromNetwork())
+  table.key.column = "name", network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{data}{(data.frame) each row is a node and columns contain node attributes}
