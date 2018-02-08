@@ -19,14 +19,14 @@ getTableColumns(table, columns = NULL, namespace = "default",
 \item{base.url}{cyrest base url for communicating with cytoscape}
 }
 \value{
-data frame of column values
+A \code{data.frame} of column values
 }
 \description{
 Get table column values
 }
 \details{
-The 'name' column is always retrieved along with specified columns. The 'name' values are used
-as row names in the returned data frame. Note that this function fails on columns with missing values.
+The 'suid' column is always retrieved along with specified columns. 
+The 'suid' values are used as \code{row.names} in the returned \code{data.frame}.
 }
 \examples{
 \donttest{

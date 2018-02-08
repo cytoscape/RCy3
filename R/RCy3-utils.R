@@ -2,50 +2,6 @@
 .defaultBaseUrl <- 'http://localhost:1234/v1'
 
 #------ Package Functions ----------------------------------------------------------------------------------------------
-.classicGraphToNodePairTable = function (g)
-{
-    edges.g <- edges(g)
-    edge.names = as.character(unlist(sapply(names(edges.g), function (a) {
-        bs = edges.g[[a]]; 
-        if (length (bs) > 0) paste (a, edges.g[[a]], sep='~') 
-    })))
-    # print(class(edge.names))
-    # print(edge.names)
-    pairs = strsplit (edge.names, '~')
-    a = sapply (pairs, "[", 1)
-    b = sapply (pairs, "[", 2)
-    
-    if ('edgeType' %in% eda.names (g)){
-        edgeType = as.character (edgeData (g, from=a, to=b, attr='edgeType'))
-    }else{
-        edgeType = rep ('unspecified', length (a))
-    }
-    
-    
-    return (data.frame (source=a, target=b, edgeType=edgeType, stringsAsFactors=FALSE))
-    
-} # .classicGraphToNodePairTable
-#------------------------------------------------------------------------------------------------------------------------
-.multiGraphToNodePairTable = function (mg)
-{
-    edge.set.names = edgeSets (mg)
-    
-    template = list (source='', target='', edgeType='')
-    tbl = data.frame (template, stringsAsFactors=FALSE)
-    for (edge.set in edgeSets (mg)) {
-        tilde.names = edgeNames (mg, edge.set)
-        pairs = strsplit (tilde.names, '~')
-        for (pair in pairs) {
-            source.node = pair [1]
-            target.node = pair [2]
-            new.row = list (source=source.node, target=target.node, edgeType=edge.set)
-            tbl = rbind (tbl, new.row)
-        }
-    } # for edge
-    
-    invisible (tbl [-1,])     
-    
-} # .multiGraphToNodePairTable
 
 # ------------------------------------------------------------------------------
 # the bioc graph 'edgeNames' function does not detect, distinguish or report 

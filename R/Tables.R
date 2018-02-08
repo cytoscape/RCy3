@@ -5,14 +5,14 @@
 # ------------------------------------------------------------------------------
 #' Get table column values
 #'
-#' @details The 'name' column is always retrieved along with specified columns. The 'name' values are used
-#' as row names in the returned data frame. Note that this function fails on columns with missing values.
+#' @details The 'suid' column is always retrieved along with specified columns. 
+#' The 'suid' values are used as \code{row.names} in the returned \code{data.frame}. 
 #' @param table name of table, e.g., node, edge, network
 #' @param columns names of columns to retrieve values from as list object or comma-separated list; default is all columns
 #' @param namespace namespace of table; default is "default"
 #' @param network name or suid of the network; default is "current" network
 #' @param base.url cyrest base url for communicating with cytoscape
-#' @return data frame of column values
+#' @return A \code{data.frame} of column values
 #' @examples
 #' \donttest{
 #' example(createNetworkFromDataFrames)
@@ -38,16 +38,16 @@ getTableColumns <- function(table,
     if (length(col.list) == 1)
         col.list = unlist(strsplit(columns, ","))
     
-    #get name column first
+    #get suid column first
     tbl = paste0(namespace, table)
-    res.names <- cyrestGET(paste('networks',suid,'tables',tbl,'columns','name',sep="/"),
+    res.names <- cyrestGET(paste('networks',suid,'tables',tbl,'columns','SUID',sep="/"),
                            base.url = base.url)
     df = data.frame(row.names = res.names$values)
     
     #retrieve column names
     table.col.list = listTableColumns(table, namespace, network, base.url)
     
-    # then append other requested columns
+    #then append other requested columns
     for (col in col.list) {
         #check for column names
         if (!col %in% table.col.list) {
