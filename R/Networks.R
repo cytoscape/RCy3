@@ -317,21 +317,17 @@ addCyNodes <- function(node.names, skip.duplicate.names=TRUE,
     if(skip.duplicate.names)
         node.names <- setdiff(node.names, getAllNodes(net.suid, base.url))
 
-    res <-cyrestPOST(paste("networks", net.suid, "nodes", sep="/"), 
+    cyrestPOST(paste("networks", net.suid, "nodes", sep="/"), 
                          body=node.names, 
                          base.url=base.url)
-    return(res)
 }
 
 # ------------------------------------------------------------------------------
 #' Add CyEdges
 #' 
-#' @details NOTE: If providing more than one source, target pair, then you
-#' MUST use \code{list} and not \code{c}. See examples. 
 #' @examples \donttest{
 #' addCyEdges(c('sourceNode','targetNode'))
-#' addCyEdges(list('sourceNode','targetNode'))
-#' addCyEdges(list(list('s1','t1'),list('s2','t2')))
+#' addCyEdges(list(c('s1','t1'),c('s2','t2')))
 #' }
 #' @export
 addCyEdges <- function (source.target.list, edgeType='interacts with', 
@@ -340,7 +336,7 @@ addCyEdges <- function (source.target.list, edgeType='interacts with',
     net.suid <- getNetworkSuid(network)
     
     # swap with node suids
-    if(is.list(unlist(source.target.list,recursive=F))){ # list of lists
+    if(length(unlist(source.target.list)) > 2 ){ # list of lists
         edge.suid.list <- lapply(source.target.list, function(x) 
                lapply(x, function(y) .nodeNameToNodeSUID(y,net.suid,base.url)))
         
@@ -364,10 +360,9 @@ addCyEdges <- function (source.target.list, edgeType='interacts with',
                                    directed = directed,
                                    interaction = edgeType))
 
-    res <- cyrestPOST(paste("networks", net.suid, "edges", sep="/"),
+    cyrestPOST(paste("networks", net.suid, "edges", sep="/"),
                       body=edge.data,
                       base.url=base.url)
-    return(res)
 }
 
 # ------------------------------------------------------------------------------
