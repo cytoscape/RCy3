@@ -53,11 +53,11 @@ cytoscapeVersionInfo<-function(base.url=.defaultBaseUrl) {
 #' @return A \code{list} of API versions as \code{character} strings, e.g., "v1"
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
-#' availableApiVersions()
+#' cytoscapeApiVersions()
 #' # [1] "v1"
 #' }
 #' @export
-availableApiVersions<-function(base.url=.defaultBaseUrl) {
+cytoscapeApiVersions<-function(base.url=.defaultBaseUrl) {
     uri <- strsplit(base.url,'/v')[[1]][1]
     res <- GET(uri)
     available.api.versions <- fromJSON(rawToChar(res$content))$availableApiVersion
