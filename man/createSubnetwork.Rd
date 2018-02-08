@@ -22,9 +22,11 @@ createSubnetwork(nodes, nodes.by.col = "name", edges, edges.by.col = "name",
 \item{subnetwork.name}{name of new subnetwork to be created;
 default is to add a numbered suffix to source network name}
 
-\item{network}{name or suid of the source network; default is "current" network}
+\item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}
 
-\item{base.url}{(optional)  URL prefix for CyREST calls}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 SUID of new subnetwork
@@ -33,7 +35,9 @@ SUID of new subnetwork
 Copies a subset of nodes and edges into a newly created subnetwork.
 }
 \details{
-If you specify both nodes and edges, the resulting subset will be the union of those sets.
+If you spe@param base.url (optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.cify both nodes and edges, the resulting subset will be the union of those sets.
 Typical usage only requires specifying either nodes or edges. Note that selected nodes will bring
 along their connecting edges by default (see exclude.edges arg) and selected edges will always
 bring along their source and target nodes.

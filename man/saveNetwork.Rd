@@ -2,10 +2,27 @@
 % Please edit documentation in R/Networks.R
 \name{saveNetwork}
 \alias{saveNetwork}
-\title{Save a network in one of mulitple file formats}
+\title{Save Network}
 \usage{
 saveNetwork(filename, type = "cys", base.url = .defaultBaseUrl)
 }
+\arguments{
+\item{filename}{DESCRIPTION}
+
+\item{type}{DESCRIPTION}
+
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
+}
+\value{
+RETURN_DESCRIPTION
+}
 \description{
 Save a network in one of mulitple file formats
+}
+\examples{
+\donttest{
+saveNetwork()
+}
 }

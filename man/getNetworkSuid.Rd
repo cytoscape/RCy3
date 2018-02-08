@@ -14,9 +14,6 @@ getNetworkSuid(title = NULL, base.url = .defaultBaseUrl)
 \value{
 (\code{numeric}) Network suid
 }
-\description{
-Get the SUID of a network
-}
 \examples{
 \donttest{
 getNetworkSuid()
