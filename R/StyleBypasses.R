@@ -21,6 +21,7 @@
 #' @param node.names DESCRIPTION
 #' @param new.values DESCRIPTION
 #' @param visual.property DESCRIPTION
+#' @param bypass Whether to set permanent bypass value. Default is \code{TRUE}. 
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -37,13 +38,14 @@
 setNodePropertyBypass <- function(node.names,
                                   new.values,
                                   visual.property,
+                                  bypass = TRUE,
                                   network = NULL,
                                   base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
-    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     node.SUIDs <-
-        .nodeNameToNodeSUID(node.names, net.SUID, base.url)
+        .nodeNameToNodeSUID(node.names, network=net.SUID, base.url=base.url)
     
     # 'node.names' and 'new.values' must have the same length
     if (length(new.values) == 1) {
@@ -54,8 +56,8 @@ setNodePropertyBypass <- function(node.names,
         write(
             sprintf(
                 "ERROR in setNodePropertyBypass():\n   the number of nodes
-                    [%d] and new values [%d] are not the same >> node(s)
-                    attribute couldn't be set",
+                [%d] and new values [%d] are not the same >> node(s)
+                attribute couldn't be set",
                 length(node.names),
                 length(new.values)
             ),
@@ -72,9 +74,8 @@ setNodePropertyBypass <- function(node.names,
                                    view.SUID,
                                    "nodes",
                                    node.SUID,
-                                   visual.property,
-                                   'bypass',
                                    sep = "/"),
+                             parameters = list(bypass=bypass),
                              body = list(visualProperty = visual.property,
                                          value = new.value),
                              base.url = base.url)
@@ -104,10 +105,10 @@ clearNodePropertyBypass <-  function(node.names,
                                      network = NULL,
                                      base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
-    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     node.SUIDs <-
-        .nodeNameToNodeSUID(node.names, net.SUID, base.url)
+        .nodeNameToNodeSUID(node.names, network=net.SUID, base.url=base.url)
     
     for (i in 1:length(node.SUIDs)) {
         node.SUID <- as.character(node.SUIDs[i])
@@ -135,6 +136,7 @@ clearNodePropertyBypass <-  function(node.names,
 #' @param edge.names DESCRIPTION
 #' @param new.values DESCRIPTION
 #' @param visual.property DESCRIPTION
+#' @param bypass Whether to set permanent bypass value. Default is \code{TRUE}. 
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -152,13 +154,14 @@ clearNodePropertyBypass <-  function(node.names,
 setEdgePropertyBypass <- function(edge.names,
                                   new.values,
                                   visual.property,
+                                  bypass = TRUE,
                                   network = NULL,
                                   base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
-    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     edge.SUIDs <-
-        .edgeNameToEdgeSUID(edge.names, net.SUID, base.url)
+        .edgeNameToEdgeSUID(edge.names, network=net.SUID, base.url=base.url)
     # 'edge.names' and 'new.values' must have the same length
     if (length(new.values) == 1) {
         new.values <- rep(new.values, length(edge.names))
@@ -168,8 +171,8 @@ setEdgePropertyBypass <- function(edge.names,
         write(
             sprintf(
                 "ERROR in setEdgePropertyBypass():\n\t number of
-                    edge.names [%d] and new.values [%d] are not the
-                    same >> edge(s) attribute could not be set",
+                edge.names [%d] and new.values [%d] are not the
+                same >> edge(s) attribute could not be set",
                 length(edge.names),
                 length(new.values)
             ),
@@ -186,9 +189,8 @@ setEdgePropertyBypass <- function(edge.names,
                                     view.SUID,
                                     "edges",
                                     edge.SUID,
-                                    visual.property,
-                                    'bypass',
                                     sep = "/"),
+                             parameters = list(bypass=bypass),
                              body = list(visualProperty = visual.property,
                                          value = current.value),
                              base.url = base.url)
@@ -218,10 +220,10 @@ clearEdgePropertyBypass <- function(edge.names,
                                     network = NULL,
                                     base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
-    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     edge.SUIDs <-
-        .nodeNameToNodeSUID(edge.names, net.SUID, base.url)
+        .nodeNameToNodeSUID(edge.names, network=net.SUID, base.url=base.url)
     
     for (i in 1:length(edge.SUIDs)) {
         edge.SUID <- as.character(edge.SUIDs[i])
@@ -248,6 +250,7 @@ clearEdgePropertyBypass <- function(edge.names,
 #' values defined by any visual style.
 #' @param new.value DESCRIPTION
 #' @param visual.property DESCRIPTION
+#' @param bypass Whether to set permanent bypass value. Default is \code{TRUE}. 
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -263,10 +266,11 @@ clearEdgePropertyBypass <- function(edge.names,
 #' @export
 setNetworkPropertyBypass <- function(new.value,
                                      visual.property,
+                                     bypass = TRUE,
                                      network = NULL,
                                      base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
-    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     
     res <- cyrestPUT(paste("networks",
@@ -275,9 +279,9 @@ setNetworkPropertyBypass <- function(new.value,
                            view.SUID,
                            "network",
                            sep = "/"),
-                     parameters = list(bypass='true'),
+                     parameters = list(bypass=bypass),
                      body = list(list(visualProperty = visual.property,
-                                 value = new.value)),
+                                      value = new.value)),
                      base.url = base.url)
 }
 # ------------------------------------------------------------------------------
@@ -301,7 +305,7 @@ clearNetworkPropertyBypass <- function(visual.property,
                                        network = NULL,
                                        base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
-    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     
     res <- cyrestDELETE( paste("networks",
@@ -345,12 +349,12 @@ clearNetworkPropertyBypass <- function(visual.property,
 # calls Node and Edge vesions of set***PropteryBypass().
 #
 unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
-    suid <- getNetworkSuid(network)
-    node.names <- getAllNodes(suid, base.url)
-    clearNodePropertyBypass(node.names, "NODE_VISIBLE", network, base.url)
+    net.SUID <- getNetworkSuid(network)
+    node.names <- getAllNodes(net.SUID, base.url)
+    clearNodePropertyBypass(node.names, "NODE_VISIBLE", network=net.SUID, base.url=base.url)
     
     edge.names <- getAllEdges(suid, base.url)
-    clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network, base.url)
+    clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network=net.SUID, base.url=base.url)
 }
 
 # ==============================================================================
@@ -399,8 +403,8 @@ setNodeColorBypass <-
                 node.names,
                 new.colors,
                 "NODE_FILL_COLOR",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -454,8 +458,8 @@ setNodeSizeBypass <- function (node.names,
         }
     }
     # set the node properties bypass
-    setNodePropertyBypass(node.names, new.sizes, "NODE_WIDTH", network, base.url)
-    setNodePropertyBypass(node.names, new.sizes, "NODE_HEIGHT", network, base.url)
+    setNodePropertyBypass(node.names, new.sizes, "NODE_WIDTH", network=network, base.url=base.url)
+    setNodePropertyBypass(node.names, new.sizes, "NODE_HEIGHT", network=network, base.url=base.url)
 }
 #-------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is not tied together).
@@ -509,7 +513,7 @@ setNodeWidthBypass <-
         }
         # set the node property bypass
         return(setNodePropertyBypass(node.names, new.widths, "NODE_WIDTH",
-                                     network, base.url))
+                                     network=network, base.url=base.url))
     }
 
 #-------------------------------------------------------------------------------
@@ -565,7 +569,7 @@ setNodeHeightBypass <-
         # set the node property bypass
         return(
             setNodePropertyBypass(node.names, new.heights, "NODE_HEIGHT",
-                                  network, base.url)
+                                  network=network, base.url=base.url)
         )
     }
 
@@ -599,7 +603,7 @@ setNodeLabelBypass <-
              new.labels,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        setNodePropertyBypass(node.names, new.labels, "NODE_LABEL", network, base.url)
+        setNodePropertyBypass(node.names, new.labels, "NODE_LABEL", network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
@@ -653,8 +657,7 @@ setNodeFontSizeBypass <-
             setNodePropertyBypass(node.names,
                                   new.sizes,
                                   "NODE_LABEL_FONT_SIZE",
-                                  network,
-                                  base.url)
+                                  network=network, base.url=base.url)
         }
     }
 
@@ -700,8 +703,8 @@ setNodeLabelColorBypass <-
                 node.names,
                 new.colors,
                 "NODE_LABEL_COLOR",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -773,7 +776,7 @@ setNodeShapeBypass <-
         }
         # set the node property bypass
         return(setNodePropertyBypass(node.names, new.shapes, "NODE_SHAPE",
-                                     network, base.url))
+                                     network=network, base.url=base.url))
     }
 
 # ------------------------------------------------------------------------------
@@ -826,8 +829,8 @@ setNodeBorderWidthBypass <-
                 node.names,
                 new.sizes,
                 "NODE_BORDER_WIDTH",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -874,8 +877,8 @@ setNodeBorderColorBypass <-
                 node.names,
                 new.colors,
                 "NODE_BORDER_PAINT",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -928,18 +931,15 @@ setNodeOpacityBypass <-
         setNodePropertyBypass(node.names,
                               new.values,
                               "NODE_TRANSPARENCY",
-                              network,
-                              base.url)
+                              network=network, base.url=base.url)
         setNodePropertyBypass(node.names,
                               new.values,
                               "NODE_BORDER_TRANSPARENCY",
-                              network,
-                              base.url)
+                              network=network, base.url=base.url)
         setNodePropertyBypass(node.names,
                               new.values,
                               "NODE_LABEL_TRANSPARENCY",
-                              network,
-                              base.url)
+                              network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
@@ -993,8 +993,8 @@ setNodeFillOpacityBypass <-
                 node.names,
                 new.values,
                 "NODE_TRANSPARENCY",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -1050,8 +1050,8 @@ setNodeBorderOpacityBypass <-
                 node.names,
                 new.values,
                 "NODE_BORDER_TRANSPARENCY",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -1107,8 +1107,8 @@ setNodeLabelOpacityBypass <-
                 node.names,
                 new.values,
                 "NODE_LABEL_TRANSPARENCY",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -1142,7 +1142,7 @@ setNodeLabelOpacityBypass <-
 hideSelectedNodes <-
     function (network = NULL, base.url = .defaultBaseUrl) {
         node.names <- getSelectedNodes(network, base.url)
-        setNodePropertyBypass(node.names, 'false', "NODE_VISIBLE", network, base.url)
+        setNodePropertyBypass(node.names, 'false', "NODE_VISIBLE", network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
@@ -1176,7 +1176,7 @@ hideNodes <-
     function(node.names,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        setNodePropertyBypass(node.names, 'false', "NODE_VISIBLE", network, base.url)
+        setNodePropertyBypass(node.names, 'false', "NODE_VISIBLE", network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
@@ -1207,7 +1207,7 @@ unhideNodes <-
     function(node.names,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        clearNodePropertyBypass(node.names, "NODE_VISIBLE", network, base.url)
+        clearNodePropertyBypass(node.names, "NODE_VISIBLE", network=network, base.url=base.url)
     }
 
 # ==============================================================================
@@ -1262,13 +1262,11 @@ setEdgeOpacityBypass <-
         setEdgePropertyBypass(edge.names,
                               new.values,
                               "EDGE_LABEL_TRANSPARENCY",
-                              network,
-                              base.url)
+                              network=network, base.url=base.url)
         setEdgePropertyBypass(edge.names,
                               new.values,
                               "EDGE_TRANSPARENCY",
-                              network,
-                              base.url)
+                              network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
@@ -1311,13 +1309,11 @@ setEdgeColorBypass <-
         setEdgePropertyBypass(edge.names,
                               new.value,
                               "EDGE_STROKE_UNSELECTED_PAINT",
-                              network,
-                              base.url)
+                              network=network, base.url=base.url)
         setEdgePropertyBypass(edge.names,
                               new.value,
                               "EDGE_UNSELECTED_PAINT",
-                              network,
-                              base.url)
+                              network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
@@ -1350,7 +1346,7 @@ setEdgeLabelBypass <-
              new.value,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        setEdgePropertyBypass(edge.names, new.value, "EDGE_LABEL", network, base.url)
+        setEdgePropertyBypass(edge.names, new.value, "EDGE_LABEL", network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
@@ -1386,8 +1382,7 @@ setEdgeFontFaceBypass <-
         setEdgePropertyBypass(edge.names,
                               new.value,
                               "EDGE_LABEL_FONT_FACE",
-                              network,
-                              base.url)
+                              network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
@@ -1441,8 +1436,7 @@ setEdgeFontSizeBypass <-
             setEdgePropertyBypass(edge.names,
                                   new.value,
                                   "EDGE_LABEL_FONT_SIZE",
-                                  network,
-                                  base.url)
+                                  network=network, base.url=base.url)
         }
     }
 
@@ -1488,8 +1482,8 @@ setEdgeLabelColorBypass <-
                 edge.names,
                 new.value,
                 "EDGE_LABEL_COLOR",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -1537,7 +1531,7 @@ setEdgeTooltipBypass <-
         }
         # set the edge property bypass
         return(
-            setEdgePropertyBypass(edge.names, new.values, "EDGE_TOOLTIP", network, base.url)
+            setEdgePropertyBypass(edge.names, new.values, "EDGE_TOOLTIP", network=network, base.url=base.url)
         )
     }
 
@@ -1586,7 +1580,7 @@ setEdgeLineWidthBypass <-
         }
         
         # set the edge property bypass
-        return(setEdgePropertyBypass(edge.names, new.value, "EDGE_WIDTH", network, base.url))
+        return(setEdgePropertyBypass(edge.names, new.value, "EDGE_WIDTH", network=network, base.url=base.url))
     }
 
 # ------------------------------------------------------------------------------
@@ -1650,8 +1644,8 @@ setEdgeLineStyleBypass <-
                 edge.names,
                 toupper(new.values),
                 "EDGE_LINE_TYPE",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -1717,8 +1711,8 @@ setEdgeSourceArrowShapeBypass <-
                 edge.names,
                 toupper(new.values),
                 "EDGE_SOURCE_ARROW_SHAPE",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -1783,8 +1777,8 @@ setEdgeTargetArrowShapeBypass <-
                 edge.names,
                 toupper(new.values),
                 "EDGE_TARGET_ARROW_SHAPE",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -1831,8 +1825,8 @@ setEdgeSourceArrowColorBypass <-
                 edge.names,
                 new.colors,
                 "EDGE_SOURCE_ARROW_UNSELECTED_PAINT",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -1878,8 +1872,8 @@ setEdgeTargetArrowColorBypass <-
                 edge.names,
                 new.colors,
                 "EDGE_TARGET_ARROW_UNSELECTED_PAINT",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -1936,8 +1930,8 @@ setEdgeLabelOpacityBypass <-
                 edge.names,
                 new.value,
                 "EDGE_LABEL_TRANSPARENCY",
-                network,
-                base.url
+                network=network,
+                base.url=base.url
             )
         )
     }
@@ -1970,7 +1964,7 @@ setEdgeLabelOpacityBypass <-
 #' @export
 hideSelectedEdges <- function (network=NULL, base.url = .defaultBaseUrl) {
     edge.names <- getSelectedEdges(base.url)
-    setEdgePropertyBypass(edge.names, 'false', "EDGE_VISIBLE", network, base.url)
+    setEdgePropertyBypass(edge.names, 'false', "EDGE_VISIBLE", network=network, base.url=base.url)
 } 
 
 # ------------------------------------------------------------------------------
@@ -2001,7 +1995,7 @@ hideSelectedEdges <- function (network=NULL, base.url = .defaultBaseUrl) {
 #' }
 #' @export
 hideEdges <- function (edge.names, network=NULL, base.url = .defaultBaseUrl) {
-    setEdgePropertyBypass(edge.names, 'false', "EDGE_VISIBLE", network, base.url)
+    setEdgePropertyBypass(edge.names, 'false', "EDGE_VISIBLE", network=network, base.url=base.url)
 } 
 
 # ------------------------------------------------------------------------------
@@ -2029,7 +2023,7 @@ hideEdges <- function (edge.names, network=NULL, base.url = .defaultBaseUrl) {
 #' }
 #' @export
 unhideEdges <- function (edge.names, network=NULL, base.url = .defaultBaseUrl) {
-    clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network, base.url)
+    clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network=network, base.url=base.url)
 } 
 
 # ==============================================================================
@@ -2040,6 +2034,8 @@ unhideEdges <- function (edge.names, network=NULL, base.url = .defaultBaseUrl) {
 #'
 #' @description Set the bypass value for scale factor for the network.
 #' @param new.value DESCRIPTION
+#' @param bypass Whether to set permanent bypass value. Default is \code{FALSE} 
+#' per common use of temporary zoom settings.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -2059,8 +2055,8 @@ unhideEdges <- function (edge.names, network=NULL, base.url = .defaultBaseUrl) {
 #' setNetworkZoomBypass()
 #' }
 #' @export
-setNetworkZoomBypass <- function(new.value, network = NULL, base.url = .defaultBaseUrl) {
-    setNetworkPropertyBypass(new.value, "NETWORK_SCALE_FACTOR", network, base.url)
+setNetworkZoomBypass <- function(new.value, bypass = FALSE, network = NULL, base.url = .defaultBaseUrl) {
+    setNetworkPropertyBypass(new.value, "NETWORK_SCALE_FACTOR", bypass=bypass, network=network, base.url=base.url)
 }
 
 # ------------------------------------------------------------------------------
@@ -2079,7 +2075,7 @@ setNetworkZoomBypass <- function(new.value, network = NULL, base.url = .defaultB
 #' }
 #' @export
 clearNetworkZoomBypass <- function(network = NULL, base.url = .defaultBaseUrl) {
-    clearNetworkPropertyBypass("NETWORK_SCALE_FACTOR", network, base.url)
+    clearNetworkPropertyBypass("NETWORK_SCALE_FACTOR", network=network, base.url=base.url)
 }
 
 # ------------------------------------------------------------------------------
@@ -2089,6 +2085,8 @@ clearNetworkZoomBypass <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' function could be used to pan and scroll the Cytoscape canvas.
 #' @param x DESCRIPTION
 #' @param y DESCRIPTION
+#' @param bypass Whether to set permanent bypass value. Default is \code{FALSE} 
+#' per common use of temporary center settings.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -2108,9 +2106,9 @@ clearNetworkZoomBypass <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' setNetworkCenterBypass()
 #' }
 #' @export
-setNetworkCenterBypass <- function(x, y, network = NULL, base.url = .defaultBaseUrl) {
-    setNetworkPropertyBypass(x, "NETWORK_CENTER_X_LOCATION", network, base.url)
-    setNetworkPropertyBypass(y, "NETWORK_CENTER_Y_LOCATION", network, base.url)
+setNetworkCenterBypass <- function(x, y, bypass = FALSE, network = NULL, base.url = .defaultBaseUrl) {
+    setNetworkPropertyBypass(x, "NETWORK_CENTER_X_LOCATION", bypass=bypass, network=network, base.url=base.url)
+    setNetworkPropertyBypass(y, "NETWORK_CENTER_Y_LOCATION", bypass=bypass, network=network, base.url=base.url)
 }
 
 # ------------------------------------------------------------------------------
@@ -2129,7 +2127,7 @@ setNetworkCenterBypass <- function(x, y, network = NULL, base.url = .defaultBase
 #' }
 #' @export
 clearNetworkCenterBypass <- function(network = NULL, base.url = .defaultBaseUrl) {
-    clearNetworkPropertyBypass("NETWORK_CENTER_X_LOCATION", network, base.url)
-    clearNetworkPropertyBypass("NETWORK_CENTER_Y_LOCATION", network, base.url)
+    clearNetworkPropertyBypass("NETWORK_CENTER_X_LOCATION", network=network, base.url=base.url)
+    clearNetworkPropertyBypass("NETWORK_CENTER_Y_LOCATION", network=network, base.url=base.url)
 }
 

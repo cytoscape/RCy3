@@ -4,12 +4,16 @@
 \alias{setNetworkCenterBypass}
 \title{Set Network Center Bypass}
 \usage{
-setNetworkCenterBypass(x, y, network = NULL, base.url = .defaultBaseUrl)
+setNetworkCenterBypass(x, y, bypass = FALSE, network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{x}{DESCRIPTION}
 
 \item{y}{DESCRIPTION}
+
+\item{bypass}{Whether to set permanent bypass value. Default is \code{FALSE} 
+per common use of temporary center settings.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}

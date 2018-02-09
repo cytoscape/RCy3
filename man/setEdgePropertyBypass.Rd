@@ -4,8 +4,8 @@
 \alias{setEdgePropertyBypass}
 \title{Set Edge Property Bypass}
 \usage{
-setEdgePropertyBypass(edge.names, new.values, visual.property, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgePropertyBypass(edge.names, new.values, visual.property, bypass = TRUE,
+  network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{edge.names}{DESCRIPTION}
@@ -13,6 +13,8 @@ setEdgePropertyBypass(edge.names, new.values, visual.property, network = NULL,
 \item{new.values}{DESCRIPTION}
 
 \item{visual.property}{DESCRIPTION}
+
+\item{bypass}{Whether to set permanent bypass value. Default is \code{TRUE}.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}

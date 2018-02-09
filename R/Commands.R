@@ -262,9 +262,9 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 .prepGetQueryArgs <- function(named.args){
     args1 <- names(named.args)
     args2 <- unlist(unname(named.args))
-    q.args = paste(args1[1],URLencode(args2[1]),sep="=")
+    q.args = paste(args1[1],URLencode(as.character(args2[1])),sep="=")
     for (i in seq(args1)[-1]){
-        arg = paste(args1[i],URLencode(args2[i]),sep="=")
+        arg = paste(args1[i],URLencode(as.character(args2[i])),sep="=")
         q.args = paste(q.args,arg,sep="&")
     }
     return(q.args)
