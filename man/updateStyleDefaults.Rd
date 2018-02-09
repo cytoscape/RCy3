@@ -9,7 +9,7 @@ updateStyleDefaults(style.name, defaults, base.url = .defaultBaseUrl)
 \arguments{
 \item{style.name}{(char) name for style}
 
-\item{defaults}{(list) a list of visual property default settings, see mapVisualProperty}
+\item{defaults}{(list) a list of visual property default settings}
 
 \item{base.url}{cyrest base url for communicating with cytoscape}
 }

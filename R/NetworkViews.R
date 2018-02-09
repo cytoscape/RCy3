@@ -13,22 +13,24 @@ getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
+# Takes first (presumably only) view associated with provided network
 #' @export
 fitContent <- function(selected.only=FALSE, network=NULL, 
                        base.url =.defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    view.SUID <- getNetworkViews(network)[1]
     if(selected.only){
-        cur.SUID <- getNetworkSuid('current')
-        commandsPOST(paste0('view set current network=SUID:"',net.SUID,'"'), 
-                     base.url = base.url)
-        commandsPOST('view fit selected', base.url = base.url)
-        commandsPOST(paste0('view set current network=SUID:"',cur.SUID,'"'), 
-                     base.url = base.url)
+        commandsPOST(paste0('view fit selected view=SUID:"',view.SUID,'"'), base.url = base.url)
     } else {
-        res <- cyrestGET(paste("apply/fit", net.SUID, sep="/"),
-                         base.url = base.url)
-        invisible(res)
+        commandsPOST(paste0('view fit content view=SUID:"',view.SUID,'"'), base.url = base.url)
     }
+}
+# ------------------------------------------------------------------------------
+# Takes first (presumably only) view associated with provided network
+#' @export
+setCurrentView <- function(network=NULL, 
+                       base.url =.defaultBaseUrl) {
+    view.SUID <- getNetworkViews(network)[1]
+        commandsPOST(paste0('view set current view=SUID:"',view.SUID,'"'), base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
@@ -51,6 +53,8 @@ fitContent <- function(selected.only=FALSE, network=NULL,
 #' formats, such as PNG and JPEG. 
 #' @param zoom (\code{numeric}) The zoom value to proportionally scale the image. The default 
 #' value is 100.0. Valid only for bitmap formats, such as PNG and JPEG
+#' @param network Name or SUID of network. Takes first (presumably only) view 
+#' associated with provided network. Default is the "current" network active in Cytoscape.
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return server response
 #' @examples
@@ -59,7 +63,7 @@ fitContent <- function(selected.only=FALSE, network=NULL,
 #' }
 #' @export
 exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, height=NULL, 
-                      width=NULL, zoom=NULL, base.url=.defaultBaseUrl){
+                      width=NULL, zoom=NULL, network=NULL, base.url=.defaultBaseUrl){
     cmd.string <- 'view export' # minimum required command
     if(!is.null(filename))
         cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"')
@@ -75,6 +79,10 @@ exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, hei
         cmd.string <- paste0(cmd.string,' Width="',width,'"')
     if(!is.null(zoom))
         cmd.string <- paste0(cmd.string,' Zoom="',zoom,'"')
+    if(!is.null(network)){
+        view.SUID <- getNetworkViews(network)[1]
+        cmd.string <- paste0(cmd.string,' view=SUID:"',view.SUID,'"')
+    }
     
     commandsPOST(cmd.string)
 }
