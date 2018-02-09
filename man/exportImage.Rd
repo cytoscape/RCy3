@@ -6,7 +6,7 @@
 \usage{
 exportImage(filename = NULL, type = NULL, resolution = NULL,
   units = NULL, height = NULL, width = NULL, zoom = NULL,
-  base.url = .defaultBaseUrl)
+  network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{filename}{(\code{character}) Name of the image file to save. By default, the view's title 
@@ -29,6 +29,9 @@ formats, such as PNG and JPEG.}
 
 \item{zoom}{(\code{numeric}) The zoom value to proportionally scale the image. The default 
 value is 100.0. Valid only for bitmap formats, such as PNG and JPEG}
+
+\item{network}{Name or SUID of network. Takes first (presumably only) view 
+associated with provided network. Default is the "current" network active in Cytoscape.}
 
 \item{base.url}{cyrest base url for communicating with cytoscape}
 }
