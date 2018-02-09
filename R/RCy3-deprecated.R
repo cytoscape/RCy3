@@ -376,7 +376,7 @@ getDirectlyModifiableVisualProperties<-function(obj, style.name){
 #' @rdname setCenter-deprecated
 setCenter<-function(obj, x, y){
     .Deprecated("setNetworkCenterBypass")
-    setNetworkCenterBypass(x, y)
+    setNetworkCenterBypass(x, y, bypass=FALSE)
 }
 
 #' DEPRECATED: getZoom
@@ -414,7 +414,7 @@ getCenter<-function(obj){
 #' @rdname setZoom-deprecated
 setZoom<-function(obj, new.level){
     .Deprecated("setNetworkZoomBypass")
-    setNetworkZoomBypass(new.level)
+    setNetworkZoomBypass(new.level, bypass=FALSE)
 }
 
 

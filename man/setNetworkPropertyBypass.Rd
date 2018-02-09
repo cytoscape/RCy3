@@ -4,13 +4,15 @@
 \alias{setNetworkPropertyBypass}
 \title{Set Network Property Bypass}
 \usage{
-setNetworkPropertyBypass(new.value, visual.property, network = NULL,
-  base.url = .defaultBaseUrl)
+setNetworkPropertyBypass(new.value, visual.property, bypass = TRUE,
+  network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{new.value}{DESCRIPTION}
 
 \item{visual.property}{DESCRIPTION}
+
+\item{bypass}{Whether to set permanent bypass value. Default is \code{TRUE}.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}
 
