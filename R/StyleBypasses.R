@@ -275,9 +275,9 @@ setNetworkPropertyBypass <- function(new.value,
                            view.SUID,
                            "network",
                            sep = "/"),
-                     parameters = list(bypass=TRUE),
-                     body = list(visualProperty = visual.property,
-                                 value = new.value),
+                     parameters = list(bypass='true'),
+                     body = list(list(visualProperty = visual.property,
+                                 value = new.value)),
                      base.url = base.url)
 }
 # ------------------------------------------------------------------------------
@@ -309,8 +309,8 @@ clearNetworkPropertyBypass <- function(visual.property,
                                "views",
                                view.SUID,
                                "network",
+                               visual.property, ## NOT AVAILABLE IN CYREST YET!
                                sep = "/"),
-                         parameters = (bypass=TRUE),
                          base.url = base.url)
 }
 
