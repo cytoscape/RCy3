@@ -5,7 +5,7 @@
 \title{Creates a mapping between an attribute and a visual property}
 \usage{
 mapVisualProperty(visual.prop, table.column, mapping.type, table.column.values,
-  visual.prop.values, obj = CytoscapeWindowFromNetwork())
+  visual.prop.values, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{visual.prop}{(char) name of visual property to map}
@@ -23,7 +23,7 @@ mapVisualProperty(visual.prop, table.column, mapping.type, table.column.values,
 \item{base.url}{cyrest base url for communicating with cytoscape}
 }
 \value{
-(obj) ready to convert into JSON by style mapping operations
+(network=network, base.url=base.url) ready to convert into JSON by style mapping operations
 }
 \description{
 Generates the appropriate data structure for the "mapping" parameter

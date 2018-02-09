@@ -1,6 +1,19 @@
-# TODO: pauseDialog(message, base.url) http://localhost:1234/v1/commands/command/pause
-# TODO: pauseTimer(message, base.url) http://localhost:1234/v1/commands/command/sleep
-# TODO: quitCytoscape(base.url) http://localhost:1234/v1/commands/command/quit 
+# ==============================================================================
+# Functions for constructing any arbitrary CyREST API or Commands API method via
+# standard GET, PUT, POST and DELETE protocols. These functions handle marshalling
+# and unmarshalling of urls, parameters and returns so that higher-level functions
+# can work with R-friendly arguments and returns.
+#
+# I. CyREST API functions
+# II. Commands API functions
+# III. Internal functions 
+# 
+# Note: This is where the bulk of the dependencies for other packages are used,
+# e.g., utils, httr, RJSONIO, etc. Follow the use of @importFrom where prudent.
+#
+# ==============================================================================
+# I. CyREST API functions
+# ------------------------------------------------------------------------------
 
 #' @importFrom RJSONIO fromJSON
 #' @importFrom httr GET
@@ -88,6 +101,8 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
     }
 }
 
+# ==============================================================================
+# II. Commands API functions
 # ------------------------------------------------------------------------------
 #' Commands Help
 #'
@@ -201,6 +216,11 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     }
 }
 
+# ==============================================================================
+# III. Internal functions
+# 
+# Dev Notes: Prefix internal functions with a '.'. Do not @export and in general
+# skip royxgen docs for these functions, with the exception of @importFrom lines.
 # ------------------------------------------------------------------------------
 # Command string to CyREST GET query URL
 #
