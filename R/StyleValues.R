@@ -35,7 +35,6 @@ getNodeProperty <- function(node.names,
     
     for (i in 1:length(node.SUIDs)) {
         node.SUID <- as.character(node.SUIDs[i])
-        new.value <- new.values[i]
         res <- cyrestGET(paste("networks",
                                net.SUID,
                                "views",
@@ -183,17 +182,17 @@ getEdgeTargetArrowShape <- function (egde.names=NULL, network=NULL, base.url =.d
 # Pattern: call getNetworkProperty()
 # ------------------------------------------------------------------------------
 #' @export
-getCenter <- function(network=NULL, base.url =.defaultBaseUrl) {
+getNetworkCenter <- function(network=NULL, base.url =.defaultBaseUrl) {
     x.coordinate <- getNetworkProperty("NETWORK_CENTER_X_LOCATION", 
                                        network = network, base.url = base.url)
     y.coordinate <- getNetworkProperty("NETWORK_CENTER_Y_LOCATION", 
                                        network = network, base.url = base.url)
-    return(list(x = x.coordinate, y = y.coordinate))
+    return(list(x = x.coordinate$value, y = y.coordinate$value))
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-getZoom <- function(network=NULL, base.url =.defaultBaseUrl) {
+getNetworkZoom <- function(network=NULL, base.url =.defaultBaseUrl) {
     getNetworkProperty("NETWORK_SCALE_FACTOR", network = network, base.url = base.url)
 }
 
