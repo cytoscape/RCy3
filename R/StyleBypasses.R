@@ -76,8 +76,8 @@ setNodePropertyBypass <- function(node.names,
                                    node.SUID,
                                    sep = "/"),
                              parameters = list(bypass=bypass),
-                             body = list(visualProperty = visual.property,
-                                         value = new.value),
+                             body = list(list(visualProperty = visual.property,
+                                         value = new.value)),
                              base.url = base.url)
         }
     }
@@ -191,8 +191,8 @@ setEdgePropertyBypass <- function(edge.names,
                                     edge.SUID,
                                     sep = "/"),
                              parameters = list(bypass=bypass),
-                             body = list(visualProperty = visual.property,
-                                         value = current.value),
+                             body = list(list(visualProperty = visual.property,
+                                         value = current.value)),
                              base.url = base.url)
         }
     }
