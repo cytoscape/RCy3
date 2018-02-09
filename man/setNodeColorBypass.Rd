@@ -23,7 +23,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-Set the fill color bypass value of the specified node or nodes.
+Set the bypass value for fill color for the specified node or nodes.
 }
 \details{
 This method permanently overrides any default values or mappings 

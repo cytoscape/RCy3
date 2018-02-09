@@ -1,5 +1,76 @@
-# TODO: layoutEdgeBundling
+# ==============================================================================
+# Functions for performing LAYOUTS in addition to getting and setting layout
+# properties. 
+# 
+# I. Perform layout functions
+# II. Get layout properties
+# III. Set layout properties
+#
+# ==============================================================================
+# I. Perform layout functions
+# ------------------------------------------------------------------------------
+#' Apply a layout to a network
+#'
+#' @details Run \link{getLayoutNames} to list available layouts. 
+#' @param layout.name (\code{character}) Name of the layout (with optional parameters). 
+#' If not specified, then the preferred layout set in the Cytoscape UI is applied.
+#' @param base.url (optional)  URL prefix for CyREST calls
+#' @return None
+#' @examples
+#' \donttest{
+#' layoutNetwork()
+#' layoutNetwork('force-directed')
+#' layoutNetwork('force-directed defaultSpringCoefficient=.00006 defaultSpringLength=80')
+#' }
+#' @export
+layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaultBaseUrl) {
+    suid <- getNetworkSuid(network)
+    if(is.null(layout.name)){
+        res<-commandsPOST(paste0('layout apply preferred networkSelected="SUID:',suid,'"'), base.url=base.url)
+        invisible(res)
+    } else {
+        res <- commandsPOST(paste0('layout ',layout.name,' network="SUID:',suid,'"'),base.url=base.url)
+        invisible(res)
+    }
+}
 
+# ------------------------------------------------------------------------------
+#' Copy a layout from one network to another
+#'
+#' @description Sets the coordinates for each node in the target network to the 
+#' coordinates of a matching node in the source network.
+#' @details Optional parameters such as \code{gridUnmapped} and \code{selectUnmapped} 
+#' determine the behavior of target network nodes that could not be matched.
+#' @param sourceNetwork (\code{character}) The name of network to get node coordinates from 
+#' @param targetNetwork (\code{character}) The name of the network to apply coordinates to
+#' @param sourceColumn (optional \code{character}) The name of column in the sourceNetwork node 
+#' table used to match nodes; default is 'name'
+#' @param targetColumn (optional \code{character}) The name of column in the targetNetwork node 
+#' table used to match nodes; default is 'name'
+#' @param gridUnmapped (optional \code{character}) If this is set to true, any nodes in the target 
+#' network that could not be matched to a node in the source network will be laid out in a grid; 
+#' default is TRUE
+#' @param selectUnmapped optional \code{character}) If this is set to true, any nodes in the target network 
+#' that could not be matched to a node in the source network will be selected in the target network; 
+#' default is TRUE
+#' @param base.url (optional)  URL prefix for CyREST calls
+#' @return None
+#' @examples
+#' \donttest{
+#' layoutCopycat('network1','network2')
+#' }
+#' @export
+layoutCopycat <- function(sourceNetwork, targetNetwork, sourceColumn='name', targetColumn='name', 
+                          gridUnmapped=TRUE, selectUnmapped=TRUE, base.url=.defaultBaseUrl){
+    res<-commandsPOST(paste0('layout copycat sourceNetwork="', sourceNetwork,'" targetNetwork="',
+                             targetNetwork,'" sourceColumn="',sourceColumn,'" targetColumn="',
+                             targetColumn,'" gridUnmapped="',gridUnmapped,'" selectUnmapped="',
+                             selectUnmapped), base.url=base.url)
+    invisible(res)
+}
+
+# ==============================================================================
+# II. Get layout properties
 # ------------------------------------------------------------------------------
 #' @title Get Layout Names
 #' 
@@ -118,6 +189,8 @@ getLayoutPropertyValue <- function (layout.name, property.name, base.url = .defa
     return(sapply(layout.property.list, '[[', 4)[position])
 }
 
+# ==============================================================================
+# III. Set layout properties
 #------------------------------------------------------------------------------------------------------------------------
 #' Set Layout Properties
 #' 
@@ -154,63 +227,3 @@ setLayoutProperties <- function (layout.name, properties.list, base.url = .defau
     
 }
 
-# ------------------------------------------------------------------------------
-#' Apply a layout to a network
-#'
-#' @details Run \link{getLayoutNames} to list available layouts. 
-#' @param layout.name (\code{character}) Name of the layout (with optional parameters). 
-#' If not specified, then the preferred layout set in the Cytoscape UI is applied.
-#' @param base.url (optional)  URL prefix for CyREST calls
-#' @return None
-#' @examples
-#' \donttest{
-#' layoutNetwork()
-#' layoutNetwork('force-directed')
-#' layoutNetwork('force-directed defaultSpringCoefficient=.00006 defaultSpringLength=80')
-#' }
-#' @export
-layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaultBaseUrl) {
-    suid <- getNetworkSuid(network)
-    if(is.null(layout.name)){
-        res<-commandsPOST(paste0('layout apply preferred networkSelected="SUID:',suid,'"'), base.url=base.url)
-        invisible(res)
-    } else {
-        res <- commandsPOST(paste0('layout ',layout.name,' network="SUID:',suid,'"'),base.url=base.url)
-        invisible(res)
-    }
-}
-
-# ------------------------------------------------------------------------------
-#' Copy a layout from one network to another
-#'
-#' @description Sets the coordinates for each node in the target network to the 
-#' coordinates of a matching node in the source network.
-#' @details Optional parameters such as \code{gridUnmapped} and \code{selectUnmapped} 
-#' determine the behavior of target network nodes that could not be matched.
-#' @param sourceNetwork (\code{character}) The name of network to get node coordinates from 
-#' @param targetNetwork (\code{character}) The name of the network to apply coordinates to
-#' @param sourceColumn (optional \code{character}) The name of column in the sourceNetwork node 
-#' table used to match nodes; default is 'name'
-#' @param targetColumn (optional \code{character}) The name of column in the targetNetwork node 
-#' table used to match nodes; default is 'name'
-#' @param gridUnmapped (optional \code{character}) If this is set to true, any nodes in the target 
-#' network that could not be matched to a node in the source network will be laid out in a grid; 
-#' default is TRUE
-#' @param selectUnmapped optional \code{character}) If this is set to true, any nodes in the target network 
-#' that could not be matched to a node in the source network will be selected in the target network; 
-#' default is TRUE
-#' @param base.url (optional)  URL prefix for CyREST calls
-#' @return None
-#' @examples
-#' \donttest{
-#' layoutCopycat('network1','network2')
-#' }
-#' @export
-layoutCopycat <- function(sourceNetwork, targetNetwork, sourceColumn='name', targetColumn='name', 
-              gridUnmapped=TRUE, selectUnmapped=TRUE, base.url=.defaultBaseUrl){
-    res<-commandsPOST(paste0('layout copycat sourceNetwork="', sourceNetwork,'" targetNetwork="',
-                           targetNetwork,'" sourceColumn="',sourceColumn,'" targetColumn="',
-                           targetColumn,'" gridUnmapped="',gridUnmapped,'" selectUnmapped="',
-                           selectUnmapped), base.url=base.url)
-    invisible(res)
-}

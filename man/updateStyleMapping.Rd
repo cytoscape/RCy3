@@ -4,7 +4,8 @@
 \alias{updateStyleMapping}
 \title{Updates a visual property mapping in a style}
 \usage{
-updateStyleMapping(style.name, mapping, obj = CytoscapeConnection())
+updateStyleMapping(style.name, mapping, network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{style.name}{(char) name for style}

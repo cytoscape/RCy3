@@ -1,3 +1,7 @@
+# ==============================================================================
+# Functions for working with GROUPS in Cytoscape.
+#
+# ------------------------------------------------------------------------------
 # TODO: createGroup(title, group.name, node.names, base.url) http://localhost:1234/v1/networks/52/groups/count
 # TODO: deleteGroup(title, group.name, base.url) http://localhost:1234/v1/networks/52/groups/count
 # TODO: renameGroup (group.name, base.url) http://localhost:1234/v1/commands/group/rename 

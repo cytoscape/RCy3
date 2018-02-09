@@ -2,8 +2,8 @@
 # Functions for setting and clearing BYPASS values for visual properties,
 # organized into sections:
 #
-# I. General functions for setting/clearing node and edge properties
-# II. Specific functions for setting particular node and edge properties
+# I. General functions for setting/clearing node, edge and network properties
+# II. Specific functions for setting particular node, edge and network properties
 #
 # NOTE: The CyREST 'bypass' enpoint is essential to properly set values that 
 # will persist for a given network independent of applied style and style 
@@ -11,10 +11,13 @@
 #
 # ==============================================================================
 # I. General Functions
+# ==============================================================================
+# I.a. Node Properties
 # ------------------------------------------------------------------------------
 #' @title Set Node Property Bypass
 #'
-#' @description Set bypass values for any node property of the specified nodes.
+#' @description Set bypass values for any node property of the specified nodes, 
+#' overriding default values and mappings defined by any visual style.
 #' @param node.names DESCRIPTION
 #' @param new.values DESCRIPTION
 #' @param visual.property DESCRIPTION
@@ -31,59 +34,53 @@
 #' setNodePropertyBypass()
 #' }
 #' @export
-setNodePropertyBypass <-
-    function(node.names,
-             new.values,
-             visual.property,
-             network = NULL,
-             base.url = .defaultBaseUrl) {
-        net.SUID <- getNetworkSuid(network)
-        net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
-        view.SUID <- as.character(net.views.SUIDs[[1]])
-        node.SUIDs <-
-            .nodeNameToNodeSUID(node.names, net.SUID, base.url)
-        
-        # 'node.names' and 'new.values' must have the same length
-        if (length(new.values) == 1) {
-            new.values <- rep(new.values, length(node.names))
-        }
-        
-        if (length(new.values) != length(node.names)) {
-            write(
-                sprintf(
-                    "ERROR in setNodePropertyBypass():\n   the number of nodes
+setNodePropertyBypass <- function(node.names,
+                                  new.values,
+                                  visual.property,
+                                  network = NULL,
+                                  base.url = .defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    node.SUIDs <-
+        .nodeNameToNodeSUID(node.names, net.SUID, base.url)
+    
+    # 'node.names' and 'new.values' must have the same length
+    if (length(new.values) == 1) {
+        new.values <- rep(new.values, length(node.names))
+    }
+    
+    if (length(new.values) != length(node.names)) {
+        write(
+            sprintf(
+                "ERROR in setNodePropertyBypass():\n   the number of nodes
                     [%d] and new values [%d] are not the same >> node(s)
                     attribute couldn't be set",
-                    length(node.names),
-                    length(new.values)
-                ),
-                stderr()
-            )
-            return()
-        } else {
-            for (i in 1:length(node.SUIDs)) {
-                node.SUID <- as.character(node.SUIDs[i])
-                new.value <- new.values[i]
-                res <-
-                    cyrestPUT(
-                        paste(
-                            "networks",
-                            net.SUID,
-                            "views",
-                            view.SUID,
-                            "nodes",
-                            node.SUID,
-                            visual.property,
-                            'bypass',
-                            sep = "/"
-                        ),
-                        body = list(visualProperty = visual.property,
-                                    value = new.value),
-                        base.url = base.url
-                    )
-            }
+                length(node.names),
+                length(new.values)
+            ),
+            stderr()
+        )
+        return()
+    } else {
+        for (i in 1:length(node.SUIDs)) {
+            node.SUID <- as.character(node.SUIDs[i])
+            new.value <- new.values[i]
+            res <- cyrestPUT(paste("networks",
+                                   net.SUID,
+                                   "views",
+                                   view.SUID,
+                                   "nodes",
+                                   node.SUID,
+                                   visual.property,
+                                   'bypass',
+                                   sep = "/"),
+                             body = list(visualProperty = visual.property,
+                                         value = new.value),
+                             base.url = base.url)
         }
     }
+}
 # ------------------------------------------------------------------------------
 #' @title Clear Node Property Bypass
 #'
@@ -102,42 +99,39 @@ setNodePropertyBypass <-
 #' clearNodePropertyBypass()
 #' }
 #' @export
-clearNodePropertyBypass <-
-    function(node.names,
-             visual.property,
-             network = NULL,
-             base.url = .defaultBaseUrl) {
-        net.SUID <- getNetworkSuid(network)
-        net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
-        view.SUID <- as.character(net.views.SUIDs[[1]])
-        node.SUIDs <-
-            .nodeNameToNodeSUID(node.names, net.SUID, base.url)
-        
-        for (i in 1:length(node.SUIDs)) {
-            node.SUID <- as.character(node.SUIDs[i])
-            new.value <- new.values[i]
-            res <-
-                cyrestDELETE(
-                    paste(
-                        "networks",
-                        net.SUID,
-                        "views",
-                        view.SUID,
-                        "nodes",
-                        node.SUID,
-                        visual.property,
-                        'bypass',
-                        sep = "/"
-                    ),
-                    base.url = base.url
-                )
-        }
+clearNodePropertyBypass <-  function(node.names,
+                                     visual.property,
+                                     network = NULL,
+                                     base.url = .defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    node.SUIDs <-
+        .nodeNameToNodeSUID(node.names, net.SUID, base.url)
+    
+    for (i in 1:length(node.SUIDs)) {
+        node.SUID <- as.character(node.SUIDs[i])
+        new.value <- new.values[i]
+        res <- cyrestDELETE( paste("networks",
+                                   net.SUID,
+                                   "views",
+                                   view.SUID,
+                                   "nodes",
+                                   node.SUID,
+                                   visual.property,
+                                   'bypass',
+                                   sep = "/"),
+                             base.url = base.url )
     }
+}
 
+# ==============================================================================
+# I.b. Edge Properties
 # ------------------------------------------------------------------------------
 #' @title Set Edge Property Bypass
 #'
-#' @description Set bypass values for any edge property of the specified edges.
+#' @description Set bypass values for any edge property of the specified edges, 
+#' overriding default values and mappings defined by any visual style.
 #' @param edge.names DESCRIPTION
 #' @param new.values DESCRIPTION
 #' @param visual.property DESCRIPTION
@@ -155,58 +149,52 @@ clearNodePropertyBypass <-
 #' setEdgePropertyBypass()
 #' }
 #' @export
-setEdgePropertyBypass <-
-    function(edge.names,
-             new.values,
-             visual.property,
-             network = NULL,
-             base.url = .defaultBaseUrl) {
-        net.SUID <- getNetworkSuid(network)
-        net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
-        view.SUID <- as.character(net.views.SUIDs[[1]])
-        edge.SUIDs <-
-            .edgeNameToEdgeSUID(edge.names, net.SUID, base.url)
-        # 'edge.names' and 'new.values' must have the same length
-        if (length(new.values) == 1) {
-            new.values <- rep(new.values, length(edge.names))
-        }
-        
-        if (length(new.values) != length(edge.names)) {
-            write(
-                sprintf(
-                    "ERROR in setEdgePropertyBypass():\n\t number of
+setEdgePropertyBypass <- function(edge.names,
+                                  new.values,
+                                  visual.property,
+                                  network = NULL,
+                                  base.url = .defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    edge.SUIDs <-
+        .edgeNameToEdgeSUID(edge.names, net.SUID, base.url)
+    # 'edge.names' and 'new.values' must have the same length
+    if (length(new.values) == 1) {
+        new.values <- rep(new.values, length(edge.names))
+    }
+    
+    if (length(new.values) != length(edge.names)) {
+        write(
+            sprintf(
+                "ERROR in setEdgePropertyBypass():\n\t number of
                     edge.names [%d] and new.values [%d] are not the
                     same >> edge(s) attribute could not be set",
-                    length(edge.names),
-                    length(new.values)
-                ),
-                stderr()
-            )
-        } else {
-            for (i in 1:length(edge.SUIDs)) {
-                edge.SUID <- as.character(edge.SUIDs[i])
-                current.value <- new.values[i]
-                
-                res <-
-                    cyrestPUT(
-                        paste(
-                            "networks",
-                            net.SUID,
-                            "views",
-                            view.SUID,
-                            "edges",
-                            edge.SUID,
-                            visual.property,
-                            'bypass',
-                            sep = "/"
-                        ),
-                        body = list(visualProperty = visual.property,
-                                    value = current.value),
-                        base.url = base.url
-                    )
-            }
+                length(edge.names),
+                length(new.values)
+            ),
+            stderr()
+        )
+    } else {
+        for (i in 1:length(edge.SUIDs)) {
+            edge.SUID <- as.character(edge.SUIDs[i])
+            current.value <- new.values[i]
+            
+            res <- cyrestPUT(paste( "networks",
+                                    net.SUID,
+                                    "views",
+                                    view.SUID,
+                                    "edges",
+                                    edge.SUID,
+                                    visual.property,
+                                    'bypass',
+                                    sep = "/"),
+                             body = list(visualProperty = visual.property,
+                                         value = current.value),
+                             base.url = base.url)
         }
     }
+}
 # ------------------------------------------------------------------------------
 #' @title Clear Edge Property Bypass
 #'
@@ -225,48 +213,153 @@ setEdgePropertyBypass <-
 #' clearEdgePropertyBypass()
 #' }
 #' @export
-clearEdgePropertyBypass <-
-    function(edge.names,
-             visual.property,
-             network = NULL,
-             base.url = .defaultBaseUrl) {
-        net.SUID <- getNetworkSuid(network)
-        net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
-        view.SUID <- as.character(net.views.SUIDs[[1]])
-        edge.SUIDs <-
-            .nodeNameToNodeSUID(edge.names, net.SUID, base.url)
-        
-        for (i in 1:length(edge.SUIDs)) {
-            edge.SUID <- as.character(edge.SUIDs[i])
-            new.value <- new.values[i]
-            res <-
-                cyrestDELETE(
-                    paste(
-                        "networks",
-                        net.SUID,
-                        "views",
-                        view.SUID,
-                        "nodes",
-                        edge.SUID,
-                        visual.property,
-                        'bypass',
-                        sep = "/"
-                    ),
-                    base.url = base.url
-                )
-        }
+clearEdgePropertyBypass <- function(edge.names,
+                                    visual.property,
+                                    network = NULL,
+                                    base.url = .defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    edge.SUIDs <-
+        .nodeNameToNodeSUID(edge.names, net.SUID, base.url)
+    
+    for (i in 1:length(edge.SUIDs)) {
+        edge.SUID <- as.character(edge.SUIDs[i])
+        new.value <- new.values[i]
+        res <- cyrestDELETE(paste( "networks",
+                                   net.SUID,
+                                   "views",
+                                   view.SUID,
+                                   "edges",
+                                   edge.SUID,
+                                   visual.property,
+                                   'bypass',
+                                   sep = "/"),
+                            base.url = base.url)
     }
+}
+
+# ==============================================================================
+# I.c. Network Properties
+# ------------------------------------------------------------------------------
+#' @title Set Network Property Bypass
+#'
+#' @description Set bypass values for any network property, overriding default 
+#' values defined by any visual style.
+#' @param new.value DESCRIPTION
+#' @param visual.property DESCRIPTION
+#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @details This method permanently overrides any default values or mappings 
+#' defined for the visual properties of the node or nodes specified. To restore
+#' defaults and mappings, use \link{clearNodePropertyBypass}.
+#' @return None
+#' @seealso \link{clearNetworkPropertyBypass}
+#' @examples \donttest{
+#' setNetworkPropertyBypass()
+#' }
+#' @export
+setNetworkPropertyBypass <- function(new.value,
+                                     visual.property,
+                                     network = NULL,
+                                     base.url = .defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    
+    res <- cyrestPUT(paste("networks",
+                           net.SUID,
+                           "views",
+                           view.SUID,
+                           "network",
+                           sep = "/"),
+                     parameters = list(bypass=TRUE),
+                     body = list(visualProperty = visual.property,
+                                 value = new.value),
+                     base.url = base.url)
+}
+# ------------------------------------------------------------------------------
+#' @title Clear Network Property Bypass
+#'
+#' @description Clear bypass values for any network property,
+#' effectively restoring any previously defined style defaults or mappings.
+#' @param visual.property DESCRIPTION
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @seealso \link{setNodePropertyBypass}
+#' @examples \donttest{
+#' clearNetworkPropertyBypass()
+#' }
+#' @export
+clearNetworkPropertyBypass <- function(visual.property,
+                                       network = NULL,
+                                       base.url = .defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
+    view.SUID <- as.character(net.views.SUIDs[[1]])
+    
+    res <- cyrestDELETE( paste("networks",
+                               net.SUID,
+                               "views",
+                               view.SUID,
+                               "network",
+                               sep = "/"),
+                         parameters = (bypass=TRUE),
+                         base.url = base.url)
+}
 
 # ==============================================================================
 # II. Specific Functions
-# ==============================================================================
-# II.a. NODE PROPERTIES
-# Pattern: (1) validate input value, (2) call setNodePropertyBypass()
+# ------------------------------------------------------------------------------
+#' @title Unhide All
+#'
+#' @description Unhide all previously hidden nodes and edges, by 
+#' clearing the Visible property bypass value.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @details This method permanently overrides any default values or mappings 
+#' defined for this visual property of the edge or edges specified. This method
+#' ultimately calls the generic function, \link{clearEdgePropertyBypass}, which 
+#' can be used to clear any visual property. 
+#' @return None
+#' @seealso {
+#' \link{clearEdgePropertyBypass},
+#' \link{unhideNodes}
+#' \link{unhideEdges}
+#' }
+#' @examples \donttest{
+#' unhideAll()
+#' }
+#' @export
 #
+# DEV NOTE: unhideAll() is an exception to the pattern since it alternatively
+# calls Node and Edge vesions of set***PropteryBypass().
+#
+unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
+    suid <- getNetworkSuid(network)
+    node.names <- getAllNodes(suid, base.url)
+    clearNodePropertyBypass(node.names, "NODE_VISIBLE", network, base.url)
+    
+    edge.names <- getAllEdges(suid, base.url)
+    clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network, base.url)
+}
+
+# ==============================================================================
+# II.a. Node Properties
+# Pattern: (1) validate input value, (2) call setNodePropertyBypass()
 # ------------------------------------------------------------------------------
 #' @title Set Node Color Bypass
 #'
-#' @description Set the fill color bypass value of the specified node or nodes. 
+#' @description Set the bypass value for fill color for the specified node or nodes. 
 #' @param node.names DESCRIPTION
 #' @param new.colors DESCRIPTION
 #' @param network (optional) Name or SUID of the network. Default is the 
@@ -1118,9 +1211,8 @@ unhideNodes <-
     }
 
 # ==============================================================================
-# II.a. EDGE PROPERTIES
+# II.b. Edge Properties
 # Pattern: (1) validate input value, (2) call setEdgePropertyBypass()
-#
 # ------------------------------------------------------------------------------
 #' @title Set Edge Opacity Bypass
 #'
@@ -1940,35 +2032,104 @@ unhideEdges <- function (edge.names, network=NULL, base.url = .defaultBaseUrl) {
     clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network, base.url)
 } 
 
+# ==============================================================================
+# II.c. Network Properties
+# Pattern: (1) validate input value, (2) call setNetworkPropertyBypass()
 # ------------------------------------------------------------------------------
-#' @title Unhide All
+#' @title Set Network Zoom Bypass
 #'
-#' @description Unhide all previously hidden nodes and edges, by 
-#' clearing the Visible property bypass value.
+#' @description Set the bypass value for scale factor for the network.
+#' @param new.value DESCRIPTION
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @details This method permanently overrides any default values or mappings 
-#' defined for this visual property of the edge or edges specified. This method
-#' ultimately calls the generic function, \link{clearEdgePropertyBypass}, which 
-#' can be used to clear any visual property. 
+#' @details This method permanently overrides any default values 
+#' for this visual property. This method
+#' ultimately calls the generic function, \link{setNetworkPropertyBypass}, which 
+#' can be used to set any visual property. To restore defaults, use
+#'  \link{clearNetworkPropertyBypass}.
 #' @return None
 #' @seealso {
-#' \link{clearEdgePropertyBypass},
-#' \link{unhideNodes}
-#' \link{unhideEdges}
+#' \link{setNetworkPropertyBypass},
+#' \link{clearNetworkPropertyBypass}
 #' }
 #' @examples \donttest{
-#' unhideAll()
+#' setNetworkZoomBypass()
 #' }
 #' @export
-unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
-    suid <- getNetworkSuid(network)
-    node.names <- getAllNodes(suid, base.url)
-    clearNodePropertyBypass(node.names, "NODE_VISIBLE", network, base.url)
-    
-    edge.names <- getAllEdges(suid, base.url)
-    clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network, base.url)
+setNetworkZoomBypass <- function(new.value, network = NULL, base.url = .defaultBaseUrl) {
+    setNetworkPropertyBypass(new.value, "NETWORK_SCALE_FACTOR", network, base.url)
 }
+
+# ------------------------------------------------------------------------------
+#' @title Clear Network Zoom Bypass
+#'
+#' @description Clear the bypass value for the scale factor for the network, 
+#' effectively restoring prior default values.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' clearNetworkZoomBypass()
+#' }
+#' @export
+clearNetworkZoomBypass <- function(network = NULL, base.url = .defaultBaseUrl) {
+    clearNetworkPropertyBypass("NETWORK_SCALE_FACTOR", network, base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Network Center Bypass
+#'
+#' @description Set the bypass value for center x and y for the network. This
+#' function could be used to pan and scroll the Cytoscape canvas.
+#' @param x DESCRIPTION
+#' @param y DESCRIPTION
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @details This method permanently overrides any default values 
+#' for this visual property. This method
+#' ultimately calls the generic function, \link{setNetworkPropertyBypass}, which 
+#' can be used to set any visual property. To restore defaults, use
+#'  \link{clearNetworkPropertyBypass}.
+#' @return None
+#' @seealso {
+#' \link{setNetworkPropertyBypass},
+#' \link{clearNetworkPropertyBypass}
+#' }
+#' @examples \donttest{
+#' setNetworkCenterBypass()
+#' }
+#' @export
+setNetworkCenterBypass <- function(x, y, network = NULL, base.url = .defaultBaseUrl) {
+    setNetworkPropertyBypass(x, "NETWORK_CENTER_X_LOCATION", network, base.url)
+    setNetworkPropertyBypass(y, "NETWORK_CENTER_Y_LOCATION", network, base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Clear Network Center Bypass
+#'
+#' @description Clear the bypass value for center x and y for the network, 
+#' effectively restoring prior default values.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' clearNetworkCenterBypass()
+#' }
+#' @export
+clearNetworkCenterBypass <- function(network = NULL, base.url = .defaultBaseUrl) {
+    clearNetworkPropertyBypass("NETWORK_CENTER_X_LOCATION", network, base.url)
+    clearNetworkPropertyBypass("NETWORK_CENTER_Y_LOCATION", network, base.url)
+}
+

@@ -1,6 +1,3 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R
-NULL
-
 # ======== Deprecation Process =======================================================
 # 1. Move deprecated functions here and update docs
 # 2. Change .Deprecated functions to .Defunct on next release
@@ -368,5 +365,58 @@ getDirectlyModifiableVisualProperties<-function(obj, style.name){
     .Deprecated("getVisualPropertyNames")
     getVisualPropertyNames()
 }
+
+#' DEPRECATED: setCenter
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage Use the replacement function instead:
+#' \code{\link[RCy3]{getVisualPropertyNames}}
+#' @export
+#' @rdname setCenter-deprecated
+setCenter<-function(obj, x, y){
+    .Deprecated("setNetworkCenterBypass")
+    setNetworkCenterBypass(x, y)
+}
+
+#' DEPRECATED: getZoom
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage Use the replacement function instead:
+#' \code{\link[RCy3]{getVisualPropertyNames}}
+#' @export
+#' @rdname getZoom-deprecated
+getZoom<-function(obj){
+    .Deprecated("getNetworkZoomBypass")
+    getNetworkZoomBypass()
+}
+#' DEPRECATED: getCenter
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage Use the replacement function instead:
+#' \code{\link[RCy3]{getVisualPropertyNames}}
+#' @export
+#' @rdname getCenter-deprecated
+getCenter<-function(obj){
+    .Deprecated("getNetworkCenterBypass")
+    getNetworkCenterBypass()
+}
+
+#' DEPRECATED: setZoom
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage Use the replacement function instead:
+#' \code{\link[RCy3]{getVisualPropertyNames}}
+#' @export
+#' @rdname setZoom-deprecated
+setZoom<-function(obj, new.level){
+    .Deprecated("setNetworkZoomBypass")
+    setNetworkZoomBypass(new.level)
+}
+
+
 
 

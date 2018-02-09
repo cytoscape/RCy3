@@ -1,7 +1,3 @@
-# ------ TODO -----------------------------------------------------------------
-# mapIdentifiers(title = NA,table = NA,column.name,species,mapFrom,mapTo,force.single = TRUE)
-# http://localhost:1234/v1/commands/idmapper/map%20column
-#
 # ------------------------------------------------------------------------------
 #' Get table column values
 #'
@@ -31,7 +27,7 @@ getTableColumns <- function(table,
     
     #all columns
     if (is.null(columns))
-        columns = listTableColumns(table, namespace, network, base.url)
+        columns = getTableColumnNames(table, namespace, network, base.url)
     
     #handle comma separated lists and list objects
     col.list = columns
@@ -45,7 +41,7 @@ getTableColumns <- function(table,
     df = data.frame(row.names = res.names$values)
     
     #retrieve column names
-    table.col.list = listTableColumns(table, namespace, network, base.url)
+    table.col.list = getTableColumnNames(table, namespace, network, base.url)
     
     #then append other requested columns
     for (col in col.list) {
@@ -75,7 +71,7 @@ getTableColumns <- function(table,
 }
 
 # ------------------------------------------------------------------------------
-#' List names of all columns in a table
+#' Get the names of all columns in a table
 #'
 #' @param table name of table, e.g., node, edge, network; default is "node"
 #' @param namespace namespace of table, e.g., default
@@ -84,13 +80,12 @@ getTableColumns <- function(table,
 #' @return list of column names
 #' @examples
 #' \donttest{
-#' listTableColumns()
-#' listTableColumns('edge')
-#' listTableColumns('network')
+#' getTableColumnNames()
+#' getTableColumnNames('edge')
+#' getTableColumnNames('network')
 #' }
 #' @export
-
-listTableColumns <-  function(table = 'node',
+getTableColumnNames <-  function(table = 'node',
                               namespace = 'default',
                               network = NULL,
                               base.url = .defaultBaseUrl) {

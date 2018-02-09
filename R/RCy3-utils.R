@@ -26,54 +26,6 @@
     return(result)
 }
 
-#------------------------------------------------------------------------------------------------------------------------
-.getNovelEdges = function (g.old, g.new)
-{
-    if (length (edges (g.old)) == 0){
-        gOld.edgeCount = 0
-    } else {
-        gOld.edgeCount = length (edgeNames (g.old))
-    }
-    
-    if (length (edges (g.new)) == 0){
-        gNew.edgeCount = 0
-    } else{
-        gNew.edgeCount = length (edgeNames (g.new))
-    }
-    
-    if (gNew.edgeCount == 0){
-        return (NA)
-    }
-    if (gOld.edgeCount == 0){
-        return (cy2.edge.names (g.new))
-    }
-    
-    old.edges = cy2.edge.names (g.old)
-    new.edges = cy2.edge.names (g.new)
-    novel.edges = setdiff (new.edges, old.edges)
-    novel.edges.indices = match (novel.edges, as.character (new.edges))
-    return (new.edges [novel.edges.indices])
-    
-    
-} # .getNovelEdges
-
-# ------------------------------------------------------------------------------
-is.classic.graph = function(obj)
-{
-    obj.classes = is(obj)
-    
-    return ('graph' %in% obj.classes)
-    
-} # is.classic.graph
-
-# ------------------------------------------------------------------------------
-is.multiGraph = function(obj)
-{
-    obj.classes = is(obj)
-    
-    return('MultiGraph' %in% obj.classes)
-    
-} # is.multiGraph
 
 # ------------------------------------------------------------------------------
 .isNotHexColor <- function(color){
@@ -197,7 +149,7 @@ is.multiGraph = function(obj)
             attribute.values = c()
             
             for(i in 1:length(nodes.with.attribute)) {
-                attribute.values = c(attribute.values, getNodeAttribute(obj, nodes.with.attribute[i], attribute.name))
+                attribute.values = c(attribute.values, getNodeAttribute(nodes.with.attribute[i], attribute.name, suid, base.url))
             }
             graph::nodeData(existing.graph, nodes.with.attribute, attribute.name) = attribute.values
         } ## END if there are nodes that have values for the attribute
@@ -215,7 +167,7 @@ is.multiGraph = function(obj)
         edges.with.attribute = haveEdgeAttribute(cy2.edgenames, attribute.name, suid, base.url)
         
         if(length(edges.with.attribute) > 0) {
-            attribute.type = getEdgeAttributeType(obj, attribute.name) 
+            attribute.type = getEdgeAttributeType(attribute.name, suid, base.url) 
             
             write(sprintf("\t retrieving attribute '%s' values for %d edges", attribute.name, length(edges.with.attribute)), stderr())
             if(attribute.type == 'Integer' || attribute.type == 'Long') {
@@ -239,7 +191,7 @@ is.multiGraph = function(obj)
             eda.values = c()
             
             for(i in 1:length(edges.with.attribute)) {
-                eda.values = c(eda.values, getEdgeAttribute(obj, edges.with.attribute[i], attribute.name))
+                eda.values = c(eda.values, getEdgeAttribute(edges.with.attribute[i], attribute.name, suid, base.url))
             }
             
             regex = ' *[\\(|\\)] *'
@@ -255,4 +207,53 @@ is.multiGraph = function(obj)
     
     return(existing.graph)
 } 
+
+# #------------------------------------------------------------------------------------------------------------------------
+# .getNovelEdges = function (g.old, g.new)
+# {
+#     if (length (edges (g.old)) == 0){
+#         gOld.edgeCount = 0
+#     } else {
+#         gOld.edgeCount = length (edgeNames (g.old))
+#     }
+#     
+#     if (length (edges (g.new)) == 0){
+#         gNew.edgeCount = 0
+#     } else{
+#         gNew.edgeCount = length (edgeNames (g.new))
+#     }
+#     
+#     if (gNew.edgeCount == 0){
+#         return (NA)
+#     }
+#     if (gOld.edgeCount == 0){
+#         return (cy2.edge.names (g.new))
+#     }
+#     
+#     old.edges = cy2.edge.names (g.old)
+#     new.edges = cy2.edge.names (g.new)
+#     novel.edges = setdiff (new.edges, old.edges)
+#     novel.edges.indices = match (novel.edges, as.character (new.edges))
+#     return (new.edges [novel.edges.indices])
+#     
+#     
+# } # .getNovelEdges
+# 
+# # ------------------------------------------------------------------------------
+# is.classic.graph = function(obj)
+# {
+#     obj.classes = is(obj)
+#     
+#     return ('graph' %in% obj.classes)
+#     
+# } # is.classic.graph
+# 
+# # ------------------------------------------------------------------------------
+# is.multiGraph = function(obj)
+# {
+#     obj.classes = is(obj)
+#     
+#     return('MultiGraph' %in% obj.classes)
+#     
+# } # is.multiGraph
 
