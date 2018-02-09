@@ -4,10 +4,14 @@
 \alias{setNetworkZoomBypass}
 \title{Set Network Zoom Bypass}
 \usage{
-setNetworkZoomBypass(new.value, network = NULL, base.url = .defaultBaseUrl)
+setNetworkZoomBypass(new.value, bypass = FALSE, network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{new.value}{DESCRIPTION}
+
+\item{bypass}{Whether to set permanent bypass value. Default is \code{FALSE} 
+per common use of temporary zoom settings.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
