@@ -25,7 +25,8 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-Set bypass values for any edge property of the specified edges.
+Set bypass values for any edge property of the specified edges, 
+overriding default values and mappings defined by any visual style.
 }
 \details{
 This method permanently overrides any default values or mappings 

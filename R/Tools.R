@@ -1,13 +1,11 @@
-#' @include CytoscapeWindowClass.R CytoscapeConnectionClass.R 
-
 # ------ TODO -----------------------------------------------------------------
 #http://localhost:1234/diffusion/v1/52/views/772/diffuse
-setGeneric ('diffuse', function (obj, title=NA, view=NA) standardGeneric('diffuse'))
+#diffuse(title=NA, view=NA)
 
 ##http://localhost:1234/v1/commands/cybrowser/dialog 
-setGeneric ('cyBrowser', function (obj, title, url, text=NA, id=NA, debug=FALSE) standardGeneric('cyBrowser'))
-setGeneric ('cyBrowserHide', function (obj, id=NA) standardGeneric('cyBrowserHide'))
-setGeneric ('cyBrowserShow', function (obj, id=NA) standardGeneric('cyBrowserShow'))
-setGeneric ('cyBrowserVersion', function (obj) standardGeneric('cyBrowserVersion'))
+#cyBrowser(title, url, text=NA, id=NA, debug=FALSE) 
+#cyBrowserHide(id=NA) s
+#cyBrowserShow(id=NA) 
+#cyBrowserVersion(obj) 
 
 # ------------------------------------------------------------------------------

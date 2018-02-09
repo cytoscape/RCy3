@@ -2,7 +2,7 @@
 % Please edit documentation in R/NetworkViews.R
 \name{exportImage}
 \alias{exportImage}
-\title{Exports the current network view as an image}
+\title{Export Image}
 \usage{
 exportImage(filename = NULL, type = NULL, resolution = NULL,
   units = NULL, height = NULL, width = NULL, zoom = NULL,
@@ -36,13 +36,14 @@ value is 100.0. Valid only for bitmap formats, such as PNG and JPEG}
 server response
 }
 \description{
-Exports the current network view as an image
+Saves the current network view as an image file.
 }
 \details{
-The image is cropped per the current view in Cytoscape.
+The image is cropped per the current view in Cytoscape. Consider
+applying \code{\link{fitContent}} prior to export.
 }
 \examples{
 \donttest{
-exportImage('myNetwork','PDF')
+exportImage('/fullpath/myNetwork','PDF')
 }
 }

@@ -1,5 +1,8 @@
-
-#------------------------------------------------------------------------------------------------------------------------
+# ==============================================================================
+# Functions for checking CYTOSCAPE SYSTEM information, including versions
+# memory usage and a function to free Java memory used by the Cytoscape session. 
+# 
+# ------------------------------------------------------------------------------
 #' Ping Cytoscape
 #' 
 #' @description Test the connection to Cytoscape via CyREST 
@@ -7,12 +10,12 @@
 #' @return status message
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
-#' ping()
+#' cytoscapePing()
 #' # [1] "You are connected to Cytoscape!"
 #' }
 #' @export
 
-ping<-function(base.url=.defaultBaseUrl) {
+cytoscapePing<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url, 'version', sep="/")
               res <- GET(conn.str)
               if(res$status_code == 200) {

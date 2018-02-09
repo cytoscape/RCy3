@@ -110,24 +110,25 @@ getVisualStyleNames <- function(base.url=.defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
-#' Save Visual Styles
+#' Export Visual Styles
 #'
 #' @description Saves one or more visual styles to file
-#' @param filename (char) name of the style file to save. Default is "styles.xml"
-#' @param type (char) type of data file to export, e.g., XML, JSON (case sensitive). Default is XML.
+#' @param filename (char) Name of the style file to save. Default is "styles.xml"
+#' @param type (optional) Type of data file to export, e.g., XML, JSON (case sensitive). 
+#' Default is XML.
 #' @param styles (optional) The styles to be exported, listed as a comma-separated string. 
 #' If no styles are specified, only the current one is exported.
 #' @param base.url cyrest base url for communicating with cytoscape
-#' @return server response
+#' @return None
 #' @export
 #' @examples
 #' \donttest{
-#' saveVisualStyles()
-#' saveVisualStyles('myStyle', type = 'JSON')
-#' saveVisualStyles('myStyle', style = 'Minimal,default,Directed')
+#' exportVisualStyles('/fullpath/myStyle')
+#' exportVisualStyles('/fullpath/myStyle', type = 'JSON')
+#' exportVisualStyles('/fullpath/myStyle', style = 'Minimal,default,Directed')
 #' }
 
-saveVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.defaultBaseUrl){
+exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.defaultBaseUrl){
     cmd.string <- 'vizmap export'  # minmum command
     if(!is.null(filename))
         cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"')
