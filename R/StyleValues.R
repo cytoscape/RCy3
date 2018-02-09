@@ -33,6 +33,7 @@ getNodeProperty <- function(node.names,
     node.SUIDs <-
         .nodeNameToNodeSUID(node.names, net.SUID, base.url)
     
+    values <- c()
     for (i in 1:length(node.SUIDs)) {
         node.SUID <- as.character(node.SUIDs[i])
         res <- cyrestGET(paste("networks",
@@ -44,7 +45,9 @@ getNodeProperty <- function(node.names,
                                visual.property,
                                sep = "/"),
                          base.url = base.url)
+        values <- c(values, unlist(unname(res['value'])))
     }
+    return(values)
 }
 
 # ------------------------------------------------------------------------------
@@ -73,12 +76,11 @@ getEdgeProperty <- function(edge.names,
     net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     edge.SUIDs <-
-        .edgeNameToEdgeSUID(edge.names, net.SUID, base.url)
-    
+        .edgeNameToEdgeSUID(edge.names, network=net.SUID, base.url=base.url)
+
+        values <- c()
     for (i in 1:length(edge.SUIDs)) {
         edge.SUID <- as.character(edge.SUIDs[i])
-        current.value <- new.values[i]
-        
         res <- cyrestGET(paste( "networks",
                                 net.SUID,
                                 "views",
@@ -88,8 +90,9 @@ getEdgeProperty <- function(edge.names,
                                 visual.property,
                                 sep = "/"),
                          base.url = base.url)
-        
+        values <- c(values, unlist(unname(res['value'])))
     }
+    return(values)
 }
 
 # ------------------------------------------------------------------------------
@@ -123,6 +126,7 @@ getNetworkProperty <- function(visual.property,
                            visual.property,
                            sep = "/"),
                      base.url = base.url)
+    return(unlist(unname(res['value'])))
 }
 
 # ==============================================================================
@@ -132,19 +136,33 @@ getNetworkProperty <- function(visual.property,
 # Pattern: call getNodeProperty()
 # ------------------------------------------------------------------------------
 #' @export
+getNodeColor <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+    if(is.null(node.names))
+        node.names <- getAllNodes()
+    getNodeProperty(node.names, "NODE_FILL_COLOR", network=network, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @export
 getNodeSize <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+    if(is.null(node.names))
+        node.names <- getAllNodes()
     getNodeProperty(node.names, "NODE_SIZE", network=network, base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
 getNodeWidth <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+    if(is.null(node.names))
+        node.names <- getAllNodes()
     getNodeProperty(node.names, "NODE_WIDTH", network=network, base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
 getNodeHeight <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+    if(is.null(node.names))
+        node.names <- getAllNodes()
     getNodeProperty(node.names, "NODE_HEIGHT", network=network, base.url = base.url)
 }
 
@@ -153,25 +171,33 @@ getNodeHeight <- function (node.names=NULL, network=NULL, base.url =.defaultBase
 # Pattern: call getEdgeProperty()
 # ------------------------------------------------------------------------------
 #' @export
-getEdgeLineWidth <- function (egde.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+getEdgeLineWidth <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+    if(is.null(edge.names))
+        edge.names <- getAllEdges()
     getEdgeProperty(edge.names, "EDGE_WIDTH", network=network, base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-getEdgeColor <- function (egde.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+getEdgeColor <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+    if(is.null(edge.names))
+        edge.names <- getAllEdges()
     getEdgeProperty(edge.names, "EDGE_PAINT", network=network, base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-getEdgeLineStyle <- function (egde.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+getEdgeLineStyle <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+    if(is.null(edge.names))
+        edge.names <- getAllEdges()
     getEdgeProperty(edge.names, "EDGE_LINE_TYPE", network=network, base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-getEdgeTargetArrowShape <- function (egde.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+getEdgeTargetArrowShape <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+    if(is.null(edge.names))
+        edge.names <- getAllEdges()
     getEdgeProperty(edge.names, "EDGE_TARGET_ARROW_SHAPE", network=network, base.url = base.url)
 }
 
@@ -187,7 +213,7 @@ getNetworkCenter <- function(network=NULL, base.url =.defaultBaseUrl) {
                                        network = network, base.url = base.url)
     y.coordinate <- getNetworkProperty("NETWORK_CENTER_Y_LOCATION", 
                                        network = network, base.url = base.url)
-    return(list(x = x.coordinate$value, y = y.coordinate$value))
+    return(list(x = x.coordinate, y = y.coordinate))
 }
 
 # ------------------------------------------------------------------------------
