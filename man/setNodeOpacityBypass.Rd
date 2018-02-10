@@ -23,23 +23,26 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Set the bypass value for node fill, label and border opacity for 
+the specified node or nodes.
 }
 \details{
 This method permanently overrides any default values or mappings 
 defined for this visual property of the node or nodes specified. This method
 ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 can be used to set any visual property. To restore defaults and mappings, use
- \link{clearNodePropertyBypass}.
+ \link{clearNodeOpacityBypass}, see examples.
 }
 \examples{
 \donttest{
-setNodeOpacityBypass()
+setNodeOpacityBypass('Node 1', 100)
+setNodeOpacityBypass(c('Node 1','Node 2'), 100)
+clearNodeOpacityBypass(c('Node 1','Node 2'))
 }
 }
 \seealso{
 {
 \link{setNodePropertyBypass},
-\link{clearNodePropertyBypass}
+\link{clearNodeOpacityBypass}
 }
 }
