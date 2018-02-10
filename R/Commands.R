@@ -26,10 +26,16 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         q.url <- paste(q.url, q.params, sep="?")
     }
     res <- GET(url=URLencode(q.url))
-    if(length(res$content)>0){
-        return(fromJSON(rawToChar(res$content)))
-    } else{
-        invisible(res)
+    if(res$status_code > 299){
+        write(sprintf("RCy3::cyrestGET, HTTP Error Code: %d\n url=%s", 
+                      res$status_code, URLencode(q.url)), stderr())
+        stop()
+    } else {
+        if(length(res$content)>0){
+            return(fromJSON(rawToChar(res$content)))
+        } else{
+            invisible(res)
+        }
     }
 }
 
@@ -48,7 +54,9 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
     q.body <- toJSON(body)
     res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json())
     if(res$status_code > 299){
-        stop(rawToChar(res$content))
+        write(sprintf("RCy3::cyrestPOST, HTTP Error Code: %d\n url=%s\n body=%s", 
+                      res$status_code, URLencode(q.url), q.body), stderr())
+        stop()
     } else {
         if(length(res$content)>0){
             return(fromJSON(rawToChar(res$content)))
@@ -73,7 +81,9 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
     q.body <- toJSON(body)
     res <- PUT(url=URLencode(q.url), body=q.body, encode="json", content_type_json())
     if(res$status_code > 299){
-        stop(rawToChar(res$content))
+        write(sprintf("RCy3::cyrestPUT, HTTP Error Code: %d\n url=%s\n body=%s", 
+                      res$status_code, URLencode(q.url), q.body), stderr())
+        stop()
     } else {
         if(length(res$content)>0){
             return(fromJSON(rawToChar(res$content)))
@@ -94,10 +104,16 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         q.url <- paste(q.url, q.params, sep="?")
     }
     res <- DELETE(url=URLencode(q.url))
-    if(length(res$content)>0){
-        return(fromJSON(rawToChar(res$content)))
-    } else{
-        invisible(res)
+    if(res$status_code > 299){
+        write(sprintf("RCy3::cyrestGET, HTTP Error Code: %d\n url=%s", 
+                      res$status_code, URLencode(q.url)), stderr())
+        stop()
+    } else {
+        if(length(res$content)>0){
+            return(fromJSON(rawToChar(res$content)))
+        } else{
+            invisible(res)
+        }
     }
 }
 
@@ -127,15 +143,22 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' @export
 commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
-    cmds = GET(.command2getQuery(s,base.url))
-    cmds.html = htmlParse(rawToChar(cmds$content), asText=TRUE)
-    cmds.elem = xpathSApply(cmds.html, "//p", xmlValue)
-    cmds.list = cmds.elem
-    if (length(cmds.elem)==1){
-        cmds.list = unlist(strsplit(cmds.elem[1],"\n\\s*"))
+    q.url <- .command2getQuery(s,base.url)
+    res = GET(q.url)
+    if(res$status_code > 299){
+        write(sprintf("RCy3::commandsHelp, HTTP Error Code: %d\n url=%s", 
+                      res$status_code, q.url), stderr())
+        stop()
+    } else {
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        res.list = res.elem
+        if (length(res.elem)==1){
+            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+        }
+        print(head(res.list,1))
+        tail(res.list,-1)
     }
-    print(head(cmds.list,1))
-    tail(cmds.list,-1)
 }
 
 # ------------------------------------------------------------------------------
@@ -158,21 +181,28 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' @importFrom httr GET
 #' @export
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
-    res = GET(.command2getQuery(cmd.string,base.url))
-    res.html = htmlParse(rawToChar(res$content), asText=TRUE)
-    res.elem = xpathSApply(res.html, "//p", xmlValue)
-    if(startsWith(res.elem[1],"[")){
-        res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
-        res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
-        res.list = unlist(strsplit(res.elem2,","))
-    }else {
-        res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
-        res.list = res.list[!(res.list=="Finished")]
-    }
-    if(length(res.list)>0){
-        res.list
+    q.url <- .command2getQuery(cmd.string,base.url)
+    res = GET(q.url)
+    if(res$status_code > 299){
+        write(sprintf("RCy3::commandsGET, HTTP Error Code: %d\n url=%s", 
+                      res$status_code, q.url), stderr())
+        stop()
     } else {
-        invisible(res.list)
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        if(startsWith(res.elem[1],"[")){
+            res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
+            res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
+            res.list = unlist(strsplit(res.elem2,","))
+        }else {
+            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+            res.list = res.list[!(res.list=="Finished")]
+        }
+        if(length(res.list)>0){
+            res.list
+        } else {
+            invisible(res.list)
+        }
     }
 }
 
@@ -200,7 +230,9 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     post.body = .command2postQueryBody(cmd.string)
     res = POST(url=post.url, body=post.body, encode="json", content_type_json())
     if(res$status_code > 299){
-        stop(rawToChar(res$content))
+        write(sprintf("RCy3::commandsPOST, HTTP Error Code: %d\n url=%s\n body=%s", 
+                      res$status_code, URLencode(q.url), q.body), stderr())
+        stop()
     } else {
         if(length(res$content)>0){
             res.data = fromJSON(rawToChar(res$content))$data
