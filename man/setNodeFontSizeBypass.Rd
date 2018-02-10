@@ -30,11 +30,13 @@ This method permanently overrides any default values or mappings
 defined for this visual property of the node or nodes specified. This method
 ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 can be used to set any visual property. To restore defaults and mappings, use
- \link{clearNodePropertyBypass}.
+ \link{clearNodePropertyBypass}, see examples.
 }
 \examples{
 \donttest{
-setNodeFontSizeBypass()
+setNodeFontSizeBypass('Node 1', 5)
+setNodeFontSizeBypass(c('Node 1','Node 2'), 5)
+clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_LABEL_FONT_SIZE')
 }
 }
 \seealso{

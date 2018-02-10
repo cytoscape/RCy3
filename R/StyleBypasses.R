@@ -46,19 +46,21 @@ setNodePropertyBypass <- function(node.names,
     view.SUID <- as.character(net.views.SUIDs[[1]])
     node.SUIDs <-
         .nodeNameToNodeSUID(node.names, network=net.SUID, base.url=base.url)
-    
-    # 'node.names' and 'new.values' must have the same length
+    # there can be more than one node.SUID per node.name!
+    # 'node.SUIDs' and 'new.values' must have the same length
     if (length(new.values) == 1) {
-        new.values <- rep(new.values, length(node.names))
+        new.values <- rep(new.values, length(node.SUIDs))
     }
     
-    if (length(new.values) != length(node.names)) {
+    if (length(new.values) != length(node.SUIDs)) {
         write(
             sprintf(
                 "ERROR in setNodePropertyBypass():\n   the number of nodes
                 [%d] and new values [%d] are not the same >> node(s)
-                attribute couldn't be set",
-                length(node.names),
+                attribute couldn't be set. Note that having multiple nodes 
+                with the same name in the network can cause this error. Use
+                node SUIDs or pass in duplicated names on their own.",
+                length(node.SUIDs),
                 length(new.values)
             ),
             stderr()
@@ -112,7 +114,6 @@ clearNodePropertyBypass <-  function(node.names,
     
     for (i in 1:length(node.SUIDs)) {
         node.SUID <- as.character(node.SUIDs[i])
-        new.value <- new.values[i]
         res <- cyrestDELETE( paste("networks",
                                    net.SUID,
                                    "views",
@@ -120,7 +121,7 @@ clearNodePropertyBypass <-  function(node.names,
                                    "nodes",
                                    node.SUID,
                                    visual.property,
-                                   'bypass',
+                                   "bypass",
                                    sep = "/"),
                              base.url = base.url )
     }
@@ -227,7 +228,6 @@ clearEdgePropertyBypass <- function(edge.names,
     
     for (i in 1:length(edge.SUIDs)) {
         edge.SUID <- as.character(edge.SUIDs[i])
-        new.value <- new.values[i]
         res <- cyrestDELETE(paste( "networks",
                                    net.SUID,
                                    "views",
@@ -235,7 +235,7 @@ clearEdgePropertyBypass <- function(edge.names,
                                    "edges",
                                    edge.SUID,
                                    visual.property,
-                                   'bypass',
+                                   "bypass",
                                    sep = "/"),
                             base.url = base.url)
     }
@@ -272,7 +272,6 @@ setNetworkPropertyBypass <- function(new.value,
     net.SUID <- getNetworkSuid(network)
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
-    
     res <- cyrestPUT(paste("networks",
                            net.SUID,
                            "views",
@@ -307,13 +306,13 @@ clearNetworkPropertyBypass <- function(visual.property,
     net.SUID <- getNetworkSuid(network)
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
-    
     res <- cyrestDELETE( paste("networks",
                                net.SUID,
                                "views",
                                view.SUID,
                                "network",
-                               visual.property, ## NOT AVAILABLE IN CYREST YET!
+                               visual.property, 
+                               "bypass",
                                sep = "/"),
                          base.url = base.url)
 }
@@ -375,7 +374,7 @@ unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
@@ -384,6 +383,7 @@ unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @examples \donttest{
 #' setNodeColorDirect ('node1', '#FF0088')
 #' setNodeColorDirect (c('node1', 'node2'), c('#88FF88', '#FF0088'))
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_FILL_COLOR')
 #' }
 #' @export
 setNodeColorBypass <-
@@ -409,12 +409,12 @@ setNodeColorBypass <-
         )
     }
 #-------------------------------------------------------------------------------
-# only works if node dimensions are unlocked (that is not tied together).
-# See lockNodeDimensions (T/F)
+# 
 # ------------------------------------------------------------------------------
 #' @title Set Node Size Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Sets the bypass value of node size for one or more nodes. Only 
+#' applicable if node dimensions are locked. See \code{lockNodeDimensions}.
 #' @param node.names DESCRIPTION
 #' @param new.sizes DESCRIPTION
 #' @param network (optional) Name or SUID of the network. Default is the 
@@ -426,23 +426,23 @@ setNodeColorBypass <-
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeSizeBypass()
+#' setNodeSizeBypass('Node 1', 35)
+#' setNodeSizeBypass(c('Node 1','Node 2'), 35)
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_SIZE')
 #' }
 #' @export
 setNodeSizeBypass <- function (node.names,
                                new.sizes,
                                network = NULL,
                                base.url = .defaultBaseUrl) {
-    # unlock node dimensions
-    lockNodeDimensions (FALSE)
-    
+
     for (current.size in new.sizes) {
         # ensure the sizes are numbers
         if (!is.double(current.size)) {
@@ -458,8 +458,7 @@ setNodeSizeBypass <- function (node.names,
         }
     }
     # set the node properties bypass
-    setNodePropertyBypass(node.names, new.sizes, "NODE_WIDTH", network=network, base.url=base.url)
-    setNodePropertyBypass(node.names, new.sizes, "NODE_HEIGHT", network=network, base.url=base.url)
+    setNodePropertyBypass(node.names, new.sizes, "NODE_SIZE", network=network, base.url=base.url)
 }
 #-------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is not tied together).
@@ -479,14 +478,16 @@ setNodeSizeBypass <- function (node.names,
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeWidthBypass()
+#' setNodeWidthBypass('Node 1', 35)
+#' setNodeWidthBypass(c('Node 1','Node 2'), 35)
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_WIDTH')
 #' }
 #' @export
 setNodeWidthBypass <-
@@ -534,14 +535,16 @@ setNodeWidthBypass <-
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeHeightBypass()
+#' setNodeHeightBypass('Node 1', 35)
+#' setNodeHeightBypass(c('Node 1','Node 2'), 35)
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_HEIGHT')
 #' }
 #' @export
 setNodeHeightBypass <-
@@ -588,14 +591,16 @@ setNodeHeightBypass <-
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeLabelBypass()
+#' setNodeLabelBypass('Node 1', 'Custom Label')
+#' setNodeLabelBypass(c('Node 1','Node 2'), 'Custom Label')
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_LABEL')
 #' }
 #' @export
 setNodeLabelBypass <-
@@ -621,14 +626,16 @@ setNodeLabelBypass <-
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeFontSizeBypass()
+#' setNodeFontSizeBypass('Node 1', 5)
+#' setNodeFontSizeBypass(c('Node 1','Node 2'), 5)
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_LABEL_FONT_SIZE')
 #' }
 #' @export
 setNodeFontSizeBypass <-
@@ -676,14 +683,16 @@ setNodeFontSizeBypass <-
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeLabelColorBypass()
+#' setNodeLabelColorBypass('Node 1', '#FF55AA')
+#' setNodeLabelColorBypass(c('Node 1','Node 2'), '#FF55AA')
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_LABEL_COLOR')
 #' }
 #' @export
 setNodeLabelColorBypass <-
@@ -724,14 +733,16 @@ setNodeLabelColorBypass <-
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeShapeBypass()
+#' setNodeShapeBypass('Node 1', 'ROUND_RECTANGLE')
+#' setNodeShapeBypass(c('Node 1','Node 2'), 'ROUND_RECTANGLE')
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_SHAPE')
 #' }
 #' @export
 setNodeShapeBypass <-
@@ -794,14 +805,16 @@ setNodeShapeBypass <-
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeBorderWidthBypass()
+#' setNodeBorderWidthBypass('Node 1', 5)
+#' setNodeBorderWidthBypass(c('Node 1','Node 2'), 5)
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_BORDER_WIDTH')
 #' }
 #' @export
 setNodeBorderWidthBypass <-
@@ -850,14 +863,16 @@ setNodeBorderWidthBypass <-
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeBorderColorBypass()
+#' setNodeBorderColorBypass('Node 1', '#FF55AA')
+#' setNodeBorderColorBypass(c('Node 1','Node 2'), '#FF55AA')
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_BORDER_PAINT')
 #' }
 #' @export
 setNodeBorderColorBypass <-
@@ -886,7 +901,8 @@ setNodeBorderColorBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Node Opacity Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the bypass value for node fill, label and border opacity for 
+#' the specified node or nodes.
 #' @param node.names DESCRIPTION
 #' @param new.values DESCRIPTION
 #' @param network (optional) Name or SUID of the network. Default is the 
@@ -898,14 +914,16 @@ setNodeBorderColorBypass <-
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodeOpacityBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
-#' \link{clearNodePropertyBypass}
+#' \link{clearNodeOpacityBypass}
 #' }
 #' @examples \donttest{
-#' setNodeOpacityBypass()
+#' setNodeOpacityBypass('Node 1', 100)
+#' setNodeOpacityBypass(c('Node 1','Node 2'), 100)
+#' clearNodeOpacityBypass(c('Node 1','Node 2'))
 #' }
 #' @export
 setNodeOpacityBypass <-
@@ -943,6 +961,41 @@ setNodeOpacityBypass <-
     }
 
 # ------------------------------------------------------------------------------
+#' @title Clear Node Opacity Bypass
+#'
+#' @description Clearn the bypass value for node fill, label and border opacity 
+#' for the specified node or nodes, effectively restoring any previously defined 
+#' style defaults or mappings.
+#' @param node.names DESCRIPTION
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @seealso {
+#' \link{setNodeOpacityBypass}
+#' }
+#' @examples \donttest{
+#' clearNodeOpacityBypass(c('Node 1','Node 2'))
+#' }
+#' @export
+clearNodeOpacityBypass <- function (node.names,
+                                    network = NULL,
+                                    base.url = .defaultBaseUrl) {
+    
+    clearNodePropertyBypass(node.names,
+                            "NODE_TRANSPARENCY",
+                            network=network, base.url=base.url)
+    clearNodePropertyBypass(node.names,
+                            "NODE_BORDER_TRANSPARENCY",
+                            network=network, base.url=base.url)
+    clearNodePropertyBypass(node.names,
+                            "NODE_LABEL_TRANSPARENCY",
+                            network=network, base.url=base.url)
+}
+
+# ------------------------------------------------------------------------------
 #' @title Set Node Fill Opacity Bypass
 #'
 #' @description FUNCTION_DESCRIPTION
@@ -957,14 +1010,16 @@ setNodeOpacityBypass <-
 #' defined for this visual property of the node or nodes specified. This method
 #' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
 #' can be used to set any visual property. To restore defaults and mappings, use
-#'  \link{clearNodePropertyBypass}.
+#'  \link{clearNodePropertyBypass}, see examples.
 #' @return None
 #' @seealso {
 #' \link{setNodePropertyBypass},
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeFillOpacityBypass()
+#' setNodeFillOpacityBypass('Node 1', 100)
+#' setNodeFillOpacityBypass(c('Node 1','Node 2'), 100)
+#' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_TRANSPARENCY')
 #' }
 #' @export
 setNodeFillOpacityBypass <-
