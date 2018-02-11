@@ -4,11 +4,12 @@
 \alias{getFirstNeighbors}
 \title{Get list of nodes neighboring provided list}
 \usage{
-getFirstNeighbors(node.names, as.nested.list = FALSE, network = NULL,
-  base.url = .defaultBaseUrl)
+getFirstNeighbors(node.names = NULL, as.nested.list = FALSE,
+  network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{A \code{list} of node names from the \code{name} column of the \code{node table}}
+\item{node.names}{A \code{list} of node names from the \code{name} column 
+of the \code{node table}. Default is currently selected nodes.}
 
 \item{as.nested.list}{\code{logical} Whether to return lists of neighbors per query node}
 
@@ -23,7 +24,7 @@ A list of unique node names, optionally nested per query node name.
 }
 \description{
 Returns a non-redundan list of first
-neighbors of the supplied list of nodes.
+neighbors of the supplied list of nodes or current node selection.
 }
 \examples{
 \donttest{
