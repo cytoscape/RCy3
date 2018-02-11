@@ -87,6 +87,7 @@ getNetworkCount <- function(base.url = .defaultBaseUrl) {
 # ------------------------------------------------------------------------------
 #' @title Get the name of a network
 #'
+#' @description Retrieve the title of a network
 #' @param suid SUID of the network; default is current network
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return network name
@@ -137,6 +138,7 @@ getNetworkName <- function(suid = NULL, base.url = .defaultBaseUrl) {
 # ------------------------------------------------------------------------------
 #' @title Get the SUID of a network
 #'
+#' @description Retrieve the SUID of a network
 #' @param title Name of the network; default is "current" network
 #' @param base.url (optional)  URL prefix for CyREST calls
 #' @return (\code{numeric}) Network suid
@@ -310,10 +312,10 @@ deleteAllNetworks <- function (base.url = .defaultBaseUrl) {
 #' @seealso
 #' selectNodes
 #' selectFirstNeighbors
-#' @examples /dontrun {
+#' @examples \donttest{
+#' getFirstNeighbors()
 #' }
 #' @export
-
 getFirstNeighbors <-
     function (node.names,
               as.nested.list = FALSE,
@@ -463,6 +465,7 @@ getAllNodes <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' addCyEdges(c('sourceNode','targetNode'))
 #' addCyEdges(list(c('s1','t1'),c('s2','t2')))
 #' }
+#' @importFrom stats setNames
 #' @export
 addCyEdges <-
     function (source.target.list,
@@ -747,6 +750,7 @@ createNetworkFromIgraph <- function(igraph,
 #' @return A Bioconductor graph object.
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
+#' createNetworkFromGraph(g, "myNetwork")
 #' }
 #' @export
 createNetworkFromGraph <- function (graph,
@@ -942,8 +946,7 @@ createNetworkFromDataFrames <-
 #' @export
 createIgraphFromNetwork <-
     function(network = NULL,
-             base.url = .defaultBaseUrl,
-             ...) {
+             base.url = .defaultBaseUrl) {
         suid = getNetworkSuid(network)
         #get dataframes
         cyedges <-
@@ -973,6 +976,8 @@ createIgraphFromNetwork <-
 #' @title createGraphFromNetwork
 #'
 #' @description Returns the Cytoscape network as a Bioconductor graph.
+#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param base.url cyrest base url for communicating with cytoscape
 #' @return A Bioconductor graph object.
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{cw <- CytoscapeWindow('network', graph=makeSimpleGraph())

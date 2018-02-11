@@ -5,7 +5,7 @@
 \title{DEPRECATED: sendNodes}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{sendNodesFromGraph}}
+\link{sendNodesFromGraph}
 }
 \description{
 This function is only provided for compatibility with older

@@ -5,7 +5,7 @@
 \title{DEPRECATED: getWindowCount}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{getNetworkCount}}
+\link{getNetworkCount}
 }
 \description{
 This function is only provided for compatibility with older

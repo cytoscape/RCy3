@@ -5,7 +5,7 @@
 \title{DEPRECATED: deleteAllWindows}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{deleteAllNetworks}}
+\link{deleteAllNetworks}
 }
 \description{
 This function is only provided for compatibility with older

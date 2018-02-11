@@ -5,7 +5,7 @@
 \title{DEPRECATED: selectFirstNeighborsOfSelectedNodes}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{selectFirstNeighbors}}
+\link{selectFirstNeighbors}
 }
 \description{
 This function is only provided for compatibility with older

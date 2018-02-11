@@ -5,7 +5,7 @@
 \title{DEPRECATED: getWindowList}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{getNetworkList}}
+\link{getNetworkList}
 }
 \description{
 This function is only provided for compatibility with older

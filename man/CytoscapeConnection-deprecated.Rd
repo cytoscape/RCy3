@@ -5,7 +5,7 @@
 \title{DEPRECATED: CytoscapeConnection}
 \usage{
 Use the replacement variable instead:
-\code{base.url}
+\link{base.url}
 Rely on the default value or overwrite with custom host and port details.
 }
 \description{

@@ -5,7 +5,7 @@
 \title{DEPRECATED: getGraphFromCyWindow}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{createGraphFromNetwork}}
+\link{createGraphFromNetwork}
 }
 \description{
 This function is only provided for compatibility with older

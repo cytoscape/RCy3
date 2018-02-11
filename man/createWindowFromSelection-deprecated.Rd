@@ -5,7 +5,7 @@
 \title{DEPRECATED: createWindowFromSelection}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{createNetworkFromSelection}}
+\link{createSubnetwork}
 }
 \description{
 This function is only provided for compatibility with older

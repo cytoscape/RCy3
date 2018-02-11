@@ -5,7 +5,7 @@
 \title{DEPRECATED: CytoscapeWindow}
 \usage{
 Use the replacement function instead:
-\code{createNetworkFromGraph}
+\link{createNetworkFromGraph}
 Rely on the default value or overwrite with custom host and port details.
 }
 \description{
