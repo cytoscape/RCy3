@@ -14,7 +14,6 @@
 #' # [1] "You are connected to Cytoscape!"
 #' }
 #' @export
-
 cytoscapePing<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url, 'version', sep="/")
               res <- GET(conn.str)
