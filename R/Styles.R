@@ -1,4 +1,14 @@
 # ------------------------------------------------------------------------------
+#' @title Copy Visual Style
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param from.style DESCRIPTION
+#' @param to.style DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' copyVisualStyle()
+#' }
 #' @export
 copyVisualStyle <- function (from.style, to.style, base.url=.defaultBaseUrl) {
     current.names = getVisualStyleNames(base.url)
@@ -54,7 +64,6 @@ copyVisualStyle <- function (from.style, to.style, base.url=.defaultBaseUrl) {
 #' example(applyStyle)
 #' }
 #' @seealso applyStyle, mapVisualProperty
-
 createVisualStyle <- function(style.name, defaults, mappings, base.url=.defaultBaseUrl) {
     
     if(missing(mappings))
@@ -73,27 +82,66 @@ createVisualStyle <- function(style.name, defaults, mappings, base.url=.defaultB
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Arrow Shapes
+#'
+#' @description Retrieve the names of the currently supported 'arrows' -- the
+#' decorations can (optionally) appear at the ends of edges, adjacent to
+#' the nodes they connect, and conveying information about the nature of
+#' the nodes' relationship.
+#' @param base.url DESCRIPTION
+#' @return A list of \code{character} strings, e.g., 'DIAMOND', 'T', 'ARROW'
+#' @examples \donttest{
+#' getArrowShapes()
+#' }
 #' @export
 getArrowShapes <- function(base.url=.defaultBaseUrl) {
     res <- cyrestGET(paste("styles/visualproperties/EDGE_TARGET_ARROW_SHAPE/values", sep="/"), base.url = base.url)
     return(res$values)
 }
 
-#------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Get Line Styles
+#'
+#' @description Retrieve the names of the currently supported line types
+#' -- values which can be used to render edges, and thus
+#' can be used in calls to 'setEdgeLineStyleRule'.
+#' @param base.url DESCRIPTION
+#' @return A list of \code{character} strings, e.g., 'SOLID', 'DOT'
+#' @examples \donttest{
+#' getLineStyles()
+#' }
 #' @export
 getLineStyles <- function(base.url=.defaultBaseUrl) {
     res <- cyrestGET(paste("styles/visualproperties/EDGE_LINE_TYPE/values", sep="/"), base.url = base.url)
     return(res$values)
 }
 
-#------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Get Node Shapes
+#'
+#' @description Retrieve the names of the currently supported node shapes,
+#' which can then be used in calls to setNodeShapeRule and
+#' setDefaultVizMapValue.
+#' @param base.url DESCRIPTION
+#' @return A list of \code{character} strings, e.g. 'ELLIPSE', 'RECTANGLE'
+#' @examples \donttest{
+#' getNodeShapes()
+#' }
 #' @export
 getNodeShapes <- function (base.url=.defaultBaseUrl) {
     res <- cyrestGET(paste("styles/visualproperties/NODE_SHAPE/values", sep="/"),base.url=base.url)
     return(res$values)
 }
 
-#------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Get Visual Property Names
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getVisualPropertyNames()
+#' }
 #' @export
 getVisualPropertyNames <- function (base.url=.defaultBaseUrl) {
     res <- cyrestGET("styles/default/defaults", base.url = base.url)
@@ -103,6 +151,14 @@ getVisualPropertyNames <- function (base.url=.defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Visual Style Names
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getVisualStyleNames()
+#' }
 #' @export
 getVisualStyleNames <- function(base.url=.defaultBaseUrl) {
     res <- cyrestGET("apply/styles",base.url = base.url)
@@ -120,14 +176,13 @@ getVisualStyleNames <- function(base.url=.defaultBaseUrl) {
 #' If no styles are specified, only the current one is exported.
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return None
-#' @export
 #' @examples
 #' \donttest{
 #' exportVisualStyles('/fullpath/myStyle')
 #' exportVisualStyles('/fullpath/myStyle', type = 'JSON')
 #' exportVisualStyles('/fullpath/myStyle', style = 'Minimal,default,Directed')
 #' }
-
+#' @export
 exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.defaultBaseUrl){
     cmd.string <- 'vizmap export'  # minmum command
     if(!is.null(filename))
@@ -140,7 +195,16 @@ exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.de
 }
 
 # ------------------------------------------------------------------------------
-# apply visual style to network
+#' @title Set Visual Style
+#'
+#' @description Apply a visual style to a network
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setVisualStyle()
+#' }
 #' @export
 setVisualStyle <- function(style.name, network=NULL, base.url=.defaultBaseUrl) {
     net.SUID = getNetworkSuid(network)

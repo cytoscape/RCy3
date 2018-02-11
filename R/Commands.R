@@ -14,7 +14,16 @@
 # ==============================================================================
 # I. CyREST API functions
 # ------------------------------------------------------------------------------
-
+#' @title CyREST GET
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param operation DESCRIPTION
+#' @param parameters DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' cyrestGET()
+#' }
 #' @importFrom RJSONIO fromJSON
 #' @importFrom httr GET
 #' @importFrom utils URLencode
@@ -39,6 +48,18 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     }
 }
 
+# ------------------------------------------------------------------------------
+#' @title CyREST POST
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param operation DESCRIPTION
+#' @param parameters DESCRIPTION
+#' @param body DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' cyrestPOST()
+#' }
 #' @importFrom RJSONIO fromJSON
 #' @importFrom RJSONIO toJSON
 #' @importFrom httr POST
@@ -66,6 +87,18 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
     }
 }
 
+# ------------------------------------------------------------------------------
+#' @title CyREST PUT
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param operation DESCRIPTION
+#' @param parameters DESCRIPTION
+#' @param body DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' cyrestPUT()
+#' }
 #' @importFrom RJSONIO fromJSON
 #' @importFrom RJSONIO toJSON
 #' @importFrom httr PUT
@@ -93,6 +126,17 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
     }
 }
 
+# ------------------------------------------------------------------------------
+#' @title CyREST DELETE
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param operation DESCRIPTION
+#' @param parameters DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' cyrestDELETE()
+#' }
 #' @importFrom RJSONIO fromJSON
 #' @importFrom httr DELETE
 #' @importFrom utils URLencode
@@ -120,7 +164,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 # ==============================================================================
 # II. Commands API functions
 # ------------------------------------------------------------------------------
-#' Commands Help
+#' @title Commands Help
 #'
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function returns a list of available commands or args.
@@ -162,7 +206,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 }
 
 # ------------------------------------------------------------------------------
-#' Commands GET
+#' @title Commands GET
 #'
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function converts a command string into a CyREST query URL, executes a GET
@@ -207,7 +251,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 }
 
 # ------------------------------------------------------------------------------
-#' Commands POST
+#' @title Commands POST
 #'
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function converts a command string into a CyREST query URL, executes a

@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-#' Get the values of dependencies in a style
+#' @title Get the values of dependencies in a style
 #'
 #' @description Updates style dependencies, overriding any prior settings.
 #' @param style.name (char) name for style
@@ -34,7 +34,7 @@ getStyleDependencies <- function(style.name,base.url=.defaultBaseUrl){
 }
 
 # ------------------------------------------------------------------------------
-#' Set Style Dependencies
+#' @title Set Style Dependencies
 #'
 #' @description Sets the values of dependencies in a style, overriding any prior settings.
 #' @param style.name (char) name for style
@@ -69,7 +69,17 @@ setStyleDependencies <- function(style.name,dependencies,base.url=.defaultBaseUr
     invisible(commandsPOST(paste0('vizmap apply styles="',style.name,'"')))
 }
 
-#------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @title Match Arrow Color To Edge
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param new.state DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' matchArrowColorToEdge()
+#' }
 #' @export
 matchArrowColorToEdge <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
     setStyleDependencies(style.name = style.name, 
@@ -77,6 +87,17 @@ matchArrowColorToEdge <- function (new.state, style.name='default', base.url=.de
                             base.url = base.url)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Lock Node Dimensions
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param new.state DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' lockNodeDimensions()
+#' }
 #' @export
 lockNodeDimensions <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
     setStyleDependencies(style.name = style.name, 
@@ -84,6 +105,17 @@ lockNodeDimensions <- function (new.state, style.name='default', base.url=.defau
                             base.url = base.url)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Sync Node Custom Graphics Size
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param new.state DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' syncNodeCustomGraphicsSize()
+#' }
 #' @export
 syncNodeCustomGraphicsSize <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
     setStyleDependencies(style.name = style.name, 
