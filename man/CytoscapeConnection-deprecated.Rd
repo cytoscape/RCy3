@@ -4,8 +4,7 @@
 \alias{CytoscapeConnection}
 \title{DEPRECATED: CytoscapeConnection}
 \usage{
-Use the replacement variable instead:
-\link{base.url}
+Use the replacement variable instead: base.url
 Rely on the default value or overwrite with custom host and port details.
 }
 \description{

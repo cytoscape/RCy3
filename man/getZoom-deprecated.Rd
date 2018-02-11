@@ -5,7 +5,7 @@
 \title{DEPRECATED: getZoom}
 \usage{
 Use the replacement function instead:
-\link{getNetworkZoomBypass}
+\link{getNetworkZoom}
 }
 \description{
 This function is only provided for compatibility with older
