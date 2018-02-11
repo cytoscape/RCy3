@@ -5,8 +5,7 @@
 \title{Create a Cytoscape network from an igraph network}
 \usage{
 createNetworkFromIgraph(igraph, new.title = "MyNetwork",
-  collection.title = "myNetworkCollection", return.graph = FALSE,
-  base.url = .defaultBaseUrl, ...)
+  collection.title = "myNetworkCollection", base.url = .defaultBaseUrl, ...)
 }
 \arguments{
 \item{igraph}{(igraph) igraph network object}

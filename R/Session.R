@@ -24,7 +24,16 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
 }
 
 #' Open Session File or URL
+#'
+#' @description Open a session file or URL. This will clear all networks, tables
+#' and styles associated with current session. Be sure to \link{saveSession} first.
 #' @param file.location File path or URL (with 'http' prefix)
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' openSession()
+#' }
+#' @seealso saveSession
 #' @export
 openSession<-function(file.location, base.url=.defaultBaseUrl){
     type = 'file'

@@ -727,7 +727,6 @@ createSubnetwork <-
 createNetworkFromIgraph <- function(igraph,
                                     new.title = "MyNetwork",
                                     collection.title = "myNetworkCollection",
-                                    return.graph = FALSE,
                                     base.url = .defaultBaseUrl,
                                     ...) {
     #extract dataframes
@@ -744,10 +743,13 @@ createNetworkFromIgraph <- function(igraph,
 }
 
 # ------------------------------------------------------------------------------
-#' @title createNetworkFromGraph
+#' @title Create Network From Graph
 #'
 #' @description Creates a Cytoscape network from a Bioconductor graph.
-#' @return A Bioconductor graph object.
+#' @param graph DESCRIPTION
+#' @param title DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
 #' createNetworkFromGraph(g, "myNetwork")

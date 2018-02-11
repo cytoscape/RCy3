@@ -9,9 +9,9 @@ setLayoutProperties(layout.name, properties.list, base.url = .defaultBaseUrl)
 \arguments{
 \item{layout.name}{(\code{character}) Name of the layout}
 
-\item{base.url}{(optional)  URL prefix for CyREST calls}
+\item{properties.list}{(\code{list}) List of one or more \code{property=value} pairs}
 
-\item{property.list}{(\code{list}) List of one or more \code{property=value} pairs}
+\item{base.url}{(optional)  URL prefix for CyREST calls}
 }
 \value{
 None

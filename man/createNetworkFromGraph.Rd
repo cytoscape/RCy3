@@ -2,12 +2,19 @@
 % Please edit documentation in R/Networks.R
 \name{createNetworkFromGraph}
 \alias{createNetworkFromGraph}
-\title{createNetworkFromGraph}
+\title{Create Network From Graph}
 \usage{
 createNetworkFromGraph(graph, title = NULL, base.url = .defaultBaseUrl)
 }
+\arguments{
+\item{graph}{DESCRIPTION}
+
+\item{title}{DESCRIPTION}
+
+\item{base.url}{DESCRIPTION}
+}
 \value{
-A Bioconductor graph object.
+RETURN_DESCRIPTION
 }
 \description{
 Creates a Cytoscape network from a Bioconductor graph.
