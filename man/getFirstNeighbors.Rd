@@ -26,7 +26,8 @@ Returns a non-redundan list of first
 neighbors of the supplied list of nodes.
 }
 \examples{
-/dontrun {
+\donttest{
+getFirstNeighbors()
 }
 }
 \seealso{

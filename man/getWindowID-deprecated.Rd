@@ -5,7 +5,7 @@
 \title{DEPRECATED: getWindowID}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{getNetworkSuid}}
+\link{getNetworkSuid}
 }
 \description{
 This function is only provided for compatibility with older

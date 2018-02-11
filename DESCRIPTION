@@ -5,12 +5,12 @@ Version: 1.99.1
 Date: 2018-01-27
 Author: Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 Maintainer: Alexander Pico <alexander.pico@gladstone.ucsf.edu>, Tanja Muetze <tanja.muetze14@alumni.imperial.ac.uk>, Paul Shannon <pshannon@systemsbiology.org> 
-Depends: R (>= 3.2), graph (>= 1.48.0)
-Imports: httr, methods, RCurl, RJSONIO, XML, utils
-Suggests: RUnit, igraph, RColorBrewer
+Depends: R (>= 3.2)
+Imports: httr, methods, RCurl, RJSONIO, XML, utils, BiocGenerics, igraph, stats
+Suggests: RUnit, RColorBrewer, knitr
 SystemRequirements: Cytoscape (>= 3.6.0), CyREST (>= 3.6.0)
 Description: Vizualize, analyze and explore networks using Cytoscape via R.
-License: GPL-2.1
+License: GPL-2.1 | file LICENSE
 URL: https://github.com/cytoscape/RCy3
 BugReports: https://github.com/cytoscape/RCy3/issues
 LazyLoad: yes

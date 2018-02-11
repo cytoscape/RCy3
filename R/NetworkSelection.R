@@ -478,7 +478,7 @@ getSelectedEdges <-
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return network with edges selected
 #' @examples \dontrun{
-#' 
+#' selectEdgesConnectingSelectedNodes()
 #' }
 #' @author Alexander Pico, Julia Gustavsen
 #' @export

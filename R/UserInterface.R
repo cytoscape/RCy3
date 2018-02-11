@@ -35,7 +35,22 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 }
 
 
-showGraphicsDetails <- function (new.value,base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Show Graphics Details
+#'
+#' @description Regardless of the current zoom level and network size,
+#' display (or hide) graphics details, e.g., node labels.
+#' @details Displaying graphics details on a very large network will affect pan
+#' and zoom performance, depending on your available RAM. 
+#' See \link{cytoscapeMemoryStatus}.
+#' @param new.value \code{boolean} Whether to show graphic details
+#' @param base.url DESCRIPTION
+#' @return None
+#' @examples \donttest{
+#' showGraphicsDetails(TRUE)
+#' }
+#' @export
+showGraphicsDetails <- function (new.value, base.url=.defaultBaseUrl) {
     resource.uri <- paste(base.url, "ui/lod/", sep="/")
     request.res <- PUT(resource.uri)
     invisible (request.res)

@@ -9,6 +9,7 @@
 #' \donttest{
 #' getStyleDependencies("myStyle")
 #' }
+#' @importFrom stats setNames
 #' @export
 #' @section Available Dependencies:
 #' arrowColorMatchesEdge

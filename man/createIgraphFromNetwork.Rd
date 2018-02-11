@@ -4,7 +4,7 @@
 \alias{createIgraphFromNetwork}
 \title{Create an igraph network from a Cytoscape network}
 \usage{
-createIgraphFromNetwork(network = NULL, base.url = .defaultBaseUrl, ...)
+createIgraphFromNetwork(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}

@@ -22,7 +22,7 @@ Selects edges in a Cytoscape Network connecting the selected nodes
 }
 \examples{
 \dontrun{
-
+selectEdgesConnectingSelectedNodes()
 }
 }
 \author{

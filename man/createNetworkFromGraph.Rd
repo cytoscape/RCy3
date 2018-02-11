@@ -14,6 +14,7 @@ Creates a Cytoscape network from a Bioconductor graph.
 }
 \examples{
 \donttest{
+createNetworkFromGraph(g, "myNetwork")
 }
 }
 \author{

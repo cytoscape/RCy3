@@ -5,7 +5,7 @@
 \title{DEFUNCT: getNodePosition}
 \usage{
 Use the replacement function instead:
-\code{layoutCopycat}
+\link{layoutCopycat}
 }
 \description{
 This function is defunct and will be removed in the next release.

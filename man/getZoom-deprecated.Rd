@@ -5,7 +5,7 @@
 \title{DEPRECATED: getZoom}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{getVisualPropertyNames}}
+\link{getNetworkZoomBypass}
 }
 \description{
 This function is only provided for compatibility with older

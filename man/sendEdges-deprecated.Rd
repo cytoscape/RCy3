@@ -5,7 +5,7 @@
 \title{DEPRECATED: sendEdges}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{sendEdgesFromGraph}}
+\link{sendEdgesFromGraph}
 }
 \description{
 This function is only provided for compatibility with older

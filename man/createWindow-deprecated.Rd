@@ -5,7 +5,7 @@
 \title{DEPRECATED: createWindow}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{sendNetworkFromGraph}}
+\link{createNetworkFromGraph}
 }
 \description{
 This function is only provided for compatibility with older
