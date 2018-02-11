@@ -300,8 +300,9 @@ deleteAllNetworks <- function (base.url = .defaultBaseUrl) {
 #' Get list of nodes neighboring provided list
 #'
 #' @description Returns a non-redundan list of first
-#' neighbors of the supplied list of nodes.
-#' @param node.names A \code{list} of node names from the \code{name} column of the \code{node table}
+#' neighbors of the supplied list of nodes or current node selection.
+#' @param node.names A \code{list} of node names from the \code{name} column 
+#' of the \code{node table}. Default is currently selected nodes.
 #' @param as.nested.list \code{logical} Whether to return lists of neighbors per query node
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -317,10 +318,14 @@ deleteAllNetworks <- function (base.url = .defaultBaseUrl) {
 #' }
 #' @export
 getFirstNeighbors <-
-    function (node.names,
+    function (node.names = NULL,
               as.nested.list = FALSE,
               network = NULL,
               base.url = .defaultBaseUrl) {
+        
+        if (is.null(node.names))
+            node.names <- getSelectedNodes()
+        
         if (length (node.names) == 0)
             return()
         

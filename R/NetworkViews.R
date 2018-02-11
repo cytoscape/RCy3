@@ -22,6 +22,52 @@ getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get the SUID of a network view
+#'
+#' @description Retrieve the SUID of a network view
+#' @param network Name or SUID of the network; default is "current" network
+#' @param base.url (optional)  URL prefix for CyREST calls
+#' @return (\code{numeric}) Network view suid
+#' @author Alexander Pico
+#' @examples
+#' \donttest{
+#' getNetworkViewSuid()
+#' getNetworkViewSuid("myNetwork")
+#' # 90
+#' }
+#' @export
+#
+# Dev Notes: together with getNetworkSuid, this function attempts to handle all 
+# of the multiple ways we support network view referencing (e.g., title, SUID, 
+# 'current', and NULL). These functions are then used by all other functions
+# that take a "network" argument.
+# 
+getNetworkViewSuid <- function(network = NULL, base.url = .defaultBaseUrl) {
+
+    if (is.character(network)) {
+        #network name (or "current") provided, return first view
+        getNetworkViews(network)[1]
+    } else if (is.numeric(network)) {
+        #suid provided, but network or view?
+        net.suid.list <- unlist(lapply(getNetworkList(), function(x) getNetworkSuid(x)))
+        if (network %in% net.suid.list){ # network SUID, return first view
+            getNetworkViews(network)[1]
+        } else{
+            view.suid.list <- unlist(lapply(net.suid.list, function(x) getNetworkViews(x)))
+            if (network %in% view.suid.list){ # view SUID, return it
+                return(network)
+            } else {
+                stop(paste0("Network view does not exist for: ", network))
+            }
+        }
+     } else {
+        #use current network, return first view
+        network.title = 'current'
+        getNetworkViews(network)[1]
+    }
+}
+
+# ------------------------------------------------------------------------------
 #' @title Fit Content
 #'
 #' @description FUNCTION_DESCRIPTION
