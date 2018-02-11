@@ -11,6 +11,8 @@ layoutNetwork(layout.name = NULL, network = NULL,
 \item{layout.name}{(\code{character}) Name of the layout (with optional parameters). 
 If not specified, then the preferred layout set in the Cytoscape UI is applied.}
 
+\item{network}{DESCRIPTION}
+
 \item{base.url}{(optional)  URL prefix for CyREST calls}
 }
 \value{
