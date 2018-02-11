@@ -23,6 +23,7 @@ makeRandomGraph = function(node.count=12, seed=123) {
 } 
 
 #------------------------------------------------------------------------------------------------------------------------
+#' @importFrom methods new
 makeSimpleGraph = function() {
     g = new ('graphNEL', edgemode='directed')
     

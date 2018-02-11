@@ -5,7 +5,7 @@
 \title{DEPRECATED: copyCytoscapeNetwork}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{cloneNetwork}}
+\link{cloneNetwork}
 }
 \description{
 This function is only provided for compatibility with older

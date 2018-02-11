@@ -6,10 +6,10 @@
 \title{DEFUNCT: restoreLayout}
 \usage{
 Use the replacement function instead:
-\code{layoutCopycat}
+\link{layoutCopycat}
 
 Use the replacement function instead:
-\code{createGraphFromNetwork}
+\link{createGraphFromNetwork}
 }
 \description{
 This function is defunct and will be removed in the next release.

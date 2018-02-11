@@ -5,7 +5,7 @@
 \title{DEPRECATED: deleteWindow}
 \usage{
 Use the replacement function instead:
-\code{\link[RCy3]{deleteNetwork}}
+\link{deleteNetwork}
 }
 \description{
 This function is only provided for compatibility with older

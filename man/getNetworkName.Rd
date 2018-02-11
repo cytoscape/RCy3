@@ -14,6 +14,9 @@ getNetworkName(suid = NULL, base.url = .defaultBaseUrl)
 \value{
 network name
 }
+\description{
+Retrieve the title of a network
+}
 \examples{
 \donttest{
 getNetworkName()

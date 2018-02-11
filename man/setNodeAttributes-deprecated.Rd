@@ -2,12 +2,10 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{setNodeAttributes}
 \alias{setNodeAttributes}
-\title{DEPRECATED: setNodeAttributes}
+\title{DEFUNCT: setNodeAttributes}
 \usage{
-Use the replacement function instead:
-\code{\link[RCy3]{sendNodeAttributesFromGraph}}
+No replacement
 }
 \description{
-This function is only provided for compatibility with older
-versions of RCy3 and will be defunct and removed in the next releases.
+This function is defunct and removed in the next releases.
 }
