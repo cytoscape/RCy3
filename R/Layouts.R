@@ -14,6 +14,7 @@
 #' @details Run \link{getLayoutNames} to list available layouts. 
 #' @param layout.name (\code{character}) Name of the layout (with optional parameters). 
 #' If not specified, then the preferred layout set in the Cytoscape UI is applied.
+#' @param network DESCRIPTION
 #' @param base.url (optional)  URL prefix for CyREST calls
 #' @return None
 #' @examples
@@ -197,7 +198,7 @@ getLayoutPropertyValue <- function (layout.name, property.name, base.url = .defa
 #' @description Sets the specified properties for the specified layout. Unmentioned properties are left unchanged.
 #' @details Run \link{getLayoutNames} to list available layouts. Run \link{getLayoutPropertyNames} to list properties per layout.
 #' @param layout.name (\code{character}) Name of the layout
-#' @param property.list (\code{list}) List of one or more \code{property=value} pairs
+#' @param properties.list (\code{list}) List of one or more \code{property=value} pairs
 #' @param base.url (optional)  URL prefix for CyREST calls
 #' @return None
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon

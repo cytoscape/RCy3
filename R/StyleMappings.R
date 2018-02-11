@@ -15,7 +15,6 @@
 #' @param network name or suid of the network; default is "current" network
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return (network=network, base.url=base.url) ready to convert into JSON by style mapping operations
-#' @export
 #' @seealso setStyleMappings createStyle
 #' @examples
 #' \donttest{
@@ -57,9 +56,7 @@
 #' Node Y Location \tab  \tab  \cr
 #' Node Z Location \tab  \tab  \cr
 #' }
-#' 
-#' 
-
+#' @export
 mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.column.values,
                               visual.prop.values,  network=NULL, base.url=.defaultBaseUrl){
     
@@ -181,6 +178,7 @@ continuousMapping <- function(attribute.name, control.points, colors, visual.pro
 #' @details Requires visual property mappings to be previously created, see mapVisualProperty.
 #' @param style.name (char) name for style
 #' @param mapping a single visual property mapping, see mapVisualProperty
+#' @param network DESCRIPTION
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return server response
 #' @export
@@ -189,37 +187,28 @@ continuousMapping <- function(attribute.name, control.points, colors, visual.pro
 #' \donttest{
 #' updateStyleMapping('myStyle',mapVisualProperty('node label','name','p'))
 #' }
-#' @import RJSONIO
-#' @import httr
-
 updateStyleMapping <- function(style.name, mapping, network=NULL, base.url=.defaultBaseUrl){
-    
-    base.url=paste(base.url,sep = "/")
-    
     visual.prop.name = mapping$visualProperty
     
     # check if vp exists already
-    exists = FALSE
-    check.url <- URLencode(paste(base.url,'styles', style.name,'mappings',sep = '/'))
-    res <- GET(check.url)
-    res.elem <- fromJSON(rawToChar(res$content))
-    for(re in res.elem){
-        if(class(re)=='list')
-            if(!is.null(re$visualProperty))
-                if(re$visualProperty==visual.prop.name)
-                    exists = TRUE
+    res <- cyrestGET(paste('styles', style.name,'mappings',sep = '/')
+                           ,base.url=base.url)
+    vp.list <- lapply(res, function(x) unname(x['visualProperty'][[1]]))
+    if(visual.prop.name %in% vp.list){
+        exists = TRUE
+    } else {
+        exists = FALSE
     }
     
-    if(exists==TRUE){     #if yes...
-        style.url <- URLencode(paste(base.url,'styles', style.name,'mappings',visual.prop.name, sep = '/'))
-        map.body <- toJSON(list(mapping))
-        invisible(PUT(url=style.url,body=map.body, encode="json"))
-        invisible(PUT(url=style.url,body=map.body, encode="json"))    # have to run it twice!? omg...
+    if(exists==TRUE){     
+        invisible(cyrestPUT(paste('styles', style.name,'mappings',visual.prop.name, sep = '/'),
+                      body=list(mapping), 
+                      base.url=base.url))
     }
-    else {    # if no...
-        style.url <- check.url
-        map.body <- toJSON(list(mapping))
-        invisible(POST(url=style.url,body=map.body, encode="json"))
+    else {   
+        invisible(cyrestPOST(paste('styles', style.name,'mappings',sep = '/'),
+                       body=list(mapping), 
+                       base.url=base.url))
     }
 }
 

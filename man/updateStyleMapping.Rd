@@ -12,6 +12,8 @@ updateStyleMapping(style.name, mapping, network = NULL,
 
 \item{mapping}{a single visual property mapping, see mapVisualProperty}
 
+\item{network}{DESCRIPTION}
+
 \item{base.url}{cyrest base url for communicating with cytoscape}
 }
 \value{

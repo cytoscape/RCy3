@@ -8,7 +8,21 @@ openSession(file.location, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{file.location}{File path or URL (with 'http' prefix)}
+
+\item{base.url}{cyrest base url for communicating with cytoscape}
+}
+\value{
+RETURN_DESCRIPTION
 }
 \description{
-Open Session File or URL
+Open a session file or URL. This will clear all networks, tables
+and styles associated with current session. Be sure to \link{saveSession} first.
+}
+\examples{
+\donttest{
+openSession()
+}
+}
+\seealso{
+saveSession
 }
