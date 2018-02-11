@@ -84,7 +84,7 @@ addGraphToGraph <- function (obj, other.graph) {
 #' @description This function is defunct and removed in the next releases.
 #' @usage No replacement
 #' @export
-#' @rdname setEdgeAttributes-deprecated
+#' @rdname setEdgeAttributes-defunct
 setEdgeAttributes<-function(obj, attribute.name){
     .Deprecated("No replacement")
 }
@@ -94,8 +94,29 @@ setEdgeAttributes<-function(obj, attribute.name){
 #' @description This function is defunct and removed in the next releases.
 #' @usage No replacement
 #' @export
-#' @rdname setNodeAttributes-deprecated
+#' @rdname setNodeAttributes-defunct
 setNodeAttributes<-function(obj, attribute.name){
+    .Deprecated("No replacement")
+}
+
+#' DEFUNCT: sendNodes
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage No replacement
+#' @export
+#' @rdname sendNodes-defunct
+sendNodes<-function(obj){
+    .Deprecated("No replacement")
+}
+#' DEFUNCT: sendEdges
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' @usage No replacement
+#' @export
+#' @rdname sendEdges-defunct
+sendEdges<-function(obj){
     .Deprecated("No replacement")
 }
 
@@ -104,8 +125,7 @@ setNodeAttributes<-function(obj, attribute.name){
 #' 
 #' @description This function is only provided for compatibility with older
 #' versions of RCy3 and will be defunct and removed in the next releases.
-#' @usage Use the replacement variable instead:
-#' \link{base.url}
+#' @usage Use the replacement variable instead: base.url
 #' Rely on the default value or overwrite with custom host and port details.
 #' @export
 #' @rdname CytoscapeConnection-deprecated
@@ -298,30 +318,6 @@ selectFirstNeighborsOfSelectedNodes<-function (obj) {
 sfn<-function (obj) {
     selectFirstNeighbors(obj=obj)
 }
-#' DEPRECATED: sendNodes
-#' 
-#' @description This function is only provided for compatibility with older
-#' versions of RCy3 and will be defunct and removed in the next releases.
-#' @usage Use the replacement function instead:
-#' \link{sendNodesFromGraph}
-#' @export
-#' @rdname sendNodes-deprecated
-sendNodes<-function(obj){
-    .Deprecated("sendNodesFromGraph(obj)")
-    sendNodesFromGraph(obj=obj)
-}
-#' DEPRECATED: sendEdges
-#' 
-#' @description This function is only provided for compatibility with older
-#' versions of RCy3 and will be defunct and removed in the next releases.
-#' @usage Use the replacement function instead:
-#' \link{sendEdgesFromGraph}
-#' @export
-#' @rdname sendEdges-deprecated
-sendEdges<-function(obj){
-    .Deprecated("sendEdgesFromGraph(obj)")
-    sendEdgesFromGraph(obj=obj)
-}
 
 #' DEPRECATED: saveImage
 #' 
@@ -381,12 +377,12 @@ setCenter<-function(obj, x, y){
 #' @description This function is only provided for compatibility with older
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' @usage Use the replacement function instead:
-#' \link{getNetworkZoomBypass}
+#' \link{getNetworkZoom}
 #' @export
 #' @rdname getZoom-deprecated
 getZoom<-function(obj){
-    .Deprecated("getNetworkZoomBypass")
-    getNetworkZoomBypass()
+    .Deprecated("getNetworkZoom")
+    getNetworkZoom()
 }
 #' DEPRECATED: getCenter
 #' 

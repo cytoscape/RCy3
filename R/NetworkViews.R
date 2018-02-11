@@ -5,6 +5,15 @@
 # Dev Notes: refer to StyleValues.R, StyleDefaults.R and StyleBypasses.R for 
 # getting/setting node, edge and network visual properties via VIEW operations.
 # ------------------------------------------------------------------------------
+#' @title Get Network Views
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getNetworkViews()
+#' }
 #' @export
 getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
@@ -13,7 +22,17 @@ getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
-# Takes first (presumably only) view associated with provided network
+#' @title Fit Content
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @details Takes first (presumably only) view associated with provided network
+#' @param selected.only DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' fitContent()
+#' }
 #' @export
 fitContent <- function(selected.only=FALSE, network=NULL, 
                        base.url =.defaultBaseUrl) {
@@ -24,8 +43,18 @@ fitContent <- function(selected.only=FALSE, network=NULL,
         commandsPOST(paste0('view fit content view=SUID:"',view.SUID,'"'), base.url = base.url)
     }
 }
+
 # ------------------------------------------------------------------------------
-# Takes first (presumably only) view associated with provided network
+#' @title Set Current View
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @details Takes first (presumably only) view associated with provided network
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setCurrentView()
+#' }
 #' @export
 setCurrentView <- function(network=NULL, 
                        base.url =.defaultBaseUrl) {

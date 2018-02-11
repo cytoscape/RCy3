@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-#' Save Session to File
+#' @title Save Session to File
 #'
 #' @description Saves the current Cytoscape session as a CYS file. 
 #' @details If no \code{filename} is provided, then it attempts to
@@ -23,7 +23,7 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
     commandsPOST(paste0('session save file="',filename,'"'),base.url=base.url)
 }
 
-#' Open Session File or URL
+#' @title Open Session File or URL
 #'
 #' @description Open a session file or URL. This will clear all networks, tables
 #' and styles associated with current session. Be sure to \link{saveSession} first.
@@ -42,6 +42,17 @@ openSession<-function(file.location, base.url=.defaultBaseUrl){
     commandsPOST(paste0('session open ',type,'="',file.location,'"'),base.url=base.url)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Close Session
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param save.before.closing DESCRIPTION
+#' @param filename DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' closeSession()
+#' }
 #' @export
 closeSession<-function(save.before.closing, filename=NULL, base.url=.defaultBaseUrl){
     if(save.before.closing)

@@ -135,6 +135,16 @@ getNetworkProperty <- function(visual.property,
 # II.a. Node Properties
 # Pattern: call getNodeProperty()
 # ------------------------------------------------------------------------------
+#' @title Get Node Color
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getNodeColor()
+#' }
 #' @export
 getNodeColor <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
     if(is.null(node.names))
@@ -143,6 +153,16 @@ getNodeColor <- function (node.names=NULL, network=NULL, base.url =.defaultBaseU
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Node Size
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getNodeSize()
+#' }
 #' @export
 getNodeSize <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
     if(is.null(node.names))
@@ -151,6 +171,16 @@ getNodeSize <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUr
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Node Width
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getNodeWidth()
+#' }
 #' @export
 getNodeWidth <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
     if(is.null(node.names))
@@ -159,6 +189,16 @@ getNodeWidth <- function (node.names=NULL, network=NULL, base.url =.defaultBaseU
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Node Height
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param node.names DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getNodeHeight()
+#' }
 #' @export
 getNodeHeight <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
     if(is.null(node.names))
@@ -170,6 +210,16 @@ getNodeHeight <- function (node.names=NULL, network=NULL, base.url =.defaultBase
 # II.b. Edge Properties
 # Pattern: call getEdgeProperty()
 # ------------------------------------------------------------------------------
+#' @title Get Edge Line Width
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getEdgeLineWidth()
+#' }
 #' @export
 getEdgeLineWidth <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
     if(is.null(edge.names))
@@ -178,6 +228,16 @@ getEdgeLineWidth <- function (edge.names=NULL, network=NULL, base.url =.defaultB
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Edge Color
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getEdgeColor()
+#' }
 #' @export
 getEdgeColor <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
     if(is.null(edge.names))
@@ -186,6 +246,16 @@ getEdgeColor <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseU
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Edge Line Style
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getEdgeLineStyle()
+#' }
 #' @export
 getEdgeLineStyle <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
     if(is.null(edge.names))
@@ -194,6 +264,16 @@ getEdgeLineStyle <- function (edge.names=NULL, network=NULL, base.url =.defaultB
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Edge Target Arrow Shape
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.names DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getEdgeTargetArrowShape()
+#' }
 #' @export
 getEdgeTargetArrowShape <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
     if(is.null(edge.names))
@@ -207,6 +287,15 @@ getEdgeTargetArrowShape <- function (edge.names=NULL, network=NULL, base.url =.d
 # II.c. Network Properties
 # Pattern: call getNetworkProperty()
 # ------------------------------------------------------------------------------
+#' @title Get Network Center
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getNetworkCenter()
+#' }
 #' @export
 getNetworkCenter <- function(network=NULL, base.url =.defaultBaseUrl) {
     x.coordinate <- getNetworkProperty("NETWORK_CENTER_X_LOCATION", 
@@ -217,6 +306,15 @@ getNetworkCenter <- function(network=NULL, base.url =.defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Network Zoom
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getNetworkZoom()
+#' }
 #' @export
 getNetworkZoom <- function(network=NULL, base.url =.defaultBaseUrl) {
     getNetworkProperty("NETWORK_SCALE_FACTOR", network = network, base.url = base.url)
