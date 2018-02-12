@@ -88,7 +88,8 @@ getNetworkCount <- function(base.url = .defaultBaseUrl) {
 #' @title Get the name of a network
 #'
 #' @description Retrieve the title of a network
-#' @param suid SUID of the network; default is current network
+#' @param suid SUID of the network; default is current network. If a name is 
+#' provided, then it is validated and returned.
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return network name
 #' @export
@@ -139,7 +140,8 @@ getNetworkName <- function(suid = NULL, base.url = .defaultBaseUrl) {
 #' @title Get the SUID of a network
 #'
 #' @description Retrieve the SUID of a network
-#' @param title Name of the network; default is "current" network
+#' @param title Name of the network; default is "current" network. If an SUID is 
+#' provided, then it is validated and returned.
 #' @param base.url (optional)  URL prefix for CyREST calls
 #' @return (\code{numeric}) Network suid
 #' @author Alexander Pico

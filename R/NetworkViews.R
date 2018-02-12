@@ -8,8 +8,11 @@
 #' @title Get Network Views
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getNetworkViews()
@@ -25,9 +28,14 @@ getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
 #' @title Get the SUID of a network view
 #'
 #' @description Retrieve the SUID of a network view
-#' @param network Name or SUID of the network; default is "current" network
-#' @param base.url (optional)  URL prefix for CyREST calls
-#' @return (\code{numeric}) Network view suid
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape. If a network view SUID is provided, 
+#' then it is validated and returned.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return (\code{numeric}) Network view suid. The first (presummably only) view 
+#' associated a network is returned.
 #' @author Alexander Pico
 #' @examples
 #' \donttest{
@@ -37,10 +45,10 @@ getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
 #' }
 #' @export
 #
-# Dev Notes: together with getNetworkSuid, this function attempts to handle all 
+# Dev Notes: analogous to getNetworkSuid, this function attempts to handle all 
 # of the multiple ways we support network view referencing (e.g., title, SUID, 
-# 'current', and NULL). These functions are then used by all other functions
-# that take a "network" argument.
+# 'current', and NULL). These functions are then used by functions
+# that take a "network" argument and requires a view SUID.
 # 
 getNetworkViewSuid <- function(network = NULL, base.url = .defaultBaseUrl) {
 
@@ -73,8 +81,12 @@ getNetworkViewSuid <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @description FUNCTION_DESCRIPTION
 #' @details Takes first (presumably only) view associated with provided network
 #' @param selected.only DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param network (optional) Name or SUID of a network or view. Default is the 
+#' "current" network active in Cytoscape. The first (presummably only) view 
+#' associated a network is used if a specific view SUID is not provided.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' fitContent()
@@ -95,14 +107,18 @@ fitContent <- function(selected.only=FALSE, network=NULL,
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @details Takes first (presumably only) view associated with provided network
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param network (optional) Name or SUID of a network or view. The first 
+#' (presummably only) view associated a network is used if a specific view 
+#' SUID is not provided.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' setCurrentView()
 #' }
 #' @export
-setCurrentView <- function(network=NULL, 
+setCurrentView <- function(network, 
                        base.url =.defaultBaseUrl) {
     view.SUID <- getNetworkViewSuid(network)
         commandsPOST(paste0('view set current view=SUID:"',view.SUID,'"'), base.url = base.url)
@@ -128,9 +144,12 @@ setCurrentView <- function(network=NULL,
 #' formats, such as PNG and JPEG. 
 #' @param zoom (\code{numeric}) The zoom value to proportionally scale the image. The default 
 #' value is 100.0. Valid only for bitmap formats, such as PNG and JPEG
-#' @param network Name or SUID of network. Takes first (presumably only) view 
-#' associated with provided network. Default is the "current" network active in Cytoscape.
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param network (optional) Name or SUID of a network or view. Default is the 
+#' "current" network active in Cytoscape. The first (presummably only) view 
+#' associated a network is used if a specific view SUID is not provided.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return server response
 #' @examples
 #' \donttest{
@@ -155,7 +174,7 @@ exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, hei
     if(!is.null(zoom))
         cmd.string <- paste0(cmd.string,' Zoom="',zoom,'"')
     if(!is.null(network)){
-        view.SUID <- getNetworkViews(network)[1]
+        view.SUID <- getNetworkViewSuid(network)
         cmd.string <- paste0(cmd.string,' view=SUID:"',view.SUID,'"')
     }
     
