@@ -4,11 +4,11 @@
 \alias{getTableColumns}
 \title{Get table column values}
 \usage{
-getTableColumns(table, columns = NULL, namespace = "default",
+getTableColumns(table = "node", columns = NULL, namespace = "default",
   network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{table}{name of table, e.g., node, edge, network}
+\item{table}{name of table, e.g., node (default), edge, network}
 
 \item{columns}{names of columns to retrieve values from as list object or comma-separated list; default is all columns}
 
@@ -22,7 +22,8 @@ getTableColumns(table, columns = NULL, namespace = "default",
 A \code{data.frame} of column values
 }
 \description{
-Get table column values
+Retrieve one or more columns of data from node, edge or network
+tables.
 }
 \details{
 The 'suid' column is always retrieved along with specified columns. 
@@ -30,8 +31,7 @@ The 'suid' values are used as \code{row.names} in the returned \code{data.frame}
 }
 \examples{
 \donttest{
-example(createNetworkFromDataFrames)
-
+getTableColumns()
 getTableColumns('node','group')
 }
 }

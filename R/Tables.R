@@ -1,9 +1,11 @@
 # ------------------------------------------------------------------------------
-#' Get table column values
+#' @title Get table column values
 #'
+#' @description Retrieve one or more columns of data from node, edge or network
+#' tables.
 #' @details The 'suid' column is always retrieved along with specified columns. 
 #' The 'suid' values are used as \code{row.names} in the returned \code{data.frame}. 
-#' @param table name of table, e.g., node, edge, network
+#' @param table name of table, e.g., node (default), edge, network
 #' @param columns names of columns to retrieve values from as list object or comma-separated list; default is all columns
 #' @param namespace namespace of table; default is "default"
 #' @param network name or suid of the network; default is "current" network
@@ -11,12 +13,11 @@
 #' @return A \code{data.frame} of column values
 #' @examples
 #' \donttest{
-#' example(createNetworkFromDataFrames)
-#'
+#' getTableColumns()
 #' getTableColumns('node','group')
 #' }
 #' @export
-getTableColumns <- function(table,
+getTableColumns <- function(table = 'node',
                              columns = NULL,
                              namespace = 'default',
                              network = NULL,
@@ -70,8 +71,9 @@ getTableColumns <- function(table,
 }
 
 # ------------------------------------------------------------------------------
-#' Get the names of all columns in a table
+#' @title Get Table Column Names 
 #'
+#' @description Retrieve the names of all columns in a table
 #' @param table name of table, e.g., node, edge, network; default is "node"
 #' @param namespace namespace of table, e.g., default
 #' @param network name or suid of the network; default is "current" network
@@ -99,7 +101,7 @@ getTableColumnNames <-  function(table = 'node',
 }
 
 # ------------------------------------------------------------------------------
-#' Loads data into Cytoscape tables keyed by row
+#' @title Loads data into Cytoscape tables keyed by row
 #'
 #' @description This function loads data into Cytoscape node/edge/network tables provided a
 #' common key, e.g., name. Data.frame column names will be used to set Cytoscape table column
@@ -111,6 +113,7 @@ getTableColumnNames <-  function(table = 'node',
 #' @param data.key.column (char) name of data.frame column to use as key; default is "row.names"
 #' @param table (char) name of Cytoscape table to load data into, e.g., node, edge or network; default is "node"
 #' @param table.key.column (char) name of Cytoscape table column to use as key; default is "name"
+#' @param namespace namespace of table, e.g., default
 #' @param network name or suid of the network; default is "current" network
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return server response
@@ -120,6 +123,7 @@ loadTableData <- function(data,
                           data.key.column = 'row.names',
                           table = 'node',
                           table.key.column = 'name',
+                          namespace = 'default',
                           network = NULL,
                           base.url = .defaultBaseUrl) {
     
@@ -165,7 +169,7 @@ loadTableData <- function(data,
         data.list[[i]] <- rest
     }
     
-    table = paste0("default", table) #add prefix
+    table = paste0(namespace, table) #add prefix
     
     tojson.list <-
         list(key = table.key.column,
@@ -178,227 +182,30 @@ loadTableData <- function(data,
     return(sprintf("Success: Data loaded in %s table", table))
 }
 
-#------------------------------------------------------------------------------------------------------------------------
-# retrieve the names of the recognized and supported names for the class of any node or edge attribute.
-.getAttributeClassNames <- function () {
-    return (c (
-        'floating|numeric|double',
-        'integer|int',
-        'string|char|character'
-    ))
-}
-
 # ------------------------------------------------------------------------------
-getNodeAttribute <- function(node.name, attribute.name, network=NULL, base.url=.defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
-    node.SUID <-
-        as.character(.nodeNameToNodeSUID(node.name, net.SUID, base.url))
-    
-    if (length(node.SUID) < 1) {
-        write(
-            sprintf(
-                "WARNING in RCy3::getNodeAttribute():\n\t no node with name '%s' could be found >> function returns empty value",
-                node.name
-            ),
-            stderr()
-        )
-        
-        return("")
-    } else {
-        node.attribute.type <- getNodeAttributeType(attribute.name,net.SUID,base.url)
-        
-        if (length(node.attribute.type) > 0) {
-            res = commandsPOST(
-                paste0(
-                    'node get attribute nodeList=',
-                    node.name,
-                    ' columnList=',
-                    attribute.name
-                )
-            )
-            res <- gsub("}", "", res)
-            node.attribute.value <-
-                unlist(strsplit(res, ":"))[4]
-
-            switch(
-                node.attribute.type,
-                "Double" = {
-                    if (is.na(node.attribute.value))
-                        node.attribute.value = 0.0
-                    return(as.numeric(node.attribute.value))
-                },
-                "Long" = ,
-                "Integer" = {
-                    if (is.na(node.attribute.value))
-                        node.attribute.value = 0
-                    return(as.integer(node.attribute.value))
-                },
-                "Boolean" = {
-                    if (is.na(node.attribute.value))
-                        node.attribute.value = FALSE
-                    return(as.logical(node.attribute.value))
-                },
-                {
-                    if (is.na(node.attribute.value))
-                        node.attribute.value = ''
-                    return(as.character(node.attribute.value))
-                }
-            )
-        }
-        return("")
-    }
-}
-
-# ------------------------------------------------------------------------------
-getAllNodeAttributes <- function(onlySelectedNodes = FALSE, 
-                                 network=NULL, 
-                                 base.url=.defaultBaseUrl) {
-    #TODO implement onlySelectedNodes
-    getTableColumns('node', network = network, base.url = base.url)
-}
-
-# ------------------------------------------------------------------------------
-getEdgeAttribute <- function(edge.name, 
-                             attribute.name, 
-                             network=NULL, 
-                             base.url=.defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
-    edge.SUID <-
-        as.character(.edgeNameToEdgeSUID(edge.name, net.SUID, base.url))
-    
-    if (length(edge.SUID) < 1) {
-        write(
-            sprintf(
-                "WARNING in RCy3::getEdgeAttribute():\n\t no edge with name '%s' could be found >> function returns empty value",
-                edge.name
-            ),
-            stderr()
-        )
-        
-        return("")
-    } else {
-        edge.attribute.type <- getEdgeAttributeType(attribute.name, net.SUID, base.url)
-        
-        if (length(edge.attribute.type) > 0) {
-            edge.attribute.value <- cyrestGET(paste("networks",
-                                                    net.SUID,
-                                                    "tables/defaultedge/rows",
-                                                    edge.SUID,
-                                                    attribute.name,
-                                                    sep = "/"),
-                                              base.url=base.url)
-            switch(
-                edge.attribute.type,
-                "Double" = {
-                    return(as.numeric(edge.attribute.value))
-                },
-                "Long" = ,
-                "Integer" = {
-                    return(as.integer(edge.attribute.value))
-                },
-                "Boolean" = {
-                    return(as.logical(edge.attribute.value))
-                },
-                {
-                    return(as.character(edge.attribute.value))
-                }
-            )
-        }
-        return("")
-    }
-}
-## END getEdgeAttribute
-
-#------------------------------------------------------------------------------------------------------------------------
-getAllEdgeAttributes <- function (onlySelectedEdges = FALSE,
-                                  network = NULL, 
-                                  base.url = .defaultBaseUrl) {
-    getTableColumns('edge', network=network, base.url = base.url)
-}
-# ------------------------------------------------------------------------------
-getNodeAttributeNames <-  function(network = NULL, 
-                                   base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
-    request.res <- cyrestGET(paste("networks",
-                                   net.SUID,
-                                   "tables/defaultnode/columns",
-                                   sep = "/"),
-                             base.url = base.url)
-    request.res <-
-        data.frame(t(sapply(request.res, base::c)))
-    request.res <- unlist(request.res$name)
-    # exclude some node attributes
-    node.attribute.names <-
-        request.res[!request.res %in% c("SUID", "shared name", "selected")]
-    if (length(node.attribute.names) <= 2) {
-        write(
-            sprintf(
-                'Please ensure that you sent the R graph to Cytoscape before calling this function, e.g. using displayGraph. Otherwise names might not be displayed (correctly).'
-            ),
-            stderr()
-        )
-    }
-    return (node.attribute.names)
-}
-
-# ------------------------------------------------------------------------------
-getEdgeAttributeNames <- function(network = NULL, 
-                                  base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
-    request.res <- cyrestGET(paste("networks",
-                                   net.SUID,
-                                   "tables/defaultedge/columns",
-                                   sep = "/"),
-                             base.url = base.url)
-    request.res <-
-        data.frame(t(sapply(request.res, base::c)))
-    request.res <- unlist(request.res$name)
-    # exclude some edge attributes
-    edge.attribute.names <-
-        request.res[!request.res %in% c("SUID", "shared name", "shared interaction", "selected")]
-    return(edge.attribute.names)
-}
-
-# ------------------------------------------------------------------------------
-# delete node attribute by deleting its column in the node table
-deleteNodeAttribute <- function(attribute.name,
+#' @title Delete a table column 
+#'
+#' @description Delete a column from node, edge or network tables.
+#' @param columns Name of the column to delete
+#' @param table Name of table, e.g., node (default), edge, network
+#' @param namespace Namespace of table. Default is "default".
+#' @param network Name or suid of the network; default is "current" network
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return A \code{data.frame} of column values
+#' @examples
+#' \donttest{
+#' deleteTableColumn('node','group')
+#' }
+#' @export
+deleteTableColumn <- function(column ,
+                               table = 'node',
+                               namespace = 'default',
                                 network = NULL, 
                                 base.url = .defaultBaseUrl) {
     net.suid <- getNetworkSuid(network)
-    if (attribute.name %in% getNodeAttributeNames(net.suid, base.url)) {
-        cyrestDELETE(paste("networks",
-                           net.suid,
-                           "tables/defaultnode/columns",
-                           as.character(attribute.name),
-                           sep = "/"),
-                     base.url = base.url)
-        write(sprintf('Attribute "%s" has been deleted...', attribute.name),
-              stderr())
-    } else{
-        msg = paste (attribute.name,
-                     'does not exist and thus could not be deleted.')
-        write (msg, stderr ())
-    }
-}
-
-# ------------------------------------------------------------------------------
-# delete edge attribute by deleting its column in the edge table
-deleteEdgeAttribute <- function(attribute.name,network = NULL, base.url = .defaultBaseUrl) {
-    net.suid <- getNetworkSuid(network)
-    if (attribute.name %in% getEdgeAttributeNames(net.suid, base.url)) {
-        cyrestDELETE(paste("networks",
-                           net.suid,
-                           "tables/defaultedge/columns",
-                           as.character(attribute.name),
-                           sep = "/"),
-                     base.url = base.url)
-        write(sprintf('Attribute "%s" has been deleted...', attribute.name),
-              stderr())
-    } else{
-        msg = paste (attribute.name,
-                     'does not exist and thus could not be deleted.')
-        write (msg, stderr ())
-    }
+    tbl = paste0(namespace, table)
+    cyrestDELETE(paste('networks',net.suid,'tables',tbl,'columns',as.character(column),sep="/"),
+                           base.url = base.url)
 }
 
 

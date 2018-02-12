@@ -5,7 +5,8 @@
 \title{Loads data into Cytoscape tables keyed by row}
 \usage{
 loadTableData(data, data.key.column = "row.names", table = "node",
-  table.key.column = "name", network = NULL, base.url = .defaultBaseUrl)
+  table.key.column = "name", namespace = "default", network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{data}{(data.frame) each row is a node and columns contain node attributes}
@@ -15,6 +16,8 @@ loadTableData(data, data.key.column = "row.names", table = "node",
 \item{table}{(char) name of Cytoscape table to load data into, e.g., node, edge or network; default is "node"}
 
 \item{table.key.column}{(char) name of Cytoscape table column to use as key; default is "name"}
+
+\item{namespace}{namespace of table, e.g., default}
 
 \item{network}{name or suid of the network; default is "current" network}
 
