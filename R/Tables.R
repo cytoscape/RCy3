@@ -149,9 +149,10 @@ getTableColumnTypes <-  function(table = 'node',
 #' @description This function loads data into Cytoscape node/edge/network tables provided a
 #' common key, e.g., name. Data.frame column names will be used to set Cytoscape table column
 #' names.
-#' @details Numeric (or integer) values will be stored as Doubles in Cytoscape tables.
-#' Character or mixed values will be stored as Strings. Logical values will be stored as Boolean.
-#' Existing columns with the same names will keep original type but values will be overwritten.
+#' @details Numeric values will be stored as Doubles in Cytoscape tables. Integer values
+#' will be stored as Integers. Character or mixed values will be stored as Strings. 
+#' Logical values will be stored as Boolean. Existing columns with the same names 
+#' will keep original type but values will be overwritten.
 #' @param data (data.frame) each row is a node and columns contain node attributes
 #' @param data.key.column (char) name of data.frame column to use as key; default is "row.names"
 #' @param table (char) name of Cytoscape table to load data into, e.g., node, edge or network; default is "node"
@@ -169,7 +170,6 @@ loadTableData <- function(data,
                           namespace = 'default',
                           network = NULL,
                           base.url = .defaultBaseUrl) {
-    
     net.suid <- getNetworkSuid(network)
     table.key.column.values =  getTableColumns(table = table,
                                                columns = table.key.column,
@@ -212,17 +212,25 @@ loadTableData <- function(data,
         data.list[[i]] <- rest
     }
     
-    table = paste0(namespace, table) #add prefix
+    tbl = paste0(namespace, table) #add prefix
+        
+    # explicitly create columns for integer data
+    data.types <- sapply(data.subset, typeof)
+    for (i in 1:length(data.types)){
+        if (data.types[i] == "integer"){
+            cyrestPOST(paste('networks',net.suid,'tables',tbl,'columns',sep='/'),
+                       body=list(name=names(data.types[i]),
+                                 type="Integer"),
+                       base.url = base.url)
+        }
+    }
     
-    tojson.list <-
-        list(key = table.key.column,
-             dataKey = data.key.column,
-             data = data.list)
-    
-    cyrestPUT(paste('networks', net.suid, "tables", table, sep = '/'),
-              body = tojson.list,
+    cyrestPUT(paste('networks', net.suid, "tables", tbl, sep = '/'),
+              body = list(key = table.key.column,
+                          dataKey = data.key.column,
+                          data = data.list),
               base.url = base.url)
-    return(sprintf("Success: Data loaded in %s table", table))
+    return(sprintf("Success: Data loaded in %s table", tbl))
 }
 
 # ------------------------------------------------------------------------------
