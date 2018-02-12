@@ -32,7 +32,8 @@ common key, e.g., name. Data.frame column names will be used to set Cytoscape ta
 names.
 }
 \details{
-Numeric (or integer) values will be stored as Doubles in Cytoscape tables.
-Character or mixed values will be stored as Strings. Logical values will be stored as Boolean.
-Existing columns with the same names will keep original type but values will be overwritten.
+Numeric values will be stored as Doubles in Cytoscape tables. Integer values
+will be stored as Integers. Character or mixed values will be stored as Strings. 
+Logical values will be stored as Boolean. Existing columns with the same names 
+will keep original type but values will be overwritten.
 }
