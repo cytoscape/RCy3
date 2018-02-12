@@ -122,9 +122,9 @@
     for(attribute.name in node.attribute.names) {
         known.node.names = sapply(node.suid.name.dict, function(n) { n$name })
         # nodes that store values for this attribute (meaning the value is not empty)
-        nodes.with.attribute = haveNodeAttribute(suid, known.node.names, attribute.name, base.url)
+        nodes.with.attribute = .haveNodeAttribute(suid, known.node.names, attribute.name, base.url)
         if(length(nodes.with.attribute) > 0) {
-            attribute.type = getNodeAttributeType(attribute.name, suid, base.url)
+            attribute.type = .getNodeAttributeType(attribute.name, suid, base.url)
             write(sprintf("\t retrieving attribute '%s' values for %d nodes", attribute.name, length(nodes.with.attribute)), stderr())
             # write(sprintf("\t retrieving %s '%s' attribute for %d nodes", attribute.type, attribute.name, length(nodes.with.attribute)), stderr())
             if(attribute.type == 'Integer' || attribute.type == 'Long') {
@@ -164,10 +164,10 @@
     cy2.edgenames = as.character(cy2.edge.names(existing.graph)) # < 2 seconds for > 9000 edges
     
     for(attribute.name in edge.attribute.names) {
-        edges.with.attribute = haveEdgeAttribute(cy2.edgenames, attribute.name, suid, base.url)
+        edges.with.attribute = .haveEdgeAttribute(cy2.edgenames, attribute.name, suid, base.url)
         
         if(length(edges.with.attribute) > 0) {
-            attribute.type = getEdgeAttributeType(attribute.name, suid, base.url) 
+            attribute.type = .getEdgeAttributeType(attribute.name, suid, base.url) 
             
             write(sprintf("\t retrieving attribute '%s' values for %d edges", attribute.name, length(edges.with.attribute)), stderr())
             if(attribute.type == 'Integer' || attribute.type == 'Long') {
@@ -207,6 +207,302 @@
     
     return(existing.graph)
 } 
+
+#------------------------------------------------------------------------------------------------------------------------
+# in Cytoscape, node attributes are administered on a global level.  In addition, and in contrast to R, not all nodes in a graph
+# will have a specific attribute define on it.  (In R, every node has every attribute)
+# this function returns a list of nodes for which the specified attribute has a value in the corresponding Cytoscape network
+
+.haveNodeAttribute <- function(node.names,
+                               attribute.name,
+                               network = NULL,
+                               base.url = .defaultBaseUrl) {
+    net.SUID = getNetworkSuid(network)
+    # check the attribute exists
+    if (attribute.name %in% getNodeAttributeNames(net.SUID, base.url)) {
+        # get the node SUIDs
+        node.SUIDs = .nodeNameToNodeSUID(node.names, net.SUID, base.url)
+        nodes.that.have.attribute = c()
+        
+        for (i in 1:length(node.SUIDs)) {
+            resource.uri = 
+                node.attribute.value = cyrestGET(paste("networks",
+                                                       net.SUID,
+                                                       "tables/defaultnode/rows",
+                                                       as.character(node.SUIDs[i]),
+                                                       attribute.name,
+                                                       sep = "/"), 
+                                                 base.url=base.url)
+            if (nchar(node.attribute.value) > 0) {
+                nodes.that.have.attribute = c(nodes.that.have.attribute, node.SUIDs[i])
+            }
+        }
+        
+        return (as.character(
+            .nodeSUIDToNodeName(nodes.that.have.attribute, net.SUID, base.url)
+        ))
+    } else {
+        write(
+            sprintf(
+                "Error: '%s' is not an existing node attribute name",
+                attribute.name
+            ),
+            stderr()
+        )
+    }
+}
+
+#------------------------------------------------------------------------------------------------------------------------
+# in Cytoscape, attributes are administered on a global level.  In addition, and in contrast to R, not all nodes in a graph
+# will have a specific attribute define on it.  (In R, every node has every attribute)
+# this function returns a list of nodes for which the specified attribute has a value in the corresponding Cytoscape network
+
+.haveEdgeAttribute <- function (edge.names,
+                                attribute.name,
+                                network = NULL,
+                                base.url = .defaultBaseUrl) {
+    net.SUID = getNetworkSuid(network)
+    
+    if (attribute.name %in% getEdgeAttributeNames(net.SUID, base.url)) {
+        edge.SUIDs = .edgeNameToEdgeSUID(edge.names, net.SUID, base.url)
+        edges.that.have.attribute = c()
+        
+        for (i in 1:length(edge.SUIDs)) {
+            edge.attribute.value = cyrestGET(paste("networks",
+                                                   net.SUID,
+                                                   "tables/defaultedge/rows",
+                                                   as.character(edge.SUIDs[i]),
+                                                   attribute.name,
+                                                   sep = "/"), 
+                                             base.url = base.url)
+            
+            if (nchar(edge.attribute.value) > 0) {
+                edges.that.have.attribute = c(edges.that.have.attribute, edge.SUIDs[i])
+            }
+        }
+        
+        return(as.character(
+            .edgeSUIDToEdgeName(edges.that.have.attribute, net.SUID, base.url)
+        ))
+    } else {
+        write(
+            sprintf(
+                "Error: '%s' is no an existing edge attribute name",
+                attribute.name
+            ),
+            stderr()
+        )
+    }
+}
+
+# ------------------------------------------------------------------------------
+.getNodeAttributeType <- function(attribute.name,
+                                 network = NULL,
+                                 base.url = .defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    
+    if (attribute.name %in% getNodeAttributeNames(net.SUID, base.url)) {
+        node.attributes.info <- cyrestGET(paste("networks",
+                                                net.SUID,
+                                                "tables/defaultnode/columns",
+                                                sep = "/"),
+                                          base.url = base.url)
+        return(node.attributes.info[[which(lapply(node.attributes.info, function(a) {
+            a$name
+        }) %in% attribute.name)]]$type)
+    } else {
+        write(
+            sprintf(
+                "WARNING in RCy3::getNodeAttributeType():\n\t '%s' could not be recognized as a valid node attribute >> function returns empty value",
+                attribute.name
+            ),
+            stderr()
+        )
+        
+        return("")
+    }
+}
+
+# ------------------------------------------------------------------------------
+.getEdgeAttributeType <- function(attribute.name, network=NULL, base.url=.defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
+    if (attribute.name %in% getEdgeAttributeNames(net.SUID, base.url)) {
+        edge.attributes.info <- cyrestGET(paste("networks",
+                                                net.SUID,
+                                                "tables/defaultedge/columns",
+                                                sep = "/"),
+                                          base.url=base.url)
+        return(edge.attributes.info[[which(lapply(edge.attributes.info, function(a) {
+            a$name
+        }) %in% attribute.name)]]$type)
+    } else {
+        write(
+            sprintf(
+                "WARNING in RCy3::getEdgeAttributeType():\n\t '%s' could not be recognized as a valid edge attribute >> function returns empty value",
+                attribute.name
+            ),
+            stderr()
+        )
+        
+        return("")
+    }
+}
+## END getEdgeAttributeType
+
+# ------------------------------------------------------------------------------
+# TODO
+.setNodeAttributesDirect <- function(
+    attribute.name,
+    attribute.type,
+    node.names,
+    values, network = NULL, base.url = .defaultBaseUrl) {
+    net.SUID = getNetworkSuid(network)
+    
+    caller.specified.attribute.class = tolower(attribute.type)
+    # the switch-block ensures the attribute values have the correct data type
+    switch(
+        caller.specified.attribute.class,
+        "floating" = ,
+        "numeric" = ,
+        "double" = {
+            caller.specified.attribute.class = 'Double'
+            values = as.numeric(values)
+        },
+        "integer" = ,
+        "int" = {
+            caller.specified.attribute.class = "Integer"
+            values = as.integer(values)
+        },
+        "boolean" = {
+            caller.specified.attribute.class = "Boolean"
+            values = as.logical(values)
+        },
+        {
+            caller.specified.attribute.class = "String"
+            values = as.character(values)
+        }
+    )
+    
+    # CREATES NEW COLUMN (IF NEEDED)
+    if (!attribute.name %in% getNodeAttributeNames(net.SUID,base.url)) {
+        # create new table column in Cytoscape 'Node Table' to store the attribute values
+        tbl.col = list(name = attribute.name, type = caller.specified.attribute.class)
+        cyrestPOST(paste("networks",
+                         net.SUID,
+                         "tables/defaultnode/columns",
+                         sep = "/"),
+                   body = tbl.col,
+                   base.url = base.url)
+    }
+    
+    if (length(node.names) > 0) {
+        if (length(node.names) != length(values)) {
+            write(
+                sprintf(
+                    "ERROR in RCy3::setNodeAttributesDirect():\n\t the number of values(%d) for attribute '%s' must equal the number of nodes(%d) >> function aborted",
+                    length(values),
+                    attribute.name,
+                    length(node.names)
+                ),
+                stderr()
+            )
+        } else {
+            node.SUIDs = .nodeNameToNodeSUID(node.names, net.SUID, base.url)
+            node.name.suid.value.df = data.frame(node.names, node.SUIDs, values)
+            
+            # converts the above data frame data in the cyREST [SUID:value]-pairs format
+            node.SUID.value.pairs =
+                apply(node.name.suid.value.df[, c('node.SUIDs', 'values')], 1, function(x) {
+                    list(SUID = unname(x[1]), value = unname(x[2]))
+                })
+            res = cyrestPUT(paste("networks",
+                                  net.SUID,
+                                  "tables/defaultnode/columns",
+                                  attribute.name,
+                                  sep = "/"),
+                            body = node.SUID.value.pairs,
+                            base.url = base.url)
+            invisible(res)
+        }
+    }
+}
+## END setNodeAttributesDirect
+
+# ------------------------------------------------------------------------------
+.setEdgeAttributesDirect <-  function(
+    attribute.name,
+    attribute.type,
+    edge.names,
+    values, network = NULL, base.url = .defaultBaseUrl) {
+    net.SUID = getNetworkSuid(network)
+    
+    if (length(edge.names) > 0) {
+        if (length(edge.names) != length(values)) {
+            write(
+                sprintf(
+                    "ERROR in RCy3::setEdgeAttributesDirect():\n\t the number of values(%d) for attribute '%s' must equal the number of edges(%d) >> function aborted",
+                    length(values),
+                    attribute.name,
+                    length(edge.names)
+                ),
+                stderr()
+            )
+            
+        } else {
+            caller.specified.attribute.class = tolower(attribute.type)
+            # the switch-block ensures the attribute values have the correct data type
+            switch(
+                caller.specified.attribute.class,
+                "floating" = ,
+                "numeric" = ,
+                "double" = {
+                    caller.specified.attribute.class = 'Double'
+                    values = as.numeric(values)
+                },
+                "integer" = ,
+                "int" = {
+                    caller.specified.attribute.class = "Integer"
+                    values = as.integer(values)
+                },
+                "boolean" = {
+                    caller.specified.attribute.class = "Boolean"
+                    values = as.logical(values)
+                },
+                {
+                    caller.specified.attribute.class = "String"
+                    values = as.character(values)
+                }
+            )
+            
+            if (!attribute.name %in% getEdgeAttributeNames(net.SUID, base.url)) {
+                tbl.col = list(name = attribute.name, type = caller.specified.attribute.class)
+                cyrestPOST( paste("networks",
+                                  net.SUID,
+                                  "tables/defaultedge/columns",
+                                  sep = "/"),
+                            body = tbl.col,
+                            base.url = base.url)
+            }
+            
+            edge.SUIDs = .edgeNameToEdgeSUID(edge.names, net.SUID ,base.url)
+            edge.name.suid.value.df = data.frame(edge.names, edge.SUIDs, values)
+            
+            edge.SUID.value.pairs =
+                apply(edge.name.suid.value.df[, c('edge.SUIDs', 'values')], 1, function(x) {
+                    list(SUID = unname(x[1]), value = unname(x[2]))
+                })
+            res = cyrestPUT( paste( "networks",
+                                    net.SUID,
+                                    "tables/defaultedge/columns",
+                                    attribute.name,
+                                    sep = "/"),
+                             body = edge.SUID.value.pairs,
+                             base.url = base.url)
+            invisible(res)
+        }
+    }
+}
+## END setEdgeAttributesDirect
 
 # #------------------------------------------------------------------------------------------------------------------------
 # .getNovelEdges = function (g.old, g.new)

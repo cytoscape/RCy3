@@ -7,7 +7,8 @@
 getNetworkSuid(title = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{title}{Name of the network; default is "current" network}
+\item{title}{Name of the network; default is "current" network. If an SUID is 
+provided, then it is validated and returned.}
 
 \item{base.url}{(optional)  URL prefix for CyREST calls}
 }

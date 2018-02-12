@@ -214,7 +214,6 @@ setVisualStyle <- function(style.name, network=NULL, base.url=.defaultBaseUrl) {
         stop(sprintf('Cannot call setVisualStyle on a non-existent visual style (%s)', style.name))
     }
     cyrestGET(paste("apply/styles", style.name, net.SUID, sep="/"), base.url = base.url)
-    write(sprintf('network visual style has been set to "%s"', style.name), stdout())
 }
 
 
