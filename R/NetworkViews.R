@@ -49,12 +49,12 @@ getNetworkViewSuid <- function(network = NULL, base.url = .defaultBaseUrl) {
         getNetworkViews(network)[1]
     } else if (is.numeric(network)) {
         #suid provided, but network or view?
-        net.suid.list <- unlist(lapply(getNetworkList(), function(x) getNetworkSuid(x)))
-        if (network %in% net.suid.list){ # network SUID, return first view
+        net.suids <- cyrestGET('networks', base.url = base.url)
+        if (network %in% net.suids){ # network SUID, return first view
             getNetworkViews(network)[1]
         } else{
-            view.suid.list <- unlist(lapply(net.suid.list, function(x) getNetworkViews(x)))
-            if (network %in% view.suid.list){ # view SUID, return it
+            view.suids <- unlist(lapply(net.suids, function(x) getNetworkViews(x)))
+            if (network %in% view.suids){ # view SUID, return it
                 return(network)
             } else {
                 stop(paste0("Network view does not exist for: ", network))
@@ -82,7 +82,7 @@ getNetworkViewSuid <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @export
 fitContent <- function(selected.only=FALSE, network=NULL, 
                        base.url =.defaultBaseUrl) {
-    view.SUID <- getNetworkViews(network)[1]
+    view.SUID <- getNetworkViewSuid(network)
     if(selected.only){
         commandsPOST(paste0('view fit selected view=SUID:"',view.SUID,'"'), base.url = base.url)
     } else {
@@ -104,7 +104,7 @@ fitContent <- function(selected.only=FALSE, network=NULL,
 #' @export
 setCurrentView <- function(network=NULL, 
                        base.url =.defaultBaseUrl) {
-    view.SUID <- getNetworkViews(network)[1]
+    view.SUID <- getNetworkViewSuid(network)
         commandsPOST(paste0('view set current view=SUID:"',view.SUID,'"'), base.url = base.url)
 }
 
