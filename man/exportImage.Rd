@@ -30,10 +30,13 @@ formats, such as PNG and JPEG.}
 \item{zoom}{(\code{numeric}) The zoom value to proportionally scale the image. The default 
 value is 100.0. Valid only for bitmap formats, such as PNG and JPEG}
 
-\item{network}{Name or SUID of network. Takes first (presumably only) view 
-associated with provided network. Default is the "current" network active in Cytoscape.}
+\item{network}{(optional) Name or SUID of a network or view. Default is the 
+"current" network active in Cytoscape. The first (presummably only) view 
+associated a network is used if a specific view SUID is not provided.}
 
-\item{base.url}{cyrest base url for communicating with cytoscape}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 server response

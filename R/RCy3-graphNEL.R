@@ -245,7 +245,7 @@
 #             
 #             caller.specified.attribute.class = 
 #                 attr(nodeDataDefaults(obj@graph, attribute.name), 'class')
-#             invisible(setNodeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, node.names, values))
+#             invisible(.setNodeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, node.names, values))
 #         } else {
 #             write(sprintf("WARNING in RCy3::setNodeAttributes():\n\t before setting node attributes, please first send the graph nodes to Cytoscape >> function aborted"), stderr())
 #         }
@@ -269,7 +269,7 @@
 #             
 #             caller.specified.attribute.class = attr(edgeDataDefaults(obj@graph, attribute.name), 'class')
 #             
-#             invisible(setEdgeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, edge.names, values))
+#             invisible(.setEdgeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, edge.names, values))
 #         } else {
 #             write(sprintf("WARNING in RCy3::setEdgeAttributes():\n\t before setting edge attributes, please first send the graph edges to Cytoscape >> function aborted"), stderr())
 #         }        
@@ -527,7 +527,7 @@
 #     # new.node.names = setdiff(nodes(other.graph), nodes(obj@graph))
 #     new.node.names = nodes(other.graph)[new.node.indices]
 #     values = noa(other.graph, attribute.name)[new.node.names]
-#     invisible(setNodeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, new.node.names, values))
+#     invisible(.setNodeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, new.node.names, values))
 # } # END .sendNodeAttributesForGraph 
 # 
 # #------------------------------------------------------------------------------------------------------------------------
@@ -572,7 +572,7 @@
 #     }
 #     
 #     values = eda(other.graph, attribute.name)[new.edge.indices]
-#     invisible(setEdgeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, new.edge.names, values))
+#     invisible(.setEdgeAttributesDirect(obj, attribute.name, caller.specified.attribute.class, new.edge.names, values))
 # } # .sendEdgeAttributesForGraph 
 # 
 # 

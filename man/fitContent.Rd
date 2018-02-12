@@ -10,9 +10,13 @@ fitContent(selected.only = FALSE, network = NULL,
 \arguments{
 \item{selected.only}{DESCRIPTION}
 
-\item{network}{DESCRIPTION}
+\item{network}{(optional) Name or SUID of a network or view. Default is the 
+"current" network active in Cytoscape. The first (presummably only) view 
+associated a network is used if a specific view SUID is not provided.}
 
-\item{base.url}{DESCRIPTION}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 RETURN_DESCRIPTION
