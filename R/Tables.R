@@ -22,12 +22,15 @@ getTableColumns <- function(table = 'node',
                              namespace = 'default',
                              network = NULL,
                              base.url = .defaultBaseUrl) {
-    #TODO handle column types like getNodeAttributes?
     suid = getNetworkSuid(network)
+    
+    #column information (names and types)
+    table.col.info <- getTableColumnTypes(table, namespace, network, base.url)
+    table.col.list <- names(table.col.info)
     
     #all columns
     if (is.null(columns))
-        columns = getTableColumnNames(table, namespace, network, base.url)
+        columns = table.col.list
     
     #handle comma separated lists and list objects
     col.list = columns
@@ -40,9 +43,6 @@ getTableColumns <- function(table = 'node',
                            base.url = base.url)
     df = data.frame(row.names = res.names$values)
     
-    #retrieve column names
-    table.col.list = getTableColumnNames(table, namespace, network, base.url)
-    
     #then append other requested columns
     for (col in col.list) {
         #check for column names
@@ -50,6 +50,8 @@ getTableColumns <- function(table = 'node',
             cat(sprintf("Error: Column %s not found in %s table \n", col, table))
             next()
         }
+        #isolate column type
+        table.col.type <- table.col.info[col]
         res.col <- cyrestGET(paste('networks',suid,'tables',tbl,'columns',col, sep="/"),
                              base.url = base.url)
         #convert NULL to NA, then unlist
@@ -57,7 +59,20 @@ getTableColumns <- function(table = 'node',
             ifelse(is.null(x), NA, x)))
         if (length(res.names$values) == length(cvv)) {
             for (i in 1:length(res.names$values)) {
-                df[i, col] <- cvv[i]
+                switch(table.col.type, 
+                       "Double"={
+                           df[i, col] <- as.numeric(cvv[i])
+                       },
+                       "Long"=,
+                       "Integer"={
+                           df[i, col] <- as.integer(cvv[i])
+                       },
+                       "Boolean"={
+                           df[i, col] <- as.logical(cvv[i])
+                       },{
+                           df[i, col] <- as.character(cvv[i])
+                       }
+                )
             }
         } else {
             print(
@@ -87,17 +102,45 @@ getTableColumns <- function(table = 'node',
 #' }
 #' @export
 getTableColumnNames <-  function(table = 'node',
-                              namespace = 'default',
-                              network = NULL,
-                              base.url = .defaultBaseUrl) {
-    title = getNetworkName(network)
-    cmd = paste(table,
-                ' list attributes network="',
-                title,
-                '" namespace="',
-                namespace,
-                sep = '')
-    return(commandsPOST(cmd, base.url = base.url))
+                                 namespace = 'default',
+                                 network = NULL,
+                                 base.url = .defaultBaseUrl) {
+    suid = getNetworkSuid(network)
+    tbl <- paste0(namespace,table)
+    res = cyrestGET(paste('networks',suid,'tables',tbl,'columns',sep = '/'),
+                    base.url = base.url)
+    col.names <- unlist(lapply(res, function(x) x$name))
+    return(col.names)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Get Table Column Types 
+#'
+#' @description Retrieve the types of all columns in a table
+#' @param table name of table, e.g., node, edge, network; default is "node"
+#' @param namespace namespace of table, e.g., default
+#' @param network name or suid of the network; default is "current" network
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return a named list of column types
+#' @examples
+#' \donttest{
+#' getTableColumnTypes()
+#' getTableColumnTypes('edge')
+#' getTableColumnTypes('network')
+#' }
+#' @export
+getTableColumnTypes <-  function(table = 'node',
+                                 namespace = 'default',
+                                 network = NULL,
+                                 base.url = .defaultBaseUrl) {
+    suid = getNetworkSuid(network)
+    tbl <- paste0(namespace,table)
+    res = cyrestGET(paste('networks',suid,'tables',tbl,'columns',sep = '/'),
+                    base.url = base.url)
+    col.names <- unlist(lapply(res, function(x) x$name))
+    col.types <- unlist(lapply(res, function(x) x$type))
+    col.types <- setNames(col.types,col.names)
+    return(col.types)
 }
 
 # ------------------------------------------------------------------------------
@@ -108,7 +151,7 @@ getTableColumnNames <-  function(table = 'node',
 #' names.
 #' @details Numeric (or integer) values will be stored as Doubles in Cytoscape tables.
 #' Character or mixed values will be stored as Strings. Logical values will be stored as Boolean.
-#' Existing columns with the same names will be overwritten.
+#' Existing columns with the same names will keep original type but values will be overwritten.
 #' @param data (data.frame) each row is a node and columns contain node attributes
 #' @param data.key.column (char) name of data.frame column to use as key; default is "row.names"
 #' @param table (char) name of Cytoscape table to load data into, e.g., node, edge or network; default is "node"

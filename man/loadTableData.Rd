@@ -34,5 +34,5 @@ names.
 \details{
 Numeric (or integer) values will be stored as Doubles in Cytoscape tables.
 Character or mixed values will be stored as Strings. Logical values will be stored as Boolean.
-Existing columns with the same names will be overwritten.
+Existing columns with the same names will keep original type but values will be overwritten.
 }
