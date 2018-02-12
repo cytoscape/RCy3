@@ -2,7 +2,7 @@
 % Please edit documentation in R/Tables.R
 \name{getTableColumnNames}
 \alias{getTableColumnNames}
-\title{Get the names of all columns in a table}
+\title{Get Table Column Names}
 \usage{
 getTableColumnNames(table = "node", namespace = "default", network = NULL,
   base.url = .defaultBaseUrl)
@@ -20,7 +20,7 @@ getTableColumnNames(table = "node", namespace = "default", network = NULL,
 list of column names
 }
 \description{
-Get the names of all columns in a table
+Retrieve the names of all columns in a table
 }
 \examples{
 \donttest{
