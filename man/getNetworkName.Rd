@@ -7,7 +7,8 @@
 getNetworkName(suid = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{suid}{SUID of the network; default is current network}
+\item{suid}{SUID of the network; default is current network. If a name is 
+provided, then it is validated and returned.}
 
 \item{base.url}{cyrest base url for communicating with cytoscape}
 }

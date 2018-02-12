@@ -8,11 +8,16 @@ closeSession(save.before.closing, filename = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{save.before.closing}{DESCRIPTION}
+\item{save.before.closing}{\code{boolean} Whether to save before closing the
+current session.}
 
-\item{filename}{DESCRIPTION}
+\item{filename}{(optional) If \code{save.before.closing} is TRUE and the 
+session has not previously been saved, then the path and name of the session 
+file to save should be provided. Default is NULL.}
 
-\item{base.url}{DESCRIPTION}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 RETURN_DESCRIPTION
@@ -22,6 +27,8 @@ FUNCTION_DESCRIPTION
 }
 \examples{
 \donttest{
-closeSession()
+closeSession(FALSE)
+closeSession(TRUE, '/fullpath/mySession')
+closeSession(TRUE)
 }
 }

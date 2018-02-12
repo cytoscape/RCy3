@@ -7,9 +7,11 @@
 saveSession(filename = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{filename}{(char) name of the session file to save}
+\item{filename}{The path and name of the session file to save}
 
-\item{base.url}{cyrest base url for communicating with cytoscape}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 server response
@@ -24,7 +26,7 @@ save to an existing CYS file associated with the session. If
 }
 \examples{
 \donttest{
-saveSession('myFirstSession')
+saveSession('/fullpath/mySession')
 saveSession() 
 }
 }
