@@ -180,6 +180,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' commandsHelp('node get attribute')
 #' }
 #' @importFrom XML htmlParse
+#' @importFrom XML xmlValue
 #' @importFrom XML xpathSApply
 #' @importFrom httr GET
 #' @importFrom utils head
@@ -221,6 +222,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' commandsGET('layout force-directed defaultNodeMass=1')
 #' }
 #' @importFrom XML htmlParse
+#' @importFrom XML xmlValue
 #' @importFrom XML xpathSApply
 #' @importFrom httr GET
 #' @export
@@ -275,7 +277,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     res = POST(url=post.url, body=post.body, encode="json", content_type_json())
     if(res$status_code > 299){
         write(sprintf("RCy3::commandsPOST, HTTP Error Code: %d\n url=%s\n body=%s", 
-                      res$status_code, URLencode(q.url), q.body), stderr())
+                      res$status_code, URLencode(post.url), post.body), stderr())
         stop()
     } else {
         if(length(res$content)>0){
