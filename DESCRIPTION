@@ -18,26 +18,3 @@ biocViews: Visualization, GraphAndNetwork, ThirdPartyClient, Network
 NeedsCompilation: no
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
-Collate: 
-    'Collections.R'
-    'Commands.R'
-    'CytoscapeSystem.R'
-    'Groups.R'
-    'Layouts.R'
-    'NetworkSelection.R'
-    'NetworkViews.R'
-    'Networks.R'
-    'RCy3-deprecated.R'
-    'RCy3-graphNEL.R'
-    'RCy3-utils.R'
-    'RCy3.R'
-    'Session.R'
-    'StyleBypasses.R'
-    'StyleDefaults.R'
-    'StyleDependencies.R'
-    'StyleMappings.R'
-    'StyleValues.R'
-    'Styles.R'
-    'Tables.R'
-    'Tools.R'
-    'UserInterface.R'
