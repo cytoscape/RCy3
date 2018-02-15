@@ -32,7 +32,8 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
 #'
 #' @description Open a session file or URL. This will clear all networks, tables
 #' and styles associated with current session. Be sure to \link{saveSession} first.
-#' @param file.location File path or URL (with 'http' prefix)
+#' @param file.location File path or URL (with 'http' or 'https' prefix). Default 
+#' is a sample session file.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -42,10 +43,13 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
 #' }
 #' @seealso saveSession
 #' @export
-openSession<-function(file.location, base.url=.defaultBaseUrl){
+openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
     type = 'file'
+    if(is.null(file.location))
+        file.location <- '../sampleData/sessions/Yeast Perturbation.cys'
     if(startsWith(file.location,'http'))
         type = 'url'
+    write(sprintf("Opening %s...",file.location), stderr())
     commandsPOST(paste0('session open ',type,'="',file.location,'"'),base.url=base.url)
 }
 

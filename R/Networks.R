@@ -255,7 +255,7 @@ exportNetwork <- function (filename=NULL, type=NULL,
     if(!is.null(type)){
         type = toupper(type)
         if (type == 'CYS') {
-            print('Saving entire session as a CYS file.')
+            write('Saving session as a CYS file...',stderr())
             return(saveSession(filename = filename, base.url = base.url))
         }
         else {
