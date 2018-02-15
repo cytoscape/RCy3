@@ -229,7 +229,10 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #'
 #' @description Export a network to one of mulitple file formats
 #' @param filename DESCRIPTION
-#' @param type File type. CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive)
+#' @param type File type. CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive). 
+#' Default is SIF.
+#' @param network (optional) Name or SUID of a network or view. Default is the 
+#' "current" network active in Cytoscape. 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -238,26 +241,32 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #' exportNetwork('/path/filename','SIF')
 #' }
 #' @export
-exportNetwork <- function (filename, type, base.url = .defaultBaseUrl) {
-    if (!file.exists(filename)) {
+exportNetwork <- function (filename=NULL, type=NULL, 
+                           network=NULL, base.url = .defaultBaseUrl) {
+    cmd.string <- 'network export' # a good start
+    
+    # filename must be suppled
+    if(is.null(filename))
+        filename <- getNetworkName(network) 
+    
+    # optional args
+    if(!is.null(network))
+        cmd.string <- paste0(cmd.string,' network="SUID:',getNetworkSuid(network),'"')
+    if(!is.null(type)){
         type = toupper(type)
         if (type == 'CYS') {
             print('Saving entire session as a CYS file.')
-            saveSession(filename = filename, base.url = base.url)
+            return(saveSession(filename = filename, base.url = base.url))
         }
         else {
             #e.g., CX, CYJS, GraphML, NNF, SIF, XGMML
             if (type == "GRAPHML")
-                #fix case for exceptions
                 type = 'GraphML'
-            commandsPOST(paste0('network export options=',
-                                type, ' OutputFile="', filename, '"'),
-                         base.url = base.url)
+            cmd.string <- paste0(cmd.string,' options="',type,'"')
         }
-    } else{
-        write (sprintf ('choose another filename. File exists: %s', filename),
-               stderr ())
     }
+    commandsPOST(paste0(cmd.string,' OutputFile="',filename,'"'),
+                 base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------

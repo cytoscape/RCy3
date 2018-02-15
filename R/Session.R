@@ -21,8 +21,11 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
         filename <- unname(cyrestGET('session/name', base.url=base.url))
         if(filename=="")
             stop('Save not completed. Provide a filename the first time you save a session.')
+        commandsPOST(paste0('session save'),base.url=base.url)
+    } else {
+        commandsPOST(paste0('session save as file="',filename,'"'),base.url=base.url)
     }
-    commandsPOST(paste0('session save file="',filename,'"'),base.url=base.url)
+    
 }
 
 #' @title Open Session File or URL
