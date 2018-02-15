@@ -158,9 +158,16 @@ setCurrentView <- function(network,
 #' @export
 exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, height=NULL, 
                       width=NULL, zoom=NULL, network=NULL, base.url=.defaultBaseUrl){
-    cmd.string <- 'view export' # minimum required command
-    if(!is.null(filename))
-        cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"')
+    cmd.string <- 'view export' # a good start
+    
+    # filename must be supplied
+    if(is.null(filename))
+        filename <- getNetworkName(network)
+    
+    # view must be supplied
+    view.SUID <- getNetworkViewSuid(network)
+    
+    # optional args
     if(!is.null(type))
         cmd.string <- paste0(cmd.string,' options="',type,'"')
     if(!is.null(resolution))
@@ -173,10 +180,9 @@ exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, hei
         cmd.string <- paste0(cmd.string,' Width="',width,'"')
     if(!is.null(zoom))
         cmd.string <- paste0(cmd.string,' Zoom="',zoom,'"')
-    if(!is.null(network)){
-        view.SUID <- getNetworkViewSuid(network)
-        cmd.string <- paste0(cmd.string,' view=SUID:"',view.SUID,'"')
-    }
     
-    commandsPOST(cmd.string)
+    commandsPOST(paste0(cmd.string,
+                        ' OutputFile="',filename,'"',
+                        ' view=SUID:"',view.SUID,'"'), 
+                 base.url = base.url)
 }
