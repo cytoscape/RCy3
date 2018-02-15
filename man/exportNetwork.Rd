@@ -4,12 +4,17 @@
 \alias{exportNetwork}
 \title{Export Network}
 \usage{
-exportNetwork(filename, type, base.url = .defaultBaseUrl)
+exportNetwork(filename = NULL, type = NULL, network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{filename}{DESCRIPTION}
 
-\item{type}{File type. CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive)}
+\item{type}{File type. CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive). 
+Default is SIF.}
+
+\item{network}{(optional) Name or SUID of a network or view. Default is the 
+"current" network active in Cytoscape.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
