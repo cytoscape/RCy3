@@ -4,10 +4,11 @@
 \alias{openSession}
 \title{Open Session File or URL}
 \usage{
-openSession(file.location, base.url = .defaultBaseUrl)
+openSession(file.location = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{file.location}{File path or URL (with 'http' prefix)}
+\item{file.location}{File path or URL (with 'http' or 'https' prefix). Default 
+is a sample session file.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
