@@ -348,6 +348,25 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     return(q.args)
 }
 
+# Parses all the possible list types and keywords accepted by Commands API.
+# If column designation is supported, simply provide a column name; otherwise
+# it is assumed to not be supported and returns a simple list. 
+.prepPostQueryLists <- function(cmd.list=NULL, cmd.by.col=NULL){
+    if (is.null(cmd.list)) {
+        cmd.list.ready = "selected" #need something here for edge selections to work
+    } else if (!is.null(cmd.by.col)) {
+        cmd.list.col = NULL
+        for (i in 1:length(cmd.list)) {
+            cmd.list.col[i] = paste(cmd.by.col, cmd.list[i], sep = ":")
+        }
+        cmd.list.str = paste(cmd.list.col, collapse = ",")
+    } else {
+        cmd.list.str = paste(cmd.list, collapse=",")
+    }
+    cmd.list.ready = cmd.list.str
+    return(cmd.list.ready)
+}
+
 # ------------------------------------------------------------------------------
 # Command string to CyREST POST query URL
 #

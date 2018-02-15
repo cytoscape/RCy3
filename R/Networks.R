@@ -642,9 +642,9 @@ cloneNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' createSubnetwork(edges="all") #subnetwork of all connected nodes
 #' }
 createSubnetwork <-
-    function(nodes,
+    function(nodes=NULL,
              nodes.by.col = 'name',
-             edges,
+             edges=NULL,
              edges.by.col = 'name',
              exclude.edges = 'F',
              subnetwork.name,
@@ -661,58 +661,18 @@ createSubnetwork <-
         json_sub = NULL
         json_sub$source = title
         json_sub$excludeEdges = exclude.edges
-        
-        node.str = NULL
-        if (missing(nodes)) {
-            json_sub$nodeList = "selected" #need something here for edge selections to work
-        } else {
-            if (!nodes[1] %in% c('all', 'selected', 'unselected')) {
-                for (n in nodes) {
-                    if (is.null(node.str))
-                        node.str = paste(nodes.by.col, n, sep = ":")
-                    else
-                        node.str = paste(node.str,
-                                         paste(nodes.by.col, n, sep = ":"),
-                                         sep = ",")
-                }
-            } else {
-                node.str = nodes
-            }
-            json_sub$nodeList = node.str
-        }
-        
-        edge.str = NULL
-        if (!missing(edges)) {
-            if (!edges[1] %in% c('all', 'selected', 'unselected')) {
-                for (e in edges) {
-                    if (is.null(edge.str))
-                        edge.str = paste(edges.by.col, e, sep = ":")
-                    else
-                        edge.str = paste(edge.str,
-                                         paste(edges.by.col, e, sep = ":"),
-                                         sep = ",")
-                }
-            } else {
-                edge.str = edges
-            }
-            json_sub$edgeList = edge.str
-        }
-        
+        json_sub$nodeList = .prepPostQueryLists(nodes,nodes.by.col)
+        json_sub$edgeList = .prepPostQueryLists(edges,edges.by.col)
+
         subnetwork.arg = NULL
         if (!missing(subnetwork.name)) {
             json_sub$networkName = subnetwork.name
         }
         
-        sub <- toJSON(as.list(json_sub))
-        url <-
-            sprintf("%s/commands/network/create", base.url, sep = "") ##TODO swap with commandsPOST (POST)?
-        response <-
-            POST(
-                url = url,
-                body = sub,
-                encode = "json",
-                content_type_json()
-            )
+        response <- cyrestPOST(
+                url = 'commands/network/create',
+                body = as.list(json_sub),
+                base.url = base.url)
         subnetwork.suid = unname(fromJSON(rawToChar(response$content)))[[1]][[1]]
         #cat(sprintf("Subnetwork SUID is : %i \n", subnetwork.suid))
         return(subnetwork.suid)
