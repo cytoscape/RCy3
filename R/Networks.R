@@ -808,7 +808,11 @@ createNetworkFromDataFrames <-
                 return("Create Network Failed: Must provide either nodes or edges")
         }
         
-        json_nodes <- .nodeSet2JSON(nodes, ...)
+        # Subset dataframe for initial network creation
+        if(!exists('node.id.list'))
+            node.id.list = 'id'
+        
+        json_nodes <- .nodeSet2JSON(nodes[node.id.list], ...)
         # cleanup global environment variables (which can be quite large)
         remove(RCy3.CreateNetworkFromDataFrames.temp.global.counter,
                envir = globalenv())
@@ -820,7 +824,19 @@ createNetworkFromDataFrames <-
         json_edges <- c()
         
         if (!is.null(edges)) {
-            json_edges <- .edgeSet2JSON(edges, ...)
+            # Subset dataframe for initial network creation 
+            if(!exists('source.id.list'))
+                source.id.list = 'source'
+            if(!exists('target.id.list'))
+                target.id.list = 'target'
+            if(!exists('interaction.type.list'))
+                interaction.type.list = 'interaction'
+            if (!(interaction.type.list %in% names(edges)))
+                edges[, interaction.type.list] = rep('interacts with')
+            
+            edges.sub <- edges[c(source.id.list,target.id.list,interaction.type.list)]
+            
+            json_edges <- .edgeSet2JSON(edges.sub, ...)
             # cleanup global environment variables (which can be quite large)
             remove(RCy3.CreateNetworkFromDataFrames.temp.global.counter,
                    envir = globalenv())
@@ -845,12 +861,22 @@ createNetworkFromDataFrames <-
                                    body = json_network,
                                    base.url = base.url)
         
-        cat("Applying default style\n")
+        cat("Applying default style...\n")
         commandsPOST('vizmap apply styles="default"', base.url = base.url)
         
-        cat("Applying preferred layout\n")
+        cat("Applying preferred layout...\n")
         layoutNetwork(network=network.suid)
-    
+        
+        cat("Loading data...\n")
+        # Remove SUID columns if present
+        if('SUID' %in% colnames(nodes))
+            nodes <- subset(nodes, select = -c(SUID))
+        if('SUID' %in% colnames(edges))
+            edges <- subset(edges, select = -c(SUID))
+        
+        loadTableData(nodes)
+        loadTableData(edges,data.key.column = 'name', table = 'edge')
+        
         return(network.suid)
     }
 
@@ -951,9 +977,6 @@ createGraphFromNetwork <-
     .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.size <- 1
     .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set <-
         c()
-    
-    if (!(interaction.type.list %in% names(edge_set)))
-        edge_set[, interaction.type.list] = rep('interacts with')
     
     computed_name <-
         paste(edge_set[, source.id.list],

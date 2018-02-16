@@ -47,9 +47,9 @@ makeSimpleGraph = function() {
     nodeData (g, 'B', 'lfc') = 0.0
     nodeData (g, 'C', 'lfc') = 3.0
     
-    nodeData (g, 'A', 'count') = 2
-    nodeData (g, 'B', 'count') = 30
-    nodeData (g, 'C', 'count') = 100
+    nodeData (g, 'A', 'count') = as.integer(2)
+    nodeData (g, 'B', 'count') = as.integer(30)
+    nodeData (g, 'C', 'count') = as.integer(100)
     
     nodeData (g, 'A', 'label') = 'Gene A'
     nodeData (g, 'B', 'label') = 'Gene B'
