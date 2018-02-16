@@ -359,11 +359,10 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         for (i in 1:length(cmd.list)) {
             cmd.list.col[i] = paste(cmd.by.col, cmd.list[i], sep = ":")
         }
-        cmd.list.str = paste(cmd.list.col, collapse = ",")
+        cmd.list.ready = paste(cmd.list.col, collapse = ",")
     } else {
-        cmd.list.str = paste(cmd.list, collapse=",")
+        cmd.list.ready = paste(cmd.list, collapse=",")
     }
-    cmd.list.ready = cmd.list.str
     return(cmd.list.ready)
 }
 
