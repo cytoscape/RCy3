@@ -4,10 +4,10 @@
 \alias{renameNetwork}
 \title{Rename a network}
 \usage{
-renameNetwork(new.title, network = NULL, base.url = .defaultBaseUrl)
+renameNetwork(title, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{new.title}{New name for the network}
+\item{title}{New name for the network}
 
 \item{network}{name or suid of the network that you want to rename; default is "current" network}
 
