@@ -214,10 +214,11 @@ loadTableData <- function(data,
     
     tbl = paste0(namespace, table) #add prefix
         
-    # explicitly create columns for integer data
+    # explicitly create columns for integer data, unless the column alread exists!
+    existing.cols <- getTableColumnNames()
     data.types <- sapply(data.subset, typeof)
     for (i in 1:length(data.types)){
-        if (data.types[i] == "integer"){
+        if (data.types[i] == "integer" && !names(data.types[i]) %in% existing.cols){
             cyrestPOST(paste('networks',net.suid,'tables',tbl,'columns',sep='/'),
                        body=list(name=names(data.types[i]),
                                  type="Integer"),

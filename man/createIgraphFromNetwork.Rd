@@ -25,7 +25,8 @@ in igraph. Associated table columns will also be passed to igraph as vertiex and
 }
 \examples{
 \donttest{
-createIgraphFromNetwork('myNetwork')
+ig <- createIgraphFromNetwork()
+ig <- createIgraphFromNetwork('myNetwork')
 }
 }
 \seealso{

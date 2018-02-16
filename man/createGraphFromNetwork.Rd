@@ -19,16 +19,8 @@ Returns the Cytoscape network as a Bioconductor graph.
 }
 \examples{
 \donttest{cw <- CytoscapeWindow('network', graph=makeSimpleGraph())
-displayGraph(cw)
-layoutNetwork(cw)
-g.net1 <- createGraphFromNetwork(cw)
-
-cc <- CytoscapeConnection()
-g.net2 <- createGraphFromNetwork(cc, 'network')
-
-g.net3 <- createGraphFromNetwork('network') #default connection
-
-g.net4 <- createGraphFromNetwork() #current network
+g <- createGraphFromNetwork()
+g <- createGraphFromNetwork('myNetwork')
 }
 }
 \author{

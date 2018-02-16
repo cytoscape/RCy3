@@ -775,12 +775,13 @@ createNetworkFromGraph <- function (graph,
 #' @examples
 #' \donttest{
 #' nodes <- data.frame(id=c("node 0","node 1","node 2","node 3"),
-#'            group=c("A","A","B","B"), # optional
+#'            group=c("A","A","B","B"), # categorical strings
+#'            score=as.integer(c(20,10,15,5)), # integers
 #'            stringsAsFactors=FALSE)
 #' edges <- data.frame(source=c("node 0","node 0","node 0","node 2"),
 #'            target=c("node 1","node 2","node 3","node 3"),
 #'            interaction=c("inhibits","interacts","activates","interacts"),  # optional
-#'            weight=c(5,3,5,9), # optional
+#'            weight=c(5.1,3.0,5.2,9.9), # numeric
 #'            stringsAsFactors=FALSE)
 #'
 #' createNetworkFromDataFrames(nodes,edges)
@@ -873,9 +874,16 @@ createNetworkFromDataFrames <-
             nodes <- subset(nodes, select = -c(SUID))
         if('SUID' %in% colnames(edges))
             edges <- subset(edges, select = -c(SUID))
+        edges['data.key.column'] <- 
+            apply(edges, 1,
+                  function(x) paste0(x[source.id.list], " (",
+                                     x[interaction.type.list],") ",
+                                     x[target.id.list]))
         
-        loadTableData(nodes)
-        loadTableData(edges,data.key.column = 'name', table = 'edge')
+        loadTableData(nodes,data.key.column = node.id.list,
+                      table.key.column = node.id.list)
+        loadTableData(edges,data.key.column = 'data.key.column', 
+                      table = 'edge')
         
         return(network.suid)
     }
