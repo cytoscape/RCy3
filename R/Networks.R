@@ -698,7 +698,9 @@ createSubnetwork <- function(nodes=NULL,
 #' @return (int) network SUID
 #' @examples
 #' \donttest{
-#' createNetworkFromIgraph(g)
+#' library(igraph)
+#' ig <- make_graph(c("A","B","B","C","C","D","D","B"), directed = FALSE)
+#' createNetworkFromIgraph(ig)
 #' }
 #' @seealso createNetworkFromDataFrames, createIgraphFromNetwork
 #' @importFrom igraph as_data_frame
@@ -873,8 +875,8 @@ createNetworkFromDataFrames <-
             json_edges <- "[]" #fake empty array
         }
         
-        json_network <- list(data <- list(name = new.title),
-                             elements <- c(
+        json_network <- list(data = list(name = new.title),
+                             elements = c(
                                  nodes = list(json_nodes),
                                  edges = list(json_edges)
                              ))
@@ -886,20 +888,12 @@ createNetworkFromDataFrames <-
                                    body = json_network,
                                    base.url = base.url)
         
-        if (is.numeric(network.suid))
-            cat(sprintf("Network SUID is : %i \n", network.suid))
-        else
-            return(network.suid)
-        
         cat("Applying default style\n")
         commandsPOST('vizmap apply styles="default"', base.url = base.url)
         
-        cat(sprintf("Applying %s layout\n", invisible(
-            commandsPOST('layout get preferred network="current"', base.url = base.url)
-        )))
-        commandsPOST('layout apply preferred networkSelected="current',
-                     base.url = base.url)
-        
+        cat("Applying preferred layout\n")
+        layoutNetwork(network=network.suid)
+    
         return(network.suid)
     }
 

@@ -5,15 +5,17 @@
 \title{Create subnetwork from existing network}
 \usage{
 createSubnetwork(nodes = NULL, nodes.by.col = "name", edges = NULL,
-  edges.by.col = "name", exclude.edges = "F", subnetwork.name,
-  network = NULL, base.url = "http://localhost:1234/v1")
+  edges.by.col = "name", exclude.edges = FALSE, subnetwork.name = NULL,
+  network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{nodes}{list of node names or keyword: selected, unselected or all}
+\item{nodes}{list of node names or keyword: selected, unselected or all. Default
+is currently selected nodes.}
 
 \item{nodes.by.col}{name of node table column corresponding to provided nodes list; default is 'name'}
 
-\item{edges}{list of edge names or keyword: selected, unselected or all}
+\item{edges}{list of edge names or keyword: selected, unselected or all. Default
+is currently selected edges.}
 
 \item{edges.by.col}{name of edge table column corresponding to provided edges list; default is 'name'}
 
@@ -44,8 +46,9 @@ bring along their source and target nodes.
 }
 \examples{
 \donttest{
-createSubnetwork("selected")
-createSubnetwork("selected",subnetwork.name="mySubnetwork")
+createSubnetwork()
+createSubnetwork("all")
+createSubnetwork(subnetwork.name="mySubnetwork")
 createSubnetwork(c("node 1","node 2","node 3"))
 createSubnetwork(c("AKT1","TP53","PIK3CA"),"display name")
 createSubnetwork(edges="all") #subnetwork of all connected nodes
