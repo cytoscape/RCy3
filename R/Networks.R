@@ -40,7 +40,7 @@ setCurrentNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #'
 #' @description Sets a new name for this network
 #' @details Duplicate network names are not allowed
-#' @param new.title New name for the network
+#' @param title New name for the network
 #' @param network name or suid of the network that you want to rename; default is "current" network
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -51,13 +51,13 @@ setCurrentNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' renameNetwork("renamed network")
 #' }
 #' @export
-renameNetwork <-  function(new.title,
+renameNetwork <-  function(title,
                            network = NULL,
                            base.url = .defaultBaseUrl) {
     old.suid = getNetworkSuid(network)
     cmd <-
         paste0('network rename name="',
-               new.title,
+               title,
                '" sourceNetwork=SUID:"',
                old.suid,
                '"')
@@ -691,8 +691,8 @@ createSubnetwork <- function(nodes=NULL,
 #' @details Vertices and edges from the igraph network will be translated into nodes and edges
 #' in Cytoscape. Associated attributes will also be passed to Cytoscape as node and edge table columns.
 #' @param igraph (igraph) igraph network object
-#' @param new.title (char) network name
-#' @param collection.title (char) network collection name
+#' @param title (char) network name
+#' @param collection (char) network collection name
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @param ... params for nodeSet2JSON() and edgeSet2JSON(); see createNetwork
 #' @return (int) network SUID
@@ -707,8 +707,8 @@ createSubnetwork <- function(nodes=NULL,
 #' @importFrom BiocGenerics colnames
 #' @export
 createNetworkFromIgraph <- function(igraph,
-                                    new.title = "MyNetwork",
-                                    collection.title = "myNetworkCollection",
+                                    title = "MyNetwork",
+                                    collection = "myNetworkCollection",
                                     base.url = .defaultBaseUrl,
                                     ...) {
     #extract dataframes
@@ -721,7 +721,7 @@ createNetworkFromIgraph <- function(igraph,
     colnames(igedges)[colnames(igedges) == "to"] <- "target"
     
     #ship
-    createNetworkFromDataFrames(ignodes, igedges, new.title, collection.title, base.url)
+    createNetworkFromDataFrames(ignodes, igedges, title, collection, base.url)
 }
 
 # ------------------------------------------------------------------------------
@@ -729,69 +729,26 @@ createNetworkFromIgraph <- function(igraph,
 #'
 #' @description Creates a Cytoscape network from a Bioconductor graph.
 #' @param graph DESCRIPTION
-#' @param title DESCRIPTION
+#' @param title (char) network name
+#' @param collection (char) network collection name
 #' @param base.url DESCRIPTION
 #' @return RETURN_DESCRIPTION
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
-#' createNetworkFromGraph(g, "myNetwork")
+#' library(graph)
+#' g <- makeSimpleGraph()
+#' createNetworkFromGraph(g)
 #' }
+#' @importFrom igraph igraph.from.graphNEL
 #' @export
 createNetworkFromGraph <- function (graph,
-                                    title = NULL,
+                                    title = "MyNetwork",
+                                    collection = "myNetworkCollection",
                                     base.url = .defaultBaseUrl) {
-    #TODO
-    
-    # #    # add a label to each node if not already present. default label is the node name, the node ID    	
-    # if (is.classic.graph(graph)){
-    #     if (edgemode(graph) == 'undirected') {
-    #         graph = remove.redundancies.in.undirected.graph(graph) #AP: not sure this is needed anymore...
-    #     }
-    # }
-    # # are all node attributes properly initialized?
-    # node.attributes = noa.names(graph)
-    # if (length(node.attributes) > 0) {
-    #     check.list = list()
-    #     for (node.attribute in node.attributes) {
-    #         check.list[[node.attribute]] = properlyInitializedNodeAttribute(graph, node.attribute)
-    #     }
-    #     uninitialized.attributes = which(check.list == FALSE)
-    #     if (length(uninitialized.attributes) > 0) {
-    #         write(sprintf("%d uninitialized node attribute/s", length(uninitialized.attributes)), stderr())
-    #         return()
-    #     }
-    # } # if node.attributes
-    # 
-    # # are all edge attributes properly initialized?
-    # edge.attributes = eda.names(graph)
-    # if (length(edge.attributes) > 0) {
-    #     check.list = list()
-    #     for (edge.attribute in edge.attributes) {
-    #         check.list[[edge.attribute]] = properlyInitializedEdgeAttribute(graph, edge.attribute)
-    #     }
-    #     uninitialized.attributes = which(check.list == FALSE)
-    #     if (length(uninitialized.attributes) > 0) {
-    #         write(sprintf("%d uninitialized edge attribute/s", length(uninitialized.attributes)), stderr())
-    #         return()
-    #     }
-    # } # if edge.attributes
-    # 
-    # if (!'label' %in% noa.names(graph)) {
-    #     write('nodes have no label attribute -- adding default labels', stderr())
-    #     graph = initNodeAttribute(graph, 'label', 'char', 'noLabel')
-    #     if (length(nodes(graph) > 0)) {
-    #         nodeData(graph, nodes(graph), 'label') = nodes(graph) # nodes(graph) returns strings
-    #     }
-    # }
-    # 
-    # # create new 'CytoscapeWindow' object
-    # cw = new('CytoscapeWindowClass', title=title, graph=graph, uri=uri, api=api,
-    #          collectTimings=collectTimings, node.suid.name.dict = list(), edge.node.suid.name.dict=list())
-    # 
-    # if (create.window) {
-    #     cw@suid = sendNetworkFromGraph(cw)
-    # }
-    # 
+    createNetworkFromIgraph(igraph::igraph.from.graphNEL(graph),
+                            title = title,
+                            collection = collection,
+                            base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
@@ -810,8 +767,8 @@ createNetworkFromGraph <- function (graph,
 #' as (Double); (chr) as (String); and (logical) as (Boolean).
 #' @param nodes (data.frame) see details and examples below; default NULL to derive nodes from edge sources and targets
 #' @param edges (data.frame) see details and examples below; default NULL for disconnected set of nodes
-#' @param new.title (char) network name
-#' @param collection.title (char) network collection name
+#' @param title (char) network name
+#' @param collection (char) network collection name
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @param ... params for nodeSet2JSON() and edgeSet2JSON()
 #' @return (int) network SUID
@@ -832,8 +789,8 @@ createNetworkFromGraph <- function (graph,
 createNetworkFromDataFrames <-
     function(nodes = NULL,
              edges = NULL,
-             new.title = "MyNetwork",
-             collection.title = "MyNetworkCollection",
+             title = "MyNetwork",
+             collection = "MyNetworkCollection",
              base.url = .defaultBaseUrl,
              ...) {
         #defining variable names to be used globally later on (to avoid devtools::check() NOTES)
@@ -875,7 +832,7 @@ createNetworkFromDataFrames <-
             json_edges <- "[]" #fake empty array
         }
         
-        json_network <- list(data = list(name = new.title),
+        json_network <- list(data = list(name = title),
                              elements = c(
                                  nodes = list(json_nodes),
                                  edges = list(json_edges)
@@ -883,8 +840,8 @@ createNetworkFromDataFrames <-
         
         network.suid <- cyrestPOST('networks',
                                    parameters = list(
-                                       title = new.title, 
-                                       collection = collection.title),
+                                       title = title, 
+                                       collection = collection),
                                    body = json_network,
                                    base.url = base.url)
         
@@ -912,7 +869,8 @@ createNetworkFromDataFrames <-
 #' @return (igraph) an igraph network
 #' @examples
 #' \donttest{
-#' createIgraphFromNetwork('myNetwork')
+#' ig <- createIgraphFromNetwork()
+#' ig <- createIgraphFromNetwork('myNetwork')
 #' }
 #' @seealso createNetworkFromDataFrames, createNetworkFromIgraph
 #' @importFrom igraph graph_from_data_frame
@@ -945,7 +903,7 @@ createIgraphFromNetwork <-
         cynodes2 = cbind(cynodes["name"], cynodes[, !(names(cynodes) == "name")])
         
         #ship
-        graph_from_data_frame(cyedges2, directed = TRUE, vertices = cynodes2)
+        igraph::graph_from_data_frame(cyedges2, directed = TRUE, vertices = cynodes2)
     }
 
 # ------------------------------------------------------------------------------
@@ -957,129 +915,17 @@ createIgraphFromNetwork <-
 #' @return A Bioconductor graph object.
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{cw <- CytoscapeWindow('network', graph=makeSimpleGraph())
-#' displayGraph(cw)
-#' layoutNetwork(cw)
-#' g.net1 <- createGraphFromNetwork(cw)
-#'
-#' cc <- CytoscapeConnection()
-#' g.net2 <- createGraphFromNetwork(cc, 'network')
-#'
-#' g.net3 <- createGraphFromNetwork('network') #default connection
-#'
-#' g.net4 <- createGraphFromNetwork() #current network
+#' g <- createGraphFromNetwork()
+#' g <- createGraphFromNetwork('myNetwork')
 #' }
+#' @importFrom igraph igraph.to.graphNEL
 #' @export
 createGraphFromNetwork <-
     function (network = NULL, base.url = .defaultBaseUrl) {
-        suid = getNetworkSuid(network)
-        title = getNetworkName(network)
-        
-        if (!is.na(suid)) {
-            res = cyrestGET(paste("networks", suid, sep = "/"), base.url)
-            g = new("graphNEL", edgemode = 'directed') # create graph object
-            g.nodes = res$elements$nodes
-            # if there are no nodes in the graph received from Cytoscape, return an empty 'graphNEL' object
-            if (length(g.nodes) == 0) {
-                write(
-                    sprintf(
-                        "NOTICE in RCy3::createGraphFromNetwork():\n\t returning an empty 'graphNEL'"
-                    ),
-                    stderr()
-                )
-                return(g)
-            }
-            
-            # else get the node names and add them to the R graph
-            node.suid.name.dict = lapply(g.nodes, function(n) {
-                list(name = n$data$name,
-                     SUID = n$data$SUID)
-            })
-            g.node.names = sapply(node.suid.name.dict, function(n) {
-                n$name
-            })
-            write(sprintf("\t received %d NODES from '%s'", length(g.nodes), title),
-                  stderr())
-            g = graph::addNode(g.node.names, g)
-            write(sprintf(
-                "\t - added %d nodes to the returned graph\n",
-                length(g.node.names)
-            ),
-            stderr())
-            
-            # GET NODE ATTRIBUTES (if any)
-            g = .copyNodeAttributesToGraph(node.suid.name.dict, suid, g)
-            
-            # Bioconductor's 'graph' edges require the 'edgeType' attribute, so its default value is assigned
-            g = .initEdgeAttribute (g, 'edgeType', 'char', 'assoc')
-            
-            # GET GRAPH EDGES
-            g.edges = request.res$elements$edges
-            
-            if (length(g.edges) > 0) {
-                regex = ' *[\\(|\\)] *'
-                write(sprintf(
-                    "\n\t received %d EDGES from '%s'",
-                    length(g.edges),
-                    title
-                ),
-                stderr())
-                
-                edge.node.suid.name.dict = lapply(g.edges, function(e) {
-                    list(name = e$data$name,
-                         SUID = e$data$SUID)
-                })
-                g.edge.names = sapply(edge.node.suid.name.dict, function(e) {
-                    e$name
-                })
-                edges.tokens = strsplit(g.edge.names, regex)
-                source.nodes = unlist(lapply(edges.tokens, function(tokens)
-                    tokens[1]))
-                target.nodes = unlist(lapply(edges.tokens, function(tokens)
-                    tokens[3]))
-                edge.types = unlist(lapply(edges.tokens, function(tokens)
-                    tokens[2]))
-                write(sprintf(
-                    '\t - adding %d edges to the returned graph\n',
-                    length(edges.tokens)
-                ),
-                stderr())
-                
-                tryCatch({
-                    g = addEdge(source.nodes, target.nodes, g)
-                    edgeData(g, source.nodes, target.nodes, 'edgeType') = edge.types
-                    
-                    # GET EDGE ATTRIBUTES (if any)
-                    g = .copyEdgeAttributesToGraph(edge.node.suid.name.dict, suid, g)
-                },
-                error = function(cond) {
-                    write(
-                        sprintf(
-                            "ERROR in RCy3::createGraphFromNetwork(): '%s'",
-                            cond
-                        ),
-                        stderr()
-                    )
-                    return(NA)
-                })
-                
-                
-            }
-            
-        } else {
-            write(
-                sprintf(
-                    "ERROR in RCy3::createGraphFromNetwork():\n\t there is no graph with name '%s' in Cytoscape",
-                    title
-                ),
-                stderr()
-            )
-            return(NA)
-        }
-        
+        ig <- createIgraphFromNetwork(network, base.url)
+        g <- igraph::igraph.to.graphNEL(ig)
         return(g)
-    }
-## END createGraphFromNetwork
-
+}
 
 # ==============================================================================
 # VI. Internal functions
