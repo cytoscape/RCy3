@@ -620,9 +620,11 @@ cloneNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' Typical usage only requires specifying either nodes or edges. Note that selected nodes will bring
 #' along their connecting edges by default (see exclude.edges arg) and selected edges will always
 #' bring along their source and target nodes.
-#' @param nodes list of node names or keyword: selected, unselected or all
+#' @param nodes list of node names or keyword: selected, unselected or all. Default
+#' is currently selected nodes.
 #' @param nodes.by.col name of node table column corresponding to provided nodes list; default is 'name'
-#' @param edges list of edge names or keyword: selected, unselected or all
+#' @param edges list of edge names or keyword: selected, unselected or all. Default
+#' is currently selected edges.
 #' @param edges.by.col name of edge table column corresponding to provided edges list; default is 'name'
 #' @param exclude.edges (boolean) whether to exclude connecting edges; default is FALSE
 #' @param subnetwork.name name of new subnetwork to be created;
@@ -635,8 +637,9 @@ cloneNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @export
 #' @examples
 #' \donttest{
-#' createSubnetwork("selected")
-#' createSubnetwork("selected",subnetwork.name="mySubnetwork")
+#' createSubnetwork()
+#' createSubnetwork("all")
+#' createSubnetwork(subnetwork.name="mySubnetwork")
 #' createSubnetwork(c("node 1","node 2","node 3"))
 #' createSubnetwork(c("AKT1","TP53","PIK3CA"),"display name")
 #' createSubnetwork(edges="all") #subnetwork of all connected nodes
