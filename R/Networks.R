@@ -641,42 +641,43 @@ cloneNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' createSubnetwork(c("AKT1","TP53","PIK3CA"),"display name")
 #' createSubnetwork(edges="all") #subnetwork of all connected nodes
 #' }
-createSubnetwork <-
-    function(nodes=NULL,
-             nodes.by.col = 'name',
-             edges=NULL,
-             edges.by.col = 'name',
-             exclude.edges = 'F',
-             subnetwork.name,
-             network = NULL,
-             base.url = 'http://localhost:1234/v1') {
-        title = getNetworkName(network, base.url)
-        
-        if (exclude.edges) {
-            exclude.edges = "true"
-        } else {
-            exclude.edges = "false"
-        }
-        
-        json_sub = NULL
-        json_sub$source = title
-        json_sub$excludeEdges = exclude.edges
-        json_sub$nodeList = .prepPostQueryLists(nodes,nodes.by.col)
-        json_sub$edgeList = .prepPostQueryLists(edges,edges.by.col)
-
-        subnetwork.arg = NULL
-        if (!missing(subnetwork.name)) {
-            json_sub$networkName = subnetwork.name
-        }
-        
-        response <- cyrestPOST(
-                url = 'commands/network/create',
-                body = as.list(json_sub),
-                base.url = base.url)
-        subnetwork.suid = unname(fromJSON(rawToChar(response$content)))[[1]][[1]]
-        #cat(sprintf("Subnetwork SUID is : %i \n", subnetwork.suid))
-        return(subnetwork.suid)
+createSubnetwork <- function(nodes=NULL,
+                             nodes.by.col = 'name',
+                             edges=NULL,
+                             edges.by.col = 'name',
+                             exclude.edges = FALSE,
+                             subnetwork.name=NULL,
+                             network = NULL,
+                             base.url = .defaultBaseUrl) {
+    title = getNetworkName(network, base.url)
+    
+    if (exclude.edges) 
+        exclude.edges = "true"
+    else 
+        exclude.edges = "false"
+    
+    if (length(nodes)==1 && nodes[1] %in% c('all','selected','unselected'))
+        nodes.by.col = NULL
+    
+    if (length(edges)==1 && edges[1] %in% c('all','selected','unselected'))
+        edges.by.col = NULL
+    
+    json_sub = NULL
+    json_sub$source = title
+    json_sub$excludeEdges = exclude.edges
+    json_sub$nodeList = .prepPostQueryLists(nodes,nodes.by.col)
+    json_sub$edgeList = .prepPostQueryLists(edges,edges.by.col)
+    
+    if (!is.null(subnetwork.name)) {
+        json_sub$networkName = subnetwork.name
     }
+    
+    res <- cyrestPOST(
+        'commands/network/create',
+        body = as.list(json_sub),
+        base.url = base.url)
+    return(res$data['network'])
+}
 
 # ------------------------------------------------------------------------------
 #' @title Create a Cytoscape network from an igraph network
