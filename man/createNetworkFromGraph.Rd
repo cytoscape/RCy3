@@ -4,12 +4,15 @@
 \alias{createNetworkFromGraph}
 \title{Create Network From Graph}
 \usage{
-createNetworkFromGraph(graph, title = NULL, base.url = .defaultBaseUrl)
+createNetworkFromGraph(graph, title = "MyNetwork",
+  collection = "myNetworkCollection", base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{graph}{DESCRIPTION}
 
-\item{title}{DESCRIPTION}
+\item{title}{(char) network name}
+
+\item{collection}{(char) network collection name}
 
 \item{base.url}{DESCRIPTION}
 }
@@ -21,7 +24,9 @@ Creates a Cytoscape network from a Bioconductor graph.
 }
 \examples{
 \donttest{
-createNetworkFromGraph(g, "myNetwork")
+library(graph)
+g <- makeSimpleGraph()
+createNetworkFromGraph(g)
 }
 }
 \author{

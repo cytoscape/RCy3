@@ -5,7 +5,7 @@
 \title{Create a network from data frames}
 \usage{
 createNetworkFromDataFrames(nodes = NULL, edges = NULL,
-  new.title = "MyNetwork", collection.title = "MyNetworkCollection",
+  title = "MyNetwork", collection = "MyNetworkCollection",
   base.url = .defaultBaseUrl, ...)
 }
 \arguments{
@@ -13,9 +13,9 @@ createNetworkFromDataFrames(nodes = NULL, edges = NULL,
 
 \item{edges}{(data.frame) see details and examples below; default NULL for disconnected set of nodes}
 
-\item{new.title}{(char) network name}
+\item{title}{(char) network name}
 
-\item{collection.title}{(char) network collection name}
+\item{collection}{(char) network collection name}
 
 \item{base.url}{cyrest base url for communicating with cytoscape}
 
@@ -42,12 +42,13 @@ as (Double); (chr) as (String); and (logical) as (Boolean).
 \examples{
 \donttest{
 nodes <- data.frame(id=c("node 0","node 1","node 2","node 3"),
-           group=c("A","A","B","B"), # optional
+           group=c("A","A","B","B"), # categorical strings
+           score=as.integer(c(20,10,15,5)), # integers
            stringsAsFactors=FALSE)
 edges <- data.frame(source=c("node 0","node 0","node 0","node 2"),
            target=c("node 1","node 2","node 3","node 3"),
            interaction=c("inhibits","interacts","activates","interacts"),  # optional
-           weight=c(5,3,5,9), # optional
+           weight=c(5.1,3.0,5.2,9.9), # numeric
            stringsAsFactors=FALSE)
 
 createNetworkFromDataFrames(nodes,edges)
