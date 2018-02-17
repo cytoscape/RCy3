@@ -16,7 +16,7 @@ See details.}
 
 \item{map.from}{Type of identifier found in specified \code{column}. See details.}
 
-\item{map.to}{Type of identifier to populate in new column.}
+\item{map.to}{Type of identifier to populate in new column. See details.}
 
 \item{force.single}{(optional) Whether to return only first result in cases
 of one-to-many mappings; otherwise the new column will hold lists of identifiers.
@@ -44,11 +44,17 @@ FUNCTION_DESCRIPTION
 Supported species: Human, Mouse, Rat, Frog, Zebrafish, Fruit fly,
 Mosquito, Worm, Arabidopsis thaliana, Yeast, E. coli, Tuberculosis.
 
-Supported identifier types (depending on species): HGNC, Ensembl, Entrez Gene, 
-Uniprot-TrEMBL, miRBase, UniGene, MGI, RGD, SGD, ZFIN, FlyBase, WormBase, TAIR.
+Supported identifier types (depending on species): Ensembl, Entrez Gene, 
+Uniprot-TrEMBL, miRBase, UniGene,  HGNC (symbols), MGI, RGD, SGD, ZFIN, 
+FlyBase, WormBase, TAIR.
 }
 \examples{
 \donttest{
-mapIdentifiers()
+mapped.cols <- mapIdentifiers('name','Yeast','Ensembl','SGD')
+#          name        SGD
+#17920  YER145C S000000947
+#17921  YMR058W S000004662
+#17922  YJL190C S000003726
+#...
 }
 }
