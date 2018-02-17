@@ -36,7 +36,12 @@
 #' mapIdentifiers is repeated on the same network. However, the original map.to 
 #' column will be returned regardless.
 #' @examples \donttest{
-#' mapIdentifiers()
+#' mapped.cols <- mapIdentifiers('name','Yeast','Ensembl','SGD')
+#' #          name        SGD
+#' #17920  YER145C S000000947
+#' #17921  YMR058W S000004662
+#' #17922  YJL190C S000003726
+#' #...
 #' }
 #' @export
 mapIdentifiers <- function(column, species, map.from, map.to, force.single=TRUE,
