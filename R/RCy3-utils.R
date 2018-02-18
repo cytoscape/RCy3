@@ -75,44 +75,44 @@
         return(edge.names)
 }
 
-#------------------------------------------------------------------------------------------------------------------------
-.initNodeAttribute = function (graph, attribute.name, attribute.type, default.value)
-{
-    stopifnot (attribute.type %in% c ('char', 'integer', 'numeric', 'boolean'))
-    if (attribute.type == 'char')
-        attribute.type = 'STRING'
-    else if (attribute.type == 'integer')
-        attribute.type = 'INTEGER'
-    else if (attribute.type == 'numeric')
-        attribute.type = 'FLOATING'
-    else if (attribute.type == 'boolean')
-        attribute.type = 'BOOLEAN'
-    
-    nodeDataDefaults (graph, attr=attribute.name) = default.value
-    attr (nodeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
-    
-    return (graph)
-    
-} 
-
-#------------------------------------------------------------------------------------------------------------------------
-.initEdgeAttribute = function (graph, attribute.name, attribute.type, default.value)
-{
-    stopifnot (attribute.type %in% c ('char', 'integer', 'numeric', 'boolean'))
-    if (attribute.type == 'char')
-        attribute.type = 'STRING'
-    else if (attribute.type == 'integer')
-        attribute.type = 'INTEGER'
-    else if (attribute.type == 'numeric')
-        attribute.type = 'FLOATING'
-    else if (attribute.type == 'boolean')
-        attribute.type = 'BOOLEAN'
-    
-    edgeDataDefaults (graph, attr=attribute.name) = default.value
-    attr (edgeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
-    
-    return (graph)
-} 
+# #------------------------------------------------------------------------------------------------------------------------
+# .initNodeAttribute = function (graph, attribute.name, attribute.type, default.value)
+# {
+#     stopifnot (attribute.type %in% c ('char', 'integer', 'numeric', 'boolean'))
+#     if (attribute.type == 'char')
+#         attribute.type = 'STRING'
+#     else if (attribute.type == 'integer')
+#         attribute.type = 'INTEGER'
+#     else if (attribute.type == 'numeric')
+#         attribute.type = 'FLOATING'
+#     else if (attribute.type == 'boolean')
+#         attribute.type = 'BOOLEAN'
+#     
+#     nodeDataDefaults (graph, attr=attribute.name) = default.value
+#     attr (nodeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
+#     
+#     return (graph)
+#     
+# } 
+# 
+# #------------------------------------------------------------------------------------------------------------------------
+# .initEdgeAttribute = function (graph, attribute.name, attribute.type, default.value)
+# {
+#     stopifnot (attribute.type %in% c ('char', 'integer', 'numeric', 'boolean'))
+#     if (attribute.type == 'char')
+#         attribute.type = 'STRING'
+#     else if (attribute.type == 'integer')
+#         attribute.type = 'INTEGER'
+#     else if (attribute.type == 'numeric')
+#         attribute.type = 'FLOATING'
+#     else if (attribute.type == 'boolean')
+#         attribute.type = 'BOOLEAN'
+#     
+#     edgeDataDefaults (graph, attr=attribute.name) = default.value
+#     attr (edgeDataDefaults (graph, attr=attribute.name), 'class') = attribute.type
+#     
+#     return (graph)
+# } 
 
 #------------------------------------------------------------------------------------------------------------------------
 .copyNodeAttributesToGraph <- function (node.suid.name.dict, suid, existing.graph, base.url) {

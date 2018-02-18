@@ -4,7 +4,7 @@
 
 ##http://localhost:1234/v1/commands/cybrowser/dialog 
 #cyBrowser(title, url, text=NA, id=NA, debug=FALSE) 
-#cyBrowserHide(id=NA) s
+#cyBrowserHide(id=NA) 
 #cyBrowserShow(id=NA) 
 #cyBrowserVersion(obj) 
 
