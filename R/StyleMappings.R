@@ -960,4 +960,16 @@ setEdgeSourceArrowColorRule <- function (edge.attribute.name, control.points, co
 } # setEdgeSourceArrowColorRule
 
 
-
+# ------------------------------------------------------------------------------
+## TODO: replace with getTableColumnTypes()??
+.findColumnType <- function(columnType){
+    if (columnType=="double"){
+        return("Double")
+    } else if (columnType == "integer"){
+        return("Integer")
+    } else if (columnType == "logical"){
+        return("Boolean")
+    } else{
+        return("String")
+    }
+} # findColumnType
