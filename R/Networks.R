@@ -736,7 +736,7 @@ createNetworkFromIgraph <- function(igraph,
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
 #' library(graph)
-#' g <- makeSimpleGraph()
+#' g <- make_graphnel()
 #' createNetworkFromGraph(g)
 #' }
 #' @importFrom igraph igraph.from.graphNEL
@@ -948,7 +948,7 @@ createIgraphFromNetwork <-
 #' @param base.url cyrest base url for communicating with cytoscape
 #' @return A Bioconductor graph object.
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
-#' @examples \donttest{cw <- CytoscapeWindow('network', graph=makeSimpleGraph())
+#' @examples \donttest{cw <- CytoscapeWindow('network', graph=make_graphnel())
 #' g <- createGraphFromNetwork()
 #' g <- createGraphFromNetwork('myNetwork')
 #' }

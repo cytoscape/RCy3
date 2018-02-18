@@ -25,7 +25,7 @@ Creates a Cytoscape network from a Bioconductor graph.
 \examples{
 \donttest{
 library(graph)
-g <- makeSimpleGraph()
+g <- make_graphnel()
 createNetworkFromGraph(g)
 }
 }

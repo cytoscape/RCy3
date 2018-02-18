@@ -1,0 +1,58 @@
+---
+title: "Cytoscape and graphNEL"
+author: "Alex Pico"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cytoscape and graphNEL}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette will show you how to convert networks between graphNEL and Cytoscape.
+
+### Installation
+```{r, echo=F, eval=F}
+source("https://bioconductor.org/biocLite.R")
+biocLite("RCy3", "graph")
+```
+
+### Required Software
+The whole point of RCy3 is to connect with Cytoscape. You will need to install and launch Cytoscape: 
+
+* [Download Cytoscape](http://www.cytoscape.org/download.php) 
+* Complete installation wizard
+* Launch Cytoscape 
+
+### From graphNEL to Cytoscape
+The graph package is a popular network tool among R users. With RCy3, you can easily translate graphNEL networks to Cytoscape networks!
+
+Create, display and render the 3-node, 3-edge simple graph
+```{r cars}
+demoNetworkFromGraph = function (base.url=.defaultBaseUrl) {
+    window.title = 'demo.simpleGraph'
+    if (window.title %in% as.character(getNetworkList (base.url)))
+        deleteNetwork(window.title, base.url)
+    
+    g.simple = makeSimpleGraph()
+    net.suid = createNetworkFromGraph(g.simple, window.title, base.url = base.url)
+    layoutNetwork('force-directed', network=net.suid, base.url = base.url)
+    setNodeLabelMapping ('label', network=net.suid, base.url = base.url)
+    
+    node.attribute.values = c("kinase",  "transcription factor")
+    colors =                c('#A0AA00', '#FF0000')
+    setNodeBorderWidthDefault(5, network=net.suid, base.url = base.url)
+    setNodeBorderColorMapping(cws, 'type', node.attribute.values, colors, 
+                              mode='lookup', default.color='#88FF22', 
+                              network=net.suid, base.url = base.url)
+    count.control.points = c(2, 30, 100)
+    sizes                = c(20, 50, 100)
+    setNodeSizeMapping('count', count.control.points, sizes, mode='interpolate',
+                       network=net.suid, base.url = base.url)
+    setNodeColorMapping('lfc', c(-3.0, 0.0, 3.0), 
+                        c('#00FF00', '#FFFFFF', '#FF0000'), 
+                        mode='interpolate',
+                        network=net.suid, base.url = base.url)
+    return(net.suid)
+} # demoNetworkFromGraph
+```
+
