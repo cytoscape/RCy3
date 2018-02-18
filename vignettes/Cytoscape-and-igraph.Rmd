@@ -1,14 +1,14 @@
 ---
-title: "Cytoscape and igraph"
+title: "Cytoscape and iGraph"
 author: "Alex Pico"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Cytoscape and igraph}
+  %\VignetteIndexEntry{Cytoscape and iGraph}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette will show you how to convert networks between igraph and Cytoscape.
+This vignette will show you how to convert networks between iGraph and Cytoscape.
 
 ### Installation
 ```{r, echo=F, eval=F}

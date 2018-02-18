@@ -18,7 +18,7 @@ A Bioconductor graph object.
 Returns the Cytoscape network as a Bioconductor graph.
 }
 \examples{
-\donttest{cw <- CytoscapeWindow('network', graph=makeSimpleGraph())
+\donttest{cw <- CytoscapeWindow('network', graph=make_graphnel())
 g <- createGraphFromNetwork()
 g <- createGraphFromNetwork('myNetwork')
 }
