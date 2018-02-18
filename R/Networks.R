@@ -699,7 +699,7 @@ createSubnetwork <- function(nodes=NULL,
 #' @examples
 #' \donttest{
 #' library(igraph)
-#' ig <- make_graph(c("A","B","B","C","C","D","D","B"), directed = FALSE)
+#' ig <- makeSimpleIgraph()
 #' createNetworkFromIgraph(ig)
 #' }
 #' @seealso createNetworkFromDataFrames, createIgraphFromNetwork
@@ -736,7 +736,7 @@ createNetworkFromIgraph <- function(igraph,
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
 #' library(graph)
-#' g <- make_graphnel()
+#' g <- makeSimpleGraph()
 #' createNetworkFromGraph(g)
 #' }
 #' @importFrom igraph igraph.from.graphNEL
