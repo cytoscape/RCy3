@@ -33,7 +33,7 @@ in Cytoscape. Associated attributes will also be passed to Cytoscape as node and
 \examples{
 \donttest{
 library(igraph)
-ig <- make_graph(c("A","B","B","C","C","D","D","B"), directed = FALSE)
+ig <- makeSimpleIgraph()
 createNetworkFromIgraph(ig)
 }
 }
