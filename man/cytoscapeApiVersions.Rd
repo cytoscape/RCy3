@@ -7,7 +7,9 @@
 cytoscapeApiVersions(base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{base.url}{(optional) URL prefix for CyREST calls}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 A \code{list} of API versions as \code{character} strings, e.g., "v1"

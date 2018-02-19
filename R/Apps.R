@@ -5,7 +5,9 @@
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param app DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' disableApp()
@@ -20,7 +22,9 @@ disableApp <- function (app, base.url=.defaultBaseUrl){
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param app DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' enableApp()
@@ -35,7 +39,9 @@ enableApp <- function (app, base.url=.defaultBaseUrl){
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param app DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getAppInformation()
@@ -50,7 +56,9 @@ getAppInformation <- function (app, base.url=.defaultBaseUrl){
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param app DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' installApp()
@@ -64,7 +72,9 @@ installApp <- function (app, base.url=.defaultBaseUrl){
 #' @title List Available Apps
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getAvailableApps()
@@ -78,7 +88,9 @@ getAvailableApps <- function (base.url=.defaultBaseUrl){
 #' @title List Disabled Apps
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getDisabledApps()
@@ -92,7 +104,9 @@ getDisabledApps <- function (base.url=.defaultBaseUrl){
 #' @title List Installed Apps
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getInstalledApps()
@@ -106,7 +120,9 @@ getInstalledApps <- function (base.url=.defaultBaseUrl){
 #' @title List Uninstalled Apps
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getUninstalledApps()
@@ -120,7 +136,9 @@ getUninstalledApps <- function (base.url=.defaultBaseUrl){
 #' @title List Apps With Updates
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getAppUpdates()
@@ -135,7 +153,9 @@ getAppUpdates <- function (base.url=.defaultBaseUrl){
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param app DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' openAppStore()
@@ -150,7 +170,9 @@ openAppStore <- function (app, base.url=.defaultBaseUrl){
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param app DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getAppStatus()
@@ -165,7 +187,9 @@ getAppStatus <- function (app, base.url=.defaultBaseUrl){
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param app DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' uninstallApp()
@@ -180,7 +204,9 @@ uninstallApp <- function (app, base.url=.defaultBaseUrl){
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param app DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' updateApp()

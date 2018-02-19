@@ -16,7 +16,9 @@ Default is XML.}
 \item{styles}{(optional) The styles to be exported, listed as a comma-separated string. 
 If no styles are specified, only the current one is exported.}
 
-\item{base.url}{cyrest base url for communicating with cytoscape}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 None

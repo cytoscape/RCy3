@@ -6,7 +6,9 @@
 #' Ping Cytoscape
 #' 
 #' @description Test the connection to Cytoscape via CyREST 
-#' @param base.url (optional)  URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return status message
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
@@ -29,7 +31,9 @@ cytoscapePing<-function(base.url=.defaultBaseUrl) {
 #' Cytoscape and CyREST API Versions
 #' 
 #' @description Returns the versions of the current Cytoscape and CyREST API
-#' @param base.url (optional) URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return \code{list} of versions
 #' @author Alexander Pico
 #' @examples \donttest{
@@ -51,7 +55,9 @@ cytoscapeVersionInfo<-function(base.url=.defaultBaseUrl) {
 #' Available CyREST API Versions 
 #' 
 #' @description Get the list of available CyREST API versions 
-#' @param base.url (optional) URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{list} of API versions as \code{character} strings, e.g., "v1"
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
@@ -70,7 +76,9 @@ cytoscapeApiVersions<-function(base.url=.defaultBaseUrl) {
 #' Number of Processors Available to Cytoscape
 #' 
 #' @description Returns the processor resources of the server running Cytoscape
-#' @param base.url (optional) URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{numeric} value
 #' @author Alexander Pico
 #' @examples \donttest{
@@ -87,7 +95,9 @@ cytoscapeNumberOfCores<-function(base.url=.defaultBaseUrl) {
 #' Memory Available to Cytoscape
 #' 
 #' @description Returns the memory resources of the server running Cytoscape
-#' @param base.url (optional) URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{list} of \code{numeric} values
 #' @author Alexander Pico
 #' @examples \donttest{
@@ -106,7 +116,9 @@ cytoscapeMemoryStatus<-function(base.url=.defaultBaseUrl) {
 #' 
 #' @description Manually call Java's garbage collection \code{System.gc()} to free up unused memory. 
 #' This process happens automatically, but may be useful to call explicitly for testing or evaluation purposes. 
-#' @param base.url (optional) URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return status message
 #' @author Alexander Pico
 #' @examples \donttest{

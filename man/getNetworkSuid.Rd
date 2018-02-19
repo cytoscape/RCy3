@@ -10,7 +10,9 @@ getNetworkSuid(title = NULL, base.url = .defaultBaseUrl)
 \item{title}{Name of the network; default is "current" network. If an SUID is 
 provided, then it is validated and returned.}
 
-\item{base.url}{(optional)  URL prefix for CyREST calls}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 (\code{numeric}) Network suid
