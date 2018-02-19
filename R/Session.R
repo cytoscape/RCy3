@@ -1,3 +1,6 @@
+# ==============================================================================
+# Functions for managing Cytoscape SESSIONS, including save, open and close.
+# 
 # ------------------------------------------------------------------------------
 #' @title Save Session to File
 #'

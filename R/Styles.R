@@ -1,3 +1,13 @@
+# ==============================================================================
+# Functions for managing STYLES and retrieving general lists of properties
+# relevant to multiple style modes. Functions specific to Default, Mapping,
+# Bypass, Dependencies and Values are in separate files.
+# 
+# I. Style management functions 
+# II. General property functions 
+#
+# ==============================================================================
+# I. Style management functions
 # ------------------------------------------------------------------------------
 #' @title Copy Visual Style
 #'
@@ -82,6 +92,74 @@ createVisualStyle <- function(style.name, defaults, mappings, base.url=.defaultB
 }
 
 # ------------------------------------------------------------------------------
+#' Export Visual Styles
+#'
+#' @description Saves one or more visual styles to file
+#' @param filename (char) Name of the style file to save. Default is "styles.xml"
+#' @param type (optional) Type of data file to export, e.g., XML, JSON (case sensitive). 
+#' Default is XML.
+#' @param styles (optional) The styles to be exported, listed as a comma-separated string. 
+#' If no styles are specified, only the current one is exported.
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return None
+#' @examples
+#' \donttest{
+#' exportVisualStyles('/fullpath/myStyle')
+#' exportVisualStyles('/fullpath/myStyle', type = 'JSON')
+#' exportVisualStyles('/fullpath/myStyle', style = 'Minimal,default,Directed')
+#' }
+#' @export
+exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.defaultBaseUrl){
+    cmd.string <- 'vizmap export'  # minmum command
+    if(!is.null(filename))
+        cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"')
+    if(!is.null(type))
+        cmd.string <- paste0(cmd.string,' options="',type,'"')
+    if(!is.null(styles))
+        cmd.string <- paste0(cmd.string,' styles="',styles,'"')
+    commandsPOST(cmd.string, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Get Visual Style Names
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' getVisualStyleNames()
+#' }
+#' @export
+getVisualStyleNames <- function(base.url=.defaultBaseUrl) {
+    res <- cyrestGET("apply/styles",base.url = base.url)
+    return(unname(res))
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Visual Style
+#'
+#' @description Apply a visual style to a network
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setVisualStyle()
+#' }
+#' @export
+setVisualStyle <- function(style.name, network=NULL, base.url=.defaultBaseUrl) {
+    net.SUID = getNetworkSuid(network)
+    current.names = getVisualStyleNames(base.url)
+    # inform user if they want to set style that does not exist 
+    if(!style.name %in% current.names) { 
+        stop(sprintf('Cannot call setVisualStyle on a non-existent visual style (%s)', style.name))
+    }
+    cyrestGET(paste("apply/styles", style.name, net.SUID, sep="/"), base.url = base.url)
+}
+
+# ==============================================================================
+# II. General property functions 
+# ------------------------------------------------------------------------------
 #' @title Get Arrow Shapes
 #'
 #' @description Retrieve the names of the currently supported 'arrows' -- the
@@ -148,72 +226,6 @@ getVisualPropertyNames <- function (base.url=.defaultBaseUrl) {
     visual.properties <- unname(res[[1]])
     visual.properties <- sapply(visual.properties, '[[', 1)
     return(visual.properties)
-}
-
-# ------------------------------------------------------------------------------
-#' @title Get Visual Style Names
-#'
-#' @description FUNCTION_DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
-#' @examples \donttest{
-#' getVisualStyleNames()
-#' }
-#' @export
-getVisualStyleNames <- function(base.url=.defaultBaseUrl) {
-    res <- cyrestGET("apply/styles",base.url = base.url)
-    return(unname(res))
-}
-
-# ------------------------------------------------------------------------------
-#' Export Visual Styles
-#'
-#' @description Saves one or more visual styles to file
-#' @param filename (char) Name of the style file to save. Default is "styles.xml"
-#' @param type (optional) Type of data file to export, e.g., XML, JSON (case sensitive). 
-#' Default is XML.
-#' @param styles (optional) The styles to be exported, listed as a comma-separated string. 
-#' If no styles are specified, only the current one is exported.
-#' @param base.url cyrest base url for communicating with cytoscape
-#' @return None
-#' @examples
-#' \donttest{
-#' exportVisualStyles('/fullpath/myStyle')
-#' exportVisualStyles('/fullpath/myStyle', type = 'JSON')
-#' exportVisualStyles('/fullpath/myStyle', style = 'Minimal,default,Directed')
-#' }
-#' @export
-exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.defaultBaseUrl){
-    cmd.string <- 'vizmap export'  # minmum command
-    if(!is.null(filename))
-        cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"')
-    if(!is.null(type))
-        cmd.string <- paste0(cmd.string,' options="',type,'"')
-    if(!is.null(styles))
-        cmd.string <- paste0(cmd.string,' styles="',styles,'"')
-    commandsPOST(cmd.string, base.url = base.url)
-}
-
-# ------------------------------------------------------------------------------
-#' @title Set Visual Style
-#'
-#' @description Apply a visual style to a network
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
-#' @examples \donttest{
-#' setVisualStyle()
-#' }
-#' @export
-setVisualStyle <- function(style.name, network=NULL, base.url=.defaultBaseUrl) {
-    net.SUID = getNetworkSuid(network)
-    current.names = getVisualStyleNames(base.url)
-    # inform user if they want to set style that does not exist 
-    if(!style.name %in% current.names) { 
-        stop(sprintf('Cannot call setVisualStyle on a non-existent visual style (%s)', style.name))
-    }
-    cyrestGET(paste("apply/styles", style.name, net.SUID, sep="/"), base.url = base.url)
 }
 
 

@@ -14,6 +14,59 @@
 # ==============================================================================
 # I. CyREST API functions
 # ------------------------------------------------------------------------------
+#' Open Swagger docs for CyREST API 
+#'
+#' @description Opens swagger docs in default browser for a live
+#' instance of CyREST operations.
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return Web page in browser
+#' @export
+#' @examples
+#' \donttest{
+#' cyrestAPI()
+#' }
+#' @importFrom utils browseURL
+
+cyrestAPI<-function(base.url=.defaultBaseUrl){
+    browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/swagger.json#/',sep=""))
+}
+
+# ------------------------------------------------------------------------------
+#' @title CyREST DELETE
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param operation DESCRIPTION
+#' @param parameters DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' cyrestDELETE()
+#' }
+#' @importFrom RJSONIO fromJSON
+#' @importFrom httr DELETE
+#' @importFrom utils URLencode
+#' @export
+cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
+    q.url <- paste(base.url, operation, sep="/")
+    if(!is.null(parameters)){
+        q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
+    }
+    res <- DELETE(url=URLencode(q.url))
+    if(res$status_code > 299){
+        write(sprintf("RCy3::cyrestGET, HTTP Error Code: %d\n url=%s", 
+                      res$status_code, URLencode(q.url)), stderr())
+        stop()
+    } else {
+        if(length(res$content)>0){
+            return(fromJSON(rawToChar(res$content)))
+        } else{
+            invisible(res)
+        }
+    }
+}
+
+# ------------------------------------------------------------------------------
 #' @title CyREST GET
 #'
 #' @description FUNCTION_DESCRIPTION
@@ -126,84 +179,24 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
     }
 }
 
-# ------------------------------------------------------------------------------
-#' @title CyREST DELETE
-#'
-#' @description FUNCTION_DESCRIPTION
-#' @param operation DESCRIPTION
-#' @param parameters DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
-#' @examples \donttest{
-#' cyrestDELETE()
-#' }
-#' @importFrom RJSONIO fromJSON
-#' @importFrom httr DELETE
-#' @importFrom utils URLencode
-#' @export
-cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, operation, sep="/")
-    if(!is.null(parameters)){
-        q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
-    }
-    res <- DELETE(url=URLencode(q.url))
-    if(res$status_code > 299){
-        write(sprintf("RCy3::cyrestGET, HTTP Error Code: %d\n url=%s", 
-                      res$status_code, URLencode(q.url)), stderr())
-        stop()
-    } else {
-        if(length(res$content)>0){
-            return(fromJSON(rawToChar(res$content)))
-        } else{
-            invisible(res)
-        }
-    }
-}
-
 # ==============================================================================
 # II. Commands API functions
 # ------------------------------------------------------------------------------
-#' @title Commands Help
+#' Open Swagger docs for CyREST Commands API 
 #'
-#' @description Using the same syntax as Cytoscape's Command Line Dialog,
-#' this function returns a list of available commands or args.
-#' @details Works with or without 'help' command prefix. Note that if you ask about a command that doesn't
-#' have any arguments, this function will run the command!
-#' @param cmd.string (char) command
+#' @description Opens swagger docs in default browser for a live
+#' instance of Commands available via CyREST.
 #' @param base.url cyrest base url for communicating with cytoscape
-#' @return List of available commands or args
+#' @return Web page in browser
+#' @export
 #' @examples
 #' \donttest{
-#' commandsHelp()
-#' commandsHelp('node')
-#' commandsHelp('node get attribute')
+#' commandsAPI()
 #' }
-#' @importFrom XML htmlParse
-#' @importFrom XML xmlValue
-#' @importFrom XML xpathSApply
-#' @importFrom httr GET
-#' @importFrom utils head
-#' @importFrom utils tail
-#' @export
-commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
-    s=sub('help *','',cmd.string)
-    q.url <- .command2getQuery(s,base.url)
-    res = GET(q.url)
-    if(res$status_code > 299){
-        write(sprintf("RCy3::commandsHelp, HTTP Error Code: %d\n url=%s", 
-                      res$status_code, q.url), stderr())
-        stop()
-    } else {
-        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
-        res.elem = xpathSApply(res.html, "//p", xmlValue)
-        res.list = res.elem
-        if (length(res.elem)==1){
-            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
-        }
-        print(head(res.list,1))
-        tail(res.list,-1)
-    }
+#' @importFrom utils browseURL
+
+commandsAPI<-function(base.url=.defaultBaseUrl){
+    browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/commands/swagger.json#/',sep=""))
 }
 
 # ------------------------------------------------------------------------------
@@ -249,6 +242,49 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
         } else {
             invisible(res.list)
         }
+    }
+}
+
+# ------------------------------------------------------------------------------
+#' @title Commands Help
+#'
+#' @description Using the same syntax as Cytoscape's Command Line Dialog,
+#' this function returns a list of available commands or args.
+#' @details Works with or without 'help' command prefix. Note that if you ask about a command that doesn't
+#' have any arguments, this function will run the command!
+#' @param cmd.string (char) command
+#' @param base.url cyrest base url for communicating with cytoscape
+#' @return List of available commands or args
+#' @examples
+#' \donttest{
+#' commandsHelp()
+#' commandsHelp('node')
+#' commandsHelp('node get attribute')
+#' }
+#' @importFrom XML htmlParse
+#' @importFrom XML xmlValue
+#' @importFrom XML xpathSApply
+#' @importFrom httr GET
+#' @importFrom utils head
+#' @importFrom utils tail
+#' @export
+commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
+    s=sub('help *','',cmd.string)
+    q.url <- .command2getQuery(s,base.url)
+    res = GET(q.url)
+    if(res$status_code > 299){
+        write(sprintf("RCy3::commandsHelp, HTTP Error Code: %d\n url=%s", 
+                      res$status_code, q.url), stderr())
+        stop()
+    } else {
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        res.list = res.elem
+        if (length(res.elem)==1){
+            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+        }
+        print(head(res.list,1))
+        tail(res.list,-1)
     }
 }
 
@@ -335,37 +371,6 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     }
 }
 
-# takes a named list and makes a string for GET query urls
-#' @importFrom utils URLencode
-.prepGetQueryArgs <- function(named.args){
-    args1 <- names(named.args)
-    args2 <- unlist(unname(named.args))
-    q.args = paste(args1[1],URLencode(as.character(args2[1])),sep="=")
-    for (i in seq(args1)[-1]){
-        arg = paste(args1[i],URLencode(as.character(args2[i])),sep="=")
-        q.args = paste(q.args,arg,sep="&")
-    }
-    return(q.args)
-}
-
-# Parses all the possible list types and keywords accepted by Commands API.
-# If column designation is supported, simply provide a column name; otherwise
-# it is assumed to not be supported and returns a simple list. 
-.prepPostQueryLists <- function(cmd.list=NULL, cmd.by.col=NULL){
-    if (is.null(cmd.list)) {
-        cmd.list.ready = "selected" #need something here for edge selections to work
-    } else if (!is.null(cmd.by.col)) {
-        cmd.list.col = NULL
-        for (i in 1:length(cmd.list)) {
-            cmd.list.col[i] = paste(cmd.by.col, cmd.list[i], sep = ":")
-        }
-        cmd.list.ready = paste(cmd.list.col, collapse = ",")
-    } else {
-        cmd.list.ready = paste(cmd.list, collapse=",")
-    }
-    return(cmd.list.ready)
-}
-
 # ------------------------------------------------------------------------------
 # Command string to CyREST POST query URL
 #
@@ -422,3 +427,34 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     names(args2) <- args1
     return(toJSON(args2))
 }
+# takes a named list and makes a string for GET query urls
+#' @importFrom utils URLencode
+.prepGetQueryArgs <- function(named.args){
+    args1 <- names(named.args)
+    args2 <- unlist(unname(named.args))
+    q.args = paste(args1[1],URLencode(as.character(args2[1])),sep="=")
+    for (i in seq(args1)[-1]){
+        arg = paste(args1[i],URLencode(as.character(args2[i])),sep="=")
+        q.args = paste(q.args,arg,sep="&")
+    }
+    return(q.args)
+}
+
+# Parses all the possible list types and keywords accepted by Commands API.
+# If column designation is supported, simply provide a column name; otherwise
+# it is assumed to not be supported and returns a simple list. 
+.prepPostQueryLists <- function(cmd.list=NULL, cmd.by.col=NULL){
+    if (is.null(cmd.list)) {
+        cmd.list.ready = "selected" #need something here for edge selections to work
+    } else if (!is.null(cmd.by.col)) {
+        cmd.list.col = NULL
+        for (i in 1:length(cmd.list)) {
+            cmd.list.col[i] = paste(cmd.by.col, cmd.list[i], sep = ":")
+        }
+        cmd.list.ready = paste(cmd.list.col, collapse = ",")
+    } else {
+        cmd.list.ready = paste(cmd.list, collapse=",")
+    }
+    return(cmd.list.ready)
+}
+

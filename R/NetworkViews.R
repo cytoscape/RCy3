@@ -186,3 +186,23 @@ exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, hei
                         ' view=SUID:"',view.SUID,'"'), 
                  base.url = base.url)
 }
+
+# ------------------------------------------------------------------------------
+#' @title Toggle Graphics Details
+#'
+#' @description Regardless of the current zoom level and network size,
+#' show (or hide) graphics details, e.g., node labels.
+#' @details Displaying graphics details on a very large network will affect pan
+#' and zoom performance, depending on your available RAM. 
+#' See \link{cytoscapeMemoryStatus}.
+#' @param base.url DESCRIPTION
+#' @return None
+#' @examples \donttest{
+#' showGraphicsDetails(TRUE)
+#' }
+#' @export
+toggleGraphicsDetails <- function (base.url=.defaultBaseUrl) {
+    resource.uri <- paste(base.url, "ui/lod/", sep="/")
+    request.res <- PUT(resource.uri)
+    invisible (request.res)
+}
