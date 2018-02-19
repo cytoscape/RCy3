@@ -1,3 +1,37 @@
+# ==============================================================================
+# Functions for managing TABLE columns and table column functions, like map and
+# rename, as well as loading and extracting table data in Cytoscape.
+# 
+# ------------------------------------------------------------------------------
+#' @title Delete a table column 
+#'
+#' @description Delete a column from node, edge or network tables.
+#' @param columns Name of the column to delete
+#' @param table Name of table, e.g., node (default), edge, network
+#' @param namespace Namespace of table. Default is "default".
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return A \code{data.frame} of column values
+#' @examples
+#' \donttest{
+#' deleteTableColumn('node','group')
+#' }
+#' @export
+deleteTableColumn <- function(column ,
+                              table = 'node',
+                              namespace = 'default',
+                              network = NULL, 
+                              base.url = .defaultBaseUrl) {
+    net.suid <- getNetworkSuid(network)
+    tbl = paste0(namespace, table)
+    cyrestDELETE(paste('networks',net.suid,'tables',tbl,'columns',as.character(column),sep="/"),
+                 base.url = base.url)
+}
+
+
 # ------------------------------------------------------------------------------
 #' @title Get table column values
 #'
@@ -8,8 +42,11 @@
 #' @param table name of table, e.g., node (default), edge, network
 #' @param columns names of columns to retrieve values from as list object or comma-separated list; default is all columns
 #' @param namespace namespace of table; default is "default"
-#' @param network name or suid of the network; default is "current" network
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{data.frame} of column values
 #' @examples
 #' \donttest{
@@ -91,8 +128,11 @@ getTableColumns <- function(table = 'node',
 #' @description Retrieve the names of all columns in a table
 #' @param table name of table, e.g., node, edge, network; default is "node"
 #' @param namespace namespace of table, e.g., default
-#' @param network name or suid of the network; default is "current" network
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return list of column names
 #' @examples
 #' \donttest{
@@ -119,8 +159,11 @@ getTableColumnNames <-  function(table = 'node',
 #' @description Retrieve the types of all columns in a table
 #' @param table name of table, e.g., node, edge, network; default is "node"
 #' @param namespace namespace of table, e.g., default
-#' @param network name or suid of the network; default is "current" network
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return a named list of column types
 #' @examples
 #' \donttest{
@@ -158,8 +201,11 @@ getTableColumnTypes <-  function(table = 'node',
 #' @param table (char) name of Cytoscape table to load data into, e.g., node, edge or network; default is "node"
 #' @param table.key.column (char) name of Cytoscape table column to use as key; default is "name"
 #' @param namespace namespace of table, e.g., default
-#' @param network name or suid of the network; default is "current" network
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return server response
 #' @importFrom BiocGenerics colnames
 #' @export
@@ -235,29 +281,99 @@ loadTableData <- function(data,
 }
 
 # ------------------------------------------------------------------------------
-#' @title Delete a table column 
+#' @title Map Table Column
 #'
-#' @description Delete a column from node, edge or network tables.
-#' @param columns Name of the column to delete
-#' @param table Name of table, e.g., node (default), edge, network
-#' @param namespace Namespace of table. Default is "default".
-#' @param network Name or suid of the network; default is "current" network
-#' @param base.url cyrest base url for communicating with cytoscape
-#' @return A \code{data.frame} of column values
-#' @examples
-#' \donttest{
-#' deleteTableColumn('node','group')
+#' @description Perform identifier mapping using an existing column of supported
+#' identifiers to populate a new column with identifiers mapped to the originals.
+#' @param column Name of column containing identifiers of type specified by 
+#' \code{map.from}.
+#' @param species Common name for species associated with identifiers, e.g., Human. 
+#' See details.
+#' @param map.from Type of identifier found in specified \code{column}. See details.
+#' @param map.to Type of identifier to populate in new column. See details.
+#' @param force.single (optional) Whether to return only first result in cases
+#' of one-to-many mappings; otherwise the new column will hold lists of identifiers.
+#' Default is TRUE.
+#' @param table (optional) Name of table, e.g., node (default), edge or network
+#' @param namespace (optional) Namespace of table, e.g., default (default), shared
+#' or hidden
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @details Supported species: Human, Mouse, Rat, Frog, Zebrafish, Fruit fly,
+#' Mosquito, Worm, Arabidopsis thaliana, Yeast, E. coli, Tuberculosis.
+#' 
+#' Supported identifier types (depending on species): Ensembl, Entrez Gene, 
+#' Uniprot-TrEMBL, miRBase, UniGene,  HGNC (symbols), MGI, RGD, SGD, ZFIN, 
+#' FlyBase, WormBase, TAIR.
+#' @return dataframe with map.from and map.to columns. Beware: if map.to is not unique,
+#' it will be suffixed with an incrementing number in parentheses, e.g., if 
+#' mapIdentifiers is repeated on the same network. However, the original map.to 
+#' column will be returned regardless.
+#' @examples \donttest{
+#' mapped.cols <- mapTableColumn('name','Yeast','Ensembl','SGD')
+#' #          name        SGD
+#' #17920  YER145C S000000947
+#' #17921  YMR058W S000004662
+#' #17922  YJL190C S000003726
+#' #...
 #' }
 #' @export
-deleteTableColumn <- function(column ,
-                               table = 'node',
-                               namespace = 'default',
-                                network = NULL, 
-                                base.url = .defaultBaseUrl) {
+mapTableColumn <- function(column, species, map.from, map.to, force.single=TRUE,
+                           table='node', namespace='default',
+                           network=NULL, base.url=.defaultBaseUrl){
     net.suid <- getNetworkSuid(network)
-    tbl = paste0(namespace, table)
-    cyrestDELETE(paste('networks',net.suid,'tables',tbl,'columns',as.character(column),sep="/"),
-                           base.url = base.url)
+    tbl <- paste(net.suid,namespace,table, sep=" ")
+    
+    if(force.single)
+        fs <- "true"
+    else
+        fs <- "false"
+    
+    all.cols <- getTableColumnNames(table, namespace, network, base.url)
+    if(!column %in% all.cols)
+        stop(sprintf("ERROR:mapIdentifiers, %s does not exist", column))
+    
+    commandsPOST(paste0('idmapper map column columnName="',column,
+                        '" forceSingle="',fs,
+                        '" mapFrom="',map.from,
+                        '" mapTo="',map.to,
+                        '" species="',species,
+                        '" table="',tbl,'"'))
+    
+    getTableColumns(table=table, columns=c(column,map.to), namespace = namespace, 
+                    network = network, base.url = base.url)
 }
 
-
+# ------------------------------------------------------------------------------
+#' @title Rename Table Column
+#'
+#' @description Sets a new name for a column.
+#' @param column Name of the column to rename
+#' @param new.name New name for the specified column
+#' @param table (optional) Name of table, e.g., node (default), edge or network
+#' @param namespace (optional) Namespace of table, e.g., default (default), shared
+#' or hidden
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' renameTableColumn('exp','log2FC')
+#' }
+#' @export
+renameTableColumn <- function(column, new.name, 
+                              table='node', namespace='default', 
+                              network=NULL, base.url=.defaultBaseUrl){
+    net.suid <- getNetworkSuid(network)
+    tbl <- paste0(namespace,table)
+    
+    cyrestPUT(paste('networks',net.suid,'tables',tbl,'columns',sep="/"),
+              body = list(oldName=column,newName=new.name),
+              base.url = base.url)
+    
+}
