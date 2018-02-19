@@ -18,8 +18,7 @@ NULL
 #' node and edge attribute types to help demonstrate round trip conversion with
 #' Cytoscape networks via RCy3.
 #' @return A \code{graphNEL} object with a few nodes, edges and attributes
-#' @seealso createNetworkFromGraph, createGraphFromNetwork, makeSimpleIgraph, 
-#' makeSimpleDataFrame
+#' @seealso createNetworkFromGraph, createGraphFromNetwork, makeSimpleIgraph
 #' @examples {
 #' makeSimpleGraph()
 #' }
@@ -34,36 +33,33 @@ NULL
 makeSimpleGraph = function() {
     g = new ('graphNEL', edgemode='directed')
     
-    graph::nodeDataDefaults (g, attr='type') = 'undefined'
-    graph::nodeDataDefaults (g, attr='lfc') = 1.0
-    graph::nodeDataDefaults (g, attr='label') = 'default node label'
-    graph::nodeDataDefaults (g, attr='count') = 0
-    graph::edgeDataDefaults (g, attr='edgeType') = 'undefined'
-    graph::edgeDataDefaults (g, attr='score') = 0.0
+    g = graph::addNode ('node 1', g)
+    g = graph::addNode ('node 3', g)
+    g = graph::addNode ('node 2', g, edges = list('node 3'))
+    g = graph::addNode ('node 0', g, edges = list(c('node 1','node 2','node 3')))
     
-    g = graph::addNode ('A', g)
-    g = graph::addNode ('B', g)
-    g = graph::addNode ('C', g)
-    graph::nodeData (g, 'A', 'type') = 'kinase'
-    graph::nodeData (g, 'B', 'type') = 'transcription factor'
-    graph::nodeData (g, 'C', 'type') = 'glycoprotein'
-    graph::nodeData (g, 'A', 'lfc') = -3.0
-    graph::nodeData (g, 'B', 'lfc') = 0.0
-    graph::nodeData (g, 'C', 'lfc') = 3.0
-    graph::nodeData (g, 'A', 'count') = as.integer(2)
-    graph::nodeData (g, 'B', 'count') = as.integer(30)
-    graph::nodeData (g, 'C', 'count') = as.integer(100)
-    graph:: nodeData (g, 'A', 'label') = 'Gene A'
-    graph::nodeData (g, 'B', 'label') = 'Gene B'
-    graph::nodeData (g, 'C', 'label') = 'Gene C'
+    graph::nodeDataDefaults (g, attr='group') = 'none'
+    graph::nodeDataDefaults (g, attr='score') = as.integer(0)
+    graph::edgeDataDefaults (g, attr='interaction') = 'undefined'
+    graph::edgeDataDefaults (g, attr='weight') = 0.0
     
-    g = graph::addEdge ('A', 'B', g)
-    g = graph::addEdge ('B', 'C', g)
-    g = graph::addEdge ('C', 'A', g)
-    graph::edgeData (g, 'A', 'B', 'edgeType') = 'phosphorylates'
-    graph::edgeData (g, 'B', 'C', 'edgeType') = 'synthetic lethal'
-    graph::edgeData (g, 'A', 'B', 'score') =  35.0
-    graph::edgeData (g, 'B', 'C', 'score') =  -12
+    graph::nodeData (g, 'node 0', 'group') = 'A'
+    graph::nodeData (g, 'node 1', 'group') = 'A'
+    graph::nodeData (g, 'node 2', 'group') = 'B'
+    graph::nodeData (g, 'node 3', 'group') = 'B'
+    graph::nodeData (g, 'node 0', 'score') = as.integer(20)
+    graph::nodeData (g, 'node 1', 'score') = as.integer(10)
+    graph::nodeData (g, 'node 2', 'score') = as.integer(15)
+    graph::nodeData (g, 'node 3', 'score') = as.integer(5)
+    
+    graph::edgeData (g, 'node 0', 'node 1', 'interaction') = 'inhibits'
+    graph::edgeData (g, 'node 0', 'node 2', 'interaction') = 'interacts'
+    graph::edgeData (g, 'node 0', 'node 3', 'interaction') = 'activates'
+    graph::edgeData (g, 'node 2', 'node 3', 'interaction') = 'interacts'
+    graph::edgeData (g, 'node 0', 'node 1', 'weight') = 5.1
+    graph::edgeData (g, 'node 0', 'node 2', 'weight') = 3.0
+    graph::edgeData (g, 'node 0', 'node 3', 'weight') = 5.2
+    graph::edgeData (g, 'node 2', 'node 3', 'weight') = 9.9
     
     return (g)
 } # makeSimpleGraph
@@ -75,8 +71,7 @@ makeSimpleGraph = function() {
 #' node and edge attribute types to help demonstrate round trip conversion with
 #' Cytoscape networks via RCy3.
 #' @return A \code{igraph} object with a few nodes, edges and attributes
-#' @seealso createNetworkFromGraph, createGraphFromNetwork, makeSimpleGraph, 
-#' makeSimpleDataFrame
+#' @seealso createNetworkFromIgraph, createIgraphFromNetwork, makeSimpleGraph
 #' @examples {
 #' makeSimpleIgraph()
 #' }
@@ -85,25 +80,17 @@ makeSimpleGraph = function() {
 #' @importFrom igraph set.edge.attribute
 #' @export
 makeSimpleIgraph = function() {
-    ig <- igraph::make_graph(c("A","B","B","C","C","A"), directed = TRUE)
-    ig <- igraph::set.vertex.attribute(ig, 'type', value=c('kinase','transcription factor','glycoprotein'))
-    ig <- igraph::set.vertex.attribute(ig, 'lfc', value=c(-3.0,0.0,3.0))
-    ig <- igraph::set.vertex.attribute(ig, 'count', value=as.integer(c(2,30,100)))
-    ig <- igraph::set.vertex.attribute(ig, 'label', value=c('Gene A','Gene B','Gene C'))
-    ig <- igraph::set.edge.attribute(ig, 'edgeType', value=c('phosphorylates','synthetic lethal','undefined'))
-    ig <- igraph::set.edge.attribute(ig, 'score', value=c(35.0,-12,0.0))
+    ig <- igraph::make_graph(c("node 0","node 1",
+                               "node 0","node 2",
+                               "node 0","node 3",
+                               "node 2","node 3"), 
+                             directed = TRUE)
+    ig <- igraph::set.vertex.attribute(ig, 'group', value=c('A','A','B','B'))
+    ig <- igraph::set.vertex.attribute(ig, 'score', value=as.integer(c(20,10,15,5)))
+    ig <- igraph::set.edge.attribute(ig, 'interaction', value=c("inhibits",
+                                                                "interacts",
+                                                                "activates",
+                                                                "interacts"))
+    ig <- igraph::set.edge.attribute(ig, 'weight', value=c(5.1,3.0,5.2,9.9))
     return (ig)
 } 
-
-
-#' nodes <- data.frame(id=c("node 0","node 1","node 2","node 3"),
-#'            group=c("A","A","B","B"), # categorical strings
-#'            score=as.integer(c(20,10,15,5)), # integers
-#'            stringsAsFactors=FALSE)
-#' edges <- data.frame(source=c("node 0","node 0","node 0","node 2"),
-#'            target=c("node 1","node 2","node 3","node 3"),
-#'            interaction=c("inhibits","interacts","activates","interacts"),  # optional
-#'            weight=c(5.1,3.0,5.2,9.9), # numeric
-#'            stringsAsFactors=FALSE)
-#'
-#' createNetworkFromDataFrames(nodes,edges)
