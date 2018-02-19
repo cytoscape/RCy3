@@ -12,8 +12,11 @@
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p)
 #' @param table.column.values (list) list of values paired with visual.prop.values; skip for passthrough mapping
 #' @param visual.prop.values (list) list of values paired with table.column.values; skip for passthrough mapping
-#' @param network name or suid of the network; default is "current" network
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return (network=network, base.url=base.url) ready to convert into JSON by style mapping operations
 #' @seealso setStyleMappings createStyle
 #' @examples
@@ -178,8 +181,11 @@ continuousMapping <- function(attribute.name, control.points, colors, visual.pro
 #' @details Requires visual property mappings to be previously created, see mapVisualProperty.
 #' @param style.name (char) name for style
 #' @param mapping a single visual property mapping, see mapVisualProperty
-#' @param network DESCRIPTION
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return server response
 #' @export
 #' @seealso mapVisualProperty

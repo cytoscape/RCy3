@@ -11,9 +11,12 @@ layoutNetwork(layout.name = NULL, network = NULL,
 \item{layout.name}{(\code{character}) Name of the layout (with optional parameters). 
 If not specified, then the preferred layout set in the Cytoscape UI is applied.}
 
-\item{network}{DESCRIPTION}
+\item{network}{(optional) Name or SUID of the network. Default is the "current" 
+network active in Cytoscape.}
 
-\item{base.url}{(optional)  URL prefix for CyREST calls}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 None

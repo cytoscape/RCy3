@@ -14,8 +14,11 @@
 #' @details Run \link{getLayoutNames} to list available layouts. 
 #' @param layout.name (\code{character}) Name of the layout (with optional parameters). 
 #' If not specified, then the preferred layout set in the Cytoscape UI is applied.
-#' @param network DESCRIPTION
-#' @param base.url (optional)  URL prefix for CyREST calls
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples
 #' \donttest{
@@ -54,7 +57,9 @@ layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaul
 #' @param selectUnmapped optional \code{character}) If this is set to true, any nodes in the target network 
 #' that could not be matched to a node in the source network will be selected in the target network; 
 #' default is TRUE
-#' @param base.url (optional)  URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples
 #' \donttest{
@@ -77,7 +82,9 @@ layoutCopycat <- function(sourceNetwork, targetNetwork, sourceColumn='name', tar
 #' 
 #' @description Retrieve the names of the currently supported layout algorithms.  These
 #' may be used in subsequent calls to the 'layoutNetwork' function.  
-#' @param base.url (optional)  URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{list} of \code{character} strings, e.g., "force-directed" "circular" "grid"
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
@@ -100,7 +107,9 @@ getLayoutNames <- function(base.url=.defaultBaseUrl) {
 #' there are different from the names by which these algorithms are known to layout method. This 
 #' method returns a named list in which the names are from the GUI, and the values identify the 
 #' names you must use to choose an algorithms in the programmatic interface.
-#' @param base.url (optional)  URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A named \code{list} of \code{character} strings
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
@@ -129,7 +138,9 @@ getLayoutNameMapping <- function(base.url=.defaultBaseUrl) {
 #' @description Returns a list of the tunable properties for the specified layout.
 #' @details Run \link{getLayoutNames} to list available layouts.
 #' @param layout.name (\code{character}) Name of the layout
-#' @param base.url (optional)  URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{list} of \code{character} strings
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
@@ -151,7 +162,9 @@ getLayoutPropertyNames <- function(layout.name, base.url = .defaultBaseUrl) {
 #' @details Run \link{getLayoutNames} to list available layouts. Run \link{getLayoutPropertyNames} to list properties per layout.
 #' @param layout.name (\code{character}) Name of the layout
 #' @param property.name (\code{character}) Name of the property
-#' @param base.url (optional)  URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{character} string specifying the type
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
@@ -174,7 +187,9 @@ getLayoutPropertyType <- function(layout.name, property.name, base.url = .defaul
 #' @details Run \link{getLayoutNames} to list available layouts. Run \link{getLayoutPropertyNames} to list properties per layout.
 #' @param layout.name (\code{character}) Name of the layout
 #' @param property.name (\code{character}) Name of the property
-#' @param base.url (optional)  URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return The current value set for this layout property. Typically an \code{integer}, \code{numeric} or \code{character} string value.
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
@@ -199,7 +214,9 @@ getLayoutPropertyValue <- function (layout.name, property.name, base.url = .defa
 #' @details Run \link{getLayoutNames} to list available layouts. Run \link{getLayoutPropertyNames} to list properties per layout.
 #' @param layout.name (\code{character}) Name of the layout
 #' @param properties.list (\code{list}) List of one or more \code{property=value} pairs
-#' @param base.url (optional)  URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{

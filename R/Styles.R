@@ -14,7 +14,9 @@
 #' @description FUNCTION_DESCRIPTION
 #' @param from.style DESCRIPTION
 #' @param to.style DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' copyVisualStyle()
@@ -47,7 +49,9 @@ copyVisualStyle <- function (from.style, to.style, base.url=.defaultBaseUrl) {
 #' @param style.name (char) name for style
 #' @param defaults (list) key-value pairs for default mappings.
 #' @param mappings (list) visual property mappings, see mapVisualProperty
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @export
 #' @examples
@@ -100,7 +104,9 @@ createVisualStyle <- function(style.name, defaults, mappings, base.url=.defaultB
 #' Default is XML.
 #' @param styles (optional) The styles to be exported, listed as a comma-separated string. 
 #' If no styles are specified, only the current one is exported.
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples
 #' \donttest{
@@ -124,7 +130,9 @@ exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.de
 #' @title Get Visual Style Names
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getVisualStyleNames()
@@ -140,8 +148,11 @@ getVisualStyleNames <- function(base.url=.defaultBaseUrl) {
 #'
 #' @description Apply a visual style to a network
 #' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' setVisualStyle()
@@ -166,7 +177,9 @@ setVisualStyle <- function(style.name, network=NULL, base.url=.defaultBaseUrl) {
 #' decorations can (optionally) appear at the ends of edges, adjacent to
 #' the nodes they connect, and conveying information about the nature of
 #' the nodes' relationship.
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A list of \code{character} strings, e.g., 'DIAMOND', 'T', 'ARROW'
 #' @examples \donttest{
 #' getArrowShapes()
@@ -183,7 +196,9 @@ getArrowShapes <- function(base.url=.defaultBaseUrl) {
 #' @description Retrieve the names of the currently supported line types
 #' -- values which can be used to render edges, and thus
 #' can be used in calls to 'setEdgeLineStyleRule'.
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A list of \code{character} strings, e.g., 'SOLID', 'DOT'
 #' @examples \donttest{
 #' getLineStyles()
@@ -200,7 +215,9 @@ getLineStyles <- function(base.url=.defaultBaseUrl) {
 #' @description Retrieve the names of the currently supported node shapes,
 #' which can then be used in calls to setNodeShapeRule and
 #' setDefaultVizMapValue.
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A list of \code{character} strings, e.g. 'ELLIPSE', 'RECTANGLE'
 #' @examples \donttest{
 #' getNodeShapes()
@@ -215,7 +232,9 @@ getNodeShapes <- function (base.url=.defaultBaseUrl) {
 #' @title Get Visual Property Names
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getVisualPropertyNames()

@@ -4,7 +4,9 @@
 #' @title Get Collection List
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getCollectionList()
@@ -21,7 +23,9 @@ getCollectionList <- function(base.url=.defaultBaseUrl){
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getCollectionSuid()
@@ -40,7 +44,9 @@ getCollectionSuid <- function(network=NULL, base.url=.defaultBaseUrl){
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param collection.suid DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getCollectionName()
@@ -60,7 +66,9 @@ getCollectionName <- function(collection.suid=NULL, base.url=.defaultBaseUrl){
 #'
 #' @description FUNCTION_DESCRIPTION
 #' @param collection.suid DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' getCollectionNetworks()

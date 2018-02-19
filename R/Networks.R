@@ -90,7 +90,9 @@ getNetworkCount <- function(base.url = .defaultBaseUrl) {
 #' @description Retrieve the title of a network
 #' @param suid SUID of the network; default is current network. If a name is 
 #' provided, then it is validated and returned.
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return network name
 #' @export
 #' @examples
@@ -142,7 +144,9 @@ getNetworkName <- function(suid = NULL, base.url = .defaultBaseUrl) {
 #' @description Retrieve the SUID of a network
 #' @param title Name of the network; default is "current" network. If an SUID is 
 #' provided, then it is validated and returned.
-#' @param base.url (optional)  URL prefix for CyREST calls
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return (\code{numeric}) Network suid
 #' @author Alexander Pico
 #' @examples
@@ -693,7 +697,9 @@ createSubnetwork <- function(nodes=NULL,
 #' @param igraph (igraph) igraph network object
 #' @param title (char) network name
 #' @param collection (char) network collection name
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @param ... params for nodeSet2JSON() and edgeSet2JSON(); see createNetwork
 #' @return (int) network SUID
 #' @examples
@@ -731,7 +737,9 @@ createNetworkFromIgraph <- function(igraph,
 #' @param graph DESCRIPTION
 #' @param title (char) network name
 #' @param collection (char) network collection name
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
@@ -769,7 +777,9 @@ createNetworkFromGraph <- function (graph,
 #' @param edges (data.frame) see details and examples below; default NULL for disconnected set of nodes
 #' @param title (char) network name
 #' @param collection (char) network collection name
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @param ... params for nodeSet2JSON() and edgeSet2JSON()
 #' @return (int) network SUID
 #' @examples
@@ -899,7 +909,9 @@ createNetworkFromDataFrames <-
 #' @details Nodes and edges from the Cytoscape network will be translated into vertices and edges
 #' in igraph. Associated table columns will also be passed to igraph as vertiex and edge attributes.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return (igraph) an igraph network
 #' @examples
 #' \donttest{
@@ -945,7 +957,9 @@ createIgraphFromNetwork <-
 #'
 #' @description Returns the Cytoscape network as a Bioconductor graph.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A Bioconductor graph object.
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{cw <- CytoscapeWindow('network', graph=make_graphnel())
