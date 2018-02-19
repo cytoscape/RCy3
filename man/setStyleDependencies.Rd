@@ -12,7 +12,9 @@ setStyleDependencies(style.name, dependencies, base.url = .defaultBaseUrl)
 \item{dependencies}{A \code{list} of style dependencies, see Available Dependencies
 below. Note: each dependency is set by a boolean, TRUE or FALSE (T or F)}
 
-\item{base.url}{cyrest base url for communicating with cytoscape}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 server response

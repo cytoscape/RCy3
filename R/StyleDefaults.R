@@ -18,7 +18,9 @@
 #' the list of visual properties.
 #' @param style.name (char) name for style
 #' @param defaults (list) a list of visual property default settings
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return server response
 #' @examples
 #' \donttest{
@@ -45,12 +47,14 @@ updateStyleDefaults <- function(style.name,defaults,base.url=.defaultBaseUrl){
 }
 
 # ------------------------------------------------------------------------------
+#' @export
 getDefaultVisualProperty <- function(property, style.name='default', base.url=.defaultBaseUrl) {
     res <- cyrestGET(paste("styles", as.character(style.name), "defaults", property, sep="/"), base.url=base.url)
     return(res[[2]])
 }
 
 # ------------------------------------------------------------------------------
+#' @export
 setDefaultVisualProperty <- function(style.string, style.name='default', base.url=.defaultBaseUrl) {
     res <- cyrestPUT(paste("styles", as.character(style.name), "defaults", sep="/"),
                      body = list(style.string),

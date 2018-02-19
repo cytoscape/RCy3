@@ -195,7 +195,9 @@ exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, hei
 #' @details Displaying graphics details on a very large network will affect pan
 #' and zoom performance, depending on your available RAM. 
 #' See \link{cytoscapeMemoryStatus}.
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
 #' showGraphicsDetails(TRUE)

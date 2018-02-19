@@ -3,7 +3,9 @@
 #'
 #' @description Updates style dependencies, overriding any prior settings.
 #' @param style.name (char) name for style
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return server response
 #' @examples
 #' \donttest{
@@ -40,7 +42,9 @@ getStyleDependencies <- function(style.name,base.url=.defaultBaseUrl){
 #' @param style.name (char) name for style
 #' @param dependencies A \code{list} of style dependencies, see Available Dependencies
 #' below. Note: each dependency is set by a boolean, TRUE or FALSE (T or F)
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return server response
 #' @examples
 #' \donttest{
@@ -75,7 +79,9 @@ setStyleDependencies <- function(style.name,dependencies,base.url=.defaultBaseUr
 #' @description FUNCTION_DESCRIPTION
 #' @param new.state DESCRIPTION
 #' @param style.name DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' matchArrowColorToEdge()
@@ -93,7 +99,9 @@ matchArrowColorToEdge <- function (new.state, style.name='default', base.url=.de
 #' @description FUNCTION_DESCRIPTION
 #' @param new.state DESCRIPTION
 #' @param style.name DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' lockNodeDimensions()
@@ -111,7 +119,9 @@ lockNodeDimensions <- function (new.state, style.name='default', base.url=.defau
 #' @description FUNCTION_DESCRIPTION
 #' @param new.state DESCRIPTION
 #' @param style.name DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' syncNodeCustomGraphicsSize()

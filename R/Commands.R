@@ -18,7 +18,9 @@
 #'
 #' @description Opens swagger docs in default browser for a live
 #' instance of CyREST operations.
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return Web page in browser
 #' @export
 #' @examples
@@ -37,7 +39,9 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 #' @description FUNCTION_DESCRIPTION
 #' @param operation DESCRIPTION
 #' @param parameters DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' cyrestDELETE()
@@ -72,7 +76,9 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' @description FUNCTION_DESCRIPTION
 #' @param operation DESCRIPTION
 #' @param parameters DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' cyrestGET()
@@ -108,7 +114,9 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' @param operation DESCRIPTION
 #' @param parameters DESCRIPTION
 #' @param body DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' cyrestPOST()
@@ -147,7 +155,9 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' @param operation DESCRIPTION
 #' @param parameters DESCRIPTION
 #' @param body DESCRIPTION
-#' @param base.url DESCRIPTION
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return RETURN_DESCRIPTION
 #' @examples \donttest{
 #' cyrestPUT()
@@ -186,7 +196,9 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
 #'
 #' @description Opens swagger docs in default browser for a live
 #' instance of Commands available via CyREST.
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return Web page in browser
 #' @export
 #' @examples
@@ -206,7 +218,9 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' this function converts a command string into a CyREST query URL, executes a GET
 #' request, and parses the result content into an R list object.
 #' @param cmd.string (char) command
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{list}, \code{status} or None.
 #' @examples
 #' \donttest{
@@ -253,7 +267,9 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 #' @details Works with or without 'help' command prefix. Note that if you ask about a command that doesn't
 #' have any arguments, this function will run the command!
 #' @param cmd.string (char) command
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return List of available commands or args
 #' @examples
 #' \donttest{
@@ -295,7 +311,9 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' this function converts a command string into a CyREST query URL, executes a
 #' POST request, and parses the result content into an R list object.
 #' @param cmd.string (char) command
-#' @param base.url cyrest base url for communicating with cytoscape
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{list}, \code{named list}, \code{status} or None.
 #' @examples
 #' \donttest{
