@@ -20,6 +20,5 @@ makeSimpleGraph()
 }
 }
 \seealso{
-createNetworkFromGraph, createGraphFromNetwork, makeSimpleIgraph, 
-makeSimpleDataFrame
+createNetworkFromGraph, createGraphFromNetwork, makeSimpleIgraph
 }
