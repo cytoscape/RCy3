@@ -24,7 +24,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-Saves one or more visual styles to file
+Save one or more visual styles to file.
 }
 \examples{
 \donttest{
