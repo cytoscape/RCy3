@@ -10,8 +10,8 @@
 #' @title Get Node Property Values
 #'
 #' @description Get values for any node property of the specified nodes.
-#' @param node.names DESCRIPTION
-#' @param visual.property DESCRIPTION
+#' @param node.names List of node names
+#' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -20,13 +20,13 @@
 #' current visual style, factoring together any default, mapping and bypass setting.
 #' @return Property value
 #' @examples \donttest{
-#' getNodeProperty()
+#' getNodeProperty(c('node 0','node 1'),'NODE_SHAPE')
 #' }
 #' @export
 getNodeProperty <- function(node.names,
-                                  visual.property,
-                                  network = NULL,
-                                  base.url = .defaultBaseUrl) {
+                            visual.property,
+                            network = NULL,
+                            base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
     net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
@@ -54,8 +54,8 @@ getNodeProperty <- function(node.names,
 #' @title Get Edge Property Values
 #'
 #' @description Get values for any edge property of the specified edges.
-#' @param edge.names DESCRIPTION
-#' @param visual.property DESCRIPTION
+#' @param edge.names List of edge names
+#' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -65,20 +65,20 @@ getNodeProperty <- function(node.names,
 #' current visual style, factoring together any default, mapping and bypass setting.
 #' @return Property value
 #' @examples \donttest{
-#' getEdgeProperty()
+#' getEdgeProperty(c('node 0 (pp) node 1','node 0 (pp) node 2'),'EDGE_WIDTH')
 #' }
 #' @export
 getEdgeProperty <- function(edge.names,
-                                  visual.property,
-                                  network = NULL,
-                                  base.url = .defaultBaseUrl) {
+                            visual.property,
+                            network = NULL,
+                            base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
     net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     edge.SUIDs <-
         .edgeNameToEdgeSUID(edge.names, network=net.SUID, base.url=base.url)
-
-        values <- c()
+    
+    values <- c()
     for (i in 1:length(edge.SUIDs)) {
         edge.SUID <- as.character(edge.SUIDs[i])
         res <- cyrestGET(paste( "networks",
@@ -99,7 +99,7 @@ getEdgeProperty <- function(edge.names,
 #' @title Get Network Property Values
 #'
 #' @description Get values for any network property.
-#' @param visual.property DESCRIPTION
+#' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -108,12 +108,12 @@ getEdgeProperty <- function(edge.names,
 #' current visual style, factoring together any default, mapping and bypass setting.
 #' @return Property value
 #' @examples \donttest{
-#' getNetworkProperty()
+#' getNetworkProperty('NETWORK_SCALE_FACTOR')
 #' }
 #' @export
 getNetworkProperty <- function(visual.property,
-                                     network = NULL,
-                                     base.url = .defaultBaseUrl) {
+                               network = NULL,
+                               base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
     net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
@@ -137,11 +137,14 @@ getNetworkProperty <- function(visual.property,
 # ------------------------------------------------------------------------------
 #' @title Get Node Color
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @description Retrieve the actual fill color of specified nodes.
+#' @param node.names List of node names
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Property value
 #' @examples \donttest{
 #' getNodeColor()
 #' }
@@ -155,11 +158,14 @@ getNodeColor <- function (node.names=NULL, network=NULL, base.url =.defaultBaseU
 # ------------------------------------------------------------------------------
 #' @title Get Node Size
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @description Retrieve the actual size of specified nodes.
+#' @param node.names List of node names
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Property value
 #' @examples \donttest{
 #' getNodeSize()
 #' }
@@ -173,11 +179,14 @@ getNodeSize <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUr
 # ------------------------------------------------------------------------------
 #' @title Get Node Width
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @description Retrieve the actual width of specified nodes.
+#' @param node.names List of node names
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Property value
 #' @examples \donttest{
 #' getNodeWidth()
 #' }
@@ -191,11 +200,14 @@ getNodeWidth <- function (node.names=NULL, network=NULL, base.url =.defaultBaseU
 # ------------------------------------------------------------------------------
 #' @title Get Node Height
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @description Retrieve the actual height of specified nodes.
+#' @param node.names List of node names
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Property value
 #' @examples \donttest{
 #' getNodeHeight()
 #' }
@@ -212,11 +224,14 @@ getNodeHeight <- function (node.names=NULL, network=NULL, base.url =.defaultBase
 # ------------------------------------------------------------------------------
 #' @title Get Edge Line Width
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @description Retrieve the actual line width of specified edges.
+#' @param edge.names List of edge names
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Property value
 #' @examples \donttest{
 #' getEdgeLineWidth()
 #' }
@@ -230,11 +245,14 @@ getEdgeLineWidth <- function (edge.names=NULL, network=NULL, base.url =.defaultB
 # ------------------------------------------------------------------------------
 #' @title Get Edge Color
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @description Retrieve the actual line color of specified edges.
+#' @param edge.names List of edge names
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Property value
 #' @examples \donttest{
 #' getEdgeColor()
 #' }
@@ -248,11 +266,14 @@ getEdgeColor <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseU
 # ------------------------------------------------------------------------------
 #' @title Get Edge Line Style
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @description Retrieve the actual line style of specified edges.
+#' @param edge.names List of edge names
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Property value
 #' @examples \donttest{
 #' getEdgeLineStyle()
 #' }
@@ -266,11 +287,14 @@ getEdgeLineStyle <- function (edge.names=NULL, network=NULL, base.url =.defaultB
 # ------------------------------------------------------------------------------
 #' @title Get Edge Target Arrow Shape
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @description Retrieve the actual target arrow shape of specified edges.
+#' @param edge.names List of edge names
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Property value
 #' @examples \donttest{
 #' getEdgeTargetArrowShape()
 #' }
@@ -289,10 +313,13 @@ getEdgeTargetArrowShape <- function (edge.names=NULL, network=NULL, base.url =.d
 # ------------------------------------------------------------------------------
 #' @title Get Network Center
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @description Retrieve the center of specified network.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Property value
 #' @examples \donttest{
 #' getNetworkCenter()
 #' }
@@ -308,10 +335,13 @@ getNetworkCenter <- function(network=NULL, base.url =.defaultBaseUrl) {
 # ------------------------------------------------------------------------------
 #' @title Get Network Zoom
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @description Retrieve the scale factor of specified network.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Property value
 #' @examples \donttest{
 #' getNetworkZoom()
 #' }
