@@ -8,9 +8,9 @@ getNodeProperty(node.names, visual.property, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{DESCRIPTION}
+\item{node.names}{List of node names}
 
-\item{visual.property}{DESCRIPTION}
+\item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}
 
@@ -30,6 +30,6 @@ current visual style, factoring together any default, mapping and bypass setting
 }
 \examples{
 \donttest{
-getNodeProperty()
+getNodeProperty(c('node 0','node 1'),'NODE_SHAPE')
 }
 }
