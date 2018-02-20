@@ -7,19 +7,19 @@
 copyVisualStyle(from.style, to.style, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{from.style}{DESCRIPTION}
+\item{from.style}{Name of visual style to copy}
 
-\item{to.style}{DESCRIPTION}
+\item{to.style}{Name of new visual style}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+None
 }
 \description{
-FUNCTION_DESCRIPTION
+Create a new visual style by copying a specified style.
 }
 \examples{
 \donttest{

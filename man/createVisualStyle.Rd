@@ -21,7 +21,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-Creates a style from defaults and predefined mappings.
+Create a style from defaults and predefined mappings.
 }
 \details{
 Requires attribute mappings to be previously created, see mapVisualProperty.

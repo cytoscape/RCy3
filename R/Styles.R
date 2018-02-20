@@ -11,13 +11,13 @@
 # ------------------------------------------------------------------------------
 #' @title Copy Visual Style
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param from.style DESCRIPTION
-#' @param to.style DESCRIPTION
+#' @description Create a new visual style by copying a specified style.
+#' @param from.style Name of visual style to copy
+#' @param to.style Name of new visual style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' copyVisualStyle()
 #' }
@@ -44,7 +44,7 @@ copyVisualStyle <- function (from.style, to.style, base.url=.defaultBaseUrl) {
 # ------------------------------------------------------------------------------
 #' Create a visual style from components
 #'
-#' @description Creates a style from defaults and predefined mappings.
+#' @description Create a style from defaults and predefined mappings.
 #' @details Requires attribute mappings to be previously created, see mapVisualProperty.
 #' @param style.name (char) name for style
 #' @param defaults (list) key-value pairs for default mappings.
@@ -98,7 +98,7 @@ createVisualStyle <- function(style.name, defaults, mappings, base.url=.defaultB
 # ------------------------------------------------------------------------------
 #' Export Visual Styles
 #'
-#' @description Saves one or more visual styles to file
+#' @description Save one or more visual styles to file.
 #' @param filename (char) Name of the style file to save. Default is "styles.xml"
 #' @param type (optional) Type of data file to export, e.g., XML, JSON (case sensitive). 
 #' Default is XML.
@@ -129,11 +129,11 @@ exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.de
 # ------------------------------------------------------------------------------
 #' @title Get Visual Style Names
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve a list of all visual style names.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return A list of names
 #' @examples \donttest{
 #' getVisualStyleNames()
 #' }
@@ -146,14 +146,14 @@ getVisualStyleNames <- function(base.url=.defaultBaseUrl) {
 # ------------------------------------------------------------------------------
 #' @title Set Visual Style
 #'
-#' @description Apply a visual style to a network
-#' @param style.name DESCRIPTION
+#' @description Apply a visual style to a network.
+#' @param style.name Name of a visual style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
 #' network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' setVisualStyle()
 #' }
@@ -231,11 +231,11 @@ getNodeShapes <- function (base.url=.defaultBaseUrl) {
 # ------------------------------------------------------------------------------
 #' @title Get Visual Property Names
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve the names of all possible visual properties.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return List of names
 #' @examples \donttest{
 #' getVisualPropertyNames()
 #' }
