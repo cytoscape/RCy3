@@ -12,7 +12,7 @@
 # ==============================================================================
 # I. Package Utility Functions
 # ------------------------------------------------------------------------------
-# Validate and provide user feedback when hex color codes are required input
+# Validate and provide user feedback when hex color codes are required input.
 .isNotHexColor <- function(color){
     if ((substring(color, 1, 1) != "#") || (nchar(color) !=7)) {
         write (sprintf ('Error. %s is not a valid hexadecimal color (has to begin with # and be 7 characters long).', color), stderr ())
@@ -23,14 +23,14 @@
 }
 
 # ------------------------------------------------------------------------------
-# Replaces node names with SUIDs
+# Replaces node names with SUIDs.
 .nodeNameToNodeSUID<-function(node.names, network=NULL, base.url=.defaultBaseUrl) {
         dict <- getTableColumns('node',c('SUID','name'),'default',network, base.url)
         node.SUIDs <- dict[which(dict$name  %in% node.names),'SUID']
         return(node.SUIDs)
 }
 # ------------------------------------------------------------------------------
-# Replaces node SUIDs with names
+# Replaces node SUIDs with names.
 .nodeSUIDToNodeName<-function(node.suids, network=NULL, base.url=.defaultBaseUrl) {
         dict <- getTableColumns('node',c('SUID','name'),'default',network, base.url)
         node.names <- dict[which(dict$SUID  %in% node.suids),'name']
@@ -38,7 +38,7 @@
 }
 
 # ------------------------------------------------------------------------------
-# Replaces edge names with SUIDs
+# Replaces edge names with SUIDs.
 .edgeNameToEdgeSUID<-function(edge.names, network=NULL, base.url=.defaultBaseUrl) {
         dict <- getTableColumns('edge',c('SUID','name'),'default',network, base.url)
         edge.SUIDs <- dict[which(dict$name  %in% edge.names),'SUID']
@@ -46,9 +46,36 @@
 }
 
 # ------------------------------------------------------------------------------
-# Replaces edge SUIDs with names
+# Replaces edge SUIDs with names.
 .edgeSUIDToEdgeName<-function(edge.suids, network=NULL, base.url=.defaultBaseUrl) {
         dict <- getTableColumns('edge',c('SUID','name'),'default',network, base.url)
         edge.names <- dict[which(dict$SUID  %in% edge.suids),'name']
         return(edge.names)
+}
+
+# ------------------------------------------------------------------------------
+# Checks to see if min supported versions of api and cytoscape are running.
+# Extracts numerics from api and major cytoscape versions before making comparison.
+.verifySupportedVersions<-function(cyrest=1,cytoscape=3.6) {
+    vStr <- cytoscapeVersionInfo()
+    vApiStr <- unname(vStr[1])
+    vCyStr <- unname(vStr[2])
+    vApiNum <- as.numeric(gsub("v([0-9]+)$", "\\1", vApiStr))
+    vCyNum <- as.numeric(gsub("([0-9]+\\.[0-9]+)\\..*$", "\\1", vCyStr))
+    
+    nogo <- FALSE
+    if(cyrest > vApiNum){
+        write(sprintf("This function requires CyREST API version %d or greater. You are currently working with version %d.",
+                      cyrest, vApiNum),
+              stderr())
+        nogo <- TRUE
+    }
+    if(cytoscape > vCyNum){
+        write(sprintf("This function requires Cytoscape version %0.2g or greater. You are currently working with version %0.2g.",
+                      cytoscape, vCyNum),
+              stderr())
+        nogo <- TRUE
+    }
+    if(nogo)
+        stop(simpleError("Function not run due to unsupported version."))
 }
