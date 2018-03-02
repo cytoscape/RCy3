@@ -9,6 +9,7 @@ that includes:
 * support for Cytoscape commands
 * better support for Cytoscape apps
 * coordinated development with CyREST and the Cytoscape service model
+  * [New API](https://github.com/cytoscape/cyrest/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3A%22new+api%22+)
 * coordinated development with other scripting libraries, e.g., 
   * [py2cytoscape](https://github.com/cytoscape/py2cytoscape)
   * [RCyjs](http://bioconductor.org/packages/release/bioc/html/RCyjs.html)
