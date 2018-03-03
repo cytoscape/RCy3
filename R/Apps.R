@@ -3,12 +3,13 @@
 # ------------------------------------------------------------------------------
 #' @title Disable App
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param app DESCRIPTION
+#' @description Disable an app to effectively remove it from your Cytoscape session
+#' without having to uninstall it.
+#' @param app Name of app
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' disableApp()
 #' }
@@ -21,12 +22,12 @@ disableApp <- function (app, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title Enable App
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param app DESCRIPTION
+#' @description Enable a previously installed and disabled app in Cytoscape.
+#' @param app Name of app
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' enableApp()
 #' }
@@ -39,12 +40,12 @@ enableApp <- function (app, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title Get App Information
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param app DESCRIPTION
+#' @description Retrieve the name, brief description and version of a Cytoscape app.
+#' @param app Name of app
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return App name, brief description and version.
 #' @examples \donttest{
 #' getAppInformation()
 #' }
@@ -57,12 +58,12 @@ getAppInformation <- function (app, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title Install App
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param app DESCRIPTION
+#' @description Installs an app in Cytoscape.
+#' @param app Name of app
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' installApp()
 #' }
@@ -75,11 +76,11 @@ installApp <- function (app, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title List Available Apps
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve a list of apps available for installation in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return A list of app names and latest versions
 #' @examples \donttest{
 #' getAvailableApps()
 #' }
@@ -92,11 +93,11 @@ getAvailableApps <- function (base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title List Disabled Apps
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve list of currently disabled apps in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return A list of disabled app names, versions and statuses
 #' @examples \donttest{
 #' getDisabledApps()
 #' }
@@ -109,11 +110,11 @@ getDisabledApps <- function (base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title List Installed Apps
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve list of currently installed apps in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return A list of installed app names, versions and statuses
 #' @examples \donttest{
 #' getInstalledApps()
 #' }
@@ -126,11 +127,11 @@ getInstalledApps <- function (base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title List Uninstalled Apps
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve list of apps not currently installed in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return A list of uninstalled app names, versions and statuses
 #' @examples \donttest{
 #' getUninstalledApps()
 #' }
@@ -143,11 +144,11 @@ getUninstalledApps <- function (base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title List Apps With Updates
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve list of currently installed Cytoscape apps with updates available.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return A list of updatable app names, versions and statuses
 #' @examples \donttest{
 #' getAppUpdates()
 #' }
@@ -160,12 +161,12 @@ getAppUpdates <- function (base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title Open App Store Page
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param app DESCRIPTION
+#' @description Opens the Cytoscape App Store in a new tab in your default browser.
+#' @param app Name of app
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' openAppStore()
 #' }
@@ -178,12 +179,13 @@ openAppStore <- function (app, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title App Status
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param app DESCRIPTION
+#' @description Retrieve the current status of a Cytoscape app: Installed, Uninstalled
+#' or Disabled.
+#' @param app Name of app
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return App name and status
 #' @examples \donttest{
 #' getAppStatus()
 #' }
@@ -196,12 +198,12 @@ getAppStatus <- function (app, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title Uninstall App
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param app DESCRIPTION
+#' @description Uninstall an app from Cytoscape.
+#' @param app Name of app
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' uninstallApp()
 #' }
@@ -214,12 +216,12 @@ uninstallApp <- function (app, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title Update App
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param app DESCRIPTION
+#' @description Update a Cytoscape app to the latest available version.
+#' @param app Name of app
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' updateApp()
 #' }
