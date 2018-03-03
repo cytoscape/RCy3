@@ -43,7 +43,6 @@ cytoscapePing<-function(base.url=.defaultBaseUrl) {
 #' }
 #' @export
 cytoscapeVersionInfo<-function(base.url=.defaultBaseUrl) {
-    write("CHECK",stderr())
     versions <- cyrestGET('version',base.url = base.url)
     if(length(versions[[1]]) == 0) {
         write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
