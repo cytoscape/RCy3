@@ -7,17 +7,17 @@
 openAppStore(app, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{app}{DESCRIPTION}
+\item{app}{Name of app}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+None
 }
 \description{
-FUNCTION_DESCRIPTION
+Opens the Cytoscape App Store in a new tab in your default browser.
 }
 \examples{
 \donttest{

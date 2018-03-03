@@ -12,10 +12,10 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+A list of uninstalled app names, versions and statuses
 }
 \description{
-FUNCTION_DESCRIPTION
+Retrieve list of apps not currently installed in Cytoscape.
 }
 \examples{
 \donttest{
