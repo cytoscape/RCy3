@@ -34,8 +34,11 @@ in setStyleMappings and createStyle.
 }
 \details{
 The paired list of values must be of the same length or mapping will fail.
-Mapping will also fail if the data type of table.column.values does not match that of
-the existing table.column. Note that all imported numeric data are stored as Doubles in
+For gradient mapping, you may include two additional visual.prop.values in the 
+first and last positions to map respectively to values less than and greater 
+than those specified in table.column.values. Mapping will also fail if the 
+data type of table.column.values does not match that of the existing table.column. 
+Note that all imported numeric data are stored as Integers or Doubles in 
 Cytosacpe tables; and character or mixed data are stored as Strings.
 }
 \section{List of visual properties}{
