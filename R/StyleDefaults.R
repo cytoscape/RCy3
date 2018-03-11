@@ -2,12 +2,8 @@
 # Functions for getting and setting DEFAULT values for visual properties,
 # organized into sections:
 #
-# I. General functions for setting/clearing node, edge and network properties
-# II. Specific functions for setting particular node, edge and network properties
-#
-# NOTE: The CyREST 'bypass' enpoint is essential to properly set values that 
-# will persist for a given network independent of applied style and style 
-# changes, and from session to session if saved.
+# I. General functions for setting node, edge and network defaults
+# II. Specific functions for setting particular node, edge and network defaults
 #
 # ==============================================================================
 # I. General Functions
@@ -48,14 +44,14 @@ updateStyleDefaults <- function(style.name,defaults,base.url=.defaultBaseUrl){
 
 # ------------------------------------------------------------------------------
 #' @export
-getDefaultVisualProperty <- function(property, style.name='default', base.url=.defaultBaseUrl) {
+getVisualPropertyDefault <- function(property, style.name='default', base.url=.defaultBaseUrl) {
     res <- cyrestGET(paste("styles", as.character(style.name), "defaults", property, sep="/"), base.url=base.url)
     return(res[[2]])
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultVisualProperty <- function(style.string, style.name='default', base.url=.defaultBaseUrl) {
+setVisualPropertyDefault <- function(style.string, style.name='default', base.url=.defaultBaseUrl) {
     res <- cyrestPUT(paste("styles", as.character(style.name), "defaults", sep="/"),
                      body = list(style.string),
                      base.url=base.url)
@@ -66,15 +62,15 @@ setDefaultVisualProperty <- function(style.string, style.name='default', base.ur
 # II. Specific Functions
 # ==============================================================================
 # II.a. Node Properties
-# Pattern A: (1) prepare input value as named list, (2) call setDefaultVisualProperty()
-# Pattern B: (1) call getDefaultVisualProperty()
+# Pattern A: (1) prepare input value as named list, (2) call setVisualPropertyDefault()
+# Pattern B: (1) call getVisualPropertyDefault()
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultNodeShape <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
+setNodeShapeDefault <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
     new.shape <- toupper(new.shape)
     if (new.shape %in% getNodeShapes(base.url)){
         style = list(visualProperty = "NODE_SHAPE", value = new.shape)
-        setDefaultVisualProperty(style, style.name, base.url)
+        setVisualPropertyDefault(style, style.name, base.url)
     }else{
         write (sprintf ('%s is not a valid shape. Use getNodeShapes() to find valid values.', new.shape), stderr ())
     }
@@ -82,187 +78,187 @@ setDefaultNodeShape <- function(new.shape, style.name='default', base.url=.defau
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultNodeSize <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
+setNodeSizeDefault <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
     lockNodeDimensions(TRUE, style.name, base.url)
     
     style <- list(visualProperty = "NODE_SIZE", value = new.size)
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultNodeColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setNodeColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     }
     style = list(visualProperty = "NODE_FILL_COLOR", value = new.color)
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultNodeBorderColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setNodeBorderColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     }
     style = list(visualProperty = "NODE_BORDER_PAINT", value = new.color)
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultNodeBorderWidth <-  function(new.width, style.name='default', base.url=.defaultBaseUrl) {
+setNodeBorderWidthDefault <-  function(new.width, style.name='default', base.url=.defaultBaseUrl) {
     style = list(visualProperty = "NODE_BORDER_WIDTH", value = new.width) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultNodeFontSize <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
+setNodeFontSizeDefault <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
     style = list(visualProperty = "NODE_LABEL_FONT_SIZE", value = new.size)
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultNodeLabelColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setNodeLabelColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     }      
     style = list(visualProperty = "NODE_LABEL_COLOR", value = new.color)
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-getDefaultNodeSelectionColor <- function(style.name='default', base.url=.defaultBaseUrl) {
-    return(getDefaultVisualProperty('NODE_SELECTED_PAINT', style.name, base.url))
+getNodeSelectionColorDefault <- function(style.name='default', base.url=.defaultBaseUrl) {
+    return(getVisualPropertyDefault('NODE_SELECTED_PAINT', style.name, base.url))
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultNodeSelectionColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setNodeSelectionColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     } 
     style = list(visualProperty = "NODE_SELECTED_PAINT", value = new.color) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 #------------------------------------------------------------------------------------------------------------------------
 #' @export
-getDefaultNodeReverseSelectionColor <- function (style.name='default', base.url=.defaultBaseUrl) {
-    return(getDefaultVisualProperty('NODE_PAINT', style.name, base.url))
+getNodeReverseSelectionColorDefault <- function (style.name='default', base.url=.defaultBaseUrl) {
+    return(getVisualPropertyDefault('NODE_PAINT', style.name, base.url))
 }
 #------------------------------------------------------------------------------------------------------------------------
 #' @export
-setDefaultNodeReverseSelectionColor <- function (new.color, style.name='default', base.url=.defaultBaseUrl) {
+setNodeReverseSelectionColorDefault <- function (new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     } 
     style = list(visualProperty = "NODE_PAINT", value = new.color) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ==============================================================================
 # II.b. Edge Properties
-# Pattern A: (1) prepare input value as named list, (2) call setDefaultVisualProperty()
-# Pattern B: (1) call getDefaultVisualProperty()
+# Pattern A: (1) prepare input value as named list, (2) call setVisualPropertyDefault()
+# Pattern B: (1) call getVisualPropertyDefault()
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultEdgeLineWidth <- function(new.width, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeLineWidthDefault <- function(new.width, style.name='default', base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_WIDTH", value = new.width) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultEdgeLineStyle <- function(new.line.style, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeLineStyleDefault <- function(new.line.style, style.name='default', base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_LINE_TYPE", value = new.line.style) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultEdgeColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     }
     style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 #' @export
-setDefaultEdgeSourceArrowColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeSourceArrowColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     }
     style = list(visualProperty = "EDGE_SOURCE_ARROW_UNSELECTED_PAINT", value = new.color) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 #' @export
-setDefaultEdgeTargetArrowColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeTargetArrowColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     }
     style = list(visualProperty = "EDGE_TARGET_ARROW_UNSELECTED_PAINT", value = new.color) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultEdgeFontSize <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeFontSizeDefault <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_LABEL_FONT_SIZE", value = new.size)
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-getDefaultEdgeSelectionColor <- function(style.name='default', base.url=.defaultBaseUrl) {
-    return(getDefaultVisualProperty('EDGE_STROKE_SELECTED_PAINT',style.name, base.url))
+getEdgeSelectionColorDefault <- function(style.name='default', base.url=.defaultBaseUrl) {
+    return(getVisualPropertyDefault('EDGE_STROKE_SELECTED_PAINT',style.name, base.url))
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultEdgeSelectionColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeSelectionColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     }
     style = list(visualProperty = "EDGE_STROKE_SELECTED_PAINT", value = new.color) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 #------------------------------------------------------------------------------------------------------------------------
 #' @export
-getDefaultEdgeReverseSelectionColor <- function (style.name='default', base.url=.defaultBaseUrl) {
-    return(getDefaultVisualProperty('EDGE_STROKE_UNSELECTED_PAINT',style.name, base.url))
+getEdgeReverseSelectionColorDefault <- function (style.name='default', base.url=.defaultBaseUrl) {
+    return(getVisualPropertyDefault('EDGE_STROKE_UNSELECTED_PAINT',style.name, base.url))
 }
 #------------------------------------------------------------------------------------------------------------------------
 #' @export
-setDefaultEdgeReverseSelectionColor <- function (new.color, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeReverseSelectionColorDefault <- function (new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     } 
     style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ==============================================================================
 # II.c. Network Properties
-# Pattern A: (1) prepare input value as named list, (2) call setDefaultVisualProperty()
-# Pattern B: (1) call getDefaultVisualProperty()
+# Pattern A: (1) prepare input value as named list, (2) call setVisualPropertyDefault()
+# Pattern B: (1) call getVisualPropertyDefault()
 # ------------------------------------------------------------------------------
 #' @export
-getDefaultBackgroundColor <- function(style.name='default', base.url=.defaultBaseUrl) {
-    return(getDefaultVisualProperty('NETWORK_BACKGROUND_PAINT',style.name, base.url))
+getBackgroundColorDefault <- function(style.name='default', base.url=.defaultBaseUrl) {
+    return(getVisualPropertyDefault('NETWORK_BACKGROUND_PAINT',style.name, base.url))
 }
 
 # ------------------------------------------------------------------------------
 #' @export
-setDefaultBackgroundColor <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setBackgroundColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     } 
     style = list(visualProperty = "NETWORK_BACKGROUND_PAINT", value = new.color) 
-    setDefaultVisualProperty(style, style.name, base.url)
+    setVisualPropertyDefault(style, style.name, base.url)
 }
 
