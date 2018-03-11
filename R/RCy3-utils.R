@@ -54,6 +54,17 @@
 }
 
 # ------------------------------------------------------------------------------
+# Checks to see if a particular column name exists in the specific table. Returns
+# TRUE or FALSE.
+.tableColumnExists <- function(table.column, table, network=network, base.url=base.url){
+    if (!table.column %in% getTableColumnNames(table, network=network, base.url=base.url)) {
+        write (sprintf ('Column %s does not exist in the %s table.', table.column, table), stderr ())
+        return (FALSE)
+    }
+    return (TRUE)
+}
+
+# ------------------------------------------------------------------------------
 # Checks to see if min supported versions of api and cytoscape are running.
 # Extracts numerics from api and major cytoscape versions before making comparison.
 .verifySupportedVersions<-function(cyrest=1,cytoscape=3.6) {
