@@ -4,8 +4,11 @@
 #' @description Generates the appropriate data structure for the "mapping" parameter
 #' in setStyleMappings and createStyle.
 #' @details The paired list of values must be of the same length or mapping will fail.
-#' Mapping will also fail if the data type of table.column.values does not match that of
-#' the existing table.column. Note that all imported numeric data are stored as Doubles in
+#' For gradient mapping, you may include two additional visual.prop.values in the 
+#' first and last positions to map respectively to values less than and greater 
+#' than those specified in table.column.values. Mapping will also fail if the 
+#' data type of table.column.values does not match that of the existing table.column. 
+#' Note that all imported numeric data are stored as Integers or Doubles in 
 #' Cytosacpe tables; and character or mixed data are stored as Strings.
 #' @param visual.prop (char) name of visual property to map
 #' @param table.column (char) name of table column to map
@@ -61,10 +64,9 @@
 #' }
 #' @export
 mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.column.values,
-                              visual.prop.values,  network=NULL, base.url=.defaultBaseUrl){
+                              visual.prop.values, network=NULL, base.url=.defaultBaseUrl){
     
     suid <- getNetworkSuid(network)
-    title <- getNetworkName(suid)
     
     #process mapping type
     mapping.type.name = switch(mapping.type, 'c'='continuous','d'='discrete','p'='passthrough',mapping.type)
@@ -80,18 +82,16 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
     #check mapping column and get type
     tp = tolower(strsplit(visual.prop.name,"_")[[1]][1])
     table = paste0('default',tp)
-    t.url = paste(base.url,'networks',suid,'tables',table,'columns',sep='/')
-    res <- GET(url=t.url)
-    t.res <- unname(fromJSON(rawToChar(res$content)))
+    res <- cyrestGET(paste('networks',suid,'tables',table,'columns',sep='/'),base.url=base.url)
     table.column.type = NULL
-    for(i in 1:length(t.res)){
-        if(t.res[[i]]$name==table.column){
-            table.column.type = t.res[[i]]$type
+    for(i in 1:length(res)){
+        if(res[[i]]$name==table.column){
+            table.column.type = res[[i]]$type
             break
         }
     }
     if(is.null(table.column.type))
-        print(paste0('Error: Could not find ',table.column,' column in ',table,' table of network: ',title,'.'))
+        print(paste0('Error: Could not find ',table.column,' column in ',table,' table.'))
     
     #construct visual property map
     visual.prop.map <- list(
@@ -109,69 +109,42 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
         visual.prop.map$map=map
     }else if(mapping.type.name=='continuous'){
         points <- list()
-        for (i in 1:length(table.column.values)) {
-            points[[i]] <- list(value=table.column.values[i],
-                                lesser=visual.prop.values[i],
-                                equal=visual.prop.values[i],
-                                greater=visual.prop.values[i])
+        #check for extra lesser and greater values
+        propValCount <- length(visual.prop.values)
+        colValCount <- length(table.column.values)
+        if (propValCount-colValCount == 2){
+            for (i in 1:colValCount) {
+                points[[i]] <- list(value=table.column.values[i],
+                                    lesser=visual.prop.values[i+1],
+                                    equal=visual.prop.values[i+1], 
+                                    greater=visual.prop.values[i+1]) #note offset
+            }
+            #then correct extreme values
+            points[[1]] <- list(value=table.column.values[1],
+                                lesser=visual.prop.values[1],
+                                equal=visual.prop.values[2], 
+                                greater=visual.prop.values[2]) 
+            points[[colValCount]] <- list(value=table.column.values[colValCount],
+                                lesser=visual.prop.values[colValCount+1],
+                                equal=visual.prop.values[colValCount+1], 
+                                greater=visual.prop.values[colValCount+2]) 
+        }
+        else if (propValCount-colValCount == 0) {
+            for (i in 1:colValCount) {
+                points[[i]] <- list(value=table.column.values[i],
+                                    lesser=visual.prop.values[i],
+                                    equal=visual.prop.values[i],
+                                    greater=visual.prop.values[i])
+            }
+        }
+        else {
+            write ("Error! RCy3:mapVisualProperty. table.column.values and visual.prop.values don't match up.", stderr ())
+            return ()
         }
         visual.prop.map$points=points
     }
-    
     return(visual.prop.map)
 }
-
-
-# ------------------------------------------------------------------------------
-discreteMapping <- function(attribute.name, control.points, colors, visual.property, columnType, style){
-    mapped.content <- apply(cbind(control.points, colors), MARGIN=1,
-                            FUN=function(s) {list(key=as.character(unname(s[[1]])), value=as.character(unname(s[[2]])))})
-    
-    discrete.mapping <- list(mappingType = "discrete", mappingColumn = attribute.name,
-                             mappingColumnType = columnType, visualProperty=visual.property,
-                             map = mapped.content)
-    discrete.mapping.json <-toJSON(list(discrete.mapping))
-    resource.uri <- paste(base.url, "styles", style, "mappings", sep="/")
-    request.res <- POST(url=resource.uri, body=discrete.mapping.json, encode="json")
-    
-    # inform the user if the request was a success or failure
-    if (request.res$status == 201){
-        write (sprintf ('Successfully set rule.'), stdout ())
-    }else{
-        write (sprintf ('Error. Could not set rule...'), stdout ())
-    }
-    
-    invisible (request.res)
-} # discreteMapping
-
-# ------------------------------------------------------------------------------
-continuousMapping <- function(attribute.name, control.points, colors, visual.property, columnType, style){
-    # continuous mapping
-    mapped.content <- apply(cbind(control.points, colors[3:length(colors)-1]), MARGIN=1,
-                            FUN=function(s) {list(value=as.character(unname(s[[1]])),
-                                                  lesser=as.character(unname(s[[2]])),
-                                                  equal=as.character(unname(s[[2]])),
-                                                  greater=as.character(unname(s[[2]])))})
-    
-    # change the attributes values below the minimum and above the maximum
-    mapped.content[[1]]$lesser <- colors[1]
-    mapped.content[[length(mapped.content)]]$greater <- colors[length(colors)]
-    
-    continuous.mapping <- list(mappingType = "continuous", mappingColumn = attribute.name,
-                               mappingColumnType = columnType, visualProperty=visual.property,
-                               points = mapped.content)
-    continuous.mapping.json <- toJSON(list(continuous.mapping))
-    resource.uri <- paste(base.url, "styles", style, "mappings", sep="/")
-    request.res <- POST(url=resource.uri, body=continuous.mapping.json, encode="json")
-    
-    # inform the user if the request was a success or failure
-    if (request.res$status == 201){
-        write (sprintf ('Successfully set rule.'), stdout ())
-    }else{
-        write (sprintf ('Error. Could not set rule...'), stdout ())
-    }
-    invisible (request.res)
-} # continuousMapping
 
 # ------------------------------------------------------------------------------
 #' Updates a visual property mapping in a style
@@ -181,8 +154,6 @@ continuousMapping <- function(attribute.name, control.points, colors, visual.pro
 #' @details Requires visual property mappings to be previously created, see mapVisualProperty.
 #' @param style.name (char) name for style
 #' @param mapping a single visual property mapping, see mapVisualProperty
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -193,7 +164,7 @@ continuousMapping <- function(attribute.name, control.points, colors, visual.pro
 #' \donttest{
 #' updateStyleMapping('myStyle',mapVisualProperty('node label','name','p'))
 #' }
-updateStyleMapping <- function(style.name, mapping, network=NULL, base.url=.defaultBaseUrl){
+updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
     visual.prop.name = mapping$visualProperty
     
     # check if vp exists already
@@ -223,166 +194,164 @@ updateStyleMapping <- function(style.name, mapping, network=NULL, base.url=.defa
 # Individual Properties
 #==========================
 
-#------------------------------------------------------------------------------------------------------------------------
-setNodeTooltipRule <- function (node.attribute.name, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Node Tooltip Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param table.column DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeTooltipMapping()
+#' }
+#' @export
+setNodeTooltipMapping <- function (table.column, style.name = 'default', 
+                                   network=NULL, base.url=.defaultBaseUrl) {
     id <- getNetworkSuid(network)
-    
-    if (!node.attribute.name %in% getNodeAttributeNames(network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setNodeTooltipRule: passed non-existent node attribute: %s', node.attribute.name), stderr ())
-        return ()
-    }
-    
-    
-    attribute.values <- getTableColumns('node',node.attribute.name)[,node.attribute.name]
-    
-    # set default tooltip
-    default.tooltip <- list(visualProperty = "NODE_TOOLTIP", value = "")
-    setVisualProperty(default.tooltip, style.name)
-    
-    # define the column type
-    sample.node.attribute <- getNodeAttribute (getAllNodes(network=network, base.url=base.url)[1], node.attribute.name)
-    columnType <- .findColumnType(typeof(sample.node.attribute))
-    
-    # discrete mapping
-    discreteMapping(node.attribute.name, attribute.values, attribute.values,
-                    visual.property="NODE_TOOLTIP", columnType=columnType, style=style.name)
-    
-}  # END setNodeTooltipRule
+    if(!.tableColumnExists(table.column,'node',network, base.url)) return()
+    mvp <- mapVisualProperty("NODE_TOOLTIP", table.column, 'p')  
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
 
-#------------------------------------------------------------------------------------------------------------------------
-setEdgeTooltipRule <- function (edge.attribute.name, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Edge Tooltip Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeTooltipMapping()
+#' }
+#' @export
+setEdgeTooltipMapping <- function (edge.attribute.name, style.name = 'default', 
+                                   network=NULL, base.url=.defaultBaseUrl) {
     id = getNetworkSuid(network)
-    
-    if (!edge.attribute.name %in% getEdgeAttributeNames(network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setEdgeTooltipRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
-        return ()
-    }
-    
-    attribute.values <- getTableColumns('edge',edge.attribute.name)[,edge.attribute.name]
-    
-    # set default tooltip
-    default.tooltip <- list(visualProperty = "EDGE_TOOLTIP", value = "")
-    setVisualProperty(default.tooltip, style.name)
-    
-    # define the column type
-    columnType <- .findColumnType(typeof(attribute.values[1]))
-    
-    # discrete mapping
-    discreteMapping(edge.attribute.name, attribute.values, attribute.values,
-                    visual.property="EDGE_TOOLTIP", columnType=columnType, style=style.name)
-    
-}  # setEdgeTooltipRule
+    if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
+    mvp <- mapVisualProperty("EDGE_TOOLTIP", table.column, 'p')  
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
 
-#------------------------------------------------------------------------------------------------------------------------
-setNodeLabelRule <- function (node.attribute.name, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Node Label Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param table.column DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeLabelMapping()
+#' }
+#' @export
+setNodeLabelMapping <- function (table.column, style.name = 'default', 
+                                 network=NULL, base.url=.defaultBaseUrl) {
     id = getNetworkSuid(network)
-    
-    if (!node.attribute.name %in% getNodeAttributeNames(network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setNodeLabelRule: passed non-existent node attribute: %s', node.attribute.name), stderr ())
-        return ()
-    }
-    
-    
-    attribute.values <- getTableColumns('node',node.attribute.name)[,node.attribute.name]
-    
-    # set default label
-    default.label <- list(visualProperty = "NODE_LABEL", value = "")
-    setVisualProperty(default.label, style.name)
-    
-    # define the column type
-    columnType <- .findColumnType(typeof(attribute.values[1]))
-    
-    # discrete mapping
-    discreteMapping(node.attribute.name, attribute.values, attribute.values,
-                    visual.property="NODE_LABEL", columnType=columnType, style=style.name)
-}  # setNodeLabelRule
+    if(!.tableColumnExists(table.column,'node',network, base.url)) return()
+    mvp <- mapVisualProperty("NODE_LABEL", table.column, 'p')  
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
 
-#------------------------------------------------------------------------------------------------------------------------
-setEdgeLabelRule <- function (edge.attribute.name, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Edge Label Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeLabelMapping()
+#' }
+#' @export
+setEdgeLabelMapping <- function (edge.attribute.name, style.name = 'default', 
+                                    network=NULL, base.url=.defaultBaseUrl) {
     id = getNetworkSuid(network)
-    
-    if (!edge.attribute.name %in% getEdgeAttributeNames(network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setEdgeLabelRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
-        return ()
-    }
-    
-    attribute.values <- getTableColumns('edge',edge.attribute.name)[,edge.attribute.name]
-    
-    # set default label
-    default.label <- list(visualProperty = "EDGE_LABEL", value = "")
-    setVisualProperty(default.label, style.name)
-    
-    # define the column type
-    columnType <- .findColumnType(typeof(attribute.values[1]))
-    
-    # discrete mapping
-    discreteMapping(edge.attribute.name, attribute.values, attribute.values,
-                    visual.property="EDGE_LABEL", columnType=columnType, style=style.name)
-}  # setEdgeLabelRule
+    if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
+    mvp <- mapVisualProperty("EDGE_LABEL", table.column, 'p')  
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
 
-#------------------------------------------------------------------------------------------------------------------------
-setNodeColorRule <- function (node.attribute.name, control.points, colors, mode, default.color='#FFFFFF', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
-    if (!mode %in% c ('interpolate', 'lookup')) {
-        write ("Error! RCy3:setNodeColorRule. Mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
-        return ()
-    }
-    
+# ------------------------------------------------------------------------------
+#' @title Set Node Color Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param table.column DESCRIPTION
+#' @param table.column.values DESCRIPTION
+#' @param colors DESCRIPTION
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p)
+#' @param default.color DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeColorMapping()
+#' }
+#' @export
+setNodeColorMapping <- function (table.column, table.column.values, colors, 
+                                 mapping.type='c', default.color=NULL, style.name='default', 
+                                 network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
-        if (.isNotHexColor(color)){
-            return()
-        } 
+        if (.isNotHexColor(color)) return()
     }
     
     # set default
-    setDefaultNodeColor (default.color, style.name)
+    if(!is.null(default.color))
+        setDefaultNodeColor(default.color, style.name, base.url=base.url)
     
-    # define the column type
-    columnType <- .findColumnType(typeof(control.points[1]))
-    
-    # interpolate
-    if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points 
-        if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
-            colors = c (colors [1], colors, colors [length (colors)])
-            write ("RCy3::setNodeColorRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
-        } #
-        good.args = length (control.points) == (length (colors) - 2)
-        if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
-            write (sprintf ('co: %d', length (colors)), stderr ())
-            write ("Error! RCy3:setNodeColorRule, interpolate mode.", stderr ())
-            write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
-            return ()
-        }
-        
-        continuousMapping (node.attribute.name, control.points, colors, visual.property="NODE_FILL_COLOR", columnType=columnType, style=style.name)
-        
-    } # if mode==interpolate
-    else { # use a discrete rule, with no interpolation, mode==lookup
-        good.args = length (control.points) == length (colors)
-        if (!good.args) {
-            write (sprintf ('control points: %d', length (control.points)), stderr ())
-            write (sprintf ('colors: %d', length (colors)), stderr ())
-            write ("Error! RCy3:setNodeColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
-            return ()
-        }
-        
-        discreteMapping(node.attribute.name, control.points, colors, visual.property="NODE_FILL_COLOR", columnType=columnType, style=style.name)    
-        
-    } # else: !interpolate, aka lookup
-} # setNodeColorRule
+    # perform mapping
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp <- mapVisualProperty("NODE_FILL_COLOR",table.column, 'c',
+                          table.column.values, colors, 
+                          network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp <- mapVisualProperty("NODE_FILL_COLOR",table.column, 'd',
+                          table.column.values, colors, 
+                          network=network, base.url = base.url)
+
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+} 
 
 #------------------------------------------------------------------------------------------------------------------------
 # Cytoscape distinguishes between Node Opacity, Node Border Opacity, and Node Label Opacity.  we call this 'aspect' here.
 
-setNodeOpacityRule <- function (node.attribute.name, control.points, opacities, mode, aspect='all', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Node Opacity Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param table.column DESCRIPTION
+#' @param table.column.values DESCRIPTION
+#' @param opacities DESCRIPTION
+#' @param mode DESCRIPTION
+#' @param aspect DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeOpacityMapping()
+#' }
+#' @export
+setNodeOpacityMapping <- function (table.column, table.column.values, opacities, mode, aspect='all', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     if (!mode %in% c ('interpolate', 'lookup')) {
-        write ("Error! RCy3:setNodeOpacityRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+        write ("Error! RCy3:setNodeOpacityMapping.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
         return ()
     }
     
     # define the column type
-    columnType <- .findColumnType(typeof(control.points[1]))
+    columnType <- .findColumnType(typeof(table.column.values[1]))
     
     # set default # Comment TanjaM: Current version does not set default
     #setDefaultNodeOpacity (default.opacity, style.name)
@@ -400,84 +369,100 @@ setNodeOpacityRule <- function (node.attribute.name, control.points, opacities, 
     
     if (aspect.fill == FALSE && aspect.border == FALSE && aspect.label == FALSE) {
         specific.options = 'fill, border, label'
-        msg.1 = "Error! RCy3:setNodeOpacityRule. Aspect must be 'all' (the default) "
+        msg.1 = "Error! RCy3:setNodeOpacityMapping. Aspect must be 'all' (the default) "
         msg.2 = sprintf ("or some combination, in any order, of %s", specific.options)
         write (msg.1, stderr ())
         write (msg.2, stderr ())
         return ()
     }
     
-    if (mode=='interpolate') {  # need a 'below' opacity and an 'above' opacity.  so there should be two more opacities than control.points 
-        if (length (control.points) == length (opacities)) { # caller did not supply 'below' and 'above' values; manufacture them
+    if (mode=='interpolate') {  # need a 'below' opacity and an 'above' opacity.  so there should be two more opacities than table.column.values 
+        if (length (table.column.values) == length (opacities)) { # caller did not supply 'below' and 'above' values; manufacture them
             opacities = c (opacities [1], opacities, opacities [length (opacities)])
-            write ("RCy3::setNodeOpacityRule, no 'below' or 'above' opacities specified.  Inferred from supplied opacities.", stderr ());
+            write ("RCy3::setNodeOpacityMapping, no 'below' or 'above' opacities specified.  Inferred from supplied opacities.", stderr ());
         }
         
-        good.args = length (control.points) == (length (opacities) - 2)
+        good.args = length (table.column.values) == (length (opacities) - 2)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (opacities)), stderr ())
-            write ("Error! RCy3:setNodeOpacityRule, interpolate mode.", stderr ())
+            write ("Error! RCy3:setNodeOpacityMapping, interpolate mode.", stderr ())
             write ("Expecting 1 opacity for each control.point, one for 'above' opacity, one for 'below' opacity.", stderr ())
             return ()
         }
         
         if (aspect.fill){
-            continuousMapping (node.attribute.name, control.points, opacities,
+            continuousMapping (table.column, table.column.values, opacities,
                                visual.property="NODE_TRANSPARENCY",
                                columnType=columnType, style=style.name)
         }
         if (aspect.border){
-            continuousMapping (node.attribute.name, control.points, opacities,
+            continuousMapping (table.column, table.column.values, opacities,
                                visual.property="NODE_BORDER_TRANSPARENCY",
                                columnType=columnType, style=style.name)
         }
         if (aspect.label){
-            continuousMapping (node.attribute.name, control.points, opacities,
+            continuousMapping (table.column, table.column.values, opacities,
                                visual.property="NODE_LABEL_TRANSPARENCY",
                                columnType=columnType, style=style.name)
         }
     } # if mode==interpolate
     
-    else { # mode==lookup, use a discrete rule, with no interpolation
-        good.args = length (control.points) == length (opacities)
+    else { # mode==lookup, use a discrete Mapping, with no interpolation
+        good.args = length (table.column.values) == length (opacities)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (opacities)), stderr ())
-            write ("Error! RCy3:setNodeOpacityRule.  Expecting exactly as many opacities as control.points in lookup mode.", stderr ())
+            write ("Error! RCy3:setNodeOpacityMapping.  Expecting exactly as many opacities as table.column.values in lookup mode.", stderr ())
             return ()
         }
         
         default.opacity = 255;
-        if (length (control.points) == 1) {   # code around the requirement that one-element lists are turned into scalars
-            control.points = rep (control.points, 2)
+        if (length (table.column.values) == 1) {   # code around the requirement that one-element lists are turned into scalars
+            table.column.values = rep (table.column.values, 2)
             opacities = rep (opacities, 2)
         }
         
         if (aspect.fill){
-            discreteMapping(node.attribute.name, control.points, opacities,
+            discreteMapping(table.column, table.column.values, opacities,
                             visual.property="NODE_TRANSPARENCY",
                             columnType=columnType, style=style.name)
         }
         
         if (aspect.border){
-            discreteMapping(node.attribute.name, control.points, opacities,
+            discreteMapping(table.column, table.column.values, opacities,
                             visual.property="NODE_BORDER_TRANSPARENCY",
                             columnType=columnType, style=style.name)
         }
         
         if (aspect.label){
-            discreteMapping(node.attribute.name, control.points, opacities,
+            discreteMapping(table.column, table.column.values, opacities,
                             visual.property="NODE_LABEL_TRANSPARENCY",
                             columnType=columnType, style=style.name)
         }
     } # else: !interpolate
-} # setNodeOpacityRule
+} # setNodeOpacityMapping
 
-#------------------------------------------------------------------------------------------------------------------------
-setNodeBorderColorRule <- function (node.attribute.name, control.points, colors, mode, default.color='#000000', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Node Border Color Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param table.column DESCRIPTION
+#' @param table.column.values DESCRIPTION
+#' @param colors DESCRIPTION
+#' @param mode DESCRIPTION
+#' @param default.color DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeBorderColorMapping()
+#' }
+#' @export
+setNodeBorderColorMapping <- function (table.column, table.column.values, colors, mode, default.color='#000000', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     if (!mode %in% c ('interpolate', 'lookup')) {
-        write ("Error! RCy3:setNodeBorderColorRule. Mode must be 'interpolate' or 'lookup'.", stderr ())
+        write ("Error! RCy3:setNodeBorderColorMapping. Mode must be 'interpolate' or 'lookup'.", stderr ())
         return ()
     }
     
@@ -492,46 +477,61 @@ setNodeBorderColorRule <- function (node.attribute.name, control.points, colors,
     setDefaultNodeBorderColor (default.color, style.name)
     
     # define the column type
-    columnType <- .findColumnType(typeof(control.points[1]))
+    columnType <- .findColumnType(typeof(table.column.values[1]))
     
     # mode==interpolate
-    if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points 
-        if (length (control.points) == length (colors)){  # caller did not supply 'below' and 'above' values; manufacture them
+    if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than table.column.values 
+        if (length (table.column.values) == length (colors)){  # caller did not supply 'below' and 'above' values; manufacture them
             colors = c (default.color, colors, default.color)
         }
-        good.args = length (control.points) == (length (colors) - 2)
+        good.args = length (table.column.values) == (length (colors) - 2)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (colors)), stderr ())
-            write ("Error! RCy3:setNodeBorderColorRule, interpolate mode.", stderr ())
+            write ("Error! RCy3:setNodeBorderColorMapping, interpolate mode.", stderr ())
             write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
             return ()
         }
         # continous mapping
-        continuousMapping (node.attribute.name, control.points, colors, visual.property="NODE_BORDER_PAINT", columnType=columnType, style=style.name)
+        continuousMapping (table.column, table.column.values, colors, visual.property="NODE_BORDER_PAINT", columnType=columnType, style=style.name)
         
     } # if mode==interpolate
-    else { # use a discrete rule, with no interpolation
-        good.args = length (control.points) == length (colors)
+    else { # use a discrete Mapping, with no interpolation
+        good.args = length (table.column.values) == length (colors)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (colors)), stderr ())
-            write ("Error! RCy3:setNodeBorderColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
+            write ("Error! RCy3:setNodeBorderColorMapping.  Expecting exactly as many colors as table.column.values in lookup mode.", stderr ())
             return ()
         }
-        discreteMapping(node.attribute.name, control.points, colors, visual.property="NODE_BORDER_PAINT", columnType=columnType, style=style.name)
+        discreteMapping(table.column, table.column.values, colors, visual.property="NODE_BORDER_PAINT", columnType=columnType, style=style.name)
     } # else: !interpolate
-} # setNodeBorderColorRule
+} # setNodeBorderColorMapping
 
-#------------------------------------------------------------------------------------------------------------------------
-setNodeBorderWidthRule <- function (node.attribute.name, attribute.values, line.widths, default.width=1, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Node Border Width Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param table.column DESCRIPTION
+#' @param attribute.values DESCRIPTION
+#' @param line.widths DESCRIPTION
+#' @param default.width DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeBorderWidthMapping()
+#' }
+#' @export
+setNodeBorderWidthMapping <- function (table.column, attribute.values, line.widths, default.width=1, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     id = getNetworkSuid(network)
     
     #TODO we should add interpolate as mode in the function
     mode = "lookup"
     
-    if (!node.attribute.name %in% getNodeAttributeNames(network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setNodeBorderWidthRule: passed non-existent node attribute: %s', node.attribute.name), stderr ())
+    if (!table.column %in% getTableColumnNames(network=network, base.url=base.url)) {
+        write (sprintf ('Warning! RCy3::setNodeBorderWidthMapping: passed non-existent node attribute: %s', table.column), stderr ())
         return ()
     }
     
@@ -542,21 +542,36 @@ setNodeBorderWidthRule <- function (node.attribute.name, attribute.values, line.
     columnType <- "String" #.findColumnType(typeof(line.widths[1]))
     # discrete mapping
     if (mode=="lookup"){
-        discreteMapping (node.attribute.name, attribute.values, line.widths,
+        discreteMapping (table.column, attribute.values, line.widths,
                          visual.property="NODE_BORDER_WIDTH", columnType=columnType, style=style.name)
     } else{
         # continuous mapping
         # TODO need to check here if 2 more values were passed in for width
-        continuousMapping (node.attribute.name, attribute.values, line.widths, visual.property="NODE_BORDER_WIDTH", columnType=columnType, style=style.name)
+        continuousMapping (table.column, attribute.values, line.widths, visual.property="NODE_BORDER_WIDTH", columnType=columnType, style=style.name)
     }
 }
 
-#------------------------------------------------------------------------------------------------------------------------
-setNodeShapeRule <- function (node.attribute.name, attribute.values, node.shapes, default.shape='ELLIPSE', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Node Shape Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param table.column DESCRIPTION
+#' @param attribute.values DESCRIPTION
+#' @param node.shapes DESCRIPTION
+#' @param default.shape DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeShapeMapping()
+#' }
+#' @export
+setNodeShapeMapping <- function (table.column, attribute.values, node.shapes, default.shape='ELLIPSE', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     id = getNetworkSuid(network)
     
-    if (!node.attribute.name %in% getNodeAttributeNames(network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setNodeShapeRule: passed non-existent node attribute: %s', node.attribute.name), stderr ())
+    if (!table.column %in% getTableColumnNames(network=network, base.url=base.url)) {
+        write (sprintf ('Warning! RCy3::setNodeShapeMapping: passed non-existent node attribute: %s', table.column), stderr ())
         return ()
     }
     
@@ -565,7 +580,7 @@ setNodeShapeRule <- function (node.attribute.name, attribute.values, node.shapes
     unique.node.shapes <- unique(node.shapes)
     wrong.node.shape <- sapply(unique.node.shapes, function(x) !(x %in% getNodeShapes(network=network, base.url=base.url)))
     if (any(wrong.node.shape)){
-        write (sprintf('ERROR in RCy3::setNodeShapeRule. You tried to use invalid node shapes. For valid ones use getNodeShapes'), stderr())
+        write (sprintf('ERROR in RCy3::setNodeShapeMapping. You tried to use invalid node shapes. For valid ones use getNodeShapes'), stderr())
         return(NA)
     }
     
@@ -576,19 +591,35 @@ setNodeShapeRule <- function (node.attribute.name, attribute.values, node.shapes
     columnType <- .findColumnType(typeof(node.shapes[1]))
     
     # discrete mapping
-    discreteMapping (node.attribute.name, attribute.values, node.shapes,
+    discreteMapping (table.column, attribute.values, node.shapes,
                      visual.property="NODE_SHAPE", columnType=columnType, style=style.name)
-} # setNodeShapeRule
+} # setNodeShapeMapping
 
-#------------------------------------------------------------------------------------------------------------------------
-setNodeSizeRule <- function (node.attribute.name, control.points, node.sizes, mode, default.size=40, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Node Size Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param table.column DESCRIPTION
+#' @param table.column.values DESCRIPTION
+#' @param node.sizes DESCRIPTION
+#' @param mode DESCRIPTION
+#' @param default.size DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setNodeSizeMapping()
+#' }
+#' @export
+setNodeSizeMapping <- function (table.column, table.column.values, node.sizes, mode, default.size=40, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     if (!mode %in% c ('interpolate', 'lookup')) {
-        write ("Error! RCy3:setNodeSizeRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+        write ("Error! RCy3:setNodeSizeMapping.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
         return ()
     }
     
     # define the column type
-    columnType <- .findColumnType(typeof(control.points[1]))
+    columnType <- .findColumnType(typeof(table.column.values[1]))
     
     # lock node dimensions
     lockNodeDimensions (TRUE)
@@ -596,45 +627,62 @@ setNodeSizeRule <- function (node.attribute.name, control.points, node.sizes, mo
     # set default
     setDefaultNodeSize (default.size, style.name)
     
-    if (mode=='interpolate') {  # need a 'below' size and an 'above' size.  so there should be two more colors than control.points
-        if (length (control.points) == length (node.sizes)) { # caller did not supply 'below' and 'above' values; manufacture them
+    if (mode=='interpolate') {  # need a 'below' size and an 'above' size.  so there should be two more colors than table.column.values
+        if (length (table.column.values) == length (node.sizes)) { # caller did not supply 'below' and 'above' values; manufacture them
             node.sizes = c (node.sizes [1], node.sizes, node.sizes [length (node.sizes)])
-            write ("RCy3::setNodeSizeRule, no 'below' or 'above' sizes specified.  Inferred from node.sizes.", stderr ())
+            write ("RCy3::setNodeSizeMapping, no 'below' or 'above' sizes specified.  Inferred from node.sizes.", stderr ())
         }
         
-        good.args = length (control.points) == (length (node.sizes) - 2)
+        good.args = length (table.column.values) == (length (node.sizes) - 2)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (node.sizes)), stderr ())
-            write ("Error! RCy3:setNodeSizeRule, interpolate mode.", stderr ())
+            write ("Error! RCy3:setNodeSizeMapping, interpolate mode.", stderr ())
             write ("Expecting 1 node.size for each control.point, one for 'above' size, one for 'below' size.", stderr ())
             return ()
         }
-        continuousMapping (node.attribute.name, control.points, node.sizes,
+        continuousMapping (table.column, table.column.values, node.sizes,
                            visual.property="NODE_SIZE",
                            columnType=columnType, style=style.name)
         
     } # if mode==interpolate
     
-    else { # use a discrete rule, with no interpolation
-        good.args = length (control.points) == length (node.sizes)
+    else { # use a discrete Mapping, with no interpolation
+        good.args = length (table.column.values) == length (node.sizes)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (node.sizes)), stderr ())
-            write ("Error! RCy3:setNodeSizeRule. Expecting exactly as many node.sizes as control.points in lookup mode.", stderr ())
+            write ("Error! RCy3:setNodeSizeMapping. Expecting exactly as many node.sizes as table.column.values in lookup mode.", stderr ())
             return ()
         }
-        discreteMapping(node.attribute.name, control.points, node.sizes,
+        discreteMapping(table.column, table.column.values, node.sizes,
                         visual.property="NODE_SIZE",
                         columnType=columnType, style=style.name)
     } # else: !interpolate, aka lookup
     
-} # setNodeSizeRule
-#
-#------------------------------------------------------------------------------------------------------------------------
-setEdgeColorRule <- function (edge.attribute.name, control.points, colors, mode="interpolate", default.color='#FFFFFF', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+} # setNodeSizeMapping
+
+
+# ------------------------------------------------------------------------------
+#' @title Set Edge Color Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param table.column.values DESCRIPTION
+#' @param colors DESCRIPTION
+#' @param mode DESCRIPTION
+#' @param default.color DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeColorMapping()
+#' }
+#' @export
+setEdgeColorMapping <- function (edge.attribute.name, table.column.values, colors, mode="interpolate", default.color='#FFFFFF', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     if (!mode %in% c ('interpolate', 'lookup')) {
-        write ("Error! RCy3:setEdgeColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+        write ("Error! RCy3:setEdgeColorMapping.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
         return ()
     }
     
@@ -649,45 +697,60 @@ setEdgeColorRule <- function (edge.attribute.name, control.points, colors, mode=
     setDefaultEdgeColor (default.color, style.name)
     
     # define the column type
-    columnType <- .findColumnType(typeof(control.points[1]))
+    columnType <- .findColumnType(typeof(table.column.values[1]))
     
-    if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
-        if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
+    if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than table.column.values
+        if (length (table.column.values) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
             colors = c (colors [1], colors, colors [length (colors)])
-            write ("RCy3::setEdgeColorRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
+            write ("RCy3::setEdgeColorMapping, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
         } 
-        good.args = length (control.points) == (length (colors) - 2)
+        good.args = length (table.column.values) == (length (colors) - 2)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (colors)), stderr ())
-            write ("Error! RCy3:setEdgeColorRule, interpolate mode.", stderr ())
+            write ("Error! RCy3:setEdgeColorMapping, interpolate mode.", stderr ())
             write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
             return ()
         }
         
-        continuousMapping (edge.attribute.name, control.points, colors,
+        continuousMapping (edge.attribute.name, table.column.values, colors,
                            visual.property="EDGE_STROKE_UNSELECTED_PAINT",
                            columnType=columnType, style=style.name)
     } # if mode==interpolate
-    else { # use a discrete rule, with no interpolation, mode==lookup
-        good.args = length (control.points) == length (colors)
+    else { # use a discrete Mapping, with no interpolation, mode==lookup
+        good.args = length (table.column.values) == length (colors)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (colors)), stderr ())
-            write ("Error! RCy3:setEdgeColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
+            write ("Error! RCy3:setEdgeColorMapping.  Expecting exactly as many colors as table.column.values in lookup mode.", stderr ())
             return ()
         }
         
-        discreteMapping(edge.attribute.name, control.points, colors,
+        discreteMapping(edge.attribute.name, table.column.values, colors,
                         visual.property="EDGE_STROKE_UNSELECTED_PAINT",
                         columnType=columnType, style=style.name)
     } # else: !interpolate, aka lookup
-} # setEdgeColorRule
+} # setEdgeColorMapping
 
-#------------------------------------------------------------------------------------------------------------------------
-setEdgeOpacityRule <- function (edge.attribute.name, control.points, opacities, mode, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Edge Opacity Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param table.column.values DESCRIPTION
+#' @param opacities DESCRIPTION
+#' @param mode DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeOpacityMapping()
+#' }
+#' @export
+setEdgeOpacityMapping <- function (edge.attribute.name, table.column.values, opacities, mode, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     if (!mode %in% c ('interpolate', 'lookup')) {
-        write ("Error! RCy3:setEdgeOpacityRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+        write ("Error! RCy3:setEdgeOpacityMapping.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
         return ()
     }
     
@@ -695,48 +758,63 @@ setEdgeOpacityRule <- function (edge.attribute.name, control.points, opacities, 
     setDefaultEdgeOpacity (default.opacity, style.name)
     
     # define the column type
-    columnType <- .findColumnType(typeof(control.points[1]))
+    columnType <- .findColumnType(typeof(table.column.values[1]))
     
     # in a previous Cytoscape version the three elements were set seperately
     #aspects = c ('Edge Opacity', 'Edge Target Arrow Opacity', 'Edge Source Arrow Opacity')
     
-    if (mode=='interpolate') {  # need a 'below' opacity and an 'above' opacity.  so there should be two more opacities than control.points 
-        if (length (control.points) == length (opacities)) { # caller did not supply 'below' and 'above' values; manufacture them
+    if (mode=='interpolate') {  # need a 'below' opacity and an 'above' opacity.  so there should be two more opacities than table.column.values 
+        if (length (table.column.values) == length (opacities)) { # caller did not supply 'below' and 'above' values; manufacture them
             opacities = c (opacities [1], opacities, opacities [length (opacities)])
-            write ("RCy3::setEdgeOpacityRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
+            write ("RCy3::setEdgeOpacityMapping, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
         } 
-        good.args = length (control.points) == (length (opacities) - 2)
+        good.args = length (table.column.values) == (length (opacities) - 2)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (opacities)), stderr ())
-            write ("Error! RCy3:setEdgeOpacityRule, interpolate mode.", stderr ())
+            write ("Error! RCy3:setEdgeOpacityMapping, interpolate mode.", stderr ())
             write ("Expecting 1 opacity value for each control.point, one for 'above' opacity, one for 'below' opacity.", stderr ())
             return ()
         }
-        continuousMapping (edge.attribute.name, control.points, opacities,
+        continuousMapping (edge.attribute.name, table.column.values, opacities,
                            visual.property="EDGE_TRANSPARENCY",
                            columnType=columnType, style=style.name)
     } # if mode==interpolate
-    else { # use a discrete rule, with no interpolation
-        good.args = length (control.points) == length (opacities)
+    else { # use a discrete Mapping, with no interpolation
+        good.args = length (table.column.values) == length (opacities)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (opacities)), stderr ())
-            write ("Error! RCy3:setEdgeColorRule.  Expecting exactly as many opacities as control.points in lookup mode.", stderr ())
+            write ("Error! RCy3:setEdgeColorMapping.  Expecting exactly as many opacities as table.column.values in lookup mode.", stderr ())
             return ()
         }
-        discreteMapping(edge.attribute.name, control.points, opacities,
+        discreteMapping(edge.attribute.name, table.column.values, opacities,
                         visual.property="EDGE_TRANSPARENCY",
                         columnType=columnType, style=style.name)
     } # else: !interpolate
-} # setEdgeColorRule
+} # setEdgeColorMapping
 
-#------------------------------------------------------------------------------------------------------------------------
-setEdgeLineStyleRule <- function (edge.attribute.name, attribute.values, line.styles, default.style='SOLID', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Edge Line Style Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param attribute.values DESCRIPTION
+#' @param line.styles DESCRIPTION
+#' @param default.style DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeLineStyleMapping()
+#' }
+#' @export
+setEdgeLineStyleMapping <- function (edge.attribute.name, attribute.values, line.styles, default.style='SOLID', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     id = getNetworkSuid(network)
     
-    if (!edge.attribute.name %in% getEdgeAttributeNames(network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setEdgeLineStyleRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
+    if (!edge.attribute.name %in% getTableColumnNames('edge', network=network, base.url=base.url)) {
+        write (sprintf ('Warning! RCy3::setEdgeLineStyleMapping: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
         return ()
     }
     
@@ -745,7 +823,7 @@ setEdgeLineStyleRule <- function (edge.attribute.name, attribute.values, line.st
     unique.values <- unique(line.styles)
     wrong.values <- sapply(unique.values, function(x) !(x %in% getLineStyles(network=network, base.url=base.url)))
     if (any(wrong.values)){
-        write (sprintf ('ERROR in RCy3::setEdgeLineStyleRule. Invalid value. For valid values use getLineStyles'), stderr ())
+        write (sprintf ('ERROR in RCy3::setEdgeLineStyleMapping. Invalid value. For valid values use getLineStyles'), stderr ())
         return(NA)
     }
     
@@ -759,19 +837,35 @@ setEdgeLineStyleRule <- function (edge.attribute.name, attribute.values, line.st
     # discrete mapping
     discreteMapping (edge.attribute.name, attribute.values, line.styles,
                      visual.property="EDGE_LINE_TYPE", columnType=columnType, style=style.name)
-} # setEdgeLineStyleRule
+} # setEdgeLineStyleMapping
 
-#------------------------------------------------------------------------------------------------------------------------
-setEdgeLineWidthRule <- function (edge.attribute.name, attribute.values, line.widths, mode="interpolate", default.width=1, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Edge Line Width Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param attribute.values DESCRIPTION
+#' @param line.widths DESCRIPTION
+#' @param mode DESCRIPTION
+#' @param default.width DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeLineWidthMapping()
+#' }
+#' @export
+setEdgeLineWidthMapping <- function (edge.attribute.name, attribute.values, line.widths, mode="interpolate", default.width=1, style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     id = getNetworkSuid(network)
     
-    if (!edge.attribute.name %in% getEdgeAttributeNames(network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setEdgeLineWidthRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
+    if (!edge.attribute.name %in% getTableColumnNames('edge', network=network, base.url=base.url)) {
+        write (sprintf ('Warning! RCy3::setEdgeLineWidthMapping: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
         return ()
     }
     
     # unconventional arg.name
-    control.points = attribute.values
+    table.column.values = attribute.values
     
     # set default
     default.width.list <- list(visualProperty = "EDGE_WIDTH", value = default.width)
@@ -781,45 +875,60 @@ setEdgeLineWidthRule <- function (edge.attribute.name, attribute.values, line.wi
     columnType <- .findColumnType(typeof(line.widths[1]))
     #columnType <- 'String'
     
-    if (mode=='interpolate') {  # need a 'below' width and an 'above' width  so there should be two more width than control.points
-        if (length (control.points) == length (line.widths)) { # caller did not supply 'below' and 'above' values; manufacture them
+    if (mode=='interpolate') {  # need a 'below' width and an 'above' width  so there should be two more width than table.column.values
+        if (length (table.column.values) == length (line.widths)) { # caller did not supply 'below' and 'above' values; manufacture them
             line.widths = c (line.widths [1], line.widths, line.widths [length (line.widths)])
-            write ("RCy3::setEdgeLineWidthRule, no 'below' or 'above' widths specified.  Inferred from supplied widths.", stderr ());
+            write ("RCy3::setEdgeLineWidthMapping, no 'below' or 'above' widths specified.  Inferred from supplied widths.", stderr ());
         } 
-        good.args = length (control.points) == (length (line.widths) - 2)
+        good.args = length (table.column.values) == (length (line.widths) - 2)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (line.widths)), stderr ())
-            write ("Error! RCy3:setEdgeLineWidthRule, interpolate mode.", stderr ())
+            write ("Error! RCy3:setEdgeLineWidthMapping, interpolate mode.", stderr ())
             write ("Expecting 1 widths for each control.point, one for 'above' widths, one for 'below' widths", stderr ())
             return ()
         }
         
-        continuousMapping (edge.attribute.name, control.points, line.widths,
+        continuousMapping (edge.attribute.name, table.column.values, line.widths,
                            visual.property="EDGE_WIDTH",
                            columnType=columnType, style=style.name)
     } 
-    else { # use a discrete rule, with no interpolation, mode==lookup
-        good.args = length (control.points) == length (line.widths)
+    else { # use a discrete Mapping, with no interpolation, mode==lookup
+        good.args = length (table.column.values) == length (line.widths)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (line.widths)), stderr ())
-            write ("Error! RCy3:setEdgeLineWidthRule.  Expecting exactly as many widths as control.points in lookup mode.", stderr ())
+            write ("Error! RCy3:setEdgeLineWidthMapping.  Expecting exactly as many widths as table.column.values in lookup mode.", stderr ())
             return ()
         }
         
-        discreteMapping (edge.attribute.name, control.points, line.widths,
+        discreteMapping (edge.attribute.name, table.column.values, line.widths,
                          visual.property="EDGE_WIDTH", columnType=columnType, style=style.name)
         
     } 
 }
 
-#------------------------------------------------------------------------------------------------------------------------
-setEdgeTargetArrowRule <- function (edge.attribute.name, attribute.values, arrows, default='ARROW', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Edge Target Arrow Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param attribute.values DESCRIPTION
+#' @param arrows DESCRIPTION
+#' @param default DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeTargetArrowMapping()
+#' }
+#' @export
+setEdgeTargetArrowMapping <- function (edge.attribute.name, attribute.values, arrows, default='ARROW', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     id = getNetworkSuid(network)
     
-    if (!edge.attribute.name %in% getEdgeAttributeNames(network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setEdgeTargetArrowRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
+    if (!edge.attribute.name %in% getTableColumnNames('edge', network=network, base.url=base.url)) {
+        write (sprintf ('Warning! RCy3::setEdgeTargetArrowMapping: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
         return ()
     }
     
@@ -833,14 +942,29 @@ setEdgeTargetArrowRule <- function (edge.attribute.name, attribute.values, arrow
     # discrete mapping
     discreteMapping (edge.attribute.name, attribute.values, arrows,
                      visual.property="EDGE_TARGET_ARROW_SHAPE", columnType=columnType, style=style.name)
-} # setTargetArrowRule
+} # setTargetArrowMapping
 
-#------------------------------------------------------------------------------------------------------------------------
-setEdgeSourceArrowRule <- function (edge.attribute.name, attribute.values, arrows, default='ARROW', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Edge Source Arrow Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param attribute.values DESCRIPTION
+#' @param arrows DESCRIPTION
+#' @param default DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeSourceArrowMapping()
+#' }
+#' @export
+setEdgeSourceArrowMapping <- function (edge.attribute.name, attribute.values, arrows, default='ARROW', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     id = getNetworkSuid(network)
     
-    if (!edge.attribute.name %in% getEdgeAttributeNames(network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setEdgeSourceArrowRule: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
+    if (!edge.attribute.name %in% getTableColumnNames('edge', network=network, base.url=base.url)) {
+        write (sprintf ('Warning! RCy3::setEdgeSourceArrowMapping: passed non-existent edge attribute: %s', edge.attribute.name), stderr ())
         return ()
     }
     
@@ -854,12 +978,28 @@ setEdgeSourceArrowRule <- function (edge.attribute.name, attribute.values, arrow
     # discrete mapping
     discreteMapping (edge.attribute.name, attribute.values, arrows,
                      visual.property="EDGE_SOURCE_ARROW_SHAPE", columnType=columnType, style=style.name)
-} # setTargetArrowRule
+} # setTargetArrowMapping
 
-#------------------------------------------------------------------------------------------------------------------------
-setEdgeTargetArrowColorRule <- function (edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Edge Target Arrow Color Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param table.column.values DESCRIPTION
+#' @param colors DESCRIPTION
+#' @param mode DESCRIPTION
+#' @param default.color DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeTargetArrowColorMapping()
+#' }
+#' @export
+setEdgeTargetArrowColorMapping <- function (edge.attribute.name, table.column.values, colors, mode="interpolate", default.color='#000000', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     if (!mode %in% c ('interpolate', 'lookup')) {
-        write ("Error! RCy3:setEdgeTargetArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+        write ("Error! RCy3:setEdgeTargetArrowColorMapping.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
         return ()
     }
     
@@ -874,46 +1014,62 @@ setEdgeTargetArrowColorRule <- function (edge.attribute.name, control.points, co
     setDefaultEdgeTargetArrowColor (default.color, style.name)
     
     # define the column type
-    columnType <- .findColumnType(typeof(control.points[1]))
+    columnType <- .findColumnType(typeof(table.column.values[1]))
     
-    if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
-        if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
+    if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than table.column.values
+        if (length (table.column.values) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
             colors = c (colors [1], colors, colors [length (colors)])
-            write ("RCy3::setEdgeTargetArrowColorRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
+            write ("RCy3::setEdgeTargetArrowColorMapping, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
         } 
-        good.args = length (control.points) == (length (colors) - 2)
+        good.args = length (table.column.values) == (length (colors) - 2)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (colors)), stderr ())
-            write ("Error! RCy3:setEdgeTargetArrowColorRule, interpolate mode.", stderr ())
+            write ("Error! RCy3:setEdgeTargetArrowColorMapping, interpolate mode.", stderr ())
             write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
             return ()
         }
         
-        continuousMapping (edge.attribute.name, control.points, colors,
+        continuousMapping (edge.attribute.name, table.column.values, colors,
                            visual.property="EDGE_TARGET_ARROW_UNSELECTED_PAINT",
                            columnType=columnType, style=style.name)
     } # if mode==interpolate
-    else { # use a discrete rule, with no interpolation, mode==lookup
-        good.args = length (control.points) == length (colors)
+    else { # use a discrete Mapping, with no interpolation, mode==lookup
+        good.args = length (table.column.values) == length (colors)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (colors)), stderr ())
-            write ("Error! RCy3:setEdgeTargetArrowColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
+            write ("Error! RCy3:setEdgeTargetArrowColorMapping.  Expecting exactly as many colors as table.column.values in lookup mode.", stderr ())
             return ()
         }
         
-        discreteMapping(edge.attribute.name, control.points, colors,
+        discreteMapping(edge.attribute.name, table.column.values, colors,
                         visual.property="EDGE_TARGET_ARROW_UNSELECTED_PAINT",
                         columnType=columnType, style=style.name)
     } # else: !interpolate, aka lookup
-} # setTargetArrowRule
+} # setTargetArrowMapping
 
-#------------------------------------------------------------------------------------------------------------------------
-setEdgeSourceArrowColorRule <- function (edge.attribute.name, control.points, colors, mode="interpolate", default.color='#000000', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
+# ------------------------------------------------------------------------------
+#' @title Set Edge Source Arrow Color Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param table.column.values DESCRIPTION
+#' @param colors DESCRIPTION
+#' @param mode DESCRIPTION
+#' @param default.color DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeSourceArrowColorMapping()
+#' }
+#' @export
+setEdgeSourceArrowColorMapping <- function (edge.attribute.name, table.column.values, colors, mode="interpolate", default.color='#000000', style.name = 'default', network=NULL, base.url=.defaultBaseUrl) {
     
     if (!mode %in% c ('interpolate', 'lookup')) {
-        write ("Error! RCy3:setEdgeSourceArrowColorRule.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
+        write ("Error! RCy3:setEdgeSourceArrowColorMapping.  mode must be 'interpolate' (the default) or 'lookup'.", stderr ())
         return ()
     }
     
@@ -928,42 +1084,42 @@ setEdgeSourceArrowColorRule <- function (edge.attribute.name, control.points, co
     setDefaultEdgeSourceArrowColor (default.color, style.name)
     
     # define the column type
-    columnType <- .findColumnType(typeof(control.points[1]))
+    columnType <- .findColumnType(typeof(table.column.values[1]))
     
     
-    if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than control.points
-        if (length (control.points) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
+    if (mode=='interpolate') {  # need a 'below' color and an 'above' color.  so there should be two more colors than table.column.values
+        if (length (table.column.values) == length (colors)) { # caller did not supply 'below' and 'above' values; manufacture them
             colors = c (colors [1], colors, colors [length (colors)])
-            write ("RCy3::setEdgeSourceArrowColorRule, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
+            write ("RCy3::setEdgeSourceArrowColorMapping, no 'below' or 'above' colors specified.  Inferred from supplied colors.", stderr ());
         } 
-        good.args = length (control.points) == (length (colors) - 2)
+        good.args = length (table.column.values) == (length (colors) - 2)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (colors)), stderr ())
-            write ("Error! RCy3:setEdgeSourceArrowColorRule, interpolate mode.", stderr ())
+            write ("Error! RCy3:setEdgeSourceArrowColorMapping, interpolate mode.", stderr ())
             write ("Expecting 1 color for each control.point, one for 'above' color, one for 'below' color.", stderr ())
             return ()
         }
         
-        continuousMapping (edge.attribute.name, control.points, colors,
+        continuousMapping (edge.attribute.name, table.column.values, colors,
                            visual.property="EDGE_SOURCE_ARROW_UNSELECTED_PAINT",
                            columnType=columnType, style=style.name)
     } # if mode==interpolate
-    else { # use a discrete rule, with no interpolation, mode==lookup
-        good.args = length (control.points) == length (colors)
+    else { # use a discrete Mapping, with no interpolation, mode==lookup
+        good.args = length (table.column.values) == length (colors)
         if (!good.args) {
-            write (sprintf ('cp: %d', length (control.points)), stderr ())
+            write (sprintf ('cp: %d', length (table.column.values)), stderr ())
             write (sprintf ('co: %d', length (colors)), stderr ())
-            write ("Error! RCy3:setEdgeSourceArrowColorRule.  Expecting exactly as many colors as control.points in lookup mode.", stderr ())
+            write ("Error! RCy3:setEdgeSourceArrowColorMapping.  Expecting exactly as many colors as table.column.values in lookup mode.", stderr ())
             return ()
         }
         
-        discreteMapping(edge.attribute.name, control.points, colors,
+        discreteMapping(edge.attribute.name, table.column.values, colors,
                         visual.property="EDGE_SOURCE_ARROW_UNSELECTED_PAINT",
                         columnType=columnType, style=style.name)
     } # else: !interpolate, aka lookup
     
-} # setEdgeSourceArrowColorRule
+} # setEdgeSourceArrowColorMapping
 
 
 # ------------------------------------------------------------------------------
@@ -979,3 +1135,12 @@ setEdgeSourceArrowColorRule <- function (edge.attribute.name, control.points, co
         return("String")
     }
 } # findColumnType
+
+# ------------------------------------------------------------------------------
+.tableColumnExists <- function(table.column, table='node',network=network, base.url=base.url){
+    if (!table.column %in% getTableColumnNames(table, network=network, base.url=base.url)) {
+        write (sprintf ('Warning! RCy3::setNodeTooltipMapping: passed non-existent node attribute: %s', table.column), stderr ())
+        return (FALSE)
+    }
+    return (TRUE)
+}
