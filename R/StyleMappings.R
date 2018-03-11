@@ -1,3 +1,12 @@
+# ==============================================================================
+# Functions for defining MAPPINGS between table column values and visual properties,
+# organized into sections:
+#
+# I. General functions for creating and applying mappings for node, edge and network properties
+# II. Specific functions for defining particular node, edge and network properties
+#
+# ==============================================================================
+# I. General Functions
 # ------------------------------------------------------------------------------
 #' Creates a mapping between an attribute and a visual property
 #'
@@ -190,10 +199,11 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
 }
 
 
-#========================================================================================================================
-# Individual Properties
-#==========================
-
+# ==============================================================================
+# II. Specific Functions
+# ==============================================================================
+# II.a. Node Properties
+# Pattern: (1) prepare mapVisualProperty, (2) call updateStyleMapping()
 # ------------------------------------------------------------------------------
 #' @title Set Node Tooltip Mapping
 #'
@@ -209,30 +219,9 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
 #' @export
 setNodeTooltipMapping <- function (table.column, style.name = 'default', 
                                    network=NULL, base.url=.defaultBaseUrl) {
-    id <- getNetworkSuid(network)
     if(!.tableColumnExists(table.column,'node',network, base.url)) return()
-    mvp <- mapVisualProperty("NODE_TOOLTIP", table.column, 'p')  
-    updateStyleMapping(style.name, mvp, base.url = base.url)
-}
-
-# ------------------------------------------------------------------------------
-#' @title Set Edge Tooltip Mapping
-#'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.attribute.name DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
-#' @examples \donttest{
-#' setEdgeTooltipMapping()
-#' }
-#' @export
-setEdgeTooltipMapping <- function (edge.attribute.name, style.name = 'default', 
-                                   network=NULL, base.url=.defaultBaseUrl) {
-    id = getNetworkSuid(network)
-    if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
-    mvp <- mapVisualProperty("EDGE_TOOLTIP", table.column, 'p')  
+    mvp <- mapVisualProperty("NODE_TOOLTIP", table.column, 'p', 
+                             network = network, base.url = base.url)  
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
 
@@ -251,30 +240,9 @@ setEdgeTooltipMapping <- function (edge.attribute.name, style.name = 'default',
 #' @export
 setNodeLabelMapping <- function (table.column, style.name = 'default', 
                                  network=NULL, base.url=.defaultBaseUrl) {
-    id = getNetworkSuid(network)
     if(!.tableColumnExists(table.column,'node',network, base.url)) return()
-    mvp <- mapVisualProperty("NODE_LABEL", table.column, 'p')  
-    updateStyleMapping(style.name, mvp, base.url = base.url)
-}
-
-# ------------------------------------------------------------------------------
-#' @title Set Edge Label Mapping
-#'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.attribute.name DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
-#' @examples \donttest{
-#' setEdgeLabelMapping()
-#' }
-#' @export
-setEdgeLabelMapping <- function (edge.attribute.name, style.name = 'default', 
-                                    network=NULL, base.url=.defaultBaseUrl) {
-    id = getNetworkSuid(network)
-    if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
-    mvp <- mapVisualProperty("EDGE_LABEL", table.column, 'p')  
+    mvp <- mapVisualProperty("NODE_LABEL", table.column, 'p', 
+                             network = network, base.url = base.url)  
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
 
@@ -305,18 +273,18 @@ setNodeColorMapping <- function (table.column, table.column.values, colors,
     
     # set default
     if(!is.null(default.color))
-        setDefaultNodeColor(default.color, style.name, base.url=base.url)
+        setNodeColorDefault(default.color, style.name, base.url=base.url)
     
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("NODE_FILL_COLOR",table.column, 'c',
-                          table.column.values, colors, 
-                          network=network, base.url = base.url)
+                                 table.column.values, colors, 
+                                 network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
         mvp <- mapVisualProperty("NODE_FILL_COLOR",table.column, 'd',
-                          table.column.values, colors, 
-                          network=network, base.url = base.url)
-
+                                 table.column.values, colors, 
+                                 network=network, base.url = base.url)
+        
     } else {
         write(print("mapping.type not recognized."), stderr())
         return()
@@ -662,6 +630,51 @@ setNodeSizeMapping <- function (table.column, table.column.values, node.sizes, m
     
 } # setNodeSizeMapping
 
+
+# ==============================================================================
+# II.b. Edge Properties
+# Pattern: (1) prepare mapVisualProperty, (2) call updateStyleMapping()
+# ------------------------------------------------------------------------------
+#' @title Set Edge Tooltip Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeTooltipMapping()
+#' }
+#' @export
+setEdgeTooltipMapping <- function (edge.attribute.name, style.name = 'default', 
+                                   network=NULL, base.url=.defaultBaseUrl) {
+    id = getNetworkSuid(network)
+    if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
+    mvp <- mapVisualProperty("EDGE_TOOLTIP", table.column, 'p')  
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Edge Label Mapping
+#'
+#' @description FUNCTION_DESCRIPTION
+#' @param edge.attribute.name DESCRIPTION
+#' @param style.name DESCRIPTION
+#' @param network DESCRIPTION
+#' @param base.url DESCRIPTION
+#' @return RETURN_DESCRIPTION
+#' @examples \donttest{
+#' setEdgeLabelMapping()
+#' }
+#' @export
+setEdgeLabelMapping <- function (edge.attribute.name, style.name = 'default', 
+                                    network=NULL, base.url=.defaultBaseUrl) {
+    id = getNetworkSuid(network)
+    if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
+    mvp <- mapVisualProperty("EDGE_LABEL", table.column, 'p')  
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
 
 # ------------------------------------------------------------------------------
 #' @title Set Edge Color Mapping
@@ -1121,26 +1134,3 @@ setEdgeSourceArrowColorMapping <- function (edge.attribute.name, table.column.va
     
 } # setEdgeSourceArrowColorMapping
 
-
-# ------------------------------------------------------------------------------
-## TODO: replace with getTableColumnTypes()??
-.findColumnType <- function(columnType){
-    if (columnType=="double"){
-        return("Double")
-    } else if (columnType == "integer"){
-        return("Integer")
-    } else if (columnType == "logical"){
-        return("Boolean")
-    } else{
-        return("String")
-    }
-} # findColumnType
-
-# ------------------------------------------------------------------------------
-.tableColumnExists <- function(table.column, table='node',network=network, base.url=base.url){
-    if (!table.column %in% getTableColumnNames(table, network=network, base.url=base.url)) {
-        write (sprintf ('Warning! RCy3::setNodeTooltipMapping: passed non-existent node attribute: %s', table.column), stderr ())
-        return (FALSE)
-    }
-    return (TRUE)
-}

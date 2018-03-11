@@ -1,3 +1,12 @@
+# ==============================================================================
+# Functions for getting and setting style DEPEDENDENCIES,
+# organized into sections:
+# 
+# I. General functions for getting and setting dependencies
+# II. Specific functions for setting particular dependencies
+#
+# ==============================================================================
+# I. General Functions
 # ------------------------------------------------------------------------------
 #' @title Get the values of dependencies in a style
 #'
@@ -73,6 +82,9 @@ setStyleDependencies <- function(style.name,dependencies,base.url=.defaultBaseUr
     invisible(commandsPOST(paste0('vizmap apply styles="',style.name,'"')))
 }
 
+# ==============================================================================
+# I. Specific Functions
+# Pattern: (1) Call setStyleDependencies()
 # ------------------------------------------------------------------------------
 #' @title Match Arrow Color To Edge
 #'
