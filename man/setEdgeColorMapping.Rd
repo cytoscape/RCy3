@@ -4,18 +4,18 @@
 \alias{setEdgeColorMapping}
 \title{Set Edge Color Mapping}
 \usage{
-setEdgeColorMapping(edge.attribute.name, table.column.values, colors,
-  mode = "interpolate", default.color = "#FFFFFF", style.name = "default",
+setEdgeColorMapping(table.column, table.column.values = NULL, colors = NULL,
+  mapping.type = "c", default.color = NULL, style.name = "default",
   network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.attribute.name}{DESCRIPTION}
+\item{table.column}{DESCRIPTION}
 
 \item{table.column.values}{DESCRIPTION}
 
 \item{colors}{DESCRIPTION}
 
-\item{mode}{DESCRIPTION}
+\item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
 
 \item{default.color}{DESCRIPTION}
 
@@ -33,6 +33,6 @@ FUNCTION_DESCRIPTION
 }
 \examples{
 \donttest{
-setEdgeColorMapping()
+setNodeColorMapping()
 }
 }

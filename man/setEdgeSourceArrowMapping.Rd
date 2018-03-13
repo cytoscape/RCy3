@@ -4,18 +4,18 @@
 \alias{setEdgeSourceArrowMapping}
 \title{Set Edge Source Arrow Mapping}
 \usage{
-setEdgeSourceArrowMapping(edge.attribute.name, attribute.values, arrows,
-  default = "ARROW", style.name = "default", network = NULL,
+setEdgeSourceArrowMapping(table.column, table.column.values, arrows,
+  default.arrow = "ARROW", style.name = "default", network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.attribute.name}{DESCRIPTION}
+\item{table.column}{DESCRIPTION}
 
-\item{attribute.values}{DESCRIPTION}
+\item{table.column.values}{DESCRIPTION}
 
 \item{arrows}{DESCRIPTION}
 
-\item{default}{DESCRIPTION}
+\item{default.arrow}{DESCRIPTION}
 
 \item{style.name}{DESCRIPTION}
 

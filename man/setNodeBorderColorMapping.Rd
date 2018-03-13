@@ -4,18 +4,18 @@
 \alias{setNodeBorderColorMapping}
 \title{Set Node Border Color Mapping}
 \usage{
-setNodeBorderColorMapping(table.column, table.column.values, colors, mode,
-  default.color = "#000000", style.name = "default", network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeBorderColorMapping(table.column, table.column.values = NULL,
+  colors = NULL, mapping.type = "c", default.color = NULL,
+  style.name = "default", network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{table.column}{DESCRIPTION}
 
 \item{table.column.values}{DESCRIPTION}
 
-\item{colors}{DESCRIPTION}
+\item{colors}{(integer) values between 0 and 255; 0 is invisible}
 
-\item{mode}{DESCRIPTION}
+\item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
 
 \item{default.color}{DESCRIPTION}
 

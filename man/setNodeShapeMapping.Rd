@@ -4,16 +4,16 @@
 \alias{setNodeShapeMapping}
 \title{Set Node Shape Mapping}
 \usage{
-setNodeShapeMapping(table.column, attribute.values, node.shapes,
+setNodeShapeMapping(table.column, table.column.values, shapes,
   default.shape = "ELLIPSE", style.name = "default", network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{table.column}{DESCRIPTION}
 
-\item{attribute.values}{DESCRIPTION}
+\item{table.column.values}{DESCRIPTION}
 
-\item{node.shapes}{DESCRIPTION}
+\item{shapes}{DESCRIPTION}
 
 \item{default.shape}{DESCRIPTION}
 
