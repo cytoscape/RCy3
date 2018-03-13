@@ -4,18 +4,18 @@
 \alias{setNodeSizeMapping}
 \title{Set Node Size Mapping}
 \usage{
-setNodeSizeMapping(table.column, table.column.values, node.sizes, mode,
-  default.size = 40, style.name = "default", network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeSizeMapping(table.column, table.column.values = NULL, sizes = NULL,
+  mapping.type = "c", default.size = NULL, style.name = "default",
+  network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{table.column}{DESCRIPTION}
 
 \item{table.column.values}{DESCRIPTION}
 
-\item{node.sizes}{DESCRIPTION}
+\item{sizes}{DESCRIPTION}
 
-\item{mode}{DESCRIPTION}
+\item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
 
 \item{default.size}{DESCRIPTION}
 

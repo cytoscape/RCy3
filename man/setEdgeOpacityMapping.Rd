@@ -4,17 +4,20 @@
 \alias{setEdgeOpacityMapping}
 \title{Set Edge Opacity Mapping}
 \usage{
-setEdgeOpacityMapping(edge.attribute.name, table.column.values, opacities, mode,
+setEdgeOpacityMapping(table.column, table.column.values = NULL,
+  opacities = NULL, mapping.type = "c", default.opacity = NULL,
   style.name = "default", network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.attribute.name}{DESCRIPTION}
+\item{table.column}{DESCRIPTION}
 
 \item{table.column.values}{DESCRIPTION}
 
-\item{opacities}{DESCRIPTION}
+\item{opacities}{(integer) values between 0 and 255; 0 is invisible}
 
-\item{mode}{DESCRIPTION}
+\item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
+
+\item{default.opacity}{DESCRIPTION}
 
 \item{style.name}{DESCRIPTION}
 

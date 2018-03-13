@@ -4,7 +4,7 @@
 \alias{setNodeColorMapping}
 \title{Set Node Color Mapping}
 \usage{
-setNodeColorMapping(table.column, table.column.values, colors,
+setNodeColorMapping(table.column, table.column.values = NULL, colors = NULL,
   mapping.type = "c", default.color = NULL, style.name = "default",
   network = NULL, base.url = .defaultBaseUrl)
 }
@@ -15,7 +15,7 @@ setNodeColorMapping(table.column, table.column.values, colors,
 
 \item{colors}{DESCRIPTION}
 
-\item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p)}
+\item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
 
 \item{default.color}{DESCRIPTION}
 

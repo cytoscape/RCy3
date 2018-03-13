@@ -4,18 +4,18 @@
 \alias{setEdgeLineStyleMapping}
 \title{Set Edge Line Style Mapping}
 \usage{
-setEdgeLineStyleMapping(edge.attribute.name, attribute.values, line.styles,
-  default.style = "SOLID", style.name = "default", network = NULL,
+setEdgeLineStyleMapping(table.column, table.column.values, line.styles,
+  default.line.style = "SOLID", style.name = "default", network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.attribute.name}{DESCRIPTION}
+\item{table.column}{DESCRIPTION}
 
-\item{attribute.values}{DESCRIPTION}
+\item{table.column.values}{DESCRIPTION}
 
 \item{line.styles}{DESCRIPTION}
 
-\item{default.style}{DESCRIPTION}
+\item{default.line.style}{DESCRIPTION}
 
 \item{style.name}{DESCRIPTION}
 

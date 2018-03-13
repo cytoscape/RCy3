@@ -4,18 +4,18 @@
 \alias{setEdgeLineWidthMapping}
 \title{Set Edge Line Width Mapping}
 \usage{
-setEdgeLineWidthMapping(edge.attribute.name, attribute.values, line.widths,
-  mode = "interpolate", default.width = 1, style.name = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+setEdgeLineWidthMapping(table.column, table.column.values = NULL,
+  widths = NULL, mapping.type = "c", default.width = NULL,
+  style.name = "default", network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.attribute.name}{DESCRIPTION}
+\item{table.column}{DESCRIPTION}
 
-\item{attribute.values}{DESCRIPTION}
+\item{table.column.values}{DESCRIPTION}
 
-\item{line.widths}{DESCRIPTION}
+\item{widths}{DESCRIPTION}
 
-\item{mode}{DESCRIPTION}
+\item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
 
 \item{default.width}{DESCRIPTION}
 
