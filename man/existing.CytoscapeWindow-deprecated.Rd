@@ -2,12 +2,14 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{existing.CytoscapeWindow}
 \alias{existing.CytoscapeWindow}
+\alias{existing.CytoscapeWindowdeprecated}
 \title{DEPRECATED: existing.CytoscapeWindow}
 \usage{
-Use the replacement function instead:
-\link{getNetworkSuid}
+existing.CytoscapeWindowdeprecated
 }
 \description{
 This function is only provided for compatibility with older
 versions of RCy3 and will be defunct and removed in the next releases.
+Use the replacement function instead: 
+\link{getNetworkSuid}
 }

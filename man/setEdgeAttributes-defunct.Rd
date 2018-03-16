@@ -2,9 +2,10 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{setEdgeAttributes}
 \alias{setEdgeAttributes}
+\alias{setEdgeAttributesdefunct}
 \title{DEFUNCT: setEdgeAttributes}
 \usage{
-No replacement
+setEdgeAttributesdefunct
 }
 \description{
 This function is defunct and removed in the next releases.

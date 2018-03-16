@@ -2,12 +2,14 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{pluginVersion}
 \alias{pluginVersion}
+\alias{pluginVersiondeprecated}
 \title{DEPRECATED: pluginVersion}
 \usage{
-Use the replacement function instead:
-\link{cytoscapeVersionInfo}
+pluginVersiondeprecated
 }
 \description{
 This function is only provided for compatibility with older
 versions of RCy3 and will be defunct and removed in the next releases.
+Use the replacement function instead: 
+\link{cytoscapeVersionInfo}
 }

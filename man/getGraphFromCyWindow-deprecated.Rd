@@ -2,12 +2,14 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{getGraphFromCyWindow}
 \alias{getGraphFromCyWindow}
+\alias{getGraphFromCyWindowdeprecated}
 \title{DEPRECATED: getGraphFromCyWindow}
 \usage{
-Use the replacement function instead:
-\link{createGraphFromNetwork}
+getGraphFromCyWindowdeprecated
 }
 \description{
 This function is only provided for compatibility with older
 versions of RCy3 and will be defunct and removed in the next releases.
+Use the replacement function instead: 
+\link{createGraphFromNetwork}
 }

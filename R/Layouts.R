@@ -89,9 +89,9 @@ layoutCopycat <- function(sourceNetwork, targetNetwork, sourceColumn='name', tar
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 #' @examples \donttest{
 #' getLayoutNames()
-#' # [1] "degree-circle"                    "attributes-layout"                "kamada-kawai"                    
-#' # [4] "force-directed"                   "cose"                             "hierarchical"                    
-#' # [7] "attribute-circle"                 "stacked-node-layout"              "circular"
+#' # [1] "degree-circle"         "attributes-layout"      "kamada-kawai"                    
+#' # [4] "force-directed"        "cose"                   "hierarchical"                    
+#' # [7] "attribute-circle"      "stacked-node-layout"    "circular"
 #' }
 #' @export
 getLayoutNames <- function(base.url=.defaultBaseUrl) {

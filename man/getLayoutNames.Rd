@@ -21,9 +21,9 @@ may be used in subsequent calls to the 'layoutNetwork' function.
 \examples{
 \donttest{
 getLayoutNames()
-# [1] "degree-circle"                    "attributes-layout"                "kamada-kawai"                    
-# [4] "force-directed"                   "cose"                             "hierarchical"                    
-# [7] "attribute-circle"                 "stacked-node-layout"              "circular"
+# [1] "degree-circle"         "attributes-layout"      "kamada-kawai"                    
+# [4] "force-directed"        "cose"                   "hierarchical"                    
+# [7] "attribute-circle"      "stacked-node-layout"    "circular"
 }
 }
 \author{

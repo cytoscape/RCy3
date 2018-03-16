@@ -4,11 +4,11 @@
 \alias{setEdgeLabelMapping}
 \title{Set Edge Label Mapping}
 \usage{
-setEdgeLabelMapping(edge.attribute.name, style.name = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+setEdgeLabelMapping(table.column, style.name = "default", network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.attribute.name}{DESCRIPTION}
+\item{table.column}{DESCRIPTION}
 
 \item{style.name}{DESCRIPTION}
 

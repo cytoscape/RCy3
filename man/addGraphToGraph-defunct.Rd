@@ -2,9 +2,10 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{addGraphToGraph}
 \alias{addGraphToGraph}
+\alias{addGraphToGraphdefunct}
 \title{DEFUNCT: addGraphToGraph}
 \usage{
-No replacement
+addGraphToGraphdefunct
 }
 \description{
 This function is only provided for compatibility with older

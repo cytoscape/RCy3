@@ -2,12 +2,14 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{renameCytoscapeNetwork}
 \alias{renameCytoscapeNetwork}
+\alias{renameCytoscapeNetworkdeprecated}
 \title{DEPRECATED: renameCytoscapeNetwork}
 \usage{
-Use the replacement function instead:
-\link{renameNetwork}
+renameCytoscapeNetworkdeprecated
 }
 \description{
 This function is only provided for compatibility with older
 versions of RCy3 and will be defunct and removed in the next releases.
+Use the replacement function instead: 
+\link{renameNetwork}
 }
