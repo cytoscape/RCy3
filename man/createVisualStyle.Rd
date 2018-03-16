@@ -47,7 +47,7 @@ edgeWidth <- mapVisualProperty('edge width','weight','p')
 createVisualStyle(style.name, defaults, list(nodeLabels,nodeFills,arrowShapes,edgeWidth))
 
 #finsh by applying the style
-example(applyStyle)
+setVisualStyle(style.name)
 }
 }
 \seealso{

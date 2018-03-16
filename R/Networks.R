@@ -898,6 +898,26 @@ createNetworkFromDataFrames <-
         return(network.suid)
     }
 
+# ------------------------------------------------------------------------------
+#' @title Import Network From File
+#'
+#' @description Loads a network from specified file
+#' @param file Name of file in any of the supported formats (e.g., SIF, GML, XGMML, etc).
+#' If NULL, a demo network file in SIF format is loaded.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return (int) network SUID
+#' @examples \donttest{
+#' importNetworkFromFile()
+#' }
+#' @export
+importNetworkFromFile <- function(file=NULL, base.url=.defaultBaseUrl){
+    if(is.null(file))
+        file <- system.file("extdata","galFiltered.sif",package="RCy3")
+    commandsPOST(paste('network load file file',file,sep = "="))
+}
+
 # ==============================================================================
 # V. Network extraction
 # ------------------------------------------------------------------------------
