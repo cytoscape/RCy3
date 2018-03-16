@@ -2,9 +2,10 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{setNodeAttributes}
 \alias{setNodeAttributes}
+\alias{setNodeAttributesdefunct}
 \title{DEFUNCT: setNodeAttributes}
 \usage{
-No replacement
+setNodeAttributesdefunct
 }
 \description{
 This function is defunct and removed in the next releases.

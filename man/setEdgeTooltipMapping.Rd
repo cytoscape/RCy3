@@ -4,11 +4,11 @@
 \alias{setEdgeTooltipMapping}
 \title{Set Edge Tooltip Mapping}
 \usage{
-setEdgeTooltipMapping(edge.attribute.name, style.name = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+setEdgeTooltipMapping(table.column, style.name = "default", network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.attribute.name}{DESCRIPTION}
+\item{table.column}{DESCRIPTION}
 
 \item{style.name}{DESCRIPTION}
 

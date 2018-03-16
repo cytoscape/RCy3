@@ -4,8 +4,8 @@
 \alias{setEdgeSourceArrowMapping}
 \title{Set Edge Source Arrow Mapping}
 \usage{
-setEdgeSourceArrowMapping(table.column, table.column.values, arrows,
-  default.arrow = "ARROW", style.name = "default", network = NULL,
+setEdgeSourceArrowMapping(table.column, table.column.values, shapes,
+  default.shape = "ARROW", style.name = "default", network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
@@ -13,9 +13,9 @@ setEdgeSourceArrowMapping(table.column, table.column.values, arrows,
 
 \item{table.column.values}{DESCRIPTION}
 
-\item{arrows}{DESCRIPTION}
+\item{shapes}{DESCRIPTION}
 
-\item{default.arrow}{DESCRIPTION}
+\item{default.shape}{DESCRIPTION}
 
 \item{style.name}{DESCRIPTION}
 

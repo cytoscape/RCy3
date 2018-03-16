@@ -2,9 +2,10 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{sendNodes}
 \alias{sendNodes}
+\alias{sendNodesdefunct}
 \title{DEFUNCT: sendNodes}
 \usage{
-No replacement
+sendNodesdefunct
 }
 \description{
 This function is only provided for compatibility with older

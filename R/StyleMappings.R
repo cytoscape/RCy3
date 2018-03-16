@@ -546,7 +546,7 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
 #' @title Set Edge Tooltip Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param edge.attribute.name DESCRIPTION
+#' @param table.column DESCRIPTION
 #' @param style.name DESCRIPTION
 #' @param network DESCRIPTION
 #' @param base.url DESCRIPTION
@@ -555,7 +555,7 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
 #' setEdgeTooltipMapping()
 #' }
 #' @export
-setEdgeTooltipMapping <- function (edge.attribute.name, style.name = 'default', 
+setEdgeTooltipMapping <- function (table.column, style.name = 'default', 
                                    network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
     mvp <- mapVisualProperty("EDGE_TOOLTIP", table.column, 'p')  
@@ -566,7 +566,7 @@ setEdgeTooltipMapping <- function (edge.attribute.name, style.name = 'default',
 #' @title Set Edge Label Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param edge.attribute.name DESCRIPTION
+#' @param table.column DESCRIPTION
 #' @param style.name DESCRIPTION
 #' @param network DESCRIPTION
 #' @param base.url DESCRIPTION
@@ -575,7 +575,7 @@ setEdgeTooltipMapping <- function (edge.attribute.name, style.name = 'default',
 #' setEdgeLabelMapping()
 #' }
 #' @export
-setEdgeLabelMapping <- function (edge.attribute.name, style.name = 'default', 
+setEdgeLabelMapping <- function (table.column, style.name = 'default', 
                                     network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
     mvp <- mapVisualProperty("EDGE_LABEL", table.column, 'p')  
@@ -764,8 +764,8 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
 #' @description FUNCTION_DESCRIPTION
 #' @param table.column DESCRIPTION
 #' @param table.column.values DESCRIPTION
-#' @param arrows DESCRIPTION
-#' @param default.arrow DESCRIPTION
+#' @param shapes DESCRIPTION
+#' @param default.shape DESCRIPTION
 #' @param style.name DESCRIPTION
 #' @param network DESCRIPTION
 #' @param base.url DESCRIPTION
@@ -774,16 +774,16 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
 #' setEdgeTargetArrowMapping()
 #' }
 #' @export
-setEdgeTargetArrowMapping <- function (table.column, table.column.values, arrows, 
-                                     default.arrow='ARROW', style.name = 'default', 
+setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes, 
+                                     default.shape='ARROW', style.name = 'default', 
                                      network=NULL, base.url=.defaultBaseUrl) {
     # set default
-    if(!is.null(default.arrow))
-        setEdgeTargetArrowDefault(default.arrow, style.name, base.url=base.url)
+    if(!is.null(default.shape))
+        setEdgeTargetArrowDefault(default.shape, style.name, base.url=base.url)
     
     # perform mapping
     mvp <- mapVisualProperty("EDGE_TARGET_ARROW_SHAPE",table.column, 'd',
-                             table.column.values, arrows, 
+                             table.column.values, shapes, 
                              network=network, base.url = base.url)
     
     updateStyleMapping(style.name, mvp, base.url = base.url)
@@ -795,8 +795,8 @@ setEdgeTargetArrowMapping <- function (table.column, table.column.values, arrows
 #' @description FUNCTION_DESCRIPTION
 #' @param table.column DESCRIPTION
 #' @param table.column.values DESCRIPTION
-#' @param arrows DESCRIPTION
-#' @param default.arrow DESCRIPTION
+#' @param shapes DESCRIPTION
+#' @param default.shape DESCRIPTION
 #' @param style.name DESCRIPTION
 #' @param network DESCRIPTION
 #' @param base.url DESCRIPTION
@@ -805,16 +805,16 @@ setEdgeTargetArrowMapping <- function (table.column, table.column.values, arrows
 #' setEdgeSourceArrowMapping()
 #' }
 #' @export
-setEdgeSourceArrowMapping <- function (table.column, table.column.values, arrows, 
-                                       default.arrow='ARROW', style.name = 'default', 
+setEdgeSourceArrowMapping <- function (table.column, table.column.values, shapes, 
+                                       default.shape='ARROW', style.name = 'default', 
                                        network=NULL, base.url=.defaultBaseUrl) {
     # set default
-    if(!is.null(default.arrow))
-        setEdgeSourceArrowDefault(default.arrow, style.name, base.url=base.url)
+    if(!is.null(default.shape))
+        setEdgeSourceArrowDefault(default.shape, style.name, base.url=base.url)
     
     # perform mapping
     mvp <- mapVisualProperty("EDGE_SOURCE_ARROW_SHAPE",table.column, 'd',
-                             table.column.values, arrows, 
+                             table.column.values, shapes, 
                              network=network, base.url = base.url)
     
     updateStyleMapping(style.name, mvp, base.url = base.url)

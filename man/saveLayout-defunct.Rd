@@ -2,11 +2,13 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{saveLayout}
 \alias{saveLayout}
+\alias{saveLayoutdefunct}
 \title{DEFUNCT: saveLayout}
 \usage{
-Use the replacement function instead:
-\link{layoutCopycat}
+saveLayoutdefunct
 }
 \description{
 This function is defunct and will be removed in the next release.
+Use the replacement function instead: 
+\link{layoutCopycat}
 }

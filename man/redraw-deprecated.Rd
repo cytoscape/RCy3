@@ -2,12 +2,14 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{redraw}
 \alias{redraw}
+\alias{redrawdeprecated}
 \title{DEPRECATED: redraw}
 \usage{
-Use the replacement function instead:
-\link{setVisualStyle}
+redrawdeprecated
 }
 \description{
 This function is only provided for compatibility with older
 versions of RCy3 and will be defunct and removed in the next releases.
+Use the replacement function instead: 
+\link{setVisualStyle}
 }
