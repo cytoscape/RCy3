@@ -366,7 +366,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 # }
 #' @importFrom utils URLencode
 .command2getQuery<-function(cmd.string, base.url = .defaultBaseUrl){
-    cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
+    cmd.string = sub(" ([A-Za-z0-9_-]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     cmd = cmdargs[1]
     if(is.na(cmd)){cmd=""}
@@ -376,12 +376,12 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         q.cmd
     }else{
         args = gsub("\"","",args)
-        p = "[[:alnum:]]+="
+        p = "[A-Za-z0-9_-]+="
         m = gregexpr(p,args)
         args1 = unlist(regmatches(args,m))
         args1 = gsub('=','',args1)
-        #args1 = unlist(str_extract_all(args,"[[:alnum:]]+(?==)")) # requires stringr lib
-        args2 = unlist(strsplit(args," *[[:alnum:]]+="))
+        #args1 = unlist(str_extract_all(args,"[A-Za-z0-9_-]+(?==)")) # requires stringr lib
+        args2 = unlist(strsplit(args," *[A-Za-z0-9_-]+="))
         args2 = args2[-1]
         names(args2) <- args1
         q.args = .prepGetQueryArgs(args2)
@@ -403,7 +403,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 # }
 #' @importFrom utils URLencode
 .command2postQueryUrl<-function(cmd.string, base.url = .defaultBaseUrl){
-    cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
+    cmd.string = sub(" ([A-Za-z0-9_-]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     cmd = cmdargs[1]
     if(is.na(cmd)){cmd=""}
@@ -427,7 +427,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 # }
 #' @importFrom RJSONIO toJSON
 .command2postQueryBody<-function(cmd.string){
-    cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
+    cmd.string = sub(" ([A-Za-z0-9_-]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     args = cmdargs[2]
     
@@ -435,12 +435,12 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         args = 'atLeastOneArg=required' #supply a benign "filler" if NULL
     
     args = gsub("\"","",args)
-    p = "[[:alnum:]]+="
+    p = "[A-Za-z0-9_-]+="
     m = gregexpr(p,args)
     args1 = unlist(regmatches(args,m))
     args1 = gsub('=','',args1)
-    #args1 = unlist(str_extract_all(args,"[[:alnum:]]+(?==)")) # requires stringr lib
-    args2 = unlist(strsplit(args," *[[:alnum:]]+="))
+    #args1 = unlist(str_extract_all(args,"[A-Za-z0-9_-]+(?==)")) # requires stringr lib
+    args2 = unlist(strsplit(args," *[A-Za-z0-9_-]+="))
     args2 = args2[-1]
     names(args2) <- args1
     return(toJSON(args2))
