@@ -1,52 +1,89 @@
-NEW RELEASE VERSION 0.99.0
--------------------------
-PERSISTING ISSUES
-    o direct functions are currently overwritten by rule-based functions.
-      Once CyREST updates, this issue will be fixed.
+New in RCy3 v2.0
 
-NEW FEATURES
-    o added setDefaultEdgeSourceArrowColor to set the default arrow color
-    o added setDefaultEdgeTargetArrowColor to set the default target arrow color
-    o added two modes (interpolate and lookup) to setEdgeSourceArrowColorRule
-    o added two modes (interpolate and lookup) to setEdgeTargetArrowColorRule
-    o redraw is no longer required as the Cytoscape interface updates automatically.
-    o lockNodeDimensions is no longer required. Functions that required locked node
-      dimensions do this automatically.
-    
-    
-SIGNIFICANT USER-VISIBLE CHANGES
+    New converter functions between Cytoscape and iGraph
+        createIgraphFromNetwork
+        createNetworkFromIgraph
+    New converter functions between Cytoscape and R data.frames
+        createNetworkFromDataFrames
+    New converter functions between Cytoscape and Bioconductor GraphNEL
+        createNetworkFromGraph
+        createGraphFromNetwork
+        addGraphToNetwork
+    Fixed visual style "Direct" functions to set persistent bypass values
+        setNodePropertyBypass
+        setEdgePropertyBypass
+        see all \code{setNode***Bypass and \code{setEdge***Bypass functions
+    Streamlined interfaces to CyREST and Commands API
+        cyrestGET
+        cyrestPUT
+        cyrestPOST
+        cyrestDELETE
+        cyrestAPI
+        commandsGET
+        commandsPOST
+        commandsAPI
+        commandsHelp
+    Optional \code{network parameter supports calls to "current" or specified Cytoscape network by name or SUID
+    New functions for importing/exporting tabular data into/out of Cytoscape
+        getTableColumns
+        loadTableData
+    New function for batch setting visual style property mappings
+        mapVisualProperty
+    Access to Cytoscape System information
+        cytoscapeVersionInfo
+        cytoscapeApiVersions
+        cytoscapeNumberOfCores
+        cytoscapeMemoryStatus
+        cytoscapeFreeMemory
+    Updated layoutCopyCat feature
+    Update network management functions
+        createSubnetwork
+        cloneNetwork
+        renameNetwork
+    Updated selection features
+        selectFirstNeighbors
+        selectEdgesConnectingSelectedNodes
+        selectEdgesAdjacentToSelectedNodes
+    New Cytoscape session functions
+        openSession
+        closeSession
+    Overhauled visual style settings to match Cytoscape's Defaults, Mappings, and Bypasses
+    Added style dependency functions, in addition to lockNodeDimensions
+        matchArrowColorToEdge
+        syncNodeCustomGraphicsSize
+    New set of functions for retrieving current visual property Values for nodes, edges and networks.
+    New functions for network-level Visual Property Defaults, Bypasses and Values.
+    Streamlined data table loading and retrieval
+    New functions for installing and managing Cytoscape Apps, e.g.,
+        installApp
+        uninstallApp
+        udpateApp
+        getInstalledApps
+        getAvailableApps
+        getAppUpdates
+        getAppStatus
+    New functions for network Collections
+        getCollectionList
+        getCollectionName
+        getCollectionSuid
+        getCollectionNetworks
 
-    o removed new.CystoscapeWindow. CytoscapeWindow does the same job now.
-    o removed setEdgeLabelWidthDirect
-    o removed setEdgeLabelPositionDirect
-    o removed setEdgeSourceArrowOpacityDirect
-    o removed setEdgeTargetArrowOpacityDirect
-    o removed set.node.or.edge.properties
-    o removed getViewCoordinates
-    o removed setWindowSize
-    o removed fitSelectedContent
-    o removed raiseWindow
-    o removed setTooltipDismissDelay
-    o removed setTooltipInitialDelay
-    o removed clearMsg
-    o removed msg
-    o removed createWindowFromSelection
-    o removed setNodeImageDirect
-    o new names for features:
-> getNodeShapes(cw)
-[1] "DIAMOND"         "HEXAGON"         "OCTAGON"         "VEE"            
-[5] "TRIANGLE"        "PARALLELOGRAM"   "ELLIPSE"         "RECTANGLE"      
-[9] "ROUND_RECTANGLE"
-> getLayoutNames(cw)
- [1] "attribute-circle"      "stacked-node-layout"   "degree-circle"        
- [4] "circular"              "attributes-layout"     "kamada-kawai"         
- [7] "force-directed"        "grid"                  "hierarchical"         
-[10] "fruchterman-rheingold" "isom"
-> getLineStyles(cw)
- [1] "LONG_DASH"        "PARALLEL_LINES"   "FORWARD_SLASH"    "DASH_DOT"        
- [5] "BACKWARD_SLASH"   "VERTICAL_SLASH"   "CONTIGUOUS_ARROW" "SEPARATE_ARROW"  
- [9] "SOLID"            "EQUAL_DASH"       "ZIGZAG"           "DOT"             
-[13] "SINEWAVE"    
-> getArrowShapes(cw)
-[1] "DIAMOND"     "NONE"        "T"           "DELTA"       "CIRCLE"     
-[6] "ARROW"       "HALF_TOP"    "HALF_BOTTOM"
+For Developers
+
+    Reorganized functions into files corresponding to CyREST API, e.g., Collections, CytoscapeSystem, Layouts, Networks, etc.
+    Normalized all documentation using roxygen2
+    Streamlined interfaces to CyREST and Commands API (see above), greatly facilitating the implementation of any new functions matching CyREST or Command API additions
+    Reverted all single-instance methods to simple functions, replacing class-based signatures with simple default values
+    Established handy functions for validating network and view SUIDs
+        getNetworkName
+        getNetworkSuid
+        getNetworkViewSuid
+
+Deprecated
+
+    Outdated function names
+
+Defunct
+
+    CytoscapeConnection and CytoscapeWindow classes, functions and parameters
+
