@@ -3,7 +3,7 @@ title: "iGraph functions and Cytoscape visualization"
 author: "Alex Pico"
 output: rmarkdown::html_vignette
 vignette: >
-    %\VignetteIndexEntry{Functions and visualization}
+    %\VignetteIndexEntry{Network functions and visualization}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
