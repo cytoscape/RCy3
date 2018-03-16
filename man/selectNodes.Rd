@@ -4,13 +4,13 @@
 \alias{selectNodes}
 \title{Select Nodes}
 \usage{
-selectNodes(nodes, by.col = "name", preserve.current.selection = TRUE,
+selectNodes(nodes, by.col = "SUID", preserve.current.selection = TRUE,
   network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{nodes}{List of node names or other column values}
+\item{nodes}{List of node SUIDs, names or other column values}
 
-\item{by.col}{Node table column to lookup up provide node values. Default is 'name'.}
+\item{by.col}{Node table column to lookup up provide node values. Default is 'SUID'.}
 
 \item{preserve.current.selection}{\code{boolean} Whether to maintain previously selected nodes.}
 
@@ -24,7 +24,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 \code{list} of newly selected node SUIDs
 }
 \description{
-Select nodes in the network by name or other column values.
+Select nodes in the network by SUID, name or other column values.
 }
 \examples{
 \donttest{

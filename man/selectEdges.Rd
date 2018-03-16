@@ -4,13 +4,13 @@
 \alias{selectEdges}
 \title{Select Edges}
 \usage{
-selectEdges(edges, by.col = "name", preserve.current.selection = TRUE,
+selectEdges(edges, by.col = "SUID", preserve.current.selection = TRUE,
   network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edges}{List of edge names or other column values}
+\item{edges}{List of edge SUIDs, names or other column values}
 
-\item{by.col}{Edge table column to lookup up provide edge values. Default is 'name'.}
+\item{by.col}{Edge table column to lookup up provide edge values. Default is 'SUID'.}
 
 \item{preserve.current.selection}{\code{boolean} Whether to maintain previously selected edges.}
 
@@ -24,7 +24,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 \code{list} of newly selected edge SUIDs
 }
 \description{
-Select edges in the network by name or other column values.
+Select edges in the network by SUID, name or other column values.
 }
 \examples{
 \donttest{

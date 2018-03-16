@@ -222,6 +222,7 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{list}, \code{status} or None.
+#' @aliases commandsRun
 #' @examples
 #' \donttest{
 #' commandsGET('layout get preferred')
