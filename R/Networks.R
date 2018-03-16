@@ -626,10 +626,10 @@ cloneNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' bring along their source and target nodes.
 #' @param nodes list of node names or keyword: selected, unselected or all. Default
 #' is currently selected nodes.
-#' @param nodes.by.col name of node table column corresponding to provided nodes list; default is 'name'
+#' @param nodes.by.col name of node table column corresponding to provided nodes list; default is 'SUID'
 #' @param edges list of edge names or keyword: selected, unselected or all. Default
 #' is currently selected edges.
-#' @param edges.by.col name of edge table column corresponding to provided edges list; default is 'name'
+#' @param edges.by.col name of edge table column corresponding to provided edges list; default is 'SUID'
 #' @param exclude.edges (boolean) whether to exclude connecting edges; default is FALSE
 #' @param subnetwork.name name of new subnetwork to be created;
 #' default is to add a numbered suffix to source network name
@@ -644,14 +644,14 @@ cloneNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' createSubnetwork()
 #' createSubnetwork("all")
 #' createSubnetwork(subnetwork.name="mySubnetwork")
-#' createSubnetwork(c("node 1","node 2","node 3"))
+#' createSubnetwork(c("node 1","node 2","node 3"),"name")
 #' createSubnetwork(c("AKT1","TP53","PIK3CA"),"display name")
 #' createSubnetwork(edges="all") #subnetwork of all connected nodes
 #' }
 createSubnetwork <- function(nodes=NULL,
-                             nodes.by.col = 'name',
+                             nodes.by.col = 'SUID',
                              edges=NULL,
-                             edges.by.col = 'name',
+                             edges.by.col = 'SUID',
                              exclude.edges = FALSE,
                              subnetwork.name=NULL,
                              network = NULL,
