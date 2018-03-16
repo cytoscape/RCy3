@@ -45,7 +45,7 @@ take these steps from within a running R session:
 They take about 4 minutes to run.
 
 ## Bioconductor
-While this is the primary development repository for the RCy3 project, we also make regular pushes to official bioconductor repository from which the official releases are generated. This is the correct repo for all coding and bug reporting interests. The tagged releases here correspond to the bioconductor releases via a manual syncing process. The `master` branch here corresponds to the latest code in development and not yet released. 
+While this is the primary development repository for the RCy3 project, we also make regular pushes to official bioconductor repository ([devel](http://bioconductor.org/packages/devel/bioc/html/RCy3.html) & [release](http://bioconductor.org/packages/release/bioc/html/RCy3.html)) from which the official releases are generated. This is the correct repo for all coding and bug reporting interests. The tagged releases here correspond to the bioconductor releases via a manual syncing process. The `master` branch here corresponds to the latest code in development and not yet released. 
 
 ## Former Repo
 The entire commit history has been preserved during this transition, but you can find the repo for RCy3 v1.5.3 and earlier
