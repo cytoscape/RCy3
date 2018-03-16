@@ -37,18 +37,24 @@ relations <- data.frame(from=c("Bob", "Cecil", "Cecil", "David",
                         to=c("Alice", "Bob", "Alice", "Alice", "Bob", "Alice"),
                         same.dept=c(FALSE,FALSE,TRUE,FALSE,FALSE,TRUE),
                         friendship=c(4,5,5,2,1,1), advice=c(4,5,5,4,2,3))
-g <- graph_from_data_frame(relations, directed=TRUE, vertices=actors)
+ig <- graph_from_data_frame(relations, directed=TRUE, vertices=actors)
 ```
 
 You now have an igraph network, g.  In order to translate the network together with all vertex (node) and edge attributes over to Cytoscape, simply use:
 
 ```{r, eval=F}
-createNetworkFromIgraph(g, "myNetwork")
+createNetworkFromIgraph(ig,"myIgraph")
 ```
 
 ### From Cytoscape to igraph 
 Inversely, you can use createIgraphFromNetwork() in RCy3 to retreive vertex (node) and edge data.frames to construct an igraph network. 
 
 ```{r, eval=F}
-g2 <- createIgraphFromNetwork("myNetwork")
+ig2 <- createIgraphFromNetwork("myIgraph")
+```
+
+Compare the round-trip result for yourself...
+```{r, eval=F}
+ig
+ig2
 ```
