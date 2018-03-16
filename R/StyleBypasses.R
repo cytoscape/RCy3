@@ -352,7 +352,7 @@ unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
     node.names <- getAllNodes(net.SUID, base.url)
     clearNodePropertyBypass(node.names, "NODE_VISIBLE", network=net.SUID, base.url=base.url)
     
-    edge.names <- getAllEdges(suid, base.url)
+    edge.names <- getAllEdges(net.SUID, base.url)
     clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network=net.SUID, base.url=base.url)
 }
 

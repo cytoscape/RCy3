@@ -2,11 +2,13 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{setNodePosition}
 \alias{setNodePosition}
+\alias{setNodePositiondefunct}
 \title{DEFUNCT: setNodePosition}
 \usage{
-Use the replacement function instead:
-\link{layoutCopycat}
+setNodePositiondefunct
 }
 \description{
 This function is defunct and will be removed in the next release.
+Use the replacement function instead: 
+\link{layoutCopycat}
 }

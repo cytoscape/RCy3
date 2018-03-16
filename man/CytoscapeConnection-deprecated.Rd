@@ -2,12 +2,14 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{CytoscapeConnection}
 \alias{CytoscapeConnection}
+\alias{CytoscapeConnectiondeprecated}
 \title{DEPRECATED: CytoscapeConnection}
 \usage{
-Use the replacement variable instead: base.url
-Rely on the default value or overwrite with custom host and port details.
+CytoscapeConnectiondeprecated
 }
 \description{
 This function is only provided for compatibility with older
 versions of RCy3 and will be defunct and removed in the next releases.
+Use the replacement variable instead: base.url
+Rely on the default value or overwrite with custom host and port details.
 }

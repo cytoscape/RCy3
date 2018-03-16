@@ -2,12 +2,14 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{getCenter}
 \alias{getCenter}
+\alias{getCenterdeprecated}
 \title{DEPRECATED: getCenter}
 \usage{
-Use the replacement function instead:
-\link{getNetworkCenter}
+getCenterdeprecated
 }
 \description{
 This function is only provided for compatibility with older
 versions of RCy3 and will be defunct and removed in the next releases.
+Use the replacement function instead: 
+\link{getNetworkCenter}
 }

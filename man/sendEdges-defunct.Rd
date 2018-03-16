@@ -2,9 +2,10 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{sendEdges}
 \alias{sendEdges}
+\alias{sendEdgesdefunct}
 \title{DEFUNCT: sendEdges}
 \usage{
-No replacement
+sendEdgesdefunct
 }
 \description{
 This function is only provided for compatibility with older

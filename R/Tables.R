@@ -6,7 +6,7 @@
 #' @title Delete a table column 
 #'
 #' @description Delete a column from node, edge or network tables.
-#' @param columns Name of the column to delete
+#' @param column Name of the column to delete
 #' @param table Name of table, e.g., node (default), edge, network
 #' @param namespace Namespace of table. Default is "default".
 #' @param network (optional) Name or SUID of the network. Default is the "current" 

@@ -2,13 +2,15 @@
 % Please edit documentation in R/RCy3-deprecated.R
 \name{CytoscapeWindow}
 \alias{CytoscapeWindow}
+\alias{CytoscapeWindowdeprecated}
 \title{DEPRECATED: CytoscapeWindow}
 \usage{
-Use the replacement function instead:
-\link{createNetworkFromGraph}
-Rely on the default value or overwrite with custom host and port details.
+CytoscapeWindowdeprecated
 }
 \description{
 This function is only provided for compatibility with older
 versions of RCy3 and will be defunct and removed in the next releases.
+Use the replacement function instead: 
+\link{createNetworkFromGraph}
+Rely on the default value or overwrite with custom host and port details.
 }

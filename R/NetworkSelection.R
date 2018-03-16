@@ -450,6 +450,17 @@ getSelectedEdgeCount <-
     }
 
 # ------------------------------------------------------------------------------
+#' @title Get Selected Edges
+#'
+#' @description Retrieve the names of all the edges selected in the network.
+#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return \code{list} of selected edge names
+#' @examples \donttest{
+#' getSelectedEdges()
+#' }
 #' @export
 getSelectedEdges <-
     function (network = NULL, base.url = .defaultBaseUrl) {

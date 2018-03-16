@@ -8,6 +8,8 @@ deleteTableColumn(column, table = "node", namespace = "default",
   network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
+\item{column}{Name of the column to delete}
+
 \item{table}{Name of table, e.g., node (default), edge, network}
 
 \item{namespace}{Namespace of table. Default is "default".}
@@ -18,8 +20,6 @@ network active in Cytoscape.}
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
-
-\item{columns}{Name of the column to delete}
 }
 \value{
 A \code{data.frame} of column values

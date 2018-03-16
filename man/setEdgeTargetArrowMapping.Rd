@@ -4,8 +4,8 @@
 \alias{setEdgeTargetArrowMapping}
 \title{Set Edge Target Arrow Mapping}
 \usage{
-setEdgeTargetArrowMapping(table.column, table.column.values, arrows,
-  default.arrow = "ARROW", style.name = "default", network = NULL,
+setEdgeTargetArrowMapping(table.column, table.column.values, shapes,
+  default.shape = "ARROW", style.name = "default", network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
@@ -13,9 +13,9 @@ setEdgeTargetArrowMapping(table.column, table.column.values, arrows,
 
 \item{table.column.values}{DESCRIPTION}
 
-\item{arrows}{DESCRIPTION}
+\item{shapes}{DESCRIPTION}
 
-\item{default.arrow}{DESCRIPTION}
+\item{default.shape}{DESCRIPTION}
 
 \item{style.name}{DESCRIPTION}
 
