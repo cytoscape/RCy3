@@ -75,7 +75,7 @@ copyVisualStyle <- function (from.style, to.style, base.url=.defaultBaseUrl) {
 #' createVisualStyle(style.name, defaults, list(nodeLabels,nodeFills,arrowShapes,edgeWidth))
 #'
 #' #finsh by applying the style
-#' example(applyStyle)
+#' setVisualStyle(style.name)
 #' }
 #' @seealso applyStyle, mapVisualProperty
 createVisualStyle <- function(style.name, defaults, mappings, base.url=.defaultBaseUrl) {
