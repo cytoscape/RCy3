@@ -2,6 +2,7 @@
 % Please edit documentation in R/Commands.R
 \name{commandsGET}
 \alias{commandsGET}
+\alias{commandsRun}
 \title{Commands GET}
 \usage{
 commandsGET(cmd.string, base.url = .defaultBaseUrl)
