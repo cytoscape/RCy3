@@ -40,6 +40,7 @@ New in RCy3 v2.0
         createSubnetwork
         cloneNetwork
         renameNetwork
+        importNetworkFromFile
     Updated selection features
         selectFirstNeighbors
         selectEdgesConnectingSelectedNodes
