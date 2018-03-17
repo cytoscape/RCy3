@@ -29,7 +29,7 @@ library(RCy3)
 
 #### Troubleshooting
 1. If you see this error on a Mac: ```make: gfortran-4.8: No such file or directory```, then try reinstalling R via [homebrew](https://brew.sh/): ```brew update && brew reinstall r```
-  * warning: this make take ~30 minutes
+   * warning: this make take ~30 minutes
 2. If you see this error in RStudio: ```ERROR: dependency ‘XML’ is not available for package```, then try this command: ```install.packages("XML")``` and then try installing RCy3 again.
 
 ## How to contribute
