@@ -1,13 +1,13 @@
 # Welcome to RCy3: 2.0 and Beyond
-Building upon the phenominal success of RCytoscape and RCy3, Cytoscape is adopting the project (and primary responsibility) 
-to provide a robust R package for the rapidly evolving Cytoscape ecosystem. We are beginning with a major refactor of RCy3
-that includes:
+Building upon the phenominal success of RCytoscape and RCy3, Cytoscape is adopting 
+this project to provide a robust R package for the rapidly evolving Cytoscape 
+ecosystem. We are beginning with a major refactor of RCy3 that includes:
 
 * independence from the graphNEL object model
-* optional object-based arguments
 * harmonized function and argument names
 * support for Cytoscape commands
 * better support for Cytoscape apps
+* see [NEWS](NEWS) for the complete release notes
 * coordinated development with CyREST and the Cytoscape service model
   * [New API](https://github.com/cytoscape/cyREST/issues?utf8=✓&q=milestone%3A*+label%3A%22new+API%22+is%3A*)
 * coordinated development with other scripting libraries, e.g., 
@@ -27,6 +27,11 @@ install_github('cytoscape/RCy3')
 library(RCy3)
 ```
 
+#### Troubleshooting
+1. If you see this error on a Mac: ```make: gfortran-4.8: No such file or directory```
+then try reinstalling R via [homebrew](https://brew.sh/): ```brew update && brew reinstall r```
+  * warning: this make take ~30 minutes
+
 ## How to contribute
 This is a public, open source project. Come on in! You can contribute at multiple levels:
 
@@ -40,7 +45,7 @@ In order to run them 'offline' (not on the Bioconductor build system),
 take these steps from within a running R session:
 
   1) source(system.file("unitTests", "test_RCy3.R", package="RCy3"))
-  2) run.tests ()
+  2) run.tests()
 
 They take about 4 minutes to run.
 
