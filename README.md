@@ -42,10 +42,10 @@ This is a public, open source project. Come on in! You can contribute at multipl
 ### Development
 ```
 install.packages("devtools")
-library(devtools)
+install.packages("roxygen2") 
+library(devtools,roxygen2)
 devtools::document()
 devtools::check()
-# may require 'brew install libxml2'
 ```
 
 ### Testing
@@ -65,6 +65,7 @@ While this is the primary development repository for the RCy3 project, we also m
 When adding or updating vignettes, consider the following tips for consistency:
 * Copy/paste the header from an existing RCy3 vignette, including the global knitr options
 * Avoid markdown encoded links; only exposed URLs will translate to the PDF version
+* Avoid spaces in Rmd filenames; causes CHECK errors
 * When ready, run **Knit to html_vignette_** and review the generated html
 * For PDF generation:
   * Uncomment ```highlight=FALSE``` in global knitr options and generate a new html. Unfortunately, the code highlighting looks terrible in PDF.

@@ -10,5 +10,5 @@ Vizualize, analyze and explore networks using Cytoscape via R.
 }
 \details{
 To learn more about RCy3, start with the vignettes:
-\code{browseVignettes(package = "RCy3")}
+\code{browseVignettes("RCy3")}
 }
