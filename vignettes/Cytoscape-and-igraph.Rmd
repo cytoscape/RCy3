@@ -21,6 +21,7 @@ This vignette will show you how to convert networks between iGraph and Cytoscape
 ```{r, echo=F, eval=F}
 source("https://bioconductor.org/biocLite.R")
 biocLite("RCy3")
+library(igraph)
 ```
 
 ### Required Software
