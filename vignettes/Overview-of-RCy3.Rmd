@@ -10,7 +10,7 @@ vignette: >
 ---
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-  highlight = FALSE,
+#  highlight = FALSE,
   eval=FALSE
 )
 ```
@@ -31,11 +31,51 @@ you have everything installed and running:
 
 ```{r}
     cytoscapePing ()
+    cytoscapeVersionInfo ()
 ```
 
-### Simple example
+### My first network
+Let's create a Cytoscape network from some basic R objects
+```{r}
+nodes <- data.frame(id=c("node 0","node 1","node 2","node 3"),
+           group=c("A","A","B","B"), # categorical strings
+           score=as.integer(c(20,10,15,5)), # integers
+           stringsAsFactors=FALSE)
+edges <- data.frame(source=c("node 0","node 0","node 0","node 2"),
+           target=c("node 1","node 2","node 3","node 3"),
+           interaction=c("inhibits","interacts","activates","interacts"),  # optional
+           weight=c(5.1,3.0,5.2,9.9), # numeric
+           stringsAsFactors=FALSE)
 
-Here we create a 4-node graph in R, send it to Cytoscape for display and layout.  For the sake of simplicity, no node attributes and no visual styles are included; those topics are covered in subsequent steps.
+createNetworkFromDataFrames(nodes,edges, title="my first network", collection="DataFrame Example")
+```
+
+### Switch styles
+Check out the marquee style!
+```{r}
+setVisualStyle('Marquee')
+```
+
+### My own style
+Create your own style with node attribute fill mappings and some defaults
+```{r}
+style.name = "myStyle"
+defaults <- list(NODE_SHAPE="diamond",
+                 NODE_SIZE=30,
+                 EDGE_TRANSPARENCY=120,
+                 NODE_LABEL_POSITION="W,E,c,0.00,0.00")
+nodeLabels <- mapVisualProperty('node label','id','p')
+nodeFills <- mapVisualProperty('node fill color','group','d',c("A","B"), c("#FF9900","#66AAAA"))
+arrowShapes <- mapVisualProperty('Edge Target Arrow Shape','interaction','d',c("activates","inhibits","interacts"),c("Arrow","T","None"))
+edgeWidth <- mapVisualProperty('edge width','weight','p')
+
+createVisualStyle(style.name, defaults, list(nodeLabels,nodeFills,arrowShapes,edgeWidth))
+setVisualStyle(style.name)
+```
+
+### Bioconductor graph example
+
+Alternatively, you might want to start from a Bioconductor graphNEL object. Here we create a 4-node graph in R, send it to Cytoscape for display and layout.  For the sake of simplicity, no node attributes and no visual styles are included; those topics are covered in subsequent steps.
 
 ```{r}
     g = new ('graphNEL', edgemode='directed')
@@ -43,7 +83,7 @@ Here we create a 4-node graph in R, send it to Cytoscape for display and layout.
     g = graph::addNode ('D', g)
     g = graph::addNode ('C', g, edges = list('D'))
     g = graph::addNode ('B', g, edges = list(c('A','D','C')))
-    createNetworkFromGraph (g)
+    createNetworkFromGraph (g, title='simple network', collection='GraphNEL Example')
 ``` 
 
 You should now the structure of this 4-node graph with a basic, default style. Fortunately, Cytoscape has some built-in rendering rules in which (and unless instructed otherwise) nodes and edges are rendered and a default (user-preference) layout algorithm is applied.
@@ -52,7 +92,7 @@ You should now the structure of this 4-node graph with a basic, default style. F
 
 We often know quite a lot about the nodes and edges in our graphs. By conveying this information visually, the graph will be easier to explore. For instance, we may know that protein A phosphorylates protein B, that A is a kinase and B a transcription factor, and that their mRNA expression (compared to a control) is a log2 fold change of 1.8 and 3.2 respectively. One of the core features of Cytoscape is visual styles, which allow you to specify how data values (e.g., `kinase', `transcription factor'; expression ratios) should be conveyed in the visual properties of the graph (e.g., node shape, node color or size).
 
-We continue with the simple 4-node graph, adding two kinds data values (`moleculeType' and `log2fc'). The easiest way to do this is via data.frames. However, you can also include attributes together with the original graph models as Bioconductor graphs, iGraphs or data.frames and then use the provided *create* functions to create and load in a singel step (see *createNetworkFromGraph*,  *createNetworkFromIgraph* and *createNetworkFromDataFrames*)
+We continue with the simple 4-node graph, adding two kinds data values (`moleculeType' and `log2fc'). The easiest way to do this is via data.frames. However, you can also include attributes together with the original graph models as Bioconductor graphs, iGraphs or data.frames and then use the provided *create* functions to create and load in a singel step (see *createNetworkFromGraph*,  *createNetworkFromIgraph* and *createNetworkFromDataFrames* functions). Check out the other vignettes for more exampls.
 
 ```{r}
     df <- data.frame (moleculeType=c('kinase','TF','cytokine','cytokine'),
@@ -114,7 +154,7 @@ Now, add a node size rule, using *log2fc* again as controlling node values.
 
 ``` 
 
-If you recall the third type of mapping, *passthrough* we can see it already working in our current network example. The node labels! By default, the *name* column is mapped to the node label property using *passthrough* logic: the value is passed directly to the style property.
+If you recall the third type of mapping, *passthrough*, we can see it already working in our current network example. The node labels! By default, the *name* column is mapped to the node label property using *passthrough* logic: the value is passed directly to the style property.
 
 
 ### Selecting nodes
@@ -141,29 +181,61 @@ You will see that three nodes are now selected. Get their SUID identifers back t
     node.suids <- getSelectedNodes ()
 ``` 
 
-
-### Saving and Export
-Session files save *everything*. As with most project software, we recommend saving often!
+And, finally, deselection works as you'd expect by means of a general *clearSelection* function:
 ```{r}
-    saveSession('tutorial_session') #.cys
+    clearSelection()
+    ?clearSelection
 ```
 
-Note: If you don't specify a complete path, the files will be save relative to your Cytoscape installation directory, e.g., /Applications/Cytoscape_v3.6.0/... or somewhere you don't have write permissions. So, it's probably better to specify one...
+### Saving and export
+Session files save *everything*. As with most project software, we recommend saving often!
+```{r}
+    saveSession('vignette_session') #.cys
+```
+
+**Note**: If you don't specify a complete path, the files will be save relative to your Cytoscape installation directory, e.g., /Applications/Cytoscape_v3.6.0/... or somewhere you don't have write permissions. So, it's probably better to specify one...
 
 ```{r}
-    full.path=paste(getwd(),'tutorial_session',sep='/')
+    full.path=paste(getwd(),'vignette_session',sep='/')
     saveSession(filename=full.path) #.cys
 ```
 
 ### Saving high resolution image files
 You can export extremely high resolution images, including vector graphic formats.
 ```{r}
-    full.path=paste(getwd(),'tutorial_image2',sep='/')
+    full.path=paste(getwd(),'vignette_image',sep='/')
     exportImage(filename=full.path, type = 'PDF') #.pdf
     ?exportImage
 ```
 
-That covers the basics of network manipulation. Check out the other vignettes for additional amd more complex examples.
+### Browse available functions, commands and arguments
+RCy3 functions
+```{r}
+help(package=RCy3)
+```
+
+Open swagger docs for live instances of CyREST API and Commands API:
+```{r}
+cyrestAPI()  # CyREST API
+commandsAPI()  # Commands API
+```
+
+List available commands and arguments in R. Use "help" to list top level:
+```{r}
+commandsHelp("help")  
+```
+
+List **network** commands. Note that "help" is optional:
+```{r}
+commandsHelp("help network")  
+```
+
+List arguments for the **network select** command:
+```{r}
+commandsHelp("help network select") 
+```
+
+That covers the basics of network manipulation. Check out the other vignettes for additional amd more complex examples. And when you are ready to work with some real data, check out the other basic and advanced R tutorials, https://github.com/cytoscape/cytoscape-automation/tree/master/for-scripters/R.
 
 
 ### Development

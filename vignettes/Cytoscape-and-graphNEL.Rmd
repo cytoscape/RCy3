@@ -4,7 +4,7 @@ author: "by Alexander Pico"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Cytoscape and graphNEL}
+  %\VignetteIndexEntry{3. Cytoscape and graphNEL}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

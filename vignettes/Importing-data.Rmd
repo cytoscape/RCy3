@@ -4,7 +4,7 @@ author: "by Alexander Pico"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Importing data}
+  %\VignetteIndexEntry{4. Importing data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
