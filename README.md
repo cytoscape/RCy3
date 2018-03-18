@@ -39,7 +39,16 @@ This is a public, open source project. Come on in! You can contribute at multipl
 * Fork and make pull requests
 * Contact current Cytoscape developers and inquire about joining the team
 
-## Testing
+### Development
+```
+install.packages("devtools")
+library(devtools)
+devtools::document()
+devtools::check()
+# may require 'brew install libxml2'
+```
+
+### Testing
 Unit tests are a crucial tool in software development.
 In order to run them 'offline' (not on the Bioconductor build system),
 take these steps from within a running R session:
@@ -49,9 +58,21 @@ take these steps from within a running R session:
 
 They take about 4 minutes to run.
 
-## Bioconductor
+### Bioconductor
 While this is the primary development repository for the RCy3 project, we also make regular pushes to official bioconductor repository ([devel](http://bioconductor.org/packages/devel/bioc/html/RCy3.html) & [release](http://bioconductor.org/packages/release/bioc/html/RCy3.html)) from which the official releases are generated. This is the correct repo for all coding and bug reporting interests. The tagged releases here correspond to the bioconductor releases via a manual syncing process. The `master` branch here corresponds to the latest code in development and not yet released. 
 
-## Former Repo
+#### Vignettes
+When adding or updating vignettes, consider the following tips for consistency:
+* Copy/paste the header from an existing RCy3 vignette, including the global knitr options
+* Avoid markdown encoded links; only exposed URLs will translate to the PDF version
+* When ready, run **Knit to html_vignette_** and review the generated html
+* For PDF generation:
+  * Uncomment ```highlight=FALSE``` in global knitr options and generate a new html. Unfortunately, the code highlighting looks terrible in PDF.
+  * Pop the html out of the Viewer and into a browser
+  * Choose print, then Save as PDF. Click *Print Background Colors* to retain code backgrounds
+  * Review the generated PDF and comment out ```highlight=FALSE``` once again
+* In the end, you should have Rmd and PDf versions of each vignette.
+
+### Former Repo
 The entire commit history has been preserved during this transition, but you can find the repo for RCy3 v1.5.3 and earlier
 at https://github.com/tmuetze/Bioconductor_RCy3_the_new_RCytoscape.
