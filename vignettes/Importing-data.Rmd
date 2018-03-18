@@ -18,10 +18,8 @@ knitr::opts_chunk$set(
 This vignette will show you how to import a data.frame of node attributes into Cytoscape as Node Table columns. The same approach works for edge and network attriubutes.  
 
 ### Installation
-```{r}
 source("https://bioconductor.org/biocLite.R")
 biocLite("RCy3")
-```
 
 ### Required Software
 The whole point of RCy3 is to connect with Cytoscape. You will need to install and launch Cytoscape: 
@@ -34,7 +32,7 @@ The whole point of RCy3 is to connect with Cytoscape. You will need to install a
 When importing data, you are actually performing a merge function of sorts, appending columns to nodes (or edges) that are present in the referenced network. Data that do not match elements in the network are effectively discarded upon import.
 
 So, in order to demonstrate data import, we first need to have a network. This command will import networks files in any of the supported formats (e.g., SIF, GML, XGMML, etc).
-```{r, eval=F}
+```{r}
 sif <- system.file("extdata","galFiltered.sif",package="RCy3")
 importNetworkFromFile(sif)
 ```
@@ -49,7 +47,7 @@ data <- read.csv(csv)
 ```
 
 Now we have a data.frame that includes our identifiers in a column called "name", plus a bunch of data columns. Knowing our key columns, we can now perform the import:
-```{r, eval=F}
+```{r}
 loadTableData(data,data.key.column="name")
 ```
 
