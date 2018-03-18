@@ -22,9 +22,10 @@ directly from R using the RCy3 package
 *From Vessy's "Fun with R blog": http://www.vesnam.com/Rblog/viznets5/
 
 ### Installation
-```{r, echo=F, eval=F}
 source("https://bioconductor.org/biocLite.R")
-biocLite("RCy3", "igraph")
+biocLite("RCy3")
+```{r}
+library(igraph)
 ```
 
 ### Required Software
