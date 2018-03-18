@@ -26,6 +26,8 @@ _Unstable development code from this repo_ (at your own risk)
 install.packages("devtools")
 library(devtools)
 install_github('cytoscape/RCy3')
+#If installation fails due to package 'XXX' not found,
+# then run install.packages("XXX") and then try install_github('cytoscape/RCy3') again
 library(RCy3)
 ```
 
