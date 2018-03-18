@@ -4,13 +4,13 @@ author: "by Alexander Pico"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-    %\VignetteIndexEntry{Network functions and visualization}
+    %\VignetteIndexEntry{5. Network functions and visualization}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-  highlight = FALSE,
+#  highlight = FALSE,
   eval=FALSE
 )
 ```

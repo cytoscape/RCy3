@@ -4,7 +4,7 @@ author: "by Alexander Pico"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Cytoscape and iGraph}
+  %\VignetteIndexEntry{2. Cytoscape and iGraph}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
