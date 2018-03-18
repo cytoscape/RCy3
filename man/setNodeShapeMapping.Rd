@@ -5,7 +5,7 @@
 \title{Set Node Shape Mapping}
 \usage{
 setNodeShapeMapping(table.column, table.column.values, shapes,
-  default.shape = "ELLIPSE", style.name = "default", network = NULL,
+  default.shape = NULL, style.name = "default", network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
