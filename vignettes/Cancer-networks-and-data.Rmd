@@ -19,9 +19,9 @@ This vignette will demonstrate network retrieval from the STRING database, basic
 analysis, TCGA data loading and visualization in Cytoscape from R using the RCy3 package.
 
 ### Installation
-```{r}
 source("https://bioconductor.org/biocLite.R")
 biocLite("RCy3")
+```{r}
 library("RColorBrewer")
 ```
 
