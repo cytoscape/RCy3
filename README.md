@@ -61,6 +61,13 @@ They take about 4 minutes to run.
 ### Bioconductor
 While this is the primary development repository for the RCy3 project, we also make regular pushes to official bioconductor repository ([devel](http://bioconductor.org/packages/devel/bioc/html/RCy3.html) & [release](http://bioconductor.org/packages/release/bioc/html/RCy3.html)) from which the official releases are generated. This is the correct repo for all coding and bug reporting interests. The tagged releases here correspond to the bioconductor releases via a manual syncing process. The `master` branch here corresponds to the latest code in development and not yet released. 
 
+```
+git commit -m "informative commit message"
+git push origin master
+git push upstream master
+```
+http://bioconductor.org/developers/how-to/git/push-to-github-bioc/
+
 #### Vignettes
 When adding or updating vignettes, consider the following tips for consistency:
 * Copy/paste the header from an existing RCy3 vignette, including the global knitr options
