@@ -1,18 +1,25 @@
 ---
-title: "iGraph functions and Cytoscape visualization"
-author: "Alex Pico"
+title: "Network functions and visualization"
+author: "by Alexander Pico"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
     %\VignetteIndexEntry{Network functions and visualization}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
-    
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  highlight = FALSE,
+  eval=FALSE
+)
+```
+
 This vignette will show how to perform basic network operations on an iGraph
 networks and use this information to customize its appearance in Cytoscape 
 directly from R using the RCy3 package
 
-*From Vessy's "Fun with R blog": http://www.vesnam.com/Rblog/viznets5/*
+*From Vessy's "Fun with R blog": http://www.vesnam.com/Rblog/viznets5/
 
 ### Installation
 ```{r, echo=F, eval=F}
@@ -23,7 +30,7 @@ biocLite("RCy3", "igraph")
 ### Required Software
 The whole point of RCy3 is to connect with Cytoscape. You will need to install and launch Cytoscape: 
     
-    * [Download Cytoscape](http://www.cytoscape.org/download.php) 
+* Download the latest Cytoscape from http://www.cytoscape.org/download.php
 * Complete installation wizard
 * Launch Cytoscape 
 
