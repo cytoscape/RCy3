@@ -37,8 +37,8 @@ deleteTableColumn <- function(column ,
 #'
 #' @description Retrieve one or more columns of data from node, edge or network
 #' tables.
-#' @details The 'suid' column is always retrieved along with specified columns. 
-#' The 'suid' values are used as \code{row.names} in the returned \code{data.frame}. 
+#' @details The 'SUID' column is always retrieved along with specified columns. 
+#' The 'SUID' values are used as \code{row.names} in the returned \code{data.frame}. 
 #' @param table name of table, e.g., node (default), edge, network
 #' @param columns names of columns to retrieve values from as list object or comma-separated list; default is all columns
 #' @param namespace namespace of table; default is "default"

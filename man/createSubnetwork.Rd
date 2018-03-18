@@ -4,20 +4,20 @@
 \alias{createSubnetwork}
 \title{Create subnetwork from existing network}
 \usage{
-createSubnetwork(nodes = NULL, nodes.by.col = "name", edges = NULL,
-  edges.by.col = "name", exclude.edges = FALSE, subnetwork.name = NULL,
+createSubnetwork(nodes = NULL, nodes.by.col = "SUID", edges = NULL,
+  edges.by.col = "SUID", exclude.edges = FALSE, subnetwork.name = NULL,
   network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{nodes}{list of node names or keyword: selected, unselected or all. Default
 is currently selected nodes.}
 
-\item{nodes.by.col}{name of node table column corresponding to provided nodes list; default is 'name'}
+\item{nodes.by.col}{name of node table column corresponding to provided nodes list; default is 'SUID'}
 
 \item{edges}{list of edge names or keyword: selected, unselected or all. Default
 is currently selected edges.}
 
-\item{edges.by.col}{name of edge table column corresponding to provided edges list; default is 'name'}
+\item{edges.by.col}{name of edge table column corresponding to provided edges list; default is 'SUID'}
 
 \item{exclude.edges}{(boolean) whether to exclude connecting edges; default is FALSE}
 
@@ -49,7 +49,7 @@ bring along their source and target nodes.
 createSubnetwork()
 createSubnetwork("all")
 createSubnetwork(subnetwork.name="mySubnetwork")
-createSubnetwork(c("node 1","node 2","node 3"))
+createSubnetwork(c("node 1","node 2","node 3"),"name")
 createSubnetwork(c("AKT1","TP53","PIK3CA"),"display name")
 createSubnetwork(edges="all") #subnetwork of all connected nodes
 }
