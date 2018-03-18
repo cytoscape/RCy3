@@ -89,7 +89,7 @@ selectFirstNeighbors <-
                    suid,
                    '"')
         res <- commandsPOST(cmd, base.url = base.url)
-        return(res['nodes'])
+        return(res)
     }
 
 # ------------------------------------------------------------------------------
@@ -263,7 +263,7 @@ invertNodeSelection <-
         res <-
             commandsPOST(paste0('network select invert=nodes network=SUID:', suid),
                          base.url = base.url)
-        return(res$nodes)
+        return(res)
     }
 
 # ------------------------------------------------------------------------------
@@ -337,7 +337,7 @@ selectEdges <-
                 ),
                 base.url = base.url
             )
-        return(res$edges)
+        return(res)
     }
 
 # ------------------------------------------------------------------------------
@@ -398,7 +398,7 @@ invertEdgeSelection <-
         res <-
             commandsPOST(paste0('network select invert=edges network=SUID:', suid),
                          base.url = base.url)
-        return(res$edges)
+        return(res)
     }
 
 # ------------------------------------------------------------------------------
@@ -421,7 +421,7 @@ deleteSelectedEdges <-
         res <-
             commandsPOST(paste0('network delete edgeList=selected network=SUID:', suid),
                          base.url = base.url)
-        return(res$edges)
+        return(res)
     }
 
 # ------------------------------------------------------------------------------
@@ -541,7 +541,7 @@ selectEdgesAdjacentToSelectedNodes <-
                     '"'
                 )
             )
-        return(res$edges)
+        return(res)
     }
 
 
