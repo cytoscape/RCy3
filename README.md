@@ -23,6 +23,8 @@ biocLite("RCy3")
 
 _Unstable development code from this repo_ (at your own risk)
 ```
+install.packages("devtools")
+library(devtools)
 install_github('cytoscape/RCy3')
 library(RCy3)
 ```
