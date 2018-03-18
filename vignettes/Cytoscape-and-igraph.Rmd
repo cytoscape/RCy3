@@ -46,6 +46,8 @@ relations <- data.frame(from=c("Bob", "Cecil", "Cecil", "David",
                         same.dept=c(FALSE,FALSE,TRUE,FALSE,FALSE,TRUE),
                         friendship=c(4,5,5,2,1,1), advice=c(4,5,5,4,2,3))
 ig <- graph_from_data_frame(relations, directed=TRUE, vertices=actors)
+
+# if function not found, then you need to install igraph. Try library(igraph)
 ```
 
 You now have an igraph network, g.  In order to translate the network together with all vertex (node) and edge attributes over to Cytoscape, simply use:
