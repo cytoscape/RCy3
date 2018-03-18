@@ -18,10 +18,8 @@ knitr::opts_chunk$set(
 This vignette will show you how to convert networks between graphNEL and Cytoscape.
 
 ### Installation
-```{r}
 source("https://bioconductor.org/biocLite.R")
 biocLite("RCy3")
-```
 
 ### Required Software
 The whole point of RCy3 is to connect with Cytoscape. You will need to install and launch Cytoscape: 
