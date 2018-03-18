@@ -75,13 +75,14 @@ http://bioconductor.org/developers/how-to/git/push-to-github-bioc/
 #### Vignettes
 When adding or updating vignettes, consider the following tips for consistency:
 * Copy/paste the header from an existing RCy3 vignette, including the global knitr options
+* Number the *VignetteIndexEntry* names w.r.t. other vignettes (this determines their presentation order)
 * Avoid markdown encoded links; only exposed URLs will translate to the PDF version
 * Avoid spaces in Rmd filenames; causes CHECK errors
 * When ready, run **Knit to html_vignette_** and review the generated html
 * For PDF generation:
   * Uncomment ```highlight=FALSE``` in global knitr options and generate a new html. Unfortunately, the code highlighting looks terrible in PDF.
   * Pop the html out of the Viewer and into a browser
-  * Choose print, then Save as PDF. Click *Print Background Colors* to retain code backgrounds
+  * Choose print, then Save as PDF. Click *Print Background Colors* to retain code backgrounds. Replace spaces with hyphens in filename.
   * Review the generated PDF and comment out ```highlight=FALSE``` once again
 * In the end, you should have Rmd and PDf versions of each vignette.
 
