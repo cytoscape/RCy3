@@ -8,21 +8,21 @@ cyrestPOST(operation, parameters = NULL, body = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{operation}{DESCRIPTION}
+\item{operation}{A string to be converted to the REST query namespace}
 
-\item{parameters}{DESCRIPTION}
+\item{parameters}{A named list of values to be converted to REST query parameters}
 
-\item{body}{DESCRIPTION}
+\item{body}{A named list of values to be converted to JSON}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+CyREST result content
 }
 \description{
-FUNCTION_DESCRIPTION
+Constructs the query and body, makes POST call and processes the result
 }
 \examples{
 \donttest{

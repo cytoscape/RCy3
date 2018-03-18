@@ -482,14 +482,14 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
 #' }
 #' @export
 setNodeShapeMapping <- function (table.column, table.column.values, shapes, 
-                                 default.shape='ELLIPSE', style.name = 'default', 
+                                 default.shape=NULL , style.name = 'default', 
                                  network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.shape))
         setNodeShapeDefault(default.shape, style.name, base.url=base.url)
     
     # perform mapping
-    mvp <- mapVisualProperty("NODE_SIZE",table.column, 'd',
+    mvp <- mapVisualProperty("NODE_SHAPE",table.column, 'd',
                              table.column.values, shapes, 
                              network=network, base.url = base.url)
     

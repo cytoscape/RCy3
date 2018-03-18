@@ -4,17 +4,17 @@
 \alias{createGroup}
 \title{Create Group}
 \usage{
-createGroup(group.name, nodes = NULL, nodes.by.col = "name",
+createGroup(group.name, nodes = NULL, nodes.by.col = "SUID",
   network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{group.name}{DESCRIPTION}
 
-\item{nodes}{List of node names or keyword: selected, unselected or all. Default
-is currently selected nodes.}
+\item{nodes}{List of node SUIDs, names, other column values, or keyword: 
+selected, unselected or all. Default is currently selected nodes.}
 
 \item{nodes.by.col}{name of node table column corresponding to provided nodes 
-list. Default is 'name'.}
+list. Default is 'SUID'.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}
 

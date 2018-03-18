@@ -29,8 +29,8 @@ Retrieve one or more columns of data from node, edge or network
 tables.
 }
 \details{
-The 'suid' column is always retrieved along with specified columns. 
-The 'suid' values are used as \code{row.names} in the returned \code{data.frame}.
+The 'SUID' column is always retrieved along with specified columns. 
+The 'SUID' values are used as \code{row.names} in the returned \code{data.frame}.
 }
 \examples{
 \donttest{

@@ -95,9 +95,9 @@ selectFirstNeighbors <-
 # ------------------------------------------------------------------------------
 #' @title Select Nodes
 #'
-#' @description Select nodes in the network by name or other column values.
-#' @param nodes List of node names or other column values
-#' @param by.col Node table column to lookup up provide node values. Default is 'name'.
+#' @description Select nodes in the network by SUID, name or other column values.
+#' @param nodes List of node SUIDs, names or other column values
+#' @param by.col Node table column to lookup up provide node values. Default is 'SUID'.
 #' @param preserve.current.selection \code{boolean} Whether to maintain previously selected nodes.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -111,7 +111,7 @@ selectFirstNeighbors <-
 #' @export
 selectNodes <-
     function(nodes,
-             by.col = 'name',
+             by.col = 'SUID',
              preserve.current.selection = TRUE,
              network = NULL,
              base.url = .defaultBaseUrl) {
@@ -292,9 +292,9 @@ deleteSelectedNodes <-
 # ------------------------------------------------------------------------------
 #' @title Select Edges
 #'
-#' @description Select edges in the network by name or other column values.
-#' @param edges List of edge names or other column values
-#' @param by.col Edge table column to lookup up provide edge values. Default is 'name'.
+#' @description Select edges in the network by SUID, name or other column values.
+#' @param edges List of edge SUIDs, names or other column values
+#' @param by.col Edge table column to lookup up provide edge values. Default is 'SUID'.
 #' @param preserve.current.selection \code{boolean} Whether to maintain previously selected edges.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -308,7 +308,7 @@ deleteSelectedNodes <-
 #' @export
 selectEdges <-
     function(edges,
-             by.col = 'name',
+             by.col = 'SUID',
              preserve.current.selection = TRUE,
              network = NULL,
              base.url = .defaultBaseUrl) {

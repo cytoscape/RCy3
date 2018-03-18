@@ -36,13 +36,13 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title CyREST DELETE
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param operation DESCRIPTION
-#' @param parameters DESCRIPTION
+#' @description Constructs the query, makes DELETE call and processes the result
+#' @param operation A string to be converted to the REST query namespace
+#' @param parameters A named list of values to be converted to REST query parameters 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return CyREST result content
 #' @examples \donttest{
 #' cyrestDELETE()
 #' }
@@ -73,13 +73,13 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 # ------------------------------------------------------------------------------
 #' @title CyREST GET
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param operation DESCRIPTION
-#' @param parameters DESCRIPTION
+#' @description Constructs the query, makes GET call and processes the result
+#' @param operation A string to be converted to the REST query namespace
+#' @param parameters A named list of values to be converted to REST query parameters 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return CyREST result content
 #' @examples \donttest{
 #' cyrestGET()
 #' }
@@ -110,14 +110,14 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 # ------------------------------------------------------------------------------
 #' @title CyREST POST
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param operation DESCRIPTION
-#' @param parameters DESCRIPTION
-#' @param body DESCRIPTION
+#' @description Constructs the query and body, makes POST call and processes the result
+#' @param operation A string to be converted to the REST query namespace
+#' @param parameters A named list of values to be converted to REST query parameters 
+#' @param body A named list of values to be converted to JSON
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return CyREST result content
 #' @examples \donttest{
 #' cyrestPOST()
 #' }
@@ -151,14 +151,14 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 # ------------------------------------------------------------------------------
 #' @title CyREST PUT
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param operation DESCRIPTION
-#' @param parameters DESCRIPTION
-#' @param body DESCRIPTION
+#' @description Constructs the query and body, makes PUT call and processes the result
+#' @param operation A string to be converted to the REST query namespace
+#' @param parameters A named list of values to be converted to REST query parameters 
+#' @param body A named list of values to be converted to JSON
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return CyREST result content
 #' @examples \donttest{
 #' cyrestPUT()
 #' }
@@ -348,6 +348,28 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     }
 }
 
+# ------------------------------------------------------------------------------
+#' @title Run a Command
+#'
+#' @description Using the same syntax as Cytoscape's Command Line Dialog,
+#' this function converts a command string into a CyREST query URL, executes a GET
+#' request, and parses the result content into an R list object. Same as commandsGET.
+#' @param cmd.string (char) command
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return A \code{list}, \code{status} or None.
+#' @examples
+#' \donttest{
+#' commandsRun('layout get preferred')
+#' commandsRun('network list properties')
+#' commandsRun('layout force-directed defaultNodeMass=1')
+#' }
+#' @export
+commandsRun<-function(cmd.string, base.url = .defaultBaseUrl){
+    commandsGET(cmd.string,base.url)
+}
+
 # ==============================================================================
 # III. Internal functions
 # 
@@ -366,7 +388,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 # }
 #' @importFrom utils URLencode
 .command2getQuery<-function(cmd.string, base.url = .defaultBaseUrl){
-    cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
+    cmd.string = sub(" ([A-Za-z0-9_-]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     cmd = cmdargs[1]
     if(is.na(cmd)){cmd=""}
@@ -376,12 +398,12 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         q.cmd
     }else{
         args = gsub("\"","",args)
-        p = "[[:alnum:]]+="
+        p = "[A-Za-z0-9_-]+="
         m = gregexpr(p,args)
         args1 = unlist(regmatches(args,m))
         args1 = gsub('=','',args1)
-        #args1 = unlist(str_extract_all(args,"[[:alnum:]]+(?==)")) # requires stringr lib
-        args2 = unlist(strsplit(args," *[[:alnum:]]+="))
+        #args1 = unlist(str_extract_all(args,"[A-Za-z0-9_-]+(?==)")) # requires stringr lib
+        args2 = unlist(strsplit(args," *[A-Za-z0-9_-]+="))
         args2 = args2[-1]
         names(args2) <- args1
         q.args = .prepGetQueryArgs(args2)
@@ -403,7 +425,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 # }
 #' @importFrom utils URLencode
 .command2postQueryUrl<-function(cmd.string, base.url = .defaultBaseUrl){
-    cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
+    cmd.string = sub(" ([A-Za-z0-9_-]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     cmd = cmdargs[1]
     if(is.na(cmd)){cmd=""}
@@ -427,7 +449,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 # }
 #' @importFrom RJSONIO toJSON
 .command2postQueryBody<-function(cmd.string){
-    cmd.string = sub(" ([[:alnum:]]*=)","XXXXXX\\1",cmd.string)
+    cmd.string = sub(" ([A-Za-z0-9_-]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     args = cmdargs[2]
     
@@ -435,12 +457,12 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         args = 'atLeastOneArg=required' #supply a benign "filler" if NULL
     
     args = gsub("\"","",args)
-    p = "[[:alnum:]]+="
+    p = "[A-Za-z0-9_-]+="
     m = gregexpr(p,args)
     args1 = unlist(regmatches(args,m))
     args1 = gsub('=','',args1)
-    #args1 = unlist(str_extract_all(args,"[[:alnum:]]+(?==)")) # requires stringr lib
-    args2 = unlist(strsplit(args," *[[:alnum:]]+="))
+    #args1 = unlist(str_extract_all(args,"[A-Za-z0-9_-]+(?==)")) # requires stringr lib
+    args2 = unlist(strsplit(args," *[A-Za-z0-9_-]+="))
     args2 = args2[-1]
     names(args2) <- args1
     return(toJSON(args2))

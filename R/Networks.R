@@ -626,10 +626,10 @@ cloneNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' bring along their source and target nodes.
 #' @param nodes list of node names or keyword: selected, unselected or all. Default
 #' is currently selected nodes.
-#' @param nodes.by.col name of node table column corresponding to provided nodes list; default is 'name'
+#' @param nodes.by.col name of node table column corresponding to provided nodes list; default is 'SUID'
 #' @param edges list of edge names or keyword: selected, unselected or all. Default
 #' is currently selected edges.
-#' @param edges.by.col name of edge table column corresponding to provided edges list; default is 'name'
+#' @param edges.by.col name of edge table column corresponding to provided edges list; default is 'SUID'
 #' @param exclude.edges (boolean) whether to exclude connecting edges; default is FALSE
 #' @param subnetwork.name name of new subnetwork to be created;
 #' default is to add a numbered suffix to source network name
@@ -644,14 +644,14 @@ cloneNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' createSubnetwork()
 #' createSubnetwork("all")
 #' createSubnetwork(subnetwork.name="mySubnetwork")
-#' createSubnetwork(c("node 1","node 2","node 3"))
+#' createSubnetwork(c("node 1","node 2","node 3"),"name")
 #' createSubnetwork(c("AKT1","TP53","PIK3CA"),"display name")
 #' createSubnetwork(edges="all") #subnetwork of all connected nodes
 #' }
 createSubnetwork <- function(nodes=NULL,
-                             nodes.by.col = 'name',
+                             nodes.by.col = 'SUID',
                              edges=NULL,
-                             edges.by.col = 'name',
+                             edges.by.col = 'SUID',
                              exclude.edges = FALSE,
                              subnetwork.name=NULL,
                              network = NULL,
@@ -897,6 +897,26 @@ createNetworkFromDataFrames <-
         
         return(network.suid)
     }
+
+# ------------------------------------------------------------------------------
+#' @title Import Network From File
+#'
+#' @description Loads a network from specified file
+#' @param file Name of file in any of the supported formats (e.g., SIF, GML, XGMML, etc).
+#' If NULL, a demo network file in SIF format is loaded.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return (int) network SUID
+#' @examples \donttest{
+#' importNetworkFromFile()
+#' }
+#' @export
+importNetworkFromFile <- function(file=NULL, base.url=.defaultBaseUrl){
+    if(is.null(file))
+        file <- system.file("extdata","galFiltered.sif",package="RCy3")
+    commandsPOST(paste('network load file file',file,sep = "="))
+}
 
 # ==============================================================================
 # V. Network extraction
