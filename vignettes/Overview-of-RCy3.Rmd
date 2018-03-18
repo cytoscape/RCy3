@@ -4,13 +4,13 @@ author: "by Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Overview of RCy3}
+  %\VignetteIndexEntry{1. Overview of RCy3}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-#  highlight = FALSE,
+  highlight = FALSE,
   eval=FALSE
 )
 ```
