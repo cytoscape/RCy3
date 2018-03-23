@@ -235,13 +235,11 @@ setLayoutProperties <- function (layout.name, properties.list, base.url = .defau
             write (sprintf ('%s is not a property in layout %s', prop, layout.name), stderr ())
         } else {
             new.value <- properties.list [[prop]]
-            all.properties <- list(unlist(all.properties), list("name"=prop, "value"=new.value))
+            each.property <- list("name"=prop, "value"=new.value)
+            res <- cyrestPUT(paste("apply/layouts", as.character(layout.name), "parameters", sep="/"),
+                             body=list(each.property), 
+                             base.url=base.url)
         }
     }
-    res <- cyrestPUT(paste("apply/layouts", as.character(layout.name), "parameters", sep="/"),
-                     body=all.properties, 
-                     base.url=base.url)
-    invisible(res)
-    
 }
 
