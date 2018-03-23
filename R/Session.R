@@ -49,7 +49,7 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
 openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
     type = 'file'
     if(is.null(file.location))
-        file.location <- '../sampleData/sessions/Yeast Perturbation.cys'
+        file.location <- './sampleData/sessions/Yeast Perturbation.cys'
     if(startsWith(file.location,'http'))
         type = 'url'
     write(sprintf("Opening %s...",file.location), stderr())
