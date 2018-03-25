@@ -11,14 +11,14 @@ deleteGroup(groups = NULL, groups.by.col = "SUID", network = NULL,
 \item{groups}{(optional) List of group SUIDs, names, other column values or keywords: all, selected,
 unselected. Default is the currently selected group.}
 
+\item{groups.by.col}{name of node table column corresponding to provided groups 
+list. Default is 'SUID'.}
+
 \item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
-
-\item{nodes.by.col}{name of node table column corresponding to provided groups 
-list. Default is 'SUID'.}
 }
 \value{
 None
