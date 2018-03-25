@@ -370,6 +370,126 @@ commandsRun<-function(cmd.string, base.url = .defaultBaseUrl){
     commandsGET(cmd.string,base.url)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Command Echo
+#'
+#' @description The echo command will display the value of the variable specified 
+#' by the variableName argument, or all variables if variableName is not provided.
+#' @param variable.name (optional) The name of the variable to display. Default is 
+#' to display all variable values using "*".
+#' @param base.url (optional) Ignore unless you need to specify a custom domain, 
+#' port or version to connect to the CyREST API. Default is http://localhost:1234 
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Value of variable
+#' @examples \donttest{
+#' commandEcho()
+#' }
+#' @export
+commandEcho <- function(variable.name="*", base.url = .defaultBaseUrl){
+    commandsPOST(paste0('command echo variableName="',variable.name,'"'),
+                 base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Command Open Dialog
+#'
+#' @description The command line dialog provides a field to enter commands and 
+#' view results. It also provides the help command to display namespaces, 
+#' commands, and arguments
+#' @param base.url (optional) Ignore unless you need to specify a custom domain, 
+#' port or version to connect to the CyREST API. Default is http://localhost:1234 
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' commandOpenDialog()
+#' }
+#' @export
+commandOpenDialog <- function(base.url = .defaultBaseUrl){
+    commandsPOST('command open dialog',
+                 base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Command Pause
+#'
+#' @description The pause command displays a dialog with the text provided in the 
+#' message argument and waits for the user to click OK.
+#' @param message (optional) Text to display in pause dialog
+#' @param base.url (optional) Ignore unless you need to specify a custom domain, 
+#' port or version to connect to the CyREST API. Default is http://localhost:1234 
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' commandPause('Please click OK to continue.')
+#' }
+#' @export
+commandPause <- function(message="", base.url = .defaultBaseUrl){
+    commandsPOST(paste0('command pause message="',message,'"'),
+                 base.url = base.url)
+}
+# ------------------------------------------------------------------------------
+#' @title Command Quit
+#'
+#' @description This command causes Cytoscape to exit. It is typically used at 
+#' the end of a script file
+#' @param base.url (optional) Ignore unless you need to specify a custom domain, 
+#' port or version to connect to the CyREST API. Default is http://localhost:1234 
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' commandQuit()
+#' }
+#' @export
+commandQuit <- function(base.url = .defaultBaseUrl){
+    commandsPOST('command quit',
+                 base.url = base.url)
+}
+# ------------------------------------------------------------------------------
+#' @title Command Run File
+#'
+#' @description The run command will execute a command script from the file pointed 
+#' to by the file argument, which should contain Cytoscape commands, one per line. 
+#' Arguments to the script are provided by the args argument
+#' @param file Path to command script file
+#' @param args The script arguments as key:value pairs separated by commas
+#' @param base.url (optional) Ignore unless you need to specify a custom domain, 
+#' port or version to connect to the CyREST API. Default is http://localhost:1234 
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' commandRunFile('/path/to/my/file.txt')
+#' }
+#' @export
+commandRunFile <- function(file, args=NULL, base.url = .defaultBaseUrl){
+    args.str <- ""
+    if(!is.null(args))
+        args.str <- paste0(' args="',args,'"')
+    
+    commandsPOST(paste0('command run',args.str,' file="',file,'"'),
+                 base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Command Sleep
+#'
+#' @description The sleep command will pause processing for a period of time as 
+#' specified by duration seconds. It is typically used as part of a command script.
+#' @param duration (optional) The time in seconds to sleep
+#' @param base.url (optional) Ignore unless you need to specify a custom domain, #' port or version to connect to the CyREST API. Default is http://localhost:1234 #' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' commandSleep(5)
+#' }
+#' @export
+commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
+    dur.str <- ""
+    if(!is.null(duration))
+        dur.str <- paste0(' duration="',duration,'"')
+    
+    commandsPOST(paste0('command sleep',dur.str),
+                 base.url = base.url)
+}
+
 # ==============================================================================
 # III. Internal functions
 # 
