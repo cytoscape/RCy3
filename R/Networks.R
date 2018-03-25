@@ -131,9 +131,9 @@ getNetworkName <- function(suid = NULL, base.url = .defaultBaseUrl) {
         cyrestGET('networks.names',
                   list(
                       column = "suid",
-                      query = network.suid,
-                      base.url = base.url
-                  ))
+                      query = network.suid),
+                  base.url = base.url
+                  )
     network.name <- unname(res)[[1]]$name
     return(network.name)
 }
