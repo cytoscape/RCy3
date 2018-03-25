@@ -17,10 +17,10 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+None
 }
 \description{
-FUNCTION_DESCRIPTION
+Replaces the group node with member nodes for a set of groups.
 }
 \examples{
 \donttest{
