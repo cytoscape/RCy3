@@ -195,3 +195,65 @@ cybrowserVersion <- function(base.url = .defaultBaseUrl){
     commandsPOST('cybrowser version',
                  base.url = base.url)
 }
+
+# ------------------------------------------------------------------------------
+#' @title Diffusion Basic
+#'
+#' @description Diffusion will send the selected network view and its selected nodes 
+#' to a web-based REST service to calculate network propagation. Results are returned 
+#' and represented by columns in the node table.
+#' @details Columns are created for each execution of Diffusion and their names 
+#' are returned in the response. The nodes you would like to use as input should 
+#' be selected. This will be used to generate the contents of the diffusion_input 
+#' column, which represents the query vector and corresponds to h in the diffusion
+#'  equation.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain, 
+#' port or version to connect to the CyREST API. Default is http://localhost:1234 
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Version number
+#' @examples \donttest{
+#' diffusionBasic()
+#' }
+#' @export
+diffusionBasic <- function(base.url = .defaultBaseUrl){
+    commandsPOST('diffusion diffuse',
+                 base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Diffusion Advanced
+#'
+#' @description Diffusion will send the selected network view and its selected nodes 
+#' to a web-based REST service to calculate network propagation. Results are returned 
+#' and represented by columns in the node table. Advanced operation supports
+#' parameters.
+#' @details Columns are created for each execution of Diffusion and their names 
+#' are returned in the response. The nodes you would like to use as input should 
+#' be selected. This will be used to generate the contents of the diffusion_input 
+#' column, which represents the query vector and corresponds to h in the diffusion
+#' equation.
+#' @param heat.column.name (optional) A node column name intended to override the 
+#' default table column 'diffusion_input'. This represents the query vector and 
+#' corresponds to h in the diffusion equation.
+#' @param time (optional) The extent of spread over the network. This corresponds 
+#' to t in the diffusion equation.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain, 
+#' port or version to connect to the CyREST API. Default is http://localhost:1234 
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Version number
+#' @examples \donttest{
+#' diffusionAdvanced()
+#' }
+#' @export
+diffusionAdvanced <- function(heat.column.name=NULL, time=NULL, base.url = .defaultBaseUrl){
+    heat.str <- ""
+    if(!is.null(heat.column.name))
+        heat.str <- paste0(' heatColumnName="',heat.column.name,'"')
+    
+    time.str <- ""
+    if(!is.null(time))
+        time.str <- paste0(' time="',time,'"')
+    
+    commandsPOST(paste0('diffusion diffuse_advanced',heat.str,time.str),
+                 base.url = base.url)
+}
