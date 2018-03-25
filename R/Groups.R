@@ -225,7 +225,7 @@ RemoveFromGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID',
 #' @description Deletes one or more groups, while leaving member nodes intact.
 #' @param groups (optional) List of group SUIDs, names, other column values or keywords: all, selected,
 #' unselected. Default is the currently selected group.
-#' @param nodes.by.col name of node table column corresponding to provided groups 
+#' @param groups.by.col name of node table column corresponding to provided groups 
 #' list. Default is 'SUID'.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
