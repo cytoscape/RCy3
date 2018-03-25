@@ -467,7 +467,7 @@ commandsRun<-function(cmd.string, base.url = .defaultBaseUrl){
     names(args2) <- args1
     return(toJSON(args2))
 }
-# takes a named list and makes a string for GET query urls
+# Takes a named list and makes a string for GET query urls
 #' @importFrom utils URLencode
 .prepGetQueryArgs <- function(named.args){
     args1 <- names(named.args)
