@@ -7,6 +7,9 @@
 \usage{
 getWindowIDdeprecated
 }
+\value{
+Network SUID
+}
 \description{
 This function is only provided for compatibility with older
 versions of RCy3 and will be defunct and removed in the next releases.

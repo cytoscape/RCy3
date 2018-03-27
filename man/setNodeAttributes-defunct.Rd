@@ -7,6 +7,9 @@
 \usage{
 setNodeAttributesdefunct
 }
+\value{
+None
+}
 \description{
 This function is defunct and removed in the next releases.
 }

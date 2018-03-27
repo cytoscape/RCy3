@@ -18,6 +18,7 @@
 #' @description This function is defunct and will be removed in the next release.
 #' Use the replacement function instead: 
 #' \link{layoutCopycat}
+#' @return None
 #' @aliases getNodePositiondefunct
 #' @usage getNodePositiondefunct
 #' @export
@@ -31,6 +32,7 @@ getNodePosition <- function (obj, node.names) {
 #' @description This function is defunct and will be removed in the next release.
 #' Use the replacement function instead: 
 #' \link{layoutCopycat}
+#' @return None
 #' @aliases setNodePositiondefunct
 #' @usage setNodePositiondefunct
 #' @export
@@ -44,6 +46,7 @@ setNodePosition <- function (obj, node.names) {
 #' @description This function is defunct and will be removed in the next release.
 #' Use the replacement function instead: 
 #' \link{layoutCopycat}
+#' @return None
 #' @aliases saveLayoutdefunct
 #' @usage saveLayoutdefunct
 #' @export
@@ -57,6 +60,7 @@ saveLayout<- function (obj, filename, timestamp.in.filename=FALSE) {
 #' @description This function is defunct and will be removed in the next release.
 #' Use the replacement function instead: 
 #' \link{layoutCopycat}
+#' @return None
 #' @aliases restoreLayoutdefunct
 #' @usage restoreLayoutdefunct
 #' @export
@@ -70,6 +74,7 @@ restoreLayout<-function (obj, filename) {
 #' @description This function is defunct and will be removed in the next release.
 #' Use the replacement function instead: 
 #' \link{createGraphFromNetwork}
+#' @return None
 #' @aliases restoreLayoutdefunct
 #' @usage restoreLayoutdefunct
 #' @export
@@ -82,6 +87,7 @@ getGraph <- function(obj) {
 #' 
 #' @description This function is only provided for compatibility with older
 #' versions of RCy3 and will be defunct and removed in the next releases.
+#' @return None
 #' @aliases addGraphToGraphdefunct
 #' @usage addGraphToGraphdefunct
 #' @export
@@ -95,6 +101,7 @@ addGraphToGraph <- function (obj, other.graph) {
 #' DEFUNCT: setEdgeAttributes
 #' 
 #' @description This function is defunct and removed in the next releases.
+#' @return None
 #' @aliases setEdgeAttributesdefunct
 #' @usage setEdgeAttributesdefunct
 #' @export
@@ -106,6 +113,7 @@ setEdgeAttributes<-function(obj, attribute.name){
 #' DEFUNCT: setNodeAttributes
 #' 
 #' @description This function is defunct and removed in the next releases.
+#' @return None
 #' @aliases setNodeAttributesdefunct
 #' @usage setNodeAttributesdefunct
 #' @export
@@ -118,6 +126,7 @@ setNodeAttributes<-function(obj, attribute.name){
 #' 
 #' @description This function is only provided for compatibility with older
 #' versions of RCy3 and will be defunct and removed in the next releases.
+#' @return None
 #' @aliases sendNodesdefunct
 #' @usage sendNodesdefunct
 #' @export
@@ -129,6 +138,7 @@ sendNodes<-function(obj){
 #' 
 #' @description This function is only provided for compatibility with older
 #' versions of RCy3 and will be defunct and removed in the next releases.
+#' @return None
 #' @aliases sendEdgesdefunct
 #' @usage sendEdgesdefunct
 #' @export
@@ -144,6 +154,7 @@ sendEdges<-function(obj){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement variable instead: base.url
 #' Rely on the default value or overwrite with custom host and port details.
+#' @return None
 #' @aliases CytoscapeConnectiondeprecated
 #' @usage CytoscapeConnectiondeprecated
 #' @export
@@ -161,6 +172,7 @@ CytoscapeConnection<-function(host, port){
 #' Use the replacement function instead: 
 #' \link{createNetworkFromGraph}
 #' Rely on the default value or overwrite with custom host and port details.
+#' @return Network SUID
 #' @aliases CytoscapeWindowdeprecated
 #' @usage CytoscapeWindowdeprecated
 #' @export
@@ -178,6 +190,7 @@ CytoscapeWindow<-function(title, graph=new('graphNEL', edgemode='directed'), uri
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{cloneNetwork}
+#' @return Network SUID
 #' @aliases copyCytoscapeNetworkdeprecated
 #' @usage copyCytoscapeNetworkdeprecated
 #' @export
@@ -192,6 +205,7 @@ copyCytoscapeNetwork<-function(obj,new.title,return.graph = FALSE) {
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{createNetworkFromGraph}
+#' @return Network SUID
 #' @aliases createWindowdeprecated
 #' @usage createWindowdeprecated
 #' @export
@@ -206,6 +220,7 @@ createWindow<-function(obj) {
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{createSubnetwork}
+#' @return Network SUID
 #' @aliases createWindowFromSelectiondeprecated
 #' @usage createWindowFromSelectiondeprecated
 #' @export
@@ -220,6 +235,7 @@ createWindowFromSelection<-function(obj,new.windowTitle,return.graph){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{deleteAllNetworks}
+#' @return None
 #' @aliases deleteAllWindowsdeprecated
 #' @usage deleteAllWindowsdeprecated
 #' @export
@@ -234,6 +250,7 @@ deleteAllWindows<-function(obj){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{deleteNetwork}
+#' @return None
 #' @aliases deleteWindowdeprecated
 #' @usage deleteWindowdeprecated
 #' @export
@@ -248,6 +265,7 @@ deleteWindow<-function(obj,window.title){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{getNetworkSuid}
+#' @return Network SUID
 #' @aliases existing.CytoscapeWindowdeprecated
 #' @usage existing.CytoscapeWindowdeprecated
 #' @export
@@ -262,6 +280,7 @@ existing.CytoscapeWindow<-function(title, host='localhost', port=1234, copy.grap
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{createGraphFromNetwork}
+#' @return Network SUID
 #' @aliases getGraphFromCyWindowdeprecated
 #' @usage getGraphFromCyWindowdeprecated
 #' @export
@@ -276,6 +295,7 @@ getGraphFromCyWindow<-function(obj,window.title){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{getNetworkCount}
+#' @return Integer
 #' @aliases getWindowCountdeprecated
 #' @usage getWindowCountdeprecated
 #' @export
@@ -290,6 +310,7 @@ getWindowCount<-function(obj){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{getNetworkSuid}
+#' @return Network SUID
 #' @aliases getWindowIDdeprecated
 #' @usage getWindowIDdeprecated
 #' @export
@@ -304,6 +325,7 @@ getWindowID<-function(obj,window.title){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{getNetworkList}
+#' @return List of networks
 #' @aliases getWindowListdeprecated
 #' @usage getWindowListdeprecated
 #' @export
@@ -318,6 +340,7 @@ getWindowList<-function(obj){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{cytoscapeVersionInfo}
+#' @return Version information
 #' @aliases pluginVersiondeprecated
 #' @usage pluginVersiondeprecated
 #' @export
@@ -332,6 +355,7 @@ pluginVersion<-function(obj){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{renameNetwork}
+#' @return None
 #' @aliases renameCytoscapeNetworkdeprecated
 #' @usage renameCytoscapeNetworkdeprecated
 #' @export
@@ -346,6 +370,7 @@ renameCytoscapeNetwork<-function(obj, new.title, return.graph = FALSE) {
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{selectFirstNeighbors}
+#' @return List of node SUIDs
 #' @aliases selectFirstNeighborsOfSelectedNodesdeprecated
 #' @usage selectFirstNeighborsOfSelectedNodesdeprecated
 #' @export
@@ -360,6 +385,7 @@ selectFirstNeighborsOfSelectedNodes<-function (obj) {
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{selectFirstNeighbors}
+#' @return List of node SUIDs
 #' @aliases sfndeprecated
 #' @usage sfndeprecated
 #' @export
@@ -375,6 +401,7 @@ sfn<-function (obj) {
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{exportImage}
+#' @return None
 #' @aliases saveImagedeprecated
 #' @usage saveImagedeprecated
 #' @export
@@ -391,6 +418,7 @@ saveImage<-function(obj, file.name, image.type, h = 600){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{setVisualStyle}
+#' @return None
 #' @aliases redrawdeprecated
 #' @usage redrawdeprecated
 #' @export
@@ -406,6 +434,7 @@ redraw<-function(obj){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{getVisualPropertyNames}
+#' @return List of property names
 #' @aliases getDirectlyModifiableVisualPropertiesdeprecated
 #' @usage getDirectlyModifiableVisualPropertiesdeprecated
 #' @export
@@ -421,6 +450,7 @@ getDirectlyModifiableVisualProperties<-function(obj, style.name){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{setNetworkCenterBypass}
+#' @return None
 #' @aliases setCenterdeprecated
 #' @usage setCenterdeprecated
 #' @export
@@ -436,6 +466,7 @@ setCenter<-function(obj, x, y){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{getNetworkZoom}
+#' @return Network zoom factor
 #' @aliases getZoomdeprecated
 #' @usage getZoomdeprecated
 #' @export
@@ -450,6 +481,7 @@ getZoom<-function(obj){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{getNetworkCenter}
+#' @return Network center
 #' @aliases getCenterdeprecated
 #' @usage getCenterdeprecated
 #' @export
@@ -465,6 +497,7 @@ getCenter<-function(obj){
 #' versions of RCy3 and will be defunct and removed in the next releases.
 #' Use the replacement function instead: 
 #' \link{setNetworkZoomBypass}
+#' @return None
 #' @aliases setZoom_deprecated
 #' @usage setZoom_deprecated
 #' @export
