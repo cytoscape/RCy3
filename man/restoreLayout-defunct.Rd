@@ -11,6 +11,11 @@ restoreLayoutdefunct
 
 restoreLayoutdefunct
 }
+\value{
+None
+
+None
+}
 \description{
 This function is defunct and will be removed in the next release.
 Use the replacement function instead: 

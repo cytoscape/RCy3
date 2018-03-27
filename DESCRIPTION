@@ -6,7 +6,7 @@ Date: 2018-03-25
 Author: Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 Maintainer: Alexander Pico <alex.pico@gladstone.ucsf.edu>, Tanja Muetze <tanja.muetze14@alumni.imperial.ac.uk>, Paul Shannon <pshannon@systemsbiology.org> 
 Depends: R (>= 3.3)
-Imports: httr, methods, RCurl, RJSONIO, XML, utils, BiocGenerics, igraph, stats, graph
+Imports: httr, methods, RJSONIO, XML, utils, BiocGenerics, igraph, stats, graph
 Suggests: RUnit, RColorBrewer, knitr
 SystemRequirements: Cytoscape (>= 3.6.0), CyREST (>= 3.6.0)
 Description: Vizualize, analyze and explore networks using Cytoscape via R.
