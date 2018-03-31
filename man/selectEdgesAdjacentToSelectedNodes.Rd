@@ -15,10 +15,11 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+Lists of SUIDs for currently selected nodes and edges
 }
 \description{
-FUNCTION_DESCRIPTION
+Takes currently selected nodes and adds to the selection all edges
+connected to those nodes, regardless of directionality.
 }
 \examples{
 \donttest{

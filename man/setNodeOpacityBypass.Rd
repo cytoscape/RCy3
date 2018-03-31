@@ -8,9 +8,9 @@ setNodeOpacityBypass(node.names, new.values, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{DESCRIPTION}
+\item{node.names}{List of node names}
 
-\item{new.values}{DESCRIPTION}
+\item{new.values}{List of values to set, or single value}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}

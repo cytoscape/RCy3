@@ -232,7 +232,7 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #' @title Export Network 
 #'
 #' @description Export a network to one of mulitple file formats
-#' @param filename DESCRIPTION
+#' @param filename Full path and name to exported file
 #' @param type File type. CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive). 
 #' Default is SIF.
 #' @param network (optional) Name or SUID of a network or view. Default is the 
@@ -276,12 +276,12 @@ exportNetwork <- function (filename=NULL, type=NULL,
 # ------------------------------------------------------------------------------
 #' @title Delete Network
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Delete a network from the current Cytoscape session.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' deleteNetwork()
 #' }
@@ -295,11 +295,11 @@ deleteNetwork <- function (network = NULL, base.url = .defaultBaseUrl) {
 # ------------------------------------------------------------------------------
 #' @title Delete All Networks
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Delete all networks from the current Cytoscape session.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' deleteAllNetworks()
 #' }
@@ -734,7 +734,7 @@ createNetworkFromIgraph <- function(igraph,
 #' @title Create Network From Graph
 #'
 #' @description Creates a Cytoscape network from a Bioconductor graph.
-#' @param graph DESCRIPTION
+#' @param graph A GraphNEL object
 #' @param title (char) network name
 #' @param collection (char) network collection name
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,

@@ -8,9 +8,9 @@ setNodeShapeBypass(node.names, new.shapes, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{DESCRIPTION}
+\item{node.names}{List of node names}
 
-\item{new.shapes}{DESCRIPTION}
+\item{new.shapes}{List of shapes, or single value. See \link{getNodeShapes}.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
@@ -23,7 +23,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Override the shape for particular nodes.
 }
 \details{
 This method permanently overrides any default values or mappings 

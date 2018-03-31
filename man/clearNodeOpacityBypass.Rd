@@ -8,7 +8,7 @@ clearNodeOpacityBypass(node.names, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{DESCRIPTION}
+\item{node.names}{List of node names}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}

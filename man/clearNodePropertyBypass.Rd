@@ -8,9 +8,9 @@ clearNodePropertyBypass(node.names, visual.property, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{DESCRIPTION}
+\item{node.names}{List of node names}
 
-\item{visual.property}{DESCRIPTION}
+\item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}

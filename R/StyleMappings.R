@@ -134,9 +134,9 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
                                 equal=visual.prop.values[2], 
                                 greater=visual.prop.values[2]) 
             points[[colValCount]] <- list(value=table.column.values[colValCount],
-                                lesser=visual.prop.values[colValCount+1],
-                                equal=visual.prop.values[colValCount+1], 
-                                greater=visual.prop.values[colValCount+2]) 
+                                          lesser=visual.prop.values[colValCount+1],
+                                          equal=visual.prop.values[colValCount+1], 
+                                          greater=visual.prop.values[colValCount+2]) 
         }
         else if (propValCount-colValCount == 0) {
             for (i in 1:colValCount) {
@@ -178,7 +178,7 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
     
     # check if vp exists already
     res <- cyrestGET(paste('styles', style.name,'mappings',sep = '/')
-                           ,base.url=base.url)
+                     ,base.url=base.url)
     vp.list <- lapply(res, function(x) unname(x['visualProperty'][[1]]))
     if(visual.prop.name %in% vp.list){
         exists = TRUE
@@ -188,13 +188,13 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
     
     if(exists==TRUE){     
         invisible(cyrestPUT(paste('styles', style.name,'mappings',visual.prop.name, sep = '/'),
-                      body=list(mapping), 
-                      base.url=base.url))
+                            body=list(mapping), 
+                            base.url=base.url))
     }
     else {   
         invisible(cyrestPOST(paste('styles', style.name,'mappings',sep = '/'),
-                       body=list(mapping), 
-                       base.url=base.url))
+                             body=list(mapping), 
+                             base.url=base.url))
     }
 }
 
@@ -208,11 +208,14 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
 #' @title Set Node Tooltip Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setNodeTooltipMapping()
 #' }
@@ -229,11 +232,14 @@ setNodeTooltipMapping <- function (table.column, style.name = 'default',
 #' @title Set Node Label Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setNodeLabelMapping()
 #' }
@@ -250,15 +256,18 @@ setNodeLabelMapping <- function (table.column, style.name = 'default',
 #' @title Set Node Color Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
-#' @param colors DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param colors List of hex colors to map to table.column.values
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.color DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param default.color Hex color to set as default
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setNodeColorMapping()
 #' }
@@ -298,15 +307,18 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
 #' @title Set Node Combo Opacity Mapping
 #'
 #' @description Sets opacity for node fill, border and label all together.
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param opacities (integer) values between 0 and 255; 0 is invisible
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.opacity DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param default.opacity Opacity value to set as default for all unmapped values
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setNodeComboOpacityMapping()
 #' }
@@ -315,7 +327,7 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
                                         opacities=NULL, mapping.type='c',
                                         default.opacity=NULL, style.name='default', 
                                         network=NULL, base.url=.defaultBaseUrl) {
-
+    
     # check if opacities are formatted correctly
     for (o in opacities){
         if (o < 0 || o > 255){
@@ -378,22 +390,25 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
 #' @title Set Node Border Color Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param colors (integer) values between 0 and 255; 0 is invisible
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.color DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param default.color Hex color to set as default
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setNodeBorderColorMapping()
 #' }
 #' @export
 setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
-                                 mapping.type='c', default.color=NULL, style.name='default', 
-                                 network=NULL, base.url=.defaultBaseUrl) {
+                                       mapping.type='c', default.color=NULL, style.name='default', 
+                                       network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
         if (.isNotHexColor(color)) return()
@@ -426,15 +441,18 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
 #' @title Set Node Border Width Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
-#' @param widths DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param widths List of width values to map to table.column.values
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.width DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param default.width Width value to set as default for all unmapped values 
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setNodeBorderWidthMapping()
 #' }
@@ -469,14 +487,17 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
 #' @title Set Node Shape Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
-#' @param shapes DESCRIPTION
-#' @param default.shape DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param shapes List of shapes to map to table.column.values. See \link{getNodeShapes}
+#' @param default.shape Shape to set as default. See \link{getNodeShapes}
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setNodeShapeMapping()
 #' }
@@ -500,22 +521,25 @@ setNodeShapeMapping <- function (table.column, table.column.values, shapes,
 #' @title Set Node Size Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param sizes DESCRIPTION
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
 #' @param default.size DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setNodeSizeMapping()
 #' }
 #' @export
 setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NULL, 
-                                       mapping.type='c', default.size=NULL, style.name='default', 
-                                       network=NULL, base.url=.defaultBaseUrl) {
+                                mapping.type='c', default.size=NULL, style.name='default', 
+                                network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.size))
         setNodeSizeDefault(default.size, style.name, base.url=base.url)
@@ -546,11 +570,14 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
 #' @title Set Edge Tooltip Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setEdgeTooltipMapping()
 #' }
@@ -566,17 +593,20 @@ setEdgeTooltipMapping <- function (table.column, style.name = 'default',
 #' @title Set Edge Label Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setEdgeLabelMapping()
 #' }
 #' @export
 setEdgeLabelMapping <- function (table.column, style.name = 'default', 
-                                    network=NULL, base.url=.defaultBaseUrl) {
+                                 network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
     mvp <- mapVisualProperty("EDGE_LABEL", table.column, 'p')  
     updateStyleMapping(style.name, mvp, base.url = base.url)
@@ -586,15 +616,18 @@ setEdgeLabelMapping <- function (table.column, style.name = 'default',
 #' @title Set Edge Color Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
-#' @param colors DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param colors List of hex colors to map to table.column.values
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.color DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param default.color Hex color to set as default
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setNodeColorMapping()
 #' }
@@ -634,23 +667,26 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
 #' @title Set Edge Opacity Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param opacities (integer) values between 0 and 255; 0 is invisible
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.opacity DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param default.opacity Opacity value to set as default for all unmapped values
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setEdgeOpacityMapping()
 #' }
 #' @export
 setEdgeOpacityMapping <- function (table.column, table.column.values=NULL, 
-                                        opacities=NULL, mapping.type='c',
-                                        default.opacity=NULL, style.name='default', 
-                                        network=NULL, base.url=.defaultBaseUrl) {
+                                   opacities=NULL, mapping.type='c',
+                                   default.opacity=NULL, style.name='default', 
+                                   network=NULL, base.url=.defaultBaseUrl) {
     
     # check if opacities are formatted correctly
     for (o in opacities){
@@ -677,7 +713,7 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
                                   network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
         mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'p',
-                                  network=network, base.url = base.url)
+                                 network=network, base.url = base.url)
     } else {
         write(print("mapping.type not recognized."), stderr())
         return()
@@ -688,21 +724,24 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
 #' @title Set Edge Line Style Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param line.styles DESCRIPTION
 #' @param default.line.style DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setEdgeLineStyleMapping()
 #' }
 #' @export
 setEdgeLineStyleMapping <- function (table.column, table.column.values, line.styles, 
-                                 default.line.style='SOLID', style.name = 'default', 
-                                 network=NULL, base.url=.defaultBaseUrl) {
+                                     default.line.style='SOLID', style.name = 'default', 
+                                     network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.line.style))
         setEdgeLineStyleDefault(default.line.style, style.name, base.url=base.url)
@@ -719,22 +758,25 @@ setEdgeLineStyleMapping <- function (table.column, table.column.values, line.sty
 #' @title Set Edge Line Width Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
-#' @param widths DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param widths List of width values to map to table.column.values
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.width DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param default.width Width value to set as default for all unmapped values for all unmapped values.
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setEdgeLineWidthMapping()
 #' }
 #' @export
 setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, widths=NULL, 
-                                       mapping.type='c', default.width=NULL, style.name='default', 
-                                       network=NULL, base.url=.defaultBaseUrl) {
+                                     mapping.type='c', default.width=NULL, style.name='default', 
+                                     network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.width))
         setEdgeLineWidthDefault(default.width, style.name, base.url=base.url)
@@ -762,21 +804,24 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
 #' @title Set Edge Target Arrow Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
-#' @param shapes DESCRIPTION
-#' @param default.shape DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param shapes List of shapes to map to table.column.values. See \link{getArrowShapes}
+#' @param default.shape Shape to set as default. See \link{getArrowShapes}
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setEdgeTargetArrowMapping()
 #' }
 #' @export
 setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes, 
-                                     default.shape='ARROW', style.name = 'default', 
-                                     network=NULL, base.url=.defaultBaseUrl) {
+                                       default.shape='ARROW', style.name = 'default', 
+                                       network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.shape))
         setEdgeTargetArrowDefault(default.shape, style.name, base.url=base.url)
@@ -793,14 +838,17 @@ setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes
 #' @title Set Edge Source Arrow Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
-#' @param shapes DESCRIPTION
-#' @param default.shape DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param shapes List of shapes to map to table.column.values. See \link{getArrowShapes}
+#' @param default.shape Shape to set as default. See \link{getArrowShapes}
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setEdgeSourceArrowMapping()
 #' }
@@ -825,22 +873,25 @@ setEdgeSourceArrowMapping <- function (table.column, table.column.values, shapes
 #' @title Set Edge Target Arrow Color Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
-#' @param colors DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param colors List of hex colors to map to table.column.values
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.color DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param default.color Hex color to set as default
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setEdgeTargetArrowColorMapping()
 #' }
 #' @export
 setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
-                                 mapping.type='c', default.color=NULL, style.name='default', 
-                                 network=NULL, base.url=.defaultBaseUrl) {
+                                            mapping.type='c', default.color=NULL, style.name='default', 
+                                            network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
         if (.isNotHexColor(color)) return()
@@ -873,15 +924,18 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
 #' @title Set Edge Source Arrow Color Mapping
 #'
 #' @description FUNCTION_DESCRIPTION
-#' @param table.column DESCRIPTION
-#' @param table.column.values DESCRIPTION
-#' @param colors DESCRIPTION
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param colors List of hex colors to map to table.column.values
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.color DESCRIPTION
-#' @param style.name DESCRIPTION
-#' @param network DESCRIPTION
-#' @param base.url DESCRIPTION
-#' @return RETURN_DESCRIPTION
+#' @param default.color Hex color to set as default
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples \donttest{
 #' setEdgeSourceArrowColorMapping()
 #' }

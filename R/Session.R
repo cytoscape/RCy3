@@ -40,7 +40,7 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' openSession('/fullpath/mySession.CYS')
 #' }
@@ -59,16 +59,19 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title Close Session
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Closes the current session in Cytoscape, destroying all unsaved
+#' work. 
+#' @details A boolean for whether to save before closing is required since you
+#' could lose data by closing without saving.
 #' @param save.before.closing \code{boolean} Whether to save before closing the
-#' current session.
+#' current session. If FALSE, then all unsaved work will be lost.
 #' @param filename (optional) If \code{save.before.closing} is TRUE and the 
 #' session has not previously been saved, then the path and name of the session 
 #' file to save should be provided. Default is NULL.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
 #' closeSession(FALSE)
 #' closeSession(TRUE, '/fullpath/mySession')

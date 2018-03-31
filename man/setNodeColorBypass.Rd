@@ -8,9 +8,9 @@ setNodeColorBypass(node.names, new.colors, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{DESCRIPTION}
+\item{node.names}{List of node names}
 
-\item{new.colors}{DESCRIPTION}
+\item{new.colors}{List of hex colors, or single value}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
