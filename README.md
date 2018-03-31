@@ -52,6 +52,7 @@ install.packages("roxygen2")
 library(devtools,roxygen2)
 devtools::document()
 devtools::check()
+BiocCheck::BiocCheck('./')
 ```
 
 ### Testing
