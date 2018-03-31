@@ -8,7 +8,7 @@ setNetworkZoomBypass(new.value, bypass = FALSE, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{new.value}{DESCRIPTION}
+\item{new.value}{Zoom factor}
 
 \item{bypass}{Whether to set permanent bypass value. Default is \code{FALSE} 
 per common use of temporary zoom settings.}

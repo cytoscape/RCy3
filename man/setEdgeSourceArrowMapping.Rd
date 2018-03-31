@@ -9,22 +9,25 @@ setEdgeSourceArrowMapping(table.column, table.column.values, shapes,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{table.column}{DESCRIPTION}
+\item{table.column}{Name of Cytoscape table column to map values from}
 
-\item{table.column.values}{DESCRIPTION}
+\item{table.column.values}{List of values from Cytoscape table to be used in mapping}
 
-\item{shapes}{DESCRIPTION}
+\item{shapes}{List of shapes to map to table.column.values. See \link{getArrowShapes}}
 
-\item{default.shape}{DESCRIPTION}
+\item{default.shape}{Shape to set as default. See \link{getArrowShapes}}
 
-\item{style.name}{DESCRIPTION}
+\item{style.name}{Name of style; default is "default" style}
 
-\item{network}{DESCRIPTION}
+\item{network}{(optional) Name or SUID of the network. Default is the "current" 
+network active in Cytoscape.}
 
-\item{base.url}{DESCRIPTION}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+None
 }
 \description{
 FUNCTION_DESCRIPTION

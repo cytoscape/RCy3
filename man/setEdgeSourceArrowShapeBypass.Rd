@@ -4,13 +4,13 @@
 \alias{setEdgeSourceArrowShapeBypass}
 \title{Set Edge Source Arrow Shape Bypass}
 \usage{
-setEdgeSourceArrowShapeBypass(edge.names, new.values, network = NULL,
+setEdgeSourceArrowShapeBypass(edge.names, new.shapes, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.names}{DESCRIPTION}
+\item{edge.names}{List of edge names}
 
-\item{new.values}{DESCRIPTION}
+\item{new.shapes}{List of shapes, or single value. See \link{getArrowShapes}.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
@@ -23,7 +23,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Override the source arrow shape for particular edges.
 }
 \details{
 This method permanently overrides any default values or mappings 

@@ -8,9 +8,9 @@ setNodeSizeBypass(node.names, new.sizes, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{DESCRIPTION}
+\item{node.names}{List of node names}
 
-\item{new.sizes}{DESCRIPTION}
+\item{new.sizes}{List of size values, or single value}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}

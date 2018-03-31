@@ -4,13 +4,13 @@
 \alias{setEdgeFontFaceBypass}
 \title{Set Edge Font Face Bypass}
 \usage{
-setEdgeFontFaceBypass(edge.names, new.value, network = NULL,
+setEdgeFontFaceBypass(edge.names, new.fonts, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.names}{DESCRIPTION}
+\item{edge.names}{List of edge names}
 
-\item{new.value}{DESCRIPTION}
+\item{new.fonts}{List of font faces, or single value}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
@@ -23,7 +23,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Override the font face for particular edges.
 }
 \details{
 This method permanently overrides any default values or mappings 

@@ -9,7 +9,7 @@ closeSession(save.before.closing, filename = NULL,
 }
 \arguments{
 \item{save.before.closing}{\code{boolean} Whether to save before closing the
-current session.}
+current session. If FALSE, then all unsaved work will be lost.}
 
 \item{filename}{(optional) If \code{save.before.closing} is TRUE and the 
 session has not previously been saved, then the path and name of the session 
@@ -20,10 +20,15 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+None
 }
 \description{
-FUNCTION_DESCRIPTION
+Closes the current session in Cytoscape, destroying all unsaved
+work.
+}
+\details{
+A boolean for whether to save before closing is required since you
+could lose data by closing without saving.
 }
 \examples{
 \donttest{

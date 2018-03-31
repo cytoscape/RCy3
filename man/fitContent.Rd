@@ -8,7 +8,8 @@ fitContent(selected.only = FALSE, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{selected.only}{DESCRIPTION}
+\item{selected.only}{(Boolean) Whether to fit only current selection. Default 
+is false, i.e., to fit the entire network.}
 
 \item{network}{(optional) Name or SUID of a network or view. Default is the 
 "current" network active in Cytoscape. The first (presummably only) view 
@@ -19,10 +20,11 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+None
 }
 \description{
-FUNCTION_DESCRIPTION
+Zoom and pan network view to maximize either height or width of
+current network window.
 }
 \details{
 Takes first (presumably only) view associated with provided network

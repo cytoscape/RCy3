@@ -8,7 +8,7 @@ exportNetwork(filename = NULL, type = NULL, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{filename}{DESCRIPTION}
+\item{filename}{Full path and name to exported file}
 
 \item{type}{File type. CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive). 
 Default is SIF.}

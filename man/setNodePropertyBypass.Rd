@@ -8,11 +8,11 @@ setNodePropertyBypass(node.names, new.values, visual.property, bypass = TRUE,
   network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{DESCRIPTION}
+\item{node.names}{List of node names}
 
-\item{new.values}{DESCRIPTION}
+\item{new.values}{List of values to set, or single value}
 
-\item{visual.property}{DESCRIPTION}
+\item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}
 
 \item{bypass}{Whether to set permanent bypass value. Default is \code{TRUE}.}
 

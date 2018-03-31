@@ -8,9 +8,9 @@ setNetworkCenterBypass(x, y, bypass = FALSE, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{x}{DESCRIPTION}
+\item{x}{Coordinate value, increases going to the right.}
 
-\item{y}{DESCRIPTION}
+\item{y}{Coordinate value, increase going down.}
 
 \item{bypass}{Whether to set permanent bypass value. Default is \code{FALSE} 
 per common use of temporary center settings.}

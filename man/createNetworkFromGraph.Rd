@@ -8,7 +8,7 @@ createNetworkFromGraph(graph, title = "MyNetwork",
   collection = "myNetworkCollection", base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{graph}{DESCRIPTION}
+\item{graph}{A GraphNEL object}
 
 \item{title}{(char) network name}
 

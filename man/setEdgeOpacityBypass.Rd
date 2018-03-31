@@ -8,9 +8,9 @@ setEdgeOpacityBypass(edge.names, new.values, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.names}{DESCRIPTION}
+\item{edge.names}{List of edge names}
 
-\item{new.values}{DESCRIPTION}
+\item{new.values}{List of values to set, or single value}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
@@ -23,7 +23,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Override the opacity for particular edges.
 }
 \details{
 This method permanently overrides any default values or mappings 

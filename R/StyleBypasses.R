@@ -18,9 +18,9 @@
 #'
 #' @description Set bypass values for any node property of the specified nodes, 
 #' overriding default values and mappings defined by any visual style.
-#' @param node.names DESCRIPTION
-#' @param new.values DESCRIPTION
-#' @param visual.property DESCRIPTION
+#' @param node.names List of node names
+#' @param new.values List of values to set, or single value
+#' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param bypass Whether to set permanent bypass value. Default is \code{TRUE}. 
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -79,7 +79,7 @@ setNodePropertyBypass <- function(node.names,
                                    sep = "/"),
                              parameters = list(bypass=bypass),
                              body = list(list(visualProperty = visual.property,
-                                         value = new.value)),
+                                              value = new.value)),
                              base.url = base.url)
         }
     }
@@ -89,8 +89,8 @@ setNodePropertyBypass <- function(node.names,
 #'
 #' @description Clear bypass values for any node property of the specified nodes,
 #' effectively restoring any previously defined style defaults or mappings.
-#' @param node.names DESCRIPTION
-#' @param visual.property DESCRIPTION
+#' @param node.names List of node names
+#' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -134,9 +134,9 @@ clearNodePropertyBypass <-  function(node.names,
 #'
 #' @description Set bypass values for any edge property of the specified edges, 
 #' overriding default values and mappings defined by any visual style.
-#' @param edge.names DESCRIPTION
-#' @param new.values DESCRIPTION
-#' @param visual.property DESCRIPTION
+#' @param edge.names List of edge names
+#' @param new.values List of values to set, or single value
+#' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param bypass Whether to set permanent bypass value. Default is \code{TRUE}. 
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
@@ -193,7 +193,7 @@ setEdgePropertyBypass <- function(edge.names,
                                     sep = "/"),
                              parameters = list(bypass=bypass),
                              body = list(list(visualProperty = visual.property,
-                                         value = current.value)),
+                                              value = current.value)),
                              base.url = base.url)
         }
     }
@@ -203,8 +203,8 @@ setEdgePropertyBypass <- function(edge.names,
 #'
 #' @description Clear bypass values for any edge property of the specified edges,
 #' effectively restoring any previously defined style defaults or mappings.
-#' @param edge.names DESCRIPTION
-#' @param visual.property DESCRIPTION
+#' @param edge.names List of edge names
+#' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -248,8 +248,8 @@ clearEdgePropertyBypass <- function(edge.names,
 #'
 #' @description Set bypass values for any network property, overriding default 
 #' values defined by any visual style.
-#' @param new.value DESCRIPTION
-#' @param visual.property DESCRIPTION
+#' @param new.value Value to set
+#' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param bypass Whether to set permanent bypass value. Default is \code{TRUE}. 
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -288,7 +288,7 @@ setNetworkPropertyBypass <- function(new.value,
 #'
 #' @description Clear bypass values for any network property,
 #' effectively restoring any previously defined style defaults or mappings.
-#' @param visual.property DESCRIPTION
+#' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -363,8 +363,8 @@ unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @title Set Node Color Bypass
 #'
 #' @description Set the bypass value for fill color for the specified node or nodes. 
-#' @param node.names DESCRIPTION
-#' @param new.colors DESCRIPTION
+#' @param node.names List of node names
+#' @param new.colors List of hex colors, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -415,8 +415,8 @@ setNodeColorBypass <-
 #'
 #' @description Sets the bypass value of node size for one or more nodes. Only 
 #' applicable if node dimensions are locked. See \code{lockNodeDimensions}.
-#' @param node.names DESCRIPTION
-#' @param new.sizes DESCRIPTION
+#' @param node.names List of node names
+#' @param new.sizes List of size values, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -442,7 +442,7 @@ setNodeSizeBypass <- function (node.names,
                                new.sizes,
                                network = NULL,
                                base.url = .defaultBaseUrl) {
-
+    
     for (current.size in new.sizes) {
         # ensure the sizes are numbers
         if (!is.double(current.size)) {
@@ -466,9 +466,9 @@ setNodeSizeBypass <- function (node.names,
 # ------------------------------------------------------------------------------
 #' @title Set Node Width Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.widths DESCRIPTION
+#' @description Override the width for particular nodes.
+#' @param node.names List of node names
+#' @param new.widths List of width values, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -523,9 +523,9 @@ setNodeWidthBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Node Height Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.heights DESCRIPTION
+#' @description Override the height for particular nodes.
+#' @param node.names List of node names
+#' @param new.heights List of height values, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -579,9 +579,9 @@ setNodeHeightBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Node Label Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.labels DESCRIPTION
+#' @description Override the label for particular nodes.
+#' @param node.names List of node names
+#' @param new.labels List of labels, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -614,9 +614,9 @@ setNodeLabelBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Node Font Size Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.sizes DESCRIPTION
+#' @description Override the font size for particular nodes.
+#' @param node.names List of node names
+#' @param new.sizes List of size values, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -671,9 +671,9 @@ setNodeFontSizeBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Node Label Color Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.colors DESCRIPTION
+#' @description Override the label color for particular nodes.
+#' @param node.names List of node names
+#' @param new.colors List of hex colors, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -721,9 +721,9 @@ setNodeLabelColorBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Node Shape Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.shapes DESCRIPTION
+#' @description Override the shape for particular nodes.
+#' @param node.names List of node names
+#' @param new.shapes List of shapes, or single value. See \link{getNodeShapes}.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -793,9 +793,9 @@ setNodeShapeBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Node Border Width Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.sizes DESCRIPTION
+#' @description Override the border width for particular nodes.
+#' @param node.names List of node names
+#' @param new.sizes List of size values, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -851,9 +851,9 @@ setNodeBorderWidthBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Node Border Color Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.colors DESCRIPTION
+#' @description Override the border color for particular nodes.
+#' @param node.names List of node names
+#' @param new.colors List of hex colors, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -903,8 +903,8 @@ setNodeBorderColorBypass <-
 #'
 #' @description Set the bypass value for node fill, label and border opacity for 
 #' the specified node or nodes.
-#' @param node.names DESCRIPTION
-#' @param new.values DESCRIPTION
+#' @param node.names List of node names
+#' @param new.values List of values to set, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -966,7 +966,7 @@ setNodeOpacityBypass <-
 #' @description Clearn the bypass value for node fill, label and border opacity 
 #' for the specified node or nodes, effectively restoring any previously defined 
 #' style defaults or mappings.
-#' @param node.names DESCRIPTION
+#' @param node.names List of node names
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -998,9 +998,9 @@ clearNodeOpacityBypass <- function (node.names,
 # ------------------------------------------------------------------------------
 #' @title Set Node Fill Opacity Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.values DESCRIPTION
+#' @description Override the fill opacity for particular nodes.
+#' @param node.names List of node names
+#' @param new.values List of values to set, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1057,9 +1057,9 @@ setNodeFillOpacityBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Node Border Opacity Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.values DESCRIPTION
+#' @description Override the border opacity for particular nodes.
+#' @param node.names List of node names
+#' @param new.values List of values to set, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1114,9 +1114,9 @@ setNodeBorderOpacityBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Node Label Opacity Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param node.names DESCRIPTION
-#' @param new.values DESCRIPTION
+#' @description Override the label opacity for particular nodes.
+#' @param node.names List of node names
+#' @param new.values List of values to set, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1205,7 +1205,7 @@ hideSelectedNodes <-
 #'
 #' @description Hide (but do not delete) the specified node or nodes, by 
 #' setting the Visible property bypass value to false.
-#' @param node.names DESCRIPTION
+#' @param node.names List of node names
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1239,7 +1239,7 @@ hideNodes <-
 #'
 #' @description Unhide specified nodes that were previously hidden, by 
 #' clearing the Visible property bypass value.
-#' @param node.names DESCRIPTION
+#' @param node.names List of node names
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1271,9 +1271,9 @@ unhideNodes <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Opacity Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.values DESCRIPTION
+#' @description Override the opacity for particular edges.
+#' @param edge.names List of edge names
+#' @param new.values List of values to set, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1329,9 +1329,9 @@ setEdgeOpacityBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Color Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.value DESCRIPTION
+#' @description Override the color for particular edges.
+#' @param edge.names List of edge names
+#' @param new.colors List of hex colors, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1353,20 +1353,20 @@ setEdgeOpacityBypass <-
 #' @export
 setEdgeColorBypass <-
     function (edge.names,
-              new.value,
+              new.colors,
               network = NULL,
               base.url = .defaultBaseUrl) {
-        for (color in new.value) {
+        for (color in new.colors) {
             if (.isNotHexColor(color)) {
                 return()
             }
         }
         setEdgePropertyBypass(edge.names,
-                              new.value,
+                              new.colors,
                               "EDGE_STROKE_UNSELECTED_PAINT",
                               network=network, base.url=base.url)
         setEdgePropertyBypass(edge.names,
-                              new.value,
+                              new.colors,
                               "EDGE_UNSELECTED_PAINT",
                               network=network, base.url=base.url)
     }
@@ -1374,9 +1374,9 @@ setEdgeColorBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Label Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.value DESCRIPTION
+#' @description Override the label for particular edges.
+#' @param edge.names List of edge names
+#' @param new.labels List of labels, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1398,18 +1398,18 @@ setEdgeColorBypass <-
 #' @export
 setEdgeLabelBypass <-
     function(edge.names,
-             new.value,
+             new.labels,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        setEdgePropertyBypass(edge.names, new.value, "EDGE_LABEL", network=network, base.url=base.url)
+        setEdgePropertyBypass(edge.names, new.labels, "EDGE_LABEL", network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
 #' @title Set Edge Font Face Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.value DESCRIPTION
+#' @description Override the font face for particular edges.
+#' @param edge.names List of edge names
+#' @param new.fonts List of font faces, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1431,11 +1431,11 @@ setEdgeLabelBypass <-
 #' @export
 setEdgeFontFaceBypass <-
     function(edge.names,
-             new.value,
+             new.fonts,
              network = NULL,
              base.url = .defaultBaseUrl) {
         setEdgePropertyBypass(edge.names,
-                              new.value,
+                              new.fonts,
                               "EDGE_LABEL_FONT_FACE",
                               network=network, base.url=base.url)
     }
@@ -1443,9 +1443,9 @@ setEdgeFontFaceBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Font Size Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.value DESCRIPTION
+#' @description Override the font size for particular edges.
+#' @param edge.names List of edge names
+#' @param new.sizes List of size values, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1467,12 +1467,12 @@ setEdgeFontFaceBypass <-
 #' @export
 setEdgeFontSizeBypass <-
     function(edge.names,
-             new.value,
+             new.sizes,
              network = NULL,
              base.url = .defaultBaseUrl) {
         size.type.errors = 0
         
-        for (current.size in new.value) {
+        for (current.size in new.sizes) {
             # ensure the sizes are valid numbers
             if (!is.numeric(current.size)) {
                 write(
@@ -1489,7 +1489,7 @@ setEdgeFontSizeBypass <-
         
         if (size.type.errors < 1) {
             setEdgePropertyBypass(edge.names,
-                                  new.value,
+                                  new.sizes,
                                   "EDGE_LABEL_FONT_SIZE",
                                   network=network, base.url=base.url)
         }
@@ -1498,9 +1498,9 @@ setEdgeFontSizeBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Label Color Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.value DESCRIPTION
+#' @description Override the label color for particular edges.
+#' @param edge.names List of edge names
+#' @param new.colors List of hex colors, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1522,10 +1522,10 @@ setEdgeFontSizeBypass <-
 #' @export
 setEdgeLabelColorBypass <-
     function (edge.names,
-              new.value,
+              new.colors,
               network = NULL,
               base.url = .defaultBaseUrl) {
-        for (current.color in new.value) {
+        for (current.color in new.colors) {
             # ensure the color is formated in correct hexadecimal style
             if (.isNotHexColor(current.color)) {
                 return()
@@ -1535,7 +1535,7 @@ setEdgeLabelColorBypass <-
         return(
             setEdgePropertyBypass(
                 edge.names,
-                new.value,
+                new.colors,
                 "EDGE_LABEL_COLOR",
                 network=network,
                 base.url=base.url
@@ -1546,9 +1546,9 @@ setEdgeLabelColorBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Tooltip Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.values DESCRIPTION
+#' @description Override the tooltip for particular edges.
+#' @param edge.names List of edge names
+#' @param new.values List of tooltip values, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1593,9 +1593,9 @@ setEdgeTooltipBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Line Width Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.value DESCRIPTION
+#' @description Override the width for particular edges.
+#' @param edge.names List of edge names
+#' @param new.widths List of width values, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1617,10 +1617,10 @@ setEdgeTooltipBypass <-
 #' @export
 setEdgeLineWidthBypass <-
     function(edge.names,
-             new.value,
+             new.widths,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        for (current.size in new.value) {
+        for (current.size in new.widths) {
             # ensure the sizes are numbers
             if (!is.numeric(current.size)) {
                 write (
@@ -1635,15 +1635,15 @@ setEdgeLineWidthBypass <-
         }
         
         # set the edge property bypass
-        return(setEdgePropertyBypass(edge.names, new.value, "EDGE_WIDTH", network=network, base.url=base.url))
+        return(setEdgePropertyBypass(edge.names, new.widths, "EDGE_WIDTH", network=network, base.url=base.url))
     }
 
 # ------------------------------------------------------------------------------
 #' @title Set Edge Line Style Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.values DESCRIPTION
+#' @description Override the style for particular edges.
+#' @param edge.names List of edge names
+#' @param new.styles List of style values, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1665,13 +1665,13 @@ setEdgeLineWidthBypass <-
 #' @export
 setEdgeLineStyleBypass <-
     function(edge.names,
-             new.values,
+             new.styles,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        unique.new.values <- unique(new.values)
+        unique.new.styles <- unique(new.styles)
         
         wrong.values <-
-            sapply(unique.new.values, function(v) {
+            sapply(unique.new.styles, function(v) {
                 !(toupper(v) %in% getLineStyles(base.url))
             })
         
@@ -1697,7 +1697,7 @@ setEdgeLineStyleBypass <-
         return(
             setEdgePropertyBypass(
                 edge.names,
-                toupper(new.values),
+                toupper(new.styles),
                 "EDGE_LINE_TYPE",
                 network=network,
                 base.url=base.url
@@ -1708,9 +1708,9 @@ setEdgeLineStyleBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Source Arrow Shape Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.values DESCRIPTION
+#' @description Override the source arrow shape for particular edges.
+#' @param edge.names List of edge names
+#' @param new.shapes List of shapes, or single value. See \link{getArrowShapes}.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1732,13 +1732,13 @@ setEdgeLineStyleBypass <-
 #' @export
 setEdgeSourceArrowShapeBypass <-
     function(edge.names,
-             new.values,
+             new.shapes,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        unique.new.values <- unique(new.values)
+        unique.new.shapes <- unique(new.shapes)
         
         wrong.values <-
-            sapply(unique.new.values, function(v) {
+            sapply(unique.new.shapes, function(v) {
                 !(toupper(v) %in% getArrowShapes(base.url))
             })
         
@@ -1764,7 +1764,7 @@ setEdgeSourceArrowShapeBypass <-
         return(
             setEdgePropertyBypass(
                 edge.names,
-                toupper(new.values),
+                toupper(new.shapes),
                 "EDGE_SOURCE_ARROW_SHAPE",
                 network=network,
                 base.url=base.url
@@ -1775,9 +1775,9 @@ setEdgeSourceArrowShapeBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Target Arrow Shape Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.values DESCRIPTION
+#' @description Override the target arrow shape for particular edges.
+#' @param edge.names List of edge names
+#' @param new.shapes List of values to set, or single value. See \link{getArrowShapes}.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1799,13 +1799,13 @@ setEdgeSourceArrowShapeBypass <-
 #' @export
 setEdgeTargetArrowShapeBypass <-
     function (edge.names,
-              new.values,
+              new.shapes,
               network = NULL,
               base.url = .defaultBaseUrl) {
-        unique.new.values <- unique(new.values)
+        unique.new.shapes <- unique(new.shapes)
         
         wrong.values <-
-            sapply(unique.new.values, function(v) {
+            sapply(unique.new.shapes, function(v) {
                 !(toupper(v) %in% getArrowShapes(base.url))
             })
         
@@ -1830,7 +1830,7 @@ setEdgeTargetArrowShapeBypass <-
         return(
             setEdgePropertyBypass(
                 edge.names,
-                toupper(new.values),
+                toupper(new.shapes),
                 "EDGE_TARGET_ARROW_SHAPE",
                 network=network,
                 base.url=base.url
@@ -1841,9 +1841,9 @@ setEdgeTargetArrowShapeBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Source Arrow Color Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.colors DESCRIPTION
+#' @description Override the source arrow color for particular edges.
+#' @param edge.names List of edge names
+#' @param new.colors List of hex colors, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1889,9 +1889,9 @@ setEdgeSourceArrowColorBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Target Arrow Color Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.colors DESCRIPTION
+#' @description Override the target arrow color for particular edges.
+#' @param edge.names List of edge names
+#' @param new.colors List of hex colors, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -1936,9 +1936,9 @@ setEdgeTargetArrowColorBypass <-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Label Opacity Bypass
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param edge.names DESCRIPTION
-#' @param new.value DESCRIPTION
+#' @description Override the label opacity for particular edges.
+#' @param edge.names List of edge names
+#' @param new.value List of opacity values, or single value
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -2027,7 +2027,7 @@ hideSelectedEdges <- function (network=NULL, base.url = .defaultBaseUrl) {
 #'
 #' @description Hide (but do not delete) the specified edge or edges, by 
 #' setting the Visible property bypass value to false.
-#' @param edge.names DESCRIPTION
+#' @param edge.names List of edge names
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -2058,7 +2058,7 @@ hideEdges <- function (edge.names, network=NULL, base.url = .defaultBaseUrl) {
 #'
 #' @description Unhide specified edges that were previously hidden, by 
 #' clearing the Visible property bypass value.
-#' @param edge.names DESCRIPTION
+#' @param edge.names List of edge names
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -2088,7 +2088,7 @@ unhideEdges <- function (edge.names, network=NULL, base.url = .defaultBaseUrl) {
 #' @title Set Network Zoom Bypass
 #'
 #' @description Set the bypass value for scale factor for the network.
-#' @param new.value DESCRIPTION
+#' @param new.value Zoom factor
 #' @param bypass Whether to set permanent bypass value. Default is \code{FALSE} 
 #' per common use of temporary zoom settings.
 #' @param network (optional) Name or SUID of the network. Default is the 
@@ -2138,8 +2138,8 @@ clearNetworkZoomBypass <- function(network = NULL, base.url = .defaultBaseUrl) {
 #'
 #' @description Set the bypass value for center x and y for the network. This
 #' function could be used to pan and scroll the Cytoscape canvas.
-#' @param x DESCRIPTION
-#' @param y DESCRIPTION
+#' @param x Coordinate value, increases going to the right.
+#' @param y Coordinate value, increase going down.
 #' @param bypass Whether to set permanent bypass value. Default is \code{FALSE} 
 #' per common use of temporary center settings.
 #' @param network (optional) Name or SUID of the network. Default is the 

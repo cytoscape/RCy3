@@ -8,7 +8,7 @@ clearNetworkPropertyBypass(visual.property, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{visual.property}{DESCRIPTION}
+\item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}

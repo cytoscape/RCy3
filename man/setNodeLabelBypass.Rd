@@ -8,9 +8,9 @@ setNodeLabelBypass(node.names, new.labels, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{DESCRIPTION}
+\item{node.names}{List of node names}
 
-\item{new.labels}{DESCRIPTION}
+\item{new.labels}{List of labels, or single value}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
@@ -23,7 +23,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Override the label for particular nodes.
 }
 \details{
 This method permanently overrides any default values or mappings 

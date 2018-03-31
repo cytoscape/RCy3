@@ -9,24 +9,27 @@ setNodeComboOpacityMapping(table.column, table.column.values = NULL,
   style.name = "default", network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{table.column}{DESCRIPTION}
+\item{table.column}{Name of Cytoscape table column to map values from}
 
-\item{table.column.values}{DESCRIPTION}
+\item{table.column.values}{List of values from Cytoscape table to be used in mapping}
 
 \item{opacities}{(integer) values between 0 and 255; 0 is invisible}
 
 \item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
 
-\item{default.opacity}{DESCRIPTION}
+\item{default.opacity}{Opacity value to set as default for all unmapped values}
 
-\item{style.name}{DESCRIPTION}
+\item{style.name}{Name of style; default is "default" style}
 
-\item{network}{DESCRIPTION}
+\item{network}{(optional) Name or SUID of the network. Default is the "current" 
+network active in Cytoscape.}
 
-\item{base.url}{DESCRIPTION}
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+None
 }
 \description{
 Sets opacity for node fill, border and label all together.

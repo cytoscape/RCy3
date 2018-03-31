@@ -4,7 +4,7 @@
 \alias{setCurrentView}
 \title{Set Current View}
 \usage{
-setCurrentView(network, base.url = .defaultBaseUrl)
+setCurrentView(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{network}{(optional) Name or SUID of a network or view. The first 
@@ -16,10 +16,10 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+None
 }
 \description{
-FUNCTION_DESCRIPTION
+Set which network view is "current".
 }
 \details{
 Takes first (presumably only) view associated with provided network
