@@ -36,6 +36,6 @@ Sets opacity for node fill, border and label all together.
 }
 \examples{
 \donttest{
-setNodeComboOpacityMapping()
+setNodeComboOpacityMapping('score', c(-5,5), c(50,255))
 }
 }

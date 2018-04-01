@@ -32,10 +32,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Map table column values to colors to set the node border color.
 }
 \examples{
 \donttest{
-setNodeBorderColorMapping()
+setNodeBorderColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
 }
 }

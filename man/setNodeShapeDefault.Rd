@@ -8,7 +8,7 @@ setNodeShapeDefault(new.shape, style.name = "default",
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{new.shape}{Name of shape, e.g., ARROW, T, etc (see \link{getArrowShapes})}
+\item{new.shape}{Name of shape, e.g., ELLIPSE, RECTANGLE, etc (see \link{getNodeShapes})}
 
 \item{style.name}{Name of style; default is "default" style}
 
@@ -20,10 +20,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Set the default node shape.
 }
 \examples{
 \donttest{
-setNodeShapeDefault()
+setNodeShapeDefault('ELLIPSE')
 }
 }

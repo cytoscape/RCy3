@@ -8,22 +8,23 @@ matchArrowColorToEdge(new.state, style.name = "default",
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{new.state}{DESCRIPTION}
+\item{new.state}{(Boolean) Whether to match arrow color to edge.}
 
-\item{style.name}{DESCRIPTION}
+\item{style.name}{Name of style; default is "default" style}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-RETURN_DESCRIPTION
+None
 }
 \description{
-FUNCTION_DESCRIPTION
+Set a boolean value to have arrow shapes share the same color as 
+the edge.
 }
 \examples{
 \donttest{
-matchArrowColorToEdge()
+matchArrowColorToEdge(TRUE)
 }
 }

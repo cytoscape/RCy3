@@ -4,10 +4,10 @@
 \alias{getStyleDependencies}
 \title{Get the values of dependencies in a style}
 \usage{
-getStyleDependencies(style.name, base.url = .defaultBaseUrl)
+getStyleDependencies(style.name = "default", base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{style.name}{(char) Name of style}
+\item{style.name}{Name of style; default is "default" style}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

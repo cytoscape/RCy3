@@ -45,7 +45,7 @@ updateStyleDefaults <- function(style.name,defaults,base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title Get Visual Property Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve the default value for a visual property.
 #' @param property Name of property, e.g., NODE_FILL_COLOR (see \link{getVisualPropertyNames})
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -53,7 +53,7 @@ updateStyleDefaults <- function(style.name,defaults,base.url=.defaultBaseUrl){
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' getVisualPropertyDefault()
+#' getVisualPropertyDefault('NODE_SIZE')
 #' }
 #' @export
 getVisualPropertyDefault <- function(property, style.name='default', base.url=.defaultBaseUrl) {
@@ -64,7 +64,7 @@ getVisualPropertyDefault <- function(property, style.name='default', base.url=.d
 # ------------------------------------------------------------------------------
 #' @title Set Visual Property Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default value for a visual property.
 #' @param style.string A named list including "visualProperty" and "value"
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -72,7 +72,7 @@ getVisualPropertyDefault <- function(property, style.name='default', base.url=.d
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setVisualPropertyDefault()
+#' setVisualPropertyDefault(list(visualProperty = "NODE_SIZE", value = 35))
 #' }
 #' @export
 setVisualPropertyDefault <- function(style.string, style.name='default', base.url=.defaultBaseUrl) {
@@ -91,15 +91,15 @@ setVisualPropertyDefault <- function(style.string, style.name='default', base.ur
 # ------------------------------------------------------------------------------
 #' @title Set Node Shape Default
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param new.shape Name of shape, e.g., ARROW, T, etc (see \link{getArrowShapes})
+#' @description Set the default node shape.
+#' @param new.shape Name of shape, e.g., ELLIPSE, RECTANGLE, etc (see \link{getNodeShapes})
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeShapeDefault()
+#' setNodeShapeDefault('ELLIPSE')
 #' }
 #' @export
 setNodeShapeDefault <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
@@ -115,7 +115,7 @@ setNodeShapeDefault <- function(new.shape, style.name='default', base.url=.defau
 # ------------------------------------------------------------------------------
 #' @title Set Node Size Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default node size.
 #' @param new.size Numeric value for size
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -123,7 +123,7 @@ setNodeShapeDefault <- function(new.shape, style.name='default', base.url=.defau
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeSizeDefault()
+#' setNodeSizeDefault(35)
 #' }
 #' @export
 setNodeSizeDefault <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
@@ -136,7 +136,7 @@ setNodeSizeDefault <- function(new.size, style.name='default', base.url=.default
 # ------------------------------------------------------------------------------
 #' @title Set Node Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default node color.
 #' @param new.color Color as hex code, e.g., #FD5903
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -144,7 +144,7 @@ setNodeSizeDefault <- function(new.size, style.name='default', base.url=.default
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeColorDefault()
+#' setNodeColorDefault('#FD5903')
 #' }
 #' @export
 setNodeColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
@@ -158,7 +158,7 @@ setNodeColorDefault <- function(new.color, style.name='default', base.url=.defau
 # ------------------------------------------------------------------------------
 #' @title Set Node Border Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default node border color.
 #' @param new.color Color as hex code, e.g., #FD5903
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -166,7 +166,7 @@ setNodeColorDefault <- function(new.color, style.name='default', base.url=.defau
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeBorderColorDefault()
+#' setNodeBorderColorDefault('#FD5903')
 #' }
 #' @export
 setNodeBorderColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
@@ -180,7 +180,7 @@ setNodeBorderColorDefault <- function(new.color, style.name='default', base.url=
 # ------------------------------------------------------------------------------
 #' @title Set Node Border Width Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default node border width.
 #' @param new.width Numeric value for width
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -188,7 +188,7 @@ setNodeBorderColorDefault <- function(new.color, style.name='default', base.url=
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeBorderWidthDefault()
+#' setNodeBorderWidthDefault(2)
 #' }
 #' @export
 setNodeBorderWidthDefault <-  function(new.width, style.name='default', base.url=.defaultBaseUrl) {
@@ -199,7 +199,7 @@ setNodeBorderWidthDefault <-  function(new.width, style.name='default', base.url
 # ------------------------------------------------------------------------------
 #' @title Set Node Font Size Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default node font size.
 #' @param new.size Numeric value for size
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -207,7 +207,7 @@ setNodeBorderWidthDefault <-  function(new.width, style.name='default', base.url
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeFontSizeDefault()
+#' setNodeFontSizeDefault(12)
 #' }
 #' @export
 setNodeFontSizeDefault <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
@@ -218,7 +218,7 @@ setNodeFontSizeDefault <- function(new.size, style.name='default', base.url=.def
 # ------------------------------------------------------------------------------
 #' @title Set Node Label Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default node label color.
 #' @param new.color Color as hex code, e.g., #FD5903
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -226,7 +226,7 @@ setNodeFontSizeDefault <- function(new.size, style.name='default', base.url=.def
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeLabelColorDefault()
+#' setNodeLabelColorDefault('#FD5903')
 #' }
 #' @export
 setNodeLabelColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
@@ -240,7 +240,7 @@ setNodeLabelColorDefault <- function(new.color, style.name='default', base.url=.
 # ------------------------------------------------------------------------------
 #' @title Get Node Selection Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve the default selection node color.
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -257,7 +257,7 @@ getNodeSelectionColorDefault <- function(style.name='default', base.url=.default
 # ------------------------------------------------------------------------------
 #' @title Set Node Selection Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default selection node color.
 #' @param new.color Color as hex code, e.g., #FD5903
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -265,7 +265,7 @@ getNodeSelectionColorDefault <- function(style.name='default', base.url=.default
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeSelectionColorDefault()
+#' setNodeSelectionColorDefault('#FD5903')
 #' }
 #' @export
 setNodeSelectionColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
@@ -276,45 +276,6 @@ setNodeSelectionColorDefault <- function(new.color, style.name='default', base.u
     setVisualPropertyDefault(style, style.name, base.url)
 }
 
-# ------------------------------------------------------------------------------
-#' @title Get Node Reverse Selection Color Default
-#'
-#' @description FUNCTION_DESCRIPTION
-#' @param style.name Name of style; default is "default" style
-#' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return None
-#' @examples \donttest{
-#' getNodeReverseSelectionColorDefault()
-#' }
-#' @export
-getNodeReverseSelectionColorDefault <- function (style.name='default', base.url=.defaultBaseUrl) {
-    return(getVisualPropertyDefault('NODE_PAINT', style.name, base.url))
-}
-
-# ------------------------------------------------------------------------------
-#' @title Set Node Reverse Selection Color Default
-#'
-#' @description FUNCTION_DESCRIPTION
-#' @param new.color Color as hex code, e.g., #FD5903
-#' @param style.name Name of style; default is "default" style
-#' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return None
-#' @examples \donttest{
-#' setNodeReverseSelectionColorDefault()
-#' }
-#' @export
-setNodeReverseSelectionColorDefault <- function (new.color, style.name='default', base.url=.defaultBaseUrl) {
-    if (.isNotHexColor(new.color)){
-        return()
-    } 
-    style = list(visualProperty = "NODE_PAINT", value = new.color) 
-    setVisualPropertyDefault(style, style.name, base.url)
-}
-
 # ==============================================================================
 # II.b. Edge Properties
 # Pattern A: (1) prepare input value as named list, (2) call setVisualPropertyDefault()
@@ -322,7 +283,7 @@ setNodeReverseSelectionColorDefault <- function (new.color, style.name='default'
 # ------------------------------------------------------------------------------
 #' @title Set Edge Line Width Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default edge width.
 #' @param new.width Numeric value for width
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -330,7 +291,7 @@ setNodeReverseSelectionColorDefault <- function (new.color, style.name='default'
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeLineWidthDefault()
+#' setEdgeLineWidthDefault(3)
 #' }
 #' @export
 setEdgeLineWidthDefault <- function(new.width, style.name='default', base.url=.defaultBaseUrl) {
@@ -341,7 +302,7 @@ setEdgeLineWidthDefault <- function(new.width, style.name='default', base.url=.d
 # ------------------------------------------------------------------------------
 #' @title Set Edge Line Style Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default edge style.
 #' @param new.line.style  Name of line style, e.g., SOLID, LONG_DASH, etc (see \link{getLineStyles})
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -349,7 +310,7 @@ setEdgeLineWidthDefault <- function(new.width, style.name='default', base.url=.d
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeLineStyleDefault()
+#' setEdgeLineStyleDefault('LONG_DASH')
 #' }
 #' @export
 setEdgeLineStyleDefault <- function(new.line.style, style.name='default', base.url=.defaultBaseUrl) {
@@ -360,7 +321,7 @@ setEdgeLineStyleDefault <- function(new.line.style, style.name='default', base.u
 # ------------------------------------------------------------------------------
 #' @title Set Edge Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default edge color.
 #' @param new.color Color as hex code, e.g., #FD5903
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -368,7 +329,7 @@ setEdgeLineStyleDefault <- function(new.line.style, style.name='default', base.u
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeColorDefault()
+#' setEdgeColorDefault('#FD5903')
 #' }
 #' @export
 setEdgeColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
@@ -382,7 +343,7 @@ setEdgeColorDefault <- function(new.color, style.name='default', base.url=.defau
 # ------------------------------------------------------------------------------
 #' @title Set Edge Source Arrow Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default edge source arrow color.
 #' @param new.color Color as hex code, e.g., #FD5903
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -390,7 +351,7 @@ setEdgeColorDefault <- function(new.color, style.name='default', base.url=.defau
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeSourceArrowColorDefault()
+#' setEdgeSourceArrowColorDefault('#FD5903')
 #' }
 #' @export
 setEdgeSourceArrowColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
@@ -404,7 +365,7 @@ setEdgeSourceArrowColorDefault <- function(new.color, style.name='default', base
 # ------------------------------------------------------------------------------
 #' @title Set Edge Target Arrow Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default edge target arrow color.
 #' @param new.color Color as hex code, e.g., #FD5903
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -412,7 +373,7 @@ setEdgeSourceArrowColorDefault <- function(new.color, style.name='default', base
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeTargetArrowColorDefault()
+#' setEdgeTargetArrowColorDefault('#FD5903')
 #' }
 #' @export
 setEdgeTargetArrowColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
@@ -424,9 +385,9 @@ setEdgeTargetArrowColorDefault <- function(new.color, style.name='default', base
 }
 
 # ------------------------------------------------------------------------------
-#' @title Set Edge Source Arrow Default
+#' @title Set Edge Source Arrow Shape Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default edge source arrow shape.
 #' @param new.shape Name of shape, e.g., ARROW, T, etc (see \link{getArrowShapes})
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -434,18 +395,18 @@ setEdgeTargetArrowColorDefault <- function(new.color, style.name='default', base
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeSourceArrowDefault()
+#' setEdgeSourceArrowShapeDefault('ARROW')
 #' }
 #' @export
-setEdgeSourceArrowDefault <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeSourceArrowShapeDefault <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_SOURCE_ARROW_SHAPE", value = new.shape) 
     setVisualPropertyDefault(style, style.name, base.url)
 }
 
 # ------------------------------------------------------------------------------
-#' @title Set Edge Target Arrow Default
+#' @title Set Edge Target Arrow Shape Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default edge target arrow shape.
 #' @param new.shape Name of shape, e.g., ARROW, T, etc (see \link{getArrowShapes})
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -453,10 +414,10 @@ setEdgeSourceArrowDefault <- function(new.shape, style.name='default', base.url=
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeTargetArrowDefault()
+#' setEdgeTargetArrowShapeDefault('ARROW')
 #' }
 #' @export
-setEdgeTargetArrowDefault <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeTargetArrowShapeDefault <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_TARGET_ARROW_SHAPE", value = new.shape) 
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -464,7 +425,7 @@ setEdgeTargetArrowDefault <- function(new.shape, style.name='default', base.url=
 # ------------------------------------------------------------------------------
 #' @title Set Edge Font Size Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default edge font size.
 #' @param new.size Numeric value for size
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -472,7 +433,7 @@ setEdgeTargetArrowDefault <- function(new.shape, style.name='default', base.url=
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeFontSizeDefault()
+#' setEdgeFontSizeDefault(12)
 #' }
 #' @export
 setEdgeFontSizeDefault <- function(new.size, style.name='default', base.url=.defaultBaseUrl) {
@@ -483,7 +444,7 @@ setEdgeFontSizeDefault <- function(new.size, style.name='default', base.url=.def
 # ------------------------------------------------------------------------------
 #' @title Get Edge Selection Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve the default selected edge color.
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -500,7 +461,7 @@ getEdgeSelectionColorDefault <- function(style.name='default', base.url=.default
 # ------------------------------------------------------------------------------
 #' @title Set Edge Selection Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default selected edge color.
 #' @param new.color Color as hex code, e.g., #FD5903
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -508,7 +469,7 @@ getEdgeSelectionColorDefault <- function(style.name='default', base.url=.default
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeSelectionColorDefault()
+#' setEdgeSelectionColorDefault('#FD5903')
 #' }
 #' @export
 setEdgeSelectionColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
@@ -519,45 +480,6 @@ setEdgeSelectionColorDefault <- function(new.color, style.name='default', base.u
     setVisualPropertyDefault(style, style.name, base.url)
 }
 
-# ------------------------------------------------------------------------------
-#' @title Get Edge Reverse Selection Color Default
-#'
-#' @description FUNCTION_DESCRIPTION
-#' @param style.name Name of style; default is "default" style
-#' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return None
-#' @examples \donttest{
-#' getEdgeReverseSelectionColorDefault()
-#' }
-#' @export
-getEdgeReverseSelectionColorDefault <- function (style.name='default', base.url=.defaultBaseUrl) {
-    return(getVisualPropertyDefault('EDGE_STROKE_UNSELECTED_PAINT',style.name, base.url))
-}
-
-# ------------------------------------------------------------------------------
-#' @title Set Edge Reverse Selection Color Default
-#'
-#' @description FUNCTION_DESCRIPTION
-#' @param new.color Color as hex code, e.g., #FD5903
-#' @param style.name Name of style; default is "default" style
-#' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return None
-#' @examples \donttest{
-#' setEdgeReverseSelectionColorDefault()
-#' }
-#' @export
-setEdgeReverseSelectionColorDefault <- function (new.color, style.name='default', base.url=.defaultBaseUrl) {
-    if (.isNotHexColor(new.color)){
-        return()
-    } 
-    style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
-    setVisualPropertyDefault(style, style.name, base.url)
-}
-
 # ==============================================================================
 # II.c. Network Properties
 # Pattern A: (1) prepare input value as named list, (2) call setVisualPropertyDefault()
@@ -565,7 +487,7 @@ setEdgeReverseSelectionColorDefault <- function (new.color, style.name='default'
 # ------------------------------------------------------------------------------
 #' @title Get Background Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Retrieve the default background color.
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -582,7 +504,7 @@ getBackgroundColorDefault <- function(style.name='default', base.url=.defaultBas
 # ------------------------------------------------------------------------------
 #' @title Set Background Color Default
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Set the default background color.
 #' @param new.color Color as hex code, e.g., #FD5903
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -590,7 +512,7 @@ getBackgroundColorDefault <- function(style.name='default', base.url=.defaultBas
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setBackgroundColorDefault()
+#' setBackgroundColorDefault('#888888')
 #' }
 #' @export
 setBackgroundColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {

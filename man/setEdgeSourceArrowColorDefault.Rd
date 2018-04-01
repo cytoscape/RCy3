@@ -20,10 +20,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Set the default edge source arrow color.
 }
 \examples{
 \donttest{
-setEdgeSourceArrowColorDefault()
+setEdgeSourceArrowColorDefault('#FD5903')
 }
 }

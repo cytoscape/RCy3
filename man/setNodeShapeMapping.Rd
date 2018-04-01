@@ -30,10 +30,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Map table column values to shapes to set the node shape.
 }
 \examples{
 \donttest{
-setNodeShapeMapping()
+setNodeShapeMapping('type',c('protein','dna'),c('ELLIPSE','RECTANGLE'))
 }
 }

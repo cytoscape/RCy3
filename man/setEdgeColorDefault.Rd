@@ -20,10 +20,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Set the default edge color.
 }
 \examples{
 \donttest{
-setEdgeColorDefault()
+setEdgeColorDefault('#FD5903')
 }
 }
