@@ -13,9 +13,9 @@ setEdgeLineStyleMapping(table.column, table.column.values, line.styles,
 
 \item{table.column.values}{List of values from Cytoscape table to be used in mapping}
 
-\item{line.styles}{DESCRIPTION}
+\item{line.styles}{List of line styles. See \link{getLineStyles}.}
 
-\item{default.line.style}{DESCRIPTION}
+\item{default.line.style}{Style to set as default. See \link{getLineStyles}.}
 
 \item{style.name}{Name of style; default is "default" style}
 
@@ -30,10 +30,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Map table column values to styles to set the edge style.
 }
 \examples{
 \donttest{
-setEdgeLineStyleMapping()
+setEdgeLineStyleMapping('type',c('pp','pd'),c('SOLID','LONG_DASH'))
 }
 }

@@ -23,10 +23,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Pass the values from a table column to display as edge labels.
 }
 \examples{
 \donttest{
-setEdgeLabelMapping()
+setEdgeLabelMapping('label')
 }
 }

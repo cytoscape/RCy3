@@ -32,10 +32,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Map table column values to widths to set the node border width.
 }
 \examples{
 \donttest{
-setNodeBorderWidthMapping()
+setNodeBorderWidthMapping('score', c(0,30), c(1,5))
 }
 }

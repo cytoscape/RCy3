@@ -4,10 +4,11 @@
 \alias{setStyleDependencies}
 \title{Set Style Dependencies}
 \usage{
-setStyleDependencies(style.name, dependencies, base.url = .defaultBaseUrl)
+setStyleDependencies(style.name = "default", dependencies,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{style.name}{(char) name for style}
+\item{style.name}{Name of style; default is "default" style}
 
 \item{dependencies}{A \code{list} of style dependencies, see Available Dependencies
 below. Note: each dependency is set by a boolean, TRUE or FALSE (T or F)}

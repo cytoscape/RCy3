@@ -13,11 +13,11 @@ setNodeSizeMapping(table.column, table.column.values = NULL, sizes = NULL,
 
 \item{table.column.values}{List of values from Cytoscape table to be used in mapping}
 
-\item{sizes}{DESCRIPTION}
+\item{sizes}{List of size values to mape to table.column.values}
 
 \item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
 
-\item{default.size}{DESCRIPTION}
+\item{default.size}{Size value to set as default}
 
 \item{style.name}{Name of style; default is "default" style}
 
@@ -32,10 +32,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Map table column values to sizes to set the node size.
 }
 \examples{
 \donttest{
-setNodeSizeMapping()
+setNodeSizeMapping('score', c(0,30), c(35,55))
 }
 }

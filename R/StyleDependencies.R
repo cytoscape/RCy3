@@ -11,7 +11,7 @@
 #' @title Get the values of dependencies in a style
 #'
 #' @description Updates style dependencies, overriding any prior settings.
-#' @param style.name (char) Name of style
+#' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -27,7 +27,7 @@
 #' nodeCustomGraphicsSizeSync
 #' nodeSizeLocked
 
-getStyleDependencies <- function(style.name,base.url=.defaultBaseUrl){
+getStyleDependencies <- function(style.name="default",base.url=.defaultBaseUrl){
     
     # launch error if visual style name is missing
     if (! style.name %in% getVisualStyleNames (base.url)) {
@@ -48,7 +48,7 @@ getStyleDependencies <- function(style.name,base.url=.defaultBaseUrl){
 #' @title Set Style Dependencies
 #'
 #' @description Sets the values of dependencies in a style, overriding any prior settings.
-#' @param style.name (char) name for style
+#' @param style.name Name of style; default is "default" style
 #' @param dependencies A \code{list} of style dependencies, see Available Dependencies
 #' below. Note: each dependency is set by a boolean, TRUE or FALSE (T or F)
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -65,7 +65,7 @@ getStyleDependencies <- function(style.name,base.url=.defaultBaseUrl){
 #' nodeCustomGraphicsSizeSync
 #' nodeSizeLocked
 
-setStyleDependencies <- function(style.name,dependencies,base.url=.defaultBaseUrl){
+setStyleDependencies <- function(style.name="default",dependencies,base.url=.defaultBaseUrl){
     
     # launch error if visual style name is missing
     if (! style.name %in% getVisualStyleNames (base.url)) {
@@ -88,59 +88,71 @@ setStyleDependencies <- function(style.name,dependencies,base.url=.defaultBaseUr
 # ------------------------------------------------------------------------------
 #' @title Match Arrow Color To Edge
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param new.state DESCRIPTION
-#' @param style.name DESCRIPTION
+#' @description Set a boolean value to have arrow shapes share the same color as 
+#' the edge.
+#' @param new.state (Boolean) Whether to match arrow color to edge.
+#' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
-#' matchArrowColorToEdge()
+#' matchArrowColorToEdge(TRUE)
 #' }
 #' @export
 matchArrowColorToEdge <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
+    toggle='false'
+    if(new.state)
+        toggle='true'
     setStyleDependencies(style.name = style.name, 
-                            dependencies = list(arrowColorMatchesEdge=new.state),
+                            dependencies = list(arrowColorMatchesEdge=toggle),
                             base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @title Lock Node Dimensions
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param new.state DESCRIPTION
-#' @param style.name DESCRIPTION
+#' @description Set a boolean value to have node width and height fixed to a 
+#' single size value.
+#' @param new.state (Boolean) Whether to lock node width and height
+#' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
-#' lockNodeDimensions()
+#' lockNodeDimensions(TRUE)
 #' }
 #' @export
 lockNodeDimensions <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
+    toggle='false'
+    if(new.state)
+        toggle='true'
     setStyleDependencies(style.name = style.name, 
-                            dependencies = list(nodeSizeLocked=new.state),
+                            dependencies = list(nodeSizeLocked=toggle),
                             base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
 #' @title Sync Node Custom Graphics Size
 #'
-#' @description FUNCTION_DESCRIPTION
-#' @param new.state DESCRIPTION
-#' @param style.name DESCRIPTION
+#' @description Set a boolean value to have the size of custom graphics match that
+#' of the node.
+#' @param new.state (Boolean) Whether to sync node custom graphics size
+#' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return RETURN_DESCRIPTION
+#' @return None
 #' @examples \donttest{
-#' syncNodeCustomGraphicsSize()
+#' syncNodeCustomGraphicsSize(TRUE)
 #' }
 #' @export
 syncNodeCustomGraphicsSize <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
+    toggle='false'
+    if(new.state)
+        toggle='true'
     setStyleDependencies(style.name = style.name, 
-                            dependencies = list(nodeCustomGraphicsSizeSync=new.state),
+                            dependencies = list(nodeCustomGraphicsSizeSync=toggle),
                             base.url = base.url)
 }

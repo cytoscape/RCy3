@@ -20,10 +20,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Retrieve the default value for a visual property.
 }
 \examples{
 \donttest{
-getVisualPropertyDefault()
+getVisualPropertyDefault('NODE_SIZE')
 }
 }

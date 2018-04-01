@@ -20,10 +20,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Set the default node border color.
 }
 \examples{
 \donttest{
-setNodeBorderColorDefault()
+setNodeBorderColorDefault('#FD5903')
 }
 }

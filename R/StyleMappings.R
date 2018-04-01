@@ -207,7 +207,7 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title Set Node Tooltip Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Pass the values from a table column to display as node tooltips.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
@@ -217,7 +217,7 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeTooltipMapping()
+#' setNodeTooltipMapping('description')
 #' }
 #' @export
 setNodeTooltipMapping <- function (table.column, style.name = 'default', 
@@ -231,7 +231,7 @@ setNodeTooltipMapping <- function (table.column, style.name = 'default',
 # ------------------------------------------------------------------------------
 #' @title Set Node Label Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Pass the values from a table column to display as node labels.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
@@ -241,7 +241,7 @@ setNodeTooltipMapping <- function (table.column, style.name = 'default',
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeLabelMapping()
+#' setNodeLabelMapping('name')
 #' }
 #' @export
 setNodeLabelMapping <- function (table.column, style.name = 'default', 
@@ -255,7 +255,7 @@ setNodeLabelMapping <- function (table.column, style.name = 'default',
 # ------------------------------------------------------------------------------
 #' @title Set Node Color Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to colors to set the node fill color.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param colors List of hex colors to map to table.column.values
@@ -269,7 +269,7 @@ setNodeLabelMapping <- function (table.column, style.name = 'default',
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeColorMapping()
+#' setNodeColorMapping('score', c(-5,0,5), c('#5577FF','#FFFFFF','#FF7755'))
 #' }
 #' @export
 setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
@@ -320,7 +320,7 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeComboOpacityMapping()
+#' setNodeComboOpacityMapping('score', c(-5,5), c(50,255))
 #' }
 #' @export
 setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL, 
@@ -389,7 +389,7 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
 # ------------------------------------------------------------------------------
 #' @title Set Node Border Color Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to colors to set the node border color.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param colors (integer) values between 0 and 255; 0 is invisible
@@ -403,7 +403,7 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeBorderColorMapping()
+#' setNodeBorderColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
 #' }
 #' @export
 setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
@@ -440,7 +440,7 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
 # ------------------------------------------------------------------------------
 #' @title Set Node Border Width Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to widths to set the node border width.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param widths List of width values to map to table.column.values
@@ -454,7 +454,7 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeBorderWidthMapping()
+#' setNodeBorderWidthMapping('score', c(0,30), c(1,5))
 #' }
 #' @export
 setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, widths=NULL, 
@@ -486,7 +486,7 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
 # ------------------------------------------------------------------------------
 #' @title Set Node Shape Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to shapes to set the node shape.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param shapes List of shapes to map to table.column.values. See \link{getNodeShapes}
@@ -499,7 +499,7 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeShapeMapping()
+#' setNodeShapeMapping('type',c('protein','dna'),c('ELLIPSE','RECTANGLE'))
 #' }
 #' @export
 setNodeShapeMapping <- function (table.column, table.column.values, shapes, 
@@ -520,12 +520,12 @@ setNodeShapeMapping <- function (table.column, table.column.values, shapes,
 # ------------------------------------------------------------------------------
 #' @title Set Node Size Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to sizes to set the node size.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param sizes DESCRIPTION
+#' @param sizes List of size values to mape to table.column.values
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.size DESCRIPTION
+#' @param default.size Size value to set as default
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
 #' network active in Cytoscape.
@@ -534,7 +534,7 @@ setNodeShapeMapping <- function (table.column, table.column.values, shapes,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeSizeMapping()
+#' setNodeSizeMapping('score', c(0,30), c(35,55))
 #' }
 #' @export
 setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NULL, 
@@ -569,7 +569,7 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
 # ------------------------------------------------------------------------------
 #' @title Set Edge Tooltip Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Pass the values from a table column to display as edge tooltips.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
@@ -579,7 +579,7 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeTooltipMapping()
+#' setEdgeTooltipMapping('description')
 #' }
 #' @export
 setEdgeTooltipMapping <- function (table.column, style.name = 'default', 
@@ -592,7 +592,7 @@ setEdgeTooltipMapping <- function (table.column, style.name = 'default',
 # ------------------------------------------------------------------------------
 #' @title Set Edge Label Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Pass the values from a table column to display as edge labels.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
@@ -602,7 +602,7 @@ setEdgeTooltipMapping <- function (table.column, style.name = 'default',
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeLabelMapping()
+#' setEdgeLabelMapping('label')
 #' }
 #' @export
 setEdgeLabelMapping <- function (table.column, style.name = 'default', 
@@ -615,7 +615,7 @@ setEdgeLabelMapping <- function (table.column, style.name = 'default',
 # ------------------------------------------------------------------------------
 #' @title Set Edge Color Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to colors to set the edge color.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param colors List of hex colors to map to table.column.values
@@ -629,7 +629,7 @@ setEdgeLabelMapping <- function (table.column, style.name = 'default',
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeColorMapping()
+#' setNodeColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
 #' }
 #' @export
 setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
@@ -666,7 +666,7 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
 # ------------------------------------------------------------------------------
 #' @title Set Edge Opacity Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to opacities to set the node opacity.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param opacities (integer) values between 0 and 255; 0 is invisible
@@ -680,7 +680,7 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeOpacityMapping()
+#' setEdgeOpacityMapping('score', c(-5,5), c(50,255))
 #' }
 #' @export
 setEdgeOpacityMapping <- function (table.column, table.column.values=NULL, 
@@ -723,11 +723,11 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
 # ------------------------------------------------------------------------------
 #' @title Set Edge Line Style Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to styles to set the edge style.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param line.styles DESCRIPTION
-#' @param default.line.style DESCRIPTION
+#' @param line.styles List of line styles. See \link{getLineStyles}.
+#' @param default.line.style Style to set as default. See \link{getLineStyles}.
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
 #' network active in Cytoscape.
@@ -736,7 +736,7 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeLineStyleMapping()
+#' setEdgeLineStyleMapping('type',c('pp','pd'),c('SOLID','LONG_DASH'))
 #' }
 #' @export
 setEdgeLineStyleMapping <- function (table.column, table.column.values, line.styles, 
@@ -757,7 +757,7 @@ setEdgeLineStyleMapping <- function (table.column, table.column.values, line.sty
 # ------------------------------------------------------------------------------
 #' @title Set Edge Line Width Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to widths to set the edge line width.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param widths List of width values to map to table.column.values
@@ -771,7 +771,7 @@ setEdgeLineStyleMapping <- function (table.column, table.column.values, line.sty
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeLineWidthMapping()
+#' setEdgeLineWidthMapping('score', c(0,30), c(1,5))
 #' }
 #' @export
 setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, widths=NULL, 
@@ -803,7 +803,7 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
 # ------------------------------------------------------------------------------
 #' @title Set Edge Target Arrow Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to shapes to set the target arrow shape.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param shapes List of shapes to map to table.column.values. See \link{getArrowShapes}
@@ -816,7 +816,7 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeTargetArrowMapping()
+#' setEdgeTargetArrowMapping('type',c('activation','inhibition'),c('ARROW','T'))
 #' }
 #' @export
 setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes, 
@@ -837,7 +837,7 @@ setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes
 # ------------------------------------------------------------------------------
 #' @title Set Edge Source Arrow Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to shapes to set the source arrow shape.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param shapes List of shapes to map to table.column.values. See \link{getArrowShapes}
@@ -850,7 +850,7 @@ setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeSourceArrowMapping()
+#' setEdgeSourceArrowMapping('type',c('activation','inhibition'),c('ARROW','T'))
 #' }
 #' @export
 setEdgeSourceArrowMapping <- function (table.column, table.column.values, shapes, 
@@ -872,7 +872,7 @@ setEdgeSourceArrowMapping <- function (table.column, table.column.values, shapes
 # ------------------------------------------------------------------------------
 #' @title Set Edge Target Arrow Color Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to colors to set the target arrow color.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param colors List of hex colors to map to table.column.values
@@ -886,7 +886,7 @@ setEdgeSourceArrowMapping <- function (table.column, table.column.values, shapes
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeTargetArrowColorMapping()
+#' setEdgeTargetArrowColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
 #' }
 #' @export
 setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
@@ -923,7 +923,7 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
 # ------------------------------------------------------------------------------
 #' @title Set Edge Source Arrow Color Mapping
 #'
-#' @description FUNCTION_DESCRIPTION
+#' @description Map table column values to colors to set the source arrow color.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
 #' @param colors List of hex colors to map to table.column.values
@@ -937,7 +937,7 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeSourceArrowColorMapping()
+#' setEdgeSourceArrowColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
 #' }
 #' @export
 setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 

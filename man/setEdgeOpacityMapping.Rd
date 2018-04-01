@@ -32,10 +32,10 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-FUNCTION_DESCRIPTION
+Map table column values to opacities to set the node opacity.
 }
 \examples{
 \donttest{
-setEdgeOpacityMapping()
+setEdgeOpacityMapping('score', c(-5,5), c(50,255))
 }
 }
