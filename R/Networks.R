@@ -194,9 +194,9 @@ getNetworkSuid <- function(title = NULL, base.url = .defaultBaseUrl) {
             network.title,
             '" namespace="default" columnList="SUID"'
         )
-    res <- commandsPOST(cmd, base.url = base.url)
-    suid <- gsub("\\{SUID:|\\}", "", res)
-    return(as.numeric(suid))
+    suid <- commandsPOST(cmd, base.url = base.url)
+    #suid <- gsub("\\{SUID:|\\}", "", res)
+    return(as.numeric(suid[[1]]))
 }
 
 # ------------------------------------------------------------------------------
