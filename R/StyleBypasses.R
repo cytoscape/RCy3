@@ -1312,8 +1312,6 @@ setEdgeOpacityBypass <-
                 return ()
             }
         }
-        # set the edge property bypass
-        #     property.names = c ('Edge Opacity',  'Edge Source Arrow Opacity', 'Edge Target Arrow Opacity')
         setEdgePropertyBypass(edge.names,
                               new.values,
                               "EDGE_LABEL_TRANSPARENCY",
