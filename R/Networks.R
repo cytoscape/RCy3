@@ -890,9 +890,11 @@ createNetworkFromDataFrames <-
                                      x[interaction.type.list],") ",
                                      x[target.id.list]))
         
-        loadTableData(nodes,data.key.column = node.id.list,
+        if(length(setdiff(colnames(nodes),"id")) > 0)
+            loadTableData(nodes,data.key.column = node.id.list,
                       table.key.column = node.id.list)
-        loadTableData(edges,data.key.column = 'data.key.column', 
+        if(length(setdiff(colnames(edges),c("source","target","interaction"))) > 0)
+            loadTableData(edges,data.key.column = 'data.key.column', 
                       table = 'edge')
         
         return(network.suid)

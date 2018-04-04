@@ -45,77 +45,46 @@ run.tests = function()
     test.setEdgeColorDefault ()
     test.setEdgeFontSizeDefault ()
     
-    # test.setNodeLabelMapping ()
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.setEdgeLabelMapping ()
-    # test.setNodeTooltipMapping ()
-    # test.setEdgeTooltipMapping ()
-    # test.setNodeColorMapping ()
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.setNodeBorderColorMapping ()
-    # test.setNodeBorderWidthMapping ()
-    # test.setNodeSizeMapping ()
-    # test.setNodeShapeMapping ()
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.setNodeOpacityMapping ()
-    # test.setNodeColorDirect ()
-    # test.setNodeBorderColorDirect ()
-    # test.setNodeLabelDirect () #--> too slow
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.setNodeLabelPropertiesDirect ()  #--> too slow
-    # test.setNodeOpacityDirect ()  #--> too slow
-    # #test.setEdgeOpacityDirect ()  #--> too slow
-    # #test.setEdgeColorDirect ()  #--> too slow
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.setEdgeSourceArrowShapeDirect ()
-    # test.setEdgeLabelDirect ()
-    # #test.setEdgeFontSizeDirect ()  #--> too slow
-    # #test.setEdgeLabelColorDirect ()  #--> too slow
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.setEdgeTooltipDirect ()
-    # test.setEdgeLineWidthDirect ()
-    # test.setEdgeLineStyleDirect ()
-    # test.setEdgeSourceArrowShapeDirect ()
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.setEdgeTargetArrowShapeDirect ()
-    # test.setEdgeSourceArrowColorDirect ()
-    # test.setEdgeTargetArrowColorDirect ()
-    # #test.setEdgeLabelOpacityDirect ()  #--> too slow
-    # 
-    # deleteAllNetworks ()
-    # 
-    # #test.setEdgeSourceArrowOpacityDirect ()
-    # #test.setEdgeTargetArrowOpacityDirect ()
-    # #test.setEdgeLabelPositionDirect ()  #--> too slow
-    # #test.setEdgeLabelWidthDirect ()
-    # test.countNodes ()
-    # test.countEdges ()
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.countNodesAndEdgesInEmptyGraph ()
-    # test.getAllNodes ()
-    # test.getAllEdges ()
-    # test.selectNodes ()
-    # test.nodeNeighborReportingAndSelection ()
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.invertSelection ()
+    test.setNodeLabelMapping ()
+    test.setEdgeLabelMapping ()
+    test.setNodeTooltipMapping ()
+    test.setEdgeTooltipMapping ()
+    test.setNodeColorMapping ()
+    test.setNodeBorderColorMapping ()
+    test.setNodeBorderWidthMapping ()
+    test.setNodeSizeMapping ()
+    test.setNodeShapeMapping ()
+    test.setNodeComboOpacityMapping ()
+    test.setNodeColorBypass ()
+    test.setNodeBorderColorBypass ()
+    test.setNodeLabelBypass () 
+    test.setNodeOpacityBypass ()  
+    
+    deleteAllNetworks ()
+    
+    test.setEdgeOpacityBypass ()  #--> too slow
+    test.setEdgeColorBypass ()  #--> too slow
+    test.setEdgeSourceArrowShapeBypass ()
+    test.setEdgeTargetArrowShapeBypass ()
+    test.setEdgeSourceArrowColorBypass ()
+    test.setEdgeTargetArrowColorBypass ()
+    test.setEdgeLabelBypass ()
+    test.setEdgeFontSizeBypass ()  #--> too slow
+    test.setEdgeLabelColorBypass ()  #--> too slow
+    test.setEdgeTooltipBypass ()
+    test.setEdgeLineWidthBypass ()
+    test.setEdgeLineStyleBypass ()
+
+    deleteAllNetworks ()
+    
+    test.countNodes ()
+    test.countEdges ()
+    test.getAllNodes ()
+    test.getAllEdges ()
+    test.selectNodes ()
+    
+    test.nodeNeighborReportingAndSelection ()
+    test.invertSelection ()
     # test.deleteSelectedNodes ()
     # test.hideNodes ()
     # test.selectEdges ()
@@ -194,14 +163,14 @@ run.tests = function()
     # 
     # #test.zoom () # timeout
     # test.center ()
-    # #test.setNodeSizeDirect ()  #--> too slow
-    # #test.setNodeWidthAndHeightDirect ()  #--> too slow
+    # #test.setNodeSizeBypass ()  #--> too slow
+    # #test.setNodeWidthAndHeightBypass ()  #--> too slow
     # 
     # deleteAllNetworks ()
     # 
-    # test.setNodeFontSizeDirect ()  #--> too slow
-    # test.setNodeShapeDirect ()  #--> too slow
-    # #test.setEdgeVizPropertiesDirect ()  #--> too slow
+    # test.setNodeFontSizeBypass ()  #--> too slow
+    # test.setNodeShapeBypass ()  #--> too slow
+    # #test.setEdgeVizPropertiesBypass ()  #--> too slow
     # #test.graphBAM ()
     # 
     # deleteAllNetworks ()
@@ -214,7 +183,7 @@ run.tests = function()
     # deleteAllNetworks ()
     # 
     # test..getNovelEdges ()
-    # #test.setNodeImageDirect ()
+    # #test.setNodeImageBypass ()
     # #test.validity ()
     # #test.tooltip.delays ()
     
@@ -553,7 +522,7 @@ test.setEdgeColorDefault = function ()
     title = 'test.setEdgeColorDefault'
     test.prep (title,F)
     
-    setEdgeColorDefault ('#FF0000')
+    setEdgeColorDefault ('#5588FF')
 }
 #-------------------------------------------------------------------------------
 test.setEdgeFontSizeDefault = function ()
@@ -569,1131 +538,595 @@ test.setNodeLabelMapping = function ()
     title = 'test.setNodeLabelMapping'
     test.prep (title,F)
     
-    setNodeLabelMapping ('label')
-    setNodeLabelMapping ('type')
-    setNodeLabelMapping ('lfc')
-    setNodeLabelMapping ('count')
+    setNodeLabelMapping ('id')
+    setNodeLabelMapping ('score')
+    setNodeLabelMapping ('group')
+    setNodeLabelMapping ('name')
 }
 #-------------------------------------------------------------------------------
 test.setEdgeLabelMapping = function ()
 {
     title = 'test.setEdgeLabelMapping'
-    test.prep (title)
+    test.prep (title, F)
     
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    setEdgeLabelMapping ('edgeType')
-    setEdgeLabelMapping ('score')
-    
-
-    
-}  # test.setEdgeLabelMapping
+    setEdgeLabelMapping ('weight')
+    setEdgeLabelMapping ('name')
+} 
 #-------------------------------------------------------------------------------
 test.setNodeTooltipMapping = function ()
 {
     title = 'test.setNodeTooltipMapping'
-    test.prep (title)
+    test.prep (title, F)
     
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    
-    setNodeTooltipMapping ('type')
-    
-
-    
-}  # test.setNodeTooltipMapping
+    setNodeTooltipMapping ('group')
+} 
 #-------------------------------------------------------------------------------
 test.setEdgeTooltipMapping = function ()
 {
     title = 'test.setEdgeTooltipMapping'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    setEdgeTooltipMapping ('edgeType')
-    
+    test.prep (title, F)
 
-    
-}  # test.setEdgeTooltipMapping
+    setEdgeTooltipMapping ('weight')
+} 
 #-------------------------------------------------------------------------------
 test.setNodeColorMapping = function ()
 {
     title = 'test.setNodeColorMapping'
-    test.prep (title)
+    test.prep (title, F)
     
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    
-    # first, specify a mode='interpolate' Mapping -- the default
-    node.attribute.values = c (-3.0, 0.0, 3.0)
+    # first, continuous
+    node.attribute.values = c (0.0, 10.0, 20.0)
     node.colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
-    setNodeColorMapping ('lfc', node.attribute.values, node.colors, mode='interpolate')
+    setNodeColorMapping ('score', node.attribute.values, node.colors, 'c')
     
-    # now, a lookup Mapping
-    node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
-    node.colors =           c ('#8888FF', '#00F088',              "#00CCCC")
-    setNodeColorMapping ('type', node.attribute.values, node.colors, mode='lookup')
+    # now, discrete
+    node.attribute.values = c ("A",  "B")
+    node.colors =           c ('#8888FF', "#00CCCC")
+    setNodeColorMapping ('group', node.attribute.values, node.colors, 'd')
     
-    # now, a lookup Mapping with an incomplete lookup table:  does the default.color argument work?  cy2.7 bug -- not yet.
-    # instead, the node is painted the cytoscape default color, pale red
-    node.attribute.values = c ("kinase",  "transcription factor")
-    node.colors = c ('#8888FF', '#00F088')
-    setNodeColorMapping ('type', node.attribute.values, node.colors, mode='lookup', default.color='#AA33AA')
-    
-    # now, use 1 element lists.
-    node.attribute.values = c ("kinase")
-    node.colors = c ('#00AA88')
-    setNodeColorMapping ('type', node.attribute.values, node.colors, mode='lookup', default.color='#AA33AA')
-    
-
-    
-} # test.setNodeColorMapping
+    # now, test default
+    node.attribute.values = c ("A")
+    node.colors =           c ('#8888FF')
+    setNodeColorMapping ('group', node.attribute.values, node.colors, 'd', default.color = '#5588FF')
+} 
 #-------------------------------------------------------------------------------
 test.setNodeBorderColorMapping = function ()
 {
-    title = 'test.setNodeBorderColorMapping'
-    test.prep (title)
+    title = 'test.setNodeColorMapping'
+    test.prep (title, F)
     
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    # set the stage by making all the nodes white, to provide better contrast for the node border colors
-    node.attribute.values = c (-3.0, 0.0, 3.0)
-    colors = c ('#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF')
-    setNodeColorMapping ('lfc', node.attribute.values, colors, mode='interpolate')
+    # first, continuous
+    node.attribute.values = c (0.0, 10.0, 20.0)
+    node.colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
+    setNodeBorderColorMapping ('score', node.attribute.values, node.colors, 'c')
     
-    # first, specify a mode='interpolate' Mapping -- the default
-    node.attribute.values = c (-3.0, 0.0, 3.0)
-    colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
-    setNodeBorderColorMapping ('lfc', node.attribute.values, colors, mode='interpolate')
-    Sys.sleep (0.3)
+    # now, discrete
+    node.attribute.values = c ("A",  "B")
+    node.colors =           c ('#8888FF', "#00CCCC")
+    setNodeBorderColorMapping ('group', node.attribute.values, node.colors, 'd')
     
-    # now, a lookup Mapping.  bright red, green and blue borders
-    node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
-    colors =                c ('#FF0000', '#00FF00',              "#0000FF")
-    setNodeBorderColorMapping ('type', node.attribute.values, colors, mode='lookup')
-    Sys.sleep (0.3)
-    
-    # now, a lookup Mapping with an incomplete lookup table:  does the default.color argument work?  cy2.7 bug -- not yet.
-    #  the glycoprotein node, 'Gene C', should have a white border around white fill
-    node.attribute.values = c ("kinase",  "transcription factor")
-    colors =                c ('#0000FF', '#FF0000')
-    setNodeBorderColorMapping ('type', node.attribute.values, colors, mode='lookup', default.color='#FFFFFF')
-    
-    # now, one element lists
-    node.attribute.values = c ("transcription factor")
-    colors =                c ('#FF00FF')
-    setNodeBorderColorMapping ('type', node.attribute.values, colors, mode='lookup', default.color='#FFFFFF')
-    
-    
-
-    
-} # test.setNodeBorderColorMapping
+    # now, test default
+    node.attribute.values = c ("A")
+    node.colors =           c ('#8888FF')
+    setNodeBorderColorMapping ('group', node.attribute.values, node.colors, 'd', default.color = '#5588FF')
+} 
 #-------------------------------------------------------------------------------
 test.setNodeBorderWidthMapping = function ()
 {
     title  = 'test.setNodeBorderWidthMapping'
-    test.prep (title)
-    cy = CytoscapeConnection ()
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
+    test.prep (title,F)
     
     # set the stage by making all the nodes white, to provide better contrast for the node border colors
-    node.attribute.values = c (-3.0, 0.0, 3.0)
-    colors = c ('#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF')
-    setNodeColorMapping ('lfc', node.attribute.values, colors, mode='interpolate')
-    setNodeBorderColorDefault ('#FF0000')
+    node.attribute.values = c (0.0, 10.0, 20.0)
+    node.colors = c ('#FFFFFF', '#FFFFFF', '#FFFFFF')
+    setNodeColorMapping ('score', node.attribute.values, node.colors, 'c')
+    setNodeBorderColorDefault ('#5588FF')
     
-    for (i in 1:3) {
-        # 3 different node border sizes
-        node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
-        border.widths =         c (0, 10, 20)
-        setNodeBorderWidthMapping ('type', node.attribute.values, border.widths)
-        # swap them around different node border sizes
-        node.attribute.values = c ("kinase",  "transcription factor", "glycoprotein")
-        border.widths =         c (20, 0, 10);
-        setNodeBorderWidthMapping ('type', node.attribute.values, border.widths)
-    } # for i
-    
-
-    
-} # test.setNodeBorderWidthMapping
+    # 2 different node border sizes
+    node.attribute.values = c ("A",  "B")
+    border.widths =         c (5, 20)
+    setNodeBorderWidthMapping ('group', node.attribute.values, border.widths, 'd')
+    # swap them around different node border sizes
+    node.attribute.values = c ("A",  "B")
+    border.widths =         c (20, 5);
+    setNodeBorderWidthMapping ('group', node.attribute.values, border.widths, 'd')
+}
 #-------------------------------------------------------------------------------
 test.setNodeSizeMapping = function ()
 {
     title = 'test.setNodeSizeMapping'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    
-    # first, create a simple 2-point Mapping, with 'below' and 'above' values strong enough to see that they are working
-    # recall that makeSimpleGraph creates count attributes like this:
-    # noa (getGraph (net.suide), 'count')     #   A.A   B.B   C.C
-    #                                       "2"  "30" "100"
-    
-    count.control.points = c (20,  40)
-    node.sizes           = c (1, 80,  120, 300)
-    setNodeSizeMapping ('count', count.control.points, node.sizes, mode='interpolate')
+    test.prep (title,F)
+
+    count.control.points = c(5,  20)
+    node.sizes           = c(1, 80,  120, 300)
+    setNodeSizeMapping ('score', count.control.points, node.sizes, 'c')
     system ('sleep 0.3')
     
     # now chop off the below & above values.  A should grow to 80, almost as big as B, and C should shrink to 120, larger that B
     
-    count.control.points = c (20,  40)
-    node.sizes           = c (80,  120)
-    setNodeSizeMapping ('count', count.control.points, node.sizes, mode='interpolate')
+    count.control.points = c(5,  20)
+    node.sizes           = c(80,  120)
+    setNodeSizeMapping ('score', count.control.points, node.sizes, 'c')
     system ('sleep 0.3')
     
-    # now use a mode='lookup' Mapping.  specify two sizes, look to see that the third type, glycoprotein, gets the tiny small size
-    molecule.types = c ('kinase', 'transcription factor')
-    node.sizes     = c (60, 80)
-    setNodeSizeMapping ('type', molecule.types,  node.sizes, default.size= 5, mode='lookup')
-    
-
-    
-} # test.setNodeSizeMapping
+    # now use a 'd' Mapping. 
+    molecule.types = c('A')
+    node.sizes     = c(60)
+    setNodeSizeMapping ('group', molecule.types,  node.sizes, default.size= 5, 'd')
+} 
 #-------------------------------------------------------------------------------
 test.setNodeShapeMapping = function ()
 {
     title = 'test.setNodeShapeMapping'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    
-    # specify shapes for only two of the three nodes and node types.  make sure that the third node gets
-    # the default shape
-    
+    test.prep (title,F)
+
     # make Mapping for 2 of 3 node types, leaving the third as the default
     node.shapes = c ('diamond', 'triangle')
-    attribute.values = c ('kinase', 'glycoprotein')
-    setNodeShapeMapping (node.attribute.name='type', attribute.values, node.shapes, default.shape='ellipse')
+    attribute.values = c ('A', 'B')
+    setNodeShapeMapping ('group', attribute.values, node.shapes, default.shape='ellipse')
     
     # test one-element lists
     node.shapes = c ('diamond')
-    attribute.values = c ('glycoprotein')
-    setNodeShapeMapping (node.attribute.name='type', attribute.values, node.shapes, default.shape='ellipse')
-    
-
-    
-} # test.setNodeShapeMapping
+    attribute.values = c ('B')
+    setNodeShapeMapping ('group', attribute.values, node.shapes, default.shape='ellipse')
+} 
 #-------------------------------------------------------------------------------
-test.setNodeOpacityMapping = function ()
+test.setNodeComboOpacityMapping = function ()
 {
-    title = 'test.setNodeOpacityMapping'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
+    title = 'test.setNodeComboOpacityMapping'
+    test.prep (title, F)
     
     # make the node borders prominent
-    setNodeBorderColorDefault (net.suid, '#FFFF00')
-    setNodeBorderWidthDefault (net.suid, 10)
+    setNodeBorderColorDefault ('#55FF88')
+    setNodeBorderWidthDefault (10)
     
-    lfc.values = c (-3.0, 0, 3.0)
+    score.values = c (5, 10, 20)
     
     # make the nodes big, give them strong colors
-    setNodeSizeDirect (net.suid, nodes (net.suid@graph), 100)
-    setNodeColorMapping (net.suid, 'lfc', lfc.values, c ('#FF0000', '#00FF00', '#0000FF'), mode='interpolate'); redraw (net.suid)
-    layoutNetwork (net.suid, 'grid')
+    setNodeSizeBypass (getAllNodes(), 100)
+    setNodeColorMapping ('score', score.values, c ('#FF0000', '#00FF00', '#0000FF'), 'c')
+    layoutNetwork ('grid')
     
-    # first, the continuous 'interpolate' case, in which opacity is a function of lfc
+    # first, the continuous 'interpolate' case, in which opacity is a function of score
     opacities = c (10, 128, 255)
-    setNodeOpacityMapping (net.suid, node.attribute.name='lfc', lfc.values, opacities, mode='interpolate')
-    redraw (net.suid)
+    setNodeComboOpacityMapping ('score', score.values, opacities, 'c')
     
     # reset
-    setNodeOpacityMapping (net.suid, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate', aspect='all');
-    redraw (net.suid)
+    setNodeComboOpacityMapping ('score', score.values, c (255, 255, 255), 'c');
     
-    # now try a few of the aspect-specific Mappings, still in interpolate mode
-    # border:
-    setNodeOpacityMapping (net.suid, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate', aspect='border');
-    redraw (net.suid)
-    setNodeOpacityMapping (net.suid, 'lfc', lfc.values, c (40,128, 0), mode='interpolate', aspect='border');
-    redraw (net.suid)
-    
+    scalar.values = c("A","B")
+    # lookup
+    setNodeComboOpacityMapping ('group', scalar.values, c (40, 128), 'd');   
+ 
     # reset
-    setNodeOpacityMapping (net.suid, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate');   redraw (net.suid)
-    
-    # label
-    setNodeOpacityMapping (net.suid, 'lfc', lfc.values, c (40,128, 0), mode='interpolate', aspect='border');
-    redraw (net.suid)
-    
-    # reset
-    setNodeOpacityMapping (net.suid, 'lfc', lfc.values, c (255, 255, 255), mode='interpolate');   redraw (net.suid)
-    
-    # border
-    setNodeOpacityMapping (net.suid, 'lfc', lfc.values, c (40,128, 0), mode='interpolate', aspect='border');
-    redraw (net.suid)
-    
-    # a mix...
-    setNodeOpacityMapping (net.suid, 'lfc', lfc.values, c (128, 128, 128), mode='interpolate', aspect='border, label, fill');
-    redraw (net.suid)
-    
-    
-    scalar.values = as.character (noa (net.suid@graph, 'type'))
-    # reset
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (255, 255, 255), mode='lookup');   redraw (net.suid)
-    
-    # label
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (40,128, 0), mode='lookup', aspect='border');
-    redraw (net.suid)
-    
-    # reset
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (255, 255, 255), mode='lookup');   redraw (net.suid)
-    
-    # border
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (40,128, 0), mode='lookup', aspect='border');
-    redraw (net.suid)
-    
-    # a mix...
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (128, 128, 128), mode='lookup', aspect='border, label, fill');
-    redraw (net.suid)
-    
-    # make everything except labels transparent
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (0, 0, 0), mode='lookup', aspect='border, fill');
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='label')
-    redraw (net.suid)
-    
-    # make everything except borders transparent
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (0, 0, 0), mode='lookup', aspect='label, fill');
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='border')
-    redraw (net.suid)
-    
-    # make everything except fill transparent
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (0, 0, 0), mode='lookup', aspect='label, border');
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='fill')
-    redraw (net.suid)
-    
-    # now restore everything
-    setNodeOpacityMapping (net.suid, 'type', scalar.values, c (255, 255, 255), mode='lookup', aspect='all')
-    redraw (net.suid)
-    
-    invisible (net.suid)
-    
-} # test.setNodeOpacityMapping
+    setNodeComboOpacityMapping ('group', scalar.values, c (255, 255), 'd');   
+ 
+} 
 #-------------------------------------------------------------------------------
-test.setNodeColorDirect = function ()
+test.setNodeColorBypass = function ()
 {
-    title = 'test.setNodeColorDirect'
-    test.prep (title)
+    title = 'test.setNodeColorBypass'
+    test.prep (title,F)
     
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    
-    setNodeColorDirect (net.suid, 'A', '#AA0088')
-    setNodeColorDirect (net.suid, c ('C', 'B'), '#448844')
-    
-    invisible (net.suid)
-    
-} # test.setNodeColorirect
+    setNodeColorBypass ('node 0', '#AA0088')
+    setNodeColorBypass ( c ('node 1', 'node 2'), '#448844')
+} 
 #-------------------------------------------------------------------------------
-test.setNodeBorderColorDirect = function ()
+test.setNodeBorderColorBypass = function ()
 {
-    title = 'test.setNodeBorderColorDirect'
-    test.prep (title)
+    title = 'test.setNodeBorderColorBypass'
+    test.prep (title,F)
     
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    
-    setNodeBorderColorDirect (net.suid, 'A', '#AA4488')
-    setNodeBorderColorDirect (net.suid, c ('C', 'B'), '#AA8888')
-    
-    invisible (net.suid)
-    
-} # test.setNodeBorderColorDirect
+    setNodeBorderColorBypass ('node 0', '#AA4488')
+    setNodeBorderColorBypass (c ('node 1', 'node 2'), '#AA8888')
+} 
 #-------------------------------------------------------------------------------
-test.setNodeLabelDirect = function ()
+test.setNodeLabelBypass = function ()
 {
-    #DEACTIVATED("too slow")
-    title = 'test.setNodeLabelDirect'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    
-    setNodeLabelDirect (net.suid, 'A', 'new A label')
-    # try multiple nodes, one label, which RCy will replicate into the right number
-    setNodeLabelDirect (net.suid, nodes (net.suid@graph), '')
-    setNodeLabelDirect (net.suid, c ('A', 'C'), c ('AzA', 'ByB'))
-    
-    invisible (net.suid)
-    
-} # test.setNodeLabelDirect
+    title = 'test.setNodeLabelBypass'
+    test.prep (title,F)
+
+    setNodeLabelBypass ('node 0', 'new A label')
+
+    setNodeLabelBypass (getAllNodes(), '')
+    setNodeLabelBypass (c ('node 0', 'node 2'), c ('AzA', 'ByB'))
+} 
 #-------------------------------------------------------------------------------
-test.setNodeLabelPropertiesDirect = function ()
+test.setNodeLabelPropertiesBypass = function ()
 {
-    #DEACTIVATED("too slow")
-    print ('--- test.setNodeLabelsPropertiesDirect')
-    title = 'test.setNodeLabelPropertiesDirect'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
+    print ('--- test.setNodeLabelsPropertiesBypass')
+    title = 'test.setNodeLabelPropertiesBypass'
+    test.prep (title,F)
     
     sizes = c (10, 50, 80)
     colors = c ('#0000FF', '#00FF00', '#FF0000')
     for (i in 1:length (sizes)) {
-        setNodeFontSizeDirect (net.suid, 'A', sizes [i])
-        setNodeLabelColorDirect (net.suid, 'A', colors [i])
-    } # for i
-    
-    invisible (net.suid)
-    
-} # test.setNodeLabelsPropertiesDirect
+        setNodeFontSizeBypass ('node 0', sizes [i])
+        setNodeLabelColorBypass ('node 0', colors [i])
+    }
+} 
 #-------------------------------------------------------------------------------
-test.setNodeOpacityDirect = function ()
+test.setNodeOpacityBypass = function ()
 {
-    #DEACTIVATED("too slow")
-    title = 'test.setNodeOpacityDirect'
-    test.prep (title)
+    title = 'test.setNodeOpacityBypass'
+    test.prep (title, F)
+
+    setNodeSizeBypass ('node 3', 120)
+    layoutNetwork ('grid')
+    fitContent ()
+    setNetworkZoomBypass (0.8 * getNetworkZoom())
     
-    g = RCy3::makeSimpleGraph ()
-    g = graph::addNode ('D', g)
-    nodeData (g, 'D', 'label') = 'blink'
-    net.suid = createNetworkFromGraph(g, title=title)
-    displayGraph (net.suid)
-    setNodeSizeDirect (net.suid, 'D', 120)
-    layoutNetwork (net.suid, 'grid')
-    fitContent (net.suid)
-    setZoom (net.suid, 0.8 * getZoom (net.suid))
-    redraw (net.suid)
-    
-    setNodeFillOpacityDirect (net.suid, 'A', 0)
-    setNodeLabelOpacityDirect (net.suid, 'B', 0)
-    setNodeBorderOpacityDirect (net.suid, 'C', 0)
+    setNodeFillOpacityBypass ('node 0', 0)
+    setNodeLabelOpacityBypass ('node 1', 0)
+    setNodeBorderOpacityBypass ('node 2', 0)
     for (i in 1:3) {
-        setNodeOpacityDirect (net.suid, 'D', 0)
-        setNodeOpacityDirect (net.suid, 'D', 255)
-    } # for i
+        setNodeOpacityBypass ('node 3', 0)
+        setNodeOpacityBypass ('node 3', 255)
+    } 
     
-    setNodeOpacityDirect (net.suid, c ('A', 'C'), 255)
-    setNodeOpacityDirect (net.suid, c ('B', 'D'), 50)
-    setNodeOpacityDirect (net.suid, c ('A', 'B', 'C', 'D'), c (10, 50, 100, 200))
-    setNodeOpacityDirect (net.suid, c ('A', 'B', 'C', 'D'), c (200, 100, 50, 10))
+    setNodeOpacityBypass (c ('node 0', 'node 2'), 255)
+    setNodeOpacityBypass (c ('node 1', 'node 3'), 50)
+    setNodeOpacityBypass (c ('node 0', 'node 1', 'node 2', 'node 3'), c (10, 50, 100, 200))
+    setNodeOpacityBypass (c ('node 0', 'node 1', 'node 2', 'node 3'), c (200, 100, 50, 10))
     Sys.sleep (0.3)
     
-    setNodeOpacityDirect (net.suid, c ('A', 'B', 'C', 'D'), 255); redraw (net.suid)
-    
-    invisible (net.suid)
-    
-} # test.setNodeOpacityDirect
+    setNodeOpacityBypass (c ('node 0', 'node 1', 'node 2', 'node 3'), 255); 
+}
 #-------------------------------------------------------------------------------
-# test.setEdgeOpacityDirect = function ()
-# {
-#     #DEACTIVATED("too slow for some reason")
-#     title = 'test.setEdgeOpacityDirect'
-#     test.prep (title)
-#
-#     g = RCy3::makeSimpleGraph ()
-#     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-#     setEdgeLineWidthDefault (net.suid, 10)
-#     displayGraph (net.suid)
-#     layoutNetwork (net.suid, 'grid')
-#
-#     named.edge.names = cy2.edge.names (g)
-#     edge.names <- unname(named.edge.names)
-#
-#     setEdgeOpacityDirect (net.suid, edge.names [1], 80)
-#     setEdgeOpacityDirect (net.suid, edge.names [2], 0)
-#     setEdgeOpacityDirect (net.suid, edge.names [3], 255)
-#
-#     setEdgeOpacityDirect (net.suid, edge.names [2], 80)
-#     setEdgeOpacityDirect (net.suid, edge.names [3], 0)
-#     setEdgeOpacityDirect (net.suid, edge.names [1], 255)
-#
-#     setEdgeOpacityDirect (net.suid, edge.names [1], 80)
-#     setEdgeOpacityDirect (net.suid, edge.names [3], 40)
-#     setEdgeOpacityDirect (net.suid, edge.names [2], 255)
-#
-#     setEdgeOpacityDirect (net.suid, edge.names [1], 0)
-#     setEdgeOpacityDirect (net.suid, edge.names [3], 0)
-#     setEdgeOpacityDirect (net.suid, edge.names [2], 0)
-#
-#     setEdgeOpacityDirect (net.suid, edge.names [1], 255)
-#     setEdgeOpacityDirect (net.suid, edge.names [3], 255)
-#     setEdgeOpacityDirect (net.suid, edge.names [2], 255)
-#
-#     setEdgeOpacityDirect (net.suid, edge.names, 0)
-#     setEdgeOpacityDirect (net.suid, edge.names, 255)
-#
-#     setEdgeOpacityDirect (net.suid, edge.names, c (0, 128, 255))
-#     setEdgeOpacityDirect (net.suid, edge.names, c (255, 0, 128))
-#
-#     setEdgeOpacityDirect (net.suid, edge.names, 255)
-#
-#     invisible (net.suid)
-#
-# } # test.setEdgeOpacityDirect
-#-------------------------------------------------------------------------------
-test.setEdgeColorDirect = function ()
+test.setEdgeOpacityBypass = function ()
 {
-    #DEACTIVATED("very slow for some reason")
-    title = 'test.setEdgeColorDirect'
+    title = 'test.setEdgeOpacityBypass'
     test.prep (title)
+
+    edge.names <- getAllEdges()
+
+    setEdgeOpacityBypass (edge.names [1], 80)
+    setEdgeOpacityBypass (edge.names [2], 0)
+    setEdgeOpacityBypass (edge.names [3], 255)
+
+    setEdgeOpacityBypass (edge.names [2], 80)
+    setEdgeOpacityBypass (edge.names [3], 0)
+    setEdgeOpacityBypass (edge.names [1], 255)
+
+    setEdgeOpacityBypass (edge.names [1], 80)
+    setEdgeOpacityBypass (edge.names [3], 40)
+    setEdgeOpacityBypass (edge.names [2], 255)
+
+    setEdgeOpacityBypass (edge.names [1], 0)
+    setEdgeOpacityBypass (edge.names [3], 0)
+    setEdgeOpacityBypass (edge.names [2], 0)
+
+    setEdgeOpacityBypass (edge.names [1], 255)
+    setEdgeOpacityBypass (edge.names [3], 255)
+    setEdgeOpacityBypass (edge.names [2], 255)
     
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    
-    edge.of.interest = as.character (cy2.edge.names (g) [1])
-    setEdgeColorDirect (net.suid, edge.of.interest, '#FF0000')
-    setEdgeColorDirect (net.suid, edge.of.interest, '#00FF00')
-    setEdgeColorDirect (net.suid, edge.of.interest, '#0000FF')
-    
-    invisible (net.suid)
-    
-} # test.setEdgeColorDirect
+    setEdgeOpacityBypass (edge.names[1:3], c (0, 128, 255))
+    setEdgeOpacityBypass (edge.names[1:3], c (255, 0, 128))
+
+    setEdgeOpacityBypass (edge.names, 255)
+}
 #-------------------------------------------------------------------------------
-test.setEdgeSourceArrowShapeDirect = function ()
+test.setEdgeColorBypass = function ()
 {
-    title = 'test.setEdgeSourceArrowShapeDirect'
-    test.prep (title)
+    title = 'test.setEdgeColorBypass'
+    test.prep (title, F)
     
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    fitContent (net.suid)
-    
-    edges.of.interest = as.character (cy2.edge.names (g))
-    supported.arrow.shapes = getArrowShapes (net.suid)
+    edge.of.interest = getAllEdges()[1]
+    setEdgeColorBypass (edge.of.interest, '#FF0000')
+    setEdgeColorBypass (edge.of.interest, '#00FF00')
+    setEdgeColorBypass (edge.of.interest, '#0000FF')
+}
+#-------------------------------------------------------------------------------
+test.setEdgeSourceArrowShapeBypass = function ()
+{
+    title = 'test.setEdgeSourceArrowShapeBypass'
+    test.prep (title, F)
+
+    edges.of.interest = getAllEdges()
+    supported.arrow.shapes = getArrowShapes()
     
     # first try passing three edges and three arrow shapes
-    setEdgeSourceArrowShapeDirect (net.suid, edges.of.interest, supported.arrow.shapes [2:4])
+    setEdgeSourceArrowShapeBypass (edges.of.interest[1:3], supported.arrow.shapes [2:4])
     
     Sys.sleep (0.3)
     
     # now try passing three edges and one arrow.shapes
-    setEdgeSourceArrowShapeDirect (net.suid, edges.of.interest, supported.arrow.shapes [6])
+    setEdgeSourceArrowShapeBypass (edges.of.interest[1:3], supported.arrow.shapes [6])
     
+    # now loop through all of the arrow.shapes
+    for (shape in supported.arrow.shapes) {
+        setEdgeSourceArrowShapeBypass (edges.of.interest, shape)
+    }
     # restore the default
-    setEdgeSourceArrowShapeDirect (net.suid, edges.of.interest, 'NONE')
-    invisible (net.suid)
-    
-} # test.setEdgeSourceArrowShapeDirect
+    setEdgeSourceArrowShapeBypass (edges.of.interest, 'NONE')
+}
 #-------------------------------------------------------------------------------
-test.setEdgeLabelDirect = function ()
+test.setEdgeTargetArrowShapeBypass = function ()
 {
-    title = 'test.setEdgeLabelDirect '
-    test.prep (title)
+    title = 'test.setEdgeTargetArrowShapeBypass'
+    test.prep (title, F)
+
+    edges.of.interest = getAllEdges()
+    supported.arrow.shapes = getArrowShapes ()
     
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    edge.names = cy2.edge.names (net.suid@graph)[1:2]
-    setEdgeLabelDirect (net.suid, edge.names, 'some name')
+    # first try passing three edges and three arrow.shapes
+    setEdgeTargetArrowShapeBypass (edges.of.interest[1:3], supported.arrow.shapes [5:7])
     
-    invisible (net.suid)
     
-} # test.setEdgeLabelDirect
-#-------------------------------------------------------------------------------
-#test.setEdgeFontFaceDirect = function ()
-#{
-#  title = 'test.setEdgeFontFaceDirect'
-#  test.prep (title)
-#
-#  g = RCy3::makeSimpleGraph ()
-#  net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-#  displayGraph (net.suid)
-#  layoutNetwork (net.suid, 'grid')
-#  redraw (net.suid)
-#
-#  edge.of.interest = cy2.edge.names (g) [1]
-#  fonts = c ('courier', 'arial')
-#  for (font in fonts) {
-#    setEdgeFontFaceDirect (net.suid, edge.of.interest, font); redraw (net.suid);
-#    Sys.sleep (0.3)
-#    } # for i
-#
-#} # test.
-#-------------------------------------------------------------------------------
-test.setEdgeFontSizeDirect = function ()
-{
-    #DEACTIVATED("too slow for some reason.")
-    title = 'test.setEdgeFontSizeDirect'
-    test.prep (title)
+    Sys.sleep (0.3)
     
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
+    # now try passing three edges and one arrow shape
+    setEdgeTargetArrowShapeBypass (edges.of.interest[1:3], supported.arrow.shapes [8])
     
-    edge.of.interest = cy2.edge.names (g) [1]
-    setEdgeFontSizeDirect (net.suid, edge.of.interest, 12)
     
-} # test.setEdgeFontSizeDirect
-#-------------------------------------------------------------------------------
-# test.setEdgeLabelColorDirect = function () # WORKS BUT IS A BIT SLOW
-# {
-#     #DEACTIVATED("too slow for some reason")
-#     title = 'test.setEdgeLabelColorDirect'
-#     test.prep (title)
-#
-#     g = RCy3::makeSimpleGraph ()
-#     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-#     displayGraph (net.suid)
-#     layoutNetwork (net.suid, 'grid')
-#     redraw (net.suid)
-#
-#     edge.names = cy2.edge.names (g)
-#     setEdgeLabelDirect (net.suid, edge.names, 'some label')
-#     setEdgeLabelColorDirect (net.suid, edge.names [1:2], '#FF0000')
-#     setEdgeLabelColorDirect (net.suid, edge.names, '#00FF00')
-#     setEdgeLabelColorDirect (net.suid, edge.names [3], '#000000')
-#
-# } # test.setEdgeLabelColorDirect
-#-------------------------------------------------------------------------------
-test.setEdgeTooltipDirect = function ()
-{
-    title = 'test.setEdgeTooltipDirect'
-    test.prep (title)
-    
-    net.suid <- createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
-    
-    edges.of.interest = as.character (cy2.edge.names (net.suid@graph))
-    
-    # first try passing three edges and three tooltips
-    setEdgeTooltipDirect (net.suid, edges.of.interest, c ('tooltip #1', 'tooltip #2', 'tooltip #3'))
-    redraw (net.suid)
-    
-    # now try passing three edges and one tooltip
-    setEdgeTooltipDirect (net.suid, edges.of.interest [1:2], 'a general purpose tooltip')
-    redraw (net.suid)
-    
-    invisible (net.suid)
-    
-} # test.setEdgeTooltipDirect
-#-------------------------------------------------------------------------------
-test.setEdgeLineWidthDirect = function ()
-{
-    title = 'test.setEdgeLineWidthDirect'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
-    
-    edges.of.interest = cy2.edge.names (g) [1:2]
-    
-    for (i in 1:10) {
-        setEdgeLineWidthDirect (net.suid, edges.of.interest, i)
+    # now loop through all of the arrow.shapes
+    for (shape in supported.arrow.shapes) {
+        setEdgeTargetArrowShapeBypass (edges.of.interest, shape)
     }
     
-    setEdgeLineWidthDirect (net.suid, edges.of.interest, 1)
-    redraw (net.suid)
-    
-} # test.setEdgeLineWidthDirect
+    # restore the default
+    setEdgeTargetArrowShapeBypass (edges.of.interest, 'NONE')
+}
 #-------------------------------------------------------------------------------
-test.setEdgeLineStyleDirect = function ()
+test.setEdgeSourceArrowColorBypass = function ()
 {
-    title = 'test.setEdgeLineStyleDirect'
-    test.prep (title)
+    title = 'test.setEdgeSourceArrowColorBypass'
+    test.prep (title,F)
     
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
+    arrows = c ('Arrow', 'Diamond', 'Circle')
+    edgeType.values = c ('inhibits', 'activates', 'interaction')
+    setEdgeSourceArrowMapping ('interaction', edgeType.values, arrows)
+    setEdgeTargetArrowMapping ('interaction', edgeType.values, arrows)
     
-    edges.of.interest = as.character (cy2.edge.names (g))
+    colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
+    colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
     
-    supported.styles = getLineStyles (net.suid)
+    edge.names = getAllEdges()
+    
+    setEdgeSourceArrowColorBypass (edge.names[1:3], colors.1)
+    setEdgeSourceArrowColorBypass (edge.names[1:3], colors.2)
+}
+#-------------------------------------------------------------------------------
+test.setEdgeTargetArrowColorBypass = function ()
+{
+    title = 'test.setEdgeTargetArrowColorBypass'
+    test.prep (title, F)
+    
+    arrows = c ('Arrow', 'Diamond', 'Circle')
+    edgeType.values = c ('inhibits', 'activates', 'interaction')
+    setEdgeSourceArrowMapping ('interaction', edgeType.values, arrows)
+    setEdgeTargetArrowMapping ('interaction', edgeType.values, arrows)
+    
+    colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
+    colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
+    
+    edge.names = getAllEdges()
+    
+    setEdgeTargetArrowColorBypass (edge.names[1:3], colors.1)
+    setEdgeTargetArrowColorBypass (edge.names[1:3], colors.2)
+} 
+#-------------------------------------------------------------------------------
+test.setEdgeLabelBypass = function ()
+{
+    title = 'test.setEdgeLabelBypass '
+    test.prep (title, F)
+    
+    edge.names = getAllEdges()[1:2]
+    setEdgeLabelBypass (edge.names, 'some name')
+} 
+#-------------------------------------------------------------------------------
+test.setEdgeFontFaceBypass = function ()
+{
+ title = 'test.setEdgeFontFaceBypass'
+ test.prep (title, F)
+
+ edge.of.interest = getAllEdges()[1]
+ fonts = c ('courier', 'arial')
+ for (font in fonts) {
+   setEdgeFontFaceBypass (edge.of.interest, font)
+   Sys.sleep (0.3)
+   } 
+} 
+#-------------------------------------------------------------------------------
+test.setEdgeFontSizeBypass = function ()
+{
+    title = 'test.setEdgeFontSizeBypass'
+    test.prep (title, F)
+    
+    edge.of.interest = getAllEdges()[1]
+    setEdgeFontSizeBypass (edge.of.interest, 12)
+}
+#-------------------------------------------------------------------------------
+test.setEdgeLabelColorBypass = function ()
+{
+    title = 'test.setEdgeLabelColorBypass'
+    test.prep (title,F)
+
+    edge.names = getAllEdges()
+    setEdgeLabelBypass (edge.names, 'some label')
+    setEdgeLabelColorBypass (edge.names [1:2], '#FF0000')
+    setEdgeLabelColorBypass (edge.names, '#00FF00')
+    setEdgeLabelColorBypass (edge.names [3], '#000000')
+}
+#-------------------------------------------------------------------------------
+test.setEdgeTooltipBypass = function ()
+{
+    title = 'test.setEdgeTooltipBypass'
+    test.prep (title,F)
+    
+    edges.of.interest = getAllEdges()
+    
+    # first try passing three edges and three tooltips
+    setEdgeTooltipBypass (edges.of.interest[1:3], c ('tooltip #1', 'tooltip #2', 'tooltip #3'))
+    
+    # now try passing three edges and one tooltip
+    setEdgeTooltipBypass (edges.of.interest [1:3], 'a general purpose tooltip')
+}
+#-------------------------------------------------------------------------------
+test.setEdgeLineWidthBypass = function ()
+{
+    title = 'test.setEdgeLineWidthBypass'
+    test.prep (title,F)
+    
+    edges.of.interest = getAllEdges()[1:2]
+    
+    for (i in 1:10) {
+        setEdgeLineWidthBypass (edges.of.interest, i)
+    }
+    #reset
+    setEdgeLineWidthBypass (edges.of.interest, 1)
+}
+#-------------------------------------------------------------------------------
+test.setEdgeLineStyleBypass = function ()
+{
+    title = 'test.setEdgeLineStyleBypass'
+    test.prep (title,F)
+    
+    edges.of.interest = getAllEdges()
+    
+    supported.styles = getLineStyles()
     
     # first try passing three edges and three styles
-    setEdgeLineStyleDirect (net.suid, edges.of.interest, supported.styles [5:7])
-    redraw (net.suid)
+    setEdgeLineStyleBypass (edges.of.interest[1:3], supported.styles [5:7])
     
     Sys.sleep (0.3)
     
     # now try passing three edges and one styles
-    setEdgeLineStyleDirect (net.suid, edges.of.interest, supported.styles [8])
-    redraw (net.suid)
+    setEdgeLineStyleBypass (edges.of.interest, supported.styles [8])
     
     # now loop through all of the styles
-    
     for (style in supported.styles) {
-        setEdgeLineStyleDirect (net.suid, edges.of.interest, style)
+        setEdgeLineStyleBypass (edges.of.interest, style)
     }
     
-    setEdgeLineStyleDirect (net.suid, edges.of.interest, 'SOLID')
-    redraw (net.suid)
-    
-    invisible (net.suid)
-    
-} # test.setEdgeLineStyleDirect
+    setEdgeLineStyleBypass (edges.of.interest, 'SOLID')
+}
 #-------------------------------------------------------------------------------
-test.setEdgeSourceArrowShapeDirect = function ()
+test.setEdgeLabelOpacityBypass = function ()
 {
-    title = 'test.setEdgeSourceArrowShapeDirect'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
-    fitContent (net.suid)
-    
-    edges.of.interest = as.character (cy2.edge.names (g))
-    supported.arrow.shapes = getArrowShapes (net.suid)
-    
-    # first try passing three edges and three arrow.shapes
-    setEdgeSourceArrowShapeDirect (net.suid, edges.of.interest, supported.arrow.shapes [5:7])
-    redraw (net.suid)
-    
-    Sys.sleep (0.3)
-    
-    # now try passing three edges and one arrow shape
-    setEdgeSourceArrowShapeDirect (net.suid, edges.of.interest, supported.arrow.shapes [8])
-    redraw (net.suid)
-    
-    # now loop through all of the arrow.shapes
-    
-    for (shape in supported.arrow.shapes) {
-        setEdgeSourceArrowShapeDirect (net.suid, edges.of.interest, shape)
+    title = 'test.setEdgeLabelOpacityBypass'
+    test.prep (title, F)
+
+    edge.of.interest = getAllEdges()[1]
+    for (i in 1:5) {
+        setEdgeOpacityBypass (edge.of.interest, i * 30)
     }
-    
-    # restore the default
-    setEdgeSourceArrowShapeDirect (net.suid, edges.of.interest, 'NONE')
-    redraw (net.suid)
-    
-    invisible (net.suid)
-    
-} # test.setEdgeSourceArrowShapeDirect
-#-------------------------------------------------------------------------------
-test.setEdgeTargetArrowShapeDirect = function ()
-{
-    title = 'test.setEdgeTargetArrowShapeDirect'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
-    
-    edges.of.interest = as.character (cy2.edge.names (g))
-    supported.arrow.shapes = getArrowShapes (net.suid)
-    
-    # first try passing three edges and three arrow.shapes
-    setEdgeTargetArrowShapeDirect (net.suid, edges.of.interest, supported.arrow.shapes [5:7])
-    redraw (net.suid)
-    
-    Sys.sleep (0.3)
-    
-    # now try passing three edges and one arrow shape
-    setEdgeTargetArrowShapeDirect (net.suid, edges.of.interest, supported.arrow.shapes [8])
-    redraw (net.suid)
-    
-    # now loop through all of the arrow.shapes
-    for (shape in supported.arrow.shapes) {
-        setEdgeTargetArrowShapeDirect (net.suid, edges.of.interest, shape)
-    }
-    
-    # restore the default
-    setEdgeTargetArrowShapeDirect (net.suid, edges.of.interest, 'NONE')
-    
-    invisible (net.suid)
-    
-} # test.setTargetArrowShapeDirect
-#-------------------------------------------------------------------------------
-test.setEdgeSourceArrowColorDirect = function ()
-{
-    title = 'test.setEdgeSourceArrowColorDirect'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
-    
-    arrows = c ('Arrow', 'Diamond', 'Circle')
-    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-    setEdgeSourceArrowMapping (net.suid, 'edgeType', edgeType.values, arrows)
-    setEdgeTargetArrowMapping (net.suid, 'edgeType', edgeType.values, arrows)
-    
-    colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
-    colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
-    
-    edge.names = as.character (cy2.edge.names (g) [1:3])
-    
-    setEdgeSourceArrowColorDirect (net.suid, edge.names, colors.1)
-    setEdgeSourceArrowColorDirect (net.suid, edge.names, colors.2)
-    
-    invisible (net.suid)
-    
-} # test.setEdgeSourceArrowColorDirect
-#-------------------------------------------------------------------------------
-test.setEdgeTargetArrowColorDirect = function ()
-{
-    title = 'test.setEdgeTargetArrowColorDirect'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
-    fitContent (net.suid)
-    
-    arrows = c ('Arrow', 'Diamond', 'Circle')
-    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-    setEdgeSourceArrowMapping (net.suid, 'edgeType', edgeType.values, arrows)
-    setEdgeTargetArrowMapping (net.suid, 'edgeType', edgeType.values, arrows)
-    
-    colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
-    colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
-    
-    edge.names = as.character (cy2.edge.names (g) [1:3])
-    
-    setEdgeTargetArrowColorDirect (net.suid, edge.names, colors.1)
-    setEdgeTargetArrowColorDirect (net.suid, edge.names, colors.2)
-    
-    invisible (net.suid)
-    
-} # test.setEdgeTargetArrowColorDirect
-#-------------------------------------------------------------------------------
-# test.setEdgeLabelOpacityDirect = function () # WORKS PERFECTLY BUT TOO SLOW
-# {
-#     #DEACTIVATED("too slow for some reason")
-#     title = 'test.setEdgeLabelOpacityDirect'
-#     test.prep (title)
-#
-#     g = RCy3::makeSimpleGraph ()
-#     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-#     displayGraph (net.suid)
-#     layoutNetwork (net.suid, 'grid')
-#     redraw (net.suid)
-#
-#     edge.of.interest = cy2.edge.names (g) [1]
-#     for (i in 1:5) {
-#         setEdgeOpacityDirect (net.suid, edge.of.interest, i * 30); redraw (net.suid);
-#     } # for i
-#
-# } # test.setEdgeLabelOpacityDirect
-#-------------------------------------------------------------------------------
-test.setEdgeSourceArrowOpacityDirect = function ()
-{
-    title = 'test.setEdgeSourceArrowOpacityDirect'
-    test.prep (title)
-    
-    g = RCy3::makeSimpleGraph ()
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
-    
-    edges.of.interest = as.character (cy2.edge.names (g))
-    
-    # make sure the source arrows are visible
-    setEdgeSourceArrowShapeDirect (net.suid, edges.of.interest, 'Circle')
-    
-    # first try passing three edges and three arrow opacity values
-    setEdgeSourceArrowOpacityDirect (net.suid, edges.of.interest, c (64, 128, 255))
-    redraw (net.suid)
-    
-    Sys.sleep (0.3)
-    
-    # now try passing three edges and just one opacity value; it will be applied to all arrows
-    setEdgeSourceArrowOpacityDirect (net.suid, edges.of.interest, 32)
-    redraw (net.suid)
-    
-    # now loop through all of the arrow.opacitys
-    for (opacity in seq (0, 255, by=45)) {
-        setEdgeSourceArrowOpacityDirect (net.suid, edges.of.interest, opacity)
-    }
-    
-    # restore the default
-    setEdgeSourceArrowOpacityDirect (net.suid, edges.of.interest, 255)
-    
-} # test.setEdgeSourceArrowOpacityDirect
-#-------------------------------------------------------------------------------
-test.setEdgeTargetArrowOpacityDirect = function ()
-{
-    title = 'test.setEdgeTargetArrowOpacityDirect'
-    test.prep (title)
-    
-    g = RCy3::makeSimpleGraph ()
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
-    
-    edges.of.interest = as.character (cy2.edge.names (g))
-    
-    # make sure the target arrows are visible
-    setEdgeTargetArrowShapeDirect (net.suid, edges.of.interest, 'Circle')
-    
-    # first try passing three edges and three arrow opacity values
-    setEdgeTargetArrowOpacityDirect (net.suid, edges.of.interest, c (64, 128, 255))
-    redraw (net.suid)
-    
-    Sys.sleep (0.3)
-    
-    # now try passing three edges and just one opacity value; it will be applied to all arrows
-    setEdgeTargetArrowOpacityDirect (net.suid, edges.of.interest, 32)
-    redraw (net.suid)
-    
-    # now loop through all of the arrow.opacitys
-    for (opacity in seq (0, 255, by=45)) {
-        setEdgeTargetArrowOpacityDirect (net.suid, edges.of.interest, opacity)
-    }
-    
-    # restore the default
-    setEdgeTargetArrowOpacityDirect (net.suid, edges.of.interest, 255)
-    redraw (net.suid)
-    
-} # test.setEdgeTargetArrowOpacityDirect
-#-------------------------------------------------------------------------------
-# test.setEdgeLabelPositionDirect = function () # WORKS PERFECTLY FINE BUT SLOW
-# {
-#     #DEACTIVATED("too slow for some reason")
-#     title = 'test.setEdgeLabelPositionDirect'
-#     test.prep (title)
-#
-#     g = RCy3::makeSimpleGraph ()
-#     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-#     displayGraph (net.suid)
-#     layoutNetwork (net.suid, 'grid')
-#     redraw (net.suid)
-#
-#     edge.of.interest = cy2.edge.names (g) [1]
-#     for (i in 1:5) {
-#         setEdgeOpacityDirect (net.suid, edge.of.interest, i * 30)
-#         Sys.sleep (0.3)
-#     } # for i
-#
-# } # test.setEdgeLabelPositionDirect
-#-------------------------------------------------------------------------------
-#test.setEdgeLabelWidthDirect = function ()
-#{
-#     title = 'test.setEdgeLabelWidthDirect',
-#     test.prep (title),
-#   ,
-#     g = RCy3::makeSimpleGraph (),
-#  net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-#  displayGraph (net.suid)
-#  layoutNetwork (net.suid, 'grid')
-#  redraw (net.suid)
-#
-#  edge.of.interest = cy2.edge.names (g) [1]
-#  for (i in 1:5) {
-#    setEdgeOpacityDirect (net.suid, edge.of.interest, i * 30); redraw (net.suid);
-#    Sys.sleep (0.3)
-#    } # for i
-#
-#} # test.
+}
 #-------------------------------------------------------------------------------
 test.countNodes = function ()
 {
     title = 'test.countNodes'
     test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    checkEquals (getNodeCount (net.suide), length (nodes (getGraph (net.suide))))
-    
-
-    
-} # test.countNodes
+    g <- RCy3::makeSimpleGraph()
+    checkEquals (getNodeCount(), length (nodes (g)))
+}
 #-------------------------------------------------------------------------------
 test.countEdges = function ()
 {
     title = 'test.countEdges'
-    test.prep (title)
-    
-    cy = CytoscapeConnection ()
-    if (title %in% as.character (getNetworkList ())){
-        deleteNetwork (title)
-    }
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    checkEquals (getEdgeCount (net.suide), length (edgeNames (getGraph (net.suide))))
-    
-
-    
-} # test.countNodes
-#-------------------------------------------------------------------------------
-test.countNodesAndEdgesInEmptyGraph = function ()
-{
-    title = 'test.countNodesAndEdgesInEmptyGraph'
-    test.prep (title)
-    
-    g.empty = new ("graphNEL", edgemode = "directed")
-    checkEquals (length(g.empty@nodes), 0)
-    checkEquals (length(g.empty@edgeL), 0)
-    
-    net.suide = createNetworkFromGraph (g.empty,title)  # default behavior, but let's make it explicit
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    checkEquals (getNodeCount (net.suide), 0)
-    checkEquals (getEdgeCount (net.suide), 0)
-    
-
-    
-} # test.countNodesAndEdgesInEmptyGraph
+    test.prep (title, F)
+    g <- RCy3::makeSimpleGraph()
+    checkEquals (getEdgeCount(), length (edgeNames (g)))
+}
 #-------------------------------------------------------------------------------
 test.getAllNodes = function ()
 {
     title = 'test.getAllNodes'
-    test.prep (title)
+    test.prep (title, F)
     
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    
-    net.suide.nodes = getAllNodes (net.suide)
-    checkEquals (length (intersect (net.suide.nodes, nodes (net.suide@graph))), 3)
-    
-
-    
-} # test.getAllNodes
+    nodes = getAllNodes()
+    checkEquals (length (nodes), 4)
+}
 #-------------------------------------------------------------------------------
 test.getAllEdges = function ()
 {
     title = 'test.getAllEdges'
-    test.prep (title)
+    test.prep (title, F)
     
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    
-    net.suide.edges = getAllEdges(net.suide)
-    checkTrue ("C (undefined) A" %in% net.suide.edges)
-    checkTrue ("B (synthetic lethal) C" %in% net.suide.edges)
-    checkTrue ("A (phosphorylates) B" %in% net.suide.edges)
-    
-    #msg ('test.getAllEdges')
-    
-
-    
-} # test.getAllEdges
+    edges = getAllEdges()
+    checkTrue ("node 0 (inhibits) node 1" %in% edges)
+    checkTrue ("node 2 (interacts) node 3" %in% edges)
+}
 #-------------------------------------------------------------------------------
 test.selectNodes = function ()
 {
     title = 'test.selectNodes'
-    test.prep (title)
+    test.prep (title, F)
     
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
+    clearSelection ()
+    checkEquals (getSelectedNodeCount(), 0)
+    net.suide.nodes = selectNodes (c ('node 0', 'node 1'), 'name', preserve=T)
+    checkEquals (getSelectedNodeCount(), 2)
     
-    clearSelection (net.suide)
-    checkEquals (getSelectedNodeCount (net.suide), 0)
-    net.suide.nodes = selectNodes (c ('A', 'B'), preserve=T)
-    checkEquals (getSelectedNodeCount (net.suide), 2)
+    net.suide.nodes = selectNodes ('node 2', 'name', preserve=T)
+    checkEquals (getSelectedNodeCount(), 3)
     
-    net.suide.nodes = selectNodes ('C', preserve=T)
-    checkEquals (getSelectedNodeCount (net.suide), 3)
+    clearSelection ()
+    net.suide.nodes = selectNodes (c ('node 0', 'node 1'), 'name', preserve=TRUE)
+    checkEquals (getSelectedNodeCount (), 2)
+    net.suide.nodes = selectNodes ('node 2', 'name', preserve=FALSE)
+    checkEquals (getSelectedNodeCount (), 1)
+    checkEquals (getSelectedNodes (), 'node 2')
     
-    clearSelection (net.suide)
-    net.suide.nodes = selectNodes (c ('A', 'B'), preserve=TRUE)
-    checkEquals (getSelectedNodeCount (net.suide), 2)
-    net.suide.nodes = selectNodes ('C', preserve=FALSE)
-    checkEquals (getSelectedNodeCount (net.suide), 1)
-    checkEquals (getSelectedNodes (net.suide), 'C')
-    
-    clearSelection (net.suide)
-    checkEquals (getSelectedNodeCount (net.suide), 0)
+    clearSelection ()
+    checkEquals (getSelectedNodeCount (), 0)
     nodes.to.select = c ('bogus', 'missing')
-    selectNodes (nodes.to.select)
-    checkEquals (getSelectedNodeCount (net.suide), 0)
-    nodes.to.select = c (nodes.to.select, nodes (net.suide@graph))
-    selectNodes (nodes.to.select)
-    checkEquals (getSelectedNodeCount (net.suide), 3)
-    
-
-    
-} # test.selectNodes
+    selectNodes (nodes.to.select, 'name')
+    checkEquals (getSelectedNodeCount (), 0)
+    nodes.to.select = c (nodes.to.select, getAllNodes())
+    selectNodes (nodes.to.select, 'name')
+    checkEquals (getSelectedNodeCount (), 4)
+}
 #-------------------------------------------------------------------------------
 test.nodeNeighborReportingAndSelection = function ()
 {
     title = 'test.nodeNeighborReportingAndSelection'
-    test.prep (title)
+    test.prep (title, F)
     
     # create a circular graph
     LETTERS = toupper (letters)
     source.nodes  <- LETTERS [1:26]
     target.nodes  <- c (LETTERS [2:26], LETTERS [1])
     weights <- runif (length (letters))
-    df <- data.frame (from=source.nodes, to=target.nodes, weight=weights)
-    g.bam <- graphBAM (df, edgemode='directed')
-    g.bam <- initEdgeAttribute (g.bam, 'weight', 'numeric', 0.0)
-    
-    net.suid = createNetworkFromGraph (g.bam,title)
-    displayGraph (net.suid)
-    redraw (net.suid)
-    layoutNetwork (net.suid)
+    dfn <- data.frame(id=source.nodes, stringsAsFactors = F)
+    dfe <- data.frame (source=source.nodes, target=target.nodes, weight=weights, stringsAsFactors = F)
+    createNetworkFromDataFrames(dfn, dfe)
     
     # paint the edges shades of green as function of weight
-    setEdgeLineWidthDefault (net.suid, 5)
-    setEdgeColorMapping (net.suid, 'weight',  c (0, 1), c ('#FFFFFF', '#00FF00'),  mode='interpolate')
+    setEdgeLineWidthDefault (5)
+    setEdgeColorMapping ('weight',  c (0, 1), c ('#FFFFFF', '#00FF00'),  'c')
     
     # select M, then its immediate neighbors
-    checkEquals (getSelectedNodeCount (net.suid), 0)
-    checkEquals (sort (getFirstNeighbors (net.suid, 'M')), c ('L', 'N'))
-    selectNodes (net.suid, 'M')
-    checkEquals (getSelectedNodeCount (net.suid), 1)
-    selectFirstNeighborsOfSelectedNodes (net.suid)
-    checkEquals (getSelectedNodeCount (net.suid), 3)
-    checkEquals (sort (getSelectedNodes (net.suid)), c ('L', 'M', 'N'))
-    sfn (net.suid)
-    checkEquals (getSelectedNodeCount (net.suid), 5)
-    nodes = sort (getSelectedNodes (net.suid))
+    checkEquals (getSelectedNodeCount(), 0)
+    checkEquals (sort (getFirstNeighbors ('M')), c ('L', 'N'))
+    selectNodes ('M', 'name')
+    checkEquals (getSelectedNodeCount (), 1)
+    selectFirstNeighbors ()
+    checkEquals (getSelectedNodeCount (), 3)
+    checkEquals (sort (getSelectedNodes ()), c ('L', 'M', 'N'))
+    selectFirstNeighbors ()
+    checkEquals (getSelectedNodeCount (), 5)
+    nodes = sort (getSelectedNodes ())
     checkEquals (nodes, c ("K", "L", "M", "N", "O"))
-    invisible (net.suid)
-    
-} # test.nodeNeighborReportingAndSelection
+}
 #-------------------------------------------------------------------------------
 test.invertSelection = function ()
 {
     title = 'test.invertSelection'
     test.prep (title)
     
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
+    clearSelection ()
+    checkEquals (getSelectedNodeCount (), 0)
+    selectNodes ('node 0','name')
+    checkEquals (getSelectedNodeCount (), 1)
     
-    clearSelection (net.suide)
-    checkEquals (getSelectedNodeCount (net.suide), 0)
-    net.suide.nodes = selectNodes (c ('A', 'B'))
-    checkEquals (getSelectedNodeCount (net.suide), 2)
+    invertNodeSelection ()
+    checkEquals (getSelectedNodeCount (), 3)
+    invertNodeSelection ()
+    checkEquals (getSelectedNodeCount (), 1)
     
-    invertNodeSelection (net.suide)
-    redraw (net.suide)
-    checkEquals (getSelectedNodeCount (net.suide), 1)
-    invertNodeSelection (net.suide)
-    redraw (net.suide)
-    checkEquals (getSelectedNodeCount (net.suide), 2)
-    
-    clearSelection (net.suide)
-    
-
-    
-} # test.invertSelection
+    clearSelection ()
+}
 #-------------------------------------------------------------------------------
 test.deleteSelectedNodes = function ()
 {
@@ -1707,7 +1140,7 @@ test.deleteSelectedNodes = function ()
     
     clearSelection (net.suide)
     checkEquals (getSelectedNodeCount (net.suide), 0)
-    net.suide.nodes = selectNodes (c ('A', 'B'))
+    net.suide.nodes = selectNodes (c ('A', 'B'), 'name')
     checkEquals (getSelectedNodeCount (net.suide), 2)
     
     deleteSelectedNodes(net.suide)
@@ -1728,7 +1161,7 @@ test.hideNodes = function ()
     
     clearSelection (net.suide)
     checkEquals (getSelectedNodeCount (net.suide), 0)
-    net.suide.nodes = selectNodes (c ('A', 'B'))
+    net.suide.nodes = selectNodes (c ('A', 'B'), 'name')
     checkEquals (getSelectedNodeCount (net.suide), 2)
     checkEquals (getNodeCount (net.suide), 3)
     hideSelectedNodes (net.suide)
@@ -1749,12 +1182,12 @@ test.selectEdges = function ()
     
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
+    layoutNetwork ('grid')
+    
     
     clearSelection (net.suid)
     checkEquals (getSelectedEdgeCount (net.suid), 0)
-    selectEdges (net.suid, "A (phosphorylates) B")
+    selectEdges ("A (phosphorylates) B")
     checkEquals (getSelectedEdgeCount (net.suid), 1)
     Sys.sleep (0.3)
     clearSelection (net.suid)
@@ -1847,20 +1280,20 @@ test.setEdgeColorMapping = function ()
     
     edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
     colors = c ('#FF0000', '#FFFF00', '#00FF00')
-    setEdgeColorMapping ('edgeType',  edgeType.values, colors, mode='lookup')
+    setEdgeColorMapping ('edgeType',  edgeType.values, colors, 'd')
     Sys.sleep (0.3)
     
     all.white  = c ('#FFFFFF', '#FFFFFF', '#FFFFFF')
-    setEdgeColorMapping ('edgeType',  edgeType.values [2], mode='lookup', '#000000')
+    setEdgeColorMapping ('edgeType',  edgeType.values [2], 'd', '#000000')
     
     # now create a continuous ('interpolate') mode Mapping, using the score edge attribute
     score.values = c (-15, 0, 40);
     colors = c ('#00FF00', '#FFFFFF', '#FF0000')
-    setEdgeColorMapping ('score',  score.values, colors, mode='interpolate')
+    setEdgeColorMapping ('score',  score.values, colors, 'c')
     
     # now swap the colors
     colors = c ('#FF0000', '#000000', '#00FF00')
-    setEdgeColorMapping ('score',  score.values, colors, mode='interpolate')
+    setEdgeColorMapping ('score',  score.values, colors, 'c')
     
 
     
@@ -1873,27 +1306,27 @@ test.setEdgeOpacityMapping = function ()
     
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
+    layoutNetwork ('grid')
     
     edgeType.values = c ("phosphorylates", "synthetic lethal", "undefined")
     
     # want to see edges and both arrows, to check success of opacity Mapping
-    setEdgeTargetArrowMapping (net.suid, 'edgeType', edgeType.values, rep ('ARROW', 3))
-    setEdgeSourceArrowMapping (net.suid, 'edgeType', edgeType.values, rep ('ARROW', 3))
-    setEdgeLineWidthDefault (net.suid, 5)
+    setEdgeTargetArrowMapping ('edgeType', edgeType.values, rep ('ARROW', 3))
+    setEdgeSourceArrowMapping ('edgeType', edgeType.values, rep ('ARROW', 3))
+    setEdgeLineWidthDefault (5)
     
-    redraw (net.suid)
+    
     
     # do the lookup Mapping
     opacities = c (25, 100, 255)
-    setEdgeOpacityMapping (net.suid, 'edgeType',  edgeType.values, opacities, mode='lookup')
-    redraw (net.suid)
+    setEdgeOpacityMapping ('edgeType',  edgeType.values, opacities, 'd')
+    
     
     # now do the interpolated version
     opacities = c (10, 125, 255)
     control.points = c (-12, 0, 35)
-    setEdgeOpacityMapping (net.suid, 'score',  control.points, opacities, mode='interpolate')
-    redraw (net.suid)
+    setEdgeOpacityMapping ('score',  control.points, opacities, 'c')
+    
     
     invisible (net.suid)
     
@@ -1988,11 +1421,11 @@ test.movie = function ()
     
     # establish the Mappings which apply during the full run of the movie
     # different node sizes and node colors are created, not by changing these Mappings, but
-    # by changing node attribute values, for the integer attribute 'count' and the numeric attribute 'lfc'
+    # by changing node attribute values, for the integer attribute 'count' and the numeric attribute 'score'
     count.control.points = c (2, 30, 100)
     sizes                = c (20, 50, 100)
-    setNodeSizeMapping ('count', count.control.points, sizes, mode='interpolate')
-    setNodeColorMapping ('lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
+    setNodeSizeMapping ('count', count.control.points, sizes, 'c')
+    setNodeColorMapping ('score', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), 'c')
     
     count = 3
     
@@ -2000,27 +1433,27 @@ test.movie = function ()
     # the first two set new attributes on the R graph data structure, then ask RCy3 to send those values
     # to R from the graph
     # the third rendering bypasses storage of new attribute values on the R graph, sending them instead
-    # directly to Cytoscape.  (hence 'setNodeAttributesDirect')
+    # directly to Cytoscape.  (hence 'setNodeAttributesBypass')
     
     for (i in 1:count) {
-        nodeData (net.suide@graph, 'A', 'lfc') = -3.0
-        nodeData (net.suide@graph, 'B', 'lfc') = -0.7
-        nodeData (net.suide@graph, 'C', 'lfc') = -1.9
+        nodeData (net.suide@graph, 'A', 'score') = -3.0
+        nodeData (net.suide@graph, 'B', 'score') = -0.7
+        nodeData (net.suide@graph, 'C', 'score') = -1.9
         nodeData (net.suide@graph, 'A', 'count') = 10
         nodeData (net.suide@graph, 'B', 'count') = 140
         nodeData (net.suide@graph, 'C', 'count') = 32
-        result = setNodeAttributes ('lfc')
+        result = setNodeAttributes ('score')
         result = setNodeAttributes ('count')
         redraw (net.suide)
         
         Sys.sleep (0.3)
-        nodeData (net.suide@graph, 'A', 'lfc') = 3.0
-        nodeData (net.suide@graph, 'B', 'lfc') = 0.7
-        nodeData (net.suide@graph, 'C', 'lfc') = 1.9
+        nodeData (net.suide@graph, 'A', 'score') = 3.0
+        nodeData (net.suide@graph, 'B', 'score') = 0.7
+        nodeData (net.suide@graph, 'C', 'score') = 1.9
         nodeData (net.suide@graph, 'A', 'count') = 50
         nodeData (net.suide@graph, 'B', 'count') = 22
         nodeData (net.suide@graph, 'C', 'count') = 180
-        result = setNodeAttributes ('lfc')
+        result = setNodeAttributes ('score')
         result = setNodeAttributes ('count')
         redraw (net.suide)
         Sys.sleep (0.3)
@@ -2029,8 +1462,8 @@ test.movie = function ()
         count.B = round (runif (1, 1, 200))
         count.C = round (runif (1, 1, 200))
         
-        result = setNodeAttributesDirect ('count', 'int', c ('A', 'B', 'C'), c (count.A, count.B, count.C));
-        result = setNodeAttributesDirect ('lfc', 'numeric', c ('A', 'B', 'C'), c (-1.0, 0.0, 1.0))
+        result = setNodeAttributesBypass ('count', 'int', c ('A', 'B', 'C'), c (count.A, count.B, count.C));
+        result = setNodeAttributesBypass ('score', 'numeric', c ('A', 'B', 'C'), c (-1.0, 0.0, 1.0))
         redraw (net.suide)
     }
     
@@ -2050,7 +1483,7 @@ test.movie = function ()
 #     # this works
 #     count.control.points = c (2, 30, 100)
 #     sizes = c (20, 50, 100)
-#     setNodeSizeMapping ('count', count.control.points, sizes, mode='interpolate')
+#     setNodeSizeMapping ('count', count.control.points, sizes, 'c')
 #
 # 
 #
@@ -2094,11 +1527,11 @@ test.simpleGraph = function (apply.viz.Mappings=TRUE, do.redraw=TRUE)
         setNodeBorderWidthDefault (net.suids, 5)
         node.attribute.values = c ("kinase",  "transcription factor")
         colors =                c ('#A0AA00', '#FF0000')
-        setNodeBorderColorMapping (net.suids, 'type', node.attribute.values, colors, mode='lookup', default.color='#88FF22')
+        setNodeBorderColorMapping (net.suids, 'type', node.attribute.values, colors, 'd', default.color='#88FF22')
         count.control.points = c (2, 30, 100)
         sizes                = c (20, 50, 100)
-        setNodeSizeMapping (net.suids, 'count', count.control.points, sizes, mode='interpolate')
-        setNodeColorMapping (net.suids, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
+        setNodeSizeMapping (net.suids, 'count', count.control.points, sizes, 'c')
+        setNodeColorMapping (net.suids, 'score', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), 'c')
         redraw (net.suids)
     } # if apply.viz.Mappings
     
@@ -2127,18 +1560,18 @@ test.simpleGraphWithReciprocalEdge = function ()
     node.attribute.values = c ("kinase",  "transcription factor")
     colors =                c ('#A0AA00', '#FF0000')
     setNodeBorderWidthDefault (net.suids, 5)
-    setNodeBorderColorMapping (net.suids, 'type', node.attribute.values, colors, mode='lookup', default.color='#88FF22')
+    setNodeBorderColorMapping (net.suids, 'type', node.attribute.values, colors, 'd', default.color='#88FF22')
     count.control.points = c (2, 30, 100)
     sizes                = c (20, 50, 100)
-    setNodeSizeMapping (net.suids, 'count', count.control.points, sizes, mode='interpolate')
-    setNodeColorMapping (net.suids, 'lfc', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), mode='interpolate')
+    setNodeSizeMapping (net.suids, 'count', count.control.points, sizes, 'c')
+    setNodeColorMapping (net.suids, 'score', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), 'c')
     arrows = c ('Arrow', 'Arrow', 'Arrow', 'None')
     edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'synthetic rescue', 'undefined')
     setEdgeTargetArrowMapping (net.suids, 'edgeType', edgeType.values, arrows)
     
     edgeType.values = c ('phosphorylates', 'synthetic lethal', 'synthetic rescue', 'undefined')
     edgeColors = c ('#0000AA', '#000000', '#00AA00', '#FFFFFF')
-    setEdgeColorMapping (net.suids, 'edgeType',  edgeType.values, edgeColors, mode='lookup')
+    setEdgeColorMapping (net.suids, 'edgeType',  edgeType.values, edgeColors, 'd')
     
     redraw (net.suids)
     
@@ -2275,48 +1708,48 @@ test.getNodeSize = function ()
     
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
+    layoutNetwork ('grid')
     
     # establish a good starting point
-    setNodeSizeDirect (net.suid, nodes (net.suid@graph), rep (100, 3))
-    redraw (net.suid)
+    setNodeSizeBypass (getAllNodes(), rep (100, 3))
     
-    sizes =  getNodeSize (net.suid, nodes (net.suid@graph))
+    
+    sizes =  getNodeSize (getAllNodes())
     # these next test pass fine in uncomplicated circumstances, but (apparently) fail due to
     # vizmap complexities when lots of windows are or have been open
     #checkEquals (sizes$width, c (100, 100, 100))
     #checkEquals (sizes$height, c (100, 100, 100))
     
-    setNodeSizeDirect (net.suid, c ('A', 'B'), 150); redraw (net.suid)
-    sizes =  getNodeSize (net.suid, nodes (net.suid@graph))
+    setNodeSizeBypass (c ('A', 'B'), 150); 
+    sizes =  getNodeSize (getAllNodes())
     
     # these next test pass fine in uncomplicated circumstances, but (apparently) fail due to
     # vizmap complexities when lots of windows are or have been open
     #checkEquals (sizes$width, c (150, 150, 100))
     #checkEquals (sizes$height, c (150, 150, 100))
     
-    setNodeSizeDirect (net.suid, c ('A', 'B'), c (180, 32));   redraw (net.suid)
+    setNodeSizeBypass (c ('A', 'B'), c (180, 32));   
     
-    sizes = getNodeSize (net.suid, nodes (net.suid@graph))
+    sizes = getNodeSize (getAllNodes())
     #checkEquals (sizes$width, c (180, 32, 100))
     #checkEquals (sizes$height, c (180, 32, 100))
     
     # now allow for non-symmetric dimensions, in which width and height are set separately
-    lockNodeDimensions (net.suid, FALSE)
-    setNodeHeightDirect (net.suid, c ('A', 'B', 'C'), c (12, 22, 32))
-    setNodeWidthDirect (net.suid, c ('A', 'B', 'C'), c (120, 122, 132))
-    redraw (net.suid)
+    lockNodeDimensions (FALSE)
+    setNodeHeightBypass (c ('A', 'B', 'C'), c (12, 22, 32))
+    setNodeWidthBypass (c ('A', 'B', 'C'), c (120, 122, 132))
     
-    sizes = getNodeSize (net.suid, 'B')
+    
+    sizes = getNodeSize ('B')
     #checkEquals (sizes$width, 122)
     #checkEquals (sizes$height, 22)
     
     # return to symmetric dimensions
-    lockNodeDimensions (net.suid, TRUE)
-    redraw (net.suid)
+    lockNodeDimensions (TRUE)
+    
     
     # not sure how width and height are rectified.  it appears that the last-used width=height values are returned
-    sizes = getNodeSize (net.suid, nodes (net.suid@graph))
+    sizes = getNodeSize (getAllNodes())
     #checkEquals (sizes$width, sizes$height)
     
     invisible (net.suid)
@@ -2333,7 +1766,7 @@ test.haveNodeAttribute = function ()
     redraw (net.suid3)
     layoutNetwork (net.suid3)
     
-    nodes.with.attribute = RCy3:::haveNodeAttribute (net.suid3, nodes (getGraph (net.suid3)), 'lfc')
+    nodes.with.attribute = RCy3:::haveNodeAttribute (net.suid3, nodes (getGraph (net.suid3)), 'score')
     checkEquals (sort (nodes.with.attribute),  c ('A', 'B', 'C'))
     
     checkEquals (length (RCy3:::haveNodeAttribute (net.suid3, nodes (getGraph (net.suid3)), 'type')), 3)
@@ -2379,14 +1812,14 @@ hiddenTest.haveEdgeAttribute.oneEdgeOnly = function ()
     g = removeNode ('A', g)
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     
     cy = CytoscapeConnection ()
     
     cy2.edgenames = as.character (cy2.edge.names (getGraph (net.suid)))
     
-    checkTrue (length (RCy3:::haveEdgeAttribute (net.suid, cy2.edgenames, 'score')) == 1)
+    checkTrue (length (RCy3:::haveEdgeAttribute (cy2.edgenames, 'score')) == 1)
     
 } # hiddenTest.haveEdgeAttribute.oneEdgeOnly
 #-------------------------------------------------------------------------------
@@ -2410,10 +1843,10 @@ test.copyNodeAttributesFromCyGraph = function ()
     g = graph::addNode (c ('A', 'B', 'C'), g)
     
     g2 = RCy3:::copyNodeAttributesFromCyGraph (net.suid3, getNetworkID (title), g)
-    checkEquals (length (intersect (noa.names (g2), c ("name", "count", "label", "lfc", "type"))), 5)
+    checkEquals (length (intersect (noa.names (g2), c ("name", "count", "label", "score", "type"))), 5)
     checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='name')), c ('A', 'B', 'C'))
     checkEquals (as.integer (nodeData (g2, c ('A', 'B', 'C'), attr='count')), c (2, 30, 100))
-    checkEquals (as.numeric (nodeData (g2, c ('A', 'B', 'C'), attr='lfc')), c (-3,  0,  3))
+    checkEquals (as.numeric (nodeData (g2, c ('A', 'B', 'C'), attr='score')), c (-3,  0,  3))
     checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='type')), c ("kinase", "transcription factor", "glycoprotein"))
     
     invisible (net.suid3)
@@ -2482,11 +1915,11 @@ test.getGraphFromCyNetwork = function ()
     
     g3 = getGraphFromCyNetwork ('test.getGraphFromCyNetwork')
     checkEquals (sort (nodes (g3)), c ('A', 'B', 'C'))
-    checkEquals (length (intersect (noa.names (g3), c ("name", "count", "label", "lfc", "type"))), 5)
+    checkEquals (length (intersect (noa.names (g3), c ("name", "count", "label", "score", "type"))), 5)
     checkEquals (as.character (sort (noa (g3, 'name'))), c ('A', 'B', 'C'))
     checkEquals (as.integer   (sort (noa (g3, 'count'))),         c (2, 30, 100))
     checkEquals (as.character (sort (noa (g3, 'label'))),         c ('Gene A', 'Gene B', 'Gene C'))
-    checkEquals (as.numeric (sort (noa (g3, 'lfc'))),             c (-3,  0,  3))
+    checkEquals (as.numeric (sort (noa (g3, 'score'))),             c (-3,  0,  3))
     checkEquals (as.character (sort (noa (g3, 'type'))),          c ("glycoprotein", "kinase", "transcription factor"))
     
     checkEquals (length (intersect (eda.names (g3), c ("name", "edgeType", "interaction", "misc", "score"))), 5)
@@ -2538,21 +1971,21 @@ test.createNetworkFromSelection = function ()
     
     net.suid =  createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
-    selectNodes (net.suid, c ('A', 'C'))
+    selectNodes (c ('A', 'C'), 'name')
     
     new.window.title = 'NEW'
     if (new.window.title %in% as.character (getNetworkList ())){
         deleteNetwork (new.window.title)
     }
     
-    c2 = createNetworkFromSelection (net.suid, new.window.title, TRUE)
+    c2 = createNetworkFromSelection (new.window.title, TRUE)
     redraw (c2)
     layoutNetwork (c2)
     
-    clearSelection (c2)
-    selectNodes (c2, 'C')
+    clearSelection ()
+    selectNodes ('C', 'name')
     #     checkEquals (getSelectedNodeCount (c2), 1)
     #
     #     new.window.title = 'NEW, just 1 node'
@@ -2588,20 +2021,20 @@ test.addGetAndDeleteEdgeAttributes = function ()
     # now add an attribute to two of the edges
     first.two.edges = as.character (cy2.edge.names (g)[1:2])
     values = c ('hemlock', 'yew')
-    setEdgeAttributesDirect (net.suid, 'treeSpecies', 'char', first.two.edges, values)
+    setEdgeAttributesBypass ('treeSpecies', 'char', first.two.edges, values)
     
-    # now add an attribute to a single edge.  this exercises a different branch in RCytoscape:setEdgeAttributesDirect
+    # now add an attribute to a single edge.  this exercises a different branch in RCytoscape:setEdgeAttributesBypass
     first.edge = as.character (cy2.edge.names (g)[1])
     value = 'one century'
-    setEdgeAttributesDirect (net.suid, 'ageInYears', 'char', first.edge, value)
+    setEdgeAttributesBypass ('ageInYears', 'char', first.edge, value)
     checkTrue ('ageInYears' %in% getEdgeAttributeNames (net.suid))
     
     # get names from cy2.edge.names (net.suid@graph)
-    checkEquals (getEdgeAttribute (net.suid, "B (synthetic lethal) C", 'treeSpecies'), "yew")
-    checkEquals (getEdgeAttribute (net.suid, "B (synthetic lethal) C", 'score'), -12)
+    checkEquals (getEdgeAttribute ("B (synthetic lethal) C", 'treeSpecies'), "yew")
+    checkEquals (getEdgeAttribute ("B (synthetic lethal) C", 'score'), -12)
     
-    deleteEdgeAttribute (net.suid, 'species')
-    deleteEdgeAttribute (net.suid, 'ageInYears')
+    deleteEdgeAttribute ('species')
+    deleteEdgeAttribute ('ageInYears')
     
     invisible (net.suid)
     
@@ -2618,8 +2051,8 @@ test.addGetAndDeleteNodeAttributes = function ()
     g  = makeSimpleGraph ()
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    redraw (net.suid)
+    layoutNetwork ('grid')
+    
     
     novel.noa.to.delete = intersect (c ('ageInYears', 'treeSpecies'), getNodeAttributeNames(net.suid))
     for (noa.name in novel.noa.to.delete){
@@ -2627,24 +2060,24 @@ test.addGetAndDeleteNodeAttributes = function ()
     }
     
     # name is added by Cytoscape
-    checkEquals (length (intersect (getNodeAttributeNames (net.suid), c ("name", "count",  "label", "lfc", "type"))), 5)
+    checkEquals (length (intersect (getNodeAttributeNames (net.suid), c ("name", "count",  "label", "score", "type"))), 5)
     
     # now add an attribute to two of the nodes
     first.two.nodes = nodes (g) [1:2]
     values = c ('cedar', 'ash')
-    setNodeAttributesDirect (net.suid, 'treeSpecies', 'char', first.two.nodes, values)
+    setNodeAttributesBypass ('treeSpecies', 'char', first.two.nodes, values)
     
-    # now add an attribute to a single node.  this exercises a different branch in RCytoscape:setNodeAttributesDirect
+    # now add an attribute to a single node.  this exercises a different branch in RCytoscape:setNodeAttributesBypass
     first.node = nodes (g) [1]
     value = 'one millenium'
-    setNodeAttributesDirect (net.suid, 'ageInYears', 'char', first.node, value)
+    setNodeAttributesBypass ('ageInYears', 'char', first.node, value)
     checkTrue ('ageInYears' %in% getNodeAttributeNames (net.suid))
-    checkEquals (getNodeAttribute (net.suid, 'B', 'type'), 'transcription factor')
-    checkEquals (getNodeAttribute (net.suid, 'A', 'ageInYears'), 'one millenium')
-    checkEquals (getNodeAttribute (net.suid, 'B', 'ageInYears'), '')
+    checkEquals (getNodeAttribute ('B', 'type'), 'transcription factor')
+    checkEquals (getNodeAttribute ('A', 'ageInYears'), 'one millenium')
+    checkEquals (getNodeAttribute ('B', 'ageInYears'), '')
     
-    deleteNodeAttribute (net.suid, 'species')
-    deleteNodeAttribute (net.suid, 'ageInYears')
+    deleteNodeAttribute ('species')
+    deleteNodeAttribute ('ageInYears')
     
     invisible (net.suid)
     
@@ -2657,14 +2090,14 @@ test.getAllNodeAttributes = function ()
     
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     
     net.suidc = existing.CytoscapeNetwork (title, copy=T)
     tbl.noa <- getAllNodeAttributes (net.suidc)
     checkEquals (nrow (tbl.noa), 3)
     checkTrue (ncol (tbl.noa) >= 5)
-    expected.colnames =  c ("name", "count", "label", "lfc", "type")  # created here
+    expected.colnames =  c ("name", "count", "label", "score", "type")  # created here
     checkEquals (length (intersect (colnames (tbl.noa), expected.colnames)), 5)
     checkEquals (sort (rownames (tbl.noa)), c ("A", "B", "C"))
     
@@ -2676,7 +2109,7 @@ test.getAllNodeAttributes = function ()
     nodeData (g2, 'A', 'label') = 'a label for A'
     window.title = 'single node attribute test'
     if (window.title %in% as.character (getNetworkList (net.suid)))
-        deleteNetwork (net.suid, window.title)
+        deleteNetwork (window.title)
     net.suid2 = CytoscapeNetwork (window.title, graph=g2)
     tbl.noa2 = getAllNodeAttributes (net.suid2)
     checkEquals (ncol (tbl.noa2), 1)
@@ -2695,7 +2128,7 @@ test.getAllEdgeAttributes = function ()
     
     net.suid =  createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     tbl.eda = getAllEdgeAttributes (net.suid)
     checkEquals (class (tbl.eda), 'data.frame')
@@ -2823,11 +2256,11 @@ test.fitContent = function ()
     test.prep (title)
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     
     clearSelection (net.suid)
-    selectNodes (net.suid, 'A')
+    selectNodes ('A', 'name')
     checkEquals (getSelectedNodeCount (net.suid), 1)
     
     #fitSelectedContent (net.suid)
@@ -2841,7 +2274,7 @@ test.fitContent = function ()
 #     test.prep (title)
 #     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
 #     displayGraph (net.suid)
-#     redraw (net.suid)
+#     
 #     layoutNetwork (net.suid)
 #
 #     center = getCenter (net.suid)
@@ -2860,7 +2293,7 @@ test.zoom = function ()
     test.prep (title)
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     
     fitContent (net.suid)
@@ -2869,11 +2302,11 @@ test.zoom = function ()
     larger = 2
     
     for (i in 1:10){
-        setZoom (net.suid, smaller * getZoom (net.suid))
+        setZoom (smaller * getZoom (net.suid))
     }
     
     for (i in 1:10){
-        setZoom (net.suid, larger * getZoom (net.suid))
+        setZoom (larger * getZoom (net.suid))
     }
     
     invisible (net.suid)
@@ -2886,11 +2319,11 @@ test.center = function ()
     test.prep (title)
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     
     fitContent (net.suid)
-    setZoom (net.suid, 0.5 * getZoom (net.suid))
+    setZoom (0.5 * getZoom (net.suid))
     
     center.orig = getCenter (net.suid)
     delta = 100
@@ -2900,119 +2333,119 @@ test.center = function ()
     y.down = center.orig$y + delta
     
     for (i in 1:10) {
-        setCenter (net.suid, x.left, y.up)
-        setCenter (net.suid, as.integer (x.left), as.integer (y.up))   # make sure the called function casts this int back to numeric
-        setCenter (net.suid, x.left, y.down)
-        setCenter (net.suid, x.right, y.down)
-        setCenter (net.suid, x.right, y.up)
+        setCenter (x.left, y.up)
+        setCenter (as.integer (x.left), as.integer (y.up))   # make sure the called function casts this int back to numeric
+        setCenter (x.left, y.down)
+        setCenter (x.right, y.down)
+        setCenter (x.right, y.up)
     } # for i
     
-    setCenter (net.suid, center.orig$x, center.orig$y)
+    setCenter (center.orig$x, center.orig$y)
     
     invisible (net.suid)
     
 } # test.center
 #-------------------------------------------------------------------------------
-test.setNodeSizeDirect = function ()
+test.setNodeSizeBypass = function ()
 {
     #DEACTIVATED("too slow")
-    title = 'test.setNodeSizeDirect'
+    title = 'test.setNodeSizeBypass'
     test.prep (title)
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     
-    lockNodeDimensions (net.suid, TRUE)
+    lockNodeDimensions (TRUE)
     
     small = 30
     large = 300
-    setNodeSizeDirect (net.suid, 'A', small);
-    setNodeSizeDirect (net.suid, 'A', large);
+    setNodeSizeBypass ('A', small);
+    setNodeSizeBypass ('A', large);
     
     invisible (net.suid)
     
-} # test.setNodeSizeDirect
+} # test.setNodeSizeBypass
 #-------------------------------------------------------------------------------
-test.setNodeWidthAndHeightDirect = function ()
+test.setNodeWidthAndHeightBypass = function ()
 {
     #DEACTIVATED("too slow")
-    title = 'test.setNodeWidthAndHeightDirect'
+    title = 'test.setNodeWidthAndHeightBypass'
     test.prep (title)
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     
-    lockNodeDimensions (net.suid, FALSE)
+    lockNodeDimensions (FALSE)
     
     small = 30
     large = 300
     
-    setNodeWidthDirect (net.suid, 'A', small);
-    setNodeHeightDirect (net.suid, 'A', large);
-    setNodeWidthDirect (net.suid, 'A', large);
-    setNodeHeightDirect (net.suid, 'A', small);
+    setNodeWidthBypass ('A', small);
+    setNodeHeightBypass ('A', large);
+    setNodeWidthBypass ('A', large);
+    setNodeHeightBypass ('A', small);
     
     invisible (net.suid)
     
-} # test.setNodeWidthAndHeightDirect
+} # test.setNodeWidthAndHeightBypass
 #-------------------------------------------------------------------------------
-test.setNodeFontSizeDirect = function ()
+test.setNodeFontSizeBypass = function ()
 {
     #DEACTIVATED("too slow")
-    title = 'test.setNodeFontSizeDirect'
+    title = 'test.setNodeFontSizeBypass'
     test.prep (title)
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     
     starting.size = 4
-    setNodeSizeDirect (net.suid, c ('A', 'B', 'C'), 50)
-    setNodeFontSizeDirect (net.suid, c ('A', 'B'), 12)
-    redraw (net.suid)
+    setNodeSizeBypass (c ('A', 'B', 'C'), 50)
+    setNodeFontSizeBypass (c ('A', 'B'), 12)
+    
     
     for (i in 1:20) {
-        setNodeFontSizeDirect (net.suid, 'A', starting.size + i)
-        setNodeFontSizeDirect (net.suid, 'B', starting.size + (i*3))
+        setNodeFontSizeBypass ('A', starting.size + i)
+        setNodeFontSizeBypass ('B', starting.size + (i*3))
     } # for i
     
     starting.size = 32
     for (i in 20:1) {
-        setNodeFontSizeDirect (net.suid, 'A', starting.size - i)
-        setNodeFontSizeDirect (net.suid, 'B', starting.size - (i*3))
+        setNodeFontSizeBypass ('A', starting.size - i)
+        setNodeFontSizeBypass ('B', starting.size - (i*3))
     } # for i
     
     invisible (net.suid)
     
-} # test.setNodeSizeDirect
+} # test.setNodeSizeBypass
 #-------------------------------------------------------------------------------
-test.setNodeShapeDirect = function ()
+test.setNodeShapeBypass = function ()
 {
     #DEACTIVATED("too slow")
-    title = 'test.setNodeShapeDirect'
+    title = 'test.setNodeShapeBypass'
     test.prep (title)
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     
-    lockNodeDimensions (net.suid, TRUE)
-    setNodeSizeDirect (net.suid, 'A', 100)
+    lockNodeDimensions (TRUE)
+    setNodeSizeBypass ('A', 100)
     
     for (new.shape in getNodeShapes (net.suid)) {
-        setNodeShapeDirect (net.suid, 'A', new.shape)
+        setNodeShapeBypass ('A', new.shape)
     } # for new.shape
     
     invisible (net.suid)
     
-} # test.setNodeShapeDirect
+} # test.setNodeShapeBypass
 #-------------------------------------------------------------------------------
 # add a node to an existing graph.
 # questions:
 #  1) what edge attribute values are assigned to this new edge?
-#  2) can we assign new values to those attributes?  use setEdgeAttributesDirect
+#  2) can we assign new values to those attributes?  use setEdgeAttributesBypass
 test.addCyNode = function ()
 {
     title = 'test.addCyNode'
@@ -3020,11 +2453,11 @@ test.addCyNode = function ()
     
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
-    layoutNetwork (net.suid, 'grid')
+    
+    layoutNetwork ('grid')
     checkEquals (getNodeCount (net.suid), 3)
-    addCyNode (net.suid, 'NEW')
-    layoutNetwork (net.suid, 'grid')
+    addCyNode ('NEW')
+    layoutNetwork ('grid')
     checkEquals (getNodeCount (net.suid), 4)
     invisible (net.suid)
     
@@ -3033,7 +2466,7 @@ test.addCyNode = function ()
 # add an edge to an existing graph.
 # questions:
 #  1) what edge attribute values are assigned to this new edge?
-#  2) can we assign new values to those attributes?  use setEdgeAttributesDirect
+#  2) can we assign new values to those attributes?  use setEdgeAttributesBypass
 test.addCyEdge = function ()
 {
     title = 'test.addCyEdge'
@@ -3041,14 +2474,14 @@ test.addCyEdge = function ()
     
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     checkEquals (getEdgeCount (net.suid), 3)
     
-    addCyNode (net.suid, 'NEW')
+    addCyNode ('NEW')
     directed.edge = TRUE
-    addCyEdge (net.suid, 'A', 'NEW', 'synthetic rescue', directed.edge)
-    redraw (net.suid)
+    addCyEdge ('A', 'NEW', 'synthetic rescue', directed.edge)
+    
     layoutNetwork (net.suid)
     checkEquals (getEdgeCount (net.suid), 4)
     invisible (net.suid)
@@ -3062,7 +2495,7 @@ test.twoGraphsDoubleEdges = function ()
     
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
-    redraw (net.suid)
+    
     layoutNetwork (net.suid)
     
     g2 = new ('graphNEL', edgemode='directed')
@@ -3074,8 +2507,8 @@ test.twoGraphsDoubleEdges = function ()
     
     edgeData (g2, 'A', 'B', 'edgeType') = 'synthetic rescue'
     
-    addGraphToGraph (net.suid, g2)
-    redraw (net.suid)
+    addGraphToGraph (g2)
+    
     layoutNetwork (net.suid)
     
 } # test.twoGraphsoubleEdges
@@ -3185,26 +2618,26 @@ hiddenTest.saveImage = function ()
     net.suid = CytoscapeNetwork (title, g.simple)
     
     displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    setNodeLabelMapping (net.suid, 'label')
-    redraw (net.suid)
+    layoutNetwork ('grid')
+    setNodeLabelMapping ('label')
+    
     
     #--- png first
     filename = sprintf ('%s/%s', tempdir (), 'saveImageTest')
     printf ('saving image file to %s', filename)
-    saveImage (net.suid, filename, 'png', 1.0)
+    saveImage (filename, 'png', 1.0)
     checkTrue (file.exists (paste0(filename, '.png')))
     
     #--- now pdf
     filename = sprintf ('%s/%s', tempdir (), 'saveImageTest')
     printf ('saving image file to %s', filename)
-    saveImage (net.suid, filename, 'pdf')
+    saveImage (filename, 'pdf')
     checkTrue (file.exists (paste0(filename, '.pdf')))
     
     #--- now svg
     filename = sprintf ('%s/%s', tempdir (), 'saveImageTest')
     printf ('saving image file to %s', filename)
-    saveImage (net.suid, filename, 'svg')
+    saveImage (filename, 'svg')
     checkTrue (file.exists (paste0(filename, '.svg')))
     
     invisible (net.suid)
@@ -3221,13 +2654,13 @@ hiddenTest.saveNetwork = function ()
     net.suid = CytoscapeNetwork (title, g.simple)
     
     displayGraph (net.suid)
-    layoutNetwork (net.suid, 'grid')
-    setNodeLabelMapping (net.suid, 'label')
-    redraw (net.suid)
+    layoutNetwork ('grid')
+    setNodeLabelMapping ('label')
+    
     
     filename = sprintf ('%s/%s', tempdir (), 'saveNetworkTest')
     printf ('saving cys file to %s', filename)
-    saveNetwork (net.suid, filename)
+    saveNetwork (filename)
     checkTrue (file.exists (paste0(filename, '.cys')))
     
     invisible (net.suid)
@@ -3243,12 +2676,12 @@ test.detectUnitializedNodeAttributes = function ()
     g = new("graphNEL", edgemode = "directed")
     
     g = initNodeAttribute(g, "type", "char", "undefined")
-    g = initNodeAttribute(g, "lfc", "numeric", 1)
+    g = initNodeAttribute(g, "score", "numeric", 1)
     g = initNodeAttribute(g, "label", "char", "default node label")
     g = initNodeAttribute(g, "count", "integer", 0)
     
     nodeDataDefaults (g, attr='type') = ''
-    nodeDataDefaults (g, attr='lfc') = 0.0
+    nodeDataDefaults (g, attr='score') = 0.0
     nodeDataDefaults (g, attr='label') = ''
     
     g = initEdgeAttribute(g, "edgeType", "char", "undefined")
@@ -3261,9 +2694,9 @@ test.detectUnitializedNodeAttributes = function ()
     nodeData(g, "A", "type") = "kinase"
     nodeData(g, "B", "type") = "transcription factor"
     nodeData(g, "C", "type") = "glycoprotein"
-    nodeData(g, "A", "lfc") = -3
-    nodeData(g, "B", "lfc") = 0
-    nodeData(g, "C", "lfc") = 3
+    nodeData(g, "A", "score") = -3
+    nodeData(g, "B", "score") = 0
+    nodeData(g, "C", "score") = 3
     nodeData(g, "A", "count") = 2
     nodeData(g, "B", "count") = 30
     nodeData(g, "C", "count") = 100
@@ -3292,7 +2725,7 @@ test.detectUnitializedEdgeAttributes = function ()
     g = new("graphNEL", edgemode = "directed")
     
     g = initNodeAttribute(g, "type", "char", "undefined")
-    g = initNodeAttribute(g, "lfc", "numeric", 1)
+    g = initNodeAttribute(g, "score", "numeric", 1)
     g = initNodeAttribute(g, "label", "char", "default node label")
     g = initNodeAttribute(g, "count", "integer", 0)
     
@@ -3307,9 +2740,9 @@ test.detectUnitializedEdgeAttributes = function ()
     nodeData(g, "A", "type") = "kinase"
     nodeData(g, "B", "type") = "transcription factor"
     nodeData(g, "C", "type") = "glycoprotein"
-    nodeData(g, "A", "lfc") = -3
-    nodeData(g, "B", "lfc") = 0
-    nodeData(g, "C", "lfc") = 3
+    nodeData(g, "A", "score") = -3
+    nodeData(g, "B", "score") = 0
+    nodeData(g, "C", "score") = 3
     nodeData(g, "A", "count") = 2
     nodeData(g, "B", "count") = 30
     nodeData(g, "C", "count") = 100
