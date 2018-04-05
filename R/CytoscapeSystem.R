@@ -5,7 +5,8 @@
 # ------------------------------------------------------------------------------
 #' Ping Cytoscape
 #' 
-#' @description Test the connection to Cytoscape via CyREST 
+#' @description Tests the connection to Cytoscape via CyREST and verifies that
+#' supported versions of Cytoscape and CyREST API are loaded.  
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -17,15 +18,16 @@
 #' }
 #' @export
 cytoscapePing<-function(base.url=.defaultBaseUrl) {
-              conn.str <- paste(base.url, 'version', sep="/")
-              res <- GET(conn.str)
-              if(res$status_code == 200) {
-                  return("You are connected to Cytoscape!")
-              } else {
-                  write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
-                  stop()
-              }
-          }
+    .verifySupportedVersions(1,3.6)
+    conn.str <- paste(base.url, 'version', sep="/")
+    res <- GET(conn.str)
+    if(res$status_code == 200) {
+        return("You are connected to Cytoscape!")
+    } else {
+        write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
+        stop()
+    }
+}
 
 #------------------------------------------------------------------------------------------------------------------------
 #' Cytoscape and CyREST API Versions

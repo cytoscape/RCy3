@@ -82,13 +82,13 @@
     
     nogo <- FALSE
     if(cyrest > vApiNum){
-        write(sprintf("This function requires CyREST API version %d or greater. You are currently working with version %d.",
+        write(sprintf("CyREST API version %d or greater is required. You are currently working with version %d.",
                       cyrest, vApiNum),
               stderr())
         nogo <- TRUE
     }
     if(cytoscape > vCyNum){
-        write(sprintf("This function requires Cytoscape version %0.2g or greater. You are currently working with version %0.2g.",
+        write(sprintf("Cytoscape version %0.2g or greater is required. You are currently working with version %0.2g.",
                       cytoscape, vCyNum),
               stderr())
         nogo <- TRUE
