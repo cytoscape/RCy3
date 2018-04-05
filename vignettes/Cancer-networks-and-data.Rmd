@@ -1,8 +1,11 @@
 ---
 title: "Cancer networks and data"
 author: "by Alexander Pico"
+package: RCy3
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  BiocStyle::html_document:
+    toc_float: true
 vignette: >
     %\VignetteIndexEntry{6. Cancer networks and data}
     %\VignetteEngine{knitr::rmarkdown}
@@ -10,7 +13,6 @@ vignette: >
 ---
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-#  highlight = FALSE,
   eval=FALSE
 )
 ```
@@ -31,6 +33,10 @@ The whole point of RCy3 is to connect with Cytoscape. You will need to install a
 * Download the latest Cytoscape from http://www.cytoscape.org/download.php
 * Complete installation wizard
 * Launch Cytoscape 
+
+```{r}
+cytoscapePing()
+```
 
 For this vignette, you'll also need the STRING app to access the STRING database
 from within Cytoscape:
