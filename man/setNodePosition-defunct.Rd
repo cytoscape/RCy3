@@ -13,5 +13,5 @@ None
 \description{
 This function is defunct and will be removed in the next release.
 Use the replacement function instead: 
-\link{layoutCopycat}
+\link{setNodePropertyBypass}
 }

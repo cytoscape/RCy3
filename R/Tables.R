@@ -123,6 +123,75 @@ getTableColumns <- function(table = 'node',
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get table cell value
+#'
+#' @description Retrieve the value from a specific row and column from node, 
+#' edge or network tables.
+#' @param table name of table, e.g., node, edge, network
+#' @param row.name Node, edge or network name, i.e., the value in the "name"
+#' column
+#' @param column name of column to retrieve values from 
+#' @param namespace namespace of table; default is "default"
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return A \code{data.frame} of column values
+#' @examples
+#' \donttest{
+#' getTableValue('node','node 1', 'score')
+#' }
+#' @export
+getTableValue <- function(table,
+                            row.name,
+                            column,
+                            namespace = 'default',
+                            network = NULL,
+                            base.url = .defaultBaseUrl) {
+    suid = getNetworkSuid(network)
+    
+    #column type
+    table.col.info <- getTableColumnTypes(table, namespace, network, base.url)
+    table.col.type <- unname(table.col.info[column])
+    
+    #which row
+    row.key = NULL
+    if(table == 'node'){
+        row.key = .nodeNameToNodeSUID(row.name)
+    } else if (table == 'edge'){
+        row.key = .edgeNameToEdgeSUID(row.name)
+    }else if (table == 'network'){
+        row.key == getNetworkSuid(row.name)
+    }
+    #get row/column value
+    tbl = paste0(namespace, table)
+    res <- cyrestGET(paste('networks',suid,'tables',tbl,'rows',row.key, column,sep="/"),
+                           base.url = base.url)
+    
+    #convert NULL to NA
+    if (is.null(res))
+        res <- NA
+    
+    switch(table.col.type, 
+           "Double"={
+               res <- as.numeric(res)
+           },
+           "Long"=,
+           "Integer"={
+               res <- as.integer(res)
+           },
+           "Boolean"={
+               res <- as.logical(res)
+           },{
+               res <- as.character(res)
+           }
+    )
+
+    return(res)
+}
+
+# ------------------------------------------------------------------------------
 #' @title Get Table Column Names 
 #'
 #' @description Retrieve the names of all columns in a table
