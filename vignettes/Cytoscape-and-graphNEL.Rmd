@@ -1,8 +1,11 @@
 ---
 title: "Cytoscape and graphNEL"
 author: "by Alexander Pico"
+package: RCy3
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  BiocStyle::html_document:
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{3. Cytoscape and graphNEL}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,7 +13,6 @@ vignette: >
 ---
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-#  highlight = FALSE,
   eval=FALSE
 )
 ```
@@ -27,6 +29,10 @@ The whole point of RCy3 is to connect with Cytoscape. You will need to install a
 * Download the latest Cytoscape from http://www.cytoscape.org/download.php
 * Complete installation wizard
 * Launch Cytoscape 
+
+```{r}
+cytoscapePing()
+```
 
 ### From graphNEL to Cytoscape
 The graph package is a popular network tool among R users. With RCy3, you can easily translate graphNEL networks to Cytoscape networks!

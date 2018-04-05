@@ -1,8 +1,11 @@
 ---
 title: "Importing data"
 author: "by Alexander Pico"
+package: RCy3
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  BiocStyle::html_document:
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{4. Importing data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,7 +13,6 @@ vignette: >
 ---
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-#  highlight = FALSE,
   eval=FALSE
 )
 ```
@@ -27,6 +29,10 @@ The whole point of RCy3 is to connect with Cytoscape. You will need to install a
 * Download the latest Cytoscape from http://www.cytoscape.org/download.php
 * Complete installation wizard
 * Launch Cytoscape 
+
+```{r}
+cytoscapePing()
+```
 
 ### Always Start with a Network
 When importing data, you are actually performing a merge function of sorts, appending columns to nodes (or edges) that are present in the referenced network. Data that do not match elements in the network are effectively discarded upon import.

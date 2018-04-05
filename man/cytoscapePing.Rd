@@ -15,7 +15,8 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 status message
 }
 \description{
-Test the connection to Cytoscape via CyREST
+Tests the connection to Cytoscape via CyREST and verifies that
+supported versions of Cytoscape and CyREST API are loaded.
 }
 \examples{
 \donttest{
