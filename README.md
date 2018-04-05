@@ -86,4 +86,5 @@ When adding or updating vignettes, consider the following tips for consistency:
 
 ### Former Repo
 The entire commit history has been preserved during this transition, but you can find the repo for RCy3 v1.5.3 and earlier
-at https://github.com/tmuetze/Bioconductor_RCy3_the_new_RCytoscape.
+at https://github.com/tmuetze/Bioconductor_RCy3_the_new_RCytoscape and you can find the Bioconductor
+page for v1.8.0, including archives at https://www.bioconductor.org/packages/3.6/bioc/html/RCy3.html.
