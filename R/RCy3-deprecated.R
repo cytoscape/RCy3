@@ -13,32 +13,372 @@
 # suid = obj@suid
 # ===================================================================================
 
+#' DEFUNCT: setTooltipDismissDelay
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases setTooltipDismissDelaydefunct
+#' @usage setTooltipDismissDelaydefunct
+#' @export
+#' @rdname setTooltipDismissDelay-defunct
+setTooltipDismissDelay <- function (obj, msecs) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: setTooltipInitialDelay
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases setTooltipInitialDelaydefunct
+#' @usage setTooltipInitialDelaydefunct
+#' @export
+#' @rdname setTooltipInitialDelay-defunct
+setTooltipInitialDelay <- function (obj, msecs) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: setWindowSize
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases setWindowSizedefunct
+#' @usage setWindowSizedefunct
+#' @export
+#' @rdname setWindowSize-defunct
+setWindowSize <- function (obj, width, height) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: setGraph
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases setGraphdefunct
+#' @usage setGraphdefunct
+#' @export
+#' @rdname setGraph-defunct
+setGraph <- function (obj, graph) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: setCommandProperties
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' Use the replacement function instead: 
+#' \link{commandsRun}
+#' @return None
+#' @aliases setCommandPropertiesdefunct
+#' @usage setCommandPropertiesdefunct
+#' @export
+#' @rdname setCommandProperties-defunct
+setCommandProperties<- function (obj, command.name, properties.list, copy.graph.to.R = FALSE) {
+    .Defunct("commandsRun")
+}
+
+#' DEFUNCT: predictTimeToDisplayGraph
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases predictTimeToDisplayGraphdefunct
+#' @usage predictTimeToDisplayGraphdefunct
+#' @export
+#' @rdname predictTimeToDisplayGraph-defunct
+predictTimeToDisplayGraph <- function (obj) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: raiseWindow
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases raiseWindowdefunct
+#' @usage raiseWindowdefunct
+#' @export
+#' @rdname raiseWindow-defunct
+raiseWindow <- function (obj, window.title) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: noa
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases noadefunct
+#' @usage noadefunct
+#' @export
+#' @rdname noa-defunct
+noa <- function (graph, node.attribute.name) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: noa.names
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases noa.namesdefunct
+#' @usage noa.namesdefunct
+#' @export
+#' @rdname noa.names-defunct
+noa.names <- function (graph) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: makeRandomGraph
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases makeRandomGraphdefunct
+#' @usage makeRandomGraphdefunct
+#' @export
+#' @rdname makeRandomGraph-defunct
+makeRandomGraph <- function (node.count, seed) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: initEdgeAttribute
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases initEdgeAttributedefunct
+#' @usage initEdgeAttributedefunct
+#' @export
+#' @rdname initEdgeAttribute-defunct
+initEdgeAttribute <- function (graph, attribute.name, attribute.type, default.value) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: initNodeAttribute
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases initNodeAttributedefunct
+#' @usage initNodeAttributedefunct
+#' @export
+#' @rdname initNodeAttribute-defunct
+initNodeAttribute <- function (graph, attribute.name, attribute.type, default.value) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: getViewCoordinates
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases getViewCoordinatesdefunct
+#' @usage getViewCoordinatesdefunct
+#' @export
+#' @rdname getViewCoordinates-defunct
+getViewCoordinates <- function (obj) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: getDefaultEdgeReverseSelectionColor
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases getDefaultEdgeReverseSelectionColordefunct
+#' @usage getDefaultEdgeReverseSelectionColordefunct
+#' @export
+#' @rdname getDefaultEdgeReverseSelectionColor-defunct
+getDefaultEdgeReverseSelectionColor <- function (obj, vizmap.style.name) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: getDefaultNodeReverseSelectionColor
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases getDefaultNodeReverseSelectionColordefunct
+#' @usage getDefaultNodeReverseSelectionColordefunct
+#' @export
+#' @rdname getDefaultNodeReverseSelectionColor-defunct
+getDefaultNodeReverseSelectionColor <- function (obj, vizmap.style.name) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: setDefaultEdgeReverseSelectionColor
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases setDefaultEdgeReverseSelectionColordefunct
+#' @usage setDefaultEdgeReverseSelectionColordefunct
+#' @export
+#' @rdname setDefaultEdgeReverseSelectionColor-defunct
+setDefaultEdgeReverseSelectionColor <- function (obj, vizmap.style.name) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: setDefaultNodeReverseSelectionColor
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases setDefaultNodeReverseSelectionColordefunct
+#' @usage setDefaultNodeReverseSelectionColordefunct
+#' @export
+#' @rdname setDefaultNodeReverseSelectionColor-defunct
+setDefaultNodeReverseSelectionColor <- function (obj, vizmap.style.name) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: getAttributeClassNames
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases getAttributeClassNamesdefunct
+#' @usage getAttributeClassNamesdefunct
+#' @export
+#' @rdname getAttributeClassNames-defunct
+getAttributeClassNames <- function (obj) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: getAdjacentEdgeNames
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' Use these replacement functions instead: 
+#' \link{selectEdgesAdjacentToSelectedNodes}, \link{getSelectedEdges}
+#' @return None
+#' @aliases getAdjacentEdgeNamesdefunct
+#' @usage getAdjacentEdgeNamesdefunct
+#' @export
+#' @rdname getAdjacentEdgeNames-defunct
+getAdjacentEdgeNames <- function (graph, node.names) {
+    .Defunct("selectEdgesAdjacentToSelectedNodes")
+}
+
+#' DEFUNCT: eda
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases edadefunct
+#' @usage edadefunct
+#' @export
+#' @rdname eda-defunct
+eda <- function (graph, edge.attribute.name) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: eda.names
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases eda.namesdefunct
+#' @usage eda.namesdefunct
+#' @export
+#' @rdname eda.names-defunct
+eda.names <- function (graph) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: displayGraph
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases displayGraphdefunct
+#' @usage displayGraphdefunct
+#' @export
+#' @rdname displayGraph-defunct
+displayGraph <- function (obj) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: demoSimpleGraph
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases demoSimpleGraphdefunct
+#' @usage demoSimpleGraphdefunct
+#' @export
+#' @rdname demoSimpleGraph-defunct
+demoSimpleGraph <- function () {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: cyPlot
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases cyPlotdefunct
+#' @usage cyPlotdefunct
+#' @export
+#' @rdname cyPlot-defunct
+cyPlot <- function (node.df, edge.df) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: cy2.edge.names
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases cy2.edge.namesdefunct
+#' @usage cy2.edge.namesdefunct
+#' @export
+#' @rdname cy2.edge.names-defunct
+cy2.edge.names <- function (graph, R.edge.names) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: connectToNewestCyWindow
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases connectToNewestCyWindowdefunct
+#' @usage connectToNewestCyWindowdefunct
+#' @export
+#' @rdname connectToNewestCyWindow-defunct
+connectToNewestCyWindow <- function (obj, copyToR) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: addCyEdge
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases addCyEdgedefunct
+#' @usage addCyEdgedefunct
+#' @export
+#' @rdname addCyEdge-defunct
+addCyEdge <- function (obj,sourceNode, targetNode, edgeType, directed) {
+    .Defunct("No replacement")
+}
+
+#' DEFUNCT: addCyNode
+#' 
+#' @description This function is defunct and will be removed in the next release.
+#' @return None
+#' @aliases addCyNodedefunct
+#' @usage addCyNodedefunct
+#' @export
+#' @rdname addCyNode-defunct
+addCyNode <- function (obj, node.names) {
+    .Defunct("No replacement")
+}
+
 #' DEFUNCT: getNodePosition
 #' 
 #' @description This function is defunct and will be removed in the next release.
 #' Use the replacement function instead: 
-#' \link{layoutCopycat}
+#' \link{getNodeProperty}
 #' @return None
 #' @aliases getNodePositiondefunct
 #' @usage getNodePositiondefunct
 #' @export
 #' @rdname getNodePosition-defunct
 getNodePosition <- function (obj, node.names) {
-    .Defunct("layoutCopycat")
+    .Defunct("getNodeProperty")
 }
 
 #' DEFUNCT: setNodePosition
 #' 
 #' @description This function is defunct and will be removed in the next release.
 #' Use the replacement function instead: 
-#' \link{layoutCopycat}
+#' \link{setNodePropertyBypass}
 #' @return None
 #' @aliases setNodePositiondefunct
 #' @usage setNodePositiondefunct
 #' @export
 #' @rdname setNodePosition-defunct
-setNodePosition <- function (obj, node.names) {
-    .Defunct("layoutCopycat")
+setNodePosition <- function (obj, node.names, x.coords, y.coords) {
+    .Defunct("setNodePropertyBypass")
 }
 
 #' DEFUNCT: saveLayout
@@ -75,10 +415,10 @@ restoreLayout<-function (obj, filename) {
 #' Use the replacement function instead: 
 #' \link{createGraphFromNetwork}
 #' @return None
-#' @aliases restoreLayoutdefunct
-#' @usage restoreLayoutdefunct
+#' @aliases getGraphdefunct
+#' @usage getGraphdefunct
 #' @export
-#' @rdname restoreLayout-defunct
+#' @rdname getGraph-defunct
 getGraph <- function(obj) {
     .Defunct("createGraphFromNetwork")
 }
@@ -506,3 +846,249 @@ setZoom<-function(obj, new.level){
     .Deprecated("setNetworkZoomBypass")
     setNetworkZoomBypass(new.level, bypass=FALSE)
 }
+
+#' DEPRECATED: fitSelectedContent
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{fitContent}
+#' @return None
+#' @aliases fitSelectedContent_deprecated
+#' @usage fitSelectedContent_deprecated
+#' @export
+#' @rdname fitSelectedContent-deprecated
+fitSelectedContent<-function(obj){
+    .Deprecated("fitContent")
+    fitContent(selected.only = TRUE)
+}
+
+#' DEPRECATED: getAllEdgeAttributes
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{getTableColumns}
+#' @return None
+#' @aliases getAllEdgeAttributes_deprecated
+#' @usage getAllEdgeAttributes_deprecated
+#' @export
+#' @rdname getAllEdgeAttributes-deprecated
+getAllEdgeAttributes<-function(obj, onlySelectedEdges){
+    .Deprecated("getTableColumns")
+    getTableColumns('edge')
+}
+
+#' DEPRECATED: getAllNodeAttributes
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{getTableColumns}
+#' @return None
+#' @aliases getAllNodeAttributes_deprecated
+#' @usage getAllNodeAttributes_deprecated
+#' @export
+#' @rdname getAllNodeAttributes-deprecated
+getAllNodeAttributes<-function(obj, onlySelectedNodes){
+    .Deprecated("getTableColumns")
+    getTableColumns()
+}
+
+#' DEPRECATED: getCommandNames
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{commandsHelp}
+#' @return None
+#' @aliases getCommandNames_deprecated
+#' @usage getCommandNames_deprecated
+#' @export
+#' @rdname getCommandNames-deprecated
+getCommandNames<-function(obj){
+    .Deprecated("commandsHelp")
+    commandsHelp()
+}
+
+#' DEPRECATED: getCommandNamesWithinNamespace
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{commandsHelp}
+#' @return None
+#' @aliases getCommandNamesWithinNamespace_deprecated
+#' @usage getCommandNamesWithinNamespace_deprecated
+#' @export
+#' @rdname getCommandNamesWithinNamespace-deprecated
+getCommandNamesWithinNamespace<-function(obj, namespace){
+    .Deprecated("commandsHelp")
+    commandsHelp(namespace)
+}
+
+#' DEPRECATED: getEdgeAttribute
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{getTableValue}
+#' @return None
+#' @aliases getEdgeAttribute_deprecated
+#' @usage getEdgeAttribute_deprecated
+#' @export
+#' @rdname getEdgeAttribute-deprecated
+getEdgeAttribute<-function(obj, edge.name, attribute.name){
+    .Deprecated("getTableValue")
+    getTableValue('edge',edge.name, attribute.name)
+}
+
+
+#' DEPRECATED: getNodeAttribute
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{getTableValue}
+#' @return None
+#' @aliases getNodeAttribute_deprecated
+#' @usage getNodeAttribute_deprecated
+#' @export
+#' @rdname getNodeAttribute-deprecated
+getNodeAttribute<-function(obj, node.name, attribute.name){
+    .Deprecated("getTableValue")
+    getTableValue('node',node.name, attribute.name)
+}
+
+#' DEPRECATED: getEdgeAttributeNames
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{getTableColumnNames}
+#' @return None
+#' @aliases getEdgeAttributeNames_deprecated
+#' @usage getEdgeAttributeNames_deprecated
+#' @export
+#' @rdname getEdgeAttributeNames-deprecated
+getEdgeAttributeNames<-function(obj){
+    .Deprecated("getTableColumnNames")
+    getTableColumnNames('edge')
+}
+
+
+#' DEPRECATED: getNodeAttributeNames
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{getTableColumnNames}
+#' @return None
+#' @aliases getNodeAttributeNames_deprecated
+#' @usage getNodeAttributeNames_deprecated
+#' @export
+#' @rdname getNodeAttributeNames-deprecated
+getNodeAttributeNames<-function(obj){
+    .Deprecated("getTableColumnNames")
+    getTableColumnNames('node')
+}
+
+#' DEPRECATED: ping
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{cytoscapePing}
+#' @return None
+#' @aliases ping_deprecated
+#' @usage ping_deprecated
+#' @export
+#' @rdname ping-deprecated
+ping<-function(obj){
+    .Deprecated("cytoscapePing")
+    cytoscapePing()
+}
+
+#' DEPRECATED: saveNetwork
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{saveSession}
+#' @return None
+#' @aliases saveNetwork_deprecated
+#' @usage saveNetwork_deprecated
+#' @export
+#' @rdname saveNetwork-deprecated
+saveNetwork<-function(obj, file.name, format){
+    .Deprecated("saveSession")
+    saveSession(filename = file.name)
+}
+
+#' DEPRECATED: selectEdgesConnectedBySelectedNodes
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{selectEdgesConnectingSelectedNodes}
+#' @return None
+#' @aliases selectEdgesConnectedBySelectedNodes_deprecated
+#' @usage selectEdgesConnectedBySelectedNodes_deprecated
+#' @export
+#' @rdname selectEdgesConnectedBySelectedNodes-deprecated
+selectEdgesConnectedBySelectedNodes<-function(obj){
+    .Deprecated("selectEdgesConnectingSelectedNodes")
+    selectEdgesConnectingSelectedNodes()
+}
+
+#' DEPRECATED: showGraphicsDetails
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{toggleGraphicsDetails}
+#' @return None
+#' @aliases showGraphicsDetails_deprecated
+#' @usage showGraphicsDetails_deprecated
+#' @export
+#' @rdname showGraphicsDetails-deprecated
+showGraphicsDetails<-function(obj, new.value){
+    .Deprecated("toggleGraphicsDetails")
+    toggleGraphicsDetails()
+}
+
+#' DEPRECATED: deleteEdgeAttribute
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{deleteTableColumn}
+#' @return None
+#' @aliases deleteEdgeAttribute_deprecated
+#' @usage deleteEdgeAttribute_deprecated
+#' @export
+#' @rdname deleteEdgeAttribute-deprecated
+deleteEdgeAttribute<-function(obj, attribute.name){
+    .Deprecated("deleteTableColumn")
+    deleteTableColumn(attribute.name,'edge')
+}
+
+#' DEPRECATED: deleteNodeAttribute
+#' 
+#' @description This function is only provided for compatibility with older
+#' versions of RCy3 and will be defunct and removed in the next releases.
+#' Use the replacement function instead: 
+#' \link{deleteTableColumn}
+#' @return None
+#' @aliases deleteNodeAttribute_deprecated
+#' @usage deleteNodeAttribute_deprecated
+#' @export
+#' @rdname deleteNodeAttribute-deprecated
+deleteNodeAttribute<-function(obj, attribute.name){
+    .Deprecated("deleteTableColumn")
+    deleteTableColumn(attribute.name, 'node')
+}
+
+
+
+

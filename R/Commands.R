@@ -46,7 +46,7 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 #' @examples \donttest{
 #' cyrestDELETE()
 #' }
-#' @importFrom RJSONIO fromJSON
+#' @importFrom RJSONIO fromJSON isValidJSON
 #' @importFrom httr DELETE
 #' @importFrom utils URLencode
 #' @export
@@ -63,8 +63,12 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         stop()
     } else {
         if(length(res$content)>0){
-            return(fromJSON(rawToChar(res$content)))
-        } else{
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
             invisible(res)
         }
     }
@@ -83,7 +87,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' @examples \donttest{
 #' cyrestGET()
 #' }
-#' @importFrom RJSONIO fromJSON
+#' @importFrom RJSONIO fromJSON isValidJSON
 #' @importFrom httr GET
 #' @importFrom utils URLencode
 #' @export
@@ -100,7 +104,12 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         stop()
     } else {
         if(length(res$content)>0){
-            return(fromJSON(rawToChar(res$content)))
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
         } else{
             invisible(res)
         }
@@ -121,8 +130,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' @examples \donttest{
 #' cyrestPOST()
 #' }
-#' @importFrom RJSONIO fromJSON
-#' @importFrom RJSONIO toJSON
+#' @importFrom RJSONIO fromJSON toJSON isValidJSON
 #' @importFrom httr POST
 #' @importFrom httr content_type_json
 #' @importFrom utils URLencode
@@ -141,8 +149,12 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         stop()
     } else {
         if(length(res$content)>0){
-            return(fromJSON(rawToChar(res$content)))
-        } else{
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
             invisible(res)
         }
     }
@@ -162,8 +174,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' @examples \donttest{
 #' cyrestPUT()
 #' }
-#' @importFrom RJSONIO fromJSON
-#' @importFrom RJSONIO toJSON
+#' @importFrom RJSONIO fromJSON isValidJSON toJSON
 #' @importFrom httr PUT
 #' @importFrom httr content_type_json
 #' @importFrom utils URLencode
@@ -182,8 +193,12 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
         stop()
     } else {
         if(length(res$content)>0){
-            return(fromJSON(rawToChar(res$content)))
-        } else{
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
             invisible(res)
         }
     }
