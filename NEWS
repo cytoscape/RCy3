@@ -12,7 +12,7 @@ New in RCy3 v2.0
     Fixed visual style "Direct" functions to set persistent bypass values
         setNodePropertyBypass
         setEdgePropertyBypass
-        see all \code{setNode***Bypass and \code{setEdge***Bypass functions
+        see all setNode***Bypass and setEdge***Bypass functions
     Streamlined interfaces to CyREST and Commands API
         cyrestGET
         cyrestPUT
@@ -23,7 +23,7 @@ New in RCy3 v2.0
         commandsPOST
         commandsAPI
         commandsHelp
-    Optional \code{network parameter supports calls to "current" or specified Cytoscape network by name or SUID
+    Optional network parameter supports calls to "current" or specified Cytoscape network by name or SUID
     New functions for importing/exporting tabular data into/out of Cytoscape
         getTableColumns
         loadTableData
