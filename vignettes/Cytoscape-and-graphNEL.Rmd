@@ -19,11 +19,11 @@ knitr::opts_chunk$set(
 
 This vignette will show you how to convert networks between graphNEL and Cytoscape.
 
-### Installation
+# Installation
 source("https://bioconductor.org/biocLite.R")
 biocLite("RCy3")
 
-### Required Software
+# Required Software
 The whole point of RCy3 is to connect with Cytoscape. You will need to install and launch Cytoscape: 
 
 * Download the latest Cytoscape from http://www.cytoscape.org/download.php
@@ -34,7 +34,7 @@ The whole point of RCy3 is to connect with Cytoscape. You will need to install a
 cytoscapePing()
 ```
 
-### From graphNEL to Cytoscape
+# From graphNEL to Cytoscape
 The graph package is a popular network tool among R users. With RCy3, you can easily translate graphNEL networks to Cytoscape networks!
 
 Create a simple GraphNEL object
@@ -47,7 +47,7 @@ Now pass it along to Cytoscape:
 ```{r}
 createNetworkFromGraph(g,"myGraph")
 ```
-### From Cytoscape to GraphNEL 
+# From Cytoscape to GraphNEL 
 Inversely, you can use createGraphFromNetwork() in RCy3 to retreive vertex (node) and edge data.frames to construct a GraphNEL object. 
 
 ```{r}

@@ -23,14 +23,14 @@ directly from R using the RCy3 package
 
 *From Vessy's "Fun with R blog": http://www.vesnam.com/Rblog/viznets5/
 
-### Installation
+# Installation
 source("https://bioconductor.org/biocLite.R")
 biocLite("RCy3")
 ```{r}
 library(igraph)
 ```
 
-### Required Software
+# Required Software
 The whole point of RCy3 is to connect with Cytoscape. You will need to install and launch Cytoscape: 
     
 * Download the latest Cytoscape from http://www.cytoscape.org/download.php
@@ -41,7 +41,7 @@ The whole point of RCy3 is to connect with Cytoscape. You will need to install a
 cytoscapePing()
 ```
 
-### Read a data set. 
+# Read a data set. 
 Data format: dataframe with 3 variables; variables 1 & 2 correspond to interactions; variable 3 is weight of interaction
 ```{r}
 lesmis <- system.file("extdata","lesmis.txt", package="RCy3")
@@ -59,7 +59,7 @@ igraph::vcount(gD)
 igraph::ecount(gD)
 ```
 
-### Common iGraph functions
+# Common iGraph functions
 Calculate some node properties and node similarities that will be used to illustrate 
 different plotting abilities
 
@@ -80,7 +80,7 @@ Calculate Dice similarities between all pairs of nodes
 dsAll <- igraph::similarity.dice(gD, vids = igraph::V(gD), mode = "all")
 ```
 
-### Add attributes to network
+# Add attributes to network
 Add new node attributes based on the calculated node properties/similarities
 ```{r}
 gD <- igraph::set.vertex.attribute(gD, "degree", index = igraph::V(gD), value = degAll)
@@ -119,14 +119,14 @@ Check the edge attributes. You should see "weight" and "similarity" added.
 summary(gD)
 ```
 
-### Let check it out in Cytoscape
+# Let check it out in Cytoscape
 
 *Update: You can go straight from igraph to Cytoscape, sending all attributes and displaying graph!*
 ```{r}
 createNetworkFromIgraph(gD,new.title='Les Miserables')
 ```
 
-### Let's decide on a layout
+## Let's decide on a layout
 A list  of available layouts can be accessed from R as follows:
 ```{r}
 getLayoutNames()
@@ -147,7 +147,7 @@ But that is a crazy layout, so let's try "force-directed" instead:
 layoutNetwork('force-directed defaultSpringLength=70 defaultSpringCoefficient=0.000003')
 ```
 
-### Next, we can visualize our data
+## Next, we can visualize our data
 
 On nodes...
 ```{r}
@@ -174,7 +174,7 @@ setNodeLabelColorDefault('#000000')
 
 Viola! All done.
 
-### Track versions for your records
+# Track versions for your records
 ```{r}
 cytoscapeVersionInfo()
 ```

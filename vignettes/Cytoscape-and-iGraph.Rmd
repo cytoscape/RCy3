@@ -19,14 +19,14 @@ knitr::opts_chunk$set(
 
 This vignette will show you how to convert networks between iGraph and Cytoscape.
 
-### Installation
+# Installation
 source("https://bioconductor.org/biocLite.R")
 biocLite("RCy3")
 ```{r}
 library(igraph)
 ```
 
-### Required Software
+# Required Software
 The whole point of RCy3 is to connect with Cytoscape. You will need to install and launch Cytoscape: 
 
 * Download the latest Cytoscape from http://www.cytoscape.org/download.php 
@@ -37,7 +37,7 @@ The whole point of RCy3 is to connect with Cytoscape. You will need to install a
 cytoscapePing()
 ```
 
-### From igraph to Cytoscape
+# From igraph to Cytoscape
 The igraph package is a popular network tool among R users. With RCy3, you can easily translate igraph networks to Cytoscape networks!
 
 Here is a basic igraph network construction from the graph_from_data_frame docs, http://igraph.org/r/doc/graph_from_data_frame.html:
@@ -62,7 +62,7 @@ You now have an igraph network, g.  In order to translate the network together w
 createNetworkFromIgraph(ig,"myIgraph")
 ```
 
-### From Cytoscape to igraph 
+# From Cytoscape to igraph 
 Inversely, you can use createIgraphFromNetwork() in RCy3 to retreive vertex (node) and edge data.frames to construct an igraph network. 
 
 ```{r}
