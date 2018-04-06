@@ -350,10 +350,22 @@ clearNetworkPropertyBypass <- function(visual.property,
 unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network)
     node.names <- getAllNodes(net.SUID, base.url)
-    clearNodePropertyBypass(node.names, "NODE_VISIBLE", network=net.SUID, base.url=base.url)
+    hidden.nodes <- c()
+    for (n in node.names){
+        if (!getNodeProperty(n, "NODE_VISIBLE"))
+            hidden.nodes <- c(hidden.nodes, n)
+    }
+    if (length(hidden.nodes) > 0)
+        clearNodePropertyBypass(hidden.nodes, "NODE_VISIBLE", network=net.SUID, base.url=base.url)
     
     edge.names <- getAllEdges(net.SUID, base.url)
-    clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network=net.SUID, base.url=base.url)
+    hidden.edges <- c()
+    for (e in edge.names){
+        if (!getEdgeProperty(e, "EDGE_VISIBLE"))
+            hidden.edges <- c(hidden.edges, e)
+    }
+    if (length(hidden.edges) > 0)
+        clearEdgePropertyBypass(hidden.edges, "EDGE_VISIBLE", network=net.SUID, base.url=base.url)
 }
 
 # ==============================================================================

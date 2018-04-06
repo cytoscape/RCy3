@@ -85,15 +85,16 @@ run.tests = function()
     
     test.nodeNeighborReportingAndSelection ()
     test.invertSelection ()
-    # test.deleteSelectedNodes ()
-    # test.hideNodes ()
-    # test.selectEdges ()
-    # test.setEdgeLineStyleMapping ()
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.setEdgeLineWidthMapping ()
-    # test.setEdgeColorMapping ()
+    test.deleteSelectedNodes ()
+
+    deleteAllNetworks ()
+    
+    test.hideNodes ()
+    test.selectEdges ()
+    test.setEdgeLineStyleMapping ()
+    test.setEdgeLineWidthMapping ()
+    test.setEdgeColorMapping ()
+    # test.setEdgeOpacityMapping()
     # test.setEdgeTargetArrowMapping ()
     # test.setEdgeArrowColorMappings ()
     # test.setEdgeSourceArrowMapping ()
@@ -1018,7 +1019,7 @@ test.countNodes = function ()
     title = 'test.countNodes'
     test.prep (title)
     g <- RCy3::makeSimpleGraph()
-    checkEquals (getNodeCount(), length (nodes (g)))
+    checkEquals (getNodeCount(), 4)
 }
 #-------------------------------------------------------------------------------
 test.countEdges = function ()
@@ -1026,7 +1027,7 @@ test.countEdges = function ()
     title = 'test.countEdges'
     test.prep (title, F)
     g <- RCy3::makeSimpleGraph()
-    checkEquals (getEdgeCount(), length (edgeNames (g)))
+    checkEquals (getEdgeCount(), 4)
 }
 #-------------------------------------------------------------------------------
 test.getAllNodes = function ()
@@ -1131,178 +1132,95 @@ test.invertSelection = function ()
 test.deleteSelectedNodes = function ()
 {
     title = 'test.deleteSelectedNodes'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    
-    clearSelection (net.suide)
-    checkEquals (getSelectedNodeCount (net.suide), 0)
-    net.suide.nodes = selectNodes (c ('A', 'B'), 'name')
-    checkEquals (getSelectedNodeCount (net.suide), 2)
-    
-    deleteSelectedNodes(net.suide)
-    checkEquals(getNodeCount(net.suide), 1)
+    test.prep (title,F)
 
+    selectNodes (c ('node 0', 'node 1'), 'name')
+    checkEquals (getSelectedNodeCount (), 2)
     
-} # test.invertNodeSelection
+    deleteSelectedNodes()
+    checkEquals(getNodeCount(), 2)
+}
 #-------------------------------------------------------------------------------
 test.hideNodes = function ()
 {
     title = 'test.hideNodes'
     test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    
-    clearSelection (net.suide)
-    checkEquals (getSelectedNodeCount (net.suide), 0)
-    net.suide.nodes = selectNodes (c ('A', 'B'), 'name')
-    checkEquals (getSelectedNodeCount (net.suide), 2)
-    checkEquals (getNodeCount (net.suide), 3)
-    hideSelectedNodes (net.suide)
-    checkEquals (getNodeCount (net.suide), 3)
-    unhideAll (net.suide)
-    layoutNetwork (net.suide)
-    redraw (net.suide)
-    checkEquals (getNodeCount (net.suide), 3)
-    
 
-    
-} # test.hideNodes
+    selectNodes (c ('node 0', 'node 1'), 'name')
+    hideSelectedNodes ()
+    checkEquals (getNodeCount (), 4)
+    unhideAll()
+}
 #-------------------------------------------------------------------------------
 test.selectEdges = function ()
 {
     title = 'test.selectEdges'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork ('grid')
-    
-    
-    clearSelection (net.suid)
-    checkEquals (getSelectedEdgeCount (net.suid), 0)
-    selectEdges ("A (phosphorylates) B")
-    checkEquals (getSelectedEdgeCount (net.suid), 1)
+    test.prep (title, F)
+
+    selectEdges ("node 0 (inhibits) node 1", "name")
+    checkEquals (getSelectedEdgeCount (), 1)
     Sys.sleep (0.3)
-    clearSelection (net.suid)
-    checkEquals (getSelectedEdgeCount (net.suid), 0)
-    
-    invisible (net.suid)
-    
-} # test.selectEdges
-#-------------------------------------------------------------------------------
-test.getAdjacentEdgeNames = function ()
-{
-    title = 'test.getAdjacentEdgeNames'
-    g = RCy3::makeSimpleGraph ()
-    expected.names = c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (undefined) A")
-    checkEquals (sort (as.character (cy2.edge.names (g))), expected.names)
-    
-    checkEquals (sort (getAdjacentEdgeNames (g, 'A')), expected.names [c (1,3)])
-    checkEquals (sort (getAdjacentEdgeNames (g, 'B')), expected.names [c (1,2)])
-    checkEquals (sort (getAdjacentEdgeNames (g, 'C')), expected.names [c (2,3)])
-    
-    checkEquals (sort (getAdjacentEdgeNames (g, c ('A', 'B'))), expected.names [1:3])
-    checkEquals (sort (getAdjacentEdgeNames (g, c ('B', 'C'))), expected.names [1:3])
-    checkEquals (sort (getAdjacentEdgeNames (g, c ('A', 'C'))), expected.names [1:3])
-    invisible (g)
-    
-} # test.getAdjacentEdgeNames
+    clearSelection ()
+    checkEquals (getSelectedEdgeCount (), 0)
+}
 #-------------------------------------------------------------------------------
 test.setEdgeLineStyleMapping = function ()
 {
     title = 'test.setEdgeLineStyleMapping'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    
-    
+    test.prep (title,F)
+
     line.styles = c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
-    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-    checkEquals (length (intersect (line.styles, getLineStyles (net.suide))), 3)
+    edgeType.values = c ('inhibits', 'activates', 'interacts')
+    checkEquals (length (intersect (line.styles, getLineStyles ())), 3)
     
-    setEdgeLineStyleMapping ('edgeType', edgeType.values, line.styles)
+    setEdgeLineStyleMapping ('interaction', edgeType.values, line.styles)
     
     # test one-element lists
     line.styles = c ('DOT')
-    edgeType.values = c ('synthetic lethal')
-    checkEquals (length (intersect (line.styles, getLineStyles (net.suide))), 1)
-    setEdgeLineStyleMapping ('edgeType', edgeType.values, line.styles)
-    
-    #msg ('test.setEdgeLineStyleMapping')
-    
-
-    
-} # test.setEdgeLineStyleMapping
+    edgeType.values = c ('activates')
+    checkEquals (length (intersect (line.styles, getLineStyles ())), 1)
+    setEdgeLineStyleMapping ('interaction', edgeType.values, line.styles)
+}
 #-------------------------------------------------------------------------------
 test.setEdgeLineWidthMapping = function ()
 {
     title = 'test.setEdgeLineWidthMapping'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    
-    line.styles = c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
-    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-    checkEquals (length (intersect (line.styles, getLineStyles (net.suide))), 3)
-    
-    setEdgeLineStyleMapping ('edgeType', edgeType.values, line.styles)
-    setEdgeLineWidthMapping ('edgeType', edgeType.values, c (0, 8, 16))
+    test.prep (title, F)
+
+    edgeType.values = c ('inhibits', 'activates', 'interacts')
+    setEdgeLineWidthMapping ('interaction', edgeType.values, c (0, 8, 16), 'd')
     
     # try one-element lists
-    setEdgeLineWidthMapping ('edgeType', edgeType.values [1], 10)
-    
-
-    
-} # test.setEdgeLineWidthMapping
+    setEdgeLineWidthMapping ('interaction', edgeType.values [1], 10, 'd')
+}
 #-------------------------------------------------------------------------------
 test.setEdgeColorMapping = function ()
 {
     title = 'test.setEdgeColorMapping'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    
-    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
+    test.prep (title, F)
+
+    edgeType.values = c ('inhibits', 'activates', 'interacts')
     colors = c ('#FF0000', '#FFFF00', '#00FF00')
-    setEdgeColorMapping ('edgeType',  edgeType.values, colors, 'd')
+    setEdgeColorMapping ('interaction',  edgeType.values, colors, 'd')
     Sys.sleep (0.3)
     
     all.white  = c ('#FFFFFF', '#FFFFFF', '#FFFFFF')
-    setEdgeColorMapping ('edgeType',  edgeType.values [2], 'd', '#000000')
+    setEdgeColorMapping ('interaction',  edgeType.values [2],'#000000', 'd')
     
     # now create a continuous ('interpolate') mode Mapping, using the score edge attribute
-    score.values = c (-15, 0, 40);
+    score.values = c (3, 6.5, 10);
     colors = c ('#00FF00', '#FFFFFF', '#FF0000')
-    setEdgeColorMapping ('score',  score.values, colors, 'c')
+    setEdgeColorMapping ('weight',  score.values, colors, 'c')
     
     # now swap the colors
     colors = c ('#FF0000', '#000000', '#00FF00')
-    setEdgeColorMapping ('score',  score.values, colors, 'c')
-    
-
-    
-} # test.setEdgeColorMapping
+    setEdgeColorMapping ('weight',  score.values, colors, 'c')
+}
 #-------------------------------------------------------------------------------
 test.setEdgeOpacityMapping = function ()
 {
     title = 'test.setEdgeOpacityMapping'
-    test.prep (title)
+    test.prep (title, F)
     
     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
     displayGraph (net.suid)
