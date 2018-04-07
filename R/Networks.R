@@ -872,12 +872,6 @@ createNetworkFromDataFrames <-
                                    body = json_network,
                                    base.url = base.url)
         
-        cat("Applying default style...\n")
-        commandsPOST('vizmap apply styles="default"', base.url = base.url)
-        
-        cat("Applying preferred layout...\n")
-        layoutNetwork(network=network.suid)
-        
         cat("Loading data...\n")
         # Remove SUID columns if present
         if('SUID' %in% colnames(nodes))
@@ -896,6 +890,12 @@ createNetworkFromDataFrames <-
         if(length(setdiff(colnames(edges),c("source","target","interaction"))) > 0)
             loadTableData(edges,data.key.column = 'data.key.column', 
                       table = 'edge')
+        
+        cat("Applying default style...\n")
+        commandsPOST('vizmap apply styles="default"', base.url = base.url)
+        
+        cat("Applying preferred layout...\n")
+        layoutNetwork(network=network.suid)
         
         return(network.suid)
     }
