@@ -180,3 +180,14 @@ Done! See the updated *XrefId* column in Cytoscape with all Ensembl IDs.
 
 *Note: you'll want to either update the *XrefDatasource* column as well or simply make 
 a note to ignore it at this point.*
+
+# More advanced cases
+This identifier mapping function is intended to handle the majority of common
+ID mapping problems. It has limitation, however. 
+```{r}
+?mapTableColumn
+```
+
+If you need an ID mapping solution for species or ID types not covered by this 
+tool, or if you want to connect to alternative sources of mappings, then check
+out the BridgeDb app: http://apps.cytoscape.org/apps/bridgedb. 
