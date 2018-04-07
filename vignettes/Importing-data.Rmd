@@ -21,6 +21,7 @@ This vignette will show you how to import a data.frame of node attributes into C
 
 # Installation
 source("https://bioconductor.org/biocLite.R")
+
 biocLite("RCy3")
 
 # Required Software
@@ -51,6 +52,14 @@ You can import data into Cytoscape from any data.frame in R as long as it contai
 csv <- system.file("extdata","galExpData.csv", package="RCy3")
 data <- read.csv(csv)
 ```
+
+**Note: there may be times where your network and data identifers are of differet
+types. This calls for identifier mapping. RCy3 provides a function to perform
+ID mapping in Cytoscape:**
+```{r}
+?mapTableColumn
+```
+Check out the *Identifier mapping* vignette for detailed examples.
 
 Now we have a data.frame that includes our identifiers in a column called "name", plus a bunch of data columns. Knowing our key columns, we can now perform the import:
 ```{r}
