@@ -21,7 +21,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 None
 }
 \description{
-Clearn the bypass value for node fill, label and border opacity 
+Clear the bypass value for node fill, label and border opacity 
 for the specified node or nodes, effectively restoring any previously defined 
 style defaults or mappings.
 }

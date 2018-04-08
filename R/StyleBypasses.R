@@ -421,8 +421,6 @@ setNodeColorBypass <-
         )
     }
 #-------------------------------------------------------------------------------
-# 
-# ------------------------------------------------------------------------------
 #' @title Set Node Size Bypass
 #'
 #' @description Sets the bypass value of node size for one or more nodes. Only 
@@ -975,7 +973,7 @@ setNodeOpacityBypass <-
 # ------------------------------------------------------------------------------
 #' @title Clear Node Opacity Bypass
 #'
-#' @description Clearn the bypass value for node fill, label and border opacity 
+#' @description Clear the bypass value for node fill, label and border opacity 
 #' for the specified node or nodes, effectively restoring any previously defined 
 #' style defaults or mappings.
 #' @param node.names List of node names

@@ -704,11 +704,11 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
     
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
-        mvp1 <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'c',
+        mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'c',
                                   table.column.values, opacities, 
                                   network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
-        mvp1 <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'd',
+        mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'd',
                                   table.column.values, opacities, 
                                   network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
