@@ -94,37 +94,23 @@ run.tests = function()
     test.setEdgeLineStyleMapping ()
     test.setEdgeLineWidthMapping ()
     test.setEdgeColorMapping ()
-    # test.setEdgeOpacityMapping()
-    # test.setEdgeTargetArrowMapping ()
-    # test.setEdgeArrowColorMappings ()
-    # test.setEdgeSourceArrowMapping ()
-    # 
+    test.setEdgeOpacityMapping()
+    test.setEdgeTargetArrowMapping ()
+    test.setEdgeArrowColorMappings ()
+    test.setEdgeSourceArrowMapping ()
+     
+    deleteAllNetworks ()
+     
+    test.movie ()
+    test.unmatchedAttributesError ()
+    test.simpleGraphWithReciprocalEdge ()
+    test.setNodePosition () 
+    test.getNodePosition ()
+    test.getNodePosition.colonInNodeName ()
+    
     # deleteAllNetworks ()
-    # 
-    # test.movie ()
-    # #test.unmatchedAttributesError ()
-    # #test.remove.redundancies.in.undirected.graph ()
-    # test.randomUndirectedGraph ()
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.simpleGraph ()
-    # test.simpleGraphWithReciprocalEdge ()
-    # test.setGraph ()
-    # test.setNodePosition ()  #--> too slow
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.getNodePosition ()
-    # test.getNodePosition.colonInNodeName ()  #--> too slow
+     
     # test.getNodeSize ()
-    # test.haveNodeAttribute ()
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.haveEdgeAttribute ()
-    # test.copyNodeAttributesFromCyGraph ()
-    # test.copyEdgeAttributesFromCyGraph ()
     # test.getGraphFromCyNetwork ()
     # 
     # deleteAllNetworks ()
@@ -135,7 +121,6 @@ run.tests = function()
     # 
     # deleteAllNetworks ()
     # 
-    # test.addGraphToGraph.degenerateFirstGraph ()
     # test.existing.CytoscapeNetwork ()
     # test.existing.CytoscapeNetwork.noEdges ()
     # test.existing.CytoscapeNetwork.emptyGraph ()
@@ -156,28 +141,17 @@ run.tests = function()
     # 
     # deleteAllNetworks ()
     # 
-    # test.defaultColors ()
-    # test.fitContent ()
-    # #test.windowCoordinates ()
-    # 
+    test.defaultColors ()
+    test.fitContent ()
+    test.zoom () # timeout
+    test.center ()
+    test.setNodeSizeBypass ()  #--> too slow
+    test.setNodeWidthAndHeightBypass ()  #--> too slow
+    test.setNodeFontSizeBypass ()  #--> too slow
+    test.setNodeShapeBypass ()  #--> too slow
+     
     # deleteAllNetworks ()
-    # 
-    # #test.zoom () # timeout
-    # test.center ()
-    # #test.setNodeSizeBypass ()  #--> too slow
-    # #test.setNodeWidthAndHeightBypass ()  #--> too slow
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.setNodeFontSizeBypass ()  #--> too slow
-    # test.setNodeShapeBypass ()  #--> too slow
-    # #test.setEdgeVizPropertiesBypass ()  #--> too slow
-    # #test.graphBAM ()
-    # 
-    # deleteAllNetworks ()
-    # 
-    # test.addCyNode ()
-    # test.addCyEdge ()
+
     # test.twoGraphsDoubleEdges ()
     # test..classicGraphToNodePairTable ()
     # test.rcy.edgeNames ()
@@ -875,9 +849,9 @@ test.setEdgeSourceArrowColorBypass = function ()
     test.prep (title,F)
     
     arrows = c ('Arrow', 'Diamond', 'Circle')
-    edgeType.values = c ('inhibits', 'activates', 'interaction')
-    setEdgeSourceArrowMapping ('interaction', edgeType.values, arrows)
-    setEdgeTargetArrowMapping ('interaction', edgeType.values, arrows)
+    interaction.values = c ('inhibits', 'activates', 'interaction')
+    setEdgeSourceArrowMapping ('interaction', interaction.values, arrows)
+    setEdgeTargetArrowMapping ('interaction', interaction.values, arrows)
     
     colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
     colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
@@ -894,9 +868,9 @@ test.setEdgeTargetArrowColorBypass = function ()
     test.prep (title, F)
     
     arrows = c ('Arrow', 'Diamond', 'Circle')
-    edgeType.values = c ('inhibits', 'activates', 'interaction')
-    setEdgeSourceArrowMapping ('interaction', edgeType.values, arrows)
-    setEdgeTargetArrowMapping ('interaction', edgeType.values, arrows)
+    interaction.values = c ('inhibits', 'activates', 'interaction')
+    setEdgeSourceArrowMapping ('interaction', interaction.values, arrows)
+    setEdgeTargetArrowMapping ('interaction', interaction.values, arrows)
     
     colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
     colors.2 = c ("#AA00AA", "#00AAAA", "#0000AA")
@@ -1170,16 +1144,16 @@ test.setEdgeLineStyleMapping = function ()
     test.prep (title,F)
 
     line.styles = c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
-    edgeType.values = c ('inhibits', 'activates', 'interacts')
+    interaction.values = c ('inhibits', 'activates', 'interacts')
     checkEquals (length (intersect (line.styles, getLineStyles ())), 3)
     
-    setEdgeLineStyleMapping ('interaction', edgeType.values, line.styles)
+    setEdgeLineStyleMapping ('interaction', interaction.values, line.styles)
     
     # test one-element lists
     line.styles = c ('DOT')
-    edgeType.values = c ('activates')
+    interaction.values = c ('activates')
     checkEquals (length (intersect (line.styles, getLineStyles ())), 1)
-    setEdgeLineStyleMapping ('interaction', edgeType.values, line.styles)
+    setEdgeLineStyleMapping ('interaction', interaction.values, line.styles)
 }
 #-------------------------------------------------------------------------------
 test.setEdgeLineWidthMapping = function ()
@@ -1187,11 +1161,11 @@ test.setEdgeLineWidthMapping = function ()
     title = 'test.setEdgeLineWidthMapping'
     test.prep (title, F)
 
-    edgeType.values = c ('inhibits', 'activates', 'interacts')
-    setEdgeLineWidthMapping ('interaction', edgeType.values, c (0, 8, 16), 'd')
+    interaction.values = c ('inhibits', 'activates', 'interacts')
+    setEdgeLineWidthMapping ('interaction', interaction.values, c (0, 8, 16), 'd')
     
     # try one-element lists
-    setEdgeLineWidthMapping ('interaction', edgeType.values [1], 10, 'd')
+    setEdgeLineWidthMapping ('interaction', interaction.values [1], 10, 'd')
 }
 #-------------------------------------------------------------------------------
 test.setEdgeColorMapping = function ()
@@ -1199,13 +1173,13 @@ test.setEdgeColorMapping = function ()
     title = 'test.setEdgeColorMapping'
     test.prep (title, F)
 
-    edgeType.values = c ('inhibits', 'activates', 'interacts')
+    interaction.values = c ('inhibits', 'activates', 'interacts')
     colors = c ('#FF0000', '#FFFF00', '#00FF00')
-    setEdgeColorMapping ('interaction',  edgeType.values, colors, 'd')
+    setEdgeColorMapping ('interaction',  interaction.values, colors, 'd')
     Sys.sleep (0.3)
     
     all.white  = c ('#FFFFFF', '#FFFFFF', '#FFFFFF')
-    setEdgeColorMapping ('interaction',  edgeType.values [2],'#000000', 'd')
+    setEdgeColorMapping ('interaction',  interaction.values [2],'#000000', 'd')
     
     # now create a continuous ('interpolate') mode Mapping, using the score edge attribute
     score.values = c (3, 6.5, 10);
@@ -1222,402 +1196,212 @@ test.setEdgeOpacityMapping = function ()
     title = 'test.setEdgeOpacityMapping'
     test.prep (title, F)
     
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    layoutNetwork ('grid')
-    
-    edgeType.values = c ("phosphorylates", "synthetic lethal", "undefined")
+    interaction.values = c ('inhibits', 'activates', 'interacts')
     
     # want to see edges and both arrows, to check success of opacity Mapping
-    setEdgeTargetArrowMapping ('edgeType', edgeType.values, rep ('ARROW', 3))
-    setEdgeSourceArrowMapping ('edgeType', edgeType.values, rep ('ARROW', 3))
+    setEdgeTargetArrowMapping ('interaction', interaction.values, rep ('ARROW', 3))
+    setEdgeSourceArrowMapping ('interaction', interaction.values, rep ('ARROW', 3))
     setEdgeLineWidthDefault (5)
     
+    # discrete mapping
+    opacities = c (10.0, 125.0, 255.0)
+    setEdgeOpacityMapping ('interaction',  interaction.values, opacities, 'd')
     
     
-    # do the lookup Mapping
-    opacities = c (25, 100, 255)
-    setEdgeOpacityMapping ('edgeType',  edgeType.values, opacities, 'd')
-    
-    
-    # now do the interpolated version
+    # now continuous mappting
     opacities = c (10, 125, 255)
-    control.points = c (-12, 0, 35)
-    setEdgeOpacityMapping ('score',  control.points, opacities, 'c')
-    
-    
-    invisible (net.suid)
-    
-} # test.setEdgeOpacityMapping
+    control.points = c (3, 6.5, 10)
+    setEdgeOpacityMapping ('weight',  control.points, opacities, 'c')
+}
 #-------------------------------------------------------------------------------
 test.setEdgeTargetArrowMapping = function ()
 {
     title = 'test.setEdgeTargetArrowMapping'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
+    test.prep (title, F)
     
     arrows = c ('DELTA', 'T', 'DIAMOND')
-    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-    checkEquals (length (intersect (arrows, getArrowShapes (net.suide))), 3)
+    interaction.values = c ('inhibits', 'activates', 'interacts')
+    checkEquals (length (intersect (arrows, getArrowShapes ())), 3)
     
-    setEdgeTargetArrowMapping ('edgeType', edgeType.values, arrows)
+    setEdgeTargetArrowMapping ('interaction', interaction.values, arrows)
     
-    # now test the list-of-length-one call.  the called method will double the list to get past the xmlrpc
-    # treatment of lists of length one as scalars, and a failed signature match
+    # now test the list-of-length-one call
     arrows = c ('CIRCLE')
-    edgeType.values = c ('phosphorylates')
-    checkEquals (length (intersect (arrows, getArrowShapes (net.suide))), 1)
+    interaction.values = c ('inhibits')
     
-    setEdgeTargetArrowMapping ('edgeType', edgeType.values, arrows)
-    
-
-    
-} # test.setEdgeTargetArrowMapping
+    setEdgeTargetArrowMapping ('interaction', interaction.values, arrows)
+}
 #-------------------------------------------------------------------------------
 test.setEdgeArrowColorMappings = function ()
 {
     title = 'test.setEdgeArrowColorMappings'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
+    test.prep (title,F)
     
     colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
     colors.2 = c ("#AA00AA", "#AAAA00", "#AA0000")
     
-    setEdgeTargetArrowColorMapping ('edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.1)
-    setEdgeSourceArrowColorMapping ('edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.1)
+    setEdgeTargetArrowColorMapping ('interaction', c ('inhibits', 'activates', 'interacts'), colors.1, 'd')
+    setEdgeSourceArrowColorMapping ('interaction', c ('inhibits', 'activates', 'interacts'), colors.1, 'd')
     system ('sleep 0.3')
-    setEdgeTargetArrowColorMapping ('edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.2)
-    setEdgeSourceArrowColorMapping ('edgeType', c ("phosphorylates", "synthetic lethal", "undefined"), colors.2)
+    setEdgeTargetArrowColorMapping ('interaction', c ('inhibits', 'activates', 'interacts'), colors.2, 'd')
+    setEdgeSourceArrowColorMapping ('interaction', c ('inhibits', 'activates', 'interacts'), colors.2, 'd')
     
     # test one-element list
-    setEdgeSourceArrowColorMapping ('edgeType', "phosphorylates", '#000000')
-    
-
-    
-} # test.setEdgetArrowColorMappings
+    setEdgeSourceArrowColorMapping ('interaction', "inhibits", '#000000', 'd')
+}
 #-------------------------------------------------------------------------------
 test.setEdgeSourceArrowMapping = function ()
 {
     title = 'test.setEdgeSourceArrowMapping'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
+    test.prep (title, F)
     
     arrows = c ('ARROW', 'DIAMOND', 'CIRCLE')
-    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'undefined')
-    checkEquals (length (intersect (arrows, getArrowShapes (net.suide))), 3)
-    
-    setEdgeSourceArrowMapping ('edgeType', edgeType.values, arrows)
+    interaction.values = c ('inhibits', 'activates', 'interacts')
+
+    setEdgeSourceArrowMapping ('interaction', interaction.values, arrows)
     
     # test one-element Mapping
-    setEdgeSourceArrowMapping ('edgeType', edgeType.values [2], arrows [2])
-    
-
-    
-} # test.setEdgeSourceArrowMapping
+    setEdgeSourceArrowMapping ('interaction', interaction.values [2], arrows [2])
+}
 #-------------------------------------------------------------------------------
 test.movie = function ()
 {
     title = 'test.movie'
     test.prep (title)
     
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    
     # establish the Mappings which apply during the full run of the movie
     # different node sizes and node colors are created, not by changing these Mappings, but
     # by changing node attribute values, for the integer attribute 'count' and the numeric attribute 'score'
-    count.control.points = c (2, 30, 100)
+    control.points = c (5, 10.5, 20)
     sizes                = c (20, 50, 100)
-    setNodeSizeMapping ('count', count.control.points, sizes, 'c')
-    setNodeColorMapping ('score', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), 'c')
+    setNodeSizeMapping ('score', control.points, sizes, 'c')
+    setNodeColorMapping ('score', control.points, c ('#00FF00', '#FFFFFF', '#FF0000'), 'c')
     
     count = 3
     
-    # three renderings of the 3-node, 3-edge network are created in this loop, which runs 'count' times
+    # three renderings of the 4-node, 4-edge network are created in this loop, which runs 'count' times
     # the first two set new attributes on the R graph data structure, then ask RCy3 to send those values
-    # to R from the graph
-    # the third rendering bypasses storage of new attribute values on the R graph, sending them instead
-    # directly to Cytoscape.  (hence 'setNodeAttributesBypass')
+    # to R from the graph the third rendering bypasses storage of new attribute values on the R graph, 
+    # sending them instead directly to Cytoscape.  (hence 'setNodeAttributesBypass')
+    
+    new.data <- data.frame(name=c("node 0","node 1","node 2","node 3"),
+                        score=as.integer(c(20,10,15,5)), 
+                        stringsAsFactors=FALSE)
     
     for (i in 1:count) {
-        nodeData (net.suide@graph, 'A', 'score') = -3.0
-        nodeData (net.suide@graph, 'B', 'score') = -0.7
-        nodeData (net.suide@graph, 'C', 'score') = -1.9
-        nodeData (net.suide@graph, 'A', 'count') = 10
-        nodeData (net.suide@graph, 'B', 'count') = 140
-        nodeData (net.suide@graph, 'C', 'count') = 32
-        result = setNodeAttributes ('score')
-        result = setNodeAttributes ('count')
-        redraw (net.suide)
+        new.data[,'score']<-c(5,20,10,15)        
+        loadTableData(new.data,'name')
         
         Sys.sleep (0.3)
-        nodeData (net.suide@graph, 'A', 'score') = 3.0
-        nodeData (net.suide@graph, 'B', 'score') = 0.7
-        nodeData (net.suide@graph, 'C', 'score') = 1.9
-        nodeData (net.suide@graph, 'A', 'count') = 50
-        nodeData (net.suide@graph, 'B', 'count') = 22
-        nodeData (net.suide@graph, 'C', 'count') = 180
-        result = setNodeAttributes ('score')
-        result = setNodeAttributes ('count')
-        redraw (net.suide)
-        Sys.sleep (0.3)
-        
-        count.A = round (runif (1, 1, 200))
-        count.B = round (runif (1, 1, 200))
-        count.C = round (runif (1, 1, 200))
-        
-        result = setNodeAttributesBypass ('count', 'int', c ('A', 'B', 'C'), c (count.A, count.B, count.C));
-        result = setNodeAttributesBypass ('score', 'numeric', c ('A', 'B', 'C'), c (-1.0, 0.0, 1.0))
-        redraw (net.suide)
-    }
-    
+        new.data[,'score']<-c(15,5,20,10)        
+        loadTableData(new.data,'name')
 
-    
-} # test.movie
+        Sys.sleep (0.3)
+        new.data[,'score']<-c(10,15,5,20)        
+        loadTableData(new.data,'name')
+    }
+}
 #-------------------------------------------------------------------------------
-# test.unmatchedAttributesError = function ()
-# {
-#     title = 'test.unmatchedAttributesError'
-#     test.prep (title)
-#
-#     net.suide = CytoscapeNetwork (title, RCy3::makeSimpleGraph ())
-#     displayGraph (net.suide)
-#     layoutNetwork ('grid')
-#
-#     # this works
-#     count.control.points = c (2, 30, 100)
-#     sizes = c (20, 50, 100)
-#     setNodeSizeMapping ('count', count.control.points, sizes, 'c')
-#
-# 
-#
-# } # test.unmatchedAttributesError
-#-------------------------------------------------------------------------------
-#RCy3:::makeRandomGraph ()
-#-------------------------------------------------------------------------------
-# this tests the otherwise invisible method in RCy3.R, called to compensate for the extra edges and edge attributes
-# packed into an undirected graph
-#-------------------------------------------------------------------------------
-test.randomUndirectedGraph = function ()
+test.unmatchedAttributesError = function ()
 {
-    title = 'test.randomUndirectedGraph'
-    test.prep (title)
-    
-    g.random = RCy3::makeRandomGraph ()
-    edgeData (g.random, '1', '2', 'weight') = 0.55
-    edgeData (g.random, '1', '2', 'pmid') = '12345678'
-    
-    net.suidr = createNetworkFromGraph (g.random,title)
-    displayGraph (net.suidr)
-    layoutNetwork (net.suidr, 'grid')
-    redraw (net.suidr)
-    
-    invisible (net.suidr)
-    
-} # test.randomUndirectedGraph
-#-------------------------------------------------------------------------------
-test.simpleGraph = function (apply.viz.Mappings=TRUE, do.redraw=TRUE)
-{
-    title = 'test.simpleGraph'
-    test.prep (title)
-    
-    net.suids = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    
-    displayGraph (net.suids)
-    layoutNetwork (net.suids, 'grid')
-    
-    if (apply.viz.Mappings) {
-        setNodeLabelMapping (net.suids, 'label')
-        setNodeBorderWidthDefault (net.suids, 5)
-        node.attribute.values = c ("kinase",  "transcription factor")
-        colors =                c ('#A0AA00', '#FF0000')
-        setNodeBorderColorMapping (net.suids, 'type', node.attribute.values, colors, 'd', default.color='#88FF22')
-        count.control.points = c (2, 30, 100)
-        sizes                = c (20, 50, 100)
-        setNodeSizeMapping (net.suids, 'count', count.control.points, sizes, 'c')
-        setNodeColorMapping (net.suids, 'score', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), 'c')
-        redraw (net.suids)
-    } # if apply.viz.Mappings
-    
-    
-    invisible (net.suids)
-    
-} # test.simpleGraph
+    title = 'test.unmatchedAttributesError'
+    test.prep (title, F)
+
+    # this works
+    control.points = c (2, 30, 100)
+    sizes = c (20, 50, 100)
+    setNodeSizeMapping ('score', control.points, sizes, 'c')
+}
 #-------------------------------------------------------------------------------
 test.simpleGraphWithReciprocalEdge = function ()
 {
     title = 'test.simpleGraphWithReciprocalEdge'
-    test.prep (title)
+    test.prep (title, F)
     
     g.simple = RCy3::makeSimpleGraph ()
-    g.simple = graph::addEdge ('C', 'B', g.simple)
-    edgeData (g.simple, 'C', 'B', attr='edgeType') = 'synthetic rescue'
-    edgeData (g.simple, 'C', 'B', attr='score') = 42
-    edgeData (g.simple, 'C', 'B', attr='misc') = 'ellany'
-    g <- g.simple
+    g.simple = graph::addEdge ('node 2', 'node 1', g.simple)
+    graph::edgeData (g.simple, 'node 2', 'node 1', attr='interaction') = 'synthetic rescue'
+    graph::edgeData (g.simple, 'node 2', 'node 1', attr='weight') = 42
     
     net.suids = createNetworkFromGraph (g.simple,title)
     
-    displayGraph (net.suids)
-    layoutNetwork (net.suids, 'grid')
-    setNodeLabelMapping (net.suids, 'label')
-    node.attribute.values = c ("kinase",  "transcription factor")
+    setNodeLabelMapping ('label')
+    node.attribute.values = c ("A",  "B")
     colors =                c ('#A0AA00', '#FF0000')
-    setNodeBorderWidthDefault (net.suids, 5)
-    setNodeBorderColorMapping (net.suids, 'type', node.attribute.values, colors, 'd', default.color='#88FF22')
-    count.control.points = c (2, 30, 100)
+    setNodeBorderWidthDefault (5)
+    setNodeBorderColorMapping ('group', node.attribute.values, colors, 'd', default.color='#88FF22')
+    control.points = c (5, 10, 20)
     sizes                = c (20, 50, 100)
-    setNodeSizeMapping (net.suids, 'count', count.control.points, sizes, 'c')
-    setNodeColorMapping (net.suids, 'score', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), 'c')
+    setNodeSizeMapping ('score', control.points, sizes, 'c')
+    setNodeColorMapping ('score', c (-3.0, 0.0, 3.0), c ('#00FF00', '#FFFFFF', '#FF0000'), 'c')
     arrows = c ('Arrow', 'Arrow', 'Arrow', 'None')
-    edgeType.values <- c ('phosphorylates', 'synthetic lethal', 'synthetic rescue', 'undefined')
-    setEdgeTargetArrowMapping (net.suids, 'edgeType', edgeType.values, arrows)
+    interaction.values <- c ('inhibits', 'activates', 'synthetic rescue', 'interacts')
+    setEdgeTargetArrowMapping ('interaction', interaction.values, arrows)
     
-    edgeType.values = c ('phosphorylates', 'synthetic lethal', 'synthetic rescue', 'undefined')
     edgeColors = c ('#0000AA', '#000000', '#00AA00', '#FFFFFF')
-    setEdgeColorMapping (net.suids, 'edgeType',  edgeType.values, edgeColors, 'd')
-    
-    redraw (net.suids)
-    
-    invisible (net.suids)
-    
-} # test.simpleGraphWithReciprocalEdge
-
+    setEdgeColorMapping ('interaction',  interaction.values, edgeColors, 'd')
+}
 #-------------------------------------------------------------------------------
 test.setNodePosition = function ()
 {
-    #DEACTIVATED("too slow")
     title = 'test.setNodePosition'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    
-    layoutNetwork ('grid')   # get a reasonable starting layout, with the nodes well-separate
-    
-    center.x = 200
-    center.y = 200
+    test.prep (title, F)
+
+    center.x = getNetworkCenter()$x
+    center.y = getNetworkCenter()$y
     radius = 200
     angles = seq (0, 360, 5)  # sweep through full revoltion, 5 degrees at a time
-    # move just the A node, swinging it around the 'center' at 200, 200.
-    # it would be nice not know more about the coordinate system than I now do, perhaps to
-    # query current position on any node
+    # move just node 0, swinging it around the network center.
     for (angle in angles) {
         angle.in.radians = angle * pi / 180
         x = center.x + (radius * cos (angle.in.radians))
         y = center.y + (radius * sin (angle.in.radians))
-        setNodePosition ('A', x, y)
+        setNodePropertyBypass('node 0', x, 'NODE_X_LOCATION', bypass=FALSE)
+        setNodePropertyBypass('node 0', y, 'NODE_Y_LOCATION', bypass=FALSE)
+        fitContent()
     }
-    
-
-    
-} # test.setNodePosition
+}
 #-------------------------------------------------------------------------------
 test.getNodePosition = function ()
 {
     title = 'test.getNodePosition'
-    test.prep (title)
-    
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
-    
-    layoutNetwork ('grid')   # get a reasonable starting layout, with the nodes well-separate
-    
-    # the scheme:  get current positions, find their mean, place all the nodes there,
-    # get their new positions, check to see that they are the means just set.
-    
-    positions <- RCy3::getNodePosition (c ('A', 'B', 'C'))
-    
-    # place the nodes on top of each other, at the center of their 3-cornered original layout
-    center.x = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$x)))))
-    center.y = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$y)))))
-    
-    setNodePosition (c ('A', 'B', 'C'), rep (center.x, 3), rep (center.y, 3))
-    current.x = RCy3::getNodePosition ('A')[[1]]$x
-    current.y = RCy3::getNodePosition ('A')[[1]]$y
-    #printf ('center:  %d  %d', center.x, center.y)
-    #printf ('current: %d  %d', current.x, current.y)
-    
-    checkEqualsNumeric (current.x, center.x, tol=1)
-    checkEqualsNumeric (current.y, center.y, tol=1)
-    
+    test.prep (title, F)
 
+    node.x <- 200
+    node.y <- 210
     
-} # test.getNodePosition
+    setNodePropertyBypass('node 2', node.x, 'NODE_X_LOCATION', bypass=FALSE)
+    setNodePropertyBypass('node 2', node.y, 'NODE_Y_LOCATION', bypass=FALSE)
+    
+    get.node.x <- getNodeProperty('node 2', 'NODE_X_LOCATION')
+    get.node.y <- getNodeProperty('node 2', 'NODE_Y_LOCATION')
+    
+    checkEqualsNumeric (get.node.x, node.x, tol=1)
+    checkEqualsNumeric (get.node.y, node.y, tol=1)
+}
 #-------------------------------------------------------------------------------
 test.getNodePosition.colonInNodeName = function ()
 {
-    #DEACTIVATED("not fatally slow, but i am impatient. Reactivate later.")
     title = 'test.getNodePosition.colonInNodeName'
-    test.prep (title)
+    test.prep (title, F)
     
     g = RCy3::makeSimpleGraph ()
     funky.node.name = 'ab::cdxyz::1234,funky!?' 
     g = graph::addNode (funky.node.name, g)
-    nodeData (g, funky.node.name, 'label') = funky.node.name
+    net.suid = createNetworkFromGraph(g, title=title)
     
-    net.suide = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suide)
-    layoutNetwork ('grid')
-    redraw (net.suide)
+    node.x <- 220
+    node.y <- 240
     
-    layoutNetwork ('grid')   # get a reasonable starting layout, with the nodes well-separate
+    setNodePropertyBypass(funky.node.name, node.x, 'NODE_X_LOCATION', bypass=FALSE)
+    setNodePropertyBypass(funky.node.name, node.y, 'NODE_Y_LOCATION', bypass=FALSE)
     
-    # the scheme:  get current positions, find their mean, place all the nodes there,
-    # get their new positions, check to see that they are the means just set.
+    get.node.x <- getNodeProperty(funky.node.name, 'NODE_X_LOCATION')
+    get.node.y <- getNodeProperty(funky.node.name, 'NODE_Y_LOCATION')
     
-    positions <- RCy3::getNodePosition (c ('A', 'B', 'C'))
-    
-    # place the nodes on top of each other, at the center of their 3-cornered original layout
-    
-    center.x = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$x)))))
-    center.y = as.integer (round (mean (as.integer (sapply (positions, function (pos) pos$y)))))
-    
-    # rearrange the positions
-    layoutNetwork ('grid')
-    
-    # superimpose A,B, and C  in the center
-    setNodePosition (c ('A', 'B', 'C'), rep (center.x, 3), rep (center.y, 3))
-    x.funky = center.x + 50
-    y.funky = center.y + 50
-    # offset funky.node.name
-    setNodePosition (funky.node.name, x.funky, y.funky)
-    fitContent (net.suide)
-    setZoom (0.75 * getZoom (net.suide))
-    
-    # now check that the nodes have been repositioned from grid to centered (A,B,C) and offset (funky.node.name)
-    current.x = RCy3::getNodePosition ('A')[[1]]$x
-    current.y = RCy3::getNodePosition ('A')[[1]]$y
-    
-    checkEqualsNumeric (current.x, center.x, tol=1)
-    checkEqualsNumeric (current.y, center.y, tol=1)
-    
-    funky.pos.x = RCy3::getNodePosition (funky.node.name) [[1]]$x
-    funky.pos.y = RCy3::getNodePosition (funky.node.name) [[1]]$y
-    checkEqualsNumeric (funky.pos.x, x.funky, tol=1)
-    checkEqualsNumeric (funky.pos.y, y.funky, tol=1)
-    
-
-    
-} # test.getNodePosition.colonInNodeName
+    checkEqualsNumeric (get.node.x, node.x, tol=1)
+    checkEqualsNumeric (get.node.y, node.y, tol=1)
+}
 #-------------------------------------------------------------------------------
 test.getNodeSize = function ()
 {
@@ -1674,151 +1458,6 @@ test.getNodeSize = function ()
     
 } # test.getNodeSize
 #-------------------------------------------------------------------------------
-test.haveNodeAttribute = function ()
-{
-    title = 'test.haveNodeAttribute'
-    test.prep (title)
-    
-    net.suid3 = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid3)
-    redraw (net.suid3)
-    layoutNetwork (net.suid3)
-    
-    nodes.with.attribute = RCy3:::haveNodeAttribute (net.suid3, nodes (getGraph (net.suid3)), 'score')
-    checkEquals (sort (nodes.with.attribute),  c ('A', 'B', 'C'))
-    
-    checkEquals (length (RCy3:::haveNodeAttribute (net.suid3, nodes (getGraph (net.suid3)), 'type')), 3)
-    checkEquals (length (RCy3:::haveNodeAttribute (net.suid3, nodes (getGraph (net.suid3)), 'label')), 3)
-    checkEquals (length (RCy3:::haveNodeAttribute (net.suid3, nodes (getGraph (net.suid3)), 'count')), 3)
-    
-    checkEquals (length (RCy3:::haveNodeAttribute (net.suid3, nodes (getGraph (net.suid3)), 'bogus')), 0)
-    
-    invisible (net.suid3)
-    
-} # test.haveNodeAttribute
-#-------------------------------------------------------------------------------
-test.haveEdgeAttribute = function ()
-{
-    title = 'test.haveEdgeAttribute'
-    test.prep (title)
-    
-    net.suid3 = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid3)
-    redraw (net.suid3)
-    layoutNetwork (net.suid3)
-    
-    cy2.edgenames = as.character (cy2.edge.names (getGraph (net.suid3)))
-    edges.with.attribute = RCy3:::haveEdgeAttribute (net.suid3, cy2.edgenames, 'edgeType')
-    
-    checkEquals (length (edges.with.attribute), 3)
-    checkTrue ("A (phosphorylates) B" %in% edges.with.attribute)
-    checkTrue ("B (synthetic lethal) C" %in% edges.with.attribute)
-    checkTrue ("C (undefined) A" %in% edges.with.attribute)
-    
-    checkTrue (length (RCy3:::haveEdgeAttribute (net.suid3, cy2.edgenames, 'score')) == 3)
-    checkTrue (length (RCy3:::haveEdgeAttribute (net.suid3, cy2.edgenames, 'misc')) == 3)
-    checkTrue (length (RCy3:::haveEdgeAttribute (net.suid3, cy2.edgenames, 'bogus')) == 0)
-    
-} # test.haveEdgeAttribute
-#-------------------------------------------------------------------------------
-hiddenTest.haveEdgeAttribute.oneEdgeOnly = function ()
-{
-    title = 'test.haveEdgeAttribute.oneEdgeOnly'
-    test.prep (title)
-    
-    g = makeSimpleGraph ()
-    g = removeNode ('A', g)
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    
-    layoutNetwork (net.suid)
-    
-    cy = CytoscapeConnection ()
-    
-    cy2.edgenames = as.character (cy2.edge.names (getGraph (net.suid)))
-    
-    checkTrue (length (RCy3:::haveEdgeAttribute (cy2.edgenames, 'score')) == 1)
-    
-} # hiddenTest.haveEdgeAttribute.oneEdgeOnly
-#-------------------------------------------------------------------------------
-test.copyNodeAttributesFromCyGraph = function ()
-{
-    title = 'test.copyNodeAttributesFromCyGraph'
-    test.prep (title)
-    
-    net.suid3 = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid3)
-    redraw (net.suid3)
-    layoutNetwork (net.suid3)
-    
-    # we can now depend upon Cytoscape holding its own version of net.suid3@graph
-    # in expected use, we expect that 'getGraphFromNetwork' will be called, to get the nodes, edges, and both
-    # node & edge attributes
-    # but here, we only want to test the reliability of querying the Cytoscape version of the graph for all of its node
-    # attributes. So we build a 3-node graph, *without* attributes, and pass that to copyNodeAttributesFromCyGraph,
-    # which should copy those Cytoscape graph node attributes onto the graph we pass in.
-    g = new ('graphNEL', edgemode='directed')
-    g = graph::addNode (c ('A', 'B', 'C'), g)
-    
-    g2 = RCy3:::copyNodeAttributesFromCyGraph (net.suid3, getNetworkID (title), g)
-    checkEquals (length (intersect (noa.names (g2), c ("name", "count", "label", "score", "type"))), 5)
-    checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='name')), c ('A', 'B', 'C'))
-    checkEquals (as.integer (nodeData (g2, c ('A', 'B', 'C'), attr='count')), c (2, 30, 100))
-    checkEquals (as.numeric (nodeData (g2, c ('A', 'B', 'C'), attr='score')), c (-3,  0,  3))
-    checkEquals (as.character (nodeData (g2, c ('A', 'B', 'C'), attr='type')), c ("kinase", "transcription factor", "glycoprotein"))
-    
-    invisible (net.suid3)
-    
-} # test.copyNodeAttributesFromCyGraph
-#-------------------------------------------------------------------------------
-test.copyEdgeAttributesFromCyGraph = function ()
-{
-    title = 'test.copyEdgeAttributesFromCyGraph'
-    test.prep (title)
-    
-    net.suid3 = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid3)
-    redraw (net.suid3)
-    layoutNetwork (net.suid3)
-    
-    g = new ('graphNEL', edgemode='directed')
-    g = graph::addNode (c ('A', 'B', 'C'), g)
-    g = graph::addEdge("A", "B", g)
-    g = graph::addEdge("B", "C", g)
-    g = graph::addEdge("C", "A", g)
-    # "C (undefined) A" "B (synthetic lethal) C"   "A (phosphorylates) B"
-    edgeDataDefaults (g, 'edgeType') = 'undefined'
-    edgeData (g, 'A', 'B', 'edgeType') = 'phosphorylates'
-    edgeData (g, 'B', 'C', 'edgeType') = 'synthetic lethal'
-    edgeData (g, 'C', 'A', 'edgeType') = 'undefined'
-    
-    cy = CytoscapeConnection ()
-    g2 = RCy3:::copyEdgeAttributesFromCyGraph (net.suid3, net.suid3, g)
-    
-    checkEquals (eda (g2, 'score') [['A|B']], 35)
-    checkEquals (eda (g2, 'score') [['B|C']], -12)
-    checkEquals (eda (g2, 'score') [['C|A']], 0)
-    
-    checkEquals (eda (g2, 'edgeType') [['A|B']], 'phosphorylates')
-    checkEquals (eda (g2, 'edgeType') [['B|C']], 'synthetic lethal')
-    checkEquals (eda (g2, 'edgeType') [['C|A']], 'undefined')
-    
-    checkEquals (eda (g2, 'interaction') [['A|B']], 'phosphorylates')
-    checkEquals (eda (g2, 'interaction') [['B|C']], 'synthetic lethal')
-    checkEquals (eda (g2, 'interaction') [['C|A']], 'undefined')
-    
-    checkEquals (eda (g2, 'misc') [['A|B']], 'default misc')
-    checkEquals (eda (g2, 'misc') [['B|C']], 'default misc')
-    checkEquals (eda (g2, 'misc') [['C|A']], 'default misc')
-    
-    checkEquals (eda (g2, 'name') [['A|B']],  "A (phosphorylates) B")
-    checkEquals (eda (g2, 'name') [['B|C']],  "B (synthetic lethal) C")
-    checkEquals (eda (g2, 'name') [['C|A']],  "C (undefined) A")
-    
-    invisible (g2)
-    
-} # test.copyEdgeAttributesFromCyGraph
-#-------------------------------------------------------------------------------
 test.getGraphFromCyNetwork = function ()
 {
     cy = CytoscapeConnection ()
@@ -1840,12 +1479,12 @@ test.getGraphFromCyNetwork = function ()
     checkEquals (as.numeric (sort (noa (g3, 'score'))),             c (-3,  0,  3))
     checkEquals (as.character (sort (noa (g3, 'type'))),          c ("glycoprotein", "kinase", "transcription factor"))
     
-    checkEquals (length (intersect (eda.names (g3), c ("name", "edgeType", "interaction", "misc", "score"))), 5)
+    checkEquals (length (intersect (eda.names (g3), c ("name", "interaction", "interaction", "misc", "score"))), 5)
     
     checkEquals (sort (names (cy2.edge.names (g3))),        c ('A~B',                   'B~C',                    'C~A'))
     checkEquals (sort (as.character (cy2.edge.names (g3))), c ("A (phosphorylates) B",  "B (synthetic lethal) C", "C (undefined) A"))
     
-    checkEquals (as.character (sort (eda (g3, 'edgeType'))), c ("phosphorylates", "synthetic lethal", "undefined"))
+    checkEquals (as.character (sort (eda (g3, 'interaction'))), c ("phosphorylates", "synthetic lethal", "undefined"))
     checkEquals (as.character (sort (eda (g3, 'name'))), c ("A (phosphorylates) B", "B (synthetic lethal) C", "C (undefined) A"))
     checkEquals (as.character (sort (eda (g3, 'interaction'))), c ("phosphorylates", "synthetic lethal", "undefined"))
     checkEquals (as.character (sort (eda (g3, 'misc'))), c ("default misc", "default misc", "default misc"))
@@ -1934,7 +1573,7 @@ test.addGetAndDeleteEdgeAttributes = function ()
     }
     
     # name and interaction are added by Cytoscape
-    checkEquals (length (intersect (getEdgeAttributeNames (net.suid), c ("name", "edgeType", "interaction", "misc", "score"))), 5)
+    checkEquals (length (intersect (getEdgeAttributeNames (net.suid), c ("name", "interaction", "interaction", "misc", "score"))), 5)
     
     # now add an attribute to two of the edges
     first.two.edges = as.character (cy2.edge.names (g)[1:2])
@@ -2052,17 +1691,17 @@ test.getAllEdgeAttributes = function ()
     checkEquals (class (tbl.eda), 'data.frame')
     checkEquals (dim (tbl.eda), c (3, 5))
     checkEquals (sort (rownames (tbl.eda)), c ("A|B", "B|C", "C|A"))
-    checkEquals (sort (colnames (tbl.eda)), c ("edgeType", "misc", "score", "source", "target"))
+    checkEquals (sort (colnames (tbl.eda)), c ("interaction", "misc", "score", "source", "target"))
     checkEquals (class (tbl.eda$score), 'numeric')
     
     # now try a graph with one edge, and just one edge attribute, to make sure that this edge case is handled properly
     g2 = new ('graphNEL', edgemode='directed')
-    g2 = initEdgeAttribute (g2, 'edgeType', 'char', 'unspecified')
+    g2 = initEdgeAttribute (g2, 'interaction', 'char', 'unspecified')
     g2 = graph::addNode ('A', g2)
     g2 = graph::addNode ('B', g2)
     g2 = addEdge ('A', 'B', g2)
     
-    edgeData (g2, 'A', 'B', 'edgeType') = 'phosphorylates'
+    edgeData (g2, 'A', 'B', 'interaction') = 'phosphorylates'
     
     cy = CytoscapeConnection ()
     
@@ -2076,7 +1715,7 @@ test.getAllEdgeAttributes = function ()
     
     checkEquals (ncol (tbl.eda2), 3)
     checkEquals (nrow (tbl.eda2), 1)
-    checkEquals (sort (colnames (tbl.eda2)), c ('edgeType', 'source', 'target'))
+    checkEquals (sort (colnames (tbl.eda2)), c ('interaction', 'source', 'target'))
     
     invisible (tbl.eda2)
     
@@ -2146,104 +1785,56 @@ test.setVisualStyle = function ()
 test.defaultColors = function ()
 {
     title = 'test.defaultColors'
-    test.prep (title)
-    cy = CytoscapeConnection ()
-    getDefaultBackgroundColor ()
-    getDefaultEdgeReverseSelectionColor ()
-    getDefaultEdgeSelectionColor ()
-    getDefaultNodeReverseSelectionColor ()
-    getDefaultNodeSelectionColor ()
+    test.prep (title, F)
+    getBackgroundColorDefault ()
+    getEdgeSelectionColorDefault ()
+    getNodeSelectionColorDefault ()
     
-    black = '#000000'
     red = '#FF0000'
     white = '#FFFFFF'
     green = '#00FF00'
-    gray = '#888888'
-    
-    setDefaultBackgroundColor (white)
-    setDefaultEdgeReverseSelectionColor (red)
-    setDefaultEdgeSelectionColor (green)
-    setDefaultNodeReverseSelectionColor (red)
-    setDefaultNodeSelectionColor (green)
-    
-} # test.defaultColors
+    grey = '#BBBBBB'
+
+    setBackgroundColorDefault (grey)
+    setEdgeSelectionColorDefault (green)
+    setNodeSelectionColorDefault (green)
+}
 #-------------------------------------------------------------------------------
 test.fitContent = function ()
 {
     title = 'test.fitContent'
-    test.prep (title)
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    
-    layoutNetwork (net.suid)
+    test.prep (title, F)
     
     clearSelection (net.suid)
-    selectNodes ('A', 'name')
-    checkEquals (getSelectedNodeCount (net.suid), 1)
+    selectNodes ('node 0', 'name')
     
-    #fitSelectedContent (net.suid)
-    fitContent (net.suid)
-    
-} # test.fitContent
-#-------------------------------------------------------------------------------
-# test.windowCoordinates = function ()
-# {
-#     title = 'test.windowCoordinates'
-#     test.prep (title)
-#     net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-#     displayGraph (net.suid)
-#     
-#     layoutNetwork (net.suid)
-#
-#     center = getCenter (net.suid)
-#     checkEquals (names (center), c ('x', 'y'))
-#
-#     corners = getViewCoordinates (net.suid)
-#     checkEquals (names (corners), c ('top.x', 'top.y', 'bottom.x', 'bottom.y'))
-#
-#     invisible (net.suid)
-#
-#} # test.windowCoordinates
+    fitContent (selected.only = T)
+    fitContent()
+}
 #-------------------------------------------------------------------------------
 test.zoom = function ()
 {
     title = 'test.zoom'
-    test.prep (title)
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    
-    layoutNetwork (net.suid)
-    
-    fitContent (net.suid)
+    test.prep (title, F)
     
     smaller = 0.5
     larger = 2
     
     for (i in 1:10){
-        setZoom (smaller * getZoom (net.suid))
+        setNetworkZoomBypass (smaller * getNetworkZoom (), bypass = F)
     }
     
     for (i in 1:10){
-        setZoom (larger * getZoom (net.suid))
+        setNetworkZoomBypass (larger * getNetworkZoom (), bypass = F)
     }
-    
-    invisible (net.suid)
-    
-} # test.zoom
+}
 #-------------------------------------------------------------------------------
 test.center = function ()
 {
     title = 'test.setCenter'
-    test.prep (title)
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
+    test.prep (title, F)
     
-    layoutNetwork (net.suid)
-    
-    fitContent (net.suid)
-    setZoom (0.5 * getZoom (net.suid))
-    
-    center.orig = getCenter (net.suid)
+    center.orig = getNetworkCenter ()
     delta = 100
     x.left = center.orig$x - delta
     x.right = center.orig$x + delta
@@ -2251,160 +1842,75 @@ test.center = function ()
     y.down = center.orig$y + delta
     
     for (i in 1:10) {
-        setCenter (x.left, y.up)
-        setCenter (as.integer (x.left), as.integer (y.up))   # make sure the called function casts this int back to numeric
-        setCenter (x.left, y.down)
-        setCenter (x.right, y.down)
-        setCenter (x.right, y.up)
-    } # for i
+        setNetworkCenterBypass (x.left, y.up, bypass = F)
+        setNetworkCenterBypass (as.integer (x.left), as.integer (y.up), bypass = F)   # make sure the called function casts this int back to numeric
+        setNetworkCenterBypass (x.left, y.down, bypass = F)
+        setNetworkCenterBypass (x.right, y.down, bypass = F)
+        setNetworkCenterBypass (x.right, y.up, bypass = F)
+    } 
     
-    setCenter (center.orig$x, center.orig$y)
-    
-    invisible (net.suid)
-    
-} # test.center
+    setNetworkCenterBypass (center.orig$x, center.orig$y, bypass = F)
+}
 #-------------------------------------------------------------------------------
 test.setNodeSizeBypass = function ()
 {
-    #DEACTIVATED("too slow")
     title = 'test.setNodeSizeBypass'
-    test.prep (title)
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    
-    layoutNetwork (net.suid)
+    test.prep (title, F)
     
     lockNodeDimensions (TRUE)
     
     small = 30
     large = 300
-    setNodeSizeBypass ('A', small);
-    setNodeSizeBypass ('A', large);
-    
-    invisible (net.suid)
-    
-} # test.setNodeSizeBypass
+    setNodeSizeBypass ('node 0', small);
+    setNodeSizeBypass ('node 0', large);
+}
 #-------------------------------------------------------------------------------
 test.setNodeWidthAndHeightBypass = function ()
 {
-    #DEACTIVATED("too slow")
     title = 'test.setNodeWidthAndHeightBypass'
-    test.prep (title)
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    
-    layoutNetwork (net.suid)
+    test.prep (title, F)
     
     lockNodeDimensions (FALSE)
     
     small = 30
     large = 300
     
-    setNodeWidthBypass ('A', small);
-    setNodeHeightBypass ('A', large);
-    setNodeWidthBypass ('A', large);
-    setNodeHeightBypass ('A', small);
-    
-    invisible (net.suid)
-    
-} # test.setNodeWidthAndHeightBypass
+    setNodeWidthBypass ('node 0', small);
+    setNodeHeightBypass ('node 0', large);
+    setNodeWidthBypass ('node 0', large);
+    setNodeHeightBypass ('node 0', small);
+}
 #-------------------------------------------------------------------------------
 test.setNodeFontSizeBypass = function ()
 {
-    #DEACTIVATED("too slow")
     title = 'test.setNodeFontSizeBypass'
-    test.prep (title)
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    
-    layoutNetwork (net.suid)
-    
-    starting.size = 4
-    setNodeSizeBypass (c ('A', 'B', 'C'), 50)
-    setNodeFontSizeBypass (c ('A', 'B'), 12)
-    
-    
+    test.prep (title, F)
+
+    starting.size = 12
     for (i in 1:20) {
-        setNodeFontSizeBypass ('A', starting.size + i)
-        setNodeFontSizeBypass ('B', starting.size + (i*3))
-    } # for i
+        setNodeFontSizeBypass ('node 0', starting.size + i)
+        setNodeFontSizeBypass ('node 1', starting.size + (i*3))
+    } 
     
     starting.size = 32
     for (i in 20:1) {
-        setNodeFontSizeBypass ('A', starting.size - i)
-        setNodeFontSizeBypass ('B', starting.size - (i*3))
-    } # for i
-    
-    invisible (net.suid)
-    
-} # test.setNodeSizeBypass
+        setNodeFontSizeBypass ('node 0', starting.size - i)
+        setNodeFontSizeBypass ('node 1', starting.size - (i*3))
+    } 
+}
 #-------------------------------------------------------------------------------
 test.setNodeShapeBypass = function ()
 {
-    #DEACTIVATED("too slow")
     title = 'test.setNodeShapeBypass'
-    test.prep (title)
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    
-    layoutNetwork (net.suid)
+    test.prep (title, F) 
     
     lockNodeDimensions (TRUE)
-    setNodeSizeBypass ('A', 100)
+    setNodeSizeBypass ('node 0', 100)
     
-    for (new.shape in getNodeShapes (net.suid)) {
-        setNodeShapeBypass ('A', new.shape)
-    } # for new.shape
-    
-    invisible (net.suid)
-    
-} # test.setNodeShapeBypass
-#-------------------------------------------------------------------------------
-# add a node to an existing graph.
-# questions:
-#  1) what edge attribute values are assigned to this new edge?
-#  2) can we assign new values to those attributes?  use setEdgeAttributesBypass
-test.addCyNode = function ()
-{
-    title = 'test.addCyNode'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    
-    layoutNetwork ('grid')
-    checkEquals (getNodeCount (net.suid), 3)
-    addCyNode ('NEW')
-    layoutNetwork ('grid')
-    checkEquals (getNodeCount (net.suid), 4)
-    invisible (net.suid)
-    
-} # test.addCyNode
-#-------------------------------------------------------------------------------
-# add an edge to an existing graph.
-# questions:
-#  1) what edge attribute values are assigned to this new edge?
-#  2) can we assign new values to those attributes?  use setEdgeAttributesBypass
-test.addCyEdge = function ()
-{
-    title = 'test.addCyEdge'
-    test.prep (title)
-    
-    net.suid = createNetworkFromIgraph(makeSimpleIgraph(), title=title)
-    displayGraph (net.suid)
-    
-    layoutNetwork (net.suid)
-    checkEquals (getEdgeCount (net.suid), 3)
-    
-    addCyNode ('NEW')
-    directed.edge = TRUE
-    addCyEdge ('A', 'NEW', 'synthetic rescue', directed.edge)
-    
-    layoutNetwork (net.suid)
-    checkEquals (getEdgeCount (net.suid), 4)
-    invisible (net.suid)
-    
-} # test.addCyEdge
+    for (new.shape in getNodeShapes ()) {
+        setNodeShapeBypass ('node 0', new.shape)
+    } 
+}
 #-------------------------------------------------------------------------------
 test.twoGraphsDoubleEdges = function ()
 {
@@ -2417,13 +1923,13 @@ test.twoGraphsDoubleEdges = function ()
     layoutNetwork (net.suid)
     
     g2 = new ('graphNEL', edgemode='directed')
-    g2 = initEdgeAttribute (g2, 'edgeType', 'char', 'unspecified')
+    g2 = initEdgeAttribute (g2, 'interaction', 'char', 'unspecified')
     
     g2 = graph::addNode ('A', g2)
     g2 = graph::addNode ('B', g2)
     g2 = addEdge ('A', 'B', g2)
     
-    edgeData (g2, 'A', 'B', 'edgeType') = 'synthetic rescue'
+    edgeData (g2, 'A', 'B', 'interaction') = 'synthetic rescue'
     
     addGraphToGraph (g2)
     
@@ -2440,8 +1946,8 @@ test..classicGraphToNodePairTable = function ()
     g = makeSimpleGraph ()
     tbl.g = RCy3:::.classicGraphToNodePairTable (g)
     checkEquals (dim (tbl.g), c (3, 3))
-    checkEquals (colnames (tbl.g), c ("source", "target", "edgeType"))
-    checkEquals (tbl.g$edgeType, c ("phosphorylates", "synthetic lethal", "undefined"))
+    checkEquals (colnames (tbl.g), c ("source", "target", "interaction"))
+    checkEquals (tbl.g$interaction, c ("phosphorylates", "synthetic lethal", "undefined"))
     checkEquals (tbl.g$source, c ("A", "B", "C"))
     checkEquals (tbl.g$target, c ("B", "C", "A"))
     
@@ -2449,11 +1955,11 @@ test..classicGraphToNodePairTable = function ()
     
     gx = makeSimpleGraph ()
     gx = graph::addEdge ('C', 'B', gx)
-    edgeData (gx, 'C', 'B', attr='edgeType') = 'synthetic rescue'
+    edgeData (gx, 'C', 'B', attr='interaction') = 'synthetic rescue'
     tbl.egx = RCy3:::.classicGraphToNodePairTable (gx)
     checkEquals (dim (tbl.egx), c (4, 3))
-    checkEquals (colnames (tbl.egx), c ("source", "target", "edgeType"))
-    checkEquals (tbl.egx$edgeType, c ("phosphorylates", "synthetic lethal", "undefined", "synthetic rescue"))
+    checkEquals (colnames (tbl.egx), c ("source", "target", "interaction"))
+    checkEquals (tbl.egx$interaction, c ("phosphorylates", "synthetic lethal", "undefined", "synthetic rescue"))
     checkEquals (tbl.egx$source, c ("A", "B", "C", "C"))
     checkEquals (tbl.egx$target, c ("B", "C", "A", "B"))
     
@@ -2468,7 +1974,7 @@ test.rcy.edgeNames = function ()
     # now extend the standard demo graph by adding an edge between C and B, making B & C reciprocally related nodes
     gx = makeSimpleGraph ()
     gx = graph::addEdge ('C', 'B', gx)
-    edgeData (gx, 'C', 'B', attr='edgeType') = 'synthetic rescue'
+    edgeData (gx, 'C', 'B', attr='interaction') = 'synthetic rescue'
     checkEquals (sort (RCy3:::.rcyEdgeNames (gx)), c ("A~B", "B~C", "C~A", "C~B"))
     
 } # test.rcy.edgeNames
@@ -2499,7 +2005,7 @@ test..getNovelEdges = function ()
 {
     g.3e <- makeSimpleGraph ()
     g.0e <- new ("graphNEL", edgemode = "directed")
-    g.0e = initEdgeAttribute (g.0e, 'edgeType', 'char', 'unspecified')
+    g.0e = initEdgeAttribute (g.0e, 'interaction', 'char', 'unspecified')
     
     # no novel edges if the 2nd arg has no edges
     checkTrue (is.na (RCy3:::.getNovelEdges (g.3e, g.0e)))
@@ -2513,7 +2019,7 @@ test..getNovelEdges = function ()
     g.1e = graph::addNode ('A', g.0e)
     g.1e = graph::addNode ('B', g.1e)
     g.1e = addEdge ('A', 'B', g.1e)
-    edgeData (g.1e, 'A', 'B', attr='edgeType') = 'phosphorylates'
+    edgeData (g.1e, 'A', 'B', attr='interaction') = 'phosphorylates'
     
     g1 <- g.1e
     g3 <- g.3e
@@ -2602,7 +2108,7 @@ test.detectUnitializedNodeAttributes = function ()
     nodeDataDefaults (g, attr='score') = 0.0
     nodeDataDefaults (g, attr='label') = ''
     
-    g = initEdgeAttribute(g, "edgeType", "char", "undefined")
+    g = initEdgeAttribute(g, "interaction", "char", "undefined")
     g = initEdgeAttribute(g, "score", "numeric", 0)
     g = initEdgeAttribute(g, "misc", "char", "default misc")
     
@@ -2624,8 +2130,8 @@ test.detectUnitializedNodeAttributes = function ()
     g = graph::addEdge("A", "B", g)
     g = graph::addEdge("B", "C", g)
     g = graph::addEdge("C", "A", g)
-    edgeData(g, "A", "B", "edgeType") = "phosphorylates"
-    edgeData(g, "B", "C", "edgeType") = "synthetic lethal"
+    edgeData(g, "A", "B", "interaction") = "phosphorylates"
+    edgeData(g, "B", "C", "interaction") = "synthetic lethal"
     edgeData(g, "A", "B", "score") = 35
     edgeData(g, "B", "C", "score") = -12
     
@@ -2647,7 +2153,7 @@ test.detectUnitializedEdgeAttributes = function ()
     g = initNodeAttribute(g, "label", "char", "default node label")
     g = initNodeAttribute(g, "count", "integer", 0)
     
-    g = initEdgeAttribute(g, "edgeType", "char", "undefined")
+    g = initEdgeAttribute(g, "interaction", "char", "undefined")
     g = initEdgeAttribute(g, "score", "numeric", 0)
     g = initEdgeAttribute(g, "misc", "char", "default misc")
     edgeDataDefaults (g, attr='misc') = ''
@@ -2670,8 +2176,8 @@ test.detectUnitializedEdgeAttributes = function ()
     g = graph::addEdge("A", "B", g)
     g = graph::addEdge("B", "C", g)
     g = graph::addEdge("C", "A", g)
-    edgeData(g, "A", "B", "edgeType") = "phosphorylates"
-    edgeData(g, "B", "C", "edgeType") = "synthetic lethal"
+    edgeData(g, "A", "B", "interaction") = "phosphorylates"
+    edgeData(g, "B", "C", "interaction") = "synthetic lethal"
     edgeData(g, "A", "B", "score") = 35
     edgeData(g, "B", "C", "score") = -12
     
