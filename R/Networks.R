@@ -714,7 +714,7 @@ createSubnetwork <- function(nodes=NULL,
 #' @export
 createNetworkFromIgraph <- function(igraph,
                                     title = "MyNetwork",
-                                    collection = "myNetworkCollection",
+                                    collection = "MyNetworkCollection",
                                     base.url = .defaultBaseUrl,
                                     ...) {
     #extract dataframes
@@ -725,6 +725,12 @@ createNetworkFromIgraph <- function(igraph,
     ignodes$id <- row.names(ignodes)
     colnames(igedges)[colnames(igedges) == "from"] <- "source"
     colnames(igedges)[colnames(igedges) == "to"] <- "target"
+    
+    #check for empty data.frames
+    if (nrow(igedges) == 0)
+        igedges = NULL
+    if (nrow(ignodes) == 0)
+        ignodes = NULL
     
     #ship
     createNetworkFromDataFrames(ignodes, igedges, title, collection, base.url)
@@ -876,20 +882,23 @@ createNetworkFromDataFrames <-
         # Remove SUID columns if present
         if('SUID' %in% colnames(nodes))
             nodes <- subset(nodes, select = -c(SUID))
-        if('SUID' %in% colnames(edges))
-            edges <- subset(edges, select = -c(SUID))
-        edges['data.key.column'] <- 
-            apply(edges, 1,
-                  function(x) paste0(x[source.id.list], " (",
-                                     x[interaction.type.list],") ",
-                                     x[target.id.list]))
-        
         if(length(setdiff(colnames(nodes),"id")) > 0)
             loadTableData(nodes,data.key.column = node.id.list,
-                      table.key.column = node.id.list)
-        if(length(setdiff(colnames(edges),c("source","target","interaction"))) > 0)
-            loadTableData(edges,data.key.column = 'data.key.column', 
-                      table = 'edge')
+                          table.key.column = node.id.list)
+        
+        if (!is.null(edges)) {
+            if('SUID' %in% colnames(edges))
+                edges <- subset(edges, select = -c(SUID))
+            edges['data.key.column'] <- 
+                apply(edges, 1,
+                      function(x) paste0(x[source.id.list], " (",
+                                         x[interaction.type.list],") ",
+                                         x[target.id.list]))
+            
+            if(length(setdiff(colnames(edges),c("source","target","interaction"))) > 0)
+                loadTableData(edges,data.key.column = 'data.key.column', 
+                              table = 'edge')
+        }
         
         cat("Applying default style...\n")
         commandsPOST('vizmap apply styles="default"', base.url = base.url)

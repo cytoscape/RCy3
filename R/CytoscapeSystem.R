@@ -66,6 +66,8 @@ cytoscapeVersionInfo<-function(base.url=.defaultBaseUrl) {
 #' cytoscapeApiVersions()
 #' # [1] "v1"
 #' }
+#' @importFrom httr GET
+#' @importFrom RJSONIO fromJSON
 #' @export
 cytoscapeApiVersions<-function(base.url=.defaultBaseUrl) {
     uri <- strsplit(base.url,'/v')[[1]][1]
