@@ -85,10 +85,11 @@ g <- graph::addNode ('A', g)
 g <- graph::addNode ('B', g)
 g <- graph::addNode ('C', g)
 net.suid <- createNetworkFromGraph (g, 'vignette')
-
-#Note 1: the network SUID is returned rather than an R object 
-#Note 2: display and layout are done automatically
 ```
+
+* Note: the network SUID is returned rather than an R object 
+* Note: display and layout are done automatically
+
 
 ## Example #2: loading nodeData 
 *BEFORE*
@@ -114,11 +115,11 @@ node.data <- data.frame(id=c('A','B','C'),
                         lfc=c(-1.2, 1.8, 3.2),
                         stringsAsFactors = FALSE)
 loadTableData(node.data, 'id')
-
-#Note 1: simply compose a data.frame and then load it! No need to initialize or alter local graphNEL object
-#Note 2: stringsAsFactors = FALSE is important or else string values won't load
-#Note 3: set and display are no longer needed
 ```
+
+* Note: simply compose a data.frame and then load it! No need to initialize or alter local graphNEL object
+* Note: stringsAsFactors = FALSE is important or else string values won't load
+* Note: set and display are no longer needed
 
 
 
@@ -137,10 +138,10 @@ setNodeShapeDefault ('OCTAGON')
 setNodeColorDefault ('#AAFF88')
 setNodeSizeDefault  (80)
 setNodeFontSizeDefault (40)
-
-#Note 1: no more cw!
-#Note 2: subtley renamed functions for consistency across package (sorry!)
 ```
+
+* Note: no more cw!
+* Note: subtley renamed functions for consistency across package (sorry!)
 
 
 ## Example #4: Rule based mapping
@@ -148,10 +149,10 @@ setNodeFontSizeDefault (40)
 ```{r, eval=FALSE}
 attribute.values <- c ('kinase',  'TF',       'cytokine')
 node.shapes      <- c ('DIAMOND', 'TRIANGLE', 'RECTANGLE')
-setNodeShapeRule (cw, node.attribute.name='moleculeType', attribute.values, node.shapes)
+setNodeShapeRule (cw, 'moleculeType', attribute.values, node.shapes)
 setNodeColorRule (cw, 'lfc', c (-3.0, 0.0, 3.0),
-                      c ('#00AA00', '#00FF00', '#FFFFFF', '#FF0000', '#AA0000'),
-mode='interpolate')
+                  c ('#00AA00', '#00FF00', '#FFFFFF', '#FF0000', '#AA0000'),
+                  mode='interpolate')
 control.points = c (-1.2, 2.0, 4.0)
 node.sizes     = c (10, 20, 50, 200, 205)
 setNodeSizeRule (cw, 'lfc', control.points, node.sizes, mode='interpolate')
@@ -163,15 +164,15 @@ attribute.values <- c ('kinase',  'TF',       'cytokine')
 node.shapes      <- c ('DIAMOND', 'TRIANGLE', 'RECTANGLE')
 setNodeShapeMapping('moleculeType', attribute.values, node.shapes)
 setNodeColorMapping('lfc', c(-3.0, 0.0, 3.0),
-                      c('#00AA00', '#00FF00', '#FFFFFF', '#FF0000', '#AA0000'))
+                    c('#00AA00', '#00FF00', '#FFFFFF', '#FF0000', '#AA0000'))
 control.points = c (-1.2, 2.0, 4.0)
 node.sizes     = c (10, 20, 50, 200, 205)
 setNodeSizeMapping('lfc',control.points, node.sizes)
-
-#Note 1: no more cw!
-#Note 2: Rules are now Mappings (like they are called in Cytoscape)
-#Note 3: "interpolate" (a.k.a. "continuous") is the default, so you can leave it out
 ```
+
+* Note: no more cw!
+* Note: Rules are now Mappings (like they are called in Cytoscape)
+* Note: "interpolate" (a.k.a. "continuous") is the default, so you can leave it out
 
 
 ## Example #5: Selecting nodes 
@@ -187,14 +188,14 @@ selectFirstNeighborsOfSelectedNodes (cw)
 selectNodes('B', 'name') #or 'id'
 nodes <- getSelectedNodes()
 selectFirstNeighbors()
-
-#Note 1: no more cw!
-#Note 2: selectNodes is by node SUID by default, so you now have to specify if using node name (or other alternative columns). This protects against ambiguous selection.
-#Note 3: selectNodes actually returns the selected nodes and edges after the operation, so you could just do: 
-
-nodes <- selectNodes('B', 'name')$nodes
 ```
 
+* Note: no more cw!
+* Note: selectNodes is by node SUID by default, so you now have to specify if using node name (or other alternative columns). This protects against ambiguous selection.
+* Note: selectNodes actually returns the selected nodes and edges after the operation, so you could just do: 
+```{r}
+nodes <- selectNodes('B', 'name')$nodes
+```
 
 ## Example #6: Saving and exporting
 *BEFORE*
@@ -207,10 +208,10 @@ saveNetwork(cw, "sample_session", format = "cys")
 ```{r}
 exportImage("sample_image", "png", h= 800)
 saveSession("sample_session")
-
-#Note 1: no more cw!
-#Note 2: subtle renames to match actual operations and outputs
 ```
+
+* Note: no more cw!
+* Note: subtle renames to match actual operations and outputs
 
 
 # Going forward
