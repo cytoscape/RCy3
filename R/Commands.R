@@ -146,7 +146,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
     if(res$status_code > 299){
         write(sprintf("RCy3::cyrestPOST, HTTP Error Code: %d\n url=%s\n body=%s", 
                       res$status_code, URLencode(q.url), q.body), stderr())
-        stop()
+       stop(fromJSON(rawToChar(res$content))$errors[[1]]$message)
     } else {
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
@@ -347,7 +347,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     if(res$status_code > 299){
         write(sprintf("RCy3::commandsPOST, HTTP Error Code: %d\n url=%s\n body=%s", 
                       res$status_code, URLencode(post.url), post.body), stderr())
-        stop()
+        stop(fromJSON(rawToChar(res$content))$errors[[1]]$message)
     } else {
         if(length(res$content)>0){
             res.data = fromJSON(rawToChar(res$content))$data
