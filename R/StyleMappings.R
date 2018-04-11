@@ -83,7 +83,7 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
     #processs visual property, including common alternatives for vp names :)
     visual.prop.name = toupper(gsub("\\s+","_",visual.prop))
     visual.prop.name = switch(visual.prop.name,
-                              'EDGE_COLOR'='EDGE_STROKE_UNSELECTED_PAINT',
+                              'EDGE_COLOR'='EDGE_UNSELECTED_PAINT',
                               'EDGE_THICKNESS'='EDGE_WIDTH',
                               'NODE_BORDER_COLOR'='NODE_BORDER_PAINT',
                               visual.prop.name)
@@ -644,7 +644,25 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
     if(!is.null(default.color))
         setEdgeColorDefault(default.color, style.name, base.url=base.url)
     
-    # perform mapping
+    # perform mapping for COLOR (i.e., when arrowColorMatchesEdge=T)
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp <- mapVisualProperty("EDGE_UNSELECTED_PAINT",table.column, 'c',
+                                 table.column.values, colors, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp <- mapVisualProperty("EDGE_UNSELECTED_PAINT",table.column, 'd',
+                                 table.column.values, colors, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp <- mapVisualProperty("EDGE_UNSELECTED_PAINT",table.column, 'p',
+                                 network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+    
+    # perform mapping for STROKE (i.e., when arrowColorMatchesEdge=F)
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("EDGE_STROKE_UNSELECTED_PAINT",table.column, 'c',
                                  table.column.values, colors, 
@@ -661,6 +679,7 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
         return()
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
+    
 } 
 
 # ------------------------------------------------------------------------------

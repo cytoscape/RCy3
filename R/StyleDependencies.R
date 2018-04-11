@@ -10,7 +10,7 @@
 # ------------------------------------------------------------------------------
 #' @title Get the values of dependencies in a style
 #'
-#' @description Updates style dependencies, overriding any prior settings.
+#' @description Retrieves style dependency settings.
 #' @param style.name Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
