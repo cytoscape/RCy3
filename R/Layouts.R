@@ -68,6 +68,8 @@ layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaul
 #' @export
 layoutCopycat <- function(sourceNetwork, targetNetwork, sourceColumn='name', targetColumn='name', 
                           gridUnmapped=TRUE, selectUnmapped=TRUE, base.url=.defaultBaseUrl){
+    sourceNetwork <- getNetworkName(sourceNetwork)
+    targetNetwork <- getNetworkName(targetNetwork)
     res<-commandsPOST(paste0('layout copycat sourceNetwork="', sourceNetwork,'" targetNetwork="',
                              targetNetwork,'" sourceColumn="',sourceColumn,'" targetColumn="',
                              targetColumn,'" gridUnmapped="',gridUnmapped,'" selectUnmapped="',

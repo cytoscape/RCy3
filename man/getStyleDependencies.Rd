@@ -17,7 +17,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 server response
 }
 \description{
-Updates style dependencies, overriding any prior settings.
+Retrieves style dependency settings.
 }
 \section{Available Dependencies}{
 

@@ -31,7 +31,7 @@ updateStyleDefaults <- function(style.name,defaults,base.url=.defaultBaseUrl){
         visual.prop.name <- names(defaults)[i]
         visual.prop.name = toupper(gsub("\\s+","_",visual.prop.name))
         visual.prop.name = switch(visual.prop.name,
-                                  'EDGE_COLOR'='EDGE_STROKE_UNSELECTED_PAINT',
+                                  'EDGE_COLOR'='EDGE_UNSELECTED_PAINT',
                                   'EDGE_THICKNESS'='EDGE_WIDTH',
                                   'NODE_BORDER_COLOR'='NODE_BORDER_PAINT',
                                   visual.prop.name)
@@ -336,6 +336,8 @@ setEdgeColorDefault <- function(new.color, style.name='default', base.url=.defau
     if (.isNotHexColor(new.color)){
         return()
     }
+    style = list(visualProperty = "EDGE_UNSELECTED_PAINT", value = new.color) 
+    setVisualPropertyDefault(style, style.name, base.url)
     style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -455,7 +457,11 @@ setEdgeFontSizeDefault <- function(new.size, style.name='default', base.url=.def
 #' }
 #' @export
 getEdgeSelectionColorDefault <- function(style.name='default', base.url=.defaultBaseUrl) {
-    return(getVisualPropertyDefault('EDGE_STROKE_SELECTED_PAINT',style.name, base.url))
+    matched <- unname(getStyleDependencies()['arrowColorMatchesEdge'])
+    if(matched)
+        return(getVisualPropertyDefault('EDGE_SELECTED_PAINT',style.name, base.url))
+    else
+        return(getVisualPropertyDefault('EDGE_STROKE_SELECTED_PAINT',style.name, base.url))
 }
 
 # ------------------------------------------------------------------------------
@@ -476,7 +482,9 @@ setEdgeSelectionColorDefault <- function(new.color, style.name='default', base.u
     if (.isNotHexColor(new.color)){
         return()
     }
-    style = list(visualProperty = "EDGE_STROKE_SELECTED_PAINT", value = new.color) 
+    style = list(visualProperty = "EDGE_SELECTED_PAINT", value = new.color) 
+    setVisualPropertyDefault(style, style.name, base.url)
+    style = list(visualProperty = "EDGE_STROKE_ELECTED_PAINT", value = new.color) 
     setVisualPropertyDefault(style, style.name, base.url)
 }
 
