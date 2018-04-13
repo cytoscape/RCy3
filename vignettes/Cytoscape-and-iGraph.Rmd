@@ -75,3 +75,5 @@ Compare the round-trip result for yourself...
 ig
 ig2
 ```
+
+**Note: All networks in Cytoscape are implicitly modeled as *directed*. This means that if you start with an *undirected* network in iGraph and then convert it round-trip (like described above), then you will end up with a *directed* network.**

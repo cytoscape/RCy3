@@ -693,7 +693,10 @@ createSubnetwork <- function(nodes=NULL,
 #' send to the createNetwork function.
 #' Returns the network.suid and applies the perferred layout set in Cytoscape preferences.
 #' @details Vertices and edges from the igraph network will be translated into nodes and edges
-#' in Cytoscape. Associated attributes will also be passed to Cytoscape as node and edge table columns.
+#' in Cytoscape. Associated attributes will also be passed to Cytoscape as node and edge
+#' table columns. Note: undirected networks will be implicitly modeled as directed
+#' in Cytoscape. Conversion back via \code{createIgraphFromNetwork} will result in
+#' a directed network.
 #' @param igraph (igraph) igraph network object
 #' @param title (char) network name
 #' @param collection (char) network collection name
@@ -938,7 +941,12 @@ importNetworkFromFile <- function(file=NULL, base.url=.defaultBaseUrl){
 #' send to the graph_from_data_frame function.
 #' Returns the network.suid and applies the perferred layout set in Cytoscape preferences.
 #' @details Nodes and edges from the Cytoscape network will be translated into vertices and edges
-#' in igraph. Associated table columns will also be passed to igraph as vertiex and edge attributes.
+#' in igraph. Associated table columns will also be passed to igraph as vertiex and
+#'  edge attributes. Note: all networks are implicitly modeled as directed
+#' in Cytoscape. Round-trip conversion of an undirected network in iGraph via
+#' \code{createNetworkFromIgraph} to Cytoscape and back to iGraph will result in
+#' a directed network.
+#' 
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
