@@ -65,7 +65,7 @@ similar to these in your pre-v2.0 scripts, then try these suggested swaps.
 
 **Note: don't run the *BEFORE* chunks with the latest RCy3 package**
 
-## Example #1: displayGraph
+## Example: displayGraph
 
 *BEFORE*
 ```{r, eval=FALSE}
@@ -90,8 +90,36 @@ net.suid <- createNetworkFromGraph (g, 'vignette')
 * Note: the network SUID is returned rather than an R object 
 * Note: display and layout are done automatically
 
+## Example: cyPlot
+*BEFORE*
+```{r}
+node.df <- data.frame(id=c("node 0","node 1","node 2","node 3"),
+           stringsAsFactors=FALSE)
+edge.df <- data.frame(source=c("node 0","node 0","node 0","node 2"),
+           target=c("node 1","node 2","node 3","node 3"),
+           interaction=c("inhibits","interacts","activates","interacts"),  # optional
+           stringsAsFactors=FALSE)
+g <- cyPlot(node.df, edge.df)
+cw <- CytoscapeWindow("My Network", g)
+displayGraph(cw)
+layoutNetwork(cw, "force-directed")
+```
 
-## Example #2: loading nodeData 
+*AFTER*
+```{r}
+node.df <- data.frame(id=c("node 0","node 1","node 2","node 3"),
+           stringsAsFactors=FALSE)
+edge.df <- data.frame(source=c("node 0","node 0","node 0","node 2"),
+           target=c("node 1","node 2","node 3","node 3"),
+           interaction=c("inhibits","interacts","activates","interacts"),  # optional
+           stringsAsFactors=FALSE)
+net.suid <- createNetworkFromDataFrames (node.df, edge.df, "My Network")
+```
+
+* Note: Same node and edge dataframes, except rather than having the key columns being positionally defined (for cyPlot), they need to be semantically defined using "id", "source", "target" and "interaction" (for createNetworkFromDataFrames)
+* Note: display and layout are done automatically
+
+## Example: loading nodeData 
 *BEFORE*
 ```{r, eval=FALSE}
 g <- initNodeAttribute (graph=g,  attribute.name='moleculeType',
@@ -123,7 +151,7 @@ loadTableData(node.data, 'id')
 
 
 
-## Example #3: setDefaults
+## Example: setDefaults
 *BEFORE*
 ```{r, eval=FALSE}
 setDefaultNodeShape (cw, 'OCTAGON')
@@ -144,7 +172,7 @@ setNodeFontSizeDefault (40)
 * Note: subtley renamed functions for consistency across package (sorry!)
 
 
-## Example #4: Rule based mapping
+## Example: Rule based mapping
 *BEFORE*
 ```{r, eval=FALSE}
 attribute.values <- c ('kinase',  'TF',       'cytokine')
@@ -175,7 +203,7 @@ setNodeSizeMapping('lfc',control.points, node.sizes)
 * Note: "interpolate" (a.k.a. "continuous") is the default, so you can leave it out
 
 
-## Example #5: Selecting nodes 
+## Example: Selecting nodes 
 *BEFORE*
 ```{r, eval=FALSE}
 selectNodes(cw, 'B')
@@ -197,7 +225,7 @@ selectFirstNeighbors()
 nodes <- selectNodes('B', 'name')$nodes
 ```
 
-## Example #6: Saving and exporting
+## Example: Saving and exporting
 *BEFORE*
 ```{r, eval=FALSE}
 saveImage(cw, "sample_image", "png", h = 800)
