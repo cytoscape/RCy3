@@ -25,8 +25,8 @@ Returns the network.suid and applies the perferred layout set in Cytoscape prefe
 Nodes and edges from the Cytoscape network will be translated into vertices and edges
 in igraph. Associated table columns will also be passed to igraph as vertiex and
  edge attributes. Note: all networks are implicitly modeled as directed
-in Cytoscape. Round-trip conversion of an undirected network in iGraph via
-\code{createNetworkFromIgraph} to Cytoscape and back to iGraph will result in
+in Cytoscape. Round-trip conversion of an undirected network in igraph via
+\code{createNetworkFromIgraph} to Cytoscape and back to igraph will result in
 a directed network.
 }
 \examples{

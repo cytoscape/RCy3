@@ -696,7 +696,8 @@ createSubnetwork <- function(nodes=NULL,
 #' in Cytoscape. Associated attributes will also be passed to Cytoscape as node and edge
 #' table columns. Note: undirected networks will be implicitly modeled as directed
 #' in Cytoscape. Conversion back via \code{createIgraphFromNetwork} will result in
-#' a directed network.
+#' a directed network. Also note: igraph attributes of type "other" denoted by "x"
+#' are converted to "String" in Cytoscape.
 #' @param igraph (igraph) igraph network object
 #' @param title (char) network name
 #' @param collection (char) network collection name
@@ -728,6 +729,20 @@ createNetworkFromIgraph <- function(igraph,
     ignodes$id <- row.names(ignodes)
     colnames(igedges)[colnames(igedges) == "from"] <- "source"
     colnames(igedges)[colnames(igedges) == "to"] <- "target"
+    
+    #protect against non-character and list types for special columns
+    ignodes$id <- unlist(lapply(ignodes$id, as.character))
+    igedges$source <- unlist(lapply(igedges$source, as.character))
+    igedges$target <- unlist(lapply(igedges$target, as.character))
+    if('interaction' %in% names(igedges))
+        igedges$interaction <- unlist(lapply(igedges$interaction, as.character))
+    
+    #flatten all list types (until supported by createNetworkFromDataFrame)
+    ige.list.cols <- sapply(igedges, is.list)
+    ign.list.cols <- sapply(ignodes, is.list)
+    
+    igedges = data.frame(lapply(igedges, unlist),stringsAsFactors = F)
+    ignodes = data.frame(lapply(ignodes, unlist),stringsAsFactors = F)
     
     #check for empty data.frames
     if (nrow(igedges) == 0)
@@ -774,14 +789,15 @@ createNetworkFromGraph <- function (graph,
 #' @description Takes data frames for nodes and edges, as well as naming parameters to
 #' generate the JSON data format required by the "networks" POST operation via CyREST.
 #' Returns the network.suid and applies the perferred layout set in Cytoscape preferences.
-#' @details NODES should contain a column named: id. This name can be overridden by
+#' @details NODES should contain a column of character strings named: id. This name can be overridden by
 #' the arg: node.id.list. Additional columns are loaded as node attributes.
-#' EDGES should contain columns named: source, target and interaction. These names can be overridden by
+#' EDGES should contain columns of character strings named: source, target and interaction. These names can be overridden by
 #' args: source.id.list, target.id.list, interaction.type.list. Additional columns
 #' are loaded as edge attributes. The 'interaction' list can contain a single
 #' value to apply to all rows; and if excluded altogether, the interaction type
-#' wiil be set to "interacts with". NOTE: attribute values of types (num) and (int) will be imported
-#' as (Double); (chr) as (String); and (logical) as (Boolean).
+#' wiil be set to "interacts with". NOTE: attribute values of types (num) will be imported
+#' as (Double); (int) as (Integer); (chr) as (String); and (logical) as (Boolean). 
+#' List types are not supported and ignored upon import.
 #' @param nodes (data.frame) see details and examples below; default NULL to derive nodes from edge sources and targets
 #' @param edges (data.frame) see details and examples below; default NULL for disconnected set of nodes
 #' @param title (char) network name
@@ -943,8 +959,8 @@ importNetworkFromFile <- function(file=NULL, base.url=.defaultBaseUrl){
 #' @details Nodes and edges from the Cytoscape network will be translated into vertices and edges
 #' in igraph. Associated table columns will also be passed to igraph as vertiex and
 #'  edge attributes. Note: all networks are implicitly modeled as directed
-#' in Cytoscape. Round-trip conversion of an undirected network in iGraph via
-#' \code{createNetworkFromIgraph} to Cytoscape and back to iGraph will result in
+#' in Cytoscape. Round-trip conversion of an undirected network in igraph via
+#' \code{createNetworkFromIgraph} to Cytoscape and back to igraph will result in
 #' a directed network.
 #' 
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.

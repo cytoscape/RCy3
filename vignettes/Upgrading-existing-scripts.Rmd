@@ -21,6 +21,15 @@ knitr::opts_chunk$set(
 **R** is a powerful programming language and environment for statistical and exploratory data analysis.
 *RCy3* uses CyREST to communicate between **R** and Cytoscape, allowing any graphs (e.g., iGraph, graphNEL or dataframes) to be viewed, explored and manipulated with the Cytoscape point-and-click visual interface. Thus, via RCy3, these two quite different, quite useful bioinformatics software environments are connected, mutually enhancing each other, providing new possibilities for exploring biological data.
 
+# Installation
+```{r}
+if(!"RCy3" %in% installed.packages()){
+    source("https://bioconductor.org/biocLite.R")
+    biocLite("RCy3")
+}
+library(RCy3)
+```
+
 # Prerequisites
 In addition to this package (RCy3), you will need:
 

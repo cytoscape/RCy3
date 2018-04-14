@@ -20,9 +20,13 @@ knitr::opts_chunk$set(
 This vignette will show you how to import a data.frame of node attributes into Cytoscape as Node Table columns. The same approach works for edge and network attriubutes.  
 
 # Installation
-source("https://bioconductor.org/biocLite.R")
-
-biocLite("RCy3")
+```{r}
+if(!"RCy3" %in% installed.packages()){
+    source("https://bioconductor.org/biocLite.R")
+    biocLite("RCy3")
+}
+library(RCy3)
+```
 
 # Required Software
 The whole point of RCy3 is to connect with Cytoscape. You will need to install and launch Cytoscape: 
