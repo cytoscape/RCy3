@@ -1,5 +1,5 @@
 ---
-title: "Cytoscape and iGraph"
+title: "Cytoscape and igraph"
 author: "by Alexander Pico"
 package: RCy3
 date: "`r Sys.Date()`"
@@ -7,7 +7,7 @@ output:
   BiocStyle::html_document:
     toc_float: true
 vignette: >
-  %\VignetteIndexEntry{2. Cytoscape and iGraph}
+  %\VignetteIndexEntry{2. Cytoscape and igraph}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,13 +17,15 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette will show you how to convert networks between iGraph and Cytoscape.
+This vignette will show you how to convert networks between igraph and Cytoscape.
 
 # Installation
-source("https://bioconductor.org/biocLite.R")
-
-biocLite("RCy3")
 ```{r}
+if(!"RCy3" %in% installed.packages()){
+    source("https://bioconductor.org/biocLite.R")
+    biocLite("RCy3")
+}
+library(RCy3)
 library(igraph)
 ```
 
@@ -76,4 +78,4 @@ ig
 ig2
 ```
 
-**Note: All networks in Cytoscape are implicitly modeled as *directed*. This means that if you start with an *undirected* network in iGraph and then convert it round-trip (like described above), then you will end up with a *directed* network.**
+**Note: All networks in Cytoscape are implicitly modeled as *directed*. This means that if you start with an *undirected* network in igraph and then convert it round-trip (like described above), then you will end up with a *directed* network.**

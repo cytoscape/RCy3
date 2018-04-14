@@ -32,14 +32,15 @@ generate the JSON data format required by the "networks" POST operation via CyRE
 Returns the network.suid and applies the perferred layout set in Cytoscape preferences.
 }
 \details{
-NODES should contain a column named: id. This name can be overridden by
+NODES should contain a column of character strings named: id. This name can be overridden by
 the arg: node.id.list. Additional columns are loaded as node attributes.
-EDGES should contain columns named: source, target and interaction. These names can be overridden by
+EDGES should contain columns of character strings named: source, target and interaction. These names can be overridden by
 args: source.id.list, target.id.list, interaction.type.list. Additional columns
 are loaded as edge attributes. The 'interaction' list can contain a single
 value to apply to all rows; and if excluded altogether, the interaction type
-wiil be set to "interacts with". NOTE: attribute values of types (num) and (int) will be imported
-as (Double); (chr) as (String); and (logical) as (Boolean).
+wiil be set to "interacts with". NOTE: attribute values of types (num) will be imported
+as (Double); (int) as (Integer); (chr) as (String); and (logical) as (Boolean). 
+List types are not supported and ignored upon import.
 }
 \examples{
 \donttest{

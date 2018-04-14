@@ -33,7 +33,8 @@ Vertices and edges from the igraph network will be translated into nodes and edg
 in Cytoscape. Associated attributes will also be passed to Cytoscape as node and edge
 table columns. Note: undirected networks will be implicitly modeled as directed
 in Cytoscape. Conversion back via \code{createIgraphFromNetwork} will result in
-a directed network.
+a directed network. Also note: igraph attributes of type "other" denoted by "x"
+are converted to "String" in Cytoscape.
 }
 \examples{
 \donttest{
