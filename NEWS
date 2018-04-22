@@ -68,6 +68,11 @@ New in RCy3 v2.0
         getCollectionName
         getCollectionSuid
         getCollectionNetworks
+    New functions for accessing NDEx via CyNDEx2
+        importNetworkFromNDEx
+        exportNetworkToNDEx
+        updateNetworkInNDEx
+        getNetworkNDExId
 
 For Developers
 

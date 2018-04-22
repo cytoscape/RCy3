@@ -8,6 +8,8 @@
 # I. Package Variables
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://localhost:1234/v1'
+.cyndexBaseUrl <- gsub('(.+?)\\/(v\\d+)$','\\1\\/cyndex2\\/\\2', .defaultBaseUrl)
+.diffusionBaseUrl <- gsub('(.+?)\\/(v\\d+)$','\\1\\/diffusion\\/\\2', .defaultBaseUrl)
 
 # ==============================================================================
 # I. Package Utility Functions

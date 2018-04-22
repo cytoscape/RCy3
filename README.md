@@ -50,6 +50,8 @@ This is a public, open source project. Come on in! You can contribute at multipl
 install.packages("devtools")
 install.packages("roxygen2") 
 library(devtools,roxygen2)
+devtools::install_github("AlexanderPico/docthis")
+library(docthis)
 devtools::document()
 devtools::check()
 BiocCheck::BiocCheck('./')
