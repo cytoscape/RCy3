@@ -741,8 +741,8 @@ createNetworkFromIgraph <- function(igraph,
     ige.list.cols <- sapply(igedges, is.list)
     ign.list.cols <- sapply(ignodes, is.list)
     
-    igedges = data.frame(lapply(igedges, unlist),stringsAsFactors = F)
-    ignodes = data.frame(lapply(ignodes, unlist),stringsAsFactors = F)
+    igedges = data.frame(lapply(igedges, unlist),stringsAsFactors = FALSE)
+    ignodes = data.frame(lapply(ignodes, unlist),stringsAsFactors = FALSE)
     
     #check for empty data.frames
     if (nrow(igedges) == 0)
