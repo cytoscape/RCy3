@@ -219,7 +219,8 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
     }
     cy.networks.SUIDs <- cyrestGET('networks', base.url = base.url)
     cy.networks.names = c()
-    for (suid in cy.networks.SUIDs)	{
+    
+    for (suid in cy.networks.SUIDs){
         res <-
             cyrestGET(paste("networks", as.character(suid), sep = "/"), base.url = base.url)
         net.name <- res$data$name

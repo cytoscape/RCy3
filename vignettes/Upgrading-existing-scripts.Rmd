@@ -44,8 +44,8 @@ a big step. The fundamental change is that CytoscapeConnection and CytoscapeWind
   * 54 new functions (244 total)
   * Other than function signatures, 
     + 44 functions are otherwise unchanged
-	+ 37 functions have been annotated as deprecated
-	+ 69 functions have been renamed to match updated docs
+    + 37 functions have been annotated as deprecated
+    + 69 functions have been renamed to match updated docs
       + 38 functions have been annotated as defunct
 
 Going forward, this realignment will help us maintain the package in sync with changes to critical upstream resources such as Cytoscape’s CyREST API. It will also greatly simply script writing for users. We hope you'll stay onboard.
