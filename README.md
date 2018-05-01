@@ -77,14 +77,24 @@ git push upstream master
 ```
 http://bioconductor.org/developers/how-to/git/push-to-github-bioc/
 
-#### Vignettes
+Following each bioconductor release, a `RELEASE_#_#` branch is created here:
+
+```
+git checkout -b RELEASE_3_7 upstream/RELEASE_3_7
+```
+
+Only bug fixes and documentation updates can be pushed to the official bioconductor release branch.
+
+https://bioconductor.org/developers/how-to/git/bug-fix-in-release-and-devel/
+
+### Vignettes
 When adding or updating vignettes, consider the following tips for consistency:
 * Copy/paste the header from an existing RCy3 vignette, including the global knitr options
 * Number the *VignetteIndexEntry* names w.r.t. other vignettes (this determines their presentation order)
 * Avoid spaces in Rmd filenames; causes CHECK errors
 * When ready, run **Knit to html_vignette_** and review the generated html
 * Note: you don't need to save the html version; it will be generated anew at Bioconductor.
-* In the end, you should just have an Rmd versionof each vignette in the repo.
+* In the end, you should just have an Rmd version of each vignette in the repo.
 
 ### Former Repo
 The entire commit history has been preserved during this transition, but you can find the repo for RCy3 v1.5.3 and earlier
