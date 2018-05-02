@@ -165,7 +165,7 @@ layoutNetwork('force-directed')
 # Visualizing data on networks
 
 ## Load datasets
-Downloaded TCGA data from https://portal.gdc.cancer.gov/ and preprocessed as R objects. Also available via each TCGA publication, e.g.:
+Downloaded TCGA data and preprocessed as R objects. Also available via each TCGA publication, e.g.:
  
 * Breast: https://tcga-data.nci.nih.gov/docs/publications/brca_2012/
 * Ovarian: https://tcga-data.nci.nih.gov/docs/publications/ov_2011/
