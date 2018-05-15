@@ -92,6 +92,7 @@ getTableColumns <- function(table = 'node',
         res.col <- cyrestGET(paste('networks',suid,'tables',tbl,'columns',col, sep="/"),
                              base.url = base.url)
         #convert NULL to NA, then unlist
+        
         cvv <- unlist(lapply(res.col$values, function(x)
             ifelse(is.null(x), NA, x)))
         if (length(res.names$values) == length(cvv)) {
@@ -106,6 +107,9 @@ getTableColumns <- function(table = 'node',
                        },
                        "Boolean"={
                            df[i, col] <- as.logical(cvv[i])
+                       },
+                       "List"={
+                           df[i,col][[1]] <- list(c(unlist(res.col$values[i])))
                        },{
                            df[i, col] <- as.character(cvv[i])
                        }
@@ -322,7 +326,11 @@ loadTableData <- function(data,
         rest <- list()
         for (j in 1:dim(data.subset)[2]) {
             #each column
-            rest[[colnames(data.subset)[j]]] = data.subset[i, j]
+            val<-data.subset[i, j]
+            if(class(val)=="list")
+                if(length(unlist(val)) > 1)
+                    val<-unlist(val)
+            rest[[colnames(data.subset)[j]]] = val
         }
         data.list[[i]] <- rest
     }
