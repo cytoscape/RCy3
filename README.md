@@ -52,6 +52,8 @@ install.packages("roxygen2")
 library(devtools,roxygen2)
 devtools::install_github("AlexanderPico/docthis")
 library(docthis)
+BiocInstaller::biocLite('BiocStyle')
+library(BiocStyle)
 devtools::document()
 devtools::check()
 BiocCheck::BiocCheck('./')
@@ -105,7 +107,7 @@ When adding or updating vignettes, consider the following tips for consistency:
 * Copy/paste the header from an existing RCy3 vignette, including the global knitr options
 * Number the *VignetteIndexEntry* names w.r.t. other vignettes (this determines their presentation order)
 * Avoid spaces in Rmd filenames; causes CHECK errors
-* When ready, run **Knit to html_vignette_** and review the generated html
+* When ready, run **Knit to html_document** and review the generated html (requires BiocStyle)
 * Note: you don't need to save the html version; it will be generated anew at Bioconductor.
 * In the end, you should just have an Rmd version of each vignette in the repo.
 
