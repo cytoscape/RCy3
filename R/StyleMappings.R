@@ -113,7 +113,7 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
     if(mapping.type.name=='discrete'){
         map <- list()
         for (i in 1:length(table.column.values)) {
-            map[[i]] <- list(key=table.column.values[i], value=toString(visual.prop.values[i]))
+            map[[i]] <- list(key=toString(table.column.values[i]), value=toString(visual.prop.values[i]))
         }
         visual.prop.map$map=map
     }else if(mapping.type.name=='continuous'){
