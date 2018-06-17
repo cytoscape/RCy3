@@ -7,7 +7,7 @@
 getGroupInfo(group, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{group}{(optional) Group name or SUID.}
+\item{group}{Group name or SUID.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}
 
@@ -19,7 +19,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 Group information
 }
 \description{
-Retrieve information about a group by providing a network and the group node identifier.
+Retrieve information about a group by name or identifier.
 }
 \examples{
 \donttest{

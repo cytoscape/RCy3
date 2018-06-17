@@ -134,8 +134,8 @@ expandGroup <- function(groups=NULL, network=NULL, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title Get Group Information
 #'
-#' @description Retrieve information about a group by providing a network and the group node identifier.
-#' @param group (optional) Group name or SUID.
+#' @description Retrieve information about a group by name or identifier.
+#' @param group Group name or SUID.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -146,12 +146,19 @@ expandGroup <- function(groups=NULL, network=NULL, base.url=.defaultBaseUrl){
 #' }
 #' @export
 getGroupInfo <- function(group, network=NULL, base.url=.defaultBaseUrl){
-    group.suid <- .nodeNameToNodeSUID(group)
     net.suid <- getNetworkSuid(network)
-    commandsPOST(paste0('group get node="SUID:',group.suid,'"',
+    
+    #group.suid <- .nodeNameToNodeSUID(group)
+    ## Note: if not yet collapsed, then group node is not in node list!
+    ## so work with the user-provided group name or SUID directly instead
+    if(is.numeric(group))
+        prefix <- 'SUID:'
+    else
+        prefix <- ''
+
+    commandsPOST(paste0('group get node="',prefix,group,'"',
                         ' network="SUID:',net.suid,'"'),
                  base.url = base.url)
-    
 }
 
 # ------------------------------------------------------------------------------
