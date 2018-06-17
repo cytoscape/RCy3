@@ -7,7 +7,7 @@ output:
   BiocStyle::html_document:
     toc_float: true
 vignette: >
-    %\VignetteIndexEntry{5. Network functions and visualization}
+    %\VignetteIndexEntry{5. Network functions and visualization ~15 min}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---

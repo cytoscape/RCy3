@@ -7,7 +7,7 @@ output:
   BiocStyle::html_document:
     toc_float: true
 vignette: >
-  %\VignetteIndexEntry{3. Cytoscape and graphNEL}
+  %\VignetteIndexEntry{3. Cytoscape and graphNEL ~5 min}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
