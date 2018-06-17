@@ -27,7 +27,7 @@ getNodeProperty <- function(node.names,
                             visual.property,
                             network = NULL,
                             base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     node.SUIDs <-
@@ -72,7 +72,7 @@ getEdgeProperty <- function(edge.names,
                             visual.property,
                             network = NULL,
                             base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     edge.SUIDs <-
@@ -114,7 +114,7 @@ getEdgeProperty <- function(edge.names,
 getNetworkProperty <- function(visual.property,
                                network = NULL,
                                base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     net.views.SUIDs <- getNetworkViews(net.SUID, base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     

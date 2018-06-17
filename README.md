@@ -48,12 +48,15 @@ This is a public, open source project. Come on in! You can contribute at multipl
 ### Development
 ```
 install.packages("devtools")
+
 install.packages("roxygen2") 
 library(devtools,roxygen2)
 devtools::install_github("AlexanderPico/docthis")
 library(docthis)
 BiocInstaller::biocLite('BiocStyle')
 library(BiocStyle)
+install.packages("RUnit")
+library(RUnit)
 devtools::document()
 devtools::check()
 BiocCheck::BiocCheck('./')
@@ -62,7 +65,7 @@ BiocCheck::BiocCheck('./')
 ### Testing
 Unit tests are a crucial tool in software development.
 In order to run them 'offline' (not on the Bioconductor build system),
-take these steps from within a running R session:
+take these steps from within a running R session (requires RUnit):
 
   1) source(system.file("unitTests", "test_RCy3.R", package="RCy3"))
   2) run.tests()

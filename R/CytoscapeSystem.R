@@ -18,7 +18,7 @@
 #' }
 #' @export
 cytoscapePing<-function(base.url=.defaultBaseUrl) {
-    .verifySupportedVersions(1,3.6)
+    .verifySupportedVersions(1,3.6,base.url)
     conn.str <- paste(base.url, 'version', sep="/")
     res <- GET(conn.str)
     if(res$status_code == 200) {

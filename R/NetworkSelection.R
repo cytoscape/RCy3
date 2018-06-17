@@ -27,7 +27,7 @@ clearSelection <-
     function(type = 'both',
              network = NULL,
              base.url = .defaultBaseUrl) {
-        net.SUID <- getNetworkSuid(network)
+        net.SUID <- getNetworkSuid(network,base.url)
         
         if (type %in% c('nodes', 'both')) {
             resource.uri <-
@@ -81,7 +81,7 @@ selectFirstNeighbors <-
     function(direction = 'any',
              network = NULL,
              base.url = .defaultBaseUrl) {
-        suid = getNetworkSuid(network)
+        suid = getNetworkSuid(network,base.url)
         cmd <-
             paste0('network select firstNeighbors="',
                    direction,
@@ -115,7 +115,7 @@ selectNodes <-
              preserve.current.selection = TRUE,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        suid <- getNetworkSuid(network)
+        suid <- getNetworkSuid(network,base.url)
         
         if (!preserve.current.selection)
             clearSelection(type = 'nodes', suid, base.url)
@@ -157,7 +157,7 @@ selectNodes <-
 #' }
 #' @export
 selectAllNodes <- function(network = NULL, base.url = .defaultBaseUrl) {
-    suid <- getNetworkSuid(network)
+    suid <- getNetworkSuid(network,base.url)
     all_node_SUIDs <-
         cyrestGET(paste("networks", suid, "nodes", sep = "/"), base.url = base.url)
     
@@ -196,7 +196,7 @@ selectAllNodes <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @export
 getSelectedNodeCount <-
     function(network = NULL, base.url = .defaultBaseUrl) {
-        net.SUID <- getNetworkSuid(network)
+        net.SUID <- getNetworkSuid(network,base.url)
         res <-
             cyrestGET(
                 paste('networks', net.SUID, 'nodes', sep = "/"),
@@ -222,7 +222,7 @@ getSelectedNodeCount <-
 #' @export
 getSelectedNodes <-
     function(network = NULL, base.url = .defaultBaseUrl) {
-        net.SUID <- getNetworkSuid(network)
+        net.SUID <- getNetworkSuid(network,base.url)
         
         if (getSelectedNodeCount(net.SUID, base.url) == 0) {
             write (sprintf ('No nodes selected.'), stdout ())
@@ -259,7 +259,7 @@ getSelectedNodes <-
 #' @export
 invertNodeSelection <-
     function(network = NULL, base.url = .defaultBaseUrl) {
-        suid <- getNetworkSuid(network)
+        suid <- getNetworkSuid(network,base.url)
         res <-
             commandsPOST(paste0('network select invert=nodes network=SUID:', suid),
                          base.url = base.url)
@@ -282,7 +282,7 @@ invertNodeSelection <-
 #' @export
 deleteSelectedNodes <-
     function(network = NULL, base.url = .defaultBaseUrl) {
-        title = getNetworkName(network)
+        title = getNetworkName(network, base.url)
         commandsPOST(paste0('network delete nodeList=selected network=', title),
                      base.url = base.url)
     }
@@ -312,7 +312,7 @@ selectEdges <-
              preserve.current.selection = TRUE,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        suid <- getNetworkSuid(network)
+        suid <- getNetworkSuid(network,base.url)
         
         if (!preserve.current.selection)
             clearSelection(type = 'edges',
@@ -356,7 +356,7 @@ selectEdges <-
 #' }
 #' @export
 selectAllEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
-    suid <- getNetworkSuid(network)
+    suid <- getNetworkSuid(network,base.url)
     all_edge_SUIDs <-
         cyrestGET(paste('networks', suid, 'edges', sep = "/"), base.url = base.url)
     SUID.value.pairs <- lapply(all_edge_SUIDs,
@@ -394,7 +394,7 @@ selectAllEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @export
 invertEdgeSelection <-
     function(network = NULL, base.url = .defaultBaseUrl) {
-        suid <- getNetworkSuid(network)
+        suid <- getNetworkSuid(network,base.url)
         res <-
             commandsPOST(paste0('network select invert=edges network=SUID:', suid),
                          base.url = base.url)
@@ -417,7 +417,7 @@ invertEdgeSelection <-
 #' @export
 deleteSelectedEdges <-
     function(network = NULL, base.url = .defaultBaseUrl) {
-        suid <- getNetworkSuid(network)
+        suid <- getNetworkSuid(network,base.url)
         res <-
             commandsPOST(paste0('network delete edgeList=selected network=SUID:', suid),
                          base.url = base.url)
@@ -440,7 +440,7 @@ deleteSelectedEdges <-
 #' @export
 getSelectedEdgeCount <-
     function(network = NULL, base.url = .defaultBaseUrl) {
-        net.SUID <- getNetworkSuid(network)
+        net.SUID <- getNetworkSuid(network,base.url)
         res <- cyrestGET(
             paste("networks", net.SUID, "edges", sep = "/"),
             list(column = "selected", query = "true"),
@@ -464,7 +464,7 @@ getSelectedEdgeCount <-
 #' @export
 getSelectedEdges <-
     function (network = NULL, base.url = .defaultBaseUrl) {
-        net.SUID = getNetworkSuid(network)
+        net.SUID = getNetworkSuid(network,base.url)
         if (getSelectedEdgeCount(net.SUID, base.url) == 0) {
             return (NA)
         } else {
@@ -496,7 +496,7 @@ getSelectedEdges <-
 
 selectEdgesConnectingSelectedNodes <-
     function(network = NULL, base.url = .defaultBaseUrl) {
-        net.suid <- getNetworkSuid(network)
+        net.suid <- getNetworkSuid(network,base.url)
         selectedNodes = getSelectedNodes(net.suid, base.url)
         if (length (selectedNodes) == 1 && is.na (selectedNodes))
             return ()
@@ -532,7 +532,7 @@ selectEdgesConnectingSelectedNodes <-
 #' @export
 selectEdgesAdjacentToSelectedNodes <-
     function(network = NULL, base.url = .defaultBaseUrl) {
-        suid <- getNetworkSuid(network)
+        suid <- getNetworkSuid(network,base.url)
         clearSelection(type = 'edges', suid, base.url)
         res <-
             commandsPOST(

@@ -30,7 +30,7 @@
 #' setCurrentNetwork('MyNetwork')
 #' }
 setCurrentNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
-    suid = getNetworkSuid(network)
+    suid = getNetworkSuid(network,base.url)
     cmd <- paste0('network set current network=SUID:"', suid, '"')
     commandsPOST(cmd, base.url = base.url)
 }
@@ -54,7 +54,7 @@ setCurrentNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 renameNetwork <-  function(title,
                            network = NULL,
                            base.url = .defaultBaseUrl) {
-    old.suid = getNetworkSuid(network)
+    old.suid = getNetworkSuid(network,base.url)
     cmd <-
         paste0('network rename name="',
                title,
@@ -256,7 +256,7 @@ exportNetwork <- function (filename=NULL, type=NULL,
     
     # optional args
     if(!is.null(network))
-        cmd.string <- paste0(cmd.string,' network="SUID:',getNetworkSuid(network),'"')
+        cmd.string <- paste0(cmd.string,' network="SUID:',getNetworkSuid(network,base.url),'"')
     if(!is.null(type)){
         type = toupper(type)
         if (type == 'CYS') {
@@ -288,7 +288,7 @@ exportNetwork <- function (filename=NULL, type=NULL,
 #' }
 #' @export
 deleteNetwork <- function (network = NULL, base.url = .defaultBaseUrl) {
-    suid = getNetworkSuid(network)
+    suid = getNetworkSuid(network,base.url)
     res = cyrestDELETE(paste("networks", suid, sep = "/"), base.url = base.url)
     invisible(res)
 }
@@ -340,12 +340,12 @@ getFirstNeighbors <-
               base.url = .defaultBaseUrl) {
         
         if (is.null(node.names))
-            node.names <- getSelectedNodes()
+            node.names <- getSelectedNodes(network,base.url)
         
         if (length (node.names) == 0)
             return()
         
-        net.SUID = getNetworkSuid(network)
+        net.SUID = getNetworkSuid(network,base.url)
         neighbor.names <- c()
         
         for (node.name in node.names) {
@@ -401,7 +401,7 @@ addCyNodes <- function(node.names,
                        skip.duplicate.names = TRUE,
                        network = NULL,
                        base.url = .defaultBaseUrl) {
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     
     if (skip.duplicate.names)
         node.names <-
@@ -429,7 +429,7 @@ addCyNodes <- function(node.names,
 #' }
 #' @export
 getNodeCount <- function(network = NULL, base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     res <-
         cyrestGET(paste("networks", net.SUID, "nodes/count", sep = "/"),
                   base.url = base.url)
@@ -450,7 +450,7 @@ getNodeCount <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' }
 #' @export
 getAllNodes <- function(network = NULL, base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     n.count <- getNodeCount(net.SUID, base.url)
     if (n.count == 0) {
         return()
@@ -494,7 +494,7 @@ addCyEdges <-
               directed = FALSE,
               network = NULL,
               base.url = .defaultBaseUrl) {
-        net.suid <- getNetworkSuid(network)
+        net.suid <- getNetworkSuid(network,base.url)
         
         # swap with node suids
         if (length(unlist(source.target.list)) > 2) {
@@ -553,7 +553,7 @@ addCyEdges <-
 #' }
 #' @export
 getEdgeCount <- function(network = NULL, base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     res <-
         cyrestGET(paste("networks", net.SUID, "edges/count", sep = "/"),
                   base.url = base.url)
@@ -574,7 +574,7 @@ getEdgeCount <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' }
 #' @export
 getAllEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     e.count <- getEdgeCount(net.SUID, base.url)
     if (e.count == 0) {
         return()
@@ -609,7 +609,7 @@ getAllEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @export
 
 cloneNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
-    suid = getNetworkSuid(network)
+    suid = getNetworkSuid(network,base.url)
     cmd <- paste0('network clone network=SUID:"', suid, '"')
     res <- commandsPOST(cmd, base.url = base.url)
     return(res['network'])
@@ -983,7 +983,7 @@ importNetworkFromFile <- function(file=NULL, base.url=.defaultBaseUrl){
 createIgraphFromNetwork <-
     function(network = NULL,
              base.url = .defaultBaseUrl) {
-        suid = getNetworkSuid(network)
+        suid = getNetworkSuid(network,base.url)
         #get dataframes
         cyedges <-
             getTableColumns('edge', network = suid, base.url = base.url)

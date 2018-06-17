@@ -86,10 +86,10 @@ hidePanel <- function(panel.name,base.url=.defaultBaseUrl) {
 #' }
 #' @export
 hideAllPanels <- function(base.url=.defaultBaseUrl) {
-    hidePanel("SOUTH")
-    hidePanel("EAST")
-    hidePanel("WEST")
-    hidePanel("SOUTH_WEST")
+    hidePanel("SOUTH",base.url)
+    hidePanel("EAST",base.url)
+    hidePanel("WEST",base.url)
+    hidePanel("SOUTH_WEST",base.url)
 }
 
 # ------------------------------------------------------------------------------

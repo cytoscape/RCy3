@@ -43,7 +43,7 @@ AddToGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID',
     
     edge.list <- .prepPostQueryLists(edges, edges.by.col)
     
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     commandsPOST(paste0('group add groupName="',group.name,'"',
                         ' nodeList="',node.list,'"',
                         ' edgeList="',edge.list,'"',
@@ -68,7 +68,7 @@ AddToGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID',
 #' @export
 collapseGroup <- function(groups=NULL, network=NULL, base.url=.defaultBaseUrl){
     group.list <- .prepPostQueryLists(groups)
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     commandsPOST(paste0('group collapse groupList="',group.list,'"',
                         ' network="SUID:',net.suid,'"'),
                  base.url = base.url)
@@ -99,7 +99,7 @@ createGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID',
         nodes.by.col = NULL
     
     node.list <- .prepPostQueryLists(nodes, nodes.by.col)
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     commandsPOST(paste0('group create groupName="',group.name,'"',
                                           ' nodeList="',node.list,'"',
                                           ' network="SUID:',net.suid,'"'),
@@ -124,7 +124,7 @@ createGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID',
 #' @export
 expandGroup <- function(groups=NULL, network=NULL, base.url=.defaultBaseUrl){
     group.list <- .prepPostQueryLists(groups)
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     commandsPOST(paste0('group expand groupList="',group.list,'"',
                         ' network="SUID:',net.suid,'"'),
                  base.url = base.url)
@@ -146,9 +146,9 @@ expandGroup <- function(groups=NULL, network=NULL, base.url=.defaultBaseUrl){
 #' }
 #' @export
 getGroupInfo <- function(group, network=NULL, base.url=.defaultBaseUrl){
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     
-    #group.suid <- .nodeNameToNodeSUID(group)
+    #group.suid <- .nodeNameToNodeSUID(group, network, base.url)
     ## Note: if not yet collapsed, then group node is not in node list!
     ## so work with the user-provided group name or SUID directly instead
     if(is.numeric(group))
@@ -175,7 +175,7 @@ getGroupInfo <- function(group, network=NULL, base.url=.defaultBaseUrl){
 #' }
 #' @export
 listGroups <- function(network=NULL, base.url=.defaultBaseUrl){
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     commandsPOST(paste0('group list',
                         ' network="SUID:',net.suid,'"'),
                  base.url = base.url)
@@ -218,7 +218,7 @@ RemoveFromGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID',
     
     edge.list <- .prepPostQueryLists(edges, edges.by.col)
     
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     commandsPOST(paste0('group remove groupName="',group.name,'"',
                         ' nodeList="',node.list,'"',
                         ' edgeList="',edge.list,'"',
@@ -250,7 +250,7 @@ deleteGroup <- function(groups=NULL, groups.by.col='SUID',
         groups.by.col = NULL
     
     group.list <- .prepPostQueryLists(groups, groups.by.col)
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     
     commandsPOST(paste0('group ungroup groupList="',group.list,'"',
                         ' network="SUID:',net.suid,'"'),

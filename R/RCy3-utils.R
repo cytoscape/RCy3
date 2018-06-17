@@ -8,8 +8,6 @@
 # I. Package Variables
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://localhost:1234/v1'
-.cyndexBaseUrl <- gsub('(.+?)\\/(v\\d+)$','\\1\\/cyndex2\\/\\2', .defaultBaseUrl)
-.diffusionBaseUrl <- gsub('(.+?)\\/(v\\d+)$','\\1\\/diffusion\\/\\2', .defaultBaseUrl)
 
 # ==============================================================================
 # I. Package Utility Functions
@@ -75,8 +73,8 @@
 # ------------------------------------------------------------------------------
 # Checks to see if min supported versions of api and cytoscape are running.
 # Extracts numerics from api and major cytoscape versions before making comparison.
-.verifySupportedVersions<-function(cyrest=1,cytoscape=3.6) {
-    vStr <- cytoscapeVersionInfo()
+.verifySupportedVersions<-function(cyrest=1,cytoscape=3.6,base.url=.defaultBaseUrl) {
+    vStr <- cytoscapeVersionInfo(base.url)
     vApiStr <- unname(vStr[1])
     vCyStr <- unname(vStr[2])
     vApiNum <- as.numeric(gsub("v([0-9]+)$", "\\1", vApiStr))

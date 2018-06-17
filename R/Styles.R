@@ -159,7 +159,7 @@ getVisualStyleNames <- function(base.url=.defaultBaseUrl) {
 #' }
 #' @export
 setVisualStyle <- function(style.name, network=NULL, base.url=.defaultBaseUrl) {
-    net.SUID = getNetworkSuid(network)
+    net.SUID = getNetworkSuid(network,base.url)
     current.names = getVisualStyleNames(base.url)
     # inform user if they want to set style that does not exist 
     if(!style.name %in% current.names) { 

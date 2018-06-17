@@ -15,7 +15,7 @@
 #' }
 #' @export
 disableApp <- function (app, base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET(paste0('apps disable app="',app,'"'), base.url=base.url)
 }
 
@@ -33,7 +33,7 @@ disableApp <- function (app, base.url=.defaultBaseUrl){
 #' }
 #' @export
 enableApp <- function (app, base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET(paste0('apps enable app="',app,'"'), base.url=base.url)
 }
 
@@ -51,7 +51,7 @@ enableApp <- function (app, base.url=.defaultBaseUrl){
 #' }
 #' @export
 getAppInformation <- function (app, base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET(paste0('apps information app="',app,'"'), base.url=base.url)
 }
 
@@ -69,7 +69,7 @@ getAppInformation <- function (app, base.url=.defaultBaseUrl){
 #' }
 #' @export
 installApp <- function (app, base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET(paste0('apps install app="',app,'"'), base.url=base.url)
 }
 
@@ -86,7 +86,7 @@ installApp <- function (app, base.url=.defaultBaseUrl){
 #' }
 #' @export
 getAvailableApps <- function (base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET('apps list available', base.url=base.url)
 }
 
@@ -103,7 +103,7 @@ getAvailableApps <- function (base.url=.defaultBaseUrl){
 #' }
 #' @export
 getDisabledApps <- function (base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET('apps list disabled', base.url=base.url)
 }
 
@@ -120,7 +120,7 @@ getDisabledApps <- function (base.url=.defaultBaseUrl){
 #' }
 #' @export
 getInstalledApps <- function (base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET('apps list installed', base.url=base.url)
 }
 
@@ -137,7 +137,7 @@ getInstalledApps <- function (base.url=.defaultBaseUrl){
 #' }
 #' @export
 getUninstalledApps <- function (base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET('apps list uninstalled', base.url=base.url)
 }
 
@@ -154,7 +154,7 @@ getUninstalledApps <- function (base.url=.defaultBaseUrl){
 #' }
 #' @export
 getAppUpdates <- function (base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET('apps list updates', base.url=base.url)
 }
 
@@ -172,7 +172,7 @@ getAppUpdates <- function (base.url=.defaultBaseUrl){
 #' }
 #' @export
 openAppStore <- function (app, base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET(paste0('apps open appstore app="',app,'"'), base.url=base.url)
 }
 
@@ -191,7 +191,7 @@ openAppStore <- function (app, base.url=.defaultBaseUrl){
 #' }
 #' @export
 getAppStatus <- function (app, base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET(paste0('apps status app="',app,'"'), base.url=base.url)
 }
 
@@ -209,7 +209,7 @@ getAppStatus <- function (app, base.url=.defaultBaseUrl){
 #' }
 #' @export
 uninstallApp <- function (app, base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET(paste0('apps uninstall app="',app,'"'), base.url=base.url)
 }
 
@@ -227,7 +227,7 @@ uninstallApp <- function (app, base.url=.defaultBaseUrl){
 #' }
 #' @export
 updateApp <- function (app, base.url=.defaultBaseUrl){
-    .verifySupportedVersions(1,3.7)
+    .verifySupportedVersions(1,3.7,base.url)
     commandsGET(paste0('apps update app="',app,'"'), base.url=base.url)
 }
 

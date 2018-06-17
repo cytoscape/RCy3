@@ -25,7 +25,7 @@ deleteTableColumn <- function(column ,
                               namespace = 'default',
                               network = NULL, 
                               base.url = .defaultBaseUrl) {
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     tbl = paste0(namespace, table)
     cyrestDELETE(paste('networks',net.suid,'tables',tbl,'columns',as.character(column),sep="/"),
                  base.url = base.url)
@@ -59,7 +59,7 @@ getTableColumns <- function(table = 'node',
                              namespace = 'default',
                              network = NULL,
                              base.url = .defaultBaseUrl) {
-    suid = getNetworkSuid(network)
+    suid = getNetworkSuid(network,base.url)
     
     #column information (names and types)
     table.col.info <- getTableColumnTypes(table, namespace, network, base.url)
@@ -153,7 +153,7 @@ getTableValue <- function(table,
                             namespace = 'default',
                             network = NULL,
                             base.url = .defaultBaseUrl) {
-    suid = getNetworkSuid(network)
+    suid = getNetworkSuid(network,base.url)
     
     #column type
     table.col.info <- getTableColumnTypes(table, namespace, network, base.url)
@@ -162,11 +162,11 @@ getTableValue <- function(table,
     #which row
     row.key = NULL
     if(table == 'node'){
-        row.key = .nodeNameToNodeSUID(row.name)
+        row.key = .nodeNameToNodeSUID(row.name,network, base.url)
     } else if (table == 'edge'){
-        row.key = .edgeNameToEdgeSUID(row.name)
+        row.key = .edgeNameToEdgeSUID(row.name,network, base.url)
     }else if (table == 'network'){
-        row.key == getNetworkSuid(row.name)
+        row.key == getNetworkSuid(row.name, base.url)
     }
     #get row/column value
     tbl = paste0(namespace, table)
@@ -218,7 +218,7 @@ getTableColumnNames <-  function(table = 'node',
                                  namespace = 'default',
                                  network = NULL,
                                  base.url = .defaultBaseUrl) {
-    suid = getNetworkSuid(network)
+    suid = getNetworkSuid(network,base.url)
     tbl <- paste0(namespace,table)
     res = cyrestGET(paste('networks',suid,'tables',tbl,'columns',sep = '/'),
                     base.url = base.url)
@@ -249,7 +249,7 @@ getTableColumnTypes <-  function(table = 'node',
                                  namespace = 'default',
                                  network = NULL,
                                  base.url = .defaultBaseUrl) {
-    suid = getNetworkSuid(network)
+    suid = getNetworkSuid(network,base.url)
     tbl <- paste0(namespace,table)
     res = cyrestGET(paste('networks',suid,'tables',tbl,'columns',sep = '/'),
                     base.url = base.url)
@@ -289,7 +289,7 @@ loadTableData <- function(data,
                           namespace = 'default',
                           network = NULL,
                           base.url = .defaultBaseUrl) {
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     table.key.column.values =  getTableColumns(table = table,
                                                columns = table.key.column,
                                                network = net.suid,
@@ -401,7 +401,7 @@ loadTableData <- function(data,
 mapTableColumn <- function(column, species, map.from, map.to, force.single=TRUE,
                            table='node', namespace='default',
                            network=NULL, base.url=.defaultBaseUrl){
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     tbl <- paste(net.suid,namespace,table, sep=" ")
     
     if(force.single)
@@ -446,7 +446,7 @@ mapTableColumn <- function(column, species, map.from, map.to, force.single=TRUE,
 renameTableColumn <- function(column, new.name, 
                               table='node', namespace='default', 
                               network=NULL, base.url=.defaultBaseUrl){
-    net.suid <- getNetworkSuid(network)
+    net.suid <- getNetworkSuid(network,base.url)
     tbl <- paste0(namespace,table)
     
     cyrestPUT(paste('networks',net.suid,'tables',tbl,'columns',sep="/"),

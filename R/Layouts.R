@@ -28,7 +28,7 @@
 #' }
 #' @export
 layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaultBaseUrl) {
-    suid <- getNetworkSuid(network)
+    suid <- getNetworkSuid(network,base.url)
     if(is.null(layout.name)){
         res<-commandsPOST(paste0('layout apply preferred networkSelected="SUID:',suid,'"'), base.url=base.url)
         invisible(res)

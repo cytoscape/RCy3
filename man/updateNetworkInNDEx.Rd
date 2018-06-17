@@ -5,7 +5,7 @@
 \title{Update Network In NDEx}
 \usage{
 updateNetworkInNDEx(username, password, isPublic, network = NULL,
-  metadata = NULL, base.url = .cyndexBaseUrl)
+  metadata = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{username}{NDEx account username}

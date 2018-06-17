@@ -75,7 +75,7 @@
 mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.column.values,
                               visual.prop.values, network=NULL, base.url=.defaultBaseUrl){
     
-    suid <- getNetworkSuid(network)
+    suid <- getNetworkSuid(network,base.url)
     
     #process mapping type
     mapping.type.name = switch(mapping.type, 'c'='continuous','d'='discrete','p'='passthrough',mapping.type)

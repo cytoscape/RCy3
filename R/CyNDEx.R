@@ -18,7 +18,7 @@
 #' }
 #' @export
 importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL, 
-                                   accessKey=NULL, base.url = .cyndexBaseUrl){
+                                   accessKey=NULL, base.url = .defaultBaseUrl){
     ndex.body <- list(serverUrl="http://ndexbio.org/v2",
                       uuid=ndex.id)
     if(!is.null(username))
@@ -30,7 +30,7 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
     
     res <- cyrestPOST('networks',
                        body = ndex.body,
-                       base.url = base.url)
+                       base.url = .CyndexBaseUrl(base.url))
     return(res$data$suid)
 }
 
@@ -55,9 +55,9 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
 #' @export
 exportNetworkToNDEx <- function(username, password, isPublic, 
                                 network=NULL, metadata=NULL, 
-                                base.url = .cyndexBaseUrl){
+                                base.url = .defaultBaseUrl){
     
-    suid <- getNetworkSuid(network)
+    suid <- getNetworkSuid(network,base.url)
     
     res <- cyrestPOST(paste('networks',suid,sep = '/'),
                       body = list(serverUrl="http://ndexbio.org/v2",
@@ -65,7 +65,7 @@ exportNetworkToNDEx <- function(username, password, isPublic,
                                   password=password,
                                   metadata=metadata,
                                   isPublic=isPublic),
-                      base.url = base.url)
+                      base.url = .CyndexBaseUrl(base.url))
     return(res$data$uuid)
 }
 
@@ -92,9 +92,9 @@ exportNetworkToNDEx <- function(username, password, isPublic,
 #' @export
 updateNetworkInNDEx <- function(username, password, isPublic, 
                                 network=NULL, metadata=NULL, 
-                                 base.url = .cyndexBaseUrl){
+                                 base.url = .defaultBaseUrl){
     
-    suid <- getNetworkSuid(network)
+    suid <- getNetworkSuid(network,base.url)
     
     res <- cyrestPUT(paste('networks',suid,sep = '/'),
                       body = list(serverUrl="http://ndexbio.org/v2",
@@ -102,7 +102,7 @@ updateNetworkInNDEx <- function(username, password, isPublic,
                                   password=password,
                                   metadata=metadata,
                                   isPublic=isPublic),
-                      base.url = base.url)
+                      base.url = .CyndexBaseUrl(base.url))
     return(res$data$uuid)
 }
 
@@ -123,11 +123,19 @@ updateNetworkInNDEx <- function(username, password, isPublic,
 #' getNetworkNDExId()
 #' }
 #' @export
-getNetworkNDExId <- function(network=NULL, base.url = .cyndexBaseUrl) {
-    suid <- getNetworkSuid(network)
+getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
+    suid <- getNetworkSuid(network,base.url)
     res <- cyrestGET(paste('networks', suid,sep = '/'),
-                     base.url = base.url)
+                     base.url = .CyndexBaseUrl(base.url))
     
     return(res$data$members[[1]]$uuid)
 }
 
+# ------------------------------------------------------------------------------
+# @title CyndexBaseUrl
+# 
+# @description Transforms generic base.url into a specific cyndex.base.url
+.CyndexBaseUrl <- function(base.url)
+{
+    gsub('(.+?)\\/(v\\d+)$','\\1\\/cyndex2\\/\\2', base.url)
+}

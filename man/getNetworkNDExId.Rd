@@ -4,7 +4,7 @@
 \alias{getNetworkNDExId}
 \title{Get Network NDEx Id}
 \usage{
-getNetworkNDExId(network = NULL, base.url = .cyndexBaseUrl)
+getNetworkNDExId(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{network}{(optional) Name or SUID of the network. Default is the "current" 

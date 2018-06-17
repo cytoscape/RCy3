@@ -5,7 +5,7 @@
 \title{Import Network From NDEx}
 \usage{
 importNetworkFromNDEx(ndex.id, username = NULL, password = NULL,
-  accessKey = NULL, base.url = .cyndexBaseUrl)
+  accessKey = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{ndex.id}{Network \code{externalId} provided by NDEx. This is not the 

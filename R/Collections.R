@@ -54,7 +54,7 @@ getCollectionSuid <- function(network=NULL, base.url=.defaultBaseUrl){
 #' @export
 getCollectionName <- function(collection.suid=NULL, base.url=.defaultBaseUrl){
     if(is.null(collection.suid))
-        collection.suid <- getCollectionSuid()
+        collection.suid <- getCollectionSuid(base.url = base.url)
     res <- cyrestGET(paste('collections',collection.suid,'tables/default', sep="/"),
                      base.url = base.url)
     return(unname(unlist(res$rows)['name']))
@@ -76,7 +76,7 @@ getCollectionName <- function(collection.suid=NULL, base.url=.defaultBaseUrl){
 #' @export
 getCollectionNetworks <- function(collection.suid=NULL, base.url=.defaultBaseUrl){
     if(is.null(collection.suid))
-        collection.suid <- getCollectionSuid()
+        collection.suid <- getCollectionSuid(base.url = base.url)
     res <- cyrestGET(paste('collections',collection.suid,'subnetworks', sep="/"),
                      base.url = base.url)
     return(res)

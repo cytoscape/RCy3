@@ -1805,7 +1805,7 @@ test.fitContent = function ()
     title = 'test.fitContent'
     test.prep (title, F)
     
-    clearSelection (net.suid)
+    clearSelection ()
     selectNodes ('node 0', 'name')
     
     fitContent (selected.only = T)

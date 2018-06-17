@@ -41,7 +41,7 @@ setNodePropertyBypass <- function(node.names,
                                   bypass = TRUE,
                                   network = NULL,
                                   base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     node.SUIDs <-
@@ -106,7 +106,7 @@ clearNodePropertyBypass <-  function(node.names,
                                      visual.property,
                                      network = NULL,
                                      base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     node.SUIDs <-
@@ -158,7 +158,7 @@ setEdgePropertyBypass <- function(edge.names,
                                   bypass = TRUE,
                                   network = NULL,
                                   base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     edge.SUIDs <-
@@ -220,7 +220,7 @@ clearEdgePropertyBypass <- function(edge.names,
                                     visual.property,
                                     network = NULL,
                                     base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     edge.SUIDs <-
@@ -269,7 +269,7 @@ setNetworkPropertyBypass <- function(new.value,
                                      bypass = TRUE,
                                      network = NULL,
                                      base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     res <- cyrestPUT(paste("networks",
@@ -303,7 +303,7 @@ setNetworkPropertyBypass <- function(new.value,
 clearNetworkPropertyBypass <- function(visual.property,
                                        network = NULL,
                                        base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     res <- cyrestDELETE( paste("networks",
@@ -348,7 +348,7 @@ clearNetworkPropertyBypass <- function(visual.property,
 # calls Node and Edge vesions of set***PropteryBypass().
 #
 unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network,base.url)
     node.names <- getAllNodes(net.SUID, base.url)
     hidden.nodes <- c()
     for (n in node.names){
