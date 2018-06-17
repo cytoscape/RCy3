@@ -7,7 +7,7 @@ output:
   BiocStyle::html_document:
     toc_float: true
 vignette: >
-  %\VignetteIndexEntry{1. Overview of RCy3}
+  %\VignetteIndexEntry{1. Overview of RCy3 ~25 min}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
