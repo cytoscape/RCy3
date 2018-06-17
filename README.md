@@ -86,14 +86,16 @@ git checkout -b RELEASE_3_7 upstream/RELEASE_3_7
 Only bug fixes and documentation updates can be pushed to the official bioconductor release branch. After committing and pushing fixes to `master`, then:
 
 ```
-git checkout RELEASE_3_7
-git cherry-pick master
+git checkout origin RELEASE_3_7
+git cherry-pick master #for lastest commit
+# or git cherry-pick <commit number>
 # bump version in DESCRIPTION
 git add DESCRIPTION
 git commit -m 'version bump'
-git push
+git push origin RELEASE_3_7
+# double check changes, and then...
 git push upstream RELEASE_3_7
-git checkout master
+git checkout origin master
 ```
 
 https://bioconductor.org/developers/how-to/git/bug-fix-in-release-and-devel/
