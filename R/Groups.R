@@ -257,3 +257,23 @@ deleteGroup <- function(groups=NULL, groups.by.col='SUID',
                  base.url = base.url)
     
 }
+
+# ------------------------------------------------------------------------------
+# Parses all the possible list types and keywords accepted by Commands API.
+# If column designation is supported, simply provide a column name; otherwise
+# it is assumed to not be supported and returns a simple list. 
+.prepPostQueryLists <- function(cmd.list=NULL, cmd.by.col=NULL){
+    if (is.null(cmd.list)) {
+        cmd.list.ready = "selected" #need something here for edge selections to work
+    } else if (!is.null(cmd.by.col)) {
+        cmd.list.col = NULL
+        for (i in 1:length(cmd.list)) {
+            cmd.list.col[i] = paste(cmd.by.col, cmd.list[i], sep = ":")
+        }
+        cmd.list.ready = paste(cmd.list.col, collapse = ",")
+    } else {
+        cmd.list.ready = paste(cmd.list, collapse=",")
+    }
+    return(cmd.list.ready)
+}
+
