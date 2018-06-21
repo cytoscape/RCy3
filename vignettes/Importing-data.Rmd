@@ -54,7 +54,7 @@ You should now see a network with just over 300 nodes. If you look at the Node T
 You can import data into Cytoscape from any data.frame in R as long as it contains row.names (or an arbitrary column) that match a Node Table column in Cytoscape. In this example, we are starting with a network with yeast identifiers in the "name" column. We also have a CSV file with gene expression data values keyed by yeast identifiers here:
 ```{r}
 csv <- system.file("extdata","galExpData.csv", package="RCy3")
-data <- read.csv(csv, stringsAsFactors = F)
+data <- read.csv(csv, stringsAsFactors = FALSE)
 ```
 
 **Note: there may be times where your network and data identifers are of differet
