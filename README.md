@@ -19,11 +19,11 @@ ecosystem. We are beginning with a major refactor of RCy3 that includes:
 ## How to install
 **_Official bioconductor releases_ (recommended)**
 ```
-source("https://bioconductor.org/biocLite.R")
-biocLite("RCy3")
+install.packages("BiocManager")
+BiocManager::install("RCy3")
 ```
 
-_Unstable development code from this repo_ (at your own risk)
+_Development version from this repo_ (at your own risk)
 ```
 install.packages("devtools")
 library(devtools)
@@ -53,8 +53,10 @@ install.packages("roxygen2")
 library(devtools,roxygen2)
 devtools::install_github("AlexanderPico/docthis")
 library(docthis)
-BiocInstaller::biocLite('BiocStyle')
+BiocManager::install("BiocStyle")
 library(BiocStyle)
+BiocManager::install("BiocCheck")
+library(BiocCheck)
 install.packages("RUnit")
 library(RUnit)
 devtools::document()

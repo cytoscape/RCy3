@@ -22,8 +22,8 @@ This vignette will show you how to convert networks between graphNEL and Cytosca
 # Installation
 ```{r}
 if(!"RCy3" %in% installed.packages()){
-    source("https://bioconductor.org/biocLite.R")
-    biocLite("RCy3")
+    install.packages("BiocManager")
+    BiocManager::install("RCy3")
 }
 library(RCy3)
 ```
