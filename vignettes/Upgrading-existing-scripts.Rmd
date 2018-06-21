@@ -24,8 +24,8 @@ knitr::opts_chunk$set(
 # Installation
 ```{r}
 if(!"RCy3" %in% installed.packages()){
-    source("https://bioconductor.org/biocLite.R")
-    biocLite("RCy3")
+    install.packages("BiocManager")
+    BiocManager::install("RCy3")
 }
 library(RCy3)
 ```

@@ -24,14 +24,14 @@ knitr::opts_chunk$set(
 # Installation
 ```{r}
 if(!"RCy3" %in% installed.packages()){
-    source("https://bioconductor.org/biocLite.R")
-    biocLite("RCy3")
+    install.packages("BiocManager")
+    BiocManager::install("RCy3")
 }
 library(RCy3)
 
 if(!"ndexr" %in% installed.packages()){
-    source("https://bioconductor.org/biocLite.R")
-    biocLite("ndexr")
+    install.packages("BiocManager")
+    BiocManager::install("ndexr")
 }
 library(ndexr)
 ```

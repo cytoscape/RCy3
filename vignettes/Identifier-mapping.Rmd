@@ -27,8 +27,8 @@ lessons that may apply to your use cases.
 # Installation
 ```{r}
 if(!"RCy3" %in% installed.packages()){
-    source("https://bioconductor.org/biocLite.R")
-    biocLite("RCy3")
+    install.packages("BiocManager")
+    BiocManager::install("RCy3")
 }
 library(RCy3)
 ```
@@ -92,10 +92,12 @@ These are handy if you want to load the mappings yourself (see last example).*
 # Example: From proteins to genes
 For this next example, you'll need the STRING app to access the STRING database
 from within Cytoscape:
-```{r}
-installApp('STRING')  #only available in Cytoscape 3.7.0 and above
-```
-*If running an older version of Cytoscape, install the STRING app from http://apps.cytoscape.org/apps/stringapp*
+* Install the STRING app from https://apps.cytoscape.org/apps/stringapp
+
+#```{r}
+#available in Cytoscape 3.7.0 and above
+#installApp('STRING')  
+#```
 
 Now we can import protein interaction networks with a ton of annotations from
 the STRING database with a simple commandsGET function, like this:
@@ -137,10 +139,13 @@ source. Future versions of the WikiPathways app will provide pre-mapped columns
 to a single ID type. But in the meantime (and relevant to other use cases), **this
 example highlights how to handle a source of mixed identifier types.**
 
-```{r}
-installApp('WikiPathways')  #only available in Cytoscape 3.7.0 and above
-```
-*If running an older version of Cytoscape, install the WikiPathways app from http://apps.cytoscape.org/apps/wikipathways*
+* Install the WikiPathways app from https://apps.cytoscape.org/apps/wikipathway
+
+#```{r}
+#available in Cytoscape 3.7.0 and above
+#installApp('WikiPathways')  
+#```
+
 
 Now we can import an Apoptosis Pathway from WikiPathways. Either from the web
 site (https://wikipathways.org), or from the Network Search Tool in Cytoscape
