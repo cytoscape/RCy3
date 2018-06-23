@@ -42,7 +42,7 @@ cytoscapePing()
 # Always Start with a Network
 When importing data, you are actually performing a merge function of sorts, appending columns to nodes (or edges) that are present in the referenced network. Data that do not match elements in the network are effectively discarded upon import.
 
-So, in order to demonstrate data import, we first need to have a network. This command will import networks files in any of the supported formats (e.g., SIF, GML, XGMML, etc).
+So, in order to demonstrate data import, we first need to have a network. This command will import network files in any of the supported formats (e.g., SIF, GML, XGMML, etc).
 ```{r}
 sif <- system.file("extdata","galFiltered.sif",package="RCy3")
 importNetworkFromFile(sif)
@@ -57,7 +57,7 @@ csv <- system.file("extdata","galExpData.csv", package="RCy3")
 data <- read.csv(csv, stringsAsFactors = FALSE)
 ```
 
-**Note: there may be times where your network and data identifers are of differet
+**Note: there may be times where your network and data identifers are of different
 types. This calls for identifier mapping. RCy3 provides a function to perform
 ID mapping in Cytoscape:**
 ```{r}
