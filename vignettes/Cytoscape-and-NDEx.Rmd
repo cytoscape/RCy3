@@ -56,7 +56,7 @@ networks <- ndex_find_networks(ndexcon, "Breast Cancer")
 print(networks[,c("name","externalId","nodeCount","edgeCount")])
 ```
 
-That *print* statement provides nifty way to browse the search results. You'll notice that we got results that hit each of the search terms individually, thus including any pathway with "cancer" in the name. That's perhaps a bit too broad...
+That *print* statement provides a nifty way to browse the search results. You'll notice that we got results that hit each of the search terms individually, thus including any pathway with "cancer" in the name. That's perhaps a bit too broad...
 ```{r}
 networks <- ndex_find_networks(ndexcon, "BRCA")
 print(networks[,c("name","externalId","nodeCount","edgeCount")])
@@ -103,4 +103,4 @@ And if you decide to make a network available to the public at some point, you c
 updateNetworkInNDEx(user, pass, isPublic=TRUE)
 ```
 
-Viola! Now anyone can search or browse to find your network and then use it in their research together with the full history and attribution of your contributions to the network.
+Voila! Now anyone can search or browse to find your network and then use it in their research together with the full history and attribution of your contributions to the network.
