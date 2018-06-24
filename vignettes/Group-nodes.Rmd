@@ -1,5 +1,5 @@
 ---
-title: "RCy3 Group Nodes Vignette"
+title: "Group nodes"
 author: "by Mark Grimes"
 package: RCy3
 date: "`r Sys.Date()`"
@@ -9,7 +9,7 @@ output:
 #  pdf_document:
 #    toc: true 
 vignette: >
-  %\VignetteIndexEntry{10. RCy3 Group Nodes Vignette}
+  %\VignetteIndexEntry{10. Group nodes ~15 min}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

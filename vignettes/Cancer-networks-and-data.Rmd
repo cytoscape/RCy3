@@ -9,7 +9,7 @@ output:
 #  pdf_document:
 #    toc: true   
 vignette: >
-    %\VignetteIndexEntry{6. Cancer networks and data ~40 min}
+    %\VignetteIndexEntry{06. Cancer networks and data ~40 min}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
