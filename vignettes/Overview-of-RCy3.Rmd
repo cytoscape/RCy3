@@ -6,6 +6,8 @@ date: "`r Sys.Date()`"
 output: 
   BiocStyle::html_document:
     toc_float: true
+#  pdf_document:
+#    toc: true    
 vignette: >
   %\VignetteIndexEntry{1. Overview of RCy3 ~25 min}
   %\VignetteEngine{knitr::rmarkdown}
