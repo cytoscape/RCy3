@@ -9,7 +9,7 @@ output:
 #  pdf_document:
 #    toc: true 
 vignette: >
-  %\VignetteIndexEntry{8. Upgrading existing scripts ~15 min}
+  %\VignetteIndexEntry{08. Upgrading existing scripts ~15 min}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -9,7 +9,7 @@ output:
 #  pdf_document:
 #    toc: true 
 vignette: >
-  %\VignetteIndexEntry{7. Identifier mapping ~20 min}
+  %\VignetteIndexEntry{07. Identifier mapping ~20 min}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -9,7 +9,7 @@ output:
 #  pdf_document:
 #    toc: true 
 vignette: >
-  %\VignetteIndexEntry{4. Importing data ~5 min}
+  %\VignetteIndexEntry{04. Importing data ~5 min}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
