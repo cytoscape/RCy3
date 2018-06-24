@@ -68,7 +68,7 @@ createNetworkFromIgraph(ig,"myIgraph")
 ```
 
 # From Cytoscape to igraph 
-Inversely, you can use createIgraphFromNetwork() in RCy3 to retreive vertex (node) and edge data.frames to construct an igraph network. 
+Inversely, you can use createIgraphFromNetwork() in RCy3 to retrieve vertex (node) and edge data.frames to construct an igraph network. 
 
 ```{r}
 ig2 <- createIgraphFromNetwork("myIgraph")

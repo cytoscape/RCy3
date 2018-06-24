@@ -75,7 +75,7 @@ net.suid <- createNetworkFromDataFrames(netnodes.df, netedges.df, title=paste(pa
 layoutNetwork('force-directed defaultSpringCoefficient=0.00001 defaultSpringLength=50 defaultNodeMass=5')
 ```
 
-Note that for convinence the data frame has defined whether a node is a protein or a modification, and also defined the parent node for each modification. 
+Note that for convenience the data frame has defined whether a node is a protein or a modification, and also defined the parent node for each modification. 
 
 The function selectNodes looks by default for the node SUID, which can be retrieved by getTableColumns. Alternatively, the data frame can be used to distinguish proteins and modifications. 
 

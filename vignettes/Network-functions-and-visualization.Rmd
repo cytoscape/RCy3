@@ -53,7 +53,7 @@ lesmis <- system.file("extdata","lesmis.txt", package="RCy3")
 dataSet <- read.table(lesmis, header = FALSE, sep = "\t")
 ```
 
-Create a graph. Use simplyfy to ensure that there are no duplicated edges or self loops
+Create a graph. Use simplify to ensure that there are no duplicated edges or self loops
 ```{r}
 gD <- igraph::simplify(igraph::graph.data.frame(dataSet, directed=FALSE))
 ```
@@ -177,7 +177,7 @@ setNodeFontSizeDefault(20)
 setNodeLabelColorDefault('#000000')
 ```
 
-Viola! All done.
+Voila! All done.
 
 # Track versions for your records
 ```{r}

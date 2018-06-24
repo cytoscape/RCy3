@@ -99,13 +99,13 @@ Alternatively, you might want to start from a Bioconductor graphNEL object. Here
     createNetworkFromGraph (g, title='simple network', collection='GraphNEL Example')
 ``` 
 
-You should now the structure of this 4-node graph with a basic, default style. Fortunately, Cytoscape has some built-in rendering rules in which (and unless instructed otherwise) nodes and edges are rendered and a default (user-preference) layout algorithm is applied.
+You should now have the structure of this 4-node graph with a basic, default style. Fortunately, Cytoscape has some built-in rendering rules in which (and unless instructed otherwise) nodes and edges are rendered and a default (user-preference) layout algorithm is applied.
 
 ## Add node attributes
 
 We often know quite a lot about the nodes and edges in our graphs. By conveying this information visually, the graph will be easier to explore. For instance, we may know that protein A phosphorylates protein B, that A is a kinase and B a transcription factor, and that their mRNA expression (compared to a control) is a log2 fold change of 1.8 and 3.2 respectively. One of the core features of Cytoscape is visual styles, which allow you to specify how data values (e.g., `kinase', `transcription factor'; expression ratios) should be conveyed in the visual properties of the graph (e.g., node shape, node color or size).
 
-We continue with the simple 4-node graph, adding two kinds data values (`moleculeType' and `log2fc'). The easiest way to do this is via data.frames. However, you can also include attributes together with the original graph models as Bioconductor graphs, igraphs or data.frames and then use the provided *create* functions to create and load in a singel step (see *createNetworkFromGraph*,  *createNetworkFromIgraph* and *createNetworkFromDataFrames* functions). Check out the other vignettes for more exampls.
+We continue with the simple 4-node graph, adding two kinds data values (`moleculeType' and `log2fc'). The easiest way to do this is via data.frames. However, you can also include attributes together with the original graph models as Bioconductor graphs, igraphs or data.frames and then use the provided *create* functions to create and load in a single step (see *createNetworkFromGraph*,  *createNetworkFromIgraph* and *createNetworkFromDataFrames* functions). Check out the other vignettes for more exampls.
 
 ```{r}
     df <- data.frame (moleculeType=c('kinase','TF','cytokine','cytokine'),
@@ -115,7 +115,7 @@ We continue with the simple 4-node graph, adding two kinds data values (`molecul
     loadTableData (df)
 ``` 
 
-Note, that adding the attributes does not in itself cause the appearance of the graph to change. Such a change requires that you specify and apply visual style mappings, which will be explained in the *next* section. You can, however, examine these attributes in Cytoscape, using Cytoscape's the **Data Panel** to display data values associated with selected nodes immediately below the Cytoscape window.
+Note that adding the attributes does not in itself cause the appearance of the graph to change. Such a change requires that you specify and apply visual style mappings, which will be explained in the *next* section. You can, however, examine these attributes in Cytoscape, using Cytoscape's the **Data Panel** to display data values associated with selected nodes immediately below the Cytoscape window.
 
 
 ## Modifying the display:  defaults and mappings
@@ -141,7 +141,7 @@ Now we will add some visual mappings.  Let's map `moleculeType' to node shapes. 
     setNodeShapeMapping (column, values, shapes)
 ``` 
 
-The node shape mapping is an example of a *discrete* mapping, where a style is defined for each, discrete value.  This is useful for categorical data (like type) where there is only a limited set of possible values. This is in contast to the other two other types of mappings: *continous* and *passthrough*. In the case of expression values, for example, we will want to use *contiuous* mapping (e.g., to node color), defining a small set of control points, rather than an explicit color for each possible data value. Cytoscape will simply interpolate between the control points to provide a gradient of colors. Let's try that one now 
+The node shape mapping is an example of a *discrete* mapping, where a style is defined for each, discrete value.  This is useful for categorical data (like type) where there is only a limited set of possible values. This is in contast to the other two other types of mappings: *continuous* and *passthrough*. In the case of expression values, for example, we will want to use *continuous* mapping (e.g., to node color), defining a small set of control points, rather than an explicit color for each possible data value. Cytoscape will simply interpolate between the control points to provide a gradient of colors. Let's try that one now 
 
 ```{r}
     column <- 'log2fc'

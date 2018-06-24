@@ -81,7 +81,7 @@ commandsGET(string.cmd)
 
 # Interacting with Cytoscape 
 
-Now that we've got a couple networks into Cytoscape, let's see what we can go with them from R...
+Now that we've got a couple networks into Cytoscape, let's see what we can do with them from R...
 
 ## Get list of networks 
 ``` {r}
@@ -164,12 +164,12 @@ layoutNetwork('force-directed')
 
 ![](https://cytoscape.github.io/cytoscape-automation/for-scripters/R/data/img/ovc4.png){height=100%} 
 
-*Pro-tip*: don't forget to **setCurrentNetwork()** the correct parent network before getting table column data and making selections.
+*Pro-tip*: don't forget to **setCurrentNetwork()** to the correct parent network before getting table column data and making selections.
 
 # Visualizing data on networks
 
 ## Load datasets
-Downloaded TCGA data and preprocessed as R objects. Also available via each TCGA publication, e.g.:
+Downloaded TCGA data, preprocessed as R objects. Also available via each TCGA publication, e.g.:
  
 * Breast: https://tcga-data.nci.nih.gov/docs/publications/brca_2012/
 * Ovarian: https://tcga-data.nci.nih.gov/docs/publications/ov_2011/
@@ -183,7 +183,7 @@ load(system.file("extdata","tutorial-brc-mut-dataset.robj", package="RCy3"))
 
 
 ## Breast Cancer Datset
-These datasets are similar to the data frames you normarlly encounter in R. For diversity, one using row.names to store corresponding gene names and the other uses the first column. Both are easy to import into Cytoscape.
+These datasets are similar to the data frames you normally encounter in R. For diversity, one using row.names to store corresponding gene names and the other uses the first column. Both are easy to import into Cytoscape.
 ``` {r}
 str(brc.expr)  # gene names in row.names of data.frame
 str(brc.mut)  # gene names in column named 'Hugo_Symbol'
