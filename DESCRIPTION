@@ -1,8 +1,8 @@
 Package: RCy3
 Type: Package
 Title: Functions to Access and Control Cytoscape
-Version: 2.1.9
-Date: 2018-06-21
+Version: 2.1.10
+Date: 2018-06-24
 Author: Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 Maintainer: Alexander Pico <alex.pico@gladstone.ucsf.edu>, Tanja Muetze <tanja.muetze14@alumni.imperial.ac.uk>, Paul Shannon <pshannon@systemsbiology.org> 
 Depends: R (>= 3.4)
