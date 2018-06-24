@@ -6,6 +6,8 @@ date: "`r Sys.Date()`"
 output: 
   BiocStyle::html_document:
     toc_float: true
+#  pdf_document:
+#    toc: true 
 vignette: >
   %\VignetteIndexEntry{10. RCy3 Group Nodes Vignette}
   %\VignetteEncoding{UTF-8}
