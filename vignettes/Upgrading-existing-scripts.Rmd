@@ -74,7 +74,7 @@ It is always helpful to see examples. Here are a few of the most common chunks
 of RCy3 usage, provided in *BEFORE* and *AFTER* versions. If you have code
 similar to these in your pre-v2.0 scripts, then try these suggested swaps.
 
-**Note: don't run the *BEFORE* chunks with the latest RCy3 package**
+**Note: don't run the *BEFORE* chunks with the latest RCy3 package. These chunks are NOT meant to be run as a sequence, but rather as isolated examples.**
 
 ## Example: displayGraph
 

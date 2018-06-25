@@ -32,7 +32,14 @@ if(!"RCy3" %in% installed.packages()){
     BiocManager::install("RCy3")
 }
 library(RCy3)
+if(!"igraph" %in% installed.packages()){
+    install.packages("igraph")
+}
 library(igraph)
+if(!"plyr" %in% installed.packages()){
+    install.packages("plyr")
+}
+library(plyr)
 ```
 
 # Required Software
