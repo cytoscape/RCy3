@@ -98,7 +98,7 @@ from within Cytoscape:
 
 #```{r}
 #available in Cytoscape 3.7.0 and above
-#installApp('STRING')  
+#installApp('STRINGapp')  
 #```
 
 Now we can import protein interaction networks with a ton of annotations from
