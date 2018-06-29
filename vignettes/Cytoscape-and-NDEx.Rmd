@@ -92,17 +92,7 @@ And, now we send it off to NDEx.
 ```{r}
 user <- "your_NDEx_account_username"  #replace with your info
 pass <- "your_NDEx_account_password"  #replace with your info
-exportNetworkToNDEx(user, pass, isPublic=FALSE, network=net.suid)
-```
-
-If you make any changes to the network in Cytoscape and want to update NDEx, you can do the following.
-```{r}
-updateNetworkInNDEx(user, pass, isPublic=FALSE) #relying on default "current" network
-```
-
-And if you decide to make a network available to the public at some point, you can simply...
-```{r}
-updateNetworkInNDEx(user, pass, isPublic=TRUE)
+exportNetworkToNDEx(user, pass, isPublic=TRUE, network=net.suid)
 ```
 
 Voila! Now anyone can search or browse to find your network and then use it in their research together with the full history and attribution of your contributions to the network.

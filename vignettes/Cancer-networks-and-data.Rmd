@@ -29,6 +29,10 @@ if(!"RCy3" %in% installed.packages()){
     BiocManager::install("RCy3")
 }
 library(RCy3)
+
+if(!"RColorBrewer" %in% installed.packages()){
+    install.packages("RColorBrewer")
+}
 library(RColorBrewer)
 ```
 
