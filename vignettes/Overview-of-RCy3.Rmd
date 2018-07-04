@@ -227,6 +227,31 @@ RCy3 functions
 help(package=RCy3)
 ```
 
+
+| Category | Description | Examples |
+|------|----------------------------------------------------------------|------|
+| **Apps** | Inspecting and managing apps for Cytoscape. | _installApp() disableApp() getInstalledApps()_ |
+| **Collections** | Getting information about network collections. | _getCollectionList() getCollectionNetworks()_ |
+| **Commands** | Constructing any arbitrary CyREST API or Commands API method via standard GET, PUT, POST and DELETE protocols. | _cyrestPOST() commandsPOST() cyrestAPI() commandsAPI()_ |
+| **CyNDEx** | Communicating with NDEx from within Cytoscape. | _importNetworkFromNDEx() exportNetworkToNDEx()_ |
+| **Cytoscape System** | Checking Cytoscape System information, including versions and memory usage. | _cytoscapePing() cytoscapeVersionInfo()_ |
+| **Groups** | Working with groups in Cytoscape. | _createGroup() collapseGroup()_ |
+| **Layouts** | Performing layouts in addition to getting and setting layout properties. | _layoutNetwork() getLayoutNames()_ |
+| **Networks** | Functions for network management and retrieving information on networks, nodes and edges. | _createNetworkFrom...() create...FromNetwork() getNetworkSuid(), exportNetwork() getAllNodes() getAllEdges()_ |
+| **Network Selection** | Working with selection of nodes and edges in networks. | _selectNodes() invertNodeSelection() selectFirstNeighbors()_ |
+| **Network Views** | Performing view operations in addition to getting and setting view properties. | _getCurrentView() fitContent() exportImage() toggleGraphicsDetails()_ |
+| **Session** | Managing Cytoscape sessions, including save, open and close. | _openSession() saveSession() closeSession()_ |
+| **Style Bypasses** | Setting and clearing bypass values for visual properties. | _setNodeColorBypass() setEdgeLineStyleBypass() hideNodes()_ |
+| **Style Defaults** | Getting and setting default values for visual properties. | _setNodeShapeDefault() setEdgeLineWidthDefault()_ |
+| **Style Dependencies** | Getting and setting style dependencies. | _lockNodeDimensions()_ |
+| **Style Mappings** | Defining mappings between table column values and visual properties. | _setNodeSizeMapping() setEdgeColorMapping()_ |
+| **Styles** | Managing styles and retrieving general lists of properties relevant to multiple style modes. | _createVisualStyle() setVisualStyle() exportVisualStyles() getArrowShapes()_ |
+| **Style Values** | Retrieving current values for visual properties. | _getNodeWidth() getEdgeColor() getNetworkZoom()_ |
+| **Tables** | Managing table columns and table column functions, like map and rename, as well as loading and extracting table data in Cytoscape. | _getTableColumns() renameTableColumn() loadTableData() mapTableColumn()_ |
+| **Tools** | Functions related to actions found in the Tools Menu in Cytoscape. | _cybrowserDialog() diffusionBasic()_ |
+| **User Interface** | Functions affecting the Cytoscape user interface, such as panel management. | _hidePanel() floatPanel() dockPanel()_ |
+
+
 Open swagger docs for live instances of CyREST API and Commands API:
 ```{r}
 cyrestAPI()  # CyREST API
