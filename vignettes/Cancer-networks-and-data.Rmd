@@ -128,6 +128,7 @@ disease.score.table
 ### Plot distribution and pick threshold
 Now you can use R like you normally would explore the data.
 ```{r}
+par(mar=c(1,1,1,1))
 plot(factor(row.names(disease.score.table)),disease.score.table[,1], ylab=colnames(disease.score.table)[1])
 summary(disease.score.table)
 ```
