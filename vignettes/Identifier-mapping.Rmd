@@ -141,7 +141,7 @@ source. Future versions of the WikiPathways app will provide pre-mapped columns
 to a single ID type. But in the meantime (and relevant to other use cases), **this
 example highlights how to handle a source of mixed identifier types.**
 
-* Install the WikiPathways app from https://apps.cytoscape.org/apps/wikipathway
+* Install the WikiPathways app from https://apps.cytoscape.org/apps/wikipathways
 
 #```{r}
 #available in Cytoscape 3.7.0 and above
