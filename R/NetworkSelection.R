@@ -13,7 +13,8 @@
 #'
 #' @description If any nodes are selected in the network, they will be unselected.
 #' @param type 'nodes', 'edges' or 'both' (default)
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -64,8 +65,10 @@ clearSelection <-
 #'
 #' @description Select nodes directly connected to currently selected nodes. Can
 #' specify connection directionality using the direction param.
-#' @param direction direction of connections to neighbors to follow, e.g., incoming, outgoing, undirected, or any (default)
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param direction direction of connections to neighbors to follow, e.g., 
+#' incoming, outgoing, undirected, or any (default)
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -97,9 +100,12 @@ selectFirstNeighbors <-
 #'
 #' @description Select nodes in the network by SUID, name or other column values.
 #' @param nodes List of node SUIDs, names or other column values
-#' @param by.col Node table column to lookup up provide node values. Default is 'SUID'.
-#' @param preserve.current.selection \code{boolean} Whether to maintain previously selected nodes.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param by.col Node table column to lookup up provide node values. Default is 
+#' 'SUID'.
+#' @param preserve.current.selection \code{boolean} Whether to maintain 
+#' previously selected nodes.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -145,7 +151,8 @@ selectNodes <-
 #' Select all nodes
 #'
 #' @description Selects all nodes in a Cytoscape Network
-#' @param network name or suid of the network into which you want to select; default is "current" network
+#' @param network name or suid of the network into which you want to select; 
+#' default is "current" network
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -184,7 +191,8 @@ selectAllNodes <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @title Get Selected Node Count
 #'
 #' @description Returns the number of nodes currently selected in the network.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -210,7 +218,8 @@ getSelectedNodeCount <-
 #' @title Get Selected Nodes
 #'
 #' @description Retrieve the names of all the nodes selected in the network.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -247,7 +256,8 @@ getSelectedNodes <-
 #'
 #' @description Select all nodes that were not selected and deselect all nodes 
 #' that were selected.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -270,7 +280,8 @@ invertNodeSelection <-
 #' @title Delete Selected Nodes
 #'
 #' @description Delete currently selected nodes from the network.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -292,7 +303,8 @@ deleteSelectedNodes <-
 #'
 #' @description Takes currently selected edges and extends the selection to
 #' connected nodes, regardless of directionality.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -325,9 +337,12 @@ selectNodesConnectedBySelectedEdges <-
 #'
 #' @description Select edges in the network by SUID, name or other column values.
 #' @param edges List of edge SUIDs, names or other column values
-#' @param by.col Edge table column to lookup up provide edge values. Default is 'SUID'.
-#' @param preserve.current.selection \code{boolean} Whether to maintain previously selected edges.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param by.col Edge table column to lookup up provide edge values. Default is 
+#' 'SUID'.
+#' @param preserve.current.selection \code{boolean} Whether to maintain 
+#' previously selected edges.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -375,7 +390,8 @@ selectEdges <-
 #' Select all edges
 #'
 #' @description Selects all edges in a Cytoscape Network
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -413,7 +429,8 @@ selectAllEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
 #'
 #' @description Select all edges that were not selected and deselect all edges 
 #' that were selected.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -436,7 +453,8 @@ invertEdgeSelection <-
 #' @title Delete Selected Edges
 #'
 #' @description Delete the currently selected edges in the network.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -459,7 +477,8 @@ deleteSelectedEdges <-
 #' @title Get Selected Edge Count
 #'
 #' @description Returns the number of edges currently selected in the network.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -513,12 +532,14 @@ getSelectedEdges <-
 # ------------------------------------------------------------------------------
 #' Select the edges connecting selected nodes in Cytoscape Network
 #'
-#' @description Selects edges in a Cytoscape Network connecting the selected nodes
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @description Selects edges in a Cytoscape Network connecting the selected 
+#' nodes, including self loops connecting single nodes.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return network with edges selected
+#' @return Lists of SUIDs for selected nodes and edges
 #' @examples \dontrun{
 #' selectEdgesConnectingSelectedNodes()
 #' }
@@ -539,6 +560,8 @@ selectEdgesConnectingSelectedNodes <-
             unlist(mapply(function(x)
                 return(allEdges [endsWith(allEdges, x)]), selectedNodes))
         selectedEdges <- intersect(selectedSources, selectedTargets)
+        if (length(selectedEdges) == 0)
+            return()
         selectEdges(
             selectedEdges,
             by.col = 'name',
@@ -553,11 +576,12 @@ selectEdgesConnectingSelectedNodes <-
 #'
 #' @description Takes currently selected nodes and adds to the selection all edges
 #' connected to those nodes, regardless of directionality.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return Lists of SUIDs for currently selected nodes and edges
+#' @return Lists of SUIDs for selected nodes and edges
 #' @examples \donttest{
 #' selectEdgesAdjacentToSelectedNodes()
 #' }
@@ -577,4 +601,78 @@ selectEdgesAdjacentToSelectedNodes <-
         return(res)
     }
 
+# ------------------------------------------------------------------------------
+#' @title Delete Duplicate Edges
+#'
+#' @description Removes edges with duplicate names. Only considers cases with
+#' identical source, target, interaction and directionality.
+#' @details Duplicate edges are first selected and then deleted. Prior edge
+#' selections will be lost; node selections will not be affected.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Lists of SUIDs for selected nodes and edges
+#' @examples \donttest{
+#' deleteDuplicateEdges()
+#' }
+#' @export
+deleteDuplicateEdges <-
+    function(network = NULL, base.url = .defaultBaseUrl){
+        net.suid <- getNetworkSuid(network,base.url)
+        
+        allEdges <- getAllEdges(net.suid, base.url)
+        dupEdges <- unique(allEdges[duplicated(allEdges)])
+        
+        #get list of duplicate edge SUIDs to select and delete
+        dupEdgeSuids <- c()
+        for (de in dupEdges){
+            edgeSuids <- .edgeNameToEdgeSUID(de, network = net.suid, base.url = base.url)
+            if(length(edgeSuids) > 1)
+                dupEdgeSuids <- c(dupEdgeSuids, edgeSuids[-1]) #pick all by one
+        }    
+        
+        selectEdges(
+            dupEdgeSuids,
+            by.col = 'SUID',
+            preserve.current.selection = FALSE,
+            network = net.suid,
+            base.url = base.url
+        )
+        
+        deleteSelectedEdges(network = net.suid, base.url = base.url)
+    }
 
+
+# ------------------------------------------------------------------------------
+#' @title Delete Self Loops
+#'
+#' @description Removes edges that connect to a single node as both source and 
+#' target.
+#' @details Self loop edges are first selected and then deleted. Prior edge and 
+#' node selections will be lost.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Lists of SUIDs for selected nodes and edges
+#' @examples \donttest{
+#' deleteSelfLoops()
+#' }
+#' @export
+deleteSelfLoops <-
+    function(network = NULL, base.url = .defaultBaseUrl){
+        net.suid <- getNetworkSuid(network,base.url)
+        
+        clearSelection('both', net.suid, base.url)
+        allNodes <- getAllNodes(net.suid, base.url)
+        for (n in allNodes){
+            selectNodes(n, by.col='name', preserve.current.selection = FALSE,
+                        network = net.suid, base.url = base.url)
+            selectEdgesConnectingSelectedNodes()
+            deleteSelectedEdges(net.suid,base.url)
+        }    
+        clearSelection('both', net.suid, base.url)
+    }

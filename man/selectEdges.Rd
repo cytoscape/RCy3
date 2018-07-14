@@ -10,11 +10,14 @@ selectEdges(edges, by.col = "SUID", preserve.current.selection = TRUE,
 \arguments{
 \item{edges}{List of edge SUIDs, names or other column values}
 
-\item{by.col}{Edge table column to lookup up provide edge values. Default is 'SUID'.}
+\item{by.col}{Edge table column to lookup up provide edge values. Default is 
+'SUID'.}
 
-\item{preserve.current.selection}{\code{boolean} Whether to maintain previously selected edges.}
+\item{preserve.current.selection}{\code{boolean} Whether to maintain 
+previously selected edges.}
 
-\item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}
+\item{network}{(optional) Name or SUID of the network. Default is the 
+"current" network active in Cytoscape.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

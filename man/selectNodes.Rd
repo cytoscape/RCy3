@@ -10,11 +10,14 @@ selectNodes(nodes, by.col = "SUID", preserve.current.selection = TRUE,
 \arguments{
 \item{nodes}{List of node SUIDs, names or other column values}
 
-\item{by.col}{Node table column to lookup up provide node values. Default is 'SUID'.}
+\item{by.col}{Node table column to lookup up provide node values. Default is 
+'SUID'.}
 
-\item{preserve.current.selection}{\code{boolean} Whether to maintain previously selected nodes.}
+\item{preserve.current.selection}{\code{boolean} Whether to maintain 
+previously selected nodes.}
 
-\item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}
+\item{network}{(optional) Name or SUID of the network. Default is the 
+"current" network active in Cytoscape.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
