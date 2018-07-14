@@ -510,6 +510,7 @@ selectEdgesConnectingSelectedNodes <-
         selectedEdges <- intersect(selectedSources, selectedTargets)
         selectEdges(
             selectedEdges,
+            by.col = 'name',
             preserve.current.selection = FALSE,
             network = net.suid,
             base.url = base.url
