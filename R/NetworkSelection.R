@@ -287,6 +287,37 @@ deleteSelectedNodes <-
                      base.url = base.url)
     }
 
+# ------------------------------------------------------------------------------
+#' @title Select Nodes Connected By Selected Edges
+#'
+#' @description Takes currently selected edges and extends the selection to
+#' connected nodes, regardless of directionality.
+#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Lists of SUIDs for currently selected nodes and edges
+#' @examples \donttest{
+#' selectNodesConnectedBySelectedEdges()
+#' }
+#' @export
+selectNodesConnectedBySelectedEdges <-
+    function(network = NULL, base.url = .defaultBaseUrl) {
+        suid <- getNetworkSuid(network,base.url)
+        clearSelection(type = 'nodes', suid, base.url)
+        res <-
+            commandsPOST(
+                paste0(
+                    'network select extendEdges="true" edgeList="selected network="',
+                    suid,
+                    '"'
+                )
+            )
+        return(res)
+    }
+
+
+
 # ==============================================================================
 # II. Edge selection functions
 # ------------------------------------------------------------------------------
