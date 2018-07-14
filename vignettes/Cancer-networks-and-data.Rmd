@@ -66,7 +66,7 @@ Use Cytoscape to query the STRING database for networks of genes associated with
 ### Breast cancer
 ```{r}
 string.cmd = 'string disease query disease="breast cancer" cutoff=0.9 species="Homo sapiens" limit=150'
-commandsGET(string.cmd)
+commandsRun(string.cmd)
 ```
 Here we are using Cytoscape's command line syntax, which can be used for any core or app
 automation function, and then making a GET request. Use *commandsHelp* to interrogate 
@@ -78,7 +78,7 @@ apps you've installed!
 ### Ovarian cancer
 ```{r}
 string.cmd = 'string disease query disease="ovarian cancer" cutoff=0.9 species="Homo sapiens" limit=150'
-commandsGET(string.cmd)
+commandsRun(string.cmd)
 ```
 
 ![](https://cytoscape.github.io/cytoscape-automation/for-scripters/R/data/img/ovc.png){height=100%}
@@ -119,7 +119,7 @@ getTableColumnNames('node')
 One of the great things about the STRING database is all the node and edge attriubtes they provide. Let's pull some of it into R to play with...
 
 ### Retrieve disease scores 
-We can retrieve any set of columns from Cytoscape and store them as an R data frame.
+We can retrieve any set of columns from Cytoscape and store them as an R data frame keyed by SUID. In this case, let's retrieve the disease score column from the node table. Those will be our two parameters:
 ```{r}
 disease.score.table <- getTableColumns('node','disease score')
 disease.score.table
@@ -162,7 +162,7 @@ createSubnetwork('selected', subnetwork.name='top disease neighbors') # selected
 ```{r}
 setCurrentNetwork(network="String Network - ovarian cancer")
 selectNodes(nodes=top.nodes)
-commandsGET('diffusion diffuse') # diffusion!
+commandsPOST('diffusion diffuse') # diffusion!
 createSubnetwork('selected',subnetwork.name = 'top disease diffusion')
 layoutNetwork('force-directed')
 ```
@@ -212,13 +212,14 @@ Let's create a new style to visualize our imported data
 ...starting with the basics, we will specify a few defaults and obvious mappings in a custom style all our own.
 ```{r}
 style.name = "dataStyle"
-defaults.list <- list(NODE_SHAPE="ellipse",
-                 NODE_SIZE=60,
-                 NODE_FILL_COLOR="#AAAAAA",
-                 EDGE_TRANSPARENCY=120)
-node.label.map <- mapVisualProperty('node label','display name','p') # p for passthrough; nothing else needed
-createVisualStyle(style.name, defaults.list, list(node.label.map))
-setVisualStyle(style.name=style.name)
+createVisualStyle(style.name)
+setVisualStyle(style.name)
+
+setNodeShapeDefault("ellipse", style.name) #remember to specify your style.name!
+setNodeSizeDefault(60, style.name)
+setNodeColorDefault("#AAAAAA", style.name)
+setEdgeLineWidthDefault(2, style.name)
+setNodeLabelMapping('display name', style.name)
 ```
 
 #### Visualize expression data
@@ -268,7 +269,7 @@ Now, let's pull in what we learned about subnetwork selection and apply it here.
 top.mut <- (brc.mut$Hugo_Symbol)[tail(order(brc.mut$mut_count),2)]
 top.mut
 selectNodes(nodes=top.mut,'display name')
-commandsGET('diffusion diffuse') 
+commandsPOST('diffusion diffuse') 
 createSubnetwork('selected',subnetwork.name = 'top mutated diffusion')
 layoutNetwork('force-directed')
 ```
@@ -308,15 +309,10 @@ For example, notice in the case of ovarian cancer: **decreased** range of mean e
 ## Saving a Cytoscape session file
 Session files save *everything*. As with most project software, we recommend saving often!
 ```{r}
-saveSession('tutorial_session') #.cys
-```
-
-**Note:** If you don't specify a complete path, the files will be save relative to your Cytoscape installation directory, e.g., /Applications/Cytoscape_v3.6.0/... or somewhere you don't have write permissions. So, it's probably better to specify one...
-
-```{r}
 full.path=paste(getwd(),'tutorial_session',sep='/')
 saveSession(filename=full.path) #.cys
 ```
+**Note:** If you don't specify a complete path, the files will be save relative to your Cytoscape installation directory, e.g., /Applications/Cytoscape_v3.6.0/... or somewhere you don't have write permissions. 
 
 ## Saving high resolution image files
 You can export extremely high resolution images, including vector graphic formats.

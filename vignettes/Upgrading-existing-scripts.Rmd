@@ -39,7 +39,7 @@ In addition to this package (RCy3), you will need:
 
 # Big changes for RCy3
 Welcome to RCy3 v2.0! If you have been using prior versions of RCy3, then this is
-a big step. The fundamental change is that CytoscapeConnection and CytoscapeWindow classes are no longer used. These were pervasive arguments throughout the package in prior versions, so practically every function signature has changed. However, this change simplifies functions and in 99% of cases the old arg can simply be deleted.
+a big step. The fundamental change is that CytoscapeConnection and CytoscapeWindow classes are no longer used. These were pervasive arguments throughout the package in prior versions, so practically every function signature has changed. However, this change simplifies functions and in 99% of cases the old cw and cc args can simply be deleted.
 
 **Some summary stats regarding the changes:**
 
@@ -53,7 +53,7 @@ a big step. The fundamental change is that CytoscapeConnection and CytoscapeWind
 Going forward, this realignment will help us maintain the package in sync with changes to critical upstream resources such as Cytoscape’s CyREST API. It will also greatly simply script writing for users. We hope you'll stay onboard.
 
 # Where to start
-We documented this upgrade in a few different ways to help you upgrage existing 
+We documented this upgrade in a few different ways to help you update existing 
 scripts you don't want to leave behind and to adopt the new conceptual model 
 for RCy3 going forward.
 
@@ -84,6 +84,8 @@ g <- new ('graphNEL', edgemode='directed')
 g <- graph::addNode ('A', g)
 g <- graph::addNode ('B', g)
 g <- graph::addNode ('C', g)
+g <- graph::addEdge ('A', 'B', g)
+g <- graph::addEdge ('B', 'C', g)
 cw <- CytoscapeWindow ('vignette', graph=g, overwrite=TRUE)
 displayGraph (cw)
 layoutNetwork (cw, layout.name='grid')
@@ -95,6 +97,8 @@ g <- new ('graphNEL', edgemode='directed')
 g <- graph::addNode ('A', g)
 g <- graph::addNode ('B', g)
 g <- graph::addNode ('C', g)
+g <- graph::addEdge ('A', 'B', g)
+g <- graph::addEdge ('B', 'C', g)
 net.suid <- createNetworkFromGraph (g, 'vignette')
 ```
 
@@ -104,27 +108,27 @@ net.suid <- createNetworkFromGraph (g, 'vignette')
 ## Example: cyPlot
 *BEFORE*
 ```{r}
-node.df <- data.frame(id=c("node 0","node 1","node 2","node 3"),
+node.df <- data.frame(id=c("A","B","C","D"),
            stringsAsFactors=FALSE)
-edge.df <- data.frame(source=c("node 0","node 0","node 0","node 2"),
-           target=c("node 1","node 2","node 3","node 3"),
+edge.df <- data.frame(source=c("A","A","A","C"),
+           target=c("B","C","D","D"),
            interaction=c("inhibits","interacts","activates","interacts"),  # optional
            stringsAsFactors=FALSE)
 g <- cyPlot(node.df, edge.df)
-cw <- CytoscapeWindow("My Network", g)
+cw <- CytoscapeWindow("vignette2", g)
 displayGraph(cw)
 layoutNetwork(cw, "force-directed")
 ```
 
 *AFTER*
 ```{r}
-node.df <- data.frame(id=c("node 0","node 1","node 2","node 3"),
+node.df <- data.frame(id=c("A","B","C","D"),
            stringsAsFactors=FALSE)
-edge.df <- data.frame(source=c("node 0","node 0","node 0","node 2"),
-           target=c("node 1","node 2","node 3","node 3"),
+edge.df <- data.frame(source=c("A","A","A","C"),
+           target=c("B","C","D","D"),
            interaction=c("inhibits","interacts","activates","interacts"),  # optional
            stringsAsFactors=FALSE)
-net.suid <- createNetworkFromDataFrames (node.df, edge.df, "My Network")
+net.suid <- createNetworkFromDataFrames (node.df, edge.df, "vignette2")
 ```
 
 * Note: Same node and edge dataframes, except rather than having the key columns being positionally defined (for cyPlot), they need to be semantically defined using "id", "source", "target" and "interaction" (for createNetworkFromDataFrames)
@@ -140,18 +144,20 @@ g <- initNodeAttribute (graph=g,  'lfc', 'numeric', 0.0)
 nodeData (g, 'A', 'moleculeType') <- 'kinase'
 nodeData (g, 'B', 'moleculeType') <- 'TF'
 nodeData (g, 'C', 'moleculeType') <- 'cytokine'
+nodeData (g, 'D', 'moleculeType') <- 'cytokine'
 nodeData (g, 'A', 'lfc') <- -1.2
 nodeData (g, 'B', 'lfc') <- 1.8
 nodeData (g, 'C', 'lfc') <- 3.2
+nodeData (g, 'D', 'lfc') <- 2.2
 cw = setGraph (cw, g)
 displayGraph (cw) 
 ```
 
 *AFTER*
 ```{r}
-node.data <- data.frame(id=c('A','B','C'), 
-                        moleculeType=c('kinase','TF','cytokine'),
-                        lfc=c(-1.2, 1.8, 3.2),
+node.data <- data.frame(id=c('A','B','C','D'), 
+                        moleculeType=c('kinase','TF','cytokine','cytokine'),
+                        lfc=c(-1.2, 1.8, 3.2, 2.2),
                         stringsAsFactors = FALSE)
 loadTableData(node.data, 'id')
 ```
@@ -193,7 +199,7 @@ setNodeColorRule (cw, 'lfc', c (-3.0, 0.0, 3.0),
                   c ('#00AA00', '#00FF00', '#FFFFFF', '#FF0000', '#AA0000'),
                   mode='interpolate')
 control.points = c (-1.2, 2.0, 4.0)
-node.sizes     = c (10, 20, 50, 200, 205)
+node.sizes     = c (30, 40, 60, 80, 90)
 setNodeSizeRule (cw, 'lfc', control.points, node.sizes, mode='interpolate')
 ```
 
@@ -205,7 +211,7 @@ setNodeShapeMapping('moleculeType', attribute.values, node.shapes)
 setNodeColorMapping('lfc', c(-3.0, 0.0, 3.0),
                     c('#00AA00', '#00FF00', '#FFFFFF', '#FF0000', '#AA0000'))
 control.points = c (-1.2, 2.0, 4.0)
-node.sizes     = c (10, 20, 50, 200, 205)
+node.sizes     = c (30, 40, 60, 80, 90)
 setNodeSizeMapping('lfc',control.points, node.sizes)
 ```
 

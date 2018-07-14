@@ -79,5 +79,7 @@ Compare the round-trip result for yourself...
 ig
 ig2
 ```
+Note that a few additional attributes are present which are used by Cytoscape to
+support node/edge selection and network collections.
 
-**Note: All networks in Cytoscape are implicitly modeled as *directed*. This means that if you start with an *undirected* network in igraph and then convert it round-trip (like described above), then you will end up with a *directed* network.**
+**Also note: All networks in Cytoscape are implicitly modeled as *directed*. This means that if you start with an *undirected* network in igraph and then convert it round-trip (like described above), then you will end up with a *directed* network.**

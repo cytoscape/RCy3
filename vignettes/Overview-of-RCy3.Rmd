@@ -188,10 +188,10 @@ Now we wish to extend the selected nodes to include the first neighbors of the a
     selectFirstNeighbors ()
 ``` 
 
-You will see that three nodes are now selected. Get their SUID identifers back to R as a list:
+You will see that three nodes are now selected. Get their names back to R as a list:
 
 ```{r}
-    node.suids <- getSelectedNodes ()
+    node.names <- getSelectedNodes ()
 ``` 
 
 And, finally, deselection works as you'd expect by means of a general *clearSelection* function:
@@ -275,6 +275,13 @@ commandsHelp("help network select")
 
 That covers the basics of network manipulation. Check out the other vignettes for additional amd more complex examples. And when you are ready to work with some real data, check out the other basic and advanced R tutorials, https://github.com/cytoscape/cytoscape-automation/tree/master/for-scripters/R.
 
+# More examples
+Don't forget to check out the other vignettes in this package:
+```{r}
+browseVignettes("RCy3")
+```
+
+In addition, the Cytoscape team is collecting scripts from the community in a public GitHub repository at https://github.com/cytoscape/cytoscape-automation/tree/master/for-scripters/R.  
 
 # Development
 
