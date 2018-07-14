@@ -87,30 +87,34 @@ genes <- netnodes.df[grep("protein", netnodes.df$nodeType), "id"]
 #select by gene SUIDs
 geneSUIDs <- nodedata[grep("protein", nodedata$nodeType), 1]
 selectNodes(geneSUIDs, preserve.current.selection = FALSE)
-clearSelection()
+```
 
+```{r }
 # or by names in the "id" column
-selectNodes(genes, by.col="id", preserve.current.selection = FALSE)
-clearSelection()
+selectNodes(c("ALK","IRS1"), by.col="id", preserve.current.selection = FALSE)
+```
 
+```{r }
 # or by names based on dataframe subsetting
 modifications <- netnodes.df[grep("modification", netnodes.df$nodeType), "id"]
 selectNodes(modifications, by='id', pre=FALSE)
-clearSelection()
+```
 
+```{r }
 # Now select one protein and all its modifications
 deltacatnodes <- netnodes.df[grep("CTNND1", netnodes.df$Gene.Name), "id"]
 selectNodes(deltacatnodes, by.col="id", preserve=FALSE)
-
 ```
 
-Let's create a new group of the selected nodes and collapse it into one node, then expand it again.
-
+Let's create a new group of the selected nodes and collapse it into one node...
 ```{r Create a group.}
 createGroup("delta catenin group")
 collapseGroup("delta catenin group")
-expandGroup("delta catenin group")
+```
 
+...then expand it again.
+```{r}
+expandGroup("delta catenin group")
 ```
 
 For these data, we can create groups of all proteins together with their modifications. Here we name the groups by their gene names.
