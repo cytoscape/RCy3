@@ -4,8 +4,8 @@
 \alias{setEdgeLabelMapping}
 \title{Set Edge Label Mapping}
 \usage{
-setEdgeLabelMapping(table.column, style.name = "default", network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeLabelMapping(table.column, style.name = "default",
+  network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

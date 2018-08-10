@@ -4,8 +4,8 @@
 \alias{getTableColumns}
 \title{Get table column values}
 \usage{
-getTableColumns(table = "node", columns = NULL, namespace = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+getTableColumns(table = "node", columns = NULL,
+  namespace = "default", network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{table}{name of table, e.g., node (default), edge, network}

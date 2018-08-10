@@ -4,7 +4,8 @@
 \alias{getCollectionNetworks}
 \title{Get Collection Networks}
 \usage{
-getCollectionNetworks(collection.suid = NULL, base.url = .defaultBaseUrl)
+getCollectionNetworks(collection.suid = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{collection.suid}{DESCRIPTION}
