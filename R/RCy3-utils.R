@@ -29,7 +29,7 @@
         test <- sapply(node.names, function(x){x %in% dict[,'SUID']})
         if(all(test))  #provided SUIDs already!
             return(node.names)
-        node.SUIDs <- dict[which(dict$name  %in% node.names),'SUID']
+        node.SUIDs <- dict$SUID[match(node.names, dict$name)]
         return(node.SUIDs)
 }
 # ------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
         test <- sapply(node.suids, function(x){x %in% dict[,'name']})
         if(all(test)) #provided names already!
             return(node.suids)
-        node.names <- dict[which(dict$SUID  %in% node.suids),'name']
+        node.names <- dict$name[match(node.suids, dict$SUID)]
         return(node.names)
 }
 
@@ -47,7 +47,7 @@
 # Replaces edge names with SUIDs.
 .edgeNameToEdgeSUID<-function(edge.names, network=NULL, base.url=.defaultBaseUrl) {
         dict <- getTableColumns('edge',c('SUID','name'),'default',network, base.url)
-        edge.SUIDs <- dict[which(dict$name  %in% edge.names),'SUID']
+        edge.SUIDs <- dict$SUID[match(edge.names, dict$name)]
         return(edge.SUIDs)
 }
 
@@ -55,7 +55,7 @@
 # Replaces edge SUIDs with names.
 .edgeSUIDToEdgeName<-function(edge.suids, network=NULL, base.url=.defaultBaseUrl) {
         dict <- getTableColumns('edge',c('SUID','name'),'default',network, base.url)
-        edge.names <- dict[which(dict$SUID  %in% edge.suids),'name']
+        edge.names <- dict$name[match(edge.suids, dict$SUID)]
         return(edge.names)
 }
 
