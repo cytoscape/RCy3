@@ -4,7 +4,8 @@
 \alias{collapseGroup}
 \title{Collapse Group}
 \usage{
-collapseGroup(groups = NULL, network = NULL, base.url = .defaultBaseUrl)
+collapseGroup(groups = NULL, network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{groups}{(optional) List of group names or keywords: all, selected,

@@ -4,7 +4,8 @@
 \alias{getLayoutPropertyValue}
 \title{Get Layout Property Value}
 \usage{
-getLayoutPropertyValue(layout.name, property.name, base.url = .defaultBaseUrl)
+getLayoutPropertyValue(layout.name, property.name,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{layout.name}{(\code{character}) Name of the layout}

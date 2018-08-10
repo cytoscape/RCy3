@@ -4,7 +4,8 @@
 \alias{clearSelection}
 \title{Clear Selection}
 \usage{
-clearSelection(type = "both", network = NULL, base.url = .defaultBaseUrl)
+clearSelection(type = "both", network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{type}{'nodes', 'edges' or 'both' (default)}

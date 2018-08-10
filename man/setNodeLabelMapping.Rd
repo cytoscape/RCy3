@@ -4,8 +4,8 @@
 \alias{setNodeLabelMapping}
 \title{Set Node Label Mapping}
 \usage{
-setNodeLabelMapping(table.column, style.name = "default", network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeLabelMapping(table.column, style.name = "default",
+  network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

@@ -4,8 +4,8 @@
 \alias{setEdgePropertyBypass}
 \title{Set Edge Property Bypass}
 \usage{
-setEdgePropertyBypass(edge.names, new.values, visual.property, bypass = TRUE,
-  network = NULL, base.url = .defaultBaseUrl)
+setEdgePropertyBypass(edge.names, new.values, visual.property,
+  bypass = TRUE, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{edge.names}{List of edge names}

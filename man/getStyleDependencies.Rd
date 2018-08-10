@@ -4,7 +4,8 @@
 \alias{getStyleDependencies}
 \title{Get the values of dependencies in a style}
 \usage{
-getStyleDependencies(style.name = "default", base.url = .defaultBaseUrl)
+getStyleDependencies(style.name = "default",
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{style.name}{Name of style; default is "default" style}

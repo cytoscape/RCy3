@@ -68,8 +68,10 @@ Unit tests are a crucial tool in software development.
 In order to run them 'offline' (not on the Bioconductor build system),
 take these steps from within a running R session:
 
-  1) source(system.file("unitTests", "test_RCy3.R", package="RCy3"))
-  2) run.tests()
+```
+source(system.file("unitTests", "test_RCy3.R", package="RCy3"))
+run.tests()
+```
 
 They take about 4 minutes to run.
 

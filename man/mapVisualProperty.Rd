@@ -4,8 +4,9 @@
 \alias{mapVisualProperty}
 \title{Creates a mapping between an attribute and a visual property}
 \usage{
-mapVisualProperty(visual.prop, table.column, mapping.type, table.column.values,
-  visual.prop.values, network = NULL, base.url = .defaultBaseUrl)
+mapVisualProperty(visual.prop, table.column, mapping.type,
+  table.column.values, visual.prop.values, network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{visual.prop}{(char) name of visual property to map}

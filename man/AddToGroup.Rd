@@ -4,8 +4,9 @@
 \alias{AddToGroup}
 \title{Add to Group}
 \usage{
-AddToGroup(group.name, nodes = NULL, nodes.by.col = "SUID", edges = NULL,
-  edges.by.col = "SUID", network = NULL, base.url = .defaultBaseUrl)
+AddToGroup(group.name, nodes = NULL, nodes.by.col = "SUID",
+  edges = NULL, edges.by.col = "SUID", network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{group.name}{Specifies the name used to identify the group}
