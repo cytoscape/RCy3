@@ -2,6 +2,8 @@
 #-------------------------------------------------------------------------------
 library (RCy3)
 library (RUnit)
+library (graph)
+library (igraph)
 
 #-------------------------------------------------------------------------------
 run.tests = function()
@@ -1561,10 +1563,10 @@ test.createGraphFromNetwork = function ()
     
     g3 = createGraphFromNetwork() 
     
-    nlist = nodes(g3)
+    nlist = graph::nodes(g3)
     checkEquals(nlist, c("node 1","node 3","node 2","node 0","ab::cdxyz::1234,funky!?" ))
     
-    elist = edges(g3)
+    elist = graph::edges(g3)
     checkEquals(elist$`node 0`,c("node 1", "node 3", "node 2"))
     
 }
