@@ -780,9 +780,10 @@ setNodeShapeBypass <-
         # ensure correct node shapes
         new.shapes <- toupper(new.shapes)
         unique.node.shapes <- unique(new.shapes)
-        wrong.node.shape <- sapply(unique.node.shapes,
+        wrong.node.shape <- vapply(unique.node.shapes,
                                    function(x)
-                                       ! (x %in% getNodeShapes(base.url)))
+                                       ! (x %in% getNodeShapes(base.url)), 
+                                   logical(1))
         if (any(wrong.node.shape)) {
             write (
                 sprintf (
@@ -1679,9 +1680,9 @@ setEdgeLineStyleBypass <-
         unique.new.styles <- unique(new.styles)
         
         wrong.values <-
-            sapply(unique.new.styles, function(v) {
+            vapply(unique.new.styles, function(v) {
                 !(toupper(v) %in% getLineStyles(base.url))
-            })
+            }, logical(1))
         
         if (any(wrong.values)) {
             error.msg <-
@@ -1746,9 +1747,9 @@ setEdgeSourceArrowShapeBypass <-
         unique.new.shapes <- unique(new.shapes)
         
         wrong.values <-
-            sapply(unique.new.shapes, function(v) {
+            vapply(unique.new.shapes, function(v) {
                 !(toupper(v) %in% getArrowShapes(base.url))
-            })
+            }, logical(1))
         
         if (any(wrong.values)) {
             error.msg <-
@@ -1813,9 +1814,9 @@ setEdgeTargetArrowShapeBypass <-
         unique.new.shapes <- unique(new.shapes)
         
         wrong.values <-
-            sapply(unique.new.shapes, function(v) {
+            vapply(unique.new.shapes, function(v) {
                 !(toupper(v) %in% getArrowShapes(base.url))
-            })
+            }, logical(1))
         
         if (any(wrong.values)) {
             error.msg <-

@@ -317,8 +317,8 @@ loadTableData <- function(data,
     data.subset = data[filter, ]
     
     #remove troublesome factors
-    if (class(data.subset[, data.key.column]) == "factor")
-        data.subset[, data.key.column] = levels(droplevels(data.subset[, data.key.column]))
+    cols.with.factors <- sapply(data.subset, is.factor)
+    data.subset[cols.with.factors]<- lapply(data.subset[cols.with.factors], as.character)
     
     data.list <- c()
     for (i in 1:dim(data.subset)[1]) {
@@ -339,7 +339,7 @@ loadTableData <- function(data,
         
     # explicitly create columns for integer data, unless the column alread exists!
     existing.cols <- getTableColumnNames()
-    data.types <- sapply(data.subset, typeof)
+    data.types <- vapply(data.subset, typeof, character(1))
     for (i in 1:length(data.types)){
         if (data.types[i] == "integer" && !names(data.types[i]) %in% existing.cols){
             cyrestPOST(paste('networks',net.suid,'tables',tbl,'columns',sep='/'),

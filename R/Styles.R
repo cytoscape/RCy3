@@ -243,7 +243,7 @@ getNodeShapes <- function (base.url=.defaultBaseUrl) {
 getVisualPropertyNames <- function (base.url=.defaultBaseUrl) {
     res <- cyrestGET("styles/default/defaults", base.url = base.url)
     visual.properties <- unname(res[[1]])
-    visual.properties <- sapply(visual.properties, '[[', 1)
+    visual.properties <- vapply(visual.properties, '[[', character(1), 1)
     return(visual.properties)
 }
 

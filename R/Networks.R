@@ -739,8 +739,8 @@ createNetworkFromIgraph <- function(igraph,
         igedges$interaction <- unlist(lapply(igedges$interaction, as.character))
     
     #flatten all list types (until supported by createNetworkFromDataFrame)
-    ige.list.cols <- sapply(igedges, is.list)
-    ign.list.cols <- sapply(ignodes, is.list)
+    ige.list.cols <- vapply(igedges, is.list, logical(1))
+    ign.list.cols <- vapply(ignodes, is.list, logical(1))
     
     igedges = data.frame(lapply(igedges, unlist),stringsAsFactors = FALSE)
     ignodes = data.frame(lapply(ignodes, unlist),stringsAsFactors = FALSE)

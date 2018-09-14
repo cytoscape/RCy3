@@ -154,7 +154,7 @@ getLayoutNameMapping <- function(base.url=.defaultBaseUrl) {
 getLayoutPropertyNames <- function(layout.name, base.url = .defaultBaseUrl) {
     res <- cyrestGET(paste("apply/layouts", as.character(layout.name), "parameters/", sep="/"),base.url=base.url)
     layout.property.names <- unname(res)
-    return(sapply(layout.property.names, '[[', 1))
+    return(vapply(layout.property.names, '[[', character(1), 1))
 }
 
 # ------------------------------------------------------------------------------
@@ -177,9 +177,9 @@ getLayoutPropertyNames <- function(layout.name, base.url = .defaultBaseUrl) {
 getLayoutPropertyType <- function(layout.name, property.name, base.url = .defaultBaseUrl) {
     res <- cyrestGET(paste("apply/layouts", as.character(layout.name), "parameters/", sep="/"),base.url=base.url)
     layout.property.list <- unname(res)
-    layout.property.names <- sapply(layout.property.list, '[[', 1)
+    layout.property.names <- vapply(layout.property.list, '[[', character(1), 1)
     position <- layout.property.names == property.name
-    return(sapply(layout.property.list, '[[', 3)[position])
+    return(vapply(layout.property.list, '[[', character(1), 3)[position])
 }
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -202,9 +202,9 @@ getLayoutPropertyType <- function(layout.name, property.name, base.url = .defaul
 getLayoutPropertyValue <- function (layout.name, property.name, base.url = .defaultBaseUrl) {
     res <- cyrestGET(paste("apply/layouts", as.character(layout.name), "parameters", sep="/"),base.url = base.url)
     layout.property.list <- unname(res)
-    layout.property.names <- sapply(layout.property.list, '[[', 1)
+    layout.property.names <- vapply(layout.property.list, '[[', character(1), 1)
     position <- layout.property.names == property.name
-    return(sapply(layout.property.list, '[[', 4)[position])
+    return(sapply(layout.property.list, '[[', 4)[position]) #can't use vapply: various types of values returned
 }
 
 # ==============================================================================

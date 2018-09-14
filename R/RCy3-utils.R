@@ -26,7 +26,7 @@
 # Replaces node names with SUIDs.
 .nodeNameToNodeSUID<-function(node.names, network=NULL, base.url=.defaultBaseUrl) {
         dict <- getTableColumns('node',c('SUID','name'),'default',network, base.url)
-        test <- sapply(node.names, function(x){x %in% dict[,'SUID']})
+        test <- vapply(node.names, function(x){x %in% dict[,'SUID']}, logical(1))
         if(all(test))  #provided SUIDs already!
             return(node.names)
         node.SUIDs <- dict$SUID[match(node.names, dict$name)]
@@ -36,7 +36,7 @@
 # Replaces node SUIDs with names.
 .nodeSUIDToNodeName<-function(node.suids, network=NULL, base.url=.defaultBaseUrl) {
         dict <- getTableColumns('node',c('SUID','name'),'default',network, base.url)
-        test <- sapply(node.suids, function(x){x %in% dict[,'name']})
+        test <- vapply(node.suids, function(x){x %in% dict[,'name']}, logical(1))
         if(all(test)) #provided names already!
             return(node.suids)
         node.names <- dict$name[match(node.suids, dict$SUID)]
