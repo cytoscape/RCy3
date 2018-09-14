@@ -1,11 +1,11 @@
 Package: RCy3
 Type: Package
 Title: Functions to Access and Control Cytoscape
-Version: 2.1.19
-Date: 2018-08-10
+Version: 2.1.20
+Date: 2018-09-13
 Author: Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
 Maintainer: Alexander Pico <alex.pico@gladstone.ucsf.edu>, Tanja Muetze <tanja.muetze14@alumni.imperial.ac.uk>, Paul Shannon <pshannon@systemsbiology.org> 
-Depends: R (>= 3.4)
+Depends: R (>= 3.5)
 Imports: httr, methods, RJSONIO, XML, utils, BiocGenerics, igraph, stats, graph
 Suggests: RUnit, RColorBrewer, BiocStyle, knitr, rmarkdown
 SystemRequirements: Cytoscape (>= 3.6.0), CyREST (>= 3.6.0)

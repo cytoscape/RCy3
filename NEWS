@@ -1,95 +1,28 @@
-New in RCy3 v2.0
+New in RCy3 v2.2
 
-    New converter functions between Cytoscape and iGraph
-        createIgraphFromNetwork
-        createNetworkFromIgraph
-    New converter functions between Cytoscape and R data.frames
-        createNetworkFromDataFrames
-    New converter functions between Cytoscape and Bioconductor GraphNEL
-        createNetworkFromGraph
-        createGraphFromNetwork
-        addGraphToNetwork
-    Fixed visual style "Direct" functions to set persistent bypass values
-        setNodePropertyBypass
-        setEdgePropertyBypass
-        see all setNode***Bypass and setEdge***Bypass functions
-    Streamlined interfaces to CyREST and Commands API
-        cyrestGET
-        cyrestPUT
-        cyrestPOST
-        cyrestDELETE
-        cyrestAPI
-        commandsGET
-        commandsPOST
-        commandsAPI
-        commandsHelp
-    Optional network parameter supports calls to "current" or specified Cytoscape network by name or SUID
-    New functions for importing/exporting tabular data into/out of Cytoscape
-        getTableColumns
-        loadTableData
-    New function for batch setting visual style property mappings
-        mapVisualProperty
-    Access to Cytoscape System information
-        cytoscapeVersionInfo
-        cytoscapeApiVersions
-        cytoscapeNumberOfCores
-        cytoscapeMemoryStatus
-        cytoscapeFreeMemory
-    Updated layoutCopyCat feature
-    Update network management functions
-        createSubnetwork
-        cloneNetwork
-        renameNetwork
-        importNetworkFromFile
-    Updated selection features
-        selectFirstNeighbors
-        selectEdgesConnectingSelectedNodes
-        selectEdgesAdjacentToSelectedNodes
-    New Cytoscape session functions
-        openSession
-        closeSession
-    Overhauled visual style settings to match Cytoscape's Defaults, Mappings, and Bypasses
-    Added style dependency functions, in addition to lockNodeDimensions
-        matchArrowColorToEdge
-        syncNodeCustomGraphicsSize
-    New set of functions for retrieving current visual property Values for nodes, edges and networks.
-    New functions for network-level Visual Property Defaults, Bypasses and Values.
-    Streamlined data table loading and retrieval
-    New functions for installing and managing Cytoscape Apps, e.g.,
-        installApp
-        uninstallApp
-        udpateApp
-        getInstalledApps
-        getAvailableApps
-        getAppUpdates
-        getAppStatus
-    New functions for network Collections
-        getCollectionList
-        getCollectionName
-        getCollectionSuid
-        getCollectionNetworks
-    New functions for accessing NDEx via CyNDEx2
-        importNetworkFromNDEx
-        exportNetworkToNDEx
-        updateNetworkInNDEx
-        getNetworkNDExId
+    New functions to remove duplicate edges
+        deleteDuplicateEdges
+        deleteSelfLoops
+    New node selection function
+        selectNodesConnectedBySelectedEdges
+        
+Bug Fixes
 
+    selectEdgesConnectingSelectedNodes -- set default by.col = 'name'
+    setEdgeLineWidthMapping -- fixes input type
+    getGroupInfo -- works without collapsing first
+    getTableColumns -- work with List type columns
+    
 For Developers
 
-    Reorganized functions into files corresponding to CyREST API, e.g., Collections, CytoscapeSystem, Layouts, Networks, etc.
-    Normalized all documentation using roxygen2
-    Streamlined interfaces to CyREST and Commands API (see above), greatly facilitating the implementation of any new functions matching CyREST or Command API additions
-    Reverted all single-instance methods to simple functions, replacing class-based signatures with simple default values
-    Established handy functions for validating network and view SUIDs
-        getNetworkName
-        getNetworkSuid
-        getNetworkViewSuid
+    Updated many functions to properly pass the base.url parameter to functions like getNetworkSuid. 
+    Please be aware and vigilent about this with future development.
 
 Deprecated
 
-    Outdated function names
+    Nothing
 
 Defunct
 
-    CytoscapeConnection and CytoscapeWindow classes, functions and parameters
+    Previously deprecated functions from older version of the package
 
