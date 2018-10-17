@@ -338,7 +338,7 @@ setNodeCustomBarChart<-function(columns, type="GROUPED", colors=NULL,
     
     if (is.null(colors)){
         if (type %in% c("GROUPED","STACKED"))
-            colors<-.cyPalette('set1')[1:length(columns)]
+            colors<-rep(.cyPalette('set1'),length.out=length(columns))
         else if (type == "HEAT_STRIPS")
             colors<-.cyPalette('rdbu')[c(2,6,10)]
         else 
@@ -411,7 +411,7 @@ setNodeCustomBoxChart<-function(columns, colors=NULL,
                   cy_axisLabelFontSize = axisFontSize)
     
     if (is.null(colors))
-        colors<-.cyPalette('set1')[1:3]
+        colors<-rep(.cyPalette('set1'),length.out=length(columns))
     
     chart[['cy_colors']] <- colors
     chart[['cy_colorScheme']] <- "Custom"
@@ -549,7 +549,7 @@ setNodeCustomLineChart<-function(columns, colors=NULL,
                   cy_axisLabelFontSize = axisFontSize)
     
     if (is.null(colors))
-        colors<-.cyPalette('set1')[1:3]
+        colors<-rep(.cyPalette('set1'),length.out=length(columns))
     
     chart[['cy_colors']] <- colors
     chart[['cy_colorScheme']] <- "Custom"
@@ -602,7 +602,7 @@ setNodeCustomPieChart<-function(columns, colors=NULL,
                   cy_startAngle = startAngle)
     
     if (is.null(colors))
-        colors<-.cyPalette('set1')[1:length(columns)]
+        colors<-rep(.cyPalette('set1'),length.out=length(columns))
     
     chart[['cy_colors']] <- colors
     chart[['cy_colorScheme']] <- "Custom"
@@ -648,7 +648,7 @@ setNodeCustomRingChart<-function(columns, colors=NULL,
                   cy_holeSize = holeSize)
     
     if (is.null(colors))
-        colors<-.cyPalette('set1')[1:length(columns)]
+        colors<-rep(.cyPalette('set1'),length.out=length(columns))
     
     chart[['cy_colors']] <- colors
     chart[['cy_colorScheme']] <- "Custom"
