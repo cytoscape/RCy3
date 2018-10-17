@@ -349,12 +349,373 @@ setNodeCustomBarChart<-function(columns, type="GROUPED", colors=NULL,
     
     if (!is.null(range))
         chart[['cy_range']] <- range
-    
+    else{
+        cols<-getTableColumns(columns=columns, base.url = base.url)
+        min<-min(apply(na.omit(cols),2,min))
+        max<-max(apply(na.omit(cols),2,max))
+        chart[['cy_range']] <- c(min,max)
+    }
     
     style.string = list(visualProperty = vp, value = paste("org.cytoscape.BarChart",toJSON(chart),sep = ":"))
-    setVisualPropertyDefault(style.string, style.name)
+    setVisualPropertyDefault(style.string, style.name, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Custom Box Chart
+#'
+#' @description Makes a box chart per node using specified node table columns by
+#' setting a default custom graphic style.
+#' @param columns List of node column names to be displayed.
+#' @param colors (optional) List of colors to be matched with columns or with
+#' range, depending on type. Default is a set of colors from an appropriate 
+#' Brewer palette.
+#' @param range (optional) Min and max values of chart. Default is to use min
+#' and max from specified data columns.
+#' @param orientation (optional) HORIZONTAL or VERTICAL (default).
+#' @param rangeAxis (optional) Show axis with range of values. Default is FALSE.
+#' @param zeroLine (optional) Show a line at zero. Default is FALSE.
+#' @param axisWidth (optional) Width of axis lines, if shown. Default is 0.25.
+#' @param axisColor (optional) Color of axis lines, if shown. Default is black.
+#' @param axisFontSize (optional) Font size of axis labels, if shown. Default 
+#' is 1.
+#' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
+#' available for independent charts and images. Default is 1.
+#' @param style.name (optional) Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeCustomBoxChart(c("data1","data2","data3"))
+#' }
+#' @seealso setNodeCustomPosition
+#' @export
+#' @importFrom RJSONIO toJSON 
+setNodeCustomBoxChart<-function(columns, colors=NULL, 
+                                range=NULL, orientation="VERTICAL", 
+                                rangeAxis=FALSE, zeroLine=FALSE,
+                                axisWidth=0.25, axisColor = "#000000",
+                                axisFontSize=1, 
+                                slot=1, style.name='default', 
+                                base.url=.defaultBaseUrl){
+    if (!slot %in% seq(1:9))
+        stop ('slot must be an integer between 1 and 9')
+    vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
-   # return(style.string)
+    chart <- list(cy_dataColumns = columns,
+                  cy_orientation = orientation,
+                  cy_showRangeAxis = rangeAxis,
+                  cy_showRangeZeroBaseline = zeroLine,
+                  cy_axisWidth = axisWidth,
+                  cy_axisColor = axisColor,
+                  cy_axisLabelFontSize = axisFontSize)
+    
+    if (is.null(colors))
+        colors<-.cyPalette('set1')[1:3]
+    
+    chart[['cy_colors']] <- colors
+    chart[['cy_colorScheme']] <- "Custom"
+    
+    if (!is.null(range))
+        chart[['cy_range']] <- range
+    else{
+        cols<-getTableColumns(columns=columns, base.url = base.url)
+        min<-min(apply(na.omit(cols),2,min))
+        max<-max(apply(na.omit(cols),2,max))
+        chart[['cy_range']] <- c(min,max)
+    }
+    
+    style.string = list(visualProperty = vp, value = paste("org.cytoscape.BoxChart",toJSON(chart),sep = ":"))
+    setVisualPropertyDefault(style.string, style.name, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Custom HeatMap Chart
+#'
+#' @description Makes a heatmap chart per node using specified node table columns by
+#' setting a default custom graphic style.
+#' @param columns List of node column names to be displayed.
+#' @param colors (optional) List of colors to be matched with columns or with
+#' range, depending on type. Default is a set of colors from an appropriate 
+#' Brewer palette.
+#' @param range (optional) Min and max values of chart. Default is to use min
+#' and max from specified data columns.
+#' @param orientation (optional) VERTICAL or HORIZONTAL (default).
+#' @param rangeAxis (optional) Show axis with range of values. Default is FALSE.
+#' @param zeroLine (optional) Show a line at zero. Default is FALSE.
+#' @param axisWidth (optional) Width of axis lines, if shown. Default is 0.25.
+#' @param axisColor (optional) Color of axis lines, if shown. Default is black.
+#' @param axisFontSize (optional) Font size of axis labels, if shown. Default 
+#' is 1.
+#' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
+#' available for independent charts and images. Default is 1.
+#' @param style.name (optional) Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeCustomHeatMapChart(c("data1","data2","data3"))
+#' }
+#' @seealso setNodeCustomPosition
+#' @export
+#' @importFrom RJSONIO toJSON 
+setNodeCustomHeatMapChart<-function(columns, colors=NULL, 
+                                    range=NULL, orientation="HORIZONTAL", 
+                                    rangeAxis=FALSE, zeroLine=FALSE,
+                                    axisWidth=0.25, axisColor = "#000000",
+                                    axisFontSize=1, 
+                                    slot=1, style.name='default', 
+                                    base.url=.defaultBaseUrl){
+    if (!slot %in% seq(1:9))
+        stop ('slot must be an integer between 1 and 9')
+    vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
+    
+    chart <- list(cy_dataColumns = columns,
+                  cy_orientation = orientation,
+                  cy_showRangeAxis = rangeAxis,
+                  cy_showRangeZeroBaseline = zeroLine,
+                  cy_axisWidth = axisWidth,
+                  cy_axisColor = axisColor,
+                  cy_axisLabelFontSize = axisFontSize)
+    
+    if (is.null(colors))
+        colors<-c(.cyPalette('rdbu')[c(2,6,10)],"#888888")
+    
+    chart[['cy_colors']] <- colors
+    chart[['cy_colorScheme']] <- "Custom"
+    
+    if (!is.null(range))
+        chart[['cy_range']] <- range
+    else{
+        cols<-getTableColumns(columns=columns, base.url = base.url)
+        min<-min(apply(na.omit(cols),2,min))
+        max<-max(apply(na.omit(cols),2,max))
+        chart[['cy_range']] <- c(min,max)
+    }
+    
+    style.string = list(visualProperty = vp, value = paste("org.cytoscape.HeatMapChart",toJSON(chart),sep = ":"))
+    setVisualPropertyDefault(style.string, style.name, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Custom Line Chart
+#'
+#' @description Makes a line chart per node using specified node table columns by
+#' setting a default custom graphic style.
+#' @param columns List of node column names to be displayed.
+#' @param colors (optional) List of colors to be matched with columns or with
+#' range, depending on type. Default is a set of colors from an appropriate 
+#' Brewer palette.
+#' @param range (optional) Min and max values of chart. Default is to use min
+#' and max from specified data columns.
+#' @param lineWidth (optional) Width of chart line. Default is 1.0.
+#' @param rangeAxis (optional) Show axis with range of values. Default is FALSE.
+#' @param zeroLine (optional) Show a line at zero. Default is FALSE.
+#' @param axisWidth (optional) Width of axis lines, if shown. Default is 0.25.
+#' @param axisColor (optional) Color of axis lines, if shown. Default is black.
+#' @param axisFontSize (optional) Font size of axis labels, if shown. Default 
+#' is 1.
+#' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
+#' available for independent charts and images. Default is 1.
+#' @param style.name (optional) Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeCustomLineChart(c("data1","data2","data3"))
+#' }
+#' @seealso setNodeCustomPosition
+#' @export
+#' @importFrom RJSONIO toJSON 
+setNodeCustomLineChart<-function(columns, colors=NULL, 
+                                 range=NULL, lineWidth=1.0, 
+                                 rangeAxis=FALSE, zeroLine=FALSE,
+                                 axisWidth=0.25, axisColor = "#000000",
+                                 axisFontSize=1, 
+                                 slot=1, style.name='default', 
+                                 base.url=.defaultBaseUrl){
+    if (!slot %in% seq(1:9))
+        stop ('slot must be an integer between 1 and 9')
+    vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
+    
+    chart <- list(cy_dataColumns = columns,
+                  cy_lineWidth = lineWidth,
+                  cy_showRangeAxis = rangeAxis,
+                  cy_showRangeZeroBaseline = zeroLine,
+                  cy_axisWidth = axisWidth,
+                  cy_axisColor = axisColor,
+                  cy_axisLabelFontSize = axisFontSize)
+    
+    if (is.null(colors))
+        colors<-.cyPalette('set1')[1:3]
+    
+    chart[['cy_colors']] <- colors
+    chart[['cy_colorScheme']] <- "Custom"
+    
+    if (!is.null(range))
+        chart[['cy_range']] <- range
+    else{
+        cols<-getTableColumns(columns=columns, base.url = base.url)
+        min<-min(apply(na.omit(cols),2,min))
+        max<-max(apply(na.omit(cols),2,max))
+        chart[['cy_range']] <- c(min,max)
+    }
+    
+    style.string = list(visualProperty = vp, value = paste("org.cytoscape.LineChart",toJSON(chart),sep = ":"))
+    setVisualPropertyDefault(style.string, style.name, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Custom Pie Chart
+#'
+#' @description Makes a pie chart per node using specified node table columns by
+#' setting a default custom graphic style.
+#' @param columns List of node column names to be displayed.
+#' @param colors (optional) List of colors to be matched with columns or with
+#' range, depending on type. Default is a set of colors from an appropriate 
+#' Brewer palette.
+#' @param startAngle (optional) Angle to start filling pie. Default is 0.0.
+#' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
+#' available for independent charts and images. Default is 1.
+#' @param style.name (optional) Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeCustomPieChart(c("data1","data2","data3"))
+#' }
+#' @seealso setNodeCustomPosition
+#' @export
+#' @importFrom RJSONIO toJSON 
+setNodeCustomPieChart<-function(columns, colors=NULL, 
+                                 startAngle=0.0, 
+                                 slot=1, style.name='default', 
+                                 base.url=.defaultBaseUrl){
+    if (!slot %in% seq(1:9))
+        stop ('slot must be an integer between 1 and 9')
+    vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
+    
+    chart <- list(cy_dataColumns = columns,
+                  cy_startAngle = startAngle)
+    
+    if (is.null(colors))
+        colors<-.cyPalette('set1')[1:length(columns)]
+    
+    chart[['cy_colors']] <- colors
+    chart[['cy_colorScheme']] <- "Custom"
+    
+    style.string = list(visualProperty = vp, value = paste("org.cytoscape.PieChart",toJSON(chart),sep = ":"))
+    setVisualPropertyDefault(style.string, style.name, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Custom Ring Chart
+#'
+#' @description Makes a ring chart per node using specified node table columns by
+#' setting a default custom graphic style.
+#' @param columns List of node column names to be displayed.
+#' @param colors (optional) List of colors to be matched with columns or with
+#' range, depending on type. Default is a set of colors from an appropriate 
+#' Brewer palette.
+#' @param startAngle (optional) Angle to start filling ring Default is 0.0.
+#' @param holeSize (optional) Size of hole in ring. Ranges 0-1. Default is 0.5.
+#' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
+#' available for independent charts and images. Default is 1.
+#' @param style.name (optional) Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeCustomRingChart(c("data1","data2","data3"))
+#' }
+#' @seealso setNodeCustomPosition
+#' @export
+#' @importFrom RJSONIO toJSON 
+setNodeCustomRingChart<-function(columns, colors=NULL, 
+                                startAngle=0.0, holeSize = 0.5,
+                                slot=1, style.name='default', 
+                                base.url=.defaultBaseUrl){
+    if (!slot %in% seq(1:9))
+        stop ('slot must be an integer between 1 and 9')
+    vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
+    
+    chart <- list(cy_dataColumns = columns,
+                  cy_startAngle = startAngle,
+                  cy_holeSize = holeSize)
+    
+    if (is.null(colors))
+        colors<-.cyPalette('set1')[1:length(columns)]
+    
+    chart[['cy_colors']] <- colors
+    chart[['cy_colorScheme']] <- "Custom"
+    
+    style.string = list(visualProperty = vp, value = paste("org.cytoscape.RingChart",toJSON(chart),sep = ":"))
+    setVisualPropertyDefault(style.string, style.name)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Custom Position
+#'
+#' @description Adjust the position of a custom graphic relative to its node.
+#' @param nodeAnchor Position on node to place the graphic: NW,N,NE,E,SE,S,SW,W 
+#' or C for center (default)
+#' @param graphicAnchor Position on graphic to place on node: NW,N,NE,E,SE,S,SW,W 
+#' or C for center (default)
+#' @param justification Positioning of content within graphic: l,r,c (default)
+#' @param xOffset Additional offset in the x direction
+#' @param yOffset Additional offset in the y direction
+#' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
+#' available for independent charts and images. Default is 1.
+#' @param style.name (optional) Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeCustomPosition()
+#' }
+#' @export
+setNodeCustomPosition<-function(nodeAnchor="C", graphicAnchor="C", justification="c", 
+                                xOffset=0.0, yOffset=0.0, slot=1, style.name='default',
+                                base.url = .defaultBaseUrl){
+    if (!slot %in% seq(1:9))
+        stop ('slot must be an integer between 1 and 9')
+    vp<-paste('NODE_CUSTOMGRAPHICS_POSITION',as.character(slot),sep='_')
+    
+    
+    style.string = list(visualProperty = vp, value = paste(nodeAnchor,graphicAnchor,
+                                                           justification,xOffset,yOffset,
+                                                           sep = ","))
+    setVisualPropertyDefault(style.string, style.name, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Remove Node Custom Chart
+#'
+#' @description Remove the default custom graphics.
+#' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
+#' available for independent charts and images. Default is 1.
+#' @param style.name (optional) Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' removeNodeCustomChart()
+#' }
+#' @export
+removeNodeCustomChart<-function(slot=1, style.name='default',
+                                base.url = .defaultBaseUrl){
+    if (!slot %in% seq(1:9))
+        stop ('slot must be an integer between 1 and 9')
+    vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
+    
+    setVisualPropertyDefault(list(visualProperty = vp, value = NULL), 
+                             style.name, base.url = base.url)
 }
 
 # ==============================================================================

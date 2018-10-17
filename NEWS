@@ -18,6 +18,7 @@ New in RCy3 v2.2
         setNodeCustomPieChart
         setNodeCustomRingChart
         setNodeCustomPosition
+        removeNodeCustomChart
         
 Bug Fixes
 
