@@ -9,7 +9,29 @@
 # ==============================================================================
 # I. Perform layout functions
 # ------------------------------------------------------------------------------
-#' Apply a layout to a network
+#' @title Bundle Edges
+#'
+#' @description Apply edge bundling to the network specified. Edge bundling is 
+#' executed with default parameters; optional parameters are not supported.
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' bundleEdges()
+#' }
+#' @export
+bundleEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
+    suid <- getNetworkSuid(network,base.url)
+    
+    res<-cyrestGET(paste('apply/edgebundling',suid, sep='/'), base.url =  base.url)
+    invisible(res)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Apply a layout to a network
 #'
 #' @details Run \link{getLayoutNames} to list available layouts. 
 #' @param layout.name (\code{character}) Name of the layout (with optional parameters). 
@@ -39,7 +61,7 @@ layoutNetwork <- function(layout.name = NULL, network = NULL, base.url = .defaul
 }
 
 # ------------------------------------------------------------------------------
-#' Copy a layout from one network to another
+#' @title Copy a layout from one network to another
 #'
 #' @description Sets the coordinates for each node in the target network to the 
 #' coordinates of a matching node in the source network.
@@ -97,13 +119,13 @@ layoutCopycat <- function(sourceNetwork, targetNetwork, sourceColumn='name', tar
 #' }
 #' @export
 getLayoutNames <- function(base.url=.defaultBaseUrl) {
-    res <- cyrestGET(paste("apply/layouts", sep="/"),base.url=base.url)
+    res <- cyrestGET("apply/layouts",base.url=base.url)
     available.layouts <- unname(res)
     return(available.layouts)
 }
 
 # ------------------------------------------------------------------------------
-#' Get Layout Name Mapping
+#' @title Get Layout Name Mapping
 #' 
 #' @description The Cytoscape 'Layout' menu lists many layout algorithms, but the names presented 
 #' there are different from the names by which these algorithms are known to layout method. This 
@@ -135,7 +157,7 @@ getLayoutNameMapping <- function(base.url=.defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
-#' Get Layout Property Names
+#' @title Get Layout Property Names
 #' 
 #' @description Returns a list of the tunable properties for the specified layout.
 #' @details Run \link{getLayoutNames} to list available layouts.
@@ -158,7 +180,7 @@ getLayoutPropertyNames <- function(layout.name, base.url = .defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
-#' Get Layout Property Type
+#' @title Get Layout Property Type
 #' 
 #' @description Returns the type of one of the tunable properties (property.name) for the specified layout.
 #' @details Run \link{getLayoutNames} to list available layouts. Run \link{getLayoutPropertyNames} to list properties per layout.
@@ -183,7 +205,7 @@ getLayoutPropertyType <- function(layout.name, property.name, base.url = .defaul
 }
 
 #------------------------------------------------------------------------------------------------------------------------
-#' Get Layout Property Value
+#' @title Get Layout Property Value
 #' 
 #' @description Returns the appropriately typed value of the specified tunable property for the specified layout.
 #' @details Run \link{getLayoutNames} to list available layouts. Run \link{getLayoutPropertyNames} to list properties per layout.
@@ -210,7 +232,7 @@ getLayoutPropertyValue <- function (layout.name, property.name, base.url = .defa
 # ==============================================================================
 # III. Set layout properties
 #------------------------------------------------------------------------------------------------------------------------
-#' Set Layout Properties
+#' @title Set Layout Properties
 #' 
 #' @description Sets the specified properties for the specified layout. Unmentioned properties are left unchanged.
 #' @details Run \link{getLayoutNames} to list available layouts. Run \link{getLayoutPropertyNames} to list properties per layout.

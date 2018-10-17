@@ -5,6 +5,19 @@ New in RCy3 v2.2
         deleteSelfLoops
     New node selection function
         selectNodesConnectedBySelectedEdges
+    New visual style management functions
+        importVisualStyles
+        deleteVisualStyle
+    New edge bundling function
+        bundleEdges
+    New custom graphics options for nodes
+        setNodeCustomBarChart
+        setNodeCustomBoxChart
+        setNodeCustomHeatMapChart
+        setNodeCustomLineChart
+        setNodeCustomPieChart
+        setNodeCustomRingChart
+        setNodeCustomPosition
         
 Bug Fixes
 
@@ -24,5 +37,5 @@ Deprecated
 
 Defunct
 
-    Previously deprecated functions from older version of the package
+    Previously deprecated functions in v2.0 from older 1.x version of the package
 

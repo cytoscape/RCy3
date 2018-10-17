@@ -8,12 +8,15 @@ exportVisualStyles(filename = NULL, type = NULL, styles = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{filename}{(char) Name of the style file to save. Default is "styles.xml"}
+\item{filename}{(char) Path and name of the style file to save. Default is 
+"styles.xml"}
 
-\item{type}{(optional) Type of data file to export, e.g., XML, JSON (case sensitive). 
-Default is XML.}
+\item{type}{(optional) Type of data file to export, e.g., XML, JSON (case 
+sensitive). 
+Default is XML. Note: Only XML can be read by importVisualStyles().}
 
-\item{styles}{(optional) The styles to be exported, listed as a comma-separated string. 
+\item{styles}{(optional) The styles to be exported, listed as a 
+comma-separated string. 
 If no styles are specified, only the current one is exported.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
@@ -21,7 +24,7 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-None
+Path to saved file
 }
 \description{
 Save one or more visual styles to file.
@@ -32,4 +35,7 @@ exportVisualStyles('/fullpath/myStyle')
 exportVisualStyles('/fullpath/myStyle', type = 'JSON')
 exportVisualStyles('/fullpath/myStyle', style = 'Minimal,default,Directed')
 }
+}
+\seealso{
+importVisualStyles
 }

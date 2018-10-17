@@ -217,7 +217,8 @@ Session files save *everything*. As with most project software, we recommend sav
 You can export extremely high resolution images, including vector graphic formats.
 ```{r}
     full.path=paste(getwd(),'vignette_image',sep='/')
-    exportImage(filename=full.path, type = 'PDF') #.pdf
+    exportImage(full.path, 'PNG', zoom=200) #.png scaled by 200%
+    exportImage(full.path, 'PDF') #.pdf
     ?exportImage
 ```
 

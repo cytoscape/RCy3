@@ -259,7 +259,7 @@ getNodeSelectionColorDefault <- function(style.name='default', base.url=.default
 #'
 #' @description Set the default selection node color.
 #' @param new.color Color as hex code, e.g., #FD5903
-#' @param style.name Name of style; default is "default" style
+#' @param style.name (optional) Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -274,6 +274,87 @@ setNodeSelectionColorDefault <- function(new.color, style.name='default', base.u
     } 
     style = list(visualProperty = "NODE_SELECTED_PAINT", value = new.color) 
     setVisualPropertyDefault(style, style.name, base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Custom Bar Chart
+#'
+#' @description Makes a bar chart per node using specified node table columns by
+#' setting a default custom graphic style.
+#' @param columns List of node column names to be displayed, in order.
+#' @param type Type of bar chart: GROUPED (default), STACKED, HEAT_STRIPS, or UP_DOWN
+#' @param colors (optional) List of colors to be matched with columns or with
+#' range, depending on type. Default is a set of colors from an appropriate 
+#' Brewer palette.
+#' @param range (optional) Min and max values of chart. Default is to use min
+#' and max from specified data columns.
+#' @param orientation (optional) HORIZONTAL or VERTICAL (default).
+#' @param colAxis (optional) Show axis with column labels. Default is FALSE.
+#' @param rangeAxis (optional) Show axis with range of values. Default is FALSE.
+#' @param zeroLine (optional) Show a line at zero. Default is FALSE.
+#' @param axisWidth (optional) Width of axis lines, if shown. Default is 0.25.
+#' @param axisColor (optional) Color of axis lines, if shown. Default is black.
+#' @param axisFontSize (optional) Font size of axis labels, if shown. Default 
+#' is 1.
+#' @param separation (optional) Distance between bars. Default is 0.0.
+#' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
+#' available for independent charts and images. Default is 1.
+#' @param style.name (optional) Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeCustomBarChart(c("data1","data2","data3"))
+#' }
+#' @seealso setNodeCustomPosition
+#' @export
+#' @importFrom RJSONIO toJSON 
+setNodeCustomBarChart<-function(columns, type="GROUPED", colors=NULL, 
+                                range=NULL, orientation="VERTICAL", 
+                                colAxis=FALSE, rangeAxis=FALSE, zeroLine=FALSE,
+                                axisWidth=0.25, axisColor = "#000000",
+                                axisFontSize=1, separation=0.0,
+                                slot=1, style.name='default', 
+                                base.url=.defaultBaseUrl){
+    
+    if (!type %in% c('GROUPED','STACKED','HEAT_STRIPS','UP_DOWN'))
+        stop ('type must be one of the following: GROUPED, STACKED, HEAT_STRIPS, or UP_DOWN')
+    
+    if (!slot %in% seq(1:9))
+        stop ('slot must be an integer between 1 and 9')
+    vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
+    
+    chart <- list(cy_dataColumns = columns,
+                  cy_type = type,
+                  cy_orientation = orientation,
+                  cy_showDomainAxis = colAxis,
+                  cy_showRangeAxis = rangeAxis,
+                  cy_showRangeZeroBaseline = zeroLine,
+                  cy_axisWidth = axisWidth,
+                  cy_axisColor = axisColor,
+                  cy_axisLabelFontSize = axisFontSize,
+                  cy_separation = separation)
+    
+    if (is.null(colors)){
+        if (type %in% c("GROUPED","STACKED"))
+            colors<-.cyPalette('set1')[1:length(columns)]
+        else if (type == "HEAT_STRIPS")
+            colors<-.cyPalette('rdbu')[c(2,6,10)]
+        else 
+            colors<-.cyPalette('rdbu')[c(2,10)]
+    }
+    chart[['cy_colors']] <- colors
+    chart[['cy_colorScheme']] <- "Custom"
+    
+    if (!is.null(range))
+        chart[['cy_range']] <- range
+    
+    
+    style.string = list(visualProperty = vp, value = paste("org.cytoscape.BarChart",toJSON(chart),sep = ":"))
+    setVisualPropertyDefault(style.string, style.name)
+    
+   # return(style.string)
 }
 
 # ==============================================================================

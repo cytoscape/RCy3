@@ -10,7 +10,7 @@ setNodeSelectionColorDefault(new.color, style.name = "default",
 \arguments{
 \item{new.color}{Color as hex code, e.g., #FD5903}
 
-\item{style.name}{Name of style; default is "default" style}
+\item{style.name}{(optional) Name of style; default is "default" style}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

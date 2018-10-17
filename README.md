@@ -52,7 +52,7 @@ install.packages("devtools")
 install.packages("roxygen2") 
 library(devtools,roxygen2)
 devtools::install_github("AlexanderPico/docthis")
-library(docthis)
+library(docthis) #shift+cmd+D 
 BiocManager::install("BiocStyle")
 library(BiocStyle)
 BiocManager::install("BiocCheck")
@@ -89,21 +89,21 @@ http://bioconductor.org/developers/how-to/git/push-to-github-bioc/
 Following each bioconductor release, a `RELEASE_#_#` branch is created here:
 
 ```
-git checkout -b RELEASE_3_7 upstream/RELEASE_3_7
+git checkout -b RELEASE_3_8 upstream/RELEASE_3_8
 ```
 
 Only bug fixes and documentation updates can be pushed to the official bioconductor release branch. After committing and pushing fixes to `master`, then:
 
 ```
-git checkout RELEASE_3_7
+git checkout RELEASE_3_8
 git cherry-pick master #for lastest commit
 # or git cherry-pick <commit number> #for specific commit
 # bump version in DESCRIPTION
 git add DESCRIPTION
 git commit -m 'version bump'
-git push origin RELEASE_3_7
+git push origin RELEASE_3_8
 # double check changes, and then...
-git push upstream RELEASE_3_7
+git push upstream RELEASE_3_8
 git checkout master
 ```
 

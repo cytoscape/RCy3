@@ -96,24 +96,45 @@ createVisualStyle <- function(style.name, defaults, mappings, base.url=.defaultB
 }
 
 # ------------------------------------------------------------------------------
-#' Export Visual Styles
+#' @title Delete Visual Style
 #'
-#' @description Save one or more visual styles to file.
-#' @param filename (char) Name of the style file to save. Default is "styles.xml"
-#' @param type (optional) Type of data file to export, e.g., XML, JSON (case sensitive). 
-#' Default is XML.
-#' @param styles (optional) The styles to be exported, listed as a comma-separated string. 
-#' If no styles are specified, only the current one is exported.
+#' @description Deletes the specified visual style from current session.
+#' @param style.name (char) name of style to delete
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
+#' @examples \donttest{
+#' deleteVisualStyle("myStyle")
+#' }
+#' @export
+deleteVisualStyle<-function(style.name, base.url=.defaultBaseUrl){
+    cyrestDELETE(paste('styles',style.name, sep='/'), base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' Export Visual Styles
+#'
+#' @description Save one or more visual styles to file.
+#' @param filename (char) Path and name of the style file to save. Default is 
+#' "styles.xml"
+#' @param type (optional) Type of data file to export, e.g., XML, JSON (case 
+#' sensitive). 
+#' Default is XML. Note: Only XML can be read by importVisualStyles().
+#' @param styles (optional) The styles to be exported, listed as a 
+#' comma-separated string. 
+#' If no styles are specified, only the current one is exported.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Path to saved file
 #' @examples
 #' \donttest{
 #' exportVisualStyles('/fullpath/myStyle')
 #' exportVisualStyles('/fullpath/myStyle', type = 'JSON')
 #' exportVisualStyles('/fullpath/myStyle', style = 'Minimal,default,Directed')
 #' }
+#' @seealso importVisualStyles
 #' @export
 exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.defaultBaseUrl){
     cmd.string <- 'vizmap export'  # minmum command
@@ -125,6 +146,27 @@ exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.de
         cmd.string <- paste0(cmd.string,' styles="',styles,'"')
     commandsPOST(cmd.string, base.url = base.url)
 }
+
+# ------------------------------------------------------------------------------
+#' @title Import Visual Styles
+#'
+#' @description Loads styles from an XML file and returns the names of the 
+#' loaded styles.
+#' @param filename (char) Name of the style file to load. Only reads XML files.
+#' Default is "styles.xml".
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return (list) Names of styles loaded
+#' @examples \donttest{
+#' importVisualStyles()
+#' }
+#' @seealso exportVisualStyles
+#' @export
+importVisualStyles<-function(filename="styles.xml", base.url=.defaultBaseUrl){
+    cmd.string <- paste0('vizmap load file',' file="',filename,'"')
+    commandsPOST(cmd.string, base.url = base.url)
+    }
 
 # ------------------------------------------------------------------------------
 #' @title Get Visual Style Names
