@@ -22,7 +22,7 @@ or C for center (default)}
 \item{yOffset}{Additional offset in the y direction}
 
 \item{slot}{(optional) Which custom graphics slot to modify. Slots 1-9 are 
-available for independent charts and images. Default is 1.}
+available for independent charts, gradients and images. Default is 1.}
 
 \item{style.name}{(optional) Name of style; default is "default" style}
 

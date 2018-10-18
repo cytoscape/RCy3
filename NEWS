@@ -7,6 +7,7 @@ Changes in vesion 2.2.0
 + New visual style management functions
   - importVisualStyles
   - deleteVisualStyle
+  - deleteStyleMapping
 + New edge bundling function
   - bundleEdges
 + New custom graphics options for nodes
@@ -16,8 +17,10 @@ Changes in vesion 2.2.0
   - setNodeCustomLineChart
   - setNodeCustomPieChart
   - setNodeCustomRingChart
+  - setNodeCustomLinearGradient
+  - setNodeCustomRadialGradient
   - setNodeCustomPosition
-  - removeNodeCustomChart
+  - removeNodeCustomGraphics
 + Bug Fixes
   - selectEdgesConnectingSelectedNodes -- set default by.col = 'name'
   - setEdgeLineWidthMapping -- fixes input type

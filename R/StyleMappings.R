@@ -198,6 +198,37 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
     }
 }
 
+# ------------------------------------------------------------------------------
+#' @title Delete Style Mapping
+#'
+#' @description Deletes a specified visual style mapping from specified style.
+#' @param style.name (char) name for style
+#' @param visual.prop (char) name of visual property to map. 
+#' See getVisualPropertyNames().
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' deleteStyleMapping()
+#' }
+#' @export
+deleteStyleMapping<-function(style.name, visual.prop,  base.url=.defaultBaseUrl){
+    # check if vp exists already
+    res <- cyrestGET(paste('styles', style.name,'mappings',sep = '/')
+                     ,base.url=base.url)
+    vp.list <- lapply(res, function(x) unname(x['visualProperty'][[1]]))
+    if(visual.prop %in% vp.list){
+        exists = TRUE
+    } else {
+        exists = FALSE
+    }
+    
+    if(exists==TRUE){     
+        invisible(cyrestDELETE(paste('styles', style.name,'mappings',visual.prop, sep = '/'),
+                            base.url=base.url))
+    }
+}
 
 # ==============================================================================
 # II. Specific Functions

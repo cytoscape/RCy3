@@ -20,7 +20,7 @@ Brewer palette.}
 \item{holeSize}{(optional) Size of hole in ring. Ranges 0-1. Default is 0.5.}
 
 \item{slot}{(optional) Which custom graphics slot to modify. Slots 1-9 are 
-available for independent charts and images. Default is 1.}
+available for independent charts, gradients and images. Default is 1.}
 
 \item{style.name}{(optional) Name of style; default is "default" style}
 
@@ -41,5 +41,5 @@ setNodeCustomRingChart(c("data1","data2","data3"))
 }
 }
 \seealso{
-setNodeCustomPosition
+setNodeCustomPosition, removeNodeCustomGraphics
 }

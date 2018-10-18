@@ -298,7 +298,7 @@ setNodeSelectionColorDefault <- function(new.color, style.name='default', base.u
 #' is 1.
 #' @param separation (optional) Distance between bars. Default is 0.0.
 #' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
-#' available for independent charts and images. Default is 1.
+#' available for independent charts, gradients and images. Default is 1.
 #' @param style.name (optional) Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -307,9 +307,10 @@ setNodeSelectionColorDefault <- function(new.color, style.name='default', base.u
 #' @examples \donttest{
 #' setNodeCustomBarChart(c("data1","data2","data3"))
 #' }
-#' @seealso setNodeCustomPosition
+#' @seealso setNodeCustomPosition, removeNodeCustomGraphics
 #' @export
 #' @importFrom RJSONIO toJSON 
+#' @importFrom stats na.omit
 setNodeCustomBarChart<-function(columns, type="GROUPED", colors=NULL, 
                                 range=NULL, orientation="VERTICAL", 
                                 colAxis=FALSE, rangeAxis=FALSE, zeroLine=FALSE,
@@ -379,7 +380,7 @@ setNodeCustomBarChart<-function(columns, type="GROUPED", colors=NULL,
 #' @param axisFontSize (optional) Font size of axis labels, if shown. Default 
 #' is 1.
 #' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
-#' available for independent charts and images. Default is 1.
+#' available for independent charts, gradients and images. Default is 1.
 #' @param style.name (optional) Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -388,9 +389,10 @@ setNodeCustomBarChart<-function(columns, type="GROUPED", colors=NULL,
 #' @examples \donttest{
 #' setNodeCustomBoxChart(c("data1","data2","data3"))
 #' }
-#' @seealso setNodeCustomPosition
+#' @seealso setNodeCustomPosition, removeNodeCustomGraphics
 #' @export
-#' @importFrom RJSONIO toJSON 
+#' @importFrom RJSONIO toJSON  
+#' @importFrom stats na.omit
 setNodeCustomBoxChart<-function(columns, colors=NULL, 
                                 range=NULL, orientation="VERTICAL", 
                                 rangeAxis=FALSE, zeroLine=FALSE,
@@ -448,7 +450,7 @@ setNodeCustomBoxChart<-function(columns, colors=NULL,
 #' @param axisFontSize (optional) Font size of axis labels, if shown. Default 
 #' is 1.
 #' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
-#' available for independent charts and images. Default is 1.
+#' available for independent charts, gradients and images. Default is 1.
 #' @param style.name (optional) Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -457,9 +459,10 @@ setNodeCustomBoxChart<-function(columns, colors=NULL,
 #' @examples \donttest{
 #' setNodeCustomHeatMapChart(c("data1","data2","data3"))
 #' }
-#' @seealso setNodeCustomPosition
+#' @seealso setNodeCustomPosition, removeNodeCustomGraphics
 #' @export
 #' @importFrom RJSONIO toJSON 
+#' @importFrom stats na.omit 
 setNodeCustomHeatMapChart<-function(columns, colors=NULL, 
                                     range=NULL, orientation="HORIZONTAL", 
                                     rangeAxis=FALSE, zeroLine=FALSE,
@@ -517,7 +520,7 @@ setNodeCustomHeatMapChart<-function(columns, colors=NULL,
 #' @param axisFontSize (optional) Font size of axis labels, if shown. Default 
 #' is 1.
 #' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
-#' available for independent charts and images. Default is 1.
+#' available for independent charts, gradients and images. Default is 1.
 #' @param style.name (optional) Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -526,9 +529,10 @@ setNodeCustomHeatMapChart<-function(columns, colors=NULL,
 #' @examples \donttest{
 #' setNodeCustomLineChart(c("data1","data2","data3"))
 #' }
-#' @seealso setNodeCustomPosition
+#' @seealso setNodeCustomPosition, removeNodeCustomGraphics
 #' @export
-#' @importFrom RJSONIO toJSON 
+#' @importFrom RJSONIO toJSON  
+#' @importFrom stats na.omit
 setNodeCustomLineChart<-function(columns, colors=NULL, 
                                  range=NULL, lineWidth=1.0, 
                                  rangeAxis=FALSE, zeroLine=FALSE,
@@ -578,7 +582,7 @@ setNodeCustomLineChart<-function(columns, colors=NULL,
 #' Brewer palette.
 #' @param startAngle (optional) Angle to start filling pie. Default is 0.0.
 #' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
-#' available for independent charts and images. Default is 1.
+#' available for independent charts, gradients and images. Default is 1.
 #' @param style.name (optional) Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -587,7 +591,7 @@ setNodeCustomLineChart<-function(columns, colors=NULL,
 #' @examples \donttest{
 #' setNodeCustomPieChart(c("data1","data2","data3"))
 #' }
-#' @seealso setNodeCustomPosition
+#' @seealso setNodeCustomPosition, removeNodeCustomGraphics
 #' @export
 #' @importFrom RJSONIO toJSON 
 setNodeCustomPieChart<-function(columns, colors=NULL, 
@@ -623,7 +627,7 @@ setNodeCustomPieChart<-function(columns, colors=NULL,
 #' @param startAngle (optional) Angle to start filling ring Default is 0.0.
 #' @param holeSize (optional) Size of hole in ring. Ranges 0-1. Default is 0.5.
 #' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
-#' available for independent charts and images. Default is 1.
+#' available for independent charts, gradients and images. Default is 1.
 #' @param style.name (optional) Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -632,7 +636,7 @@ setNodeCustomPieChart<-function(columns, colors=NULL,
 #' @examples \donttest{
 #' setNodeCustomRingChart(c("data1","data2","data3"))
 #' }
-#' @seealso setNodeCustomPosition
+#' @seealso setNodeCustomPosition, removeNodeCustomGraphics 
 #' @export
 #' @importFrom RJSONIO toJSON 
 setNodeCustomRingChart<-function(columns, colors=NULL, 
@@ -658,6 +662,78 @@ setNodeCustomRingChart<-function(columns, colors=NULL,
 }
 
 # ------------------------------------------------------------------------------
+#' @title Set Node Custom Linear Gradient
+#'
+#' @description Makes a gradient fill per node by setting a default custom 
+#' graphic style.
+#' @param colors (optional) List of colors to define gradient
+#' @param anchors (optional) Position of colors from 0.0 to 1.0.
+#' @param angle (optional) Angle of gradient. Default is 0 (left-to-right).
+#' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
+#' available for independent charts, gradients and images. Default is 1.
+#' @param style.name (optional) Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeCustomLinearGradient()
+#' }
+#' @export
+setNodeCustomLinearGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0.0,1.0), angle=0.0, 
+                                      slot=1, style.name='default', 
+                                      base.url=.defaultBaseUrl){
+    if (!slot %in% seq(1:9))
+        stop ('slot must be an integer between 1 and 9')
+    vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
+    
+    chart <- list(cy_angle = angle,
+                  cy_gradientColors = colors,
+                  cy_gradientFractions = anchors)
+    
+    style.string = list(visualProperty = vp, value = paste("org.cytoscape.LinearGradient",toJSON(chart),sep = ":"))
+    setVisualPropertyDefault(style.string, style.name)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Custom Radial Gradient
+#'
+#' @description Makes a gradient fill per node by setting a default custom 
+#' graphic style.
+#' @param colors (optional) List of colors to define gradient
+#' @param anchors (optional) Position of colors from 0.0 to 1.0.
+#' @param xCenter (optional) X position for center of radial effect from 0.0 
+#' to 1.0. Default is 0.5.
+#' @param yCenter (optional) Y position for center of radial effect from 0.0 
+#' to 1.0. Default is 0.5.
+#' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
+#' available for independent charts, gradients and images. Default is 1.
+#' @param style.name (optional) Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeCustomRadialGradient()
+#' }
+#' @export
+setNodeCustomRadialGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0.0,1.0), 
+                                      xCenter=0.5, yCenter=0.5, 
+                                      slot=1, style.name='default', 
+                                      base.url=.defaultBaseUrl){
+    if (!slot %in% seq(1:9))
+        stop ('slot must be an integer between 1 and 9')
+    vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
+    
+    chart <- list(cy_gradientColors = colors,
+                  cy_gradientFractions = anchors,
+                  cy_center = list(x = xCenter,
+                                   y = yCenter))
+    
+    style.string = list(visualProperty = vp, value = paste("org.cytoscape.RadialGradient",toJSON(chart),sep = ":"))
+    setVisualPropertyDefault(style.string, style.name)
+}
+# ------------------------------------------------------------------------------
 #' @title Set Node Custom Position
 #'
 #' @description Adjust the position of a custom graphic relative to its node.
@@ -669,7 +745,7 @@ setNodeCustomRingChart<-function(columns, colors=NULL,
 #' @param xOffset Additional offset in the x direction
 #' @param yOffset Additional offset in the y direction
 #' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
-#' available for independent charts and images. Default is 1.
+#' available for independent charts, gradients and images. Default is 1.
 #' @param style.name (optional) Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -694,21 +770,21 @@ setNodeCustomPosition<-function(nodeAnchor="C", graphicAnchor="C", justification
 }
 
 # ------------------------------------------------------------------------------
-#' @title Remove Node Custom Chart
+#' @title Remove Node Custom Graphics
 #'
-#' @description Remove the default custom graphics.
+#' @description Remove the default custom charts, images and gradients.
 #' @param slot (optional) Which custom graphics slot to modify. Slots 1-9 are 
-#' available for independent charts and images. Default is 1.
+#' available for independent charts, gradients and images. Default is 1.
 #' @param style.name (optional) Name of style; default is "default" style
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' removeNodeCustomChart()
+#' removeNodeCustomGraphics()
 #' }
 #' @export
-removeNodeCustomChart<-function(slot=1, style.name='default',
+removeNodeCustomGraphics<-function(slot=1, style.name='default',
                                 base.url = .defaultBaseUrl){
     if (!slot %in% seq(1:9))
         stop ('slot must be an integer between 1 and 9')

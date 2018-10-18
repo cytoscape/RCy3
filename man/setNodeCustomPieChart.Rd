@@ -17,7 +17,7 @@ Brewer palette.}
 \item{startAngle}{(optional) Angle to start filling pie. Default is 0.0.}
 
 \item{slot}{(optional) Which custom graphics slot to modify. Slots 1-9 are 
-available for independent charts and images. Default is 1.}
+available for independent charts, gradients and images. Default is 1.}
 
 \item{style.name}{(optional) Name of style; default is "default" style}
 
@@ -38,5 +38,5 @@ setNodeCustomPieChart(c("data1","data2","data3"))
 }
 }
 \seealso{
-setNodeCustomPosition
+setNodeCustomPosition, removeNodeCustomGraphics
 }
