@@ -21,6 +21,12 @@ Changes in vesion 2.2.0
   - setNodeCustomRadialGradient
   - setNodeCustomPosition
   - removeNodeCustomGraphics
++ New filter functions
+  - applyFilter
+  - createColumnFilter
+  - createDegreeFilter
+  - exportFilters
+  - importFilters
 + Bug Fixes
   - selectEdgesConnectingSelectedNodes -- set default by.col = 'name'
   - setEdgeLineWidthMapping -- fixes input type
