@@ -24,9 +24,12 @@ Changes in vesion 2.2.0
 + New filter functions
   - applyFilter
   - createColumnFilter
+  - createCompositeFilter
   - createDegreeFilter
+  - getFilterList
   - exportFilters
   - importFilters
++ Improved speed on bulk node and edge property bypasses
 + Bug Fixes
   - selectEdgesConnectingSelectedNodes -- set default by.col = 'name'
   - setEdgeLineWidthMapping -- fixes input type
@@ -34,6 +37,8 @@ Changes in vesion 2.2.0
   - getTableColumns -- work with List type columns
 + For Developers
   - Updated many functions to properly pass the base.url parameter to functions like getNetworkSuid. Please be aware and vigilent about this with future development.
+  - Adopted use of seq_len(). Please be aware and vigilent.
+  - Replaced all but one case of sapply() with vapply().
 + Deprecated
   - Nothing
 + Defunct
