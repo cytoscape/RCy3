@@ -53,13 +53,17 @@ getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
 getNetworkViewSuid <- function(network = NULL, base.url = .defaultBaseUrl) {
 
     if (is.character(network)) {
-        #network name (or "current") provided, return first view
-        getNetworkViews(network,base.url)[1]
+        #network name (or "current") provided, warn if multiple view
+        if(length(getNetworkViews(network,base.url))>1)
+            message("Warning: This network has multiple views. Returning last.")
+        tail(getNetworkViews(network,base.url),n=1)
     } else if (is.numeric(network)) {
         #suid provided, but network or view?
         net.suids <- cyrestGET('networks', base.url = base.url)
-        if (network %in% net.suids){ # network SUID, return first view
-            getNetworkViews(network,base.url)[1]
+        if (network %in% net.suids){ # network SUID, warn if multiple view
+            if(length(getNetworkViews(network,base.url))>1)
+                message("Warning: This network has multiple views. Returning last.")
+            tail(getNetworkViews(network,base.url),n=1)
         } else{
             view.suids <- unlist(lapply(net.suids, function(x) getNetworkViews(x,base.url)))
             if (network %in% view.suids){ # view SUID, return it
@@ -71,7 +75,10 @@ getNetworkViewSuid <- function(network = NULL, base.url = .defaultBaseUrl) {
      } else {
         #use current network, return first view
         network.title = 'current'
-        getNetworkViews(network,base.url)[1]
+        #warn if multiple view
+        if(length(getNetworkViews(network,base.url))>1)
+            message("Warning: This network has multiple views. Returning last.")
+        tail(getNetworkViews(network,base.url),n=1)
     }
 }
 
@@ -98,9 +105,9 @@ fitContent <- function(selected.only=FALSE, network=NULL,
                        base.url =.defaultBaseUrl) {
     view.SUID <- getNetworkViewSuid(network,base.url)
     if(selected.only){
-        commandsPOST(paste0('view fit selected view=SUID:"',view.SUID,'"'), base.url = base.url)
+        commandsPOST(paste0('view fit selected view=SUID:',view.SUID), base.url = base.url)
     } else {
-        commandsPOST(paste0('view fit content view=SUID:"',view.SUID,'"'), base.url = base.url)
+        commandsPOST(paste0('view fit content view=SUID:',view.SUID), base.url = base.url)
     }
 }
 
