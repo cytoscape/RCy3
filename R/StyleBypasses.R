@@ -67,21 +67,23 @@ setNodePropertyBypass <- function(node.names,
         )
         return()
     } else {
-        for (i in 1:length(node.SUIDs)) {
-            node.SUID <- as.character(node.SUIDs[i])
+        body.list <- {}
+        for (i in seq_len(length(node.SUIDs))) {
+            node.SUID <- node.SUIDs[i]
             new.value <- new.values[i]
-            res <- cyrestPUT(paste("networks",
-                                   net.SUID,
-                                   "views",
-                                   view.SUID,
-                                   "nodes",
-                                   node.SUID,
-                                   sep = "/"),
-                             parameters = list(bypass=bypass),
-                             body = list(list(visualProperty = visual.property,
-                                              value = new.value)),
-                             base.url = base.url)
+            body.list <- c(body.list, list(list(SUID=node.SUID,
+                            view=list(list(visualProperty = visual.property,
+                                      value = new.value)))))
         }
+        res <- cyrestPUT(paste("networks",
+                               net.SUID,
+                               "views",
+                               view.SUID,
+                               "nodes",
+                               sep = "/"),
+                         parameters = list(bypass=bypass),
+                         body = body.list,
+                         base.url = base.url)    
     }
 }
 # ------------------------------------------------------------------------------
@@ -112,7 +114,7 @@ clearNodePropertyBypass <-  function(node.names,
     node.SUIDs <-
         .nodeNameToNodeSUID(node.names, network=net.SUID, base.url=base.url)
     
-    for (i in 1:length(node.SUIDs)) {
+    for (i in seq_len(length(node.SUIDs))) {
         node.SUID <- as.character(node.SUIDs[i])
         res <- cyrestDELETE( paste("networks",
                                    net.SUID,
@@ -180,22 +182,23 @@ setEdgePropertyBypass <- function(edge.names,
             stderr()
         )
     } else {
-        for (i in 1:length(edge.SUIDs)) {
-            edge.SUID <- as.character(edge.SUIDs[i])
-            current.value <- new.values[i]
-            
-            res <- cyrestPUT(paste( "networks",
-                                    net.SUID,
-                                    "views",
-                                    view.SUID,
-                                    "edges",
-                                    edge.SUID,
-                                    sep = "/"),
-                             parameters = list(bypass=bypass),
-                             body = list(list(visualProperty = visual.property,
-                                              value = current.value)),
-                             base.url = base.url)
+        body.list <- {}
+        for (i in seq_len(length(edge.SUIDs))) {
+            edge.SUID <- edge.SUIDs[i]
+            new.value <- new.values[i]
+            body.list <- c(body.list, list(list(SUID=edge.SUID,
+                                                view=list(list(visualProperty = visual.property,
+                                                               value = new.value)))))
         }
+        res <- cyrestPUT(paste("networks",
+                               net.SUID,
+                               "views",
+                               view.SUID,
+                               "edges",
+                               sep = "/"),
+                         parameters = list(bypass=bypass),
+                         body = body.list,
+                         base.url = base.url)    
     }
 }
 # ------------------------------------------------------------------------------
@@ -226,7 +229,7 @@ clearEdgePropertyBypass <- function(edge.names,
     edge.SUIDs <-
         .nodeNameToNodeSUID(edge.names, network=net.SUID, base.url=base.url)
     
-    for (i in 1:length(edge.SUIDs)) {
+    for (i in seq_len(length(edge.SUIDs))) {
         edge.SUID <- as.character(edge.SUIDs[i])
         res <- cyrestDELETE(paste( "networks",
                                    net.SUID,
@@ -350,22 +353,15 @@ clearNetworkPropertyBypass <- function(visual.property,
 unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network,base.url)
     node.names <- getAllNodes(net.SUID, base.url)
-    hidden.nodes <- c()
-    for (n in node.names){
-        if (!getNodeProperty(n, "NODE_VISIBLE"))
-            hidden.nodes <- c(hidden.nodes, n)
-    }
-    if (length(hidden.nodes) > 0)
-        clearNodePropertyBypass(hidden.nodes, "NODE_VISIBLE", network=net.SUID, base.url=base.url)
+
+    if (length(node.names) > 0)
+        setNodePropertyBypass(node.names, 'true', "NODE_VISIBLE", network=network, base.url=base.url)
+        #clearNodePropertyBypass(hidden.nodes, "NODE_VISIBLE", network=net.SUID, base.url=base.url)
     
     edge.names <- getAllEdges(net.SUID, base.url)
-    hidden.edges <- c()
-    for (e in edge.names){
-        if (!getEdgeProperty(e, "EDGE_VISIBLE"))
-            hidden.edges <- c(hidden.edges, e)
-    }
-    if (length(hidden.edges) > 0)
-        clearEdgePropertyBypass(hidden.edges, "EDGE_VISIBLE", network=net.SUID, base.url=base.url)
+    if (length(edge.names) > 0)
+        setEdgePropertyBypass(edge.names, 'true', "EDGE_VISIBLE", network=network, base.url=base.url)
+        #clearEdgePropertyBypass(hidden.edges, "EDGE_VISIBLE", network=net.SUID, base.url=base.url)
 }
 
 # ==============================================================================
@@ -1273,7 +1269,8 @@ unhideNodes <-
     function(node.names,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        clearNodePropertyBypass(node.names, "NODE_VISIBLE", network=network, base.url=base.url)
+        setNodePropertyBypass(node.names, 'true', "NODE_VISIBLE", network=network, base.url=base.url)
+        #clearNodePropertyBypass(node.names, "NODE_VISIBLE", network=network, base.url=base.url)
     }
 
 # ==============================================================================
@@ -2087,7 +2084,8 @@ hideEdges <- function (edge.names, network=NULL, base.url = .defaultBaseUrl) {
 #' }
 #' @export
 unhideEdges <- function (edge.names, network=NULL, base.url = .defaultBaseUrl) {
-    clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network=network, base.url=base.url)
+    setEdgePropertyBypass(edge.names, 'true', "EDGE_VISIBLE", network=network, base.url=base.url)
+    #clearEdgePropertyBypass(edge.names, "EDGE_VISIBLE", network=network, base.url=base.url)
 } 
 
 # ==============================================================================
