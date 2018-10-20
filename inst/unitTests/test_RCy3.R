@@ -125,6 +125,9 @@ run.tests = function()
     test.createGraphFromNetwork ()
     test.createNetworkFromSelection ()
     
+    test.customGraphics()
+    test.Filters()
+    
     options('warn'=0)
     
 } # run.tests
@@ -1545,13 +1548,13 @@ test.createIgraphFromNetwork = function ()
     ig = createIgraphFromNetwork()
     
     vatts = get.vertex.attribute(ig)
-    checkEquals(vatts$name, c("node 1","node 3","node 2","node 0","ab::cdxyz::1234,funky!?" ) )
-    checkEqualsNumeric(vatts$score,c(10,5, 15, 20,  0))
-    checkEquals(vatts$group,c("A","B","B","A","none"))
+    checkEquals(sort(vatts$name), sort(c("node 1","node 3","node 2","node 0","ab::cdxyz::1234,funky!?" )) )
+    checkEqualsNumeric(sort(vatts$score),sort(c(10,5, 15, 20,  0)))
+    checkEquals(sort(vatts$group),sort(c("A","B","B","A","none")))
     
     eatts = get.edge.attribute(ig)
-    checkEquals(eatts$name, c("node 2 (interacts) node 3", "node 0 (inhibits) node 1",  "node 0 (interacts) node 2", "node 0 (activates) node 3"))
-    checkEqualsNumeric(eatts$weight, c(9.9, 5.1, 3.0, 5.2))
+    checkEquals(sort(eatts$name), sort(c("node 2 (interacts) node 3", "node 0 (inhibits) node 1",  "node 0 (interacts) node 2", "node 0 (activates) node 3")))
+    checkEqualsNumeric(sort(eatts$weight), sort(c(9.9, 5.1, 3.0, 5.2)))
     
 }
 #-------------------------------------------------------------------------------
@@ -1564,10 +1567,10 @@ test.createGraphFromNetwork = function ()
     g3 = createGraphFromNetwork() 
     
     nlist = graph::nodes(g3)
-    checkEquals(nlist, c("node 1","node 3","node 2","node 0","ab::cdxyz::1234,funky!?" ))
+    checkEquals(sort(nlist), sort(c("node 1","node 3","node 2","node 0","ab::cdxyz::1234,funky!?" )))
     
     elist = graph::edges(g3)
-    checkEquals(elist$`node 0`,c("node 1", "node 3", "node 2"))
+    checkEquals(sort(elist$`node 0`),sort(c("node 1", "node 3", "node 2")))
     
 }
 #-------------------------------------------------------------------------------
@@ -1582,4 +1585,162 @@ test.createNetworkFromSelection = function ()
     createSubnetwork('selected', subnetwork.name = 'test.createNetworkFromSelection')
     
     checkEqualsNumeric(getNodeCount(),3)
+}
+
+#-------------------------------------------------------------------------------
+test.customGraphics = function ()
+{
+    title = 'test.customGraphics'
+    test.prep (title, F)
+    
+    openSession()
+    checkEqualsNumeric(getNodeCount(),330)
+    
+    # set canvas
+    selectNodes("Gal2", by.col="COMMON")
+    #selectFirstNeighbors()
+    fitContent(TRUE)
+    setNetworkZoomBypass(4)
+    clearSelection()
+    setNodeColorDefault("#FFFFFF")
+    setNodeLabelMapping("COMMON")
+    setNodeBorderWidthDefault(1)
+    setVisualStyle('default')
+    
+    # paint!
+    mycols<-c("gal1RGexp","gal4RGexp","gal80Rexp")
+    setNodeCustomBarChart(mycols, slot=7)
+    setNodeCustomBarChart(mycols, "STACKED", slot=7)
+    setNodeCustomBarChart(mycols, "HEAT_STRIPS", slot=7)
+    setNodeCustomBarChart(mycols, "UP_DOWN", slot=7)
+        setNodeCustomPosition("NW","SE", slot=7)
+    commandSleep(1)
+    
+    setNodeCustomBoxChart(mycols, slot=2)
+    setNodeCustomBoxChart(mycols, slot=2, rangeAxis = TRUE,
+                          zeroLine = TRUE,axisWidth = 1,
+                          axisColor = "#888888", axisFontSize = 3)
+    setNodeCustomPosition("N","S", slot=2)
+    commandSleep(1)
+    
+    setNodeCustomHeatMapChart(mycols, slot=3)
+    setNodeCustomHeatMapChart(mycols, slot=3, orientation = "VERTICAL")
+    setNodeCustomHeatMapChart(mycols, slot=3, orientation = "HORIZONTAL")
+    setNodeCustomPosition("NE","SW", slot=3)
+    commandSleep(1)
+    
+    setNodeCustomLineChart(mycols, slot=4)
+    setNodeCustomLineChart(mycols, slot=4, axisWidth = 1,
+                           axisFontSize = 3, axisColor = "#888888",
+                           rangeAxis = TRUE, zeroLine = TRUE)
+    setNodeCustomPosition("SW","NE", slot=4)
+    commandSleep(1)
+    
+    setNodeCustomPieChart(mycols, slot=5)
+    setNodeCustomPieChart(mycols, slot=5, startAngle = 45)
+    setNodeCustomPieChart(mycols, slot=5, startAngle = 90)
+    setNodeCustomPieChart(mycols, slot=5, startAngle = 180)
+    setNodeCustomPieChart(mycols, slot=5, startAngle = 360)
+    setNodeCustomPosition("S","N", slot=5)
+    commandSleep(1)
+    
+    setNodeCustomRingChart(mycols, slot=6)
+    setNodeCustomRingChart(mycols, slot=6, holeSize = .1)
+    setNodeCustomRingChart(mycols, slot=6, holeSize = .25)
+    setNodeCustomRingChart(mycols, slot=6, holeSize = .5)
+    setNodeCustomRingChart(mycols, slot=6, holeSize = .75)
+    setNodeCustomPosition("SE","NW", slot=6)
+    commandSleep(1)
+    
+    setNodeCustomLinearGradient() #NOTE: gradients only work in slot 1
+    setNodeCustomLinearGradient(c("#660088","#EE99FF","#AA00DD"), c(0,0,1))
+    setNodeCustomLinearGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.2,1))
+    setNodeCustomLinearGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.4,1))
+    setNodeCustomLinearGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.6,1))
+    setNodeCustomLinearGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.8,1))
+    setNodeCustomLinearGradient(c("#660088","#EE99FF","#AA00DD"), c(0,1,1))
+    setNodeCustomLinearGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.6,1), angle = 0)
+    setNodeCustomLinearGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.6,1), angle = 45)
+    setNodeCustomLinearGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.6,1), angle = 90)
+    commandSleep(1)
+
+    setNodeCustomRadialGradient()    
+    setNodeShapeDefault("ELLIPSE")
+    lockNodeDimensions(TRUE)
+    setNodeCustomRadialGradient(c("#660088","#EE99FF","#AA00DD"), c(0,0,1))
+    setNodeCustomRadialGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.2,1))
+    setNodeCustomRadialGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.4,1))
+    setNodeCustomRadialGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.6,1))
+    setNodeCustomRadialGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.8,1))
+    setNodeCustomRadialGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.2,1), 
+                                xCenter = .5, yCenter = .5)
+    setNodeCustomRadialGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.2,1), 
+                                xCenter = .7, yCenter = .3)
+    setNodeCustomRadialGradient(c("#660088","#EE99FF","#AA00DD"), c(0,.2,1), 
+                                xCenter = .9, yCenter = .1)
+    
+    setNetworkZoomBypass(2)
+    commandSleep(1)
+    setNetworkZoomBypass(1)
+    commandSleep(1)
+    setNetworkZoomBypass(.5)
+    commandSleep(1)
+    fitContent()
+    commandSleep(1)
+    
+    removeNodeCustomGraphics(slot=2)
+    removeNodeCustomGraphics(slot=3)
+    removeNodeCustomGraphics(slot=4)
+    removeNodeCustomGraphics(slot=5)
+    removeNodeCustomGraphics(slot=6)
+    removeNodeCustomGraphics(slot=7)
+    removeNodeCustomGraphics()
+    
+}
+
+#-------------------------------------------------------------------------------
+test.Filters = function ()
+{
+    setNetworkZoomBypass(0.6)
+    # COLUMN FILTERS ON NODES
+    sel<-createColumnFilter('gal4RGexp-up', 'gal4RGexp', 2, "GREATER_THAN")
+    checkTrue(is.na(sel$nodes[1]))
+    sel<-createColumnFilter('gal4RGexp-dn', 'gal4RGexp', 0, "LESS_THAN")
+    checkEqualsNumeric(length(sel$nodes),212)
+    sel<-createColumnFilter('gal4RGexp-sig', 'gal4RGexp', c(-1,1), "IS_NOT_BETWEEN")
+    checkEqualsNumeric(length(sel$nodes),14)
+    sel<-createColumnFilter('gal1RGexp-sig', 'gal1RGexp', c(-1,1), "IS_NOT_BETWEEN")
+    checkEqualsNumeric(length(sel$nodes),7)
+    sel<-createColumnFilter('Y*****C', 'name', "^Y.*C$", "REGEX")
+    checkEqualsNumeric(length(sel$nodes),148)
+    
+    # COMPOSITE OF NODE COLUMN FILTERS
+    sel<-createCompositeFilter('comp1', c('gal4RGexp-sig','gal1RGexp-sig'))
+    checkEqualsNumeric(length(sel$nodes),4)
+    sel<-createCompositeFilter('comp2', c('gal4RGexp-sig','gal1RGexp-sig'), "ANY")
+    checkEqualsNumeric(length(sel$nodes),17)
+    
+    # APPLY AND HIDE
+    sel<-applyFilter('gal4RGexp-sig', hide=TRUE)
+    checkEqualsNumeric(length(sel$nodes),14)
+    
+    
+    # COLUMN FILTER ON EDGES
+    sel<-createColumnFilter('edge1', 'EdgeBetweenness', 6, "IS", type="edges")
+    checkEqualsNumeric(length(sel$edges),7)
+    
+    #COMPOSITE OF NODE AND EDGE, AND HIDE
+    sel<-createCompositeFilter('comp3', c('edge1','gal4RGexp-dn'), 'ANY', hide=TRUE)
+    checkEqualsNumeric(length(sel$nodes),212)
+    checkEqualsNumeric(length(sel$edges),7)
+    unhideAll()
+    
+    #DEGREE FILTER
+    sel<-createDegreeFilter('deg1', c(5,10))
+    checkEqualsNumeric(length(sel$nodes),20)
+    
+    #GET FILTERS
+    flist<-getFilterList()
+    checkEqualsNumeric(flist,11)
+    
 }
