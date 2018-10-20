@@ -8,23 +8,34 @@
 #'
 #' @description Run an existing filter by supplying the filter name.
 #' @param filter.name Name of filter to apply. Default is "Default filter".
-#' @param container Type of filter: "filter" (default) or "chain"
+#' @param hide Whether to hide filtered out nodes and edges. Default is FALSE.
+#' Ignored if all nodes or edges are filtered out. This is an alternative to 
+#' filtering for node and edge selection.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return List of selected nodes and edges.
+#' @details Known bug: selection (or hiding) of edges using edge-based column 
+#' filters does not work. As a workaround, simply repeat the createColumnFilter
+#' operation to perform selection (or hiding) of edges.
 #' @examples \donttest{
 #' applyFilter('myFilter')
+#' applyFilter('myFilter', hide = TRUE)
 #' }
+#' @seealso unhideAll
 #' @importFrom RJSONIO toJSON
 #' @export
-applyFilter<-function(filter.name="Default filter", container="filter", network=NULL, 
+applyFilter<-function(filter.name="Default filter", hide=FALSE, network=NULL, 
                       base.url = .defaultBaseUrl){
+    
+    if(!filter.name %in% getFilterList(base.url))
+        stop (sprintf("Filter %s does not exist.",filter.name))
+    
     net.SUID <- getNetworkSuid(network,base.url)
     
-    cmd.container <- paste('container',container, sep='=')
+    cmd.container <- paste('container', 'filter', sep='=')
     cmd.name <- paste('name',filter.name,sep='=')
     cmd.network <- paste('network=SUID',net.SUID, sep=':')
     
@@ -33,7 +44,19 @@ applyFilter<-function(filter.name="Default filter", container="filter", network=
                        cmd.name,
                        cmd.network, 
                        sep=' '), base.url)
-    return(list(nodes=getSelectedNodes(), edges=getSelectedEdges()))
+    
+    sel.nodes<-getSelectedNodes(network, base.url)
+    sel.edges<-getSelectedEdges(network, base.url)
+    
+    if(hide) {
+        unhideAll(network, base.url)
+        if(!is.na(sel.nodes[1]))
+            hideNodes(invertNodeSelection(network, base.url)$nodes)
+        if(!is.na(sel.edges[1]))
+            hideEdges(invertEdgeSelection(network, base.url)$edges)
+    }
+    
+    return(list(nodes=sel.nodes, edges=sel.edges))
 }
 
 # ------------------------------------------------------------------------------
@@ -60,6 +83,11 @@ applyFilter<-function(filter.name="Default filter", container="filter", network=
 #' one element in the list must pass the filter, if false then all the elements 
 #' in the list must pass the filter. Default is TRUE.
 #' @param type (optional) Apply filter to "nodes" (default) or "edges".
+#' @param hide Whether to hide filtered out nodes and edges. Default is FALSE.
+#' Ignored if all nodes or edges are filtered out. This is an alternative to 
+#' filtering for node and edge selection.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -70,26 +98,31 @@ applyFilter<-function(filter.name="Default filter", container="filter", network=
 #' createColumnFilter('myFilter', 'function', "kinase", "CONTAINS", FALSE)
 #' createColumnFilter('myFilter', 'name', "^Y.*C$", "REGEX")
 #' createColumnFilter('myFilter', 'isTarget', TRUE , "IS")
+#' createColumnFilter('myFilter', 'isTarget', TRUE , "IS", hide = TRUE)
 #' }
 #' @importFrom RJSONIO fromJSON
 #' @export
 createColumnFilter<-function(filter.name, column, criterion, predicate, 
                              caseSensitive=FALSE, anyMatch=TRUE, 
-                             type="nodes", base.url = .defaultBaseUrl){
+                             type="nodes", hide = FALSE, network = NULL,
+                             base.url = .defaultBaseUrl){
     
-    col.type <- getTableColumnTypes(substr(type,1,4), base.url = base.url)[[column]]
+    if(!column %in% getTableColumnNames(substr(type,1,4), base.url = base.url))
+        stop (sprintf("Column %s does not exist in the %s table", column, substr(type,1,4)))
     
     if(predicate %in% c("BETWEEN","IS_NOT_BETWEEN")){
         if(!length(criterion)==2)
             stop ("criterion must be a list of two numeric values, e.g., c(0.5,2.0)")
     } else if (predicate %in% c("GREATER_THAN", "GREATER_THAN_OR_EQUAL")){
+    # manually feed max bound so that UI is also correct    
         col.vals <- getTableColumns(substr(type,1,4), column, base.url = base.url)
         crit.max <- max(na.omit(col.vals))
         criterion <- c(criterion[1], crit.max)
-    } else if (predicate %in% c("LESS_THAN", "LESS_THAN_OR_EQUAL")){
-        col.vals <- getTableColumns(substr(type,1,4), column, base.url = base.url)
-        crit.max <- min(na.omit(col.vals))
-        criterion <- c(crit.max,criterion[1])
+    # same trick to fix UI does not work for LESS_THAN cases
+    # } else if (predicate %in% c("LESS_THAN", "LESS_THAN_OR_EQUAL")){
+    #     col.vals <- getTableColumns(substr(type,1,4), column, base.url = base.url)
+    #     crit.max <- min(na.omit(col.vals))
+    #     criterion <- c(crit.max,criterion[1])
     } else if (is.numeric(criterion[1]) & predicate == "IS"){
         criterion <- c(criterion[1],criterion[1])
         predicate <- "BETWEEN"
@@ -111,8 +144,75 @@ createColumnFilter<-function(filter.name, column, criterion, predicate,
     
     .postCreateFilter(cmd.body, base.url)
  
-    return(list(nodes=getSelectedNodes(), edges=getSelectedEdges()))
+    commandSleep(1) #Yikes! Have to wait a second for selection to settle!
+    
+    sel.nodes<-getSelectedNodes(network, base.url)
+    sel.edges<-getSelectedEdges(network, base.url)
+    
+    if(hide) {
+        unhideAll(network, base.url)
+        if(!is.na(sel.nodes[1]))
+            hideNodes(invertNodeSelection(network, base.url)$nodes)
+        if(!is.na(sel.edges[1]))
+            hideEdges(invertEdgeSelection(network, base.url)$edges)
+    }
+    
+    return(list(nodes=sel.nodes, edges=sel.edges))
 }
+# ------------------------------------------------------------------------------
+#' @title Create Composite Filter
+#'
+#' @description Combines filters to control node and edge selection based on
+#' previously created filters.
+#' @param filter.name Name for filter.
+#' @param filter.list List of filters to combine.
+#' @param type (optional) Type of composition, requiring ALL (default) or ANY
+#' filters to pass for final node and edge selection.
+#' @param hide Whether to hide filtered out nodes and edges. Default is FALSE.
+#' Ignored if all nodes or edges are filtered out. This is an alternative to 
+#' filtering for node and edge selection.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return List of selected nodes and edges.
+#' @examples \donttest{
+#' createCompositeFilter("comp1", c("filter1", "filter2"))
+#' createCompositeFilter("comp2", c("filter1", "filter2"), "ANY")
+#' createCompositeFilter("comp3", c("comp1", "filter3"))
+#' }
+#' @importFrom RJSONIO fromJSON
+#' @export
+createCompositeFilter<-function(filter.name, filter.list, type="ALL", 
+                                hide = FALSE, network = NULL,
+                                base.url = .defaultBaseUrl){
+    
+    if(!length(filter.list)>1)
+        stop ('Must provide a list of two or more filter names, e.g., c("filter1", "filter2")')
+    
+    trans.list <- lapply(filter.list, function(x) .getFilterJson(x,base.url)[[1]]$transformers[[1]])
+    
+    #return(trans.list)
+    cmd.json <- list(id="CompositeFilter", parameters=list(type=type), transformers=trans.list)
+    cmd.body <- toJSON(list(name=filter.name, json=cmd.json))
+
+    .postCreateFilter(cmd.body, base.url)
+
+    sel.nodes<-getSelectedNodes(network, base.url)
+    sel.edges<-getSelectedEdges(network, base.url)
+    
+    if(hide) {
+        unhideAll(network, base.url)
+        if(!is.na(sel.nodes[1]))
+            hideNodes(invertNodeSelection(network, base.url)$nodes)
+        if(!is.na(sel.edges[1]))
+            hideEdges(invertEdgeSelection(network, base.url)$edges)
+    }
+    
+    return(list(nodes=sel.nodes, edges=sel.edges))
+}
+
 # ------------------------------------------------------------------------------
 #' @title Create Degree Filter
 #'
@@ -122,6 +222,11 @@ createColumnFilter<-function(filter.name, column, criterion, predicate,
 #' @param predicate BETWEEN (default) or IS_NOT_BETWEEN
 #' @param edgeType (optional) Type of edges to consider in degree count: 
 #' ANY (default), UNDIRECTED, INCOMING, OUTGOING, DIRECTED
+#' @param hide Whether to hide filtered out nodes and edges. Default is FALSE.
+#' Ignored if all nodes or edges are filtered out. This is an alternative to 
+#' filtering for node and edge selection.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -132,11 +237,12 @@ createColumnFilter<-function(filter.name, column, criterion, predicate,
 #' @importFrom RJSONIO fromJSON
 #' @export
 createDegreeFilter<-function(filter.name, criterion, predicate="BETWEEN", 
-                            edgeType="ANY", base.url = .defaultBaseUrl){
+                             edgeType="ANY", hide = FALSE, network = NULL,
+                             base.url = .defaultBaseUrl){
     
     if(!length(criterion)==2)
         stop ("criterion must be a list of two numeric values, e.g., c(2,5)")
-
+    
     cmd.name <- paste0('name="',filter.name,'"')
     cmd.json <- list(id="DegreeFilter", parameters=list(criterion=criterion, 
                                                         predicate=predicate,
@@ -145,7 +251,34 @@ createDegreeFilter<-function(filter.name, criterion, predicate="BETWEEN",
     
     .postCreateFilter(cmd.body, base.url)
     
-    return(list(nodes=getSelectedNodes(), edges=getSelectedEdges()))
+    sel.nodes<-getSelectedNodes(network, base.url)
+    sel.edges<-getSelectedEdges(network, base.url)
+    
+    if(hide) {
+        unhideAll(network, base.url)
+        if(!is.na(sel.nodes[1]))
+            hideNodes(invertNodeSelection(network, base.url)$nodes)
+        if(!is.na(sel.edges[1]))
+            hideEdges(invertEdgeSelection(network, base.url)$edges)
+    }
+    
+    return(list(nodes=sel.nodes, edges=sel.edges))
+}
+
+# ------------------------------------------------------------------------------
+#' @title Get Filter List
+#'
+#' @description Retrieve list of named filters in current session.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return List of filter names
+#' @examples \donttest{
+#' getFilterList()
+#' }
+#' @export
+getFilterList<-function(base.url=.defaultBaseUrl){
+    commandsPOST('filter list', base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------
@@ -192,6 +325,7 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
     cmd.url <- paste0(base.url, '/commands/filter/create')
     cmd.body <- gsub("json\": {\n", "json\": \\'{\n", cmd.body, perl = TRUE)
     cmd.body <- gsub("\n} \n} \n}", "\n} \n}\\' \n}", cmd.body, perl = TRUE)
+    cmd.body <- gsub("\n] \n} \n}", "\n] \n}\\' \n}", cmd.body, perl = TRUE) #for createCompositeFilter
     
     res=POST(url=cmd.url, body=cmd.body, encode="json", content_type_json())
     if(res$status_code > 299){
@@ -199,4 +333,11 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
                       res$status_code, URLencode(cmd.url), cmd.body), stderr())
         stop(fromJSON(rawToChar(res$content))$errors[[1]]$message)
     } 
+}
+
+# ------------------------------------------------------------------------------
+# Internal function to get filters as JSON for constructing composite filters.
+.getFilterJson<-function(filter.name, base.url){
+    commandsPOST(paste0('filter get name="',filter.name,'"'),
+                 base.url = base.url)
 }
