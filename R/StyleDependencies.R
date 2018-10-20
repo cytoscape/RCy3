@@ -73,7 +73,7 @@ setStyleDependencies <- function(style.name="default",dependencies,base.url=.def
         return ()
     }
     dep.list <- list()
-    for (i in 1:length(dependencies)) {
+    for (i in seq_len(length(dependencies))) {
         dep.list[[i]] <- list(visualPropertyDependency=names(dependencies)[i],
                               enabled=dependencies[[i]])
     }

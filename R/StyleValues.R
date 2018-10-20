@@ -34,7 +34,7 @@ getNodeProperty <- function(node.names,
         .nodeNameToNodeSUID(node.names, net.SUID, base.url)
     
     values <- c()
-    for (i in 1:length(node.SUIDs)) {
+    for (i in seq_len(length(node.SUIDs))) {
         node.SUID <- as.character(node.SUIDs[i])
         res <- cyrestGET(paste("networks",
                                net.SUID,
@@ -79,7 +79,7 @@ getEdgeProperty <- function(edge.names,
         .edgeNameToEdgeSUID(edge.names, network=net.SUID, base.url=base.url)
     
     values <- c()
-    for (i in 1:length(edge.SUIDs)) {
+    for (i in seq_len(length(edge.SUIDs))) {
         edge.SUID <- as.character(edge.SUIDs[i])
         res <- cyrestGET(paste( "networks",
                                 net.SUID,

@@ -96,7 +96,7 @@ getTableColumns <- function(table = 'node',
         cvv <- unlist(lapply(res.col$values, function(x)
             ifelse(is.null(x), NA, x)))
         if (length(res.names$values) == length(cvv)) {
-            for (i in 1:length(res.names$values)) {
+            for (i in seq_len(length(res.names$values))) {
                 switch(table.col.type, 
                        "Double"={
                            df[i, col] <- as.numeric(cvv[i])
@@ -317,14 +317,14 @@ loadTableData <- function(data,
     data.subset = data[filter, ]
     
     #remove troublesome factors
-    cols.with.factors <- sapply(data.subset, is.factor)
+    cols.with.factors <- vapply(data.subset, is.factor, logical(1))
     data.subset[cols.with.factors]<- lapply(data.subset[cols.with.factors], as.character)
     
     data.list <- c()
-    for (i in 1:dim(data.subset)[1]) {
+    for (i in seq_len(dim(data.subset)[1])) {
         #each rows
         rest <- list()
-        for (j in 1:dim(data.subset)[2]) {
+        for (j in seq_len(dim(data.subset)[2])) {
             #each column
             val<-data.subset[i, j]
             if(class(val)=="list")
@@ -340,7 +340,7 @@ loadTableData <- function(data,
     # explicitly create columns for integer data, unless the column alread exists!
     existing.cols <- getTableColumnNames()
     data.types <- vapply(data.subset, typeof, character(1))
-    for (i in 1:length(data.types)){
+    for (i in seq_len(length(data.types))){
         if (data.types[i] == "integer" && !names(data.types[i]) %in% existing.cols){
             cyrestPOST(paste('networks',net.suid,'tables',tbl,'columns',sep='/'),
                        body=list(name=names(data.types[i]),

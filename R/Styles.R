@@ -85,7 +85,7 @@ createVisualStyle <- function(style.name, defaults, mappings, base.url=.defaultB
     
     styleDef <- list()
     if(!missing(defaults)){
-        for (i in 1:length(defaults)) {
+        for (i in seq_len(length(defaults))) {
             styleDef[[i]] <- list(visualProperty=names(defaults)[i], value=defaults[[i]])
         }
     }

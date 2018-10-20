@@ -1062,16 +1062,16 @@ createGraphFromNetwork <-
               edge_set[, target.id.list],
               sep = " ")
     
-    for (i in 1:dim(edge_set)[1]) {
+    for (i in seq_len(dim(edge_set)[1])) {
         rest <- list()
         rest[["name"]] = computed_name[i]
-        for (j in 1:dim(edge_set)[2]) {
+        for (j in seq_len(dim(edge_set)[2])) {
             rest[[colnames(edge_set)[j]]] = edge_set[i, j]
         }
         current_edge = list("data" = rest)
         .FastAppendListGlobal(current_edge)
     }
-    return(.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set[1:.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter])
+    return(.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set[seq_len(.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter)])
 }
 
 # ------------------------------------------------------------------------------
@@ -1089,15 +1089,15 @@ createGraphFromNetwork <-
     .GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set <-
         c()
     
-    for (i in 1:dim(node.set)[1]) {
+    for (i in seq_len(dim(node.set)[1])) {
         rest <- list()
-        for (j in 1:dim(node.set)[2]) {
+        for (j in seq_len(dim(node.set)[2])) {
             rest[[colnames(node.set)[j]]] = node.set[i, j]
         }
         current_node = list("data" = rest)
         .FastAppendListGlobal(current_node)
     }
-    return(.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set[1:.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter])
+    return(.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.json_set[seq_len(.GlobalEnv$RCy3.CreateNetworkFromDataFrames.temp.global.counter)])
 }
 
 # ------------------------------------------------------------------------------

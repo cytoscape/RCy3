@@ -93,7 +93,7 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
     table = paste0('default',tp)
     res <- cyrestGET(paste('networks',suid,'tables',table,'columns',sep='/'),base.url=base.url)
     table.column.type = NULL
-    for(i in 1:length(res)){
+    for(i in seq_len(length(res))){
         if(res[[i]]$name==table.column){
             table.column.type = res[[i]]$type
             break
@@ -112,7 +112,7 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
     
     if(mapping.type.name=='discrete'){
         map <- list()
-        for (i in 1:length(table.column.values)) {
+        for (i in seq_len(length(table.column.values))) {
             map[[i]] <- list(key=toString(table.column.values[i]), value=toString(visual.prop.values[i]))
         }
         visual.prop.map$map=map
@@ -122,7 +122,7 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
         propValCount <- length(visual.prop.values)
         colValCount <- length(table.column.values)
         if (propValCount-colValCount == 2){
-            for (i in 1:colValCount) {
+            for (i in seq_len(colValCount)) {
                 points[[i]] <- list(value=table.column.values[i],
                                     lesser=visual.prop.values[i+1],
                                     equal=visual.prop.values[i+1], 
@@ -139,7 +139,7 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
                                           greater=visual.prop.values[colValCount+2]) 
         }
         else if (propValCount-colValCount == 0) {
-            for (i in 1:colValCount) {
+            for (i in seq_len(colValCount)) {
                 points[[i]] <- list(value=table.column.values[i],
                                     lesser=visual.prop.values[i],
                                     equal=visual.prop.values[i],

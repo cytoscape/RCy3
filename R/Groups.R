@@ -267,7 +267,7 @@ deleteGroup <- function(groups=NULL, groups.by.col='SUID',
         cmd.list.ready = "selected" #need something here for edge selections to work
     } else if (!is.null(cmd.by.col)) {
         cmd.list.col = NULL
-        for (i in 1:length(cmd.list)) {
+        for (i in seq_len(length(cmd.list))) {
             cmd.list.col[i] = paste(cmd.by.col, cmd.list[i], sep = ":")
         }
         cmd.list.ready = paste(cmd.list.col, collapse = ",")

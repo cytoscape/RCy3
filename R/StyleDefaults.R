@@ -27,7 +27,7 @@
 updateStyleDefaults <- function(style.name,defaults,base.url=.defaultBaseUrl){
     
     def.list <- list()
-    for (i in 1:length(defaults)) {
+    for (i in seq_len(length(defaults))) {
         visual.prop.name <- names(defaults)[i]
         visual.prop.name = toupper(gsub("\\s+","_",visual.prop.name))
         visual.prop.name = switch(visual.prop.name,
@@ -322,7 +322,7 @@ setNodeCustomBarChart<-function(columns, type="GROUPED", colors=NULL,
     if (!type %in% c('GROUPED','STACKED','HEAT_STRIPS','UP_DOWN'))
         stop ('type must be one of the following: GROUPED, STACKED, HEAT_STRIPS, or UP_DOWN')
     
-    if (!slot %in% seq(1:9))
+    if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
@@ -400,7 +400,7 @@ setNodeCustomBoxChart<-function(columns, colors=NULL,
                                 axisFontSize=1, 
                                 slot=1, style.name='default', 
                                 base.url=.defaultBaseUrl){
-    if (!slot %in% seq(1:9))
+    if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
@@ -470,11 +470,11 @@ setNodeCustomHeatMapChart<-function(columns, colors=NULL,
                                     axisFontSize=1, 
                                     slot=1, style.name='default', 
                                     base.url=.defaultBaseUrl){
-    if (!slot %in% seq(1:9))
+    if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
-    chart <- list(cy_dataColumns = columns,
+    chart <- list(cy_dataColumns = rev(columns), #rev for left-to-right ordering
                   cy_orientation = orientation,
                   cy_showRangeAxis = rangeAxis,
                   cy_showRangeZeroBaseline = zeroLine,
@@ -540,7 +540,7 @@ setNodeCustomLineChart<-function(columns, colors=NULL,
                                  axisFontSize=1, 
                                  slot=1, style.name='default', 
                                  base.url=.defaultBaseUrl){
-    if (!slot %in% seq(1:9))
+    if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
@@ -598,7 +598,7 @@ setNodeCustomPieChart<-function(columns, colors=NULL,
                                  startAngle=0.0, 
                                  slot=1, style.name='default', 
                                  base.url=.defaultBaseUrl){
-    if (!slot %in% seq(1:9))
+    if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
@@ -643,7 +643,7 @@ setNodeCustomRingChart<-function(columns, colors=NULL,
                                 startAngle=0.0, holeSize = 0.5,
                                 slot=1, style.name='default', 
                                 base.url=.defaultBaseUrl){
-    if (!slot %in% seq(1:9))
+    if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
@@ -683,7 +683,7 @@ setNodeCustomRingChart<-function(columns, colors=NULL,
 setNodeCustomLinearGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0.0,1.0), angle=0.0, 
                                       slot=1, style.name='default', 
                                       base.url=.defaultBaseUrl){
-    if (!slot %in% seq(1:9))
+    if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
@@ -721,7 +721,7 @@ setNodeCustomRadialGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0
                                       xCenter=0.5, yCenter=0.5, 
                                       slot=1, style.name='default', 
                                       base.url=.defaultBaseUrl){
-    if (!slot %in% seq(1:9))
+    if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
@@ -758,7 +758,7 @@ setNodeCustomRadialGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0
 setNodeCustomPosition<-function(nodeAnchor="C", graphicAnchor="C", justification="c", 
                                 xOffset=0.0, yOffset=0.0, slot=1, style.name='default',
                                 base.url = .defaultBaseUrl){
-    if (!slot %in% seq(1:9))
+    if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
     vp<-paste('NODE_CUSTOMGRAPHICS_POSITION',as.character(slot),sep='_')
     
@@ -786,7 +786,7 @@ setNodeCustomPosition<-function(nodeAnchor="C", graphicAnchor="C", justification
 #' @export
 removeNodeCustomGraphics<-function(slot=1, style.name='default',
                                 base.url = .defaultBaseUrl){
-    if (!slot %in% seq(1:9))
+    if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
