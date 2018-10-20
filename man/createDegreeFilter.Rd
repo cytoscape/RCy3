@@ -5,7 +5,8 @@
 \title{Create Degree Filter}
 \usage{
 createDegreeFilter(filter.name, criterion, predicate = "BETWEEN",
-  edgeType = "ANY", base.url = .defaultBaseUrl)
+  edgeType = "ANY", hide = FALSE, network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{filter.name}{Name for filter.}
@@ -16,6 +17,13 @@ createDegreeFilter(filter.name, criterion, predicate = "BETWEEN",
 
 \item{edgeType}{(optional) Type of edges to consider in degree count: 
 ANY (default), UNDIRECTED, INCOMING, OUTGOING, DIRECTED}
+
+\item{hide}{Whether to hide filtered out nodes and edges. Default is FALSE.
+Ignored if all nodes or edges are filtered out. This is an alternative to 
+filtering for node and edge selection.}
+
+\item{network}{(optional) Name or SUID of the network. Default is the 
+"current" network active in Cytoscape.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

@@ -6,7 +6,7 @@
 \usage{
 createColumnFilter(filter.name, column, criterion, predicate,
   caseSensitive = FALSE, anyMatch = TRUE, type = "nodes",
-  base.url = .defaultBaseUrl)
+  hide = FALSE, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{filter.name}{Name for filter.}
@@ -34,6 +34,13 @@ in the list must pass the filter. Default is TRUE.}
 
 \item{type}{(optional) Apply filter to "nodes" (default) or "edges".}
 
+\item{hide}{Whether to hide filtered out nodes and edges. Default is FALSE.
+Ignored if all nodes or edges are filtered out. This is an alternative to 
+filtering for node and edge selection.}
+
+\item{network}{(optional) Name or SUID of the network. Default is the 
+"current" network active in Cytoscape.}
+
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
@@ -53,5 +60,6 @@ createColumnFilter('myFilter', 'pValue', 0.05, "LESS_THAN")
 createColumnFilter('myFilter', 'function', "kinase", "CONTAINS", FALSE)
 createColumnFilter('myFilter', 'name', "^Y.*C$", "REGEX")
 createColumnFilter('myFilter', 'isTarget', TRUE , "IS")
+createColumnFilter('myFilter', 'isTarget', TRUE , "IS", hide = TRUE)
 }
 }
