@@ -66,6 +66,9 @@
 # Replaces edge names with SUIDs.
 .edgeNameToEdgeSUID<-function(edge.names, network=NULL, base.url=.defaultBaseUrl) {
         dict <- getTableColumns('edge',c('SUID','name'),'default',network, base.url)
+        test <- vapply(edge.names, function(x){x %in% dict[,'SUID']}, logical(1))
+        if(all(test))  #provided SUIDs already!
+            return(edge.names)
         edge.SUIDs <- dict$SUID[match(edge.names, dict$name)]
         return(edge.SUIDs)
 }
@@ -74,6 +77,9 @@
 # Replaces edge SUIDs with names.
 .edgeSUIDToEdgeName<-function(edge.suids, network=NULL, base.url=.defaultBaseUrl) {
         dict <- getTableColumns('edge',c('SUID','name'),'default',network, base.url)
+        test <- vapply(edge.suids, function(x){x %in% dict[,'name']}, logical(1))
+        if(all(test)) #provided names already!
+            return(edge.suids)
         edge.names <- dict$name[match(edge.suids, dict$SUID)]
         return(edge.names)
 }
