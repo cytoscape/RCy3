@@ -98,7 +98,7 @@ from within Cytoscape:
 
 ```{r}
 #available in Cytoscape 3.7.0 and above
-#installApp('STRINGapp')  
+installApp('STRINGapp')  
 ```
 
 Now we can import protein interaction networks with a ton of annotations from
@@ -145,7 +145,7 @@ example highlights how to handle a source of mixed identifier types.**
 
 ```{r}
 #available in Cytoscape 3.7.0 and above
-#installApp('WikiPathways')  
+installApp('WikiPathways')  
 ```
 
 
@@ -205,7 +205,7 @@ out the BridgeDb app: http://apps.cytoscape.org/apps/bridgedb.
 
 ```{r}
 #available in Cytoscape 3.7.0 and above
-#installApp('BridgeDb')  
+installApp('BridgeDb')  
 ```
 
 And then browse the available function with *commandsHelp('bridgedb')*

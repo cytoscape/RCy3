@@ -109,7 +109,7 @@ run.tests = function()
     test.setNodePosition () 
     test.getNodePosition ()
     test.getNodePosition.colonInNodeName ()
-    test.VisualStyle ()
+    test.visualStyle ()
     
     test.defaultColors ()
     test.fitContent ()
@@ -126,8 +126,9 @@ run.tests = function()
     test.createNetworkFromSelection ()
     
     test.customGraphics()
-    test.Filters()
+    test.filters()
     
+    closeSession(F)
     options('warn'=0)
     
 } # run.tests
@@ -1368,9 +1369,9 @@ test.getNodePosition.colonInNodeName = function ()
 }
 
 #-------------------------------------------------------------------------------
-test.VisualStyle = function ()
+test.visualStyle = function ()
 {
-    title = 'test.VisualStyle'
+    title = 'test.visualStyle'
     test.prep (title,F)
     
     copyVisualStyle('default','test.default')
@@ -1699,8 +1700,12 @@ test.customGraphics = function ()
 }
 
 #-------------------------------------------------------------------------------
-test.Filters = function ()
+test.filters = function ()
 {
+    
+    title = 'test.filters'
+    test.prep (title, F)
+    
     setNetworkZoomBypass(0.6)
     # COLUMN FILTERS ON NODES
     sel<-createColumnFilter('gal4RGexp-up', 'gal4RGexp', 2, "GREATER_THAN")
@@ -1741,6 +1746,6 @@ test.Filters = function ()
     
     #GET FILTERS
     flist<-getFilterList()
-    checkEqualsNumeric(flist,11)
+    checkEqualsNumeric(length(flist),11)
     
 }

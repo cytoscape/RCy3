@@ -86,6 +86,11 @@ createVisualStyle(style.name, defaults, list(nodeLabels,nodeFills,arrowShapes,ed
 setVisualStyle(style.name)
 ```
 
+*Pro-tip: if you want to set NODE_WIDTH and NODE_HEIGHT independently, you also need to unlock the node dimensions with...*
+```
+lockNodeDimensions(FALSE, style.name)
+```
+
 # Bioconductor graph example
 
 Alternatively, you might want to start from a Bioconductor graphNEL object. Here we create a 4-node graph in R, send it to Cytoscape for display and layout.  For the sake of simplicity, no node attributes and no visual styles are included; those topics are covered in subsequent steps.

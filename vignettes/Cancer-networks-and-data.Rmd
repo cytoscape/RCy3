@@ -53,7 +53,7 @@ from within Cytoscape:
 
 #```{r}
 #available in Cytoscape 3.7.0 and above
-#installApp('STRINGapp')  
+installApp('STRINGapp')  
 #```
 
 # Getting Disease Networks
