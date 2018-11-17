@@ -93,6 +93,13 @@ The nodes in the network are labeled with the corresponding protein names (yeast
 
 This involves a new step: Filling a new column with parameters for the enhancedGraphics App. This column is then mapped to a Custom Graphic slot and (optionally) positioned, like in the examples above.
 
+## Install enhancedGraphics
+The enhancedGraphics app is available from the [Cytoscape App Store](http://apps.cytoscape.org/apps/enhancedgraphics). In Cytoscape 3.7 and above, you can install apps from R with the following function:
+
+```{r}
+installApp(enhancedGraphics)
+```
+
 ## Define new label
 The new column values have to follow a specific syntax to be recognized by the enhancedGraphics app.  Here, for example, is how you set a **label** based on another attribute (e.g., the column called "COMMON"), specifying its size, color, outline and background:
 
