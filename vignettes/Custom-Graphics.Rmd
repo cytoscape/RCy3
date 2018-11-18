@@ -56,35 +56,28 @@ In this example, we will create a bar chart with the three expression values, ga
 
 Create the Custom Graphic:
 ```{r}
-setNodeCustomBarChart(c("gal1RGexp","gal4RGexp","gal80Rexp"), type = "GROUPED", colors = NULL,range = NULL, orientation = "VERTICAL", colAxis = FALSE,
-  rangeAxis = FALSE, zeroLine = FALSE, axisWidth = 0.25,
-  axisColor = "#000000", axisFontSize = 1, separation = 0,
-  slot = 1)
+setNodeCustomBarChart(c("gal1RGexp","gal4RGexp","gal80Rexp"))
 ```
+There are 4 types of Bar Charts and customizable parameters for colors, size, spacing and orientation.
 
 Position the Bar Chart just below the node. This is an optional step that we are doing here just to make room for subsequent graphics. By specifying both anchors at opposite ends, we can get a lot of space between the node and the graphic. 
 ```{r}
-setNodeCustomPosition(nodeAnchor = "S", graphicAnchor = "N", slot = 1)
+setNodeCustomPosition(nodeAnchor = "S", graphicAnchor = "N")
 ```
 
 ## Stripes
-Next we are going to create stripes of gradient mappings using a horizontal "heatmap"" of the same three data columns and position the heatmap right above the node:
+Next we are going to create stripes of gradient mappings using a horizontal "heatmap"" of the same three data columns and position the heatmap right above the node. For this vignette, we need to also specify the slot number to avoid overwriting the Bar Chart:
 
 ```{r}
-setNodeCustomHeatMapChart(c("gal1RGexp","gal4RGexp","gal80Rexp"), colors = NULL, range = NULL,
-  orientation = "HORIZONTAL", rangeAxis = FALSE, zeroLine = FALSE,
-  axisWidth = 0.25, axisColor = "#000000", axisFontSize = 1, slot = 2)
-
+setNodeCustomHeatMapChart(c("gal1RGexp","gal4RGexp","gal80Rexp"), slot = 2)
 setNodeCustomPosition(nodeAnchor = "N", graphicAnchor = "S", slot = 2)
-
 ```
 
 ## Pie chart
 Finally, we will create a pie chart with two columns, Radiality and Degree, and place it to the left of the node. Here we'll use the *xOffset* parameter to be even more specific about where we want to place the graphic relative to the node.
 
 ```{r}
-setNodeCustomPieChart(c("Radiality", "Degree"), colors = NULL, startAngle = 0,  slot = 3)
-
+setNodeCustomPieChart(c("Radiality", "Degree"), slot = 3)
 setNodeCustomPosition(nodeAnchor = "W", xOffset = -20, slot = 3)
 ```
 
@@ -97,7 +90,7 @@ This involves a new step: Filling a new column with parameters for the enhancedG
 The enhancedGraphics app is available from the [Cytoscape App Store](http://apps.cytoscape.org/apps/enhancedgraphics). In Cytoscape 3.7 and above, you can install apps from R with the following function:
 
 ```{r}
-installApp(enhancedGraphics)
+installApp("enhancedGraphics")
 ```
 
 ## Define new label
