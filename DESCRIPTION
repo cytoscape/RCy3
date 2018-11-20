@@ -17,4 +17,4 @@ LazyLoad: yes
 biocViews: Visualization, GraphAndNetwork, ThirdPartyClient, Network
 NeedsCompilation: no
 VignetteBuilder: knitr
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

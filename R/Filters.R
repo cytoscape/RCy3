@@ -34,6 +34,7 @@ applyFilter<-function(filter.name="Default filter", hide=FALSE, network=NULL,
         stop (sprintf("Filter %s does not exist.",filter.name))
     
     net.SUID <- getNetworkSuid(network,base.url)
+    setCurrentNetwork(net.SUID, base.url)
     
     cmd.container <- paste('container', 'filter', sep='=')
     cmd.name <- paste('name',filter.name,sep='=')
@@ -45,15 +46,15 @@ applyFilter<-function(filter.name="Default filter", hide=FALSE, network=NULL,
                        cmd.network, 
                        sep=' '), base.url)
     
-    sel.nodes<-getSelectedNodes(network, base.url)
-    sel.edges<-getSelectedEdges(network, base.url)
+    sel.nodes<-getSelectedNodes(net.SUID, base.url)
+    sel.edges<-getSelectedEdges(net.SUID, base.url)
     
     if(hide) {
-        unhideAll(network, base.url)
+        unhideAll(net.SUID, base.url)
         if(!is.na(sel.nodes[1]))
-            hideNodes(invertNodeSelection(network, base.url)$nodes)
+            hideNodes(invertNodeSelection(net.SUID, base.url)$nodes, net.SUID, base.url)
         if(!is.na(sel.edges[1]))
-            hideEdges(invertEdgeSelection(network, base.url)$edges)
+            hideEdges(invertEdgeSelection(net.SUID, base.url)$edges, net.SUID, base.url)
     }
     
     return(list(nodes=sel.nodes, edges=sel.edges))
@@ -106,6 +107,8 @@ createColumnFilter<-function(filter.name, column, criterion, predicate,
                              caseSensitive=FALSE, anyMatch=TRUE, 
                              type="nodes", hide = FALSE, network = NULL,
                              base.url = .defaultBaseUrl){
+
+    setCurrentNetwork(network,base.url)
     
     if(!column %in% getTableColumnNames(substr(type,1,4), base.url = base.url))
         stop (sprintf("Column %s does not exist in the %s table", column, substr(type,1,4)))
@@ -188,6 +191,8 @@ createCompositeFilter<-function(filter.name, filter.list, type="ALL",
                                 hide = FALSE, network = NULL,
                                 base.url = .defaultBaseUrl){
     
+    setCurrentNetwork(network,base.url)
+    
     if(!length(filter.list)>1)
         stop ('Must provide a list of two or more filter names, e.g., c("filter1", "filter2")')
     
@@ -239,6 +244,8 @@ createCompositeFilter<-function(filter.name, filter.list, type="ALL",
 createDegreeFilter<-function(filter.name, criterion, predicate="BETWEEN", 
                              edgeType="ANY", hide = FALSE, network = NULL,
                              base.url = .defaultBaseUrl){
+    
+    setCurrentNetwork(network,base.url)
     
     if(!length(criterion)==2)
         stop ("criterion must be a list of two numeric values, e.g., c(2,5)")
