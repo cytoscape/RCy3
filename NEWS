@@ -1,3 +1,26 @@
+Changes in vesion 2.2.6
++ Bug Fixes
+   - createNetworkFromDataFrame and .edgeNameToSuids -- #41 multigraph support
+   - BiocCheck errors and warnings -- #42
++ Doc Fixes
+    - added tests for multigraphs
+Changes in vesion 2.2.5
++ Bug Fixes
+   - createXXXFilter and applyFilter -- #40 network arg 
++ Doc Fixes
+   - new filters vignette
+Changes in vesion 2.2.4
++ Doc Fixes
+   - vignettes
+Changes in vesion 2.2.3
++ Doc Fixes
+   - vignettes
+Changes in vesion 2.2.2
++ Doc Fixes
+   - new custom graphics vignette
+Changes in vesion 2.2.1
++ Doc Fixes
+   - vignettes, readme and test
 Changes in vesion 2.2.0
 + New functions to remove duplicate edges
   - deleteDuplicateEdges
