@@ -128,7 +128,7 @@ run.tests = function()
     test.customGraphics()
     test.filters()
     
-    closeSession(F)
+    closeSession(FALSE)
     options('warn'=0)
     
 } # run.tests
@@ -159,7 +159,7 @@ test.prep = function (title, make.net=TRUE)
 test.app.version = function ()
 {
     title = 'test.app.version'
-    test.prep(title,F)
+    test.prep(title,FALSE)
     app.version.string = cytoscapeVersionInfo()
     app.version.string = unname(app.version.string['apiVersion'])
     string.tmp = gsub ('[a-z]', '', app.version.string)
@@ -224,7 +224,7 @@ test.getNetworkList = function ()
 test.getNodeShapes = function ()
 {
     title = 'test.getNodeShapes'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     shapes = getNodeShapes ()
     checkTrue (length (shapes) > 8)
     # pick a few specific shapes to test
@@ -235,7 +235,7 @@ test.getNodeShapes = function ()
 test.getTableColumnTypes = function ()
 {
     title = 'test.getTableColumnTypes'
-    test.prep(title,F)
+    test.prep(title,FALSE)
     possible.values = getTableColumnTypes ()
     checkTrue (grep ('Integer', possible.values) > 0)
     checkTrue (grep ('String', possible.values) > 0)
@@ -245,7 +245,7 @@ test.getTableColumnTypes = function ()
 test.getArrowShapes = function ()
 {
     title = 'test.getArrowShapes'
-    test.prep(title,F)
+    test.prep(title,FALSE)
     shapes = getArrowShapes ()
     checkTrue (length (shapes) >= 8)
     # pick a few specific shapes to test
@@ -256,7 +256,7 @@ test.getArrowShapes = function ()
 test.getLineStyles = function ()
 {
     title = 'test.getLineStyles'
-    test.prep(title,F)
+    test.prep(title,FALSE)
     styles = getLineStyles ()
     checkTrue (length (styles) > 10)
     # pick a few specific styles to test
@@ -267,7 +267,7 @@ test.getLineStyles = function ()
 test.getLayoutNames = function ()
 {
     title = 'test.getLayoutNames'
-    test.prep(title,F)
+    test.prep(title,FALSE)
     names = getLayoutNames ()
     checkTrue (length (names) > 10)
     # pick a few specific styles to test
@@ -278,7 +278,7 @@ test.getLayoutNames = function ()
 test.getLayoutNameMapping = function ()
 {
     title = 'test.getLayoutNameMapping'
-    test.prep(title,F)
+    test.prep(title,FALSE)
     name.map = getLayoutNameMapping ()
     checkTrue (length (name.map) >= 8)  
     checkEquals (name.map [['Attribute Circle Layout']], "attribute-circle")
@@ -289,7 +289,7 @@ test.getLayoutNameMapping = function ()
 test.getLayoutPropertyNames = function ()
 {
     title = 'test.getLayoutNameMapping'
-    test.prep(title,F)
+    test.prep(title,FALSE)
     props = getLayoutPropertyNames ('force-directed')
     expected = c ("numIterations", "defaultSpringCoefficient", "defaultSpringLength",
                   "defaultNodeMass", "isDeterministic", "singlePartition")
@@ -306,7 +306,7 @@ test.getLayoutPropertyNames = function ()
 test.getLayoutPropertyType = function ()
 {
     title = 'test.getLayoutPropertyType'
-    test.prep(title,F)
+    test.prep(title,FALSE)
     
     checkEquals (getLayoutPropertyType ('isom', 'coolingFactor'), 'double')
     
@@ -326,7 +326,7 @@ test.getLayoutPropertyType = function ()
 test.getLayoutPropertyValue = function ()
 {
     title = 'test.getLayoutPropertyValue'
-    test.prep(title,F)
+    test.prep(title,FALSE)
     
     layout.name = 'force-directed'
     props = getLayoutPropertyNames (layout.name)
@@ -341,7 +341,7 @@ test.getLayoutPropertyValue = function ()
 test.setLayoutProperties = function ()
 {
     title = 'test.setLayoutProperties'
-    test.prep(title,F)
+    test.prep(title,FALSE)
     layout.name = 'force-directed'
     prop = 'numIterations'
     setLayoutProperties (layout.name, list (numIterations=200))
@@ -356,7 +356,7 @@ test.setLayoutProperties = function ()
 test.panelOperations = function ()
 {
     title = 'test.panelOperations'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     hidePanel ('control panel')
     hidePanel ('SOUTH')
@@ -388,7 +388,7 @@ test.showGraphicsDetails = function ()
 test.setNodeShapeDefault = function ()
 {
     title = 'test.setNodeShapeDefault'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     shapes = getNodeShapes()
     
@@ -401,7 +401,7 @@ test.setNodeShapeDefault = function ()
 test.setNodeColorDefault = function ()
 {
     title = 'test.setNodeColorDefault'
-    test.prep (title,F)
+    test.prep (title,FALSE)
 
     setNodeColorDefault ('#AA00AA')
 } 
@@ -409,7 +409,7 @@ test.setNodeColorDefault = function ()
 test.setNodeSizeDefault = function ()
 {
     title = 'test.setNodeSizeDefault'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setNodeSizeDefault (200)   
     setNodeSizeDefault (20)
@@ -418,7 +418,7 @@ test.setNodeSizeDefault = function ()
 test.setNodeBorderColorDefault = function ()
 {
     title = 'test.setNodeBorderColorDefault'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setNodeBorderColorDefault ('#FFFFFF')
     setNodeBorderColorDefault ('#FF0000')
@@ -427,7 +427,7 @@ test.setNodeBorderColorDefault = function ()
 test.setNodeBorderWidthDefault = function ()
 {
     title = 'test.setNodeBorderWidthDefault'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setNodeBorderWidthDefault (5)
     setNodeBorderWidthDefault (1)
@@ -436,7 +436,7 @@ test.setNodeBorderWidthDefault = function ()
 test.setNodeFontSizeDefault = function ()
 {
     title = 'test.setNodeFontSizeDefault'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setNodeFontSizeDefault (12)
 }
@@ -444,7 +444,7 @@ test.setNodeFontSizeDefault = function ()
 test.setNodeLabelColorDefault = function ()
 {
     title = 'test.setNodeLabelColorDefault'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setNodeLabelColorDefault ('#FFAAAA')
 }
@@ -452,7 +452,7 @@ test.setNodeLabelColorDefault = function ()
 test.setEdgeLineWidthDefault = function ()
 {
     title = 'test.setEdgeLineWidthDefault'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setEdgeLineWidthDefault (10)
 }
@@ -460,7 +460,7 @@ test.setEdgeLineWidthDefault = function ()
 test.setEdgeColorDefault = function ()
 {
     title = 'test.setEdgeColorDefault'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setEdgeColorDefault ('#5588FF')
 }
@@ -468,7 +468,7 @@ test.setEdgeColorDefault = function ()
 test.setEdgeFontSizeDefault = function ()
 {
     title = 'test.setEdgeFontSizeDefault'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setEdgeFontSizeDefault (12);
 }
@@ -476,7 +476,7 @@ test.setEdgeFontSizeDefault = function ()
 test.setNodeLabelMapping = function ()
 {
     title = 'test.setNodeLabelMapping'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setNodeLabelMapping ('id')
     setNodeLabelMapping ('score')
@@ -487,7 +487,7 @@ test.setNodeLabelMapping = function ()
 test.setEdgeLabelMapping = function ()
 {
     title = 'test.setEdgeLabelMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     setEdgeLabelMapping ('weight')
     setEdgeLabelMapping ('name')
@@ -496,7 +496,7 @@ test.setEdgeLabelMapping = function ()
 test.setNodeTooltipMapping = function ()
 {
     title = 'test.setNodeTooltipMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     setNodeTooltipMapping ('group')
 } 
@@ -504,7 +504,7 @@ test.setNodeTooltipMapping = function ()
 test.setEdgeTooltipMapping = function ()
 {
     title = 'test.setEdgeTooltipMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     setEdgeTooltipMapping ('weight')
 } 
@@ -512,7 +512,7 @@ test.setEdgeTooltipMapping = function ()
 test.setNodeColorMapping = function ()
 {
     title = 'test.setNodeColorMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     # first, continuous
     node.attribute.values = c (0.0, 10.0, 20.0)
@@ -533,7 +533,7 @@ test.setNodeColorMapping = function ()
 test.setNodeBorderColorMapping = function ()
 {
     title = 'test.setNodeColorMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     # first, continuous
     node.attribute.values = c (0.0, 10.0, 20.0)
@@ -554,7 +554,7 @@ test.setNodeBorderColorMapping = function ()
 test.setNodeBorderWidthMapping = function ()
 {
     title  = 'test.setNodeBorderWidthMapping'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     # set the stage by making all the nodes white, to provide better contrast for the node border colors
     node.attribute.values = c (0.0, 10.0, 20.0)
@@ -575,7 +575,7 @@ test.setNodeBorderWidthMapping = function ()
 test.setNodeSizeMapping = function ()
 {
     title = 'test.setNodeSizeMapping'
-    test.prep (title,F)
+    test.prep (title,FALSE)
 
     count.control.points = c(5,  20)
     node.sizes           = c(1, 80,  120, 300)
@@ -598,7 +598,7 @@ test.setNodeSizeMapping = function ()
 test.setNodeShapeMapping = function ()
 {
     title = 'test.setNodeShapeMapping'
-    test.prep (title,F)
+    test.prep (title,FALSE)
 
     # make Mapping for 2 of 3 node types, leaving the third as the default
     node.shapes = c ('diamond', 'triangle')
@@ -614,7 +614,7 @@ test.setNodeShapeMapping = function ()
 test.setNodeComboOpacityMapping = function ()
 {
     title = 'test.setNodeComboOpacityMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     # make the node borders prominent
     setNodeBorderColorDefault ('#55FF88')
@@ -646,7 +646,7 @@ test.setNodeComboOpacityMapping = function ()
 test.setNodeColorBypass = function ()
 {
     title = 'test.setNodeColorBypass'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setNodeColorBypass ('node 0', '#AA0088')
     setNodeColorBypass ( c ('node 1', 'node 2'), '#448844')
@@ -655,7 +655,7 @@ test.setNodeColorBypass = function ()
 test.setNodeBorderColorBypass = function ()
 {
     title = 'test.setNodeBorderColorBypass'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     setNodeBorderColorBypass ('node 0', '#AA4488')
     setNodeBorderColorBypass (c ('node 1', 'node 2'), '#AA8888')
@@ -664,7 +664,7 @@ test.setNodeBorderColorBypass = function ()
 test.setNodeLabelBypass = function ()
 {
     title = 'test.setNodeLabelBypass'
-    test.prep (title,F)
+    test.prep (title,FALSE)
 
     setNodeLabelBypass ('node 0', 'new A label')
 
@@ -676,7 +676,7 @@ test.setNodeLabelPropertiesBypass = function ()
 {
     print ('--- test.setNodeLabelsPropertiesBypass')
     title = 'test.setNodeLabelPropertiesBypass'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     sizes = c (10, 50, 80)
     colors = c ('#0000FF', '#00FF00', '#FF0000')
@@ -689,7 +689,7 @@ test.setNodeLabelPropertiesBypass = function ()
 test.setNodeOpacityBypass = function ()
 {
     title = 'test.setNodeOpacityBypass'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     setNodeSizeBypass ('node 3', 120)
     layoutNetwork ('grid')
@@ -749,7 +749,7 @@ test.setEdgeOpacityBypass = function ()
 test.setEdgeColorBypass = function ()
 {
     title = 'test.setEdgeColorBypass'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     edge.of.interest = getAllEdges()[1]
     setEdgeColorBypass (edge.of.interest, '#FF0000')
@@ -760,7 +760,7 @@ test.setEdgeColorBypass = function ()
 test.setEdgeSourceArrowShapeBypass = function ()
 {
     title = 'test.setEdgeSourceArrowShapeBypass'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     edges.of.interest = getAllEdges()
     supported.arrow.shapes = getArrowShapes()
@@ -784,7 +784,7 @@ test.setEdgeSourceArrowShapeBypass = function ()
 test.setEdgeTargetArrowShapeBypass = function ()
 {
     title = 'test.setEdgeTargetArrowShapeBypass'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     edges.of.interest = getAllEdges()
     supported.arrow.shapes = getArrowShapes ()
@@ -811,7 +811,7 @@ test.setEdgeTargetArrowShapeBypass = function ()
 test.setEdgeSourceArrowColorBypass = function ()
 {
     title = 'test.setEdgeSourceArrowColorBypass'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     arrows = c ('Arrow', 'Diamond', 'Circle')
     interaction.values = c ('inhibits', 'activates', 'interaction')
@@ -830,7 +830,7 @@ test.setEdgeSourceArrowColorBypass = function ()
 test.setEdgeTargetArrowColorBypass = function ()
 {
     title = 'test.setEdgeTargetArrowColorBypass'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     arrows = c ('Arrow', 'Diamond', 'Circle')
     interaction.values = c ('inhibits', 'activates', 'interaction')
@@ -849,7 +849,7 @@ test.setEdgeTargetArrowColorBypass = function ()
 test.setEdgeLabelBypass = function ()
 {
     title = 'test.setEdgeLabelBypass '
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     edge.names = getAllEdges()[1:2]
     setEdgeLabelBypass (edge.names, 'some name')
@@ -858,7 +858,7 @@ test.setEdgeLabelBypass = function ()
 test.setEdgeFontFaceBypass = function ()
 {
  title = 'test.setEdgeFontFaceBypass'
- test.prep (title, F)
+ test.prep (title,FALSE)
 
  edge.of.interest = getAllEdges()[1]
  fonts = c ('courier', 'arial')
@@ -871,7 +871,7 @@ test.setEdgeFontFaceBypass = function ()
 test.setEdgeFontSizeBypass = function ()
 {
     title = 'test.setEdgeFontSizeBypass'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     edge.of.interest = getAllEdges()[1]
     setEdgeFontSizeBypass (edge.of.interest, 12)
@@ -880,7 +880,7 @@ test.setEdgeFontSizeBypass = function ()
 test.setEdgeLabelColorBypass = function ()
 {
     title = 'test.setEdgeLabelColorBypass'
-    test.prep (title,F)
+    test.prep (title,FALSE)
 
     edge.names = getAllEdges()
     setEdgeLabelBypass (edge.names, 'some label')
@@ -892,7 +892,7 @@ test.setEdgeLabelColorBypass = function ()
 test.setEdgeTooltipBypass = function ()
 {
     title = 'test.setEdgeTooltipBypass'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     edges.of.interest = getAllEdges()
     
@@ -906,7 +906,7 @@ test.setEdgeTooltipBypass = function ()
 test.setEdgeLineWidthBypass = function ()
 {
     title = 'test.setEdgeLineWidthBypass'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     edges.of.interest = getAllEdges()[1:2]
     
@@ -920,7 +920,7 @@ test.setEdgeLineWidthBypass = function ()
 test.setEdgeLineStyleBypass = function ()
 {
     title = 'test.setEdgeLineStyleBypass'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     edges.of.interest = getAllEdges()
     
@@ -945,7 +945,7 @@ test.setEdgeLineStyleBypass = function ()
 test.setEdgeLabelOpacityBypass = function ()
 {
     title = 'test.setEdgeLabelOpacityBypass'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     edge.of.interest = getAllEdges()[1]
     for (i in 1:5) {
@@ -964,7 +964,7 @@ test.countNodes = function ()
 test.countEdges = function ()
 {
     title = 'test.countEdges'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     g <- RCy3::makeSimpleGraph()
     checkEquals (getEdgeCount(), 4)
 }
@@ -972,7 +972,7 @@ test.countEdges = function ()
 test.getAllNodes = function ()
 {
     title = 'test.getAllNodes'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     nodes = getAllNodes()
     checkEquals (length (nodes), 4)
@@ -981,7 +981,7 @@ test.getAllNodes = function ()
 test.getAllEdges = function ()
 {
     title = 'test.getAllEdges'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     edges = getAllEdges()
     checkTrue ("node 0 (inhibits) node 1" %in% edges)
@@ -991,14 +991,14 @@ test.getAllEdges = function ()
 test.selectNodes = function ()
 {
     title = 'test.selectNodes'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     clearSelection ()
     checkEquals (getSelectedNodeCount(), 0)
-    net.suide.nodes = selectNodes (c ('node 0', 'node 1'), 'name', preserve=T)
+    net.suide.nodes = selectNodes (c ('node 0', 'node 1'), 'name', preserve=TRUE)
     checkEquals (getSelectedNodeCount(), 2)
     
-    net.suide.nodes = selectNodes ('node 2', 'name', preserve=T)
+    net.suide.nodes = selectNodes ('node 2', 'name', preserve=TRUE)
     checkEquals (getSelectedNodeCount(), 3)
     
     clearSelection ()
@@ -1021,15 +1021,15 @@ test.selectNodes = function ()
 test.nodeNeighborReportingAndSelection = function ()
 {
     title = 'test.nodeNeighborReportingAndSelection'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     # create a circular graph
     LETTERS = toupper (letters)
     source.nodes  <- LETTERS [1:26]
     target.nodes  <- c (LETTERS [2:26], LETTERS [1])
     weights <- runif (length (letters))
-    dfn <- data.frame(id=source.nodes, stringsAsFactors = F)
-    dfe <- data.frame (source=source.nodes, target=target.nodes, weight=weights, stringsAsFactors = F)
+    dfn <- data.frame(id=source.nodes, stringsAsFactors = FALSE)
+    dfe <- data.frame (source=source.nodes, target=target.nodes, weight=weights, stringsAsFactors = FALSE)
     createNetworkFromDataFrames(dfn, dfe)
     
     # paint the edges shades of green as function of weight
@@ -1071,7 +1071,7 @@ test.invertSelection = function ()
 test.deleteSelectedNodes = function ()
 {
     title = 'test.deleteSelectedNodes'
-    test.prep (title,F)
+    test.prep (title,FALSE)
 
     selectNodes (c ('node 0', 'node 1'), 'name')
     checkEquals (getSelectedNodeCount (), 2)
@@ -1094,7 +1094,7 @@ test.hideNodes = function ()
 test.selectEdges = function ()
 {
     title = 'test.selectEdges'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     selectEdges ("node 0 (inhibits) node 1", "name")
     checkEquals (getSelectedEdgeCount (), 1)
@@ -1106,7 +1106,7 @@ test.selectEdges = function ()
 test.setEdgeLineStyleMapping = function ()
 {
     title = 'test.setEdgeLineStyleMapping'
-    test.prep (title,F)
+    test.prep (title,FALSE)
 
     line.styles = c ('SINEWAVE', 'DOT', 'PARALLEL_LINES')
     interaction.values = c ('inhibits', 'activates', 'interacts')
@@ -1124,7 +1124,7 @@ test.setEdgeLineStyleMapping = function ()
 test.setEdgeLineWidthMapping = function ()
 {
     title = 'test.setEdgeLineWidthMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     interaction.values = c ('inhibits', 'activates', 'interacts')
     setEdgeLineWidthMapping ('interaction', interaction.values, c (0, 8, 16), 'd')
@@ -1136,7 +1136,7 @@ test.setEdgeLineWidthMapping = function ()
 test.setEdgeColorMapping = function ()
 {
     title = 'test.setEdgeColorMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     interaction.values = c ('inhibits', 'activates', 'interacts')
     colors = c ('#FF0000', '#FFFF00', '#00FF00')
@@ -1159,7 +1159,7 @@ test.setEdgeColorMapping = function ()
 test.setEdgeOpacityMapping = function ()
 {
     title = 'test.setEdgeOpacityMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     interaction.values = c ('inhibits', 'activates', 'interacts')
     
@@ -1182,7 +1182,7 @@ test.setEdgeOpacityMapping = function ()
 test.setEdgeTargetArrowMapping = function ()
 {
     title = 'test.setEdgeTargetArrowMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     arrows = c ('DELTA', 'T', 'DIAMOND')
     interaction.values = c ('inhibits', 'activates', 'interacts')
@@ -1200,7 +1200,7 @@ test.setEdgeTargetArrowMapping = function ()
 test.setEdgeArrowColorMappings = function ()
 {
     title = 'test.setEdgeArrowColorMappings'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     colors.1 = c ("#FFFFFF", "#FFFFFF", "#FFFFFF")
     colors.2 = c ("#AA00AA", "#AAAA00", "#AA0000")
@@ -1218,7 +1218,7 @@ test.setEdgeArrowColorMappings = function ()
 test.setEdgeSourceArrowMapping = function ()
 {
     title = 'test.setEdgeSourceArrowMapping'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     arrows = c ('ARROW', 'DIAMOND', 'CIRCLE')
     interaction.values = c ('inhibits', 'activates', 'interacts')
@@ -1270,7 +1270,7 @@ test.movie = function ()
 test.unmatchedAttributesError = function ()
 {
     title = 'test.unmatchedAttributesError'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     # this works
     control.points = c (2, 30, 100)
@@ -1281,7 +1281,7 @@ test.unmatchedAttributesError = function ()
 test.simpleGraphWithReciprocalEdge = function ()
 {
     title = 'test.simpleGraphWithReciprocalEdge'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     g.simple = RCy3::makeSimpleGraph ()
     g.simple = graph::addEdge ('node 2', 'node 1', g.simple)
@@ -1310,7 +1310,7 @@ test.simpleGraphWithReciprocalEdge = function ()
 test.setNodePosition = function ()
 {
     title = 'test.setNodePosition'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     center.x = getNetworkCenter()$x
     center.y = getNetworkCenter()$y
@@ -1330,7 +1330,7 @@ test.setNodePosition = function ()
 test.getNodePosition = function ()
 {
     title = 'test.getNodePosition'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     node.x <- 200
     node.y <- 210
@@ -1348,7 +1348,7 @@ test.getNodePosition = function ()
 test.getNodePosition.colonInNodeName = function ()
 {
     title = 'test.getNodePosition.colonInNodeName'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     g = RCy3::makeSimpleGraph ()
     funky.node.name = 'ab::cdxyz::1234,funky!?' 
@@ -1372,7 +1372,7 @@ test.getNodePosition.colonInNodeName = function ()
 test.visualStyle = function ()
 {
     title = 'test.visualStyle'
-    test.prep (title,F)
+    test.prep (title,FALSE)
     
     copyVisualStyle('default','test.default')
     current.names = getVisualStyleNames ()
@@ -1388,7 +1388,7 @@ test.visualStyle = function ()
 test.defaultColors = function ()
 {
     title = 'test.defaultColors'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     getBackgroundColorDefault ()
     getEdgeSelectionColorDefault ()
     getNodeSelectionColorDefault ()
@@ -1406,36 +1406,36 @@ test.defaultColors = function ()
 test.fitContent = function ()
 {
     title = 'test.fitContent'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     clearSelection ()
     selectNodes ('node 0', 'name')
     
-    fitContent (selected.only = T)
+    fitContent (selected.only = TRUE)
     fitContent()
 }
 #-------------------------------------------------------------------------------
 test.zoom = function ()
 {
     title = 'test.zoom'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     smaller = 0.5
     larger = 2
     
     for (i in 1:10){
-        setNetworkZoomBypass (smaller * getNetworkZoom (), bypass = F)
+        setNetworkZoomBypass (smaller * getNetworkZoom (), bypass = FALSE)
     }
     
     for (i in 1:10){
-        setNetworkZoomBypass (larger * getNetworkZoom (), bypass = F)
+        setNetworkZoomBypass (larger * getNetworkZoom (), bypass = FALSE)
     }
 }
 #-------------------------------------------------------------------------------
 test.center = function ()
 {
     title = 'test.setCenter'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     center.orig = getNetworkCenter ()
     delta = 100
@@ -1445,20 +1445,20 @@ test.center = function ()
     y.down = center.orig$y + delta
     
     for (i in 1:10) {
-        setNetworkCenterBypass (x.left, y.up, bypass = F)
-        setNetworkCenterBypass (as.integer (x.left), as.integer (y.up), bypass = F)   # make sure the called function casts this int back to numeric
-        setNetworkCenterBypass (x.left, y.down, bypass = F)
-        setNetworkCenterBypass (x.right, y.down, bypass = F)
-        setNetworkCenterBypass (x.right, y.up, bypass = F)
+        setNetworkCenterBypass (x.left, y.up, bypass = FALSE)
+        setNetworkCenterBypass (as.integer (x.left), as.integer (y.up), bypass = FALSE)   # make sure the called function casts this int back to numeric
+        setNetworkCenterBypass (x.left, y.down, bypass = FALSE)
+        setNetworkCenterBypass (x.right, y.down, bypass = FALSE)
+        setNetworkCenterBypass (x.right, y.up, bypass = FALSE)
     } 
     
-    setNetworkCenterBypass (center.orig$x, center.orig$y, bypass = F)
+    setNetworkCenterBypass (center.orig$x, center.orig$y, bypass = FALSE)
 }
 #-------------------------------------------------------------------------------
 test.setNodeSizeBypass = function ()
 {
     title = 'test.setNodeSizeBypass'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     lockNodeDimensions (TRUE)
     
@@ -1471,7 +1471,7 @@ test.setNodeSizeBypass = function ()
 test.getNodeSize = function ()
 {
     title = 'test.getNodeSize'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     size =  getNodeSize ('node 0')
     checkEquals (size, 300)
@@ -1497,7 +1497,7 @@ test.getNodeSize = function ()
 test.setNodeWidthAndHeightBypass = function ()
 {
     title = 'test.setNodeWidthAndHeightBypass'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     lockNodeDimensions (FALSE)
     
@@ -1513,7 +1513,7 @@ test.setNodeWidthAndHeightBypass = function ()
 test.setNodeFontSizeBypass = function ()
 {
     title = 'test.setNodeFontSizeBypass'
-    test.prep (title, F)
+    test.prep (title,FALSE)
 
     starting.size = 12
     for (i in 1:20) {
@@ -1531,7 +1531,7 @@ test.setNodeFontSizeBypass = function ()
 test.setNodeShapeBypass = function ()
 {
     title = 'test.setNodeShapeBypass'
-    test.prep (title, F) 
+    test.prep (title,FALSE) 
     
     lockNodeDimensions (TRUE)
     setNodeSizeBypass ('node 0', 100)
@@ -1544,7 +1544,7 @@ test.setNodeShapeBypass = function ()
 test.createIgraphFromNetwork = function ()
 {
     title = 'test.createIgraphFromNetwork'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     ig = createIgraphFromNetwork()
     
@@ -1563,7 +1563,7 @@ test.createGraphFromNetwork = function ()
 {
     
     title = 'test.createGraphFromNetwork'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     g3 = createGraphFromNetwork() 
     
@@ -1578,9 +1578,9 @@ test.createGraphFromNetwork = function ()
 test.createNetworkFromSelection = function ()
 {
     title = 'test.createNetworkFromSelection'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
-    selectNodes ('node 3', 'name', preserve.current.selection = F)
+    selectNodes ('node 3', 'name', preserve.current.selection = FALSE)
     selectFirstNeighbors()
     
     createSubnetwork('selected', subnetwork.name = 'test.createNetworkFromSelection')
@@ -1592,7 +1592,7 @@ test.createNetworkFromSelection = function ()
 test.customGraphics = function ()
 {
     title = 'test.customGraphics'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     openSession()
     checkEqualsNumeric(getNodeCount(),330)
@@ -1704,7 +1704,7 @@ test.filters = function ()
 {
     
     title = 'test.filters'
-    test.prep (title, F)
+    test.prep (title,FALSE)
     
     setNetworkZoomBypass(0.6)
     # COLUMN FILTERS ON NODES

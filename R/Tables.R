@@ -281,6 +281,7 @@ getTableColumnTypes <-  function(table = 'node',
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return server response
 #' @importFrom BiocGenerics colnames
+#' @importFrom methods is
 #' @export
 loadTableData <- function(data,
                           data.key.column = 'row.names',
@@ -327,7 +328,7 @@ loadTableData <- function(data,
         for (j in seq_len(dim(data.subset)[2])) {
             #each column
             val<-data.subset[i, j]
-            if(class(val)=="list")
+            if(is(val)=="list")
                 if(length(unlist(val)) > 1)
                     val<-unlist(val)
             rest[[colnames(data.subset)[j]]] = val
