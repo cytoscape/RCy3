@@ -328,7 +328,7 @@ loadTableData <- function(data,
         for (j in seq_len(dim(data.subset)[2])) {
             #each column
             val<-data.subset[i, j]
-            if(is(val)=="list")
+            if(is.list(val))
                 if(length(unlist(val)) > 1)
                     val<-unlist(val)
             rest[[colnames(data.subset)[j]]] = val
@@ -339,7 +339,7 @@ loadTableData <- function(data,
     tbl = paste0(namespace, table) #add prefix
         
     # explicitly create columns for integer data, unless the column alread exists!
-    existing.cols <- getTableColumnNames()
+    existing.cols <- getTableColumnNames(table, namespace, net.suid, base.url)
     data.types <- vapply(data.subset, typeof, character(1))
     for (i in seq_len(length(data.types))){
         if (data.types[i] == "integer" && !names(data.types[i]) %in% existing.cols){
