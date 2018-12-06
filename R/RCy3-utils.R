@@ -69,7 +69,8 @@
         test <- vapply(edge.names, function(x){x %in% dict[,'SUID']}, logical(1))
         if(all(test))  #provided SUIDs already!
             return(edge.names)
-        edge.SUIDs <- dict$SUID[match(edge.names, dict$name)]
+        # Using pmatch to support multigraphs: multiple edges with the same name
+        edge.SUIDs <- dict$SUID[pmatch(edge.names, dict$name)] 
         return(edge.SUIDs)
 }
 
