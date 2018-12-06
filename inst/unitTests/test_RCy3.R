@@ -120,10 +120,13 @@ run.tests = function()
     test.setNodeWidthAndHeightBypass () 
     test.setNodeFontSizeBypass ()  
     test.setNodeShapeBypass () 
-    
     test.createIgraphFromNetwork ()
     test.createGraphFromNetwork ()
     test.createNetworkFromSelection ()
+    test.createNetworkFromDataFrames ()
+    test.multigraph ()
+    test.createNetworkFromIgraph()
+    test.createNetworkFromGraph()
     
     test.customGraphics()
     test.filters()
@@ -1540,6 +1543,62 @@ test.setNodeShapeBypass = function ()
         setNodeShapeBypass ('node 0', new.shape)
     } 
 }
+
+#-------------------------------------------------------------------------------
+test.createNetworkFromDataFrames = function ()
+{
+    title = 'test.createNetworkFromDataFrames'
+    test.prep (title,FALSE)
+    
+    nodes <- data.frame(id=c("node 0","node 1","node 2","node 3"),
+                        group=c("A","A","B","B"), # categorical strings
+                        score=as.integer(c(20,10,15,5)), # integers
+                        stringsAsFactors=FALSE)
+    edges <- data.frame(source=c("node 0","node 0","node 0","node 2"),
+                        target=c("node 1","node 2","node 3","node 3"),
+                        interaction=c("inhibits","interacts","activates","interacts"),  # optional
+                        weight=c(5.1,3.0,5.2,9.9), # numeric
+                        stringsAsFactors=FALSE)
+        createNetworkFromDataFrames(nodes, edges)
+}
+
+#-------------------------------------------------------------------------------
+test.multigraph = function ()
+{
+    title = 'test.multigraph'
+    test.prep (title,FALSE)
+    
+    nodes <- data.frame(id=c("node 0","node 1","node 2","node 3"),
+                        group=c("A","A","B","B"), # categorical strings
+                        score=as.integer(c(20,10,15,5)), # integers
+                        stringsAsFactors=FALSE)
+    edges <- data.frame(source=c("node 0","node 0","node 0","node 2","node 2"),
+                        target=c("node 1","node 2","node 3","node 3","node 3"),
+                        interaction=c("inhibits","interacts","activates","interacts","interacts"),  # optional
+                        weight=c(5.1,3.0,5.2,9.9,8.8), # numeric
+                        stringsAsFactors=FALSE)
+    createNetworkFromDataFrames(nodes, edges, title = "multigraph", collection = "multigraph")
+}
+
+#-------------------------------------------------------------------------------
+test.createNetworkFromIgraph = function ()
+{
+    title = 'test.createNetworkFromIgraph'
+    test.prep (title,FALSE)
+    
+    ig = makeSimpleIgraph()
+    createNetworkFromIgraph(ig)
+}
+#-------------------------------------------------------------------------------
+test.createNetworkFromGraph = function ()
+{
+    title = 'test.createNetworkFromGraph'
+    test.prep (title,FALSE)
+    
+    g = makeSimpleGraph()
+    createNetworkFromGraph(g)
+}
+
 #-------------------------------------------------------------------------------
 test.createIgraphFromNetwork = function ()
 {

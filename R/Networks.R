@@ -849,7 +849,7 @@ createNetworkFromDataFrames <-
         if(!exists('node.id.list'))
             node.id.list = 'id'
         
-        json_nodes <- .nodeSet2JSON(nodes[node.id.list], ...)
+        json_nodes <- .nodeSet2JSON(nodes[node.id.list])
         # cleanup global environment variables (which can be quite large)
         remove(RCy3.CreateNetworkFromDataFrames.temp.global.counter,
                envir = globalenv())
@@ -873,7 +873,7 @@ createNetworkFromDataFrames <-
             
             edges.sub <- edges[c(source.id.list,target.id.list,interaction.type.list)]
             
-            json_edges <- .edgeSet2JSON(edges.sub, ...)
+            json_edges <- .edgeSet2JSON(edges.sub)
             # cleanup global environment variables (which can be quite large)
             remove(RCy3.CreateNetworkFromDataFrames.temp.global.counter,
                    envir = globalenv())
@@ -904,20 +904,26 @@ createNetworkFromDataFrames <-
             nodes <- subset(nodes, select = -c(SUID))
         if(length(setdiff(colnames(nodes),"id")) > 0)
             loadTableData(nodes,data.key.column = node.id.list,
-                          table.key.column = node.id.list)
+                          table.key.column = node.id.list,
+                          network = network.suid, base.url = base.url)
         
         if (!is.null(edges)) {
             if('SUID' %in% colnames(edges))
                 edges <- subset(edges, select = -c(SUID))
-            edges['data.key.column'] <- 
+            edges['name'] <- 
                 apply(edges, 1,
                       function(x) paste0(x[source.id.list], " (",
                                          x[interaction.type.list],") ",
                                          x[target.id.list]))
-            
-            if(length(setdiff(colnames(edges),c("source","target","interaction"))) > 0)
+            # Using SUIDs to support multigraphs: multiple edges with same name
+            edges['data.key.column'] <- .edgeNameToEdgeSUID(edges$name,
+                                                            network.suid,
+                                                            base.url)
+            if(length(setdiff(colnames(edges),c("source","target","interaction", 
+                                                "name","data.key.column"))) > 0)
                 loadTableData(edges,data.key.column = 'data.key.column', 
-                              table = 'edge')
+                              table = 'edge', table.key.column = 'SUID',
+                              network = network.suid, base.url = base.url)
         }
         
         cat("Applying default style...\n")
