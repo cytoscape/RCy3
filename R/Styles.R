@@ -116,7 +116,9 @@ deleteVisualStyle<-function(style.name, base.url=.defaultBaseUrl){
 #' Export Visual Styles
 #'
 #' @description Save one or more visual styles to file.
-#' @param filename (char) Path and name of the style file to save. Default is 
+#' @param filename (char) Full path or path relavtive to current 
+#' working directory, in addition to the name of the file. Extension is 
+#' automatically added based on the \code{type} argument. Default is 
 #' "styles.xml"
 #' @param type (optional) Type of data file to export, e.g., XML, JSON (case 
 #' sensitive). 
@@ -135,16 +137,24 @@ deleteVisualStyle<-function(style.name, base.url=.defaultBaseUrl){
 #' exportVisualStyles('/fullpath/myStyle', style = 'Minimal,default,Directed')
 #' }
 #' @seealso importVisualStyles
+#' @importFrom R.utils isAbsolutePath
 #' @export
 exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.defaultBaseUrl){
     cmd.string <- 'vizmap export'  # minmum command
-    if(!is.null(filename))
-        cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"')
+    if(is.null(filename))
+        filename <- "styles"
+    if(isAbsolutePath(filename))
+            cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"')
+        else
+            cmd.string <- paste0(cmd.string,' OutputFile="',
+                                 paste(getwd(),filename,sep="/"),'"')
     if(!is.null(type))
         cmd.string <- paste0(cmd.string,' options="',type,'"')
     if(!is.null(styles))
         cmd.string <- paste0(cmd.string,' styles="',styles,'"')
+    
     commandsPOST(cmd.string, base.url = base.url)
+    
 }
 
 # ------------------------------------------------------------------------------

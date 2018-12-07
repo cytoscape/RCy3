@@ -309,16 +309,14 @@ For example, notice in the case of ovarian cancer: **decreased** range of mean e
 ## Saving a Cytoscape session file
 Session files save *everything*. As with most project software, we recommend saving often!
 ```{r}
-full.path=paste(getwd(),'tutorial_session',sep='/')
-saveSession(filename=full.path) #.cys
+saveSession('tutorial_session') #.cys
 ```
-**Note:** If you don't specify a complete path, the files will be save relative to your Cytoscape installation directory, e.g., /Applications/Cytoscape_v3.6.0/... or somewhere you don't have write permissions. 
+**Note:** If you don't specify a complete path, the files will be saved relative to your current working directory in R. 
 
 ## Saving high resolution image files
 You can export extremely high resolution images, including vector graphic formats.
 ```{r}
-full.path=paste(getwd(),'tutorial_image2',sep='/')
-exportImage(filename=full.path, type = 'PDF') #.pdf
+exportImage(filename='tutorial_image2', type = 'PDF') #.pdf
 ?exportImage
 ```
 

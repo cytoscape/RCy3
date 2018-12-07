@@ -7,7 +7,8 @@
 exportFilters(filename = "filters.json", base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{filename}{(char) Path and name of the filters file to save. Default is 
+\item{filename}{(char) Full path or path relavtive to current 
+working directory, in addition to the name of the file. Default is 
 "filters.json"}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,

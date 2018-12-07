@@ -62,7 +62,9 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
 #' @details If no \code{filename} is provided, then it attempts to
 #' save to an existing CYS file associated with the session. If 
 #' \code{filename} already exists, then it is overwritten.
-#' @param filename The path and name of the session file to save
+#' @param filename Full path or path relavtive to current working directory, 
+#' in addition to the name of the file. The \code{.cys} extension is 
+#' automatically added.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -72,6 +74,7 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
 #' saveSession('/fullpath/mySession')
 #' saveSession() 
 #' }
+#' @importFrom R.utils isAbsolutePath
 #' @export
 saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
     if(is.null(filename)){
@@ -80,7 +83,14 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
             stop('Save not completed. Provide a filename the first time you save a session.')
         commandsPOST(paste0('session save'),base.url=base.url)
     } else {
-        commandsPOST(paste0('session save as file="',filename,'"'),base.url=base.url)
+        if(isAbsolutePath(filename))
+            commandsPOST(paste0('session save as file="',
+                                filename,'"'), 
+                         base.url=base.url)
+        else
+            commandsPOST(paste0('session save as file="',
+                                paste(getwd(),filename,sep="/"),'"'),
+                         base.url=base.url)
     }
     
 }

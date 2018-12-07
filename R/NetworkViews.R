@@ -139,8 +139,10 @@ setCurrentView <- function(network = NULL,
 #' @description Saves the current network view as an image file.
 #' @details The image is cropped per the current view in Cytoscape. Consider
 #' applying \code{\link{fitContent}} prior to export.
-#' @param filename (\code{character}) Name of the image file to save. By default, the view's title 
-#' is used as the file name and the last valid export path from the current session is used.
+#' @param filename (\code{character}) Full path or path relavtive to current 
+#' working directory, in addition to the name of the file. Extension is 
+#' automatically added based on the \code{type} argument. If blank, the current
+#' network name will be used.
 #' @param type (\code{character}) Type of image to export, e.g., JPEG, PDF, PNG, PostScript, SVG (case sensitive).
 #' @param resolution (\code{numeric}) The resolution of the exported image, in DPI. Valid 
 #' only for bitmap formats, when the selected width and height 'units' is inches. The 
@@ -164,6 +166,7 @@ setCurrentView <- function(network = NULL,
 #' \donttest{
 #' exportImage('/fullpath/myNetwork','PDF')
 #' }
+#' @importFrom R.utils isAbsolutePath
 #' @export
 exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, height=NULL, 
                       width=NULL, zoom=NULL, network=NULL, base.url=.defaultBaseUrl){
@@ -190,10 +193,17 @@ exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, hei
     if(!is.null(zoom))
         cmd.string <- paste0(cmd.string,' Zoom="',zoom,'"')
     
-    commandsPOST(paste0(cmd.string,
-                        ' OutputFile="',filename,'"',
-                        ' view=SUID:"',view.SUID,'"'), 
-                 base.url = base.url)
+    if(isAbsolutePath(filename))
+        commandsPOST(paste0(cmd.string,
+                            ' OutputFile="',filename,'"',
+                            ' view=SUID:"',view.SUID,'"'), 
+                     base.url = base.url)
+    else
+        commandsPOST(paste0(cmd.string,
+                            ' OutputFile="',
+                            paste(getwd(),filename,sep="/"),'"',
+                            ' view=SUID:"',view.SUID,'"'), 
+                     base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------

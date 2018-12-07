@@ -211,12 +211,7 @@ Session files save *everything*. As with most project software, we recommend sav
     saveSession('vignette_session') #.cys
 ```
 
-**Note**: If you don't specify a complete path, the files will be save relative to your Cytoscape installation directory, e.g., /Applications/Cytoscape_v3.6.0/... or somewhere you don't have write permissions. So, it's probably better to specify one...
-
-```{r}
-    full.path=paste(getwd(),'vignette_session',sep='/')
-    saveSession(filename=full.path) #.cys
-```
+**Note**: If you don't specify a complete path, the files will be saved relative to your current working directory in R.
 
 ### Saving high resolution image files
 You can export extremely high resolution images, including vector graphic formats.
