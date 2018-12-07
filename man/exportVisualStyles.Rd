@@ -8,7 +8,9 @@ exportVisualStyles(filename = NULL, type = NULL, styles = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{filename}{(char) Path and name of the style file to save. Default is 
+\item{filename}{(char) Full path or path relavtive to current 
+working directory, in addition to the name of the file. Extension is 
+automatically added based on the \code{type} argument. Default is 
 "styles.xml"}
 
 \item{type}{(optional) Type of data file to export, e.g., XML, JSON (case 

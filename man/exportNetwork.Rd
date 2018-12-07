@@ -8,7 +8,9 @@ exportNetwork(filename = NULL, type = NULL, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{filename}{Full path and name to exported file}
+\item{filename}{Full path or path relavtive to current working directory, 
+in addition to the name of the file. Extension is automatically added based
+on the \code{type} argument. If blank, then the current network name is used.}
 
 \item{type}{File type. CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive). 
 Default is SIF.}

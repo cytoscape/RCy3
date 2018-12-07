@@ -233,7 +233,9 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #' @title Export Network 
 #'
 #' @description Export a network to one of mulitple file formats
-#' @param filename Full path and name to exported file
+#' @param filename Full path or path relavtive to current working directory, 
+#' in addition to the name of the file. Extension is automatically added based
+#' on the \code{type} argument. If blank, then the current network name is used.
 #' @param type File type. CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive). 
 #' Default is SIF.
 #' @param network (optional) Name or SUID of a network or view. Default is the 
@@ -245,6 +247,7 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #' @examples \donttest{
 #' exportNetwork('/path/filename','SIF')
 #' }
+#' @importFrom R.utils isAbsolutePath
 #' @export
 exportNetwork <- function (filename=NULL, type=NULL, 
                            network=NULL, base.url = .defaultBaseUrl) {
@@ -270,8 +273,14 @@ exportNetwork <- function (filename=NULL, type=NULL,
             cmd.string <- paste0(cmd.string,' options="',type,'"')
         }
     }
-    commandsPOST(paste0(cmd.string,' OutputFile="',filename,'"'),
-                 base.url = base.url)
+    if(isAbsolutePath(filename))
+        commandsPOST(paste0(cmd.string,' OutputFile="',
+                            filename,'"'),
+                     base.url = base.url)
+    else
+        commandsPOST(paste0(cmd.string,' OutputFile="',
+                            paste(getwd(),filename,sep="/"),'"'),
+                     base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------

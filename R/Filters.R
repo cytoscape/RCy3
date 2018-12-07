@@ -292,7 +292,8 @@ getFilterList<-function(base.url=.defaultBaseUrl){
 #' @title Export Filters
 #'
 #' @description Saves filters to file in JSON format.
-#' @param filename (char) Path and name of the filters file to save. Default is 
+#' @param filename (char) Full path or path relavtive to current 
+#' working directory, in addition to the name of the file. Default is 
 #' "filters.json"
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -301,9 +302,20 @@ getFilterList<-function(base.url=.defaultBaseUrl){
 #' @examples \donttest{
 #' exportFilters()
 #' }
+#' @importFrom R.utils isAbsolutePath
 #' @export
 exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl){
-    commandsGET(paste0('filter export file="',filename,'"'),base.url)
+    if(tail(strsplit(filename, '\\.')[[1]],1) != "json")
+        filename <- paste(filename, "json",sep='.')
+    
+    if(isAbsolutePath(filename))
+        commandsGET(paste0('filter export file="',
+                           filename,'"'),
+                    base.url)
+    else
+        commandsGET(paste0('filter export file="', 
+                           paste(getwd(),filename,sep="/"),'"'),
+                    base.url)
 }
 
 # ------------------------------------------------------------------------------

@@ -9,8 +9,10 @@ exportImage(filename = NULL, type = NULL, resolution = NULL,
   network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{filename}{(\code{character}) Name of the image file to save. By default, the view's title 
-is used as the file name and the last valid export path from the current session is used.}
+\item{filename}{(\code{character}) Full path or path relavtive to current 
+working directory, in addition to the name of the file. Extension is 
+automatically added based on the \code{type} argument. If blank, the current
+network name will be used.}
 
 \item{type}{(\code{character}) Type of image to export, e.g., JPEG, PDF, PNG, PostScript, SVG (case sensitive).}
 

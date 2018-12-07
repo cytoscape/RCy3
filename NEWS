@@ -1,9 +1,10 @@
 Changes in vesion 2.2.6
 + Bug Fixes
+   - saveSession, exportXXX -- #39 default to working directory
    - createNetworkFromDataFrame and .edgeNameToSuids -- #41 multigraph support
    - BiocCheck errors and warnings -- #42
 + Doc Fixes
-    - added tests for multigraphs
+   - added tests for multigraphs
 Changes in vesion 2.2.5
 + Bug Fixes
    - createXXXFilter and applyFilter -- #40 network arg 
