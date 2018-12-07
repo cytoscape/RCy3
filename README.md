@@ -99,14 +99,18 @@ Only bug fixes and documentation updates can be pushed to the official bioconduc
 ```
 git checkout RELEASE_3_8
 git cherry-pick master #for lastest commit
-# or git cherry-pick <commit number> #for specific commit
-# bump version in DESCRIPTION
-git add DESCRIPTION
-git commit -m 'version bump'
+# or git cherry-pick 1abc234 #for specific commit
+# or git cherry-pick 1abc234^..5def678 #for an inclusive range
+# bump release version in DESCRIPTION
+git commit -am 'version bump'
 git push origin RELEASE_3_8
 # double check changes, and then...
 git push upstream RELEASE_3_8
 git checkout master
+# bump dev version in DESCRIPTION
+git commit -am 'version bump'
+git push origin master
+git push upstream master
 ```
 
 https://bioconductor.org/developers/how-to/git/bug-fix-in-release-and-devel/
