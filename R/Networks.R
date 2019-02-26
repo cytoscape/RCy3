@@ -666,7 +666,7 @@ createSubnetwork <- function(nodes=NULL,
                              subnetwork.name=NULL,
                              network = NULL,
                              base.url = .defaultBaseUrl) {
-    title = getNetworkName(network, base.url)
+    title = getNetworkSuid(network, base.url)
     
     if (exclude.edges) 
         exclude.edges = "true"
@@ -680,7 +680,7 @@ createSubnetwork <- function(nodes=NULL,
         edges.by.col = NULL
     
     json_sub = NULL
-    json_sub$source = title
+    json_sub$source = paste0("SUID:", title)
     json_sub$excludeEdges = exclude.edges
     json_sub$nodeList = .prepPostQueryLists(nodes,nodes.by.col)
     json_sub$edgeList = .prepPostQueryLists(edges,edges.by.col)
