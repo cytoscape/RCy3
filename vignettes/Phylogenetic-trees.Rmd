@@ -64,7 +64,6 @@ tree <- phytools::read.newick(system.file("extdata","phylotree.newick", package=
 ig <- ape::as.igraph.phylo(tree, FALSE) # boolean for whether tree is rooted or not
 ig <- set_edge_attr(ig,'distance', value=tree$edge.length) # set distances as edge attributes
 ```
-*Pro-t
 
 # Network to Cytoscape
 From here it's a simple matter of loading the igraph network into Cytoscape. RCy3 has a function for that:
