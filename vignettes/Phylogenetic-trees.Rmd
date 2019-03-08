@@ -92,7 +92,7 @@ setNodeHeightBypass(junctions,1)
 setNodeLabelBypass(junctions, "")
 ```
 
-# Egde Length as Distance
+# Edge Length as Distance
 And, as a final touch, let's label our edges with distance values:
 ```{r}
 setEdgeLabelMapping('distance')
