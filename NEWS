@@ -1,6 +1,8 @@
 Changes in version 2.4.0
-* Bug Fixes
++ Bug Fixes
     - createSubnetwork -- #43 network suids i/o names
++Doc Fixes
+    - improved visual.prop handling in mapVisualProperty -- #49 user report
 Changes in version 2.2.7
 + Doc Fixes
     - vignette for phylogenetic trees

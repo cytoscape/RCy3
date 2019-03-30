@@ -30,7 +30,7 @@
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return (network=network, base.url=base.url) ready to convert into JSON by style mapping operations
-#' @seealso setStyleMappings createStyle
+#' @seealso setStyleMappings createStyle getVisualPropertyNames
 #' @examples
 #' \donttest{
 #' mapVisualProperty('node fill color','score','c',c(-4.0,0.0,9.0),c('#99CCFF','#FFFFFF','#FF7777'))
@@ -39,7 +39,7 @@
 #' }
 #' @section List of visual properties:
 #' \tabular{lll}{
-#' Node Border Line Type \tab Edge Bend \tab Network Background Paint \cr
+#' Node Border Stroke \tab Edge Bend \tab Network Background Paint \cr
 #' Node Border Paint \tab Edge Curved \tab Network Center X Location \cr
 #' Node Border Transparency \tab Edge Label \tab Network Center Y Location \cr
 #' Node Border Width \tab Edge Label Color \tab Network Center Z Location \cr
@@ -86,7 +86,14 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
                               'EDGE_COLOR'='EDGE_UNSELECTED_PAINT',
                               'EDGE_THICKNESS'='EDGE_WIDTH',
                               'NODE_BORDER_COLOR'='NODE_BORDER_PAINT',
+                              'NODE_BORDER_LINE_TYPE'='NODE_BORDER_STROKE',
                               visual.prop.name)
+    
+    #check visual prop name
+    if(!visual.prop.name %in% getVisualPropertyNames(base.url = base.url)){
+        stop(paste0('Could not find ',visual.prop.name,
+                     '. Run getVisualPropertyNames() to retrieve property names.'))
+    }
     
     #check mapping column and get type
     tp = tolower(strsplit(visual.prop.name,"_")[[1]][1])
@@ -100,7 +107,7 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
         }
     }
     if(is.null(table.column.type))
-        print(paste0('Error: Could not find ',table.column,' column in ',table,' table.'))
+        stop(paste0('Could not find ',table.column,' column in ',table,' table.'))
     
     #construct visual property map
     visual.prop.map <- list(

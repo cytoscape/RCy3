@@ -45,7 +45,7 @@ Cytosacpe tables; and character or mixed data are stored as Strings.
 \section{List of visual properties}{
 
 \tabular{lll}{
-Node Border Line Type \tab Edge Bend \tab Network Background Paint \cr
+Node Border Stroke \tab Edge Bend \tab Network Background Paint \cr
 Node Border Paint \tab Edge Curved \tab Network Center X Location \cr
 Node Border Transparency \tab Edge Label \tab Network Center Y Location \cr
 Node Border Width \tab Edge Label Color \tab Network Center Z Location \cr
@@ -87,5 +87,5 @@ mapVisualProperty('node label','alias','p')
 }
 }
 \seealso{
-setStyleMappings createStyle
+setStyleMappings createStyle getVisualPropertyNames
 }
