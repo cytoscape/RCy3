@@ -49,8 +49,11 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
     type = 'file'
     if(is.null(file.location))
         file.location <- './sampleData/sessions/Yeast Perturbation.cys'
-    if(startsWith(file.location,'http'))
+    else if(startsWith(file.location,'http'))
         type = 'url'
+    else if(!isAbsolutePath(file.location))
+        file.location = paste(getwd(),file.location,sep='/')
+        
     write(sprintf("Opening %s...",file.location), stderr())
     commandsPOST(paste0('session open ',type,'="',file.location,'"'),base.url=base.url)
 }

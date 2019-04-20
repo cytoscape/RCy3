@@ -1,8 +1,9 @@
 Changes in version 2.4.0
 + Bug Fixes
     - createSubnetwork -- #43 network suids i/o names
+    - openSession works with current working directory -- #50
 +Doc Fixes
-    - improved visual.prop handling in mapVisualProperty -- #49 user report
+    - improved visual.prop handling in mapVisualProperty -- #49,#53 user report
 Changes in version 2.2.7
 + Doc Fixes
     - vignette for phylogenetic trees
