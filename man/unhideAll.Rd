@@ -22,9 +22,9 @@ Unhide all previously hidden nodes and edges, by
 clearing the Visible property bypass value.
 }
 \details{
-This method permanently overrides any default values or mappings 
-defined for this visual property of the edge or edges specified. This method
-ultimately calls the generic function, \link{clearEdgePropertyBypass}, which 
+This method sets node and edge visibility bypass to true, overriding
+any defaults or mappings. Pending CyREST updates, this method will
+ultimately call the generic function, \link{clearEdgePropertyBypass}, which 
 can be used to clear any visual property.
 }
 \examples{

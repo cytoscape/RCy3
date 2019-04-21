@@ -21,11 +21,10 @@ None
 }
 \description{
 Unhide specified nodes that were previously hidden, by 
-clearing the Visible property bypass value.
+clearing the Node Visible property bypass value.
 }
 \details{
-This method permanently overrides any default values or mappings 
-defined for this visual property of the node or nodes specified. This method
+This method 
 ultimately calls the generic function, \link{clearNodePropertyBypass}, which 
 can be used to clear any visual property.
 }
