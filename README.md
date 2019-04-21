@@ -59,7 +59,7 @@ BiocManager::install("BiocCheck")
 library(BiocCheck)
 install.packages("RUnit")
 library(RUnit)
-setwd("/git/cytoscape/RCy3")
+setwd("/git/cytoscape/RCy3") #customize to your setup
 devtools::document()
 devtools::check()
 BiocCheck::BiocCheck('./')
