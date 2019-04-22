@@ -1,4 +1,35 @@
 Changes in version 2.4.0
++ New style setting functions
+    - setEdgeFontFaceDefault
+    - setEdgeFontFaceMapping
+    - setEdgeFontSizeMapping
+    - setEdgeLabelDefault
+    - setEdgeLabelColorDefault
+    - setEdgeLabelColorMapping
+    - setEdgeLabelOpacityDefault
+    - setEdgeLabelOpacityMapping
+    - setEdgeOpacityDefault
+    - setEdgeSourceArrowShapeMapping
+    - setEdgeTargetArrowShapeMapping
+    - setEdgeTooltipDefault
+    - setNodeBorderOpacityDefault
+    - setNodeBorderOpacityMapping
+    - setNodeFillOpacityDefault
+    - setNodeFillOpacityMapping
+    - setNodeFontFaceDefault
+    - setNodeFontFaceBypass
+    - setNodeFontFaceMapping
+    - setNodeFontSizeMapping
+    - setNodeHeightDefault
+    - setNodeHeightMapping
+    - setNodeLabelDefault
+    - setNodeLabelColorMapping
+    - setNodeLabelOpacityDefault
+    - setNodeLabelOpactiyMapping
+    - setNodeTooltipDefault
+    - setNodeTooltipBypass
+    - setNodeWidthDefault
+    - setNodeWidthMapping
 + Bug Fixes
     - createSubnetwork -- #43 network suids i/o names
     - openSession works with current working directory -- #50

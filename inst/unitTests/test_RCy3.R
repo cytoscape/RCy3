@@ -42,11 +42,9 @@ run.tests = function()
     test.setNodeBorderWidthDefault ()
     test.setNodeFontSizeDefault ()
     test.setNodeLabelColorDefault ()
-
     test.setEdgeLineWidthDefault ()
     test.setEdgeColorDefault ()
     test.setEdgeFontSizeDefault ()
-    
     test.setNodeLabelMapping ()
     test.setEdgeLabelMapping ()
     test.setNodeTooltipMapping ()
@@ -73,7 +71,6 @@ run.tests = function()
     test.setEdgeLabelBypass ()
     test.setEdgeFontSizeBypass ()  
     test.setEdgeLabelColorBypass ()  
-    test.setEdgeTooltipBypass ()
     test.setEdgeLineWidthBypass ()
     test.setEdgeLineStyleBypass ()
 
@@ -501,7 +498,11 @@ test.setNodeTooltipMapping = function ()
     title = 'test.setNodeTooltipMapping'
     test.prep (title,FALSE)
     
+    setNodeTooltipDefault('unknown')
     setNodeTooltipMapping ('group')
+    setNodeTooltipBypass(c('node 1','node 2'), c('bypass1','bypass2'))
+    setNodeTooltipBypass(c('node 1','node 2'), 'bypass3')
+    setNodeTooltipBypass('node 1', 'bypass4')
 } 
 #-------------------------------------------------------------------------------
 test.setEdgeTooltipMapping = function ()
@@ -509,7 +510,14 @@ test.setEdgeTooltipMapping = function ()
     title = 'test.setEdgeTooltipMapping'
     test.prep (title,FALSE)
 
+    edges.of.interest = getAllEdges()
+    
+    setEdgeTooltipDefault('unknown')
     setEdgeTooltipMapping ('weight')
+    # first try passing three edges and three tooltips
+    setEdgeTooltipBypass (edges.of.interest[1:3], c ('tooltip #1', 'tooltip #2', 'tooltip #3'))
+    # now try passing three edges and one tooltip
+    setEdgeTooltipBypass (edges.of.interest [1:3], 'a general purpose tooltip')
 } 
 #-------------------------------------------------------------------------------
 test.setNodeColorMapping = function ()
@@ -582,6 +590,8 @@ test.setNodeSizeMapping = function ()
 
     count.control.points = c(5,  20)
     node.sizes           = c(1, 80,  120, 300)
+    setNodeHeightMapping ('score', count.control.points, node.sizes, 'c')
+    setNodeWidthMapping ('score', count.control.points, node.sizes, 'c')
     setNodeSizeMapping ('score', count.control.points, node.sizes, 'c')
     system ('sleep 0.3')
     
@@ -628,11 +638,14 @@ test.setNodeComboOpacityMapping = function ()
     # make the nodes big, give them strong colors
     setNodeSizeBypass (getAllNodes(), 100)
     setNodeColorMapping ('score', score.values, c ('#FF0000', '#00FF00', '#0000FF'), 'c')
+    setNodeLabelColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
     layoutNetwork ('grid')
     
     # first, the continuous 'interpolate' case, in which opacity is a function of score
     opacities = c (10, 128, 255)
-    setNodeComboOpacityMapping ('score', score.values, opacities, 'c')
+    setNodeFillOpacityMapping ('score', score.values, opacities, 'c')
+    setNodeLabelOpacityMapping ('score', score.values, opacities, 'c')
+    setNodeBorderOpacityMapping ('score', score.values, opacities, 'c')
     
     # reset
     setNodeComboOpacityMapping ('score', score.values, c (255, 255, 255), 'c');
@@ -699,6 +712,10 @@ test.setNodeOpacityBypass = function ()
     fitContent ()
     setNetworkZoomBypass (0.8 * getNetworkZoom())
     
+    setNodeFillOpacityDefault(150)
+    setNodeLabelOpacityDefault(150)
+    setNodeBorderOpacityDefault(150)
+    
     setNodeFillOpacityBypass ('node 0', 0)
     setNodeLabelOpacityBypass ('node 1', 0)
     setNodeBorderOpacityBypass ('node 2', 0)
@@ -723,6 +740,12 @@ test.setEdgeOpacityBypass = function ()
 
     edge.names <- getAllEdges()
 
+    setEdgeOpacityDefault(150)
+    setEdgeLabelOpacityDefault(150)
+    
+    setEdgeOpacityMapping ('weight', c(1,10),c(50,255))
+    setEdgeLabelOpacityMapping ('weight', c(1,10),c(50,255))
+    
     setEdgeOpacityBypass (edge.names [1], 80)
     setEdgeOpacityBypass (edge.names [2], 0)
     setEdgeOpacityBypass (edge.names [3], 255)
@@ -768,6 +791,10 @@ test.setEdgeSourceArrowShapeBypass = function ()
     edges.of.interest = getAllEdges()
     supported.arrow.shapes = getArrowShapes()
     
+    setEdgeSourceArrowShapeDefault("ARROW")
+    setEdgeSourceArrowShapeMapping('interaction',c('activates','inhibits'),
+                                   c('ARROW_SHORT','T'))
+    
     # first try passing three edges and three arrow shapes
     setEdgeSourceArrowShapeBypass (edges.of.interest[1:3], supported.arrow.shapes [2:4])
     
@@ -791,6 +818,10 @@ test.setEdgeTargetArrowShapeBypass = function ()
 
     edges.of.interest = getAllEdges()
     supported.arrow.shapes = getArrowShapes ()
+    
+    setEdgeTargetArrowShapeDefault("ARROW")
+    setEdgeTargetArrowShapeMapping('interaction',c('activates','inhibits'),
+                                   c('ARROW_SHORT','T'))
     
     # first try passing three edges and three arrow.shapes
     setEdgeTargetArrowShapeBypass (edges.of.interest[1:3], supported.arrow.shapes [5:7])
@@ -887,24 +918,15 @@ test.setEdgeLabelColorBypass = function ()
 
     edge.names = getAllEdges()
     setEdgeLabelBypass (edge.names, 'some label')
+    setEdgeLabelColorDefault("#8333FD")
     setEdgeLabelColorBypass (edge.names [1:2], '#FF0000')
     setEdgeLabelColorBypass (edge.names, '#00FF00')
     setEdgeLabelColorBypass (edge.names [3], '#000000')
+    setEdgeFontFaceDefault("SansSerif,plain,9")
+    setEdgeFontFaceMapping("interaction", c("activates","inhibits"),
+                           c("SansSerif,plain,12", "Dialog,plain,10"))
 }
-#-------------------------------------------------------------------------------
-test.setEdgeTooltipBypass = function ()
-{
-    title = 'test.setEdgeTooltipBypass'
-    test.prep (title,FALSE)
-    
-    edges.of.interest = getAllEdges()
-    
-    # first try passing three edges and three tooltips
-    setEdgeTooltipBypass (edges.of.interest[1:3], c ('tooltip #1', 'tooltip #2', 'tooltip #3'))
-    
-    # now try passing three edges and one tooltip
-    setEdgeTooltipBypass (edges.of.interest [1:3], 'a general purpose tooltip')
-}
+
 #-------------------------------------------------------------------------------
 test.setEdgeLineWidthBypass = function ()
 {
@@ -1518,6 +1540,8 @@ test.setNodeFontSizeBypass = function ()
     title = 'test.setNodeFontSizeBypass'
     test.prep (title,FALSE)
 
+    setNodeFontFaceDefault("SansSerif,plain,12")
+    setNodeFontFaceMapping('group',c("A","B"),c("SansSerif,plain,8", "Dialog,plain,8"))
     starting.size = 12
     for (i in 1:20) {
         setNodeFontSizeBypass ('node 0', starting.size + i)

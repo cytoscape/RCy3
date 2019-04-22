@@ -243,10 +243,14 @@ deleteStyleMapping<-function(style.name, visual.prop,  base.url=.defaultBaseUrl)
 # II.a. Node Properties
 # Pattern: (1) prepare mapVisualProperty, (2) call updateStyleMapping()
 # ------------------------------------------------------------------------------
-#' @title Set Node Tooltip Mapping
+#' @title Set Node Border Color Mapping
 #'
-#' @description Pass the values from a table column to display as node tooltips.
+#' @description Map table column values to colors to set the node border color.
 #' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param colors (integer) values between 0 and 255; 0 is invisible
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param default.color Hex color to set as default
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
 #' network active in Cytoscape.
@@ -255,22 +259,110 @@ deleteStyleMapping<-function(style.name, visual.prop,  base.url=.defaultBaseUrl)
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeTooltipMapping('description')
+#' setNodeBorderColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
 #' }
 #' @export
-setNodeTooltipMapping <- function (table.column, style.name = 'default', 
-                                   network=NULL, base.url=.defaultBaseUrl) {
-    if(!.tableColumnExists(table.column,'node',network, base.url)) return()
-    mvp <- mapVisualProperty("NODE_TOOLTIP", table.column, 'p', 
-                             network = network, base.url = base.url)  
+setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
+                                       mapping.type='c', default.color=NULL, style.name='default', 
+                                       network=NULL, base.url=.defaultBaseUrl) {
+    # check if colors are formatted correctly
+    for (color in colors){
+        if (.isNotHexColor(color)) return()
+    }
+    
+    # set default
+    if(!is.null(default.color))
+        setNodeBorderColorDefault(default.color, style.name, base.url=base.url)
+    
+    # perform mapping
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp <- mapVisualProperty("NODE_BORDER_PAINT",table.column, 'c',
+                                 table.column.values, colors, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp <- mapVisualProperty("NODE_BORDER_PAINT",table.column, 'd',
+                                 table.column.values, colors, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp <- mapVisualProperty("NODE_BORDER_PAINT",table.column, 'p',
+                                 network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
     updateStyleMapping(style.name, mvp, base.url = base.url)
-}
+} 
 
 # ------------------------------------------------------------------------------
-#' @title Set Node Label Mapping
+#' @title Set Node Border Opacity Mapping
 #'
-#' @description Pass the values from a table column to display as node labels.
+#' @description Sets opacity for node border only.
 #' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in 
+#' mapping
+#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
+#' @param default.opacity Opacity value to set as default for all unmapped 
+#' values
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeBorderOpacityMapping('score', c(-5,5), c(50,255))
+#' }
+#' @export
+setNodeBorderOpacityMapping <- function(table.column, table.column.values=NULL, 
+                                        opacities=NULL, mapping.type='c', 
+                                        default.opacity=NULL, style.name='default', 
+                                        network=NULL, base.url=.defaultBaseUrl) {
+    if(!.tableColumnExists(table.column,'node',network, base.url)) 
+        stop("Table column does not exist. Please try again.")
+    for (o in opacities){
+        if (o < 0 || o > 255){
+            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
+            return()
+        } 
+    }
+    if(!is.null(default.opacity)){
+        if (default.opacity < 0 || default.opacity > 255){
+            write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
+            return()
+        } 
+        setVisualPropertyDefault(
+            list(visualProperty = "NODE_BORDER_TRANSPARENCY", value = default.opacity), 
+            style.name, base.url)
+    }
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp1 <- mapVisualProperty("NODE_BORDER_TRANSPARENCY",table.column, 'c',
+                                  table.column.values, opacities, 
+                                  network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp1 <- mapVisualProperty("NODE_BORDER_TRANSPARENCY",table.column, 'd',
+                                  table.column.values, opacities, 
+                                  network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp1 <- mapVisualProperty("NODE_BORDER_TRANSPARENCY",table.column, 'p',
+                                  network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp1, base.url = base.url)
+}
+# ------------------------------------------------------------------------------
+#' @title Set Node Border Width Mapping
+#'
+#' @description Map table column values to widths to set the node border width.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param widths List of width values to map to table.column.values
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param default.width Width value to set as default for all unmapped values 
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
 #' network active in Cytoscape.
@@ -279,17 +371,34 @@ setNodeTooltipMapping <- function (table.column, style.name = 'default',
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeLabelMapping('name')
+#' setNodeBorderWidthMapping('score', c(0,30), c(1,5))
 #' }
 #' @export
-setNodeLabelMapping <- function (table.column, style.name = 'default', 
-                                 network=NULL, base.url=.defaultBaseUrl) {
-    if(!.tableColumnExists(table.column,'node',network, base.url)) return()
-    mvp <- mapVisualProperty("NODE_LABEL", table.column, 'p', 
-                             network = network, base.url = base.url)  
+setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, widths=NULL, 
+                                       mapping.type='c', default.width=NULL, style.name='default', 
+                                       network=NULL, base.url=.defaultBaseUrl) {
+    # set default
+    if(!is.null(default.width))
+        setNodeBorderWidthDefault(default.width, style.name, base.url=base.url)
+    
+    # perform mapping
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp <- mapVisualProperty("NODE_BORDER_WIDTH",table.column, 'c',
+                                 table.column.values, widths, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp <- mapVisualProperty("NODE_BORDER_WIDTH",table.column, 'd',
+                                 table.column.values, widths, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp <- mapVisualProperty("NODE_BORDER_WIDTH",table.column, 'p',
+                                 network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
-
 # ------------------------------------------------------------------------------
 #' @title Set Node Color Mapping
 #'
@@ -346,13 +455,16 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
 #'
 #' @description Sets opacity for node fill, border and label all together.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param table.column.values List of values from Cytoscape table to be used in 
+#' mapping
 #' @param opacities (integer) values between 0 and 255; 0 is invisible
-#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.opacity Opacity value to set as default for all unmapped values
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
+#' @param default.opacity Opacity value to set as default for all unmapped 
+#' values
 #' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -376,6 +488,10 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
     
     # set default
     if(!is.null(default.opacity)){
+        if (default.opacity < 0 || default.opacity > 255){
+            write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
+            return()
+        } 
         setVisualPropertyDefault(
             list(visualProperty = "NODE_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
@@ -425,7 +541,239 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
 } 
 
 # ------------------------------------------------------------------------------
-#' @title Set Node Border Color Mapping
+#' @title Set Node Fill Opacity Mapping
+#'
+#' @description Sets opacity for node fill only.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in 
+#' mapping
+#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
+#' @param default.opacity Opacity value to set as default for all unmapped 
+#' values
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeFillOpacityMapping('score', c(-5,5), c(50,255))
+#' }
+#' @export
+setNodeFillOpacityMapping <- function(table.column, table.column.values=NULL, 
+                                        opacities=NULL, mapping.type='c', 
+                                        default.opacity=NULL, style.name='default', 
+                                        network=NULL, base.url=.defaultBaseUrl) {
+    if(!.tableColumnExists(table.column,'node',network, base.url)) 
+        stop("Table column does not exist. Please try again.")
+    for (o in opacities){
+        if (o < 0 || o > 255){
+            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
+            return()
+        } 
+    }
+    if(!is.null(default.opacity)){
+        if (default.opacity < 0 || default.opacity > 255){
+            write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
+            return()
+        } 
+        setVisualPropertyDefault(
+            list(visualProperty = "NODE_TRANSPARENCY", value = default.opacity), 
+            style.name, base.url)
+    }
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp1 <- mapVisualProperty("NODE_TRANSPARENCY",table.column, 'c',
+                                  table.column.values, opacities, 
+                                  network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp1 <- mapVisualProperty("NODE_TRANSPARENCY",table.column, 'd',
+                                  table.column.values, opacities, 
+                                  network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp1 <- mapVisualProperty("NODE_TRANSPARENCY",table.column, 'p',
+                                  network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp1, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Font Face Mapping
+#'
+#' @description Sets font face for node labels.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in 
+#' mapping
+#' @param fonts List of string specifications of font face, style and size, e.g., 
+#' c("SansSerif,plain,12", "Dialog,plain,10")
+#' @param mapping.type (char) discrete or passthrough (d,p); 
+#' default is discrete
+#' @param default.font String specification of font face, style and size, e.g., 
+#' "SansSerif,plain,12" or "Dialog,plain,10"
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeFontFaceMapping("myfonts", c("normal","small"),
+#' c("SansSerif,plain,12", "Dialog,plain,10"))
+#' }
+#' @export
+setNodeFontFaceMapping <- function(table.column, table.column.values, 
+                                   fonts, mapping.type='d', 
+                                   default.font=NULL,
+                                   style.name = 'default', 
+                                   network=NULL, base.url=.defaultBaseUrl) {
+    if(!.tableColumnExists(table.column,'node',network, base.url)) 
+        stop("Table column does not exist. Please try again.")
+    if(!is.null(default.font)){
+        setVisualPropertyDefault(
+            list(visualProperty = "NODE_LABEL_FONT_FACE", value = default.font), 
+            style.name, base.url)
+    }
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        stop("Continuous mapping of font face values is not supported.")
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp1 <- mapVisualProperty("NODE_LABEL_FONT_FACE",table.column, 'd',
+                                  table.column.values, fonts, 
+                                  network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp1 <- mapVisualProperty("NODE_LABEL_FONT_FACE",table.column, 'p',
+                                  network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp1, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Font Size Mapping
+#'
+#' @description Map table column values to sizes to set the node size.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param sizes List of size values to mape to table.column.values
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param default.size Size value to set as default
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeFontSizeMapping('score', c(0,30), c(35,55))
+#' }
+#' @export
+setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, sizes=NULL, 
+                                mapping.type='c', default.size=NULL, style.name='default', 
+                                network=NULL, base.url=.defaultBaseUrl) {
+    # set default
+    if(!is.null(default.size))
+        setNodeFontSizeDefault(default.size, style.name, base.url=base.url)
+    
+    # perform mapping
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp <- mapVisualProperty("NODE_LABEL_FONT_SIZE",table.column, 'c',
+                                 table.column.values, sizes, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp <- mapVisualProperty("NODE_LABEL_FONT_SIZE",table.column, 'd',
+                                 table.column.values, sizes, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp <- mapVisualProperty("NODE_LABEL_FONT_SIZE",table.column, 'p',
+                                 network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Height Mapping
+#'
+#' @description Map table column values to the node heights.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param heights List of height values to mape to table.column.values
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param default.height Size value to set as default
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeHeightMapping('score', c(0,30), c(35,55))
+#' }
+#' @export
+setNodeHeightMapping <- function (table.column, table.column.values=NULL, heights=NULL, 
+                                mapping.type='c', default.height=NULL, style.name='default', 
+                                network=NULL, base.url=.defaultBaseUrl) {
+    # set default
+    if(!is.null(default.height))
+        setNodeHeightDefault(default.height, style.name, base.url=base.url)
+    
+    # perform mapping
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp <- mapVisualProperty("NODE_HEIGHT",table.column, 'c',
+                                 table.column.values, heights, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp <- mapVisualProperty("NODE_HEIGHT",table.column, 'd',
+                                 table.column.values, heights, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp <- mapVisualProperty("NODE_HEIGHT",table.column, 'p',
+                                 network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Label Mapping
+#'
+#' @description Pass the values from a table column to display as node labels.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeLabelMapping('name')
+#' }
+#' @export
+setNodeLabelMapping <- function (table.column, style.name = 'default', 
+                                 network=NULL, base.url=.defaultBaseUrl) {
+    if(!.tableColumnExists(table.column,'node',network, base.url)) return()
+    mvp <- mapVisualProperty("NODE_LABEL", table.column, 'p', 
+                             network = network, base.url = base.url)  
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Label Color Mapping
 #'
 #' @description Map table column values to colors to set the node border color.
 #' @param table.column Name of Cytoscape table column to map values from
@@ -441,10 +789,10 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeBorderColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
+#' setNodeLabelColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
 #' }
 #' @export
-setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
+setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                        mapping.type='c', default.color=NULL, style.name='default', 
                                        network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
@@ -454,65 +802,19 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
     
     # set default
     if(!is.null(default.color))
-        setNodeBorderColorDefault(default.color, style.name, base.url=base.url)
+        setNodeLabelColorDefault(default.color, style.name, base.url=base.url)
     
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
-        mvp <- mapVisualProperty("NODE_BORDER_PAINT",table.column, 'c',
+        mvp <- mapVisualProperty("NODE_LABEL_COLOR",table.column, 'c',
                                  table.column.values, colors, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
-        mvp <- mapVisualProperty("NODE_BORDER_PAINT",table.column, 'd',
+        mvp <- mapVisualProperty("NODE_LABEL_COLOR",table.column, 'd',
                                  table.column.values, colors, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
-        mvp <- mapVisualProperty("NODE_BORDER_PAINT",table.column, 'p',
-                                 network=network, base.url = base.url)
-    } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
-    }
-    updateStyleMapping(style.name, mvp, base.url = base.url)
-} 
-
-# ------------------------------------------------------------------------------
-#' @title Set Node Border Width Mapping
-#'
-#' @description Map table column values to widths to set the node border width.
-#' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param widths List of width values to map to table.column.values
-#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.width Width value to set as default for all unmapped values 
-#' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
-#' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return None
-#' @examples \donttest{
-#' setNodeBorderWidthMapping('score', c(0,30), c(1,5))
-#' }
-#' @export
-setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, widths=NULL, 
-                                       mapping.type='c', default.width=NULL, style.name='default', 
-                                       network=NULL, base.url=.defaultBaseUrl) {
-    # set default
-    if(!is.null(default.width))
-        setNodeBorderWidthDefault(default.width, style.name, base.url=base.url)
-    
-    # perform mapping
-    if (mapping.type %in% c('continuous','c','interpolate')) {
-        mvp <- mapVisualProperty("NODE_BORDER_WIDTH",table.column, 'c',
-                                 table.column.values, widths, 
-                                 network=network, base.url = base.url)
-    } else if (mapping.type %in% c('discrete','d','lookup')){
-        mvp <- mapVisualProperty("NODE_BORDER_WIDTH",table.column, 'd',
-                                 table.column.values, widths, 
-                                 network=network, base.url = base.url)
-    } else if (mapping.type %in% c('passthrough','p')){
-        mvp <- mapVisualProperty("NODE_BORDER_WIDTH",table.column, 'p',
+        mvp <- mapVisualProperty("NODE_LABEL_COLOR",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
         write(print("mapping.type not recognized."), stderr())
@@ -521,6 +823,67 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Set Node Label Opacity Mapping
+#'
+#' @description Sets opacity for node label only.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in 
+#' mapping
+#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
+#' @param default.opacity Opacity value to set as default for all unmapped 
+#' values
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeLabelOpacityMapping('score', c(-5,5), c(50,255))
+#' }
+#' @export
+setNodeLabelOpacityMapping <- function(table.column, table.column.values=NULL, 
+                                        opacities=NULL, mapping.type='c', 
+                                        default.opacity=NULL, style.name='default', 
+                                        network=NULL, base.url=.defaultBaseUrl) {
+    if(!.tableColumnExists(table.column,'node',network, base.url)) 
+        stop("Table column does not exist. Please try again.")
+    for (o in opacities){
+        if (o < 0 || o > 255){
+            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
+            return()
+        } 
+    }
+    if(!is.null(default.opacity)){
+        if (default.opacity < 0 || default.opacity > 255){
+            write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
+            return()
+        } 
+        setVisualPropertyDefault(
+            list(visualProperty = "NODE_LABEL_TRANSPARENCY", value = default.opacity), 
+            style.name, base.url)
+    }
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp1 <- mapVisualProperty("NODE_LABEL_TRANSPARENCY",table.column, 'c',
+                                  table.column.values, opacities, 
+                                  network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp1 <- mapVisualProperty("NODE_LABEL_TRANSPARENCY",table.column, 'd',
+                                  table.column.values, opacities, 
+                                  network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp1 <- mapVisualProperty("NODE_LABEL_TRANSPARENCY",table.column, 'p',
+                                  network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp1, base.url = base.url)
+}
 # ------------------------------------------------------------------------------
 #' @title Set Node Shape Mapping
 #'
@@ -558,10 +921,10 @@ setNodeShapeMapping <- function (table.column, table.column.values, shapes,
 # ------------------------------------------------------------------------------
 #' @title Set Node Size Mapping
 #'
-#' @description Map table column values to sizes to set the node size.
+#' @description Map table column values to node font sizes.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param sizes List of size values to mape to table.column.values
+#' @param sizes List of font size values to mape to table.column.values
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
 #' @param default.size Size value to set as default
 #' @param style.name Name of style; default is "default" style
@@ -601,55 +964,78 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Set Node Tooltip Mapping
+#'
+#' @description Pass the values from a table column to display as node tooltips.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeTooltipMapping('description')
+#' }
+#' @export
+setNodeTooltipMapping <- function (table.column, style.name = 'default', 
+                                   network=NULL, base.url=.defaultBaseUrl) {
+    if(!.tableColumnExists(table.column,'node',network, base.url)) return()
+    mvp <- mapVisualProperty("NODE_TOOLTIP", table.column, 'p', 
+                             network = network, base.url = base.url)  
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Width Mapping
+#'
+#' @description Map table column values to the node widths.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param widths List of width values to mape to table.column.values
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param default.width Size value to set as default
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeWidthMapping('score', c(0,30), c(35,55))
+#' }
+#' @export
+setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=NULL, 
+                                  mapping.type='c', default.width=NULL, style.name='default', 
+                                  network=NULL, base.url=.defaultBaseUrl) {
+    # set default
+    if(!is.null(default.width))
+        setNodeWidthDefault(default.width, style.name, base.url=base.url)
+    
+    # perform mapping
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp <- mapVisualProperty("NODE_WIDTH",table.column, 'c',
+                                 table.column.values, widths, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp <- mapVisualProperty("NODE_WIDTH",table.column, 'd',
+                                 table.column.values, widths, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp <- mapVisualProperty("NODE_WIDTH",table.column, 'p',
+                                 network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
 # ==============================================================================
 # II.b. Edge Properties
 # Pattern: (1) prepare mapVisualProperty, (2) call updateStyleMapping()
-# ------------------------------------------------------------------------------
-#' @title Set Edge Tooltip Mapping
-#'
-#' @description Pass the values from a table column to display as edge tooltips.
-#' @param table.column Name of Cytoscape table column to map values from
-#' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
-#' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return None
-#' @examples \donttest{
-#' setEdgeTooltipMapping('description')
-#' }
-#' @export
-setEdgeTooltipMapping <- function (table.column, style.name = 'default', 
-                                   network=NULL, base.url=.defaultBaseUrl) {
-    if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
-    mvp <- mapVisualProperty("EDGE_TOOLTIP", table.column, 'p')  
-    updateStyleMapping(style.name, mvp, base.url = base.url)
-}
-
-# ------------------------------------------------------------------------------
-#' @title Set Edge Label Mapping
-#'
-#' @description Pass the values from a table column to display as edge labels.
-#' @param table.column Name of Cytoscape table column to map values from
-#' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
-#' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return None
-#' @examples \donttest{
-#' setEdgeLabelMapping('label')
-#' }
-#' @export
-setEdgeLabelMapping <- function (table.column, style.name = 'default', 
-                                 network=NULL, base.url=.defaultBaseUrl) {
-    if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
-    mvp <- mapVisualProperty("EDGE_LABEL", table.column, 'p')  
-    updateStyleMapping(style.name, mvp, base.url = base.url)
-}
-
 # ------------------------------------------------------------------------------
 #' @title Set Edge Color Mapping
 #'
@@ -721,14 +1107,67 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
 } 
 
 # ------------------------------------------------------------------------------
-#' @title Set Edge Opacity Mapping
+#' @title Set Edge Font Face Mapping
 #'
-#' @description Map table column values to opacities to set the node opacity.
+#' @description Sets font face for edge labels.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in 
+#' mapping
+#' @param fonts List of string specifications of font face, style and size, e.g., 
+#' c("SansSerif,plain,12", "Dialog,plain,10")
+#' @param mapping.type (char) discrete or passthrough (d,p); 
+#' default is discrete
+#' @param default.font String specification of font face, style and size, e.g., 
+#' "SansSerif,plain,12" or "Dialog,plain,10"
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setEdgeFontFaceMapping("myfonts", c("normal","small"),
+#' c("SansSerif,plain,12", "Dialog,plain,10"))
+#' }
+#' @export
+setEdgeFontFaceMapping <- function(table.column, table.column.values, 
+                                   fonts, mapping.type='d', 
+                                   default.font=NULL,
+                                   style.name = 'default', 
+                                   network=NULL, base.url=.defaultBaseUrl) {
+    if(!.tableColumnExists(table.column,'edge',network, base.url)) 
+        stop("Table column does not exist. Please try again.")
+    if(!is.null(default.font)){
+        setVisualPropertyDefault(
+            list(visualProperty = "EDGE_LABEL_FONT_FACE", value = default.font), 
+            style.name, base.url)
+    }
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        stop("Continuous mapping of font face values is not supported.")
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp1 <- mapVisualProperty("EDGE_LABEL_FONT_FACE",table.column, 'd',
+                                  table.column.values, fonts, 
+                                  network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp1 <- mapVisualProperty("EDGE_LABEL_FONT_FACE",table.column, 'p',
+                                  network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp1, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Edge Font Size Mapping
+#'
+#' @description Map table column values to sizes to set the edge size.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' @param sizes List of size values to mape to table.column.values
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
-#' @param default.opacity Opacity value to set as default for all unmapped values
+#' @param default.size Size value to set as default
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
 #' network active in Cytoscape.
@@ -737,46 +1176,172 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeOpacityMapping('score', c(-5,5), c(50,255))
+#' setEdgeFontSizeMapping('score', c(0,30), c(35,55))
 #' }
 #' @export
-setEdgeOpacityMapping <- function (table.column, table.column.values=NULL, 
-                                   opacities=NULL, mapping.type='c',
-                                   default.opacity=NULL, style.name='default', 
-                                   network=NULL, base.url=.defaultBaseUrl) {
-    
-    # check if opacities are formatted correctly
-    for (o in opacities){
-        if (o < 0 || o > 255){
-            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
-            return()
-        } 
-    }
-    
+setEdgeFontSizeMapping <- function (table.column, table.column.values=NULL, sizes=NULL, 
+                                    mapping.type='c', default.size=NULL, style.name='default', 
+                                    network=NULL, base.url=.defaultBaseUrl) {
     # set default
-    if(!is.null(default.opacity))
-        setVisualPropertyDefault(
-            list(visualProperty = "EDGE_TRANSPARENCY", value = default.opacity), 
-            style.name, base.url)
+    if(!is.null(default.size))
+        setEdgeFontSizeDefault(default.size, style.name, base.url=base.url)
     
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
-        mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'c',
-                                  table.column.values, opacities, 
-                                  network=network, base.url = base.url)
+        mvp <- mapVisualProperty("EDGE_LABEL_FONT_SIZE",table.column, 'c',
+                                 table.column.values, sizes, 
+                                 network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
-        mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'd',
-                                  table.column.values, opacities, 
-                                  network=network, base.url = base.url)
+        mvp <- mapVisualProperty("EDGE_LABEL_FONT_SIZE",table.column, 'd',
+                                 table.column.values, sizes, 
+                                 network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
-        mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'p',
+        mvp <- mapVisualProperty("EDGE_LABEL_FONT_SIZE",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
         write(print("mapping.type not recognized."), stderr())
         return()
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
-} 
+}
+# ------------------------------------------------------------------------------
+#' @title Set Edge Label Mapping
+#'
+#' @description Pass the values from a table column to display as edge labels.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setEdgeLabelMapping('label')
+#' }
+#' @export
+setEdgeLabelMapping <- function (table.column, style.name = 'default', 
+                                 network=NULL, base.url=.defaultBaseUrl) {
+    if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
+    mvp <- mapVisualProperty("EDGE_LABEL", table.column, 'p')  
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+#' @export
+# ------------------------------------------------------------------------------
+#' @title Set Edge Label Color Mapping
+#'
+#' @description Map table column values to colors to set the edge border color.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param colors (integer) values between 0 and 255; 0 is invisible
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param default.color Hex color to set as default
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setEdgeLabelColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
+#' }
+#' @export
+setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
+                                      mapping.type='c', default.color=NULL, style.name='default', 
+                                      network=NULL, base.url=.defaultBaseUrl) {
+    # check if colors are formatted correctly
+    for (color in colors){
+        if (.isNotHexColor(color)) return()
+    }
+    
+    # set default
+    if(!is.null(default.color))
+        setEdgeLabelColorDefault(default.color, style.name, base.url=base.url)
+    
+    # perform mapping
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp <- mapVisualProperty("EDGE_LABEL_COLOR",table.column, 'c',
+                                 table.column.values, colors, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp <- mapVisualProperty("EDGE_LABEL_COLOR",table.column, 'd',
+                                 table.column.values, colors, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp <- mapVisualProperty("EDGE_LABEL_COLOR",table.column, 'p',
+                                 network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Edge Label Opacity Mapping
+#'
+#' @description Sets opacity for edge label only.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in 
+#' mapping
+#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
+#' @param default.opacity Opacity value to set as default for all unmapped 
+#' values
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setEdgeLabelOpacityMapping ('weight', c(1,10), c(50,255))
+#' }
+#' @export
+setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL, 
+                                   opacities=NULL, mapping.type='c', 
+                                   default.opacity=NULL,
+                                   style.name = 'default', 
+                                   network=NULL, base.url=.defaultBaseUrl) {
+    if(!.tableColumnExists(table.column,'edge',network, base.url)) 
+        stop("Table column does not exist. Please try again.")
+    for (o in opacities){
+        if (o < 0 || o > 255){
+            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
+            return()
+        } 
+    }
+    if(!is.null(default.opacity)){
+        if (default.opacity < 0 || default.opacity > 255){
+            write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
+            return()
+        } 
+        setVisualPropertyDefault(
+            list(visualProperty = "EDGE_LABEL_TRANSPARENCY", value = default.opacity), 
+            style.name, base.url)
+    }
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp1 <- mapVisualProperty("EDGE_LABEL_TRANSPARENCY",table.column, 'c',
+                                  table.column.values, opacities, 
+                                  network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp1 <- mapVisualProperty("EDGE_LABEL_TRANSPARENCY",table.column, 'd',
+                                  table.column.values, opacities, 
+                                  network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp1 <- mapVisualProperty("EDGE_LABEL_TRANSPARENCY",table.column, 'p',
+                                  network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp1, base.url = base.url)
+}
 # ------------------------------------------------------------------------------
 #' @title Set Edge Line Style Mapping
 #'
@@ -857,6 +1422,63 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Set Edge Opacity Mapping
+#'
+#' @description Map table column values to opacities to set the edge opacity.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param default.opacity Opacity value to set as default for all unmapped values
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setEdgeOpacityMapping ('weight', c(1,10), c(50,255))
+#' }
+#' @export
+setEdgeOpacityMapping <- function (table.column, table.column.values=NULL, 
+                                   opacities=NULL, mapping.type='c',
+                                   default.opacity=NULL, style.name='default', 
+                                   network=NULL, base.url=.defaultBaseUrl) {
+    
+    # check if opacities are formatted correctly
+    for (o in opacities){
+        if (o < 0 || o > 255){
+            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
+            return()
+        } 
+    }
+    
+    # set default
+    if(!is.null(default.opacity))
+        setVisualPropertyDefault(
+            list(visualProperty = "EDGE_TRANSPARENCY", value = default.opacity), 
+            style.name, base.url)
+    
+    # perform mapping
+    if (mapping.type %in% c('continuous','c','interpolate')) {
+        mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'c',
+                                 table.column.values, opacities, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('discrete','d','lookup')){
+        mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'd',
+                                 table.column.values, opacities, 
+                                 network=network, base.url = base.url)
+    } else if (mapping.type %in% c('passthrough','p')){
+        mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'p',
+                                 network=network, base.url = base.url)
+    } else {
+        write(print("mapping.type not recognized."), stderr())
+        return()
+    }
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+} 
 # ------------------------------------------------------------------------------
 #' @title Set Edge Target Arrow Mapping
 #'
@@ -1027,3 +1649,96 @@ setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NU
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 } 
+
+# ------------------------------------------------------------------------------
+#' @title Set Edge Target Arrow Shape Mapping
+#'
+#' @description Map table column values to shapes to set the target arrow shape.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param shapes List of arrow shapes to map to table.column.values. See \link{getArrowShapes}
+#' @param default.shape Shape to set as default. See \link{getArrowShapes}
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setEdgeTargetArrowShapeMapping('type',c('activation','inhibition'),
+#' c('ARROW','T'))
+#' }
+#' @export
+setEdgeTargetArrowShapeMapping <- function (table.column, table.column.values, shapes, 
+                                 default.shape=NULL , style.name = 'default', 
+                                 network=NULL, base.url=.defaultBaseUrl) {
+    # set default
+    if(!is.null(default.shape))
+        setEdgeTargetArrowShapeDefault(default.shape, style.name, base.url=base.url)
+    
+    # perform mapping
+    mvp <- mapVisualProperty("EDGE_TARGET_ARROW_SHAPE",table.column, 'd',
+                             table.column.values, shapes, 
+                             network=network, base.url = base.url)
+    
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Set Edge Source Arrow Shape Mapping
+#'
+#' @description Map table column values to shapes to set the source arrow shape.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param table.column.values List of values from Cytoscape table to be used in mapping
+#' @param shapes List of arrow shapes to map to table.column.values. See \link{getArrowShapes}
+#' @param default.shape Shape to set as default. See \link{getArrowShapes}
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setEdgeSourceArrowShapeMapping('type',c('activation','inhibition'),
+#' c('ARROW','T'))
+#' }
+#' @export
+setEdgeSourceArrowShapeMapping <- function (table.column, table.column.values, shapes, 
+                                            default.shape=NULL , style.name = 'default', 
+                                            network=NULL, base.url=.defaultBaseUrl) {
+    # set default
+    if(!is.null(default.shape))
+        setEdgeSourceArrowShapeDefault(default.shape, style.name, base.url=base.url)
+    
+    # perform mapping
+    mvp <- mapVisualProperty("EDGE_SOURCE_ARROW_SHAPE",table.column, 'd',
+                             table.column.values, shapes, 
+                             network=network, base.url = base.url)
+    
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+# ------------------------------------------------------------------------------
+#' @title Set Edge Tooltip Mapping
+#'
+#' @description Pass the values from a table column to display as edge tooltips.
+#' @param table.column Name of Cytoscape table column to map values from
+#' @param style.name Name of style; default is "default" style
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setEdgeTooltipMapping('description')
+#' }
+#' @export
+setEdgeTooltipMapping <- function (table.column, style.name = 'default', 
+                                   network=NULL, base.url=.defaultBaseUrl) {
+    if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
+    mvp <- mapVisualProperty("EDGE_TOOLTIP", table.column, 'p')  
+    updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+

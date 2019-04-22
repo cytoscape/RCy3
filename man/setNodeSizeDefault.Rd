@@ -10,7 +10,7 @@ setNodeSizeDefault(new.size, style.name = "default",
 \arguments{
 \item{new.size}{Numeric value for size}
 
-\item{style.name}{Name of style; default is "default" style}
+\item{style.name}{Name of style; default is "default" style.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

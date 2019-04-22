@@ -493,6 +493,40 @@ setNodeSizeBypass <- function (node.names,
     # set the node properties bypass
     setNodePropertyBypass(node.names, new.sizes, "NODE_SIZE", network=network, base.url=base.url)
 }
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Tooltip Bypass
+#'
+#' @description Sets a bypass tooltip for one or more nodes
+#' @param node.names List of node names
+#' @param new.tooltip List of tooltips, or a single tooltip
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @details This method permanently overrides any default values or mappings 
+#' defined for this visual property of the node or nodes specified. This method
+#' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
+#' can be used to set any visual property. To restore defaults and mappings, use
+#'  \link{clearNodePropertyBypass}, see examples.
+#' @return None
+#' @seealso {
+#' \link{setNodePropertyBypass},
+#' \link{clearNodePropertyBypass}
+#' }
+#' @examples \donttest{
+#' setNodeTooltipBypass('Node 1', 'This is an important node.')
+#' }
+#' @export
+setNodeTooltipBypass <- function(node.names, 
+                                 new.tooltip,
+                                 network = NULL,
+                                 base.url = .defaultBaseUrl) {
+    setNodePropertyBypass(node.names, new.tooltip, "NODE_TOOLTIP", network=network, 
+                          base.url=base.url)
+}
+
 #-------------------------------------------------------------------------------
 # only works if node dimensions are not locked (that is not tied together).
 # See lockNodeDimensions (T/F)
@@ -636,13 +670,45 @@ setNodeHeightBypass <-
 #' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_LABEL')
 #' }
 #' @export
-setNodeLabelBypass <-
-    function(node.names,
-             new.labels,
-             network = NULL,
-             base.url = .defaultBaseUrl) {
-        setNodePropertyBypass(node.names, new.labels, "NODE_LABEL", network=network, base.url=base.url)
+setNodeLabelBypass <- function(node.names, new.labels,
+                               network = NULL, base.url = .defaultBaseUrl) {
+        setNodePropertyBypass(node.names, new.labels, "NODE_LABEL", 
+                              network=network, base.url=base.url)
     }
+
+
+# ------------------------------------------------------------------------------
+#' @title Set Node Font Face Bypass
+#'
+#' @description Override the font face for particular nodes.
+#' @param node.names List of node names
+#' @param new.fonts List of font faces, or single value
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @details This method permanently overrides any default values or mappings 
+#' defined for this visual property of the node or nodes specified. This method
+#' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
+#' can be used to set any visual property. To restore defaults and mappings, use
+#'  \link{clearNodePropertyBypass}.
+#' @return None
+#' @seealso {
+#' \link{setNodePropertyBypass},
+#' \link{clearNodePropertyBypass}
+#' }
+#' @examples \donttest{
+#' setNodeFontFaceBypass()
+#' }
+#' @export
+setNodeFontFaceBypass <- function(node.names, new.fonts,
+                                  network = NULL, base.url = .defaultBaseUrl) {
+    setNodePropertyBypass(node.names,
+                          new.fonts,
+                          "NODE_LABEL_FONT_FACE",
+                          network=network, base.url=base.url)
+}
 
 # ------------------------------------------------------------------------------
 #' @title Set Node Font Size Bypass
