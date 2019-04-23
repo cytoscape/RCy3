@@ -35,6 +35,7 @@ Changes in version 2.4.0
     - openSession works with current working directory -- #50
 +Doc Fixes
     - improved visual.prop handling in mapVisualProperty -- #49,#53 user report
+    - added file overwrite warnings to all export and save functions
 Changes in version 2.2.7
 + Doc Fixes
     - vignette for phylogenetic trees

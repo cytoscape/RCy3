@@ -139,19 +139,27 @@ deleteVisualStyle<-function(style.name, base.url=.defaultBaseUrl){
 #' @seealso importVisualStyles
 #' @importFrom R.utils isAbsolutePath
 #' @export
-exportVisualStyles<-function(filename=NULL, type=NULL, styles=NULL, base.url=.defaultBaseUrl){
+exportVisualStyles<-function(filename=NULL, type="XML", styles=NULL, base.url=.defaultBaseUrl){
     cmd.string <- 'vizmap export'  # minmum command
     if(is.null(filename))
         filename <- "styles"
-    if(isAbsolutePath(filename))
-            cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"')
-        else
-            cmd.string <- paste0(cmd.string,' OutputFile="',
-                                 paste(getwd(),filename,sep="/"),'"')
-    if(!is.null(type))
-        cmd.string <- paste0(cmd.string,' options="',type,'"')
     if(!is.null(styles))
         cmd.string <- paste0(cmd.string,' styles="',styles,'"')
+    
+    ext <- paste0(".",tolower(type),"$")
+    if (!grepl(ext,filename))
+        filename <- paste0(filename,".",tolower(type))
+    if(!isAbsolutePath(filename))
+        filename <- paste(getwd(),filename,sep="/")
+    if (file.exists(filename))
+        warning("This file already exists. A Cytoscape popup 
+                will be generated to confirm overwrite.",
+                call. = FALSE,
+                immediate. = TRUE)
+    
+    cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"',
+                         ' options="',type,'"')
+
     
     commandsPOST(cmd.string, base.url = base.url)
     

@@ -21,6 +21,11 @@ Path to saved file
 \description{
 Saves filters to file in JSON format.
 }
+\details{
+Unlike other export functions, Cytoscape will automatically
+overwrite files with the same name. You will not be prompted to confirm
+or reject overwrite. Use carefully!
+}
 \examples{
 \donttest{
 exportFilters()

@@ -299,23 +299,28 @@ getFilterList<-function(base.url=.defaultBaseUrl){
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return Path to saved file
+#' @details Unlike other export functions, Cytoscape will automatically
+#' overwrite files with the same name. You will not be prompted to confirm
+#' or reject overwrite. Use carefully!
 #' @examples \donttest{
 #' exportFilters()
 #' }
 #' @importFrom R.utils isAbsolutePath
 #' @export
 exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl){
-    if(tail(strsplit(filename, '\\.')[[1]],1) != "json")
-        filename <- paste(filename, "json",sep='.')
+    ext <- ".json$"
+    if (!grepl(ext,filename))
+        filename <- paste0(filename,".json")
+    if(!isAbsolutePath(filename))
+        filename <- paste(getwd(),filename,sep="/")
+    if (file.exists(filename))
+        warning("This file has been overwritten.",
+                call. = FALSE,
+                immediate. = TRUE)
     
-    if(isAbsolutePath(filename))
-        commandsGET(paste0('filter export file="',
-                           filename,'"'),
-                    base.url)
-    else
-        commandsGET(paste0('filter export file="', 
-                           paste(getwd(),filename,sep="/"),'"'),
-                    base.url)
+    commandsGET(paste0('filter export file="',
+                       filename,'"'),
+                base.url)
 }
 
 # ------------------------------------------------------------------------------

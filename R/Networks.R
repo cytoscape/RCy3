@@ -249,7 +249,7 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #' }
 #' @importFrom R.utils isAbsolutePath
 #' @export
-exportNetwork <- function (filename=NULL, type=NULL, 
+exportNetwork <- function (filename=NULL, type="SIF", 
                            network=NULL, base.url = .defaultBaseUrl) {
     cmd.string <- 'network export' # a good start
     
@@ -260,27 +260,32 @@ exportNetwork <- function (filename=NULL, type=NULL,
     # optional args
     if(!is.null(network))
         cmd.string <- paste0(cmd.string,' network="SUID:',getNetworkSuid(network,base.url),'"')
-    if(!is.null(type)){
-        type = toupper(type)
-        if (type == 'CYS') {
-            write('Saving session as a CYS file...',stderr())
-            return(saveSession(filename = filename, base.url = base.url))
-        }
-        else {
-            #e.g., CX, CYJS, GraphML, NNF, SIF, XGMML
-            if (type == "GRAPHML")
-                type = 'GraphML'
-            cmd.string <- paste0(cmd.string,' options="',type,'"')
-        }
+    type = toupper(type)
+    if (type == 'CYS') {
+        write('Saving session as a CYS file...',stderr())
+        return(saveSession(filename = filename, base.url = base.url))
     }
-    if(isAbsolutePath(filename))
-        commandsPOST(paste0(cmd.string,' OutputFile="',
-                            filename,'"'),
-                     base.url = base.url)
-    else
-        commandsPOST(paste0(cmd.string,' OutputFile="',
-                            paste(getwd(),filename,sep="/"),'"'),
-                     base.url = base.url)
+    else {
+        #e.g., CX, CYJS, GraphML, NNF, SIF, XGMML
+        if (type == "GRAPHML")
+            type = 'GraphML'
+        cmd.string <- paste0(cmd.string,' options="',type,'"')
+    }
+    
+    ext <- paste0(".",tolower(type),"$")
+    if (!grepl(ext,filename))
+        filename <- paste0(filename,".",tolower(type))
+    if(!isAbsolutePath(filename))
+        filename <- paste(getwd(),filename,sep="/")
+    if (file.exists(filename))
+        warning("This file already exists. A Cytoscape popup 
+                will be generated to confirm overwrite.",
+                call. = FALSE,
+                immediate. = TRUE)
+    
+    commandsPOST(paste0(cmd.string,' OutputFile="',
+                        filename,'"'),
+                 base.url = base.url)
 }
 
 # ------------------------------------------------------------------------------

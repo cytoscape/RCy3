@@ -4,7 +4,7 @@
 \alias{exportVisualStyles}
 \title{Export Visual Styles}
 \usage{
-exportVisualStyles(filename = NULL, type = NULL, styles = NULL,
+exportVisualStyles(filename = NULL, type = "XML", styles = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{

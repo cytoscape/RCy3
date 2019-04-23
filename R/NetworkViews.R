@@ -143,7 +143,8 @@ setCurrentView <- function(network = NULL,
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
-#' @param type (\code{character}) Type of image to export, e.g., JPEG, PDF, PNG, PostScript, SVG (case sensitive).
+#' @param type (\code{character}) Type of image to export, e.g., JPEG, PDF, 
+#' PNG (default), PostScript, SVG. All types are case sensitive.
 #' @param resolution (\code{numeric}) The resolution of the exported image, in DPI. Valid 
 #' only for bitmap formats, when the selected width and height 'units' is inches. The 
 #' possible values are: 72 (default), 100, 150, 300, 600. 
@@ -168,7 +169,7 @@ setCurrentView <- function(network = NULL,
 #' }
 #' @importFrom R.utils isAbsolutePath
 #' @export
-exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, height=NULL, 
+exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, height=NULL, 
                       width=NULL, zoom=NULL, network=NULL, base.url=.defaultBaseUrl){
     cmd.string <- 'view export' # a good start
     
@@ -180,8 +181,6 @@ exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, hei
     view.SUID <- getNetworkViewSuid(network,base.url)
     
     # optional args
-    if(!is.null(type))
-        cmd.string <- paste0(cmd.string,' options="',type,'"')
     if(!is.null(resolution))
         cmd.string <- paste0(cmd.string,' Resolution="',resolution,'"')
     if(!is.null(units))
@@ -193,17 +192,23 @@ exportImage<-function(filename=NULL, type=NULL, resolution=NULL, units=NULL, hei
     if(!is.null(zoom))
         cmd.string <- paste0(cmd.string,' Zoom="',zoom,'"')
     
-    if(isAbsolutePath(filename))
-        commandsPOST(paste0(cmd.string,
-                            ' OutputFile="',filename,'"',
-                            ' view=SUID:"',view.SUID,'"'), 
-                     base.url = base.url)
-    else
-        commandsPOST(paste0(cmd.string,
-                            ' OutputFile="',
-                            paste(getwd(),filename,sep="/"),'"',
-                            ' view=SUID:"',view.SUID,'"'), 
-                     base.url = base.url)
+    ext <- paste0(".",tolower(type),"$")
+    if (!grepl(ext,filename))
+        filename <- paste0(filename,".",tolower(type))
+    if(!isAbsolutePath(filename))
+        filename <- paste(getwd(),filename,sep="/")
+    if (file.exists(filename))
+        warning("This file already exists. A Cytoscape popup 
+                will be generated to confirm overwrite.",
+                call. = FALSE,
+                immediate. = TRUE)
+    
+    commandsPOST(paste0(cmd.string,
+                        ' OutputFile="',filename,'"',
+                        ' options="',type,'"',
+                        ' view=SUID:"',view.SUID,'"'), 
+                 base.url = base.url)
+    
 }
 
 # ------------------------------------------------------------------------------

@@ -4,7 +4,7 @@
 \alias{exportNetwork}
 \title{Export Network}
 \usage{
-exportNetwork(filename = NULL, type = NULL, network = NULL,
+exportNetwork(filename = NULL, type = "SIF", network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{

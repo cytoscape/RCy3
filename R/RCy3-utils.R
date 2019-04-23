@@ -122,3 +122,12 @@
     if(nogo)
         stop(simpleError("Function not run due to unsupported version."))
 }
+
+# ------------------------------------------------------------------------------
+# Checks to see if file to be saved/exported already exists. May want to warn or
+# throw error. May want to prompt of overwrite decision prior to sending to 
+# Cytoscape to avoid GUI popup [pending addition of "force" parameter in 
+# commands].
+.checkFileExists<-function(filepath){
+    #TODO
+}

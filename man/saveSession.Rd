@@ -25,6 +25,10 @@ Saves the current Cytoscape session as a CYS file.
 If no \code{filename} is provided, then it attempts to
 save to an existing CYS file associated with the session. If 
 \code{filename} already exists, then it is overwritten.
+
+Unlike most export functions in RCy3, Cytoscape will automatically
+overwrite CYS session files with the same name. You will not be prompted to
+confirm or reject overwrite. Use carefully!
 }
 \examples{
 \donttest{

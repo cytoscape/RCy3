@@ -72,6 +72,9 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return server response
+#' @details Unlike most export functions in RCy3, Cytoscape will automatically
+#' overwrite CYS session files with the same name. You will not be prompted to
+#' confirm or reject overwrite. Use carefully!
 #' @examples
 #' \donttest{
 #' saveSession('/fullpath/mySession')
@@ -86,14 +89,18 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
             stop('Save not completed. Provide a filename the first time you save a session.')
         commandsPOST(paste0('session save'),base.url=base.url)
     } else {
-        if(isAbsolutePath(filename))
-            commandsPOST(paste0('session save as file="',
-                                filename,'"'), 
-                         base.url=base.url)
-        else
-            commandsPOST(paste0('session save as file="',
-                                paste(getwd(),filename,sep="/"),'"'),
-                         base.url=base.url)
+        ext <- ".cys$"
+        if (!grepl(ext,filename))
+            filename <- paste0(filename,".cys")
+        if(!isAbsolutePath(filename))
+            filename <- paste(getwd(),filename,sep="/")
+        if (file.exists(filename))
+            warning("This file has been overwritten.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        commandsPOST(paste0('session save as file="',
+                            filename,'"'), 
+                     base.url=base.url)
     }
     
 }
