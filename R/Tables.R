@@ -267,7 +267,8 @@ getTableColumnTypes <-  function(table = 'node',
 #' names.
 #' @details Numeric values will be stored as Doubles in Cytoscape tables. Integer values
 #' will be stored as Integers. Character or mixed values will be stored as Strings. 
-#' Logical values will be stored as Boolean. Existing columns with the same names 
+#' Logical values will be stored as Boolean. Lists are not supported by the
+#' current version of CyREST. Existing columns with the same names 
 #' will keep original type but values will be overwritten.
 #' @param data (data.frame) each row is a node and columns contain node attributes
 #' @param data.key.column (char) name of data.frame column to use as key; default is "row.names"
