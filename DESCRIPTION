@@ -1,20 +1,20 @@
 Package: RCy3
 Type: Package
 Title: Functions to Access and Control Cytoscape
-Version: 2.3.17
+Version: 2.3.18
 Date: 2019-04-22
 Authors@R: c(person("Alex", "Pico", role = c("aut","cre"),
                      email = "alex.pico@gladstone.ucsf.edu",
                      comment = c(ORCID = "0000-0001-5706-2163")),
-             person("Tanja", "Muetze", role = c("aut"),
+             person("Tanja", "Muetze", role = "aut",
                      email = "tanja.muetze14@alumni.imperial.ac.uk"),
-             person("Paul", "Shannon", role = c("aut"),
+             person("Paul", "Shannon", role = "aut",
                      email = "pshannon@systemsbiology.org"),
-             person("Ruth", "Isserlin", role = c("ctb")),
-             person("Shraddha", "Pai", role = c("ctb")),
-             person("Julia", "Gustavsen", role = c("ctb")),
-             person("Georgi", "Kolishovski", role = c("ctb"))             
-)
+             person("Ruth", "Isserlin", role = "ctb"),
+             person("Shraddha", "Pai", role = "ctb"),
+             person("Julia", "Gustavsen", role = "ctb"),
+             person("Georgi", "Kolishovski", role = "ctb")             
+          )
 Imports: httr, methods, RJSONIO, XML, utils, BiocGenerics, igraph, stats, graph, R.utils
 Suggests: RUnit, BiocStyle, knitr, rmarkdown
 SystemRequirements: Cytoscape (>= 3.7.1), CyREST (>= 3.8.0)
