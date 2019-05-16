@@ -754,7 +754,17 @@ createNetworkFromIgraph <- function(igraph,
     
     #flatten all list types (until supported by createNetworkFromDataFrame)
     ige.list.cols <- vapply(igedges, is.list, logical(1))
+    for(i in 1:length(ige.list.cols)){
+        if(ige.list.cols[i]){
+            suppressWarnings(igedges[i]<-lapply(igedges[[i]], paste, collapse=','))
+        }
+    }
     ign.list.cols <- vapply(ignodes, is.list, logical(1))
+    for(i in 1:length(ign.list.cols)){
+        if(ign.list.cols[i]){
+            suppressWarnings(ignodes[i]<-lapply(ignodes[[i]], paste, collapse=','))
+        }
+    }
     
     igedges = data.frame(lapply(igedges, unlist),stringsAsFactors = FALSE)
     ignodes = data.frame(lapply(ignodes, unlist),stringsAsFactors = FALSE)
