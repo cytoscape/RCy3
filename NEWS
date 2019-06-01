@@ -1,3 +1,7 @@
+Changes in vesion 2.4.1
++ Bug Fixes
+   - getLayoutPropertyNames -- #59 fixed returned values
+   - createNetworkFromIgraph -- #58 flatten list attributes to strings
 Changes in version 2.4.0
 + New style setting functions
     - setEdgeFontFaceDefault

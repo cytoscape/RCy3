@@ -174,9 +174,10 @@ getLayoutNameMapping <- function(base.url=.defaultBaseUrl) {
 #' }
 #' @export
 getLayoutPropertyNames <- function(layout.name, base.url = .defaultBaseUrl) {
-    res <- cyrestGET(paste("apply/layouts", as.character(layout.name), "parameters/", sep="/"),base.url=base.url)
-    layout.property.names <- unname(res)
-    return(vapply(layout.property.names, '[[', character(1), 1))
+    # res <- cyrestGET(paste("apply/layouts", as.character(layout.name), "parameters/", sep="/"),base.url=base.url)
+    # layout.property.names <- unname(res)
+    # return(vapply(layout.property.names, '[[', character(1), 1))
+    return(commandsHelp(paste('layout',layout.name,sep = ' '), base.url = base.url))
 }
 
 # ------------------------------------------------------------------------------
