@@ -586,8 +586,8 @@ getEdgeCount <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return \code{named list of lists}
-#' @details This function kinda slow. It takes approximately 70ms per edge to 
-#' return a result, e.g., 850 edges will take a one minute.
+#' @details This function is kinda slow. It takes approximately 70ms per edge 
+#' to return a result, e.g., 850 edges will take a one minute.
 #' @author Alexander Pico
 #' @examples \donttest{
 #' getEdgeInfo()
