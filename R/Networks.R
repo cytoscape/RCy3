@@ -575,6 +575,39 @@ getEdgeCount <- function(network = NULL, base.url = .defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Edge Information
+#'
+#' @description Returns source, target and edge table row values.
+#' @param edges List of SUIDs or names of edges, i.e., values in the "name" 
+#' column. Can also input a single edge.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return \code{named list of lists}
+#' @details This function kinda slow. It takes approximately 70ms per edge to 
+#' return a result, e.g., 850 edges will take a one minute.
+#' @author Alexander Pico
+#' @examples \donttest{
+#' getEdgeInfo()
+#' }
+#' @export
+getEdgeInfo <- function(edges, network = NULL, base.url = .defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network,base.url)
+    ret <- lapply (edges, function(x){
+        edge.SUID <- .edgeNameToEdgeSUID(x, network, base.url)
+        res <- cyrestGET(paste("networks", net.SUID,
+                               "edges", edge.SUID, sep = "/"),
+                         base.url = base.url)
+        res[["data"]]       
+    })
+    names(ret) <- edges
+
+    return(ret)
+}
+
+# ------------------------------------------------------------------------------
 #' @title Get All Edges
 #'
 #' @description Retrieve the names of all the edges in the network.

@@ -1,3 +1,6 @@
+Changes in vesion 2.4.2
++ Bug Fixes
+   - getEdgeInfo -- #61 missing function
 Changes in vesion 2.4.1
 + Bug Fixes
    - getLayoutPropertyNames -- #59 fixed returned values
