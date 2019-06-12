@@ -337,6 +337,9 @@ exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl){
 #' }
 #' @export
 importFilters<-function(filename , base.url = .defaultBaseUrl){
+    if(!isAbsolutePath(filename))
+        filename = paste(getwd(),filename,sep='/')
+    
     commandsGET(paste0('filter import file="',filename,'"'),base.url)
 }
 

@@ -1009,6 +1009,9 @@ createNetworkFromDataFrames <-
 importNetworkFromFile <- function(file=NULL, base.url=.defaultBaseUrl){
     if(is.null(file))
         file <- system.file("extdata","galFiltered.sif",package="RCy3")
+    else if(!isAbsolutePath(file))
+        file = paste(getwd(),file,sep='/')
+    
     commandsPOST(paste('network load file file',file,sep = "="))
 }
 
