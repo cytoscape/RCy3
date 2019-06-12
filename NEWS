@@ -1,3 +1,6 @@
+Changes in vesion 2.4.3
++ Bug Fixes
+   - import functions -- #62 fixed default directory
 Changes in vesion 2.4.2
 + Bug Fixes
    - getEdgeInfo -- #61 missing function
