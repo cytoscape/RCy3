@@ -24,8 +24,8 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 Returns source, target and edge table row values.
 }
 \details{
-This function kinda slow. It takes approximately 70ms per edge to 
-return a result, e.g., 850 edges will take a one minute.
+This function is kinda slow. It takes approximately 70ms per edge 
+to return a result, e.g., 850 edges will take a one minute.
 }
 \examples{
 \donttest{
