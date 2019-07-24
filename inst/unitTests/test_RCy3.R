@@ -293,12 +293,13 @@ test.getLayoutPropertyNames = function ()
     props = getLayoutPropertyNames ('force-directed')
     expected = c ("numIterations", "defaultSpringCoefficient", "defaultSpringLength",
                   "defaultNodeMass", "isDeterministic", "singlePartition")
-    checkTrue (length (intersect (props, expected)) > (length (props) - 2))  # some variation across Cytoscape versions
+    checkTrue (length (intersect (props, expected)) >= length (expected))  # some variation across Cytoscape versions
     
     props = getLayoutPropertyNames ('isom')
     expected = c ("coolingFactor", "initialAdaptation", "maxEpoch", "minAdaptation",
                   "minRadius", "radius", "radiusConstantTime", "singlePartition", "sizeFactor")
-    checkEquals (sort (props), expected)
+    checkTrue (length (intersect (props, expected)) >= length (expected))  # some variation across Cytoscape versions
+    
     
     
 } 

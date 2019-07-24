@@ -315,7 +315,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
             res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
         }
         print(head(res.list,1))
-        tail(res.list,-1)
+        vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
     }
 }
 
