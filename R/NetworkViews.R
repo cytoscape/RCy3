@@ -143,8 +143,8 @@ setCurrentView <- function(network = NULL,
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
-#' @param type (\code{character}) Type of image to export, e.g., JPEG, PDF, 
-#' PNG (default), PostScript, SVG. All types are case sensitive.
+#' @param type (\code{character}) Type of image to export, e.g., PNG (default), 
+#' JPEG, PDF, SVG, PS (PostScript). 
 #' @param resolution (\code{numeric}) The resolution of the exported image, in DPI. Valid 
 #' only for bitmap formats, when the selected width and height 'units' is inches. The 
 #' possible values are: 72 (default), 100, 150, 300, 600. 
@@ -205,7 +205,7 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
     
     commandsPOST(paste0(cmd.string,
                         ' OutputFile="',filename,'"',
-                        ' options="',type,'"',
+                        ' options="',toupper(type),'"',
                         ' view=SUID:"',view.SUID,'"'), 
                  base.url = base.url)
     

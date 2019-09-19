@@ -12,8 +12,7 @@ exportNetwork(filename = NULL, type = "SIF", network = NULL,
 in addition to the name of the file. Extension is automatically added based
 on the \code{type} argument. If blank, then the current network name is used.}
 
-\item{type}{File type. CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive). 
-Default is SIF.}
+\item{type}{File type. SIF (default), CX, cyjs, graphML, NNF,  xGMML.}
 
 \item{network}{(optional) Name or SUID of a network or view. Default is the 
 "current" network active in Cytoscape.}

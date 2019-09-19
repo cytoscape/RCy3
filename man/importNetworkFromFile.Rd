@@ -7,7 +7,8 @@
 importNetworkFromFile(file = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{file}{Name of file in any of the supported formats (e.g., SIF, GML, XGMML, etc).
+\item{file}{Name of file in any of the supported formats (e.g., SIF, GML, 
+xGMML, etc).
 If NULL, a demo network file in SIF format is loaded.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,

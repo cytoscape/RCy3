@@ -236,8 +236,7 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #' @param filename Full path or path relavtive to current working directory, 
 #' in addition to the name of the file. Extension is automatically added based
 #' on the \code{type} argument. If blank, then the current network name is used.
-#' @param type File type. CX, CYJS, GraphML, NNF, SIF, XGMML (case sensitive). 
-#' Default is SIF.
+#' @param type File type. SIF (default), CX, cyjs, graphML, NNF,  xGMML. 
 #' @param network (optional) Name or SUID of a network or view. Default is the 
 #' "current" network active in Cytoscape. 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -996,7 +995,8 @@ createNetworkFromDataFrames <-
 #' @title Import Network From File
 #'
 #' @description Loads a network from specified file
-#' @param file Name of file in any of the supported formats (e.g., SIF, GML, XGMML, etc).
+#' @param file Name of file in any of the supported formats (e.g., SIF, GML, 
+#' xGMML, etc).
 #' If NULL, a demo network file in SIF format is loaded.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
