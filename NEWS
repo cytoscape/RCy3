@@ -1,3 +1,8 @@
+Changes in version 2.6.0
++ New, more robust handling of file type
++ Doc Fixes
+   - added Filters to Overview vignette
+   - improved file type handling descriptions
 Changes in vesion 2.4.3
 + Bug Fixes
    - import functions -- #62 fixed default directory
@@ -43,7 +48,7 @@ Changes in version 2.4.0
 + Bug Fixes
     - createSubnetwork -- #43 network suids i/o names
     - openSession works with current working directory -- #50
-+Doc Fixes
++ Doc Fixes
     - improved visual.prop handling in mapVisualProperty -- #49,#53 user report
     - added file overwrite warnings to all export and save functions
 Changes in version 2.2.7
