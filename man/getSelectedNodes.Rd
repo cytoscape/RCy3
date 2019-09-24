@@ -4,9 +4,13 @@
 \alias{getSelectedNodes}
 \title{Get Selected Nodes}
 \usage{
-getSelectedNodes(network = NULL, base.url = .defaultBaseUrl)
+getSelectedNodes(node.suids = FALSE, network = NULL,
+  base.url = .defaultBaseUrl)
 }
 \arguments{
+\item{node.suids}{Whether to return node SUIDs. Default is FALSE to return 
+node names.}
+
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
 

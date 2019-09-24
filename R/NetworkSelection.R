@@ -218,6 +218,8 @@ getSelectedNodeCount <-
 #' @title Get Selected Nodes
 #'
 #' @description Retrieve the names of all the nodes selected in the network.
+#' @param node.suids Whether to return node SUIDs. Default is FALSE to return 
+#' node names.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -230,7 +232,7 @@ getSelectedNodeCount <-
 #' }
 #' @export
 getSelectedNodes <-
-    function(network = NULL, base.url = .defaultBaseUrl) {
+    function(node.suids = FALSE, network = NULL, base.url = .defaultBaseUrl) {
         net.SUID <- getNetworkSuid(network,base.url)
         
         if (getSelectedNodeCount(net.SUID, base.url) == 0) {
@@ -244,9 +246,13 @@ getSelectedNodes <-
                              "true"),
                     base.url = base.url
                 )
-            selected.node.names <-
-                .nodeSUIDToNodeName(selected.node.SUIDs, net.SUID, base.url)
-            return(selected.node.names)
+            if (node.suids){
+                return(selected.node.SUIDs)
+            } else {
+                selected.node.names <-
+                    .nodeSUIDToNodeName(selected.node.SUIDs, net.SUID, base.url)
+                return(selected.node.names)
+            }
         }
     }
 
@@ -503,7 +509,10 @@ getSelectedEdgeCount <-
 #' @title Get Selected Edges
 #'
 #' @description Retrieve the names of all the edges selected in the network.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param edge.suids Whether to return edge SUIDs. Default is FALSE to return 
+#' edge names. 
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -513,7 +522,7 @@ getSelectedEdgeCount <-
 #' }
 #' @export
 getSelectedEdges <-
-    function (network = NULL, base.url = .defaultBaseUrl) {
+    function (edge.suids = FALSE, network = NULL, base.url = .defaultBaseUrl) {
         net.SUID = getNetworkSuid(network,base.url)
         if (getSelectedEdgeCount(net.SUID, base.url) == 0) {
             return (NA)
@@ -524,6 +533,9 @@ getSelectedEdges <-
                          "true"),
                 base.url = base.url
             )
+            if (edge.suids) {
+                return(selected.edges.SUIDs)
+            }
             selected.edges = .edgeSUIDToEdgeName(selected.edges.SUIDs, net.SUID, base.url)
             return(selected.edges)
         }
