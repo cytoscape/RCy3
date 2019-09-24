@@ -78,7 +78,7 @@ collapseGroup <- function(groups=NULL, network=NULL, base.url=.defaultBaseUrl){
 #' @title Create Group
 #'
 #' @description Create a group from the specified nodes.
-#' @param group.name Specifies the name used to identify the group
+#' @param group.name The name used to identify and optionaly label the group
 #' @param nodes List of node SUIDs, names, other column values, or keyword: 
 #' selected, unselected or all. Default is currently selected nodes.
 #' @param nodes.by.col name of node table column corresponding to provided nodes 
@@ -106,6 +106,30 @@ createGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID',
                  base.url = base.url)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Create Group by Column
+#'
+#' @description Create a group of nodes defined by a column value.
+#' @param group.name The name used to identify and optionaly label the group
+#' @param column The name or header of the Node Table column to use for selecting nodes to group
+#' @param value The value in the column to use for selecting nodes to group
+#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Group SUID
+#' @examples \donttest{
+#' createGroupByColumn('mygroup','Cluster', 'A')
+#' }
+#' @export
+createGroupByColumn <- function(group.name, column=NULL, value=NULL, 
+                    network=NULL, base.url=.defaultBaseUrl) {
+    net.suid <- getNetworkSuid(network,base.url)
+    commandsPOST(paste0('group create groupName="',group.name,'"',
+                        ' nodeList="',column,'":"',value,'"',
+                        ' network="SUID:',net.suid,'"'),
+                 base.url = base.url)
+}
 
 # ------------------------------------------------------------------------------
 #' @title Expand Group
