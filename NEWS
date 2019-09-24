@@ -1,4 +1,5 @@
 Changes in version 2.6.0
++ New function: createGroupByColumn
 + New, more robust handling of file type
 + Doc Fixes
    - added Filters to Overview vignette
