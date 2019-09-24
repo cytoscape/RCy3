@@ -236,6 +236,7 @@ help(package=RCy3)
 | **Commands** | Constructing any arbitrary CyREST API or Commands API method via standard GET, PUT, POST and DELETE protocols. | _cyrestPOST() commandsPOST() cyrestAPI() commandsAPI()_ |
 | **CyNDEx** | Communicating with NDEx from within Cytoscape. | _importNetworkFromNDEx() exportNetworkToNDEx()_ |
 | **Cytoscape System** | Checking Cytoscape System information, including versions and memory usage. | _cytoscapePing() cytoscapeVersionInfo()_ |
+| **Filters** | Selection via filter criteria. | _createDegreeFilter() createColumnFilter()_ |
 | **Groups** | Working with groups in Cytoscape. | _createGroup() collapseGroup()_ |
 | **Layouts** | Performing layouts in addition to getting and setting layout properties. | _layoutNetwork() getLayoutNames()_ |
 | **Networks** | Functions for network management and retrieving information on networks, nodes and edges. | _createNetworkFrom...() create...FromNetwork() getNetworkSuid(), exportNetwork() getAllNodes() getAllEdges()_ |
