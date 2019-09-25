@@ -240,7 +240,7 @@ help(package=RCy3)
 | **Groups** | Working with groups in Cytoscape. | _createGroup() collapseGroup()_ |
 | **Layouts** | Performing layouts in addition to getting and setting layout properties. | _layoutNetwork() getLayoutNames()_ |
 | **Networks** | Functions for network management and retrieving information on networks, nodes and edges. | _createNetworkFrom...() create...FromNetwork() getNetworkSuid(), exportNetwork() getAllNodes() getAllEdges()_ |
-| **Network Selection** | Working with selection of nodes and edges in networks. | _selectNodes() invertNodeSelection() selectFirstNeighbors()_ |
+| **Network Selection** | Manipulating selection of nodes and edges in networks. | _selectNodes() invertNodeSelection() selectFirstNeighbors()_ |
 | **Network Views** | Performing view operations in addition to getting and setting view properties. | _getCurrentView() fitContent() exportImage() toggleGraphicsDetails()_ |
 | **Session** | Managing Cytoscape sessions, including save, open and close. | _openSession() saveSession() closeSession()_ |
 | **Style Bypasses** | Setting and clearing bypass values for visual properties. | _setNodeColorBypass() setEdgeLineStyleBypass() hideNodes()_ |
