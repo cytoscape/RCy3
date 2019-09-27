@@ -1,9 +1,12 @@
 Changes in version 2.6.0
-+ New function: createGroupByColumn
++ New functions: 
+  - createGroupByColumn
+  - clearEdgeBends
 + New parameter to return SUIDs for
-   - getSelectedNodes
-   - getSelectedEdges
+  - getSelectedNodes
+  - getSelectedEdges
 + New, more robust handling of file type
++ New support for loading list data
 + Doc Fixes
   - added Filters to Overview vignette
   - improved file type handling descriptions

@@ -31,6 +31,27 @@ bundleEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
+#' @title Clear Edge Bends
+#'
+#' @description Clear all edge bends, e.g., those created from edge bundling.
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' clearEdgeBends()
+#' }
+#' @export
+clearEdgeBends <- function(network = NULL, base.url = .defaultBaseUrl) {
+    suid <- getNetworkSuid(network,base.url)
+    
+    res<-cyrestGET(paste('apply/clearalledgebends',suid, sep='/'), base.url =  base.url)
+    invisible(res)
+}
+
+# ------------------------------------------------------------------------------
 #' @title Apply a layout to a network
 #'
 #' @details Run \link{getLayoutNames} to list available layouts. 

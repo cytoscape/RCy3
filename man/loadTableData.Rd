@@ -9,35 +9,40 @@ loadTableData(data, data.key.column = "row.names", table = "node",
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{data}{(data.frame) each row is a node and columns contain node attributes}
+\item{data}{(data.frame) each row is a node and columns contain node 
+attributes}
 
-\item{data.key.column}{(char) name of data.frame column to use as key; default is "row.names"}
+\item{data.key.column}{(char) name of data.frame column to use as key; 
+default is "row.names"}
 
-\item{table}{(char) name of Cytoscape table to load data into, e.g., node, edge or network; default is "node"}
+\item{table}{(char) name of Cytoscape table to load data into, e.g., node, 
+edge or network; default is "node"}
 
-\item{table.key.column}{(char) name of Cytoscape table column to use as key; default is "name"}
+\item{table.key.column}{(char) name of Cytoscape table column to use as key; 
+default is "name"}
 
 \item{namespace}{namespace of table, e.g., default}
 
-\item{network}{(optional) Name or SUID of the network. Default is the "current" 
-network active in Cytoscape.}
+\item{network}{(optional) Name or SUID of the network. Default is the 
+"current" network active in Cytoscape.}
 
-\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
-port or version to connect to the CyREST API. Default is http://localhost:1234
-and the latest version of the CyREST API supported by this version of RCy3.}
+\item{base.url}{(optional) Ignore unless you need to specify a custom 
+domain, port or version to connect to the CyREST API. Default is 
+http://localhost:1234 and the latest version of the CyREST API supported by 
+this version of RCy3.}
 }
 \value{
 server response
 }
 \description{
-This function loads data into Cytoscape node/edge/network tables provided a
-common key, e.g., name. Data.frame column names will be used to set Cytoscape table column
-names.
+This function loads data into Cytoscape node/edge/network 
+tables provided a common key, e.g., name. Data.frame column names will be 
+used to set Cytoscape table column names.
 }
 \details{
-Numeric values will be stored as Doubles in Cytoscape tables. Integer values
-will be stored as Integers. Character or mixed values will be stored as Strings. 
-Logical values will be stored as Boolean. Lists are not supported by the
-current version of CyREST. Existing columns with the same names 
-will keep original type but values will be overwritten.
+Numeric values will be stored as Doubles in Cytoscape tables. 
+Integer values will be stored as Integers. Character or mixed values will be 
+stored as Strings. Logical values will be stored as Boolean. Lists are 
+stored as Lists by CyREST v3.9+. Existing columns with the same names will
+keep original type but values will be overwritten.
 }
