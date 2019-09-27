@@ -5,7 +5,8 @@ Changes in version 2.6.0
 + New parameter to return SUIDs for
   - getSelectedNodes
   - getSelectedEdges
-+ New, more robust handling of file type
++ More robust handling of file type in export functions
++ More robust handling of dataframes in createNetworkFromDataFrames
 + New support for loading list data
 + Doc Fixes
   - added Filters to Overview vignette

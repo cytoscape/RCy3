@@ -843,38 +843,43 @@ createNetworkFromGraph <- function (graph,
 # ------------------------------------------------------------------------------
 #' @title Create a network from data frames
 #'
-#' @description Takes data frames for nodes and edges, as well as naming parameters to
-#' generate the JSON data format required by the "networks" POST operation via CyREST.
-#' Returns the network.suid and applies the perferred layout set in Cytoscape preferences.
-#' @details NODES should contain a column of character strings named: id. This name can be overridden by
-#' the arg: node.id.list. Additional columns are loaded as node attributes.
-#' EDGES should contain columns of character strings named: source, target and interaction. These names can be overridden by
-#' args: source.id.list, target.id.list, interaction.type.list. Additional columns
-#' are loaded as edge attributes. The 'interaction' list can contain a single
-#' value to apply to all rows; and if excluded altogether, the interaction type
-#' wiil be set to "interacts with". NOTE: attribute values of types (num) will be imported
-#' as (Double); (int) as (Integer); (chr) as (String); and (logical) as (Boolean). 
-#' List types are not supported and ignored upon import.
-#' @param nodes (data.frame) see details and examples below; default NULL to derive nodes from edge sources and targets
-#' @param edges (data.frame) see details and examples below; default NULL for disconnected set of nodes
+#' @description Takes data frames for nodes and edges, as well as naming 
+#' parameters to generate the JSON data format required by the "networks" POST 
+#' operation via CyREST. Returns the network.suid and applies the perferred 
+#' layout set in Cytoscape preferences.
+#' @details NODES should contain a column of character strings named: id. This 
+#' name can be overridden by the arg: node.id.list. Additional columns are 
+#' loaded as node attributes. EDGES should contain columns of character strings 
+#' named: source, target and interaction. These names can be overridden by
+#' args: source.id.list, target.id.list, interaction.type.list. Additional 
+#' columns are loaded as edge attributes. The 'interaction' list can contain a 
+#' single value to apply to all rows; and if excluded altogether, the 
+#' interaction type wiil be set to "interacts with". NOTE: attribute values of 
+#' types (num) will be imported as (Double); (int) as (Integer); (chr) as 
+#' (String); and (logical) as (Boolean). (Lists) will be imported as (Lists)
+#' in CyREST v3.9+.
+#' @param nodes (data.frame) see details and examples below; default NULL to 
+#' derive nodes from edge sources and targets
+#' @param edges (data.frame) see details and examples below; default NULL for 
+#' disconnected set of nodes
 #' @param title (char) network name
 #' @param collection (char) network collection name
-#' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param base.url (optional) Ignore unless you need to specify a custom 
+#' domain, port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
 #' @param ... params for nodeSet2JSON() and edgeSet2JSON()
 #' @return (int) network SUID
 #' @examples
 #' \donttest{
 #' nodes <- data.frame(id=c("node 0","node 1","node 2","node 3"),
 #'            group=c("A","A","B","B"), # categorical strings
-#'            score=as.integer(c(20,10,15,5)), # integers
-#'            stringsAsFactors=FALSE)
+#'            score=as.integer(c(20,10,15,5))) # integers
 #' edges <- data.frame(source=c("node 0","node 0","node 0","node 2"),
 #'            target=c("node 1","node 2","node 3","node 3"),
-#'            interaction=c("inhibits","interacts","activates","interacts"),  # optional
-#'            weight=c(5.1,3.0,5.2,9.9), # numeric
-#'            stringsAsFactors=FALSE)
+#'            interaction=c("inhibits","interacts",
+#'                          "activates","interacts"),  # optional
+#'            weight=c(5.1,3.0,5.2,9.9)) # numeric
 #'
 #' createNetworkFromDataFrames(nodes,edges)
 #' }
@@ -899,6 +904,8 @@ createNetworkFromDataFrames <-
                 )
             } else
                 return("Create Network Failed: Must provide either nodes or edges")
+        } else {
+            nodes <- data.frame(nodes, stringsAsFactors = FALSE) #clear factors
         }
         
         # Subset dataframe for initial network creation
@@ -917,6 +924,7 @@ createNetworkFromDataFrames <-
         json_edges <- c()
         
         if (!is.null(edges)) {
+            edges <- data.frame(edges, stringsAsFactors = FALSE) #clear factors
             # Subset dataframe for initial network creation 
             if(!exists('source.id.list'))
                 source.id.list = 'source'
