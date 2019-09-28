@@ -45,8 +45,8 @@ columns are loaded as edge attributes. The 'interaction' list can contain a
 single value to apply to all rows; and if excluded altogether, the 
 interaction type wiil be set to "interacts with". NOTE: attribute values of 
 types (num) will be imported as (Double); (int) as (Integer); (chr) as 
-(String); and (logical) as (Boolean). List types are not supported and 
-ignored upon import.
+(String); and (logical) as (Boolean). (Lists) will be imported as (Lists)
+in CyREST v3.9+.
 }
 \examples{
 \donttest{
