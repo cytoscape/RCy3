@@ -11,7 +11,7 @@
 #' Creates a mapping between an attribute and a visual property
 #'
 #' @description Generates the appropriate data structure for the "mapping" parameter
-#' in setStyleMappings and createStyle.
+#' in updateStyleMapping.
 #' @details The paired list of values must be of the same length or mapping will fail.
 #' For gradient mapping, you may include two additional visual.prop.values in the 
 #' first and last positions to map respectively to values less than and greater 
@@ -30,7 +30,7 @@
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return (network=network, base.url=base.url) ready to convert into JSON by style mapping operations
-#' @seealso setStyleMappings createStyle getVisualPropertyNames
+#' @seealso updateStyleMapping getVisualPropertyNames
 #' @examples
 #' \donttest{
 #' mapVisualProperty('node fill color','score','c',c(-4.0,0.0,9.0),c('#99CCFF','#FFFFFF','#FF7777'))

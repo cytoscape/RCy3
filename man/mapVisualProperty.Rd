@@ -31,7 +31,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \description{
 Generates the appropriate data structure for the "mapping" parameter
-in setStyleMappings and createStyle.
+in updateStyleMapping.
 }
 \details{
 The paired list of values must be of the same length or mapping will fail.
@@ -87,5 +87,5 @@ mapVisualProperty('node label','alias','p')
 }
 }
 \seealso{
-setStyleMappings createStyle getVisualPropertyNames
+updateStyleMapping getVisualPropertyNames
 }
