@@ -46,8 +46,8 @@ applyFilter<-function(filter.name="Default filter", hide=FALSE, network=NULL,
                        cmd.network, 
                        sep=' '), base.url)
     
-    sel.nodes<-getSelectedNodes(net.SUID, base.url)
-    sel.edges<-getSelectedEdges(net.SUID, base.url)
+    sel.nodes<-getSelectedNodes(network=net.SUID, base.url=base.url)
+    sel.edges<-getSelectedEdges(nnetwork=net.SUID, base.url=base.url)
     
     if(hide) {
         unhideAll(net.SUID, base.url)
@@ -149,8 +149,8 @@ createColumnFilter<-function(filter.name, column, criterion, predicate,
  
     commandSleep(1) #Yikes! Have to wait a second for selection to settle!
     
-    sel.nodes<-getSelectedNodes(network, base.url)
-    sel.edges<-getSelectedEdges(network, base.url)
+    sel.nodes<-getSelectedNodes(network=network, base.url=base.url)
+    sel.edges<-getSelectedEdges(network=network, base.url=base.url)
     
     if(hide) {
         unhideAll(network, base.url)
@@ -204,8 +204,8 @@ createCompositeFilter<-function(filter.name, filter.list, type="ALL",
 
     .postCreateFilter(cmd.body, base.url)
 
-    sel.nodes<-getSelectedNodes(network, base.url)
-    sel.edges<-getSelectedEdges(network, base.url)
+    sel.nodes<-getSelectedNodes(network=network, base.url=base.url)
+    sel.edges<-getSelectedEdges(network=network, base.url=base.url)
     
     if(hide) {
         unhideAll(network, base.url)
@@ -258,8 +258,8 @@ createDegreeFilter<-function(filter.name, criterion, predicate="BETWEEN",
     
     .postCreateFilter(cmd.body, base.url)
     
-    sel.nodes<-getSelectedNodes(network, base.url)
-    sel.edges<-getSelectedEdges(network, base.url)
+    sel.nodes<-getSelectedNodes(network=network, base.url=base.url)
+    sel.edges<-getSelectedEdges(network=network, base.url=base.url)
     
     if(hide) {
         unhideAll(network, base.url)

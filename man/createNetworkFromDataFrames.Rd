@@ -5,7 +5,8 @@
 \title{Create a network from data frames}
 \usage{
 createNetworkFromDataFrames(nodes = NULL, edges = NULL,
-  title = "MyNetwork", collection = "MyNetworkCollection",
+  title = "From dataframe",
+  collection = "My Dataframe Network Collection",
   base.url = .defaultBaseUrl, ...)
 }
 \arguments{
