@@ -164,6 +164,7 @@ getNetworkName <- function(suid = NULL, base.url = .defaultBaseUrl) {
 # 
 getNetworkSuid <- function(title = NULL, base.url = .defaultBaseUrl) {
     if (is.character(title)) {
+        print("NET TITLE: ",title)
         #title provided
         if (title == 'current') {
             network.title = title
@@ -764,8 +765,8 @@ createSubnetwork <- function(nodes=NULL,
 #' @importFrom BiocGenerics colnames
 #' @export
 createNetworkFromIgraph <- function(igraph,
-                                    title = "MyNetwork",
-                                    collection = "MyNetworkCollection",
+                                    title = "From igraph",
+                                    collection = "My Igraph Network Collection",
                                     base.url = .defaultBaseUrl,
                                     ...) {
     #extract dataframes
@@ -831,8 +832,8 @@ createNetworkFromIgraph <- function(igraph,
 #' @importFrom igraph igraph.from.graphNEL
 #' @export
 createNetworkFromGraph <- function (graph,
-                                    title = "MyNetwork",
-                                    collection = "myNetworkCollection",
+                                    title = "From graph",
+                                    collection = "My GraphNEL Network Collection",
                                     base.url = .defaultBaseUrl) {
     createNetworkFromIgraph(igraph::igraph.from.graphNEL(graph),
                             title = title,
@@ -887,8 +888,8 @@ createNetworkFromGraph <- function (graph,
 createNetworkFromDataFrames <-
     function(nodes = NULL,
              edges = NULL,
-             title = "MyNetwork",
-             collection = "MyNetworkCollection",
+             title = "From dataframe",
+             collection = "My Dataframe Network Collection",
              base.url = .defaultBaseUrl,
              ...) {
         #defining variable names to be used globally later on (to avoid devtools::check() NOTES)
