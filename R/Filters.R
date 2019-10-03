@@ -47,7 +47,7 @@ applyFilter<-function(filter.name="Default filter", hide=FALSE, network=NULL,
                        sep=' '), base.url)
     
     sel.nodes<-getSelectedNodes(network=net.SUID, base.url=base.url)
-    sel.edges<-getSelectedEdges(nnetwork=net.SUID, base.url=base.url)
+    sel.edges<-getSelectedEdges(network=net.SUID, base.url=base.url)
     
     if(hide) {
         unhideAll(net.SUID, base.url)
