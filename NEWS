@@ -11,13 +11,16 @@ Changes in version 2.6.0
 + Doc Fixes
   - added Filters to Overview vignette
   - improved file type handling descriptions
-Changes in vesion 2.4.3
+Changes in version 2.4.4
++ Bug Fixes
+  - filter functions -- #73 wrong params
+Changes in version 2.4.3
 + Bug Fixes
   - import functions -- #62 fixed default directory
-Changes in vesion 2.4.2
+Changes in version 2.4.2
 + Bug Fixes
   - getEdgeInfo -- #61 missing function
-Changes in vesion 2.4.1
+Changes in version 2.4.1
 + Bug Fixes
   - getLayoutPropertyNames -- #59 fixed returned values
   - createNetworkFromIgraph -- #58 flatten list attributes to strings
@@ -62,31 +65,31 @@ Changes in version 2.4.0
 Changes in version 2.2.7
 + Doc Fixes
   - vignette for phylogenetic trees
-Changes in vesion 2.2.6
+Changes in version 2.2.6
 + Bug Fixes
   - saveSession, exportXXX -- #39 default to working directory
   - createNetworkFromDataFrame and .edgeNameToSuids -- #41 multigraph support
   - BiocCheck errors and warnings -- #42
 + Doc Fixes
   - added tests for multigraphs
-Changes in vesion 2.2.5
+Changes in version 2.2.5
 + Bug Fixes
   - createXXXFilter and applyFilter -- #40 network arg 
 + Doc Fixes
   - new filters vignette
-Changes in vesion 2.2.4
+Changes in version 2.2.4
 + Doc Fixes
    - vignettes
-Changes in vesion 2.2.3
+Changes in version 2.2.3
 + Doc Fixes
   - vignettes
-Changes in vesion 2.2.2
+Changes in version 2.2.2
 + Doc Fixes
   - new custom graphics vignette
-Changes in vesion 2.2.1
+Changes in version 2.2.1
 + Doc Fixes
   - vignettes, readme and test
-Changes in vesion 2.2.0
+Changes in version 2.2.0
 + New functions to remove duplicate edges
   - deleteDuplicateEdges
   - deleteSelfLoops
