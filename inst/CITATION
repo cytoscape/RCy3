@@ -1,10 +1,8 @@
 citEntry(entry = "Article",
-         "author" = "Keiichiro Ono, Tanja Muetze, Georgi Kolishovski, Paul Shannon, Barry Demchak",
-         "title" = "CyREST: Turbocharging Cytoscape Access for External Tools via a RESTful API [version 1; referees: 2 approved]",
-         journal = "F1000Research",
-         volume = "4",
-         number = "478",
-         year = "2015",
-         doi = "10.12688/f1000research.6767.1",
-         textVersion = "Ono K, Muetze T, Kolishovski G, Shannon P, Demchak, B. CyREST: Turbocharging Cytoscape Access for External Tools via a RESTful API [version 1; referees: 2 approved]. F1000Research 2015, 4:478."
+         "author" = "Gustavsen, Julia A. and Pai, Shraddha and Isserlin, Ruth and Demchak, Barry and Pico, Alexander R.",
+         "title" = "RCy3: Network Biology using Cytoscape from within R",
+         journal = "bioRxiv",
+         year = "2019",
+         doi = "10.1101/793166",
+         textVersion = "Gustavsen JA and Pai S and Isserlin R and Demchak B and Pico AR. RCy3: Network Biology using Cytoscape from within R. bioRxiv 2019, doi:10.1101/793166."
          )
