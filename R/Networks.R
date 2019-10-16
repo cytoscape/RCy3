@@ -164,7 +164,6 @@ getNetworkName <- function(suid = NULL, base.url = .defaultBaseUrl) {
 # 
 getNetworkSuid <- function(title = NULL, base.url = .defaultBaseUrl) {
     if (is.character(title)) {
-        print("NET TITLE: ",title)
         #title provided
         if (title == 'current') {
             network.title = title
