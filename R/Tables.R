@@ -38,15 +38,18 @@ deleteTableColumn <- function(column ,
 #' @description Retrieve one or more columns of data from node, edge or network
 #' tables.
 #' @details The 'SUID' column is always retrieved along with specified columns. 
-#' The 'SUID' values are used as \code{row.names} in the returned \code{data.frame}. 
+#' The 'SUID' values are used as \code{row.names} in the returned 
+#' \code{data.frame}. 
 #' @param table name of table, e.g., node (default), edge, network
-#' @param columns names of columns to retrieve values from as list object or comma-separated list; default is all columns
+#' @param columns names of columns to retrieve values from as list object or 
+#' comma-separated list; default is all columns
 #' @param namespace namespace of table; default is "default"
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
-#' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom 
+#' domain, port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported 
+#' by this version of RCy3.
 #' @return A \code{data.frame} of column values
 #' @examples
 #' \donttest{
@@ -95,7 +98,6 @@ getTableColumns <- function(table = 'node',
         
         cvv <- unlist(lapply(res.col$values, function(x)
             ifelse(is.null(x), NA, x)))
-        if (length(res.names$values) == length(cvv)) {
             for (i in seq_len(length(res.names$values))) {
                 switch(table.col.type, 
                        "Double"={
@@ -115,13 +117,6 @@ getTableColumns <- function(table = 'node',
                        }
                 )
             }
-        } else {
-            print(
-                "Warning: Requested column has missing values. Returning single column without row.names..."
-            )
-            df2 = data.frame(col = unlist(res.col$values))
-            return(df2)
-        }
     }
     return(df)
 }

@@ -10,16 +10,18 @@ getTableColumns(table = "node", columns = NULL,
 \arguments{
 \item{table}{name of table, e.g., node (default), edge, network}
 
-\item{columns}{names of columns to retrieve values from as list object or comma-separated list; default is all columns}
+\item{columns}{names of columns to retrieve values from as list object or 
+comma-separated list; default is all columns}
 
 \item{namespace}{namespace of table; default is "default"}
 
-\item{network}{(optional) Name or SUID of the network. Default is the "current" 
-network active in Cytoscape.}
+\item{network}{(optional) Name or SUID of the network. Default is the 
+"current" network active in Cytoscape.}
 
-\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
-port or version to connect to the CyREST API. Default is http://localhost:1234
-and the latest version of the CyREST API supported by this version of RCy3.}
+\item{base.url}{(optional) Ignore unless you need to specify a custom 
+domain, port or version to connect to the CyREST API. Default is 
+http://localhost:1234 and the latest version of the CyREST API supported 
+by this version of RCy3.}
 }
 \value{
 A \code{data.frame} of column values
@@ -30,7 +32,8 @@ tables.
 }
 \details{
 The 'SUID' column is always retrieved along with specified columns. 
-The 'SUID' values are used as \code{row.names} in the returned \code{data.frame}.
+The 'SUID' values are used as \code{row.names} in the returned 
+\code{data.frame}.
 }
 \examples{
 \donttest{
