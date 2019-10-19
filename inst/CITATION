@@ -1,8 +1,8 @@
 citEntry(entry = "Article",
          "author" = "Gustavsen, Julia A. and Pai, Shraddha and Isserlin, Ruth and Demchak, Barry and Pico, Alexander R.",
          "title" = "RCy3: Network Biology using Cytoscape from within R",
-         journal = "bioRxiv",
+         journal = "F1000Research",
          year = "2019",
-         doi = "10.1101/793166",
-         textVersion = "Gustavsen JA and Pai S and Isserlin R and Demchak B and Pico AR. RCy3: Network Biology using Cytoscape from within R. bioRxiv 2019, doi:10.1101/793166."
+         doi = "10.12688/f1000research.20887.1",
+         textVersion = "Gustavsen JA and Pai S and Isserlin R and Demchak B and Pico AR. RCy3: Network Biology using Cytoscape from within R. F1000Research 2019, http://dx.doi.org/10.12688/f1000research.20887.1."
          )
