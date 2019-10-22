@@ -4,11 +4,11 @@
 \alias{getNodeProperty}
 \title{Get Node Property Values}
 \usage{
-getNodeProperty(node.names, visual.property, network = NULL,
+getNodeProperty(node.names = NULL, visual.property, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{List of node names}
+\item{node.names}{List of node names. Default is NULL for all nodes.}
 
 \item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}
 
@@ -19,7 +19,7 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-Property value
+Named list of property values
 }
 \description{
 Get values for any node property of the specified nodes.

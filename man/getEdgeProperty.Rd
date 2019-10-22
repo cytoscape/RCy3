@@ -4,11 +4,11 @@
 \alias{getEdgeProperty}
 \title{Get Edge Property Values}
 \usage{
-getEdgeProperty(edge.names, visual.property, network = NULL,
+getEdgeProperty(edge.names = NULL, visual.property, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names. Default is NULL for all edges.}
 
 \item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}
 
@@ -20,7 +20,7 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-Property value
+Named list of property values
 }
 \description{
 Get values for any edge property of the specified edges.

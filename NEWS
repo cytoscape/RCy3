@@ -2,9 +2,12 @@ Changes in version 2.6.0
 + New functions: 
   - createGroupByColumn
   - clearEdgeBends
+  - getNodePosition
 + New parameter to return SUIDs for
   - getSelectedNodes
   - getSelectedEdges
++ Node and edge property values returned as named lists
++ Faster results for getting all node and edge property values, #78
 + More robust handling of file type in export functions
 + More robust handling of dataframes in createNetworkFromDataFrames
 + New support for loading list data

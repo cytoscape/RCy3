@@ -8,7 +8,7 @@ getNodeHeight(node.names = NULL, network = NULL,
   base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{List of node names}
+\item{node.names}{List of node names. Default is NULL for all nodes.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
@@ -18,7 +18,7 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-Property value
+Named list of property values
 }
 \description{
 Retrieve the actual height of specified nodes.
