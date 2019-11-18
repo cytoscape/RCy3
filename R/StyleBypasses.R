@@ -1296,7 +1296,7 @@ setNodeLabelOpacityBypass <-
 #' @export
 hideSelectedNodes <-
     function (network = NULL, base.url = .defaultBaseUrl) {
-        node.names <- getSelectedNodes(network, base.url)
+        node.names <- getSelectedNodes(network=network, base.url=base.url)
         setNodePropertyBypass(node.names, 'false', "NODE_VISIBLE", network=network, base.url=base.url)
     }
 
@@ -2116,7 +2116,7 @@ setEdgeLabelOpacityBypass <-
 #' }
 #' @export
 hideSelectedEdges <- function (network=NULL, base.url = .defaultBaseUrl) {
-    edge.names <- getSelectedEdges(base.url)
+    edge.names <- getSelectedEdges(network=network,base.url=base.url)
     setEdgePropertyBypass(edge.names, 'false', "EDGE_VISIBLE", network=network, base.url=base.url)
 } 
 

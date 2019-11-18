@@ -561,7 +561,7 @@ getSelectedEdges <-
 selectEdgesConnectingSelectedNodes <-
     function(network = NULL, base.url = .defaultBaseUrl) {
         net.suid <- getNetworkSuid(network,base.url)
-        selectedNodes = getSelectedNodes(net.suid, base.url)
+        selectedNodes = getSelectedNodes(network=net.suid, base.url=base.url)
         if (length (selectedNodes) == 1 && is.na (selectedNodes))
             return ()
         allEdges <- getAllEdges(net.suid, base.url)

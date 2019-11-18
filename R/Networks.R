@@ -353,7 +353,7 @@ getFirstNeighbors <-
               base.url = .defaultBaseUrl) {
         
         if (is.null(node.names))
-            node.names <- getSelectedNodes(network,base.url)
+            node.names <- getSelectedNodes(network=network,base.url=base.url)
         
         if (length (node.names) == 0)
             return()
@@ -786,13 +786,13 @@ createNetworkFromIgraph <- function(igraph,
     
     #flatten all list types (until supported by createNetworkFromDataFrame)
     ige.list.cols <- vapply(igedges, is.list, logical(1))
-    for(i in 1:length(ige.list.cols)){
+    for(i in seq_along(ige.list.cols)){
         if(ige.list.cols[i]){
             suppressWarnings(igedges[i]<-lapply(igedges[[i]], paste, collapse=','))
         }
     }
     ign.list.cols <- vapply(ignodes, is.list, logical(1))
-    for(i in 1:length(ign.list.cols)){
+    for(i in seq_along(ign.list.cols)){
         if(ign.list.cols[i]){
             suppressWarnings(ignodes[i]<-lapply(ignodes[[i]], paste, collapse=','))
         }
