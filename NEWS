@@ -1,8 +1,7 @@
-Changes in version 2.6.2
+Changes in version 2.6.1
 + Doc Fixes
   - Roxygen update and man pages
   - Fixes to unitTests
-Changes in version 2.6.1
 + Bug Fixes
   - getSelectedNodes/Edges -- #82 fixed missing param in usage
 Changes in version 2.6.0
