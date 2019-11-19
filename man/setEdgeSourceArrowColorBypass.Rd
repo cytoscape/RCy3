@@ -4,8 +4,12 @@
 \alias{setEdgeSourceArrowColorBypass}
 \title{Set Edge Source Arrow Color Bypass}
 \usage{
-setEdgeSourceArrowColorBypass(edge.names, new.colors, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeSourceArrowColorBypass(
+  edge.names,
+  new.colors,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names}

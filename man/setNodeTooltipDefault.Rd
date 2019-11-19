@@ -4,8 +4,11 @@
 \alias{setNodeTooltipDefault}
 \title{Set Node Tooltip Default}
 \usage{
-setNodeTooltipDefault(new.tooltip, style.name = "default",
-  base.url = .defaultBaseUrl)
+setNodeTooltipDefault(
+  new.tooltip,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.tooltip}{String tooltip for unmapped nodes.}

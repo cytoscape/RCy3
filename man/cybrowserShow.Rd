@@ -4,8 +4,13 @@
 \alias{cybrowserShow}
 \title{Cybrowser Show}
 \usage{
-cybrowserShow(id = NULL, text = NULL, title = NULL, url = NULL,
-  base.url = .defaultBaseUrl)
+cybrowserShow(
+  id = NULL,
+  text = NULL,
+  title = NULL,
+  url = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{id}{(optional) The identifier for the browser window}

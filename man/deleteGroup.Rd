@@ -4,8 +4,12 @@
 \alias{deleteGroup}
 \title{Delete (or Ungroup) a Group}
 \usage{
-deleteGroup(groups = NULL, groups.by.col = "SUID", network = NULL,
-  base.url = .defaultBaseUrl)
+deleteGroup(
+  groups = NULL,
+  groups.by.col = "SUID",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{groups}{(optional) List of group SUIDs, names, other column values or keywords: all, selected,

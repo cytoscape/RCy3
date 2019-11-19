@@ -4,8 +4,7 @@
 \alias{layoutNetwork}
 \title{Apply a layout to a network}
 \usage{
-layoutNetwork(layout.name = NULL, network = NULL,
-  base.url = .defaultBaseUrl)
+layoutNetwork(layout.name = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{layout.name}{(\code{character}) Name of the layout (with optional parameters). 

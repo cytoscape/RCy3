@@ -4,8 +4,11 @@
 \alias{getVisualPropertyDefault}
 \title{Get Visual Property Default}
 \usage{
-getVisualPropertyDefault(property, style.name = "default",
-  base.url = .defaultBaseUrl)
+getVisualPropertyDefault(
+  property,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{property}{Name of property, e.g., NODE_FILL_COLOR (see \link{getVisualPropertyNames})}

@@ -4,8 +4,14 @@
 \alias{getTableValue}
 \title{Get table cell value}
 \usage{
-getTableValue(table, row.name, column, namespace = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+getTableValue(
+  table,
+  row.name,
+  column,
+  namespace = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table}{name of table, e.g., node, edge, network}

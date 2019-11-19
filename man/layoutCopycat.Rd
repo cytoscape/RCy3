@@ -4,9 +4,15 @@
 \alias{layoutCopycat}
 \title{Copy a layout from one network to another}
 \usage{
-layoutCopycat(sourceNetwork, targetNetwork, sourceColumn = "name",
-  targetColumn = "name", gridUnmapped = TRUE, selectUnmapped = TRUE,
-  base.url = .defaultBaseUrl)
+layoutCopycat(
+  sourceNetwork,
+  targetNetwork,
+  sourceColumn = "name",
+  targetColumn = "name",
+  gridUnmapped = TRUE,
+  selectUnmapped = TRUE,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{sourceNetwork}{(\code{character}) The name of network to get node coordinates from}

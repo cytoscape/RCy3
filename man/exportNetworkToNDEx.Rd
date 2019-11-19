@@ -4,8 +4,14 @@
 \alias{exportNetworkToNDEx}
 \title{Export Network To NDEx}
 \usage{
-exportNetworkToNDEx(username, password, isPublic, network = NULL,
-  metadata = NULL, base.url = .defaultBaseUrl)
+exportNetworkToNDEx(
+  username,
+  password,
+  isPublic,
+  network = NULL,
+  metadata = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{username}{NDEx account username}

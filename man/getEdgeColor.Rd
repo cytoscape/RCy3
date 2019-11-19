@@ -4,8 +4,7 @@
 \alias{getEdgeColor}
 \title{Get Edge Color}
 \usage{
-getEdgeColor(edge.names = NULL, network = NULL,
-  base.url = .defaultBaseUrl)
+getEdgeColor(edge.names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{edge.names}{List of edge names. Default is NULL for all edges.}

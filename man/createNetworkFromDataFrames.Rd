@@ -4,10 +4,14 @@
 \alias{createNetworkFromDataFrames}
 \title{Create a network from data frames}
 \usage{
-createNetworkFromDataFrames(nodes = NULL, edges = NULL,
+createNetworkFromDataFrames(
+  nodes = NULL,
+  edges = NULL,
   title = "From dataframe",
   collection = "My Dataframe Network Collection",
-  base.url = .defaultBaseUrl, ...)
+  base.url = .defaultBaseUrl,
+  ...
+)
 }
 \arguments{
 \item{nodes}{(data.frame) see details and examples below; default NULL to 

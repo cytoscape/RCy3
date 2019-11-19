@@ -4,8 +4,7 @@
 \alias{setLayoutProperties}
 \title{Set Layout Properties}
 \usage{
-setLayoutProperties(layout.name, properties.list,
-  base.url = .defaultBaseUrl)
+setLayoutProperties(layout.name, properties.list, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{layout.name}{(\code{character}) Name of the layout}

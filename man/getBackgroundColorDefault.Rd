@@ -4,8 +4,7 @@
 \alias{getBackgroundColorDefault}
 \title{Get Background Color Default}
 \usage{
-getBackgroundColorDefault(style.name = "default",
-  base.url = .defaultBaseUrl)
+getBackgroundColorDefault(style.name = "default", base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{style.name}{Name of style; default is "default" style}

@@ -4,9 +4,16 @@
 \alias{createSubnetwork}
 \title{Create subnetwork from existing network}
 \usage{
-createSubnetwork(nodes = NULL, nodes.by.col = "SUID", edges = NULL,
-  edges.by.col = "SUID", exclude.edges = FALSE,
-  subnetwork.name = NULL, network = NULL, base.url = .defaultBaseUrl)
+createSubnetwork(
+  nodes = NULL,
+  nodes.by.col = "SUID",
+  edges = NULL,
+  edges.by.col = "SUID",
+  exclude.edges = FALSE,
+  subnetwork.name = NULL,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{nodes}{list of node names or keyword: selected, unselected or all. Default

@@ -4,8 +4,12 @@
 \alias{setEdgeLabelBypass}
 \title{Set Edge Label Bypass}
 \usage{
-setEdgeLabelBypass(edge.names, new.labels, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeLabelBypass(
+  edge.names,
+  new.labels,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names}

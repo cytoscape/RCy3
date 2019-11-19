@@ -4,8 +4,11 @@
 \alias{setBackgroundColorDefault}
 \title{Set Background Color Default}
 \usage{
-setBackgroundColorDefault(new.color, style.name = "default",
-  base.url = .defaultBaseUrl)
+setBackgroundColorDefault(
+  new.color,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.color}{Color as hex code, e.g., #FD5903}

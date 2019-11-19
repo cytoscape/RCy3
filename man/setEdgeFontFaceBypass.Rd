@@ -4,8 +4,12 @@
 \alias{setEdgeFontFaceBypass}
 \title{Set Edge Font Face Bypass}
 \usage{
-setEdgeFontFaceBypass(edge.names, new.fonts, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeFontFaceBypass(
+  edge.names,
+  new.fonts,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names}

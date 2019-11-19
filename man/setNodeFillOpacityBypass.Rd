@@ -4,8 +4,12 @@
 \alias{setNodeFillOpacityBypass}
 \title{Set Node Fill Opacity Bypass}
 \usage{
-setNodeFillOpacityBypass(node.names, new.values, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeFillOpacityBypass(
+  node.names,
+  new.values,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

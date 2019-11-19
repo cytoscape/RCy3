@@ -4,8 +4,12 @@
 \alias{clearEdgePropertyBypass}
 \title{Clear Edge Property Bypass}
 \usage{
-clearEdgePropertyBypass(edge.names, visual.property, network = NULL,
-  base.url = .defaultBaseUrl)
+clearEdgePropertyBypass(
+  edge.names,
+  visual.property,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names. Pending CyREST updates, if set to 

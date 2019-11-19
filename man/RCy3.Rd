@@ -3,7 +3,6 @@
 \docType{package}
 \name{RCy3}
 \alias{RCy3}
-\alias{RCy3-package}
 \title{RCy3: Functions to Access and Control Cytoscape}
 \description{
 Vizualize, analyze and explore networks using Cytoscape via R.

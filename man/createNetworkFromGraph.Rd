@@ -4,9 +4,12 @@
 \alias{createNetworkFromGraph}
 \title{Create Network From Graph}
 \usage{
-createNetworkFromGraph(graph, title = "From graph",
+createNetworkFromGraph(
+  graph,
+  title = "From graph",
   collection = "My GraphNEL Network Collection",
-  base.url = .defaultBaseUrl)
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{graph}{A GraphNEL object}

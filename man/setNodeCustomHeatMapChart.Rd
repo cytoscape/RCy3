@@ -4,10 +4,20 @@
 \alias{setNodeCustomHeatMapChart}
 \title{Set Node Custom HeatMap Chart}
 \usage{
-setNodeCustomHeatMapChart(columns, colors = NULL, range = NULL,
-  orientation = "HORIZONTAL", rangeAxis = FALSE, zeroLine = FALSE,
-  axisWidth = 0.25, axisColor = "#000000", axisFontSize = 1,
-  slot = 1, style.name = "default", base.url = .defaultBaseUrl)
+setNodeCustomHeatMapChart(
+  columns,
+  colors = NULL,
+  range = NULL,
+  orientation = "HORIZONTAL",
+  rangeAxis = FALSE,
+  zeroLine = FALSE,
+  axisWidth = 0.25,
+  axisColor = "#000000",
+  axisFontSize = 1,
+  slot = 1,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{columns}{List of node column names to be displayed.}

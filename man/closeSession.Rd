@@ -4,8 +4,7 @@
 \alias{closeSession}
 \title{Close Session}
 \usage{
-closeSession(save.before.closing, filename = NULL,
-  base.url = .defaultBaseUrl)
+closeSession(save.before.closing, filename = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{save.before.closing}{\code{boolean} Whether to save before closing the

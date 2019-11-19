@@ -4,8 +4,12 @@
 \alias{setNodeBorderOpacityBypass}
 \title{Set Node Border Opacity Bypass}
 \usage{
-setNodeBorderOpacityBypass(node.names, new.values, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeBorderOpacityBypass(
+  node.names,
+  new.values,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

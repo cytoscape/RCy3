@@ -4,8 +4,12 @@
 \alias{setNodeFontSizeBypass}
 \title{Set Node Font Size Bypass}
 \usage{
-setNodeFontSizeBypass(node.names, new.sizes, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeFontSizeBypass(
+  node.names,
+  new.sizes,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

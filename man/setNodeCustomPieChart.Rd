@@ -4,8 +4,14 @@
 \alias{setNodeCustomPieChart}
 \title{Set Node Custom Pie Chart}
 \usage{
-setNodeCustomPieChart(columns, colors = NULL, startAngle = 0,
-  slot = 1, style.name = "default", base.url = .defaultBaseUrl)
+setNodeCustomPieChart(
+  columns,
+  colors = NULL,
+  startAngle = 0,
+  slot = 1,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{columns}{List of node column names to be displayed.}

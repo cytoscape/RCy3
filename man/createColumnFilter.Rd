@@ -4,9 +4,18 @@
 \alias{createColumnFilter}
 \title{Create Column Filter}
 \usage{
-createColumnFilter(filter.name, column, criterion, predicate,
-  caseSensitive = FALSE, anyMatch = TRUE, type = "nodes",
-  hide = FALSE, network = NULL, base.url = .defaultBaseUrl)
+createColumnFilter(
+  filter.name,
+  column,
+  criterion,
+  predicate,
+  caseSensitive = FALSE,
+  anyMatch = TRUE,
+  type = "nodes",
+  hide = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{filter.name}{Name for filter.}

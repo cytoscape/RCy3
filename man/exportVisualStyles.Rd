@@ -4,8 +4,12 @@
 \alias{exportVisualStyles}
 \title{Export Visual Styles}
 \usage{
-exportVisualStyles(filename = NULL, type = "XML", styles = NULL,
-  base.url = .defaultBaseUrl)
+exportVisualStyles(
+  filename = NULL,
+  type = "XML",
+  styles = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{filename}{(char) Full path or path relavtive to current 

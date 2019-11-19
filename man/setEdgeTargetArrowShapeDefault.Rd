@@ -4,8 +4,11 @@
 \alias{setEdgeTargetArrowShapeDefault}
 \title{Set Edge Target Arrow Shape Default}
 \usage{
-setEdgeTargetArrowShapeDefault(new.shape, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeTargetArrowShapeDefault(
+  new.shape,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.shape}{Name of shape, e.g., ARROW, T, etc (see \link{getArrowShapes})}

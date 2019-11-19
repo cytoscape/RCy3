@@ -4,9 +4,17 @@
 \alias{exportImage}
 \title{Export Image}
 \usage{
-exportImage(filename = NULL, type = "PNG", resolution = NULL,
-  units = NULL, height = NULL, width = NULL, zoom = NULL,
-  network = NULL, base.url = .defaultBaseUrl)
+exportImage(
+  filename = NULL,
+  type = "PNG",
+  resolution = NULL,
+  units = NULL,
+  height = NULL,
+  width = NULL,
+  zoom = NULL,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{filename}{(\code{character}) Full path or path relavtive to current 

@@ -4,9 +4,15 @@
 \alias{setNodeCustomRadialGradient}
 \title{Set Node Custom Radial Gradient}
 \usage{
-setNodeCustomRadialGradient(colors = c("#DDDDDD", "#888888"),
-  anchors = c(0, 1), xCenter = 0.5, yCenter = 0.5, slot = 1,
-  style.name = "default", base.url = .defaultBaseUrl)
+setNodeCustomRadialGradient(
+  colors = c("#DDDDDD", "#888888"),
+  anchors = c(0, 1),
+  xCenter = 0.5,
+  yCenter = 0.5,
+  slot = 1,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{colors}{(optional) List of colors to define gradient}

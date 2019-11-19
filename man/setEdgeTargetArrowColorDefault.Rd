@@ -4,8 +4,11 @@
 \alias{setEdgeTargetArrowColorDefault}
 \title{Set Edge Target Arrow Color Default}
 \usage{
-setEdgeTargetArrowColorDefault(new.color, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeTargetArrowColorDefault(
+  new.color,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.color}{Color as hex code, e.g., #FD5903}

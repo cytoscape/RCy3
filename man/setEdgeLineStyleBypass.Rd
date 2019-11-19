@@ -4,8 +4,12 @@
 \alias{setEdgeLineStyleBypass}
 \title{Set Edge Line Style Bypass}
 \usage{
-setEdgeLineStyleBypass(edge.names, new.styles, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeLineStyleBypass(
+  edge.names,
+  new.styles,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names}

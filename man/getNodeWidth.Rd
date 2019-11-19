@@ -4,8 +4,7 @@
 \alias{getNodeWidth}
 \title{Get Node Width}
 \usage{
-getNodeWidth(node.names = NULL, network = NULL,
-  base.url = .defaultBaseUrl)
+getNodeWidth(node.names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{node.names}{List of node names. Default is NULL for all nodes.}

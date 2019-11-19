@@ -4,8 +4,12 @@
 \alias{setEdgeFontSizeBypass}
 \title{Set Edge Font Size Bypass}
 \usage{
-setEdgeFontSizeBypass(edge.names, new.sizes, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeFontSizeBypass(
+  edge.names,
+  new.sizes,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names}

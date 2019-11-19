@@ -4,8 +4,12 @@
 \alias{setNodeBorderWidthBypass}
 \title{Set Node Border Width Bypass}
 \usage{
-setNodeBorderWidthBypass(node.names, new.sizes, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeBorderWidthBypass(
+  node.names,
+  new.sizes,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

@@ -4,8 +4,11 @@
 \alias{setNodeFontFaceDefault}
 \title{Set Node Font Face Default}
 \usage{
-setNodeFontFaceDefault(new.font, style.name = "default",
-  base.url = .defaultBaseUrl)
+setNodeFontFaceDefault(
+  new.font,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.font}{String specification of font face, style and size, e.g., 

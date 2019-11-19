@@ -4,8 +4,12 @@
 \alias{getTableColumnNames}
 \title{Get Table Column Names}
 \usage{
-getTableColumnNames(table = "node", namespace = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+getTableColumnNames(
+  table = "node",
+  namespace = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table}{name of table, e.g., node, edge, network; default is "node"}

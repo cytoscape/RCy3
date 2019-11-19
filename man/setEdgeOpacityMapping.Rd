@@ -4,9 +4,16 @@
 \alias{setEdgeOpacityMapping}
 \title{Set Edge Opacity Mapping}
 \usage{
-setEdgeOpacityMapping(table.column, table.column.values = NULL,
-  opacities = NULL, mapping.type = "c", default.opacity = NULL,
-  style.name = "default", network = NULL, base.url = .defaultBaseUrl)
+setEdgeOpacityMapping(
+  table.column,
+  table.column.values = NULL,
+  opacities = NULL,
+  mapping.type = "c",
+  default.opacity = NULL,
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

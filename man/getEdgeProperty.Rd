@@ -4,8 +4,12 @@
 \alias{getEdgeProperty}
 \title{Get Edge Property Values}
 \usage{
-getEdgeProperty(edge.names = NULL, visual.property, network = NULL,
-  base.url = .defaultBaseUrl)
+getEdgeProperty(
+  edge.names = NULL,
+  visual.property,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names. Default is NULL for all edges.}

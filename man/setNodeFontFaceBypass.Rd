@@ -4,8 +4,12 @@
 \alias{setNodeFontFaceBypass}
 \title{Set Node Font Face Bypass}
 \usage{
-setNodeFontFaceBypass(node.names, new.fonts, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeFontFaceBypass(
+  node.names,
+  new.fonts,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

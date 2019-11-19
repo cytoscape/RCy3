@@ -4,9 +4,16 @@
 \alias{setNodeBorderWidthMapping}
 \title{Set Node Border Width Mapping}
 \usage{
-setNodeBorderWidthMapping(table.column, table.column.values = NULL,
-  widths = NULL, mapping.type = "c", default.width = NULL,
-  style.name = "default", network = NULL, base.url = .defaultBaseUrl)
+setNodeBorderWidthMapping(
+  table.column,
+  table.column.values = NULL,
+  widths = NULL,
+  mapping.type = "c",
+  default.width = NULL,
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

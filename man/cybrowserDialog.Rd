@@ -4,8 +4,13 @@
 \alias{cybrowserDialog}
 \title{Cybrowser Dialog}
 \usage{
-cybrowserDialog(id = NULL, text = NULL, title = NULL, url = NULL,
-  base.url = .defaultBaseUrl)
+cybrowserDialog(
+  id = NULL,
+  text = NULL,
+  title = NULL,
+  url = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{id}{(optional) The identifier for the browser window}

@@ -4,9 +4,16 @@
 \alias{setNodeBorderColorMapping}
 \title{Set Node Border Color Mapping}
 \usage{
-setNodeBorderColorMapping(table.column, table.column.values = NULL,
-  colors = NULL, mapping.type = "c", default.color = NULL,
-  style.name = "default", network = NULL, base.url = .defaultBaseUrl)
+setNodeBorderColorMapping(
+  table.column,
+  table.column.values = NULL,
+  colors = NULL,
+  mapping.type = "c",
+  default.color = NULL,
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

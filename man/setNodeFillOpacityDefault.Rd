@@ -4,8 +4,11 @@
 \alias{setNodeFillOpacityDefault}
 \title{Set Node Fill Opacity Default}
 \usage{
-setNodeFillOpacityDefault(new.opacity, style.name = "default",
-  base.url = .defaultBaseUrl)
+setNodeFillOpacityDefault(
+  new.opacity,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.opacity}{Numeric values between 0 and 255; 0 is invisible.}

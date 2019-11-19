@@ -4,8 +4,12 @@
 \alias{cyrestPOST}
 \title{CyREST POST}
 \usage{
-cyrestPOST(operation, parameters = NULL, body = NULL,
-  base.url = .defaultBaseUrl)
+cyrestPOST(
+  operation,
+  parameters = NULL,
+  body = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{operation}{A string to be converted to the REST query namespace}

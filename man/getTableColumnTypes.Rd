@@ -4,8 +4,12 @@
 \alias{getTableColumnTypes}
 \title{Get Table Column Types}
 \usage{
-getTableColumnTypes(table = "node", namespace = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+getTableColumnTypes(
+  table = "node",
+  namespace = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table}{name of table, e.g., node, edge, network; default is "node"}

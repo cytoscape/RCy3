@@ -4,9 +4,15 @@
 \alias{setEdgeSourceArrowMapping}
 \title{Set Edge Source Arrow Mapping}
 \usage{
-setEdgeSourceArrowMapping(table.column, table.column.values, shapes,
-  default.shape = "ARROW", style.name = "default", network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeSourceArrowMapping(
+  table.column,
+  table.column.values,
+  shapes,
+  default.shape = "ARROW",
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

@@ -4,8 +4,7 @@
 \alias{selectEdgesAdjacentToSelectedNodes}
 \title{Select Edges Adjacent To Selected Nodes}
 \usage{
-selectEdgesAdjacentToSelectedNodes(network = NULL,
-  base.url = .defaultBaseUrl)
+selectEdgesAdjacentToSelectedNodes(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{network}{(optional) Name or SUID of the network. Default is the 

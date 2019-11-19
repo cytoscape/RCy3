@@ -4,8 +4,11 @@
 \alias{removeNodeCustomGraphics}
 \title{Remove Node Custom Graphics}
 \usage{
-removeNodeCustomGraphics(slot = 1, style.name = "default",
-  base.url = .defaultBaseUrl)
+removeNodeCustomGraphics(
+  slot = 1,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{slot}{(optional) Which custom graphics slot to modify. Slots 1-9 are 

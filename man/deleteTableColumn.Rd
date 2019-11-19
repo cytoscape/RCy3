@@ -4,8 +4,13 @@
 \alias{deleteTableColumn}
 \title{Delete a table column}
 \usage{
-deleteTableColumn(column, table = "node", namespace = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+deleteTableColumn(
+  column,
+  table = "node",
+  namespace = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{column}{Name of the column to delete}

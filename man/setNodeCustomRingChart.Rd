@@ -4,9 +4,15 @@
 \alias{setNodeCustomRingChart}
 \title{Set Node Custom Ring Chart}
 \usage{
-setNodeCustomRingChart(columns, colors = NULL, startAngle = 0,
-  holeSize = 0.5, slot = 1, style.name = "default",
-  base.url = .defaultBaseUrl)
+setNodeCustomRingChart(
+  columns,
+  colors = NULL,
+  startAngle = 0,
+  holeSize = 0.5,
+  slot = 1,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{columns}{List of node column names to be displayed.}

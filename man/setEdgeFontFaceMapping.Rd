@@ -4,9 +4,16 @@
 \alias{setEdgeFontFaceMapping}
 \title{Set Edge Font Face Mapping}
 \usage{
-setEdgeFontFaceMapping(table.column, table.column.values, fonts,
-  mapping.type = "d", default.font = NULL, style.name = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+setEdgeFontFaceMapping(
+  table.column,
+  table.column.values,
+  fonts,
+  mapping.type = "d",
+  default.font = NULL,
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

@@ -4,8 +4,11 @@
 \alias{setEdgeSelectionColorDefault}
 \title{Set Edge Selection Color Default}
 \usage{
-setEdgeSelectionColorDefault(new.color, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeSelectionColorDefault(
+  new.color,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.color}{Color as hex code, e.g., #FD5903}

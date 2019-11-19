@@ -4,8 +4,7 @@
 \alias{getEdgeLineWidth}
 \title{Get Edge Line Width}
 \usage{
-getEdgeLineWidth(edge.names = NULL, network = NULL,
-  base.url = .defaultBaseUrl)
+getEdgeLineWidth(edge.names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{edge.names}{List of edge names. Default is NULL for all edges.}

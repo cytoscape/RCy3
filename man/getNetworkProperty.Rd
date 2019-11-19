@@ -4,8 +4,7 @@
 \alias{getNetworkProperty}
 \title{Get Network Property Values}
 \usage{
-getNetworkProperty(visual.property, network = NULL,
-  base.url = .defaultBaseUrl)
+getNetworkProperty(visual.property, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}

@@ -4,8 +4,11 @@
 \alias{setNodeWidthDefault}
 \title{Set Node Width Default}
 \usage{
-setNodeWidthDefault(new.width, style.name = "default",
-  base.url = .defaultBaseUrl)
+setNodeWidthDefault(
+  new.width,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.width}{Numeric value for width.}

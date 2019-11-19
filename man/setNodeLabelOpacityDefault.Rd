@@ -4,8 +4,11 @@
 \alias{setNodeLabelOpacityDefault}
 \title{Set Node Label Opacity Default}
 \usage{
-setNodeLabelOpacityDefault(new.opacity, style.name = "default",
-  base.url = .defaultBaseUrl)
+setNodeLabelOpacityDefault(
+  new.opacity,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.opacity}{Numeric values between 0 and 255; 0 is invisible.}

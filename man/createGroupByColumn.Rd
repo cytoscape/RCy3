@@ -4,8 +4,13 @@
 \alias{createGroupByColumn}
 \title{Create Group by Column}
 \usage{
-createGroupByColumn(group.name, column = NULL, value = NULL,
-  network = NULL, base.url = .defaultBaseUrl)
+createGroupByColumn(
+  group.name,
+  column = NULL,
+  value = NULL,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{group.name}{The name used to identify and optionaly label the group}

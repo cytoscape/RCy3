@@ -4,8 +4,13 @@
 \alias{addCyEdges}
 \title{Add CyEdges}
 \usage{
-addCyEdges(source.target.list, edgeType = "interacts with",
-  directed = FALSE, network = NULL, base.url = .defaultBaseUrl)
+addCyEdges(
+  source.target.list,
+  edgeType = "interacts with",
+  directed = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{source.target.list}{A \code{list} (or \code{list of lists}) of source and target node pairs}

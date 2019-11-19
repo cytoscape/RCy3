@@ -4,8 +4,13 @@
 \alias{selectEdges}
 \title{Select Edges}
 \usage{
-selectEdges(edges, by.col = "SUID", preserve.current.selection = TRUE,
-  network = NULL, base.url = .defaultBaseUrl)
+selectEdges(
+  edges,
+  by.col = "SUID",
+  preserve.current.selection = TRUE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edges}{List of edge SUIDs, names or other column values}

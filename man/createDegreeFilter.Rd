@@ -4,9 +4,15 @@
 \alias{createDegreeFilter}
 \title{Create Degree Filter}
 \usage{
-createDegreeFilter(filter.name, criterion, predicate = "BETWEEN",
-  edgeType = "ANY", hide = FALSE, network = NULL,
-  base.url = .defaultBaseUrl)
+createDegreeFilter(
+  filter.name,
+  criterion,
+  predicate = "BETWEEN",
+  edgeType = "ANY",
+  hide = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{filter.name}{Name for filter.}

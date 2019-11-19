@@ -4,8 +4,7 @@
 \alias{cyrestGET}
 \title{CyREST GET}
 \usage{
-cyrestGET(operation = NULL, parameters = NULL,
-  base.url = .defaultBaseUrl)
+cyrestGET(operation = NULL, parameters = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{operation}{A string to be converted to the REST query namespace}

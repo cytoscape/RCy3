@@ -4,8 +4,12 @@
 \alias{setNodeLabelColorBypass}
 \title{Set Node Label Color Bypass}
 \usage{
-setNodeLabelColorBypass(node.names, new.colors, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeLabelColorBypass(
+  node.names,
+  new.colors,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

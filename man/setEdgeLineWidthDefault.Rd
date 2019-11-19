@@ -4,8 +4,11 @@
 \alias{setEdgeLineWidthDefault}
 \title{Set Edge Line Width Default}
 \usage{
-setEdgeLineWidthDefault(new.width, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeLineWidthDefault(
+  new.width,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.width}{Numeric value for width}

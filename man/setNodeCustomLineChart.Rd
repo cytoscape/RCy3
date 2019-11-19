@@ -4,10 +4,20 @@
 \alias{setNodeCustomLineChart}
 \title{Set Node Custom Line Chart}
 \usage{
-setNodeCustomLineChart(columns, colors = NULL, range = NULL,
-  lineWidth = 1, rangeAxis = FALSE, zeroLine = FALSE,
-  axisWidth = 0.25, axisColor = "#000000", axisFontSize = 1,
-  slot = 1, style.name = "default", base.url = .defaultBaseUrl)
+setNodeCustomLineChart(
+  columns,
+  colors = NULL,
+  range = NULL,
+  lineWidth = 1,
+  rangeAxis = FALSE,
+  zeroLine = FALSE,
+  axisWidth = 0.25,
+  axisColor = "#000000",
+  axisFontSize = 1,
+  slot = 1,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{columns}{List of node column names to be displayed.}

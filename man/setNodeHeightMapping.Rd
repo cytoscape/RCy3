@@ -4,9 +4,16 @@
 \alias{setNodeHeightMapping}
 \title{Set Node Height Mapping}
 \usage{
-setNodeHeightMapping(table.column, table.column.values = NULL,
-  heights = NULL, mapping.type = "c", default.height = NULL,
-  style.name = "default", network = NULL, base.url = .defaultBaseUrl)
+setNodeHeightMapping(
+  table.column,
+  table.column.values = NULL,
+  heights = NULL,
+  mapping.type = "c",
+  default.height = NULL,
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

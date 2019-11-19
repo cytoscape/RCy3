@@ -4,8 +4,11 @@
 \alias{matchArrowColorToEdge}
 \title{Match Arrow Color To Edge}
 \usage{
-matchArrowColorToEdge(new.state, style.name = "default",
-  base.url = .defaultBaseUrl)
+matchArrowColorToEdge(
+  new.state,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.state}{(Boolean) Whether to match arrow color to edge.}

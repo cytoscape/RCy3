@@ -4,8 +4,12 @@
 \alias{setEdgeTooltipMapping}
 \title{Set Edge Tooltip Mapping}
 \usage{
-setEdgeTooltipMapping(table.column, style.name = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+setEdgeTooltipMapping(
+  table.column,
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}
