@@ -4,11 +4,23 @@
 \alias{setNodeCustomBarChart}
 \title{Set Node Custom Bar Chart}
 \usage{
-setNodeCustomBarChart(columns, type = "GROUPED", colors = NULL,
-  range = NULL, orientation = "VERTICAL", colAxis = FALSE,
-  rangeAxis = FALSE, zeroLine = FALSE, axisWidth = 0.25,
-  axisColor = "#000000", axisFontSize = 1, separation = 0,
-  slot = 1, style.name = "default", base.url = .defaultBaseUrl)
+setNodeCustomBarChart(
+  columns,
+  type = "GROUPED",
+  colors = NULL,
+  range = NULL,
+  orientation = "VERTICAL",
+  colAxis = FALSE,
+  rangeAxis = FALSE,
+  zeroLine = FALSE,
+  axisWidth = 0.25,
+  axisColor = "#000000",
+  axisFontSize = 1,
+  separation = 0,
+  slot = 1,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{columns}{List of node column names to be displayed, in order.}

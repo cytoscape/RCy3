@@ -4,8 +4,12 @@
 \alias{setNodeShapeBypass}
 \title{Set Node Shape Bypass}
 \usage{
-setNodeShapeBypass(node.names, new.shapes, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeShapeBypass(
+  node.names,
+  new.shapes,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

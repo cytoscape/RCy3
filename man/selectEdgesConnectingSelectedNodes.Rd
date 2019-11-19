@@ -4,8 +4,7 @@
 \alias{selectEdgesConnectingSelectedNodes}
 \title{Select the edges connecting selected nodes in Cytoscape Network}
 \usage{
-selectEdgesConnectingSelectedNodes(network = NULL,
-  base.url = .defaultBaseUrl)
+selectEdgesConnectingSelectedNodes(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{network}{(optional) Name or SUID of the network. Default is the 

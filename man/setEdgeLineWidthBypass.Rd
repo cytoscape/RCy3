@@ -4,8 +4,12 @@
 \alias{setEdgeLineWidthBypass}
 \title{Set Edge Line Width Bypass}
 \usage{
-setEdgeLineWidthBypass(edge.names, new.widths, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeLineWidthBypass(
+  edge.names,
+  new.widths,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names}

@@ -4,8 +4,7 @@
 \alias{getNodeColor}
 \title{Get Node Color}
 \usage{
-getNodeColor(node.names = NULL, network = NULL,
-  base.url = .defaultBaseUrl)
+getNodeColor(node.names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{node.names}{List of node names. Default is NULL for all nodes.}

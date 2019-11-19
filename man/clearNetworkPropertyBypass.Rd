@@ -4,8 +4,11 @@
 \alias{clearNetworkPropertyBypass}
 \title{Clear Network Property Bypass}
 \usage{
-clearNetworkPropertyBypass(visual.property, network = NULL,
-  base.url = .defaultBaseUrl)
+clearNetworkPropertyBypass(
+  visual.property,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}

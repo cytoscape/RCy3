@@ -4,8 +4,12 @@
 \alias{exportNetwork}
 \title{Export Network}
 \usage{
-exportNetwork(filename = NULL, type = "SIF", network = NULL,
-  base.url = .defaultBaseUrl)
+exportNetwork(
+  filename = NULL,
+  type = "SIF",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{filename}{Full path or path relavtive to current working directory, 

@@ -4,8 +4,11 @@
 \alias{selectFirstNeighbors}
 \title{Select first neighbor nodes}
 \usage{
-selectFirstNeighbors(direction = "any", network = NULL,
-  base.url = .defaultBaseUrl)
+selectFirstNeighbors(
+  direction = "any",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{direction}{direction of connections to neighbors to follow, e.g., 

@@ -4,8 +4,13 @@
 \alias{selectNodes}
 \title{Select Nodes}
 \usage{
-selectNodes(nodes, by.col = "SUID", preserve.current.selection = TRUE,
-  network = NULL, base.url = .defaultBaseUrl)
+selectNodes(
+  nodes,
+  by.col = "SUID",
+  preserve.current.selection = TRUE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{nodes}{List of node SUIDs, names or other column values}

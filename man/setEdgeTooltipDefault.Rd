@@ -4,8 +4,11 @@
 \alias{setEdgeTooltipDefault}
 \title{Set Edge Tooltip Default}
 \usage{
-setEdgeTooltipDefault(new.tooltip, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeTooltipDefault(
+  new.tooltip,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.tooltip}{String tooltip for unmapped edges.}

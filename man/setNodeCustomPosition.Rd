@@ -4,9 +4,16 @@
 \alias{setNodeCustomPosition}
 \title{Set Node Custom Position}
 \usage{
-setNodeCustomPosition(nodeAnchor = "C", graphicAnchor = "C",
-  justification = "c", xOffset = 0, yOffset = 0, slot = 1,
-  style.name = "default", base.url = .defaultBaseUrl)
+setNodeCustomPosition(
+  nodeAnchor = "C",
+  graphicAnchor = "C",
+  justification = "c",
+  xOffset = 0,
+  yOffset = 0,
+  slot = 1,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{nodeAnchor}{Position on node to place the graphic: NW,N,NE,E,SE,S,SW,W 

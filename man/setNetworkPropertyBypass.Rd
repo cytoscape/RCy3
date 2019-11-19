@@ -4,8 +4,13 @@
 \alias{setNetworkPropertyBypass}
 \title{Set Network Property Bypass}
 \usage{
-setNetworkPropertyBypass(new.value, visual.property, bypass = TRUE,
-  network = NULL, base.url = .defaultBaseUrl)
+setNetworkPropertyBypass(
+  new.value,
+  visual.property,
+  bypass = TRUE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.value}{Value to set}

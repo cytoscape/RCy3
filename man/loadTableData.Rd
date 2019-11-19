@@ -4,9 +4,15 @@
 \alias{loadTableData}
 \title{Loads data into Cytoscape tables keyed by row}
 \usage{
-loadTableData(data, data.key.column = "row.names", table = "node",
-  table.key.column = "name", namespace = "default", network = NULL,
-  base.url = .defaultBaseUrl)
+loadTableData(
+  data,
+  data.key.column = "row.names",
+  table = "node",
+  table.key.column = "name",
+  namespace = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{data}{(data.frame) each row is a node and columns contain node 

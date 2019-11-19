@@ -4,8 +4,11 @@
 \alias{setNodeBorderColorDefault}
 \title{Set Node Border Color Default}
 \usage{
-setNodeBorderColorDefault(new.color, style.name = "default",
-  base.url = .defaultBaseUrl)
+setNodeBorderColorDefault(
+  new.color,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.color}{Color as hex code, e.g., #FD5903}

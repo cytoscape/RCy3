@@ -4,9 +4,16 @@
 \alias{setNodeFontSizeMapping}
 \title{Set Node Font Size Mapping}
 \usage{
-setNodeFontSizeMapping(table.column, table.column.values = NULL,
-  sizes = NULL, mapping.type = "c", default.size = NULL,
-  style.name = "default", network = NULL, base.url = .defaultBaseUrl)
+setNodeFontSizeMapping(
+  table.column,
+  table.column.values = NULL,
+  sizes = NULL,
+  mapping.type = "c",
+  default.size = NULL,
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

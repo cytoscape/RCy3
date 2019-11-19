@@ -4,9 +4,14 @@
 \alias{setNodeCustomLinearGradient}
 \title{Set Node Custom Linear Gradient}
 \usage{
-setNodeCustomLinearGradient(colors = c("#DDDDDD", "#888888"),
-  anchors = c(0, 1), angle = 0, slot = 1, style.name = "default",
-  base.url = .defaultBaseUrl)
+setNodeCustomLinearGradient(
+  colors = c("#DDDDDD", "#888888"),
+  anchors = c(0, 1),
+  angle = 0,
+  slot = 1,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{colors}{(optional) List of colors to define gradient}

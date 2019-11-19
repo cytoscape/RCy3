@@ -4,9 +4,16 @@
 \alias{setNodeFontFaceMapping}
 \title{Set Node Font Face Mapping}
 \usage{
-setNodeFontFaceMapping(table.column, table.column.values, fonts,
-  mapping.type = "d", default.font = NULL, style.name = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+setNodeFontFaceMapping(
+  table.column,
+  table.column.values,
+  fonts,
+  mapping.type = "d",
+  default.font = NULL,
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

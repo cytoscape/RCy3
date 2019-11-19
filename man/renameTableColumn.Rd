@@ -4,8 +4,14 @@
 \alias{renameTableColumn}
 \title{Rename Table Column}
 \usage{
-renameTableColumn(column, new.name, table = "node",
-  namespace = "default", network = NULL, base.url = .defaultBaseUrl)
+renameTableColumn(
+  column,
+  new.name,
+  table = "node",
+  namespace = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{column}{Name of the column to rename}

@@ -4,8 +4,7 @@
 \alias{clearNodeOpacityBypass}
 \title{Clear Node Opacity Bypass}
 \usage{
-clearNodeOpacityBypass(node.names, network = NULL,
-  base.url = .defaultBaseUrl)
+clearNodeOpacityBypass(node.names, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{node.names}{List of node names}

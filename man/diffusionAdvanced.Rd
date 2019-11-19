@@ -4,8 +4,11 @@
 \alias{diffusionAdvanced}
 \title{Diffusion Advanced}
 \usage{
-diffusionAdvanced(heat.column.name = NULL, time = NULL,
-  base.url = .defaultBaseUrl)
+diffusionAdvanced(
+  heat.column.name = NULL,
+  time = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{heat.column.name}{(optional) A node column name intended to override the 

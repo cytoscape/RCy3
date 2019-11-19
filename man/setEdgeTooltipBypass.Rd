@@ -4,8 +4,12 @@
 \alias{setEdgeTooltipBypass}
 \title{Set Edge Tooltip Bypass}
 \usage{
-setEdgeTooltipBypass(edge.names, new.values, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeTooltipBypass(
+  edge.names,
+  new.values,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names}

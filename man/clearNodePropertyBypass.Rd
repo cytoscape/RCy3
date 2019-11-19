@@ -4,8 +4,12 @@
 \alias{clearNodePropertyBypass}
 \title{Clear Node Property Bypass}
 \usage{
-clearNodePropertyBypass(node.names, visual.property, network = NULL,
-  base.url = .defaultBaseUrl)
+clearNodePropertyBypass(
+  node.names,
+  visual.property,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names. Pending CyREST updates, if set to 

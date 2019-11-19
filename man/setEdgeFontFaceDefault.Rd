@@ -4,8 +4,11 @@
 \alias{setEdgeFontFaceDefault}
 \title{Set Edge Font Face Default}
 \usage{
-setEdgeFontFaceDefault(new.font, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeFontFaceDefault(
+  new.font,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.font}{String specification of font face, style and size, e.g., 

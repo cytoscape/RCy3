@@ -4,8 +4,11 @@
 \alias{getSelectedEdges}
 \title{Get Selected Edges}
 \usage{
-getSelectedEdges(edge.suids = FALSE, network = NULL,
-  base.url = .defaultBaseUrl)
+getSelectedEdges(
+  edge.suids = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.suids}{Whether to return edge SUIDs. Default is FALSE to return 

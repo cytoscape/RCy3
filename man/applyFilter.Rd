@@ -4,8 +4,12 @@
 \alias{applyFilter}
 \title{Apply Filter}
 \usage{
-applyFilter(filter.name = "Default filter", hide = FALSE,
-  network = NULL, base.url = .defaultBaseUrl)
+applyFilter(
+  filter.name = "Default filter",
+  hide = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{filter.name}{Name of filter to apply. Default is "Default filter".}

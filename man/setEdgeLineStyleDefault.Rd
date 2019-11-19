@@ -4,8 +4,11 @@
 \alias{setEdgeLineStyleDefault}
 \title{Set Edge Line Style Default}
 \usage{
-setEdgeLineStyleDefault(new.line.style, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeLineStyleDefault(
+  new.line.style,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.line.style}{Name of line style, e.g., SOLID, LONG_DASH, etc (see \link{getLineStyles})}

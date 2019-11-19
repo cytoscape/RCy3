@@ -4,9 +4,13 @@
 \alias{createNetworkFromIgraph}
 \title{Create a Cytoscape network from an igraph network}
 \usage{
-createNetworkFromIgraph(igraph, title = "From igraph",
+createNetworkFromIgraph(
+  igraph,
+  title = "From igraph",
   collection = "My Igraph Network Collection",
-  base.url = .defaultBaseUrl, ...)
+  base.url = .defaultBaseUrl,
+  ...
+)
 }
 \arguments{
 \item{igraph}{(igraph) igraph network object}

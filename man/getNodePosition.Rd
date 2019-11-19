@@ -4,8 +4,7 @@
 \alias{getNodePosition}
 \title{Get Node Position}
 \usage{
-getNodePosition(node.names = NULL, network = NULL,
-  base.url = .defaultBaseUrl)
+getNodePosition(node.names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{node.names}{List of node names. Default is NULL for all nodes.}

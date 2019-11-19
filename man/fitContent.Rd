@@ -4,8 +4,7 @@
 \alias{fitContent}
 \title{Fit Content}
 \usage{
-fitContent(selected.only = FALSE, network = NULL,
-  base.url = .defaultBaseUrl)
+fitContent(selected.only = FALSE, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{selected.only}{(Boolean) Whether to fit only current selection. Default 

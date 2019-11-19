@@ -4,8 +4,11 @@
 \alias{syncNodeCustomGraphicsSize}
 \title{Sync Node Custom Graphics Size}
 \usage{
-syncNodeCustomGraphicsSize(new.state, style.name = "default",
-  base.url = .defaultBaseUrl)
+syncNodeCustomGraphicsSize(
+  new.state,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.state}{(Boolean) Whether to sync node custom graphics size}

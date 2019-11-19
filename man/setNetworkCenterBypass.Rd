@@ -4,8 +4,13 @@
 \alias{setNetworkCenterBypass}
 \title{Set Network Center Bypass}
 \usage{
-setNetworkCenterBypass(x, y, bypass = FALSE, network = NULL,
-  base.url = .defaultBaseUrl)
+setNetworkCenterBypass(
+  x,
+  y,
+  bypass = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{x}{Coordinate value, increases going to the right.}

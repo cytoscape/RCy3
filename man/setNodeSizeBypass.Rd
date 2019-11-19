@@ -4,8 +4,12 @@
 \alias{setNodeSizeBypass}
 \title{Set Node Size Bypass}
 \usage{
-setNodeSizeBypass(node.names, new.sizes, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeSizeBypass(
+  node.names,
+  new.sizes,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

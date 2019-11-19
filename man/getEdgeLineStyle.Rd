@@ -4,8 +4,7 @@
 \alias{getEdgeLineStyle}
 \title{Get Edge Line Style}
 \usage{
-getEdgeLineStyle(edge.names = NULL, network = NULL,
-  base.url = .defaultBaseUrl)
+getEdgeLineStyle(edge.names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{edge.names}{List of edge names. Default is NULL for all edges.}

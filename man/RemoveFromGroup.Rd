@@ -4,9 +4,15 @@
 \alias{RemoveFromGroup}
 \title{Remove from Group}
 \usage{
-RemoveFromGroup(group.name, nodes = NULL, nodes.by.col = "SUID",
-  edges = NULL, edges.by.col = "SUID", network = NULL,
-  base.url = .defaultBaseUrl)
+RemoveFromGroup(
+  group.name,
+  nodes = NULL,
+  nodes.by.col = "SUID",
+  edges = NULL,
+  edges.by.col = "SUID",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{group.name}{Specifies the name used to identify the group}

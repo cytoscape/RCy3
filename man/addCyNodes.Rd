@@ -4,8 +4,12 @@
 \alias{addCyNodes}
 \title{Add CyNodes}
 \usage{
-addCyNodes(node.names, skip.duplicate.names = TRUE, network = NULL,
-  base.url = .defaultBaseUrl)
+addCyNodes(
+  node.names,
+  skip.duplicate.names = TRUE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{A \code{list} of node names}

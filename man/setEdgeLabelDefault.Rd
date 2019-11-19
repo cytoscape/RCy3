@@ -4,8 +4,11 @@
 \alias{setEdgeLabelDefault}
 \title{Set Edge Label Default}
 \usage{
-setEdgeLabelDefault(new.label, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeLabelDefault(
+  new.label,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.label}{String label for unmapped edges.}

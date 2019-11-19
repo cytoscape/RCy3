@@ -4,8 +4,12 @@
 \alias{setNodeTooltipMapping}
 \title{Set Node Tooltip Mapping}
 \usage{
-setNodeTooltipMapping(table.column, style.name = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+setNodeTooltipMapping(
+  table.column,
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

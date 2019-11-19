@@ -4,8 +4,12 @@
 \alias{setEdgeOpacityBypass}
 \title{Set Edge Opacity Bypass}
 \usage{
-setEdgeOpacityBypass(edge.names, new.values, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeOpacityBypass(
+  edge.names,
+  new.values,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names}

@@ -4,8 +4,11 @@
 \alias{setStyleDependencies}
 \title{Set Style Dependencies}
 \usage{
-setStyleDependencies(style.name = "default", dependencies,
-  base.url = .defaultBaseUrl)
+setStyleDependencies(
+  style.name = "default",
+  dependencies,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{style.name}{Name of style; default is "default" style}

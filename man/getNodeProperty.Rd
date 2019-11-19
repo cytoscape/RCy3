@@ -4,8 +4,12 @@
 \alias{getNodeProperty}
 \title{Get Node Property Values}
 \usage{
-getNodeProperty(node.names = NULL, visual.property, network = NULL,
-  base.url = .defaultBaseUrl)
+getNodeProperty(
+  node.names = NULL,
+  visual.property,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names. Default is NULL for all nodes.}

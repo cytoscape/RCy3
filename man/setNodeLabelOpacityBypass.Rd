@@ -4,8 +4,12 @@
 \alias{setNodeLabelOpacityBypass}
 \title{Set Node Label Opacity Bypass}
 \usage{
-setNodeLabelOpacityBypass(node.names, new.values, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeLabelOpacityBypass(
+  node.names,
+  new.values,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

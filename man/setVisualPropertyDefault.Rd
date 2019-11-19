@@ -4,8 +4,11 @@
 \alias{setVisualPropertyDefault}
 \title{Set Visual Property Default}
 \usage{
-setVisualPropertyDefault(style.string, style.name = "default",
-  base.url = .defaultBaseUrl)
+setVisualPropertyDefault(
+  style.string,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{style.string}{A named list including "visualProperty" and "value"}

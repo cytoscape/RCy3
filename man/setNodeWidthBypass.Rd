@@ -4,8 +4,12 @@
 \alias{setNodeWidthBypass}
 \title{Set Node Width Bypass}
 \usage{
-setNodeWidthBypass(node.names, new.widths, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeWidthBypass(
+  node.names,
+  new.widths,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

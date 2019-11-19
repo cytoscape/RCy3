@@ -4,8 +4,7 @@
 \alias{cyrestDELETE}
 \title{CyREST DELETE}
 \usage{
-cyrestDELETE(operation = NULL, parameters = NULL,
-  base.url = .defaultBaseUrl)
+cyrestDELETE(operation = NULL, parameters = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{operation}{A string to be converted to the REST query namespace}

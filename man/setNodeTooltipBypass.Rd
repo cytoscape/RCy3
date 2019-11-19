@@ -4,8 +4,12 @@
 \alias{setNodeTooltipBypass}
 \title{Set Node Tooltip Bypass}
 \usage{
-setNodeTooltipBypass(node.names, new.tooltip, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeTooltipBypass(
+  node.names,
+  new.tooltip,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

@@ -4,8 +4,7 @@
 \alias{getNodeHeight}
 \title{Get Node Height}
 \usage{
-getNodeHeight(node.names = NULL, network = NULL,
-  base.url = .defaultBaseUrl)
+getNodeHeight(node.names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{node.names}{List of node names. Default is NULL for all nodes.}

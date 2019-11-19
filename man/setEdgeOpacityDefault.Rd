@@ -4,8 +4,11 @@
 \alias{setEdgeOpacityDefault}
 \title{Set Edge Opacity Default}
 \usage{
-setEdgeOpacityDefault(new.opacity, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeOpacityDefault(
+  new.opacity,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.opacity}{Numeric values between 0 and 255; 0 is invisible.}

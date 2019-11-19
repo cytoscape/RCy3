@@ -4,8 +4,12 @@
 \alias{setEdgeColorBypass}
 \title{Set Edge Color Bypass}
 \usage{
-setEdgeColorBypass(edge.names, new.colors, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeColorBypass(
+  edge.names,
+  new.colors,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names}

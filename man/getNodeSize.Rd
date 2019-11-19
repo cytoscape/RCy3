@@ -4,8 +4,7 @@
 \alias{getNodeSize}
 \title{Get Node Size}
 \usage{
-getNodeSize(node.names = NULL, network = NULL,
-  base.url = .defaultBaseUrl)
+getNodeSize(node.names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{node.names}{List of node names. Default is NULL for all nodes.}

@@ -4,8 +4,12 @@
 \alias{setNodeLabelBypass}
 \title{Set Node Label Bypass}
 \usage{
-setNodeLabelBypass(node.names, new.labels, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeLabelBypass(
+  node.names,
+  new.labels,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

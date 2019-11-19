@@ -4,8 +4,12 @@
 \alias{getFirstNeighbors}
 \title{Get list of nodes neighboring provided list}
 \usage{
-getFirstNeighbors(node.names = NULL, as.nested.list = FALSE,
-  network = NULL, base.url = .defaultBaseUrl)
+getFirstNeighbors(
+  node.names = NULL,
+  as.nested.list = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{A \code{list} of node names from the \code{name} column 

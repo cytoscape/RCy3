@@ -4,8 +4,11 @@
 \alias{setEdgeSourceArrowColorDefault}
 \title{Set Edge Source Arrow Color Default}
 \usage{
-setEdgeSourceArrowColorDefault(new.color, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeSourceArrowColorDefault(
+  new.color,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.color}{Color as hex code, e.g., #FD5903}

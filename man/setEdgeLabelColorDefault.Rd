@@ -4,8 +4,11 @@
 \alias{setEdgeLabelColorDefault}
 \title{Set Edge Label Color Default}
 \usage{
-setEdgeLabelColorDefault(new.color, style.name = "default",
-  base.url = .defaultBaseUrl)
+setEdgeLabelColorDefault(
+  new.color,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.color}{Color as hex code, e.g., #FD5903}

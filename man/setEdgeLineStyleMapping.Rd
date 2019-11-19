@@ -4,9 +4,15 @@
 \alias{setEdgeLineStyleMapping}
 \title{Set Edge Line Style Mapping}
 \usage{
-setEdgeLineStyleMapping(table.column, table.column.values, line.styles,
-  default.line.style = "SOLID", style.name = "default",
-  network = NULL, base.url = .defaultBaseUrl)
+setEdgeLineStyleMapping(
+  table.column,
+  table.column.values,
+  line.styles,
+  default.line.style = "SOLID",
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

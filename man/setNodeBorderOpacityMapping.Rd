@@ -4,9 +4,16 @@
 \alias{setNodeBorderOpacityMapping}
 \title{Set Node Border Opacity Mapping}
 \usage{
-setNodeBorderOpacityMapping(table.column, table.column.values = NULL,
-  opacities = NULL, mapping.type = "c", default.opacity = NULL,
-  style.name = "default", network = NULL, base.url = .defaultBaseUrl)
+setNodeBorderOpacityMapping(
+  table.column,
+  table.column.values = NULL,
+  opacities = NULL,
+  mapping.type = "c",
+  default.opacity = NULL,
+  style.name = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}

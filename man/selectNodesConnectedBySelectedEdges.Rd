@@ -4,8 +4,7 @@
 \alias{selectNodesConnectedBySelectedEdges}
 \title{Select Nodes Connected By Selected Edges}
 \usage{
-selectNodesConnectedBySelectedEdges(network = NULL,
-  base.url = .defaultBaseUrl)
+selectNodesConnectedBySelectedEdges(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{network}{(optional) Name or SUID of the network. Default is the 

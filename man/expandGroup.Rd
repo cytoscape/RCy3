@@ -4,8 +4,7 @@
 \alias{expandGroup}
 \title{Expand Group}
 \usage{
-expandGroup(groups = NULL, network = NULL,
-  base.url = .defaultBaseUrl)
+expandGroup(groups = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{groups}{(optional) List of group names or keywords: all, selected,

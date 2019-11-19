@@ -4,8 +4,11 @@
 \alias{lockNodeDimensions}
 \title{Lock Node Dimensions}
 \usage{
-lockNodeDimensions(new.state, style.name = "default",
-  base.url = .defaultBaseUrl)
+lockNodeDimensions(
+  new.state,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.state}{(Boolean) Whether to lock node width and height}

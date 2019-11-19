@@ -4,8 +4,12 @@
 \alias{setNodeHeightBypass}
 \title{Set Node Height Bypass}
 \usage{
-setNodeHeightBypass(node.names, new.heights, network = NULL,
-  base.url = .defaultBaseUrl)
+setNodeHeightBypass(
+  node.names,
+  new.heights,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}

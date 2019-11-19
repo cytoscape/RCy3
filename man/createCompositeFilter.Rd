@@ -4,8 +4,14 @@
 \alias{createCompositeFilter}
 \title{Create Composite Filter}
 \usage{
-createCompositeFilter(filter.name, filter.list, type = "ALL",
-  hide = FALSE, network = NULL, base.url = .defaultBaseUrl)
+createCompositeFilter(
+  filter.name,
+  filter.list,
+  type = "ALL",
+  hide = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{filter.name}{Name for filter.}

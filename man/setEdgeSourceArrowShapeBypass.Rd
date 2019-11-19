@@ -4,8 +4,12 @@
 \alias{setEdgeSourceArrowShapeBypass}
 \title{Set Edge Source Arrow Shape Bypass}
 \usage{
-setEdgeSourceArrowShapeBypass(edge.names, new.shapes, network = NULL,
-  base.url = .defaultBaseUrl)
+setEdgeSourceArrowShapeBypass(
+  edge.names,
+  new.shapes,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{edge.names}{List of edge names}

@@ -4,10 +4,20 @@
 \alias{setNodeCustomBoxChart}
 \title{Set Node Custom Box Chart}
 \usage{
-setNodeCustomBoxChart(columns, colors = NULL, range = NULL,
-  orientation = "VERTICAL", rangeAxis = FALSE, zeroLine = FALSE,
-  axisWidth = 0.25, axisColor = "#000000", axisFontSize = 1,
-  slot = 1, style.name = "default", base.url = .defaultBaseUrl)
+setNodeCustomBoxChart(
+  columns,
+  colors = NULL,
+  range = NULL,
+  orientation = "VERTICAL",
+  rangeAxis = FALSE,
+  zeroLine = FALSE,
+  axisWidth = 0.25,
+  axisColor = "#000000",
+  axisFontSize = 1,
+  slot = 1,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{columns}{List of node column names to be displayed.}

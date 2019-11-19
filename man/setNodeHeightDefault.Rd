@@ -4,8 +4,11 @@
 \alias{setNodeHeightDefault}
 \title{Set Node Height Default}
 \usage{
-setNodeHeightDefault(new.height, style.name = "default",
-  base.url = .defaultBaseUrl)
+setNodeHeightDefault(
+  new.height,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.height}{Numeric value for height.}

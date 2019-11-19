@@ -4,8 +4,11 @@
 \alias{setNodeBorderOpacityDefault}
 \title{Set Node Border Opacity Default}
 \usage{
-setNodeBorderOpacityDefault(new.opacity, style.name = "default",
-  base.url = .defaultBaseUrl)
+setNodeBorderOpacityDefault(
+  new.opacity,
+  style.name = "default",
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.opacity}{Numeric values between 0 and 255; 0 is invisible.}

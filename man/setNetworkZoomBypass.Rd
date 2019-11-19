@@ -4,8 +4,12 @@
 \alias{setNetworkZoomBypass}
 \title{Set Network Zoom Bypass}
 \usage{
-setNetworkZoomBypass(new.value, bypass = FALSE, network = NULL,
-  base.url = .defaultBaseUrl)
+setNetworkZoomBypass(
+  new.value,
+  bypass = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{new.value}{Zoom factor}

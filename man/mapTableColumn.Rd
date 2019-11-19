@@ -4,9 +4,17 @@
 \alias{mapTableColumn}
 \title{Map Table Column}
 \usage{
-mapTableColumn(column, species, map.from, map.to, force.single = TRUE,
-  table = "node", namespace = "default", network = NULL,
-  base.url = .defaultBaseUrl)
+mapTableColumn(
+  column,
+  species,
+  map.from,
+  map.to,
+  force.single = TRUE,
+  table = "node",
+  namespace = "default",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{column}{Name of column containing identifiers of type specified by 

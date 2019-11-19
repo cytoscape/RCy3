@@ -4,8 +4,13 @@
 \alias{createGroup}
 \title{Create Group}
 \usage{
-createGroup(group.name, nodes = NULL, nodes.by.col = "SUID",
-  network = NULL, base.url = .defaultBaseUrl)
+createGroup(
+  group.name,
+  nodes = NULL,
+  nodes.by.col = "SUID",
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{group.name}{The name used to identify and optionaly label the group}

@@ -1500,11 +1500,11 @@ test.getNodeSize = function ()
     test.prep (title,FALSE)
     
     size =  getNodeSize ('node 0')
-    checkEquals (size, 300)
+    checkEquals (unname(size), 300)
 
     setNodeSizeBypass ('node 0', 150); 
     size =  getNodeSize ('node 0')
-    checkEquals (size, 150)
+    checkEquals (unname(size), 150)
     
     # now allow for non-symmetric dimensions, in which width and height are set separately
     lockNodeDimensions (FALSE)
@@ -1513,8 +1513,8 @@ test.getNodeSize = function ()
     
     height = getNodeHeight('node 0') 
     width = getNodeWidth('node 0')
-    checkEquals (width, 120)
-    checkEquals (height, 80)
+    checkEquals (unname(width), 120)
+    checkEquals (unname(height), 80)
     
     # return to symmetric dimensions
     lockNodeDimensions (TRUE)

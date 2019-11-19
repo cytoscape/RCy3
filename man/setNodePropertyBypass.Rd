@@ -4,8 +4,14 @@
 \alias{setNodePropertyBypass}
 \title{Set Node Property Bypass}
 \usage{
-setNodePropertyBypass(node.names, new.values, visual.property,
-  bypass = TRUE, network = NULL, base.url = .defaultBaseUrl)
+setNodePropertyBypass(
+  node.names,
+  new.values,
+  visual.property,
+  bypass = TRUE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
 }
 \arguments{
 \item{node.names}{List of node names}
