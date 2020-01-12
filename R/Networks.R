@@ -110,7 +110,7 @@ getNetworkName <- function(suid = NULL, base.url = .defaultBaseUrl) {
     if (is.character(suid)) {
         #title provided
         if (suid == 'current') {
-            network.suid = getNetworkSuid()
+            network.suid = getNetworkSuid(base.url = base.url)
         } else {
             net.names <- getNetworkList(base.url = base.url)
             if (suid %in% net.names) {
