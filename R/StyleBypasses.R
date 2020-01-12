@@ -416,8 +416,8 @@ unhideAll <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' \link{clearNodePropertyBypass}
 #' }
 #' @examples \donttest{
-#' setNodeColorDirect ('node1', '#FF0088')
-#' setNodeColorDirect (c('node1', 'node2'), c('#88FF88', '#FF0088'))
+#' setNodeColorBypass ('node1', '#FF0088')
+#' setNodeColorBypass (c('node1', 'node2'), c('#88FF88', '#FF0088'))
 #' clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_FILL_COLOR')
 #' }
 #' @export
@@ -481,7 +481,7 @@ setNodeSizeBypass <- function (node.names,
         if (!is.double(current.size)) {
             write (
                 sprintf (
-                    'illegal size string "%s" in RCy3::setNodeSizeDirect.
+                    'illegal size string "%s" in RCy3::setNodeSizeBypass.
                     It needs to be a number.',
                     current.size
                 ),
@@ -570,7 +570,7 @@ setNodeWidthBypass <-
             if (!is.double(current.width)) {
                 write (
                     sprintf (
-                        'illegal node width "%s" in RCy3::setNodeWidthDirect.
+                        'illegal node width "%s" in RCy3::setNodeWidthBypass.
                         Width needs to be a number.',
                         current.width
                     ),
@@ -627,7 +627,7 @@ setNodeHeightBypass <-
             if (!is.double(current.height)) {
                 write (
                     sprintf (
-                        'illegal height string "%s" in RCy3::setNodeHeightDirect.
+                        'illegal height string "%s" in RCy3::setNodeHeightBypass.
                         It needs to be a number.',
                         current.height
                     ),
@@ -852,7 +852,7 @@ setNodeShapeBypass <-
         if (length (node.names) != length (new.shapes)) {
             if (length(new.shapes) != 1) {
                 msg = sprintf (
-                    'error in RCy3::setNodeShapeDirect.  new.shapes count
+                    'error in RCy3::setNodeShapeBypass.  new.shapes count
                     (%d) is neither 1 nor same as node.names count (%d)',
                     length (new.shapes),
                     length (node.names)
@@ -876,7 +876,7 @@ setNodeShapeBypass <-
         if (any(wrong.node.shape)) {
             write (
                 sprintf (
-                    'ERROR in RCy3::setNodeShapeDirect. %s is not a valid
+                    'ERROR in RCy3::setNodeShapeBypass. %s is not a valid
                     shape. Please note that some older shapes are no longer
                     available. For valid ones check getNodeShapes.',
                     new.shapes
@@ -927,7 +927,7 @@ setNodeBorderWidthBypass <-
             if (!is.double(current.size)) {
                 write (
                     sprintf (
-                        'illegal width string "%s" in RCy3::setNodeBorderWidthDirect.
+                        'illegal width string "%s" in RCy3::setNodeBorderWidthBypass.
                         It needs to be a number.',
                         current.size
                     ),
@@ -1037,7 +1037,7 @@ setNodeOpacityBypass <-
                 current.value < 0  || current.value > 255) {
                 write (
                     sprintf (
-                        'RCy3::setNodeOpacityDirect: illegal opacity string
+                        'RCy3::setNodeOpacityBypass: illegal opacity string
                         "%s". It needs to be between 0 and 255.',
                         current.value
                     ),
@@ -1133,7 +1133,7 @@ setNodeFillOpacityBypass <-
                 current.value < 0  || current.value > 255) {
                 write (
                     sprintf (
-                        'illegal opacity string "%s" in RCy3::setNodeFillOpacityDirect.
+                        'illegal opacity string "%s" in RCy3::setNodeFillOpacityBypass.
                         It needs to be a double and between 0 and 255.',
                         current.value
                     ),
@@ -1190,7 +1190,7 @@ setNodeBorderOpacityBypass <-
                 current.value < 0  || current.value > 255) {
                 write (
                     sprintf (
-                        'illegal opacity string "%s" in RCy3::setNodeBorderOpacityDirect.
+                        'illegal opacity string "%s" in RCy3::setNodeBorderOpacityBypass.
                         It needs to be between 0 and 255.',
                         current.value
                     ),
@@ -1247,7 +1247,7 @@ setNodeLabelOpacityBypass <-
                 current.value < 0  || current.value > 255) {
                 write (
                     sprintf (
-                        'illegal opacity string "%s" in RCy3::setNodeLabelOpacityDirect.
+                        'illegal opacity string "%s" in RCy3::setNodeLabelOpacityBypass.
                         It needs to be between 0 and 255.',
                         current.value
                     ),
@@ -1404,7 +1404,7 @@ setEdgeOpacityBypass <-
                 current.value < 0  || current.value > 255) {
                 write (
                     sprintf (
-                        'illegal opacity string "%s" in RCy3::setEdgeLabelOpacityDirect. It needs to be between 0 and 255.',
+                        'illegal opacity string "%s" in RCy3::setEdgeLabelOpacityBypass. It needs to be between 0 and 255.',
                         current.value
                     ),
                     stderr ()
@@ -1674,7 +1674,7 @@ setEdgeTooltipBypass <-
         if (length (edge.names) != length (new.values)) {
             if (length(new.values) != 1) {
                 msg = sprintf (
-                    'error in RCy3::setEdgeTooltipDirect.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+                    'error in RCy3::setEdgeTooltipBypass.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
                     length (new.values),
                     length (edge.names)
                 )
@@ -1723,7 +1723,7 @@ setEdgeLineWidthBypass <-
             if (!is.numeric(current.size)) {
                 write (
                     sprintf (
-                        'illegal size string "%s" in RCy3::setEdgeLineWidthDirect. It needs to be a number.',
+                        'illegal size string "%s" in RCy3::setEdgeLineWidthBypass. It needs to be a number.',
                         current.size
                     ),
                     stderr ()

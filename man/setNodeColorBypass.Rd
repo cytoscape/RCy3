@@ -38,8 +38,8 @@ can be used to set any visual property. To restore defaults and mappings, use
 }
 \examples{
 \donttest{
-setNodeColorDirect ('node1', '#FF0088')
-setNodeColorDirect (c('node1', 'node2'), c('#88FF88', '#FF0088'))
+setNodeColorBypass ('node1', '#FF0088')
+setNodeColorBypass (c('node1', 'node2'), c('#88FF88', '#FF0088'))
 clearNodePropertyBypass(c('Node 1','Node 2'), 'NODE_FILL_COLOR')
 }
 }
