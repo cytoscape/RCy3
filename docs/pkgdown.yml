@@ -1,0 +1,18 @@
+pandoc: 2.3.1
+pkgdown: 1.4.1
+pkgdown_sha: ~
+articles:
+  Cancer-networks-and-data: Cancer-networks-and-data.html
+  Custom-Graphics: Custom-Graphics.html
+  Cytoscape-and-NDEx: Cytoscape-and-NDEx.html
+  Cytoscape-and-graphNEL: Cytoscape-and-graphNEL.html
+  Cytoscape-and-iGraph: Cytoscape-and-iGraph.html
+  Filtering-Networks: Filtering-Networks.html
+  Group-nodes: Group-nodes.html
+  Identifier-mapping: Identifier-mapping.html
+  Importing-data: Importing-data.html
+  Network-functions-and-visualization: Network-functions-and-visualization.html
+  Overview-of-RCy3: Overview-of-RCy3.html
+  Phylogenetic-trees: Phylogenetic-trees.html
+  Upgrading-existing-scripts: Upgrading-existing-scripts.html
+
