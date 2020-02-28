@@ -137,6 +137,14 @@
 </ul>
 </li>
 </ul>
+<div id="getting-started" class="section level2">
+<h2 class="hasAnchor">
+<a href="#getting-started" class="anchor"></a>Getting Started</h2>
+<ul>
+<li><a href="http://cytoscape.org/RCy3/index.html">Documenation site</a></li>
+<li><a href="https://cytoscape.org/cytoscape-automation/for-scripters/R/notebooks/">Cytoscape Rmd noteboods</a></li>
+</ul>
+</div>
 <div id="how-to-install" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-install" class="anchor"></a>How to install</h2>
@@ -200,6 +208,13 @@ BiocCheck::BiocCheck('./')</a></code></pre>
 run.tests()</a></code></pre>
 <p>They take about 4 minutes to run.</p>
 </div>
+<div id="updating-site" class="section level3">
+<h3 class="hasAnchor">
+<a href="#updating-site" class="anchor"></a>Updating site</h3>
+<p>We use <a href="https://pkgdown.r-lib.org/">pkgdown</a> to generate the <a href="http://cytoscape.org/RCy3/index.html">main site for RCy3</a> based on this README, metadata, man pages and vignettes. If you make changes to any of these, please take a moment to regenerate the site:</p>
+<pre><code><a href="https://rdrr.io/r/base/library.html">library(pkgdown)
+pkgdown::build_site()</a></code></pre>
+</div>
 <div id="bioconductor" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bioconductor" class="anchor"></a>Bioconductor</h3>
@@ -256,6 +271,8 @@ git push upstream master</code></pre>
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from BIOC at <br><a href="https://www.bioconductor.org/packages/RCy3">https://​www.bioconductor.org/​packages/​RCy3</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/cytoscape/RCy3">https://​github.com/​cytoscape/​RCy3</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/cytoscape/RCy3/issues">https://​github.com/​cytoscape/​RCy3/​issues</a>
