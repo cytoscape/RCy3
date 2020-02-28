@@ -16,6 +16,10 @@ ecosystem. We are beginning with a major refactor of RCy3 that includes:
   * [py2cytoscape](https://github.com/cytoscape/py2cytoscape)
   * [RCyjs](http://bioconductor.org/packages/release/bioc/html/RCyjs.html)
 
+## Getting Started
+ * [Documenation site](http://cytoscape.org/RCy3/index.html) 
+ * [Cytoscape Rmd noteboods](https://cytoscape.org/cytoscape-automation/for-scripters/R/notebooks/)
+ 
 ## How to install
 **_Official bioconductor releases_ (recommended)**
 ```
@@ -76,6 +80,15 @@ run.tests()
 ```
 
 They take about 4 minutes to run.
+
+
+### Updating site
+We use [pkgdown](https://pkgdown.r-lib.org/) to generate the [main site for RCy3](http://cytoscape.org/RCy3/index.html) based on this README, metadata, man pages and vignettes. If you make changes to any of these, please take a moment to regenerate the site:
+```
+library(pkgdown)
+pkgdown::build_site()
+```
+
 
 ### Bioconductor
 While this is the primary development repository for the RCy3 project, we also make regular pushes to official bioconductor repository ([devel](http://bioconductor.org/packages/devel/bioc/html/RCy3.html) & [release](http://bioconductor.org/packages/release/bioc/html/RCy3.html)) from which the official releases are generated. This is the correct repo for all coding and bug reporting interests. The tagged releases here correspond to the bioconductor releases via a manual syncing process. The `master` branch here corresponds to the latest code in development and not yet released. 
