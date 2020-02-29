@@ -229,7 +229,7 @@ types (num) will be imported as (Double); (int) as (Integer); (chr) as
 in CyREST v3.9+.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+    <pre class="examples"><span class='co'># \donttest{</span>
 <span class='no'>nodes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>id</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"node 0"</span>,<span class='st'>"node 1"</span>,<span class='st'>"node 2"</span>,<span class='st'>"node 3"</span>),
            <span class='kw'>group</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>,<span class='st'>"A"</span>,<span class='st'>"B"</span>,<span class='st'>"B"</span>), <span class='co'># categorical strings</span>
            <span class='kw'>score</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>20</span>,<span class='fl'>10</span>,<span class='fl'>15</span>,<span class='fl'>5</span>))) <span class='co'># integers</span>
@@ -239,8 +239,8 @@ in CyREST v3.9+.</p>
                          <span class='st'>"activates"</span>,<span class='st'>"interacts"</span>),  <span class='co'># optional</span>
            <span class='kw'>weight</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5.1</span>,<span class='fl'>3.0</span>,<span class='fl'>5.2</span>,<span class='fl'>9.9</span>)) <span class='co'># numeric</span>
 
-<span class='fu'>createNetworkFromDataFrames</span>(<span class='no'>nodes</span>,<span class='no'>edges</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): Failed to connect to localhost port 1234: Connection refused</span></div><div class='input'># }
-</div></pre>
+<span class='fu'>createNetworkFromDataFrames</span>(<span class='no'>nodes</span>,<span class='no'>edges</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

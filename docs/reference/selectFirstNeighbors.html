@@ -196,9 +196,11 @@ and the latest version of the CyREST API supported by this version of RCy3.</p><
     <p>list of suids of selected nodes, including original selection</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'>selectFirstNeighbors</span>()</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): Failed to connect to localhost port 1234: Connection refused</span></div><div class='input'><span class='fu'>selectFirstNeighors</span>(<span class='st'>'outgoing'</span>)</div><div class='output co'>#&gt; <span class='error'>Error in selectFirstNeighors("outgoing"): could not find function "selectFirstNeighors"</span></div><div class='input'><span class='fu'>selectFirstNeighors</span>(<span class='st'>'incoming'</span>)</div><div class='output co'>#&gt; <span class='error'>Error in selectFirstNeighors("incoming"): could not find function "selectFirstNeighors"</span></div><div class='input'># }
-</div></pre>
+    <pre class="examples"><span class='co'># \donttest{</span>
+<span class='fu'>selectFirstNeighbors</span>()
+<span class='fu'>selectFirstNeighors</span>(<span class='st'>'outgoing'</span>)
+<span class='fu'>selectFirstNeighors</span>(<span class='st'>'incoming'</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

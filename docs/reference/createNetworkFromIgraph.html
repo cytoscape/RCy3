@@ -217,19 +217,11 @@ are converted to "String" in Cytoscape.</p>
     <div class='dont-index'><p>createNetworkFromDataFrames, createIgraphFromNetwork</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>igraph</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘igraph’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:graph’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    degree, edges, intersection, union</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:BiocGenerics’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    normalize, path, union</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    decompose, spectrum</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    union</span></div><div class='input'><span class='no'>ig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='makeSimpleIgraph.html'>makeSimpleIgraph</a></span>()
-<span class='fu'>createNetworkFromIgraph</span>(<span class='no'>ig</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): Failed to connect to localhost port 1234: Connection refused</span></div><div class='input'># }
-</div></pre>
+    <pre class="examples"><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>igraph</span>)
+<span class='no'>ig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='makeSimpleIgraph.html'>makeSimpleIgraph</a></span>()
+<span class='fu'>createNetworkFromIgraph</span>(<span class='no'>ig</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

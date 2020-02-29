@@ -9,7 +9,7 @@ ecosystem. We are beginning with a major refactor of RCy3 that includes:
 * harmonized function and argument names
 * support for Cytoscape commands
 * better support for Cytoscape apps
-* see [NEWS](NEWS) for the complete release notes
+* see [NEWS](https://github.com/cytoscape/RCy3/blob/master/NEWS) for the complete release notes
 * coordinated development with CyREST and the Cytoscape service model
   * [New API](https://github.com/cytoscape/cyREST/issues?utf8=✓&q=milestone%3A*+label%3A%22new+API%22+is%3A*)
 * coordinated development with other scripting libraries, e.g., 
@@ -86,7 +86,7 @@ They take about 4 minutes to run.
 We use [pkgdown](https://pkgdown.r-lib.org/) to generate the [main site for RCy3](http://cytoscape.org/RCy3/index.html) based on this README, metadata, man pages and vignettes. If you make changes to any of these, please take a moment to regenerate the site:
 ```
 library(pkgdown)
-pkgdown::build_site()
+pkgdown::build_site(examples=FALSE)
 ```
 
 

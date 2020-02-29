@@ -198,37 +198,28 @@ and the latest version of the CyREST API supported by this version of RCy3.</p><
     <div class='dont-index'><p>applyStyle, mapVisualProperty</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+    <pre class="examples"><span class='co'># \donttest{</span>
 <span class='co'>#first there has to be a network to apply style to</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span>(<span class='no'>createNetworkFromDataFrames</span>)</div><div class='output co'>#&gt; 
-#&gt; crNFDF&gt; ## No test: 
-#&gt; crNFDF&gt; ##D nodes &lt;- data.frame(id=c("node 0","node 1","node 2","node 3"),
-#&gt; crNFDF&gt; ##D            group=c("A","A","B","B"), # categorical strings
-#&gt; crNFDF&gt; ##D            score=as.integer(c(20,10,15,5))) # integers
-#&gt; crNFDF&gt; ##D edges &lt;- data.frame(source=c("node 0","node 0","node 0","node 2"),
-#&gt; crNFDF&gt; ##D            target=c("node 1","node 2","node 3","node 3"),
-#&gt; crNFDF&gt; ##D            interaction=c("inhibits","interacts",
-#&gt; crNFDF&gt; ##D                          "activates","interacts"),  # optional
-#&gt; crNFDF&gt; ##D            weight=c(5.1,3.0,5.2,9.9)) # numeric
-#&gt; crNFDF&gt; ##D 
-#&gt; crNFDF&gt; ##D createNetworkFromDataFrames(nodes,edges)
-#&gt; crNFDF&gt; ## End(No test)
-#&gt; crNFDF&gt; 
-#&gt; crNFDF&gt; 
-#&gt; crNFDF&gt; </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span>(<span class='no'>createNetworkFromDataFrames</span>)
+
 <span class='co'>#then prepare style variables</span>
 <span class='no'>style.name</span> <span class='kw'>=</span> <span class='st'>"myStyle"</span>
 <span class='no'>defaults</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>NODE_SHAPE</span><span class='kw'>=</span><span class='st'>"diamond"</span>,
                  <span class='kw'>NODE_SIZE</span><span class='kw'>=</span><span class='fl'>30</span>,
                  <span class='kw'>EDGE_TRANSPARENCY</span><span class='kw'>=</span><span class='fl'>120</span>,
                  <span class='kw'>NODE_LABEL_POSITION</span><span class='kw'>=</span><span class='st'>"W,E,c,0.00,0.00"</span>)
-<span class='no'>nodeLabels</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mapVisualProperty.html'>mapVisualProperty</a></span>(<span class='st'>'node label'</span>,<span class='st'>'id'</span>,<span class='st'>'p'</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): Failed to connect to localhost port 1234: Connection refused</span></div><div class='input'><span class='no'>nodeFills</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mapVisualProperty.html'>mapVisualProperty</a></span>(<span class='st'>'node fill color'</span>,<span class='st'>'group'</span>,<span class='st'>'d'</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>,<span class='st'>"B"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#FF9900"</span>,<span class='st'>"#66AAAA"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): Failed to connect to localhost port 1234: Connection refused</span></div><div class='input'><span class='no'>arrowShapes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mapVisualProperty.html'>mapVisualProperty</a></span>(<span class='st'>'Edge Target Arrow Shape'</span>,<span class='st'>'interaction'</span>,<span class='st'>'d'</span>,
-                                 <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"activates"</span>,<span class='st'>"inhibits"</span>,<span class='st'>"interacts"</span>),<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Arrow"</span>,<span class='st'>"T"</span>,<span class='st'>"None"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): Failed to connect to localhost port 1234: Connection refused</span></div><div class='input'><span class='no'>edgeWidth</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mapVisualProperty.html'>mapVisualProperty</a></span>(<span class='st'>'edge width'</span>,<span class='st'>'weight'</span>,<span class='st'>'p'</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): Failed to connect to localhost port 1234: Connection refused</span></div><div class='input'>
+<span class='no'>nodeLabels</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mapVisualProperty.html'>mapVisualProperty</a></span>(<span class='st'>'node label'</span>,<span class='st'>'id'</span>,<span class='st'>'p'</span>)
+<span class='no'>nodeFills</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mapVisualProperty.html'>mapVisualProperty</a></span>(<span class='st'>'node fill color'</span>,<span class='st'>'group'</span>,<span class='st'>'d'</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>,<span class='st'>"B"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#FF9900"</span>,<span class='st'>"#66AAAA"</span>))
+<span class='no'>arrowShapes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mapVisualProperty.html'>mapVisualProperty</a></span>(<span class='st'>'Edge Target Arrow Shape'</span>,<span class='st'>'interaction'</span>,<span class='st'>'d'</span>,
+                                 <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"activates"</span>,<span class='st'>"inhibits"</span>,<span class='st'>"interacts"</span>),<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Arrow"</span>,<span class='st'>"T"</span>,<span class='st'>"None"</span>))
+<span class='no'>edgeWidth</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mapVisualProperty.html'>mapVisualProperty</a></span>(<span class='st'>'edge width'</span>,<span class='st'>'weight'</span>,<span class='st'>'p'</span>)
+
 <span class='co'>#and then create the style</span>
-<span class='fu'>createVisualStyle</span>(<span class='no'>style.name</span>, <span class='no'>defaults</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>nodeLabels</span>,<span class='no'>nodeFills</span>,<span class='no'>arrowShapes</span>,<span class='no'>edgeWidth</span>))</div><div class='output co'>#&gt; <span class='error'>Error in createVisualStyle(style.name, defaults, list(nodeLabels, nodeFills,     arrowShapes, edgeWidth)): object 'nodeLabels' not found</span></div><div class='input'>
+<span class='fu'>createVisualStyle</span>(<span class='no'>style.name</span>, <span class='no'>defaults</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>nodeLabels</span>,<span class='no'>nodeFills</span>,<span class='no'>arrowShapes</span>,<span class='no'>edgeWidth</span>))
+
 <span class='co'>#finsh by applying the style</span>
-<span class='fu'><a href='setVisualStyle.html'>setVisualStyle</a></span>(<span class='no'>style.name</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): Failed to connect to localhost port 1234: Connection refused</span></div><div class='input'># }
-</div></pre>
+<span class='fu'><a href='setVisualStyle.html'>setVisualStyle</a></span>(<span class='no'>style.name</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

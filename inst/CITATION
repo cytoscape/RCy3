@@ -3,6 +3,6 @@ citEntry(entry = "Article",
          "title" = "RCy3: Network Biology using Cytoscape from within R",
          journal = "F1000Research",
          year = "2019",
-         doi = "10.12688/f1000research.20887.1",
-         textVersion = "Gustavsen JA and Pai S and Isserlin R and Demchak B and Pico AR. RCy3: Network Biology using Cytoscape from within R. F1000Research 2019, http://dx.doi.org/10.12688/f1000research.20887.1."
+         doi = "10.12688/f1000research.20887.3",
+         textVersion = "Gustavsen JA, Pai S, Isserlin R et al. RCy3: Network biology using Cytoscape from within R [version 3; peer review: 3 approved]. F1000Research 2019, 8:1774 (https://doi.org/10.12688/f1000research.20887.3)"
          )
