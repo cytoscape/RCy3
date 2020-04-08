@@ -298,7 +298,7 @@ getFilterList<-function(base.url=.defaultBaseUrl){
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return Path to saved file
+#' @return None
 #' @details Unlike other export functions, Cytoscape will automatically
 #' overwrite files with the same name. You will not be prompted to confirm
 #' or reject overwrite. Use carefully!
@@ -331,7 +331,7 @@ exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl){
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return Path to saved file
+#' @return None
 #' @examples \donttest{
 #' importFilters()
 #' }

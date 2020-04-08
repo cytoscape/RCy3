@@ -16,7 +16,8 @@
 #' @export
 disableApp <- function (app, base.url=.defaultBaseUrl){
     .verifySupportedVersions(1,3.7,base.url)
-    commandsGET(paste0('apps disable app="',app,'"'), base.url=base.url)
+    msg <- commandsGET(paste0('apps disable app="',app,'"'), base.url=base.url)
+    message(msg)
 }
 
 # ------------------------------------------------------------------------------
@@ -34,7 +35,8 @@ disableApp <- function (app, base.url=.defaultBaseUrl){
 #' @export
 enableApp <- function (app, base.url=.defaultBaseUrl){
     .verifySupportedVersions(1,3.7,base.url)
-    commandsGET(paste0('apps enable app="',app,'"'), base.url=base.url)
+    msg <- commandsGET(paste0('apps enable app="',app,'"'), base.url=base.url)
+    message(msg)
 }
 
 # ------------------------------------------------------------------------------
@@ -70,7 +72,8 @@ getAppInformation <- function (app, base.url=.defaultBaseUrl){
 #' @export
 installApp <- function (app, base.url=.defaultBaseUrl){
     .verifySupportedVersions(1,3.7,base.url)
-    commandsGET(paste0('apps install app="',app,'"'), base.url=base.url)
+    msg <- commandsGET(paste0('apps install app="',app,'"'), base.url=base.url)
+    message(msg)
 }
 
 # ------------------------------------------------------------------------------
@@ -173,7 +176,8 @@ getAppUpdates <- function (base.url=.defaultBaseUrl){
 #' @export
 openAppStore <- function (app, base.url=.defaultBaseUrl){
     .verifySupportedVersions(1,3.7,base.url)
-    commandsGET(paste0('apps open appstore app="',app,'"'), base.url=base.url)
+    msg <- commandsGET(paste0('apps open appstore app="',app,'"'), base.url=base.url)
+    message(msg)
 }
 
 # ------------------------------------------------------------------------------
@@ -210,7 +214,8 @@ getAppStatus <- function (app, base.url=.defaultBaseUrl){
 #' @export
 uninstallApp <- function (app, base.url=.defaultBaseUrl){
     .verifySupportedVersions(1,3.7,base.url)
-    commandsGET(paste0('apps uninstall app="',app,'"'), base.url=base.url)
+    msg <- commandsGET(paste0('apps uninstall app="',app,'"'), base.url=base.url)
+    message(msg)
 }
 
 # ------------------------------------------------------------------------------
@@ -228,6 +233,7 @@ uninstallApp <- function (app, base.url=.defaultBaseUrl){
 #' @export
 updateApp <- function (app, base.url=.defaultBaseUrl){
     .verifySupportedVersions(1,3.7,base.url)
-    commandsGET(paste0('apps update app="',app,'"'), base.url=base.url)
+    msg <- commandsGET(paste0('apps update app="',app,'"'), base.url=base.url)
+    message(msg)
 }
 

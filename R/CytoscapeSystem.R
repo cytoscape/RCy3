@@ -134,9 +134,9 @@ cytoscapeFreeMemory<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url, 'gc', sep="/")
               res <- GET(conn.str)
               if(res$status_code == 204) {
-                  return("Unused memory freed up.")
+                  return(message("Unused memory freed up."))
               } else {
-                  write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
+                  message(sprintf('CyREST connection problem. RCy3 can not continue! '), stderr())
                   stop()
               }
           }
