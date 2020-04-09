@@ -10,7 +10,7 @@ setNodeHeightMapping(
   heights = NULL,
   mapping.type = "c",
   default.height = NULL,
-  style.name = "default",
+  style.name = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )

@@ -6,7 +6,7 @@
 \usage{
 setEdgeTooltipDefault(
   new.tooltip,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

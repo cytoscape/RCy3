@@ -6,7 +6,7 @@
 \usage{
 removeNodeCustomGraphics(
   slot = 1,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

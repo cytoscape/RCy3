@@ -24,8 +24,12 @@
 #' }
 #' @export
 #' @seealso mapVisualProperty
-updateStyleDefaults <- function(style.name,defaults,base.url=.defaultBaseUrl){
-    
+updateStyleDefaults <- function(style.name, defaults,base.url=.defaultBaseUrl){
+    # set default style
+    if(is.null(style.name)){
+        style.name <- 'default'
+        message('style.name not specified; updating "default" style.')
+    }
     def.list <- list()
     for (i in seq_len(length(defaults))) {
         visual.prop.name <- names(defaults)[i]
@@ -56,7 +60,12 @@ updateStyleDefaults <- function(style.name,defaults,base.url=.defaultBaseUrl){
 #' getVisualPropertyDefault('NODE_SIZE')
 #' }
 #' @export
-getVisualPropertyDefault <- function(property, style.name='default', base.url=.defaultBaseUrl) {
+getVisualPropertyDefault <- function(property, style.name=NULL, base.url=.defaultBaseUrl) {
+    # set default style
+    if(is.null(style.name)){
+        style.name <- 'default'
+        message('style.name not specified; accessing "default" style.')
+    }
     res <- cyrestGET(paste("styles", as.character(style.name), "defaults", property, sep="/"), base.url=base.url)
     return(res[[2]])
 }
@@ -75,7 +84,12 @@ getVisualPropertyDefault <- function(property, style.name='default', base.url=.d
 #' setVisualPropertyDefault(list(visualProperty = "NODE_SIZE", value = 35))
 #' }
 #' @export
-setVisualPropertyDefault <- function(style.string, style.name='default', base.url=.defaultBaseUrl) {
+setVisualPropertyDefault <- function(style.string, style.name=NULL, base.url=.defaultBaseUrl) {
+    # set default style
+    if(is.null(style.name)){
+        style.name <- 'default'
+        message('style.name not specified; updating "default" style.')
+    }
     res <- cyrestPUT(paste("styles", as.character(style.name), "defaults", sep="/"),
                      body = list(style.string),
                      base.url=base.url)
@@ -102,7 +116,7 @@ setVisualPropertyDefault <- function(style.string, style.name='default', base.ur
 #' setNodeBorderColorDefault('#FD5903')
 #' }
 #' @export
-setNodeBorderColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setNodeBorderColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     }
@@ -124,7 +138,7 @@ setNodeBorderColorDefault <- function(new.color, style.name='default', base.url=
 #' setNodeBorderWidthDefault(2)
 #' }
 #' @export
-setNodeBorderWidthDefault <-  function(new.width, style.name='default', 
+setNodeBorderWidthDefault <-  function(new.width, style.name=NULL, 
                                        base.url=.defaultBaseUrl) {
     style = list(visualProperty = "NODE_BORDER_WIDTH", value = new.width) 
     setVisualPropertyDefault(style, style.name, base.url)
@@ -144,7 +158,7 @@ setNodeBorderWidthDefault <-  function(new.width, style.name='default',
 #' setNodeBorderOpacityDefault(50)
 #' }
 #' @export
-setNodeBorderOpacityDefault <- function(new.opacity, style.name='default', 
+setNodeBorderOpacityDefault <- function(new.opacity, style.name=NULL, 
                                         base.url=.defaultBaseUrl) {
     
     if (new.opacity < 0 || new.opacity > 255){
@@ -169,7 +183,7 @@ setNodeBorderOpacityDefault <- function(new.opacity, style.name='default',
 #' setNodeColorDefault('#FD5903')
 #' }
 #' @export
-setNodeColorDefault <- function(new.color, style.name='default', 
+setNodeColorDefault <- function(new.color, style.name=NULL, 
                                 base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
@@ -219,7 +233,7 @@ setNodeCustomBarChart<-function(columns, type="GROUPED", colors=NULL,
                                 colAxis=FALSE, rangeAxis=FALSE, zeroLine=FALSE,
                                 axisWidth=0.25, axisColor = "#000000",
                                 axisFontSize=1, separation=0.0,
-                                slot=1, style.name='default', 
+                                slot=1, style.name=NULL, 
                                 base.url=.defaultBaseUrl){
     
     if (!type %in% c('GROUPED','STACKED','HEAT_STRIPS','UP_DOWN'))
@@ -301,7 +315,7 @@ setNodeCustomBoxChart<-function(columns, colors=NULL,
                                 rangeAxis=FALSE, zeroLine=FALSE,
                                 axisWidth=0.25, axisColor = "#000000",
                                 axisFontSize=1, 
-                                slot=1, style.name='default', 
+                                slot=1, style.name=NULL, 
                                 base.url=.defaultBaseUrl){
     if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
@@ -371,7 +385,7 @@ setNodeCustomHeatMapChart<-function(columns, colors=NULL,
                                     rangeAxis=FALSE, zeroLine=FALSE,
                                     axisWidth=0.25, axisColor = "#000000",
                                     axisFontSize=1, 
-                                    slot=1, style.name='default', 
+                                    slot=1, style.name=NULL, 
                                     base.url=.defaultBaseUrl){
     if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
@@ -441,7 +455,7 @@ setNodeCustomLineChart<-function(columns, colors=NULL,
                                  rangeAxis=FALSE, zeroLine=FALSE,
                                  axisWidth=0.25, axisColor = "#000000",
                                  axisFontSize=1, 
-                                 slot=1, style.name='default', 
+                                 slot=1, style.name=NULL, 
                                  base.url=.defaultBaseUrl){
     if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
@@ -499,7 +513,7 @@ setNodeCustomLineChart<-function(columns, colors=NULL,
 #' @importFrom RJSONIO toJSON 
 setNodeCustomPieChart<-function(columns, colors=NULL, 
                                 startAngle=0.0, 
-                                slot=1, style.name='default', 
+                                slot=1, style.name=NULL, 
                                 base.url=.defaultBaseUrl){
     if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
@@ -544,7 +558,7 @@ setNodeCustomPieChart<-function(columns, colors=NULL,
 #' @importFrom RJSONIO toJSON 
 setNodeCustomRingChart<-function(columns, colors=NULL, 
                                  startAngle=0.0, holeSize = 0.5,
-                                 slot=1, style.name='default', 
+                                 slot=1, style.name=NULL, 
                                  base.url=.defaultBaseUrl){
     if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
@@ -584,7 +598,7 @@ setNodeCustomRingChart<-function(columns, colors=NULL,
 #' }
 #' @export
 setNodeCustomLinearGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0.0,1.0), angle=0.0, 
-                                      slot=1, style.name='default', 
+                                      slot=1, style.name=NULL, 
                                       base.url=.defaultBaseUrl){
     if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
@@ -622,7 +636,7 @@ setNodeCustomLinearGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0
 #' @export
 setNodeCustomRadialGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0.0,1.0), 
                                       xCenter=0.5, yCenter=0.5, 
-                                      slot=1, style.name='default', 
+                                      slot=1, style.name=NULL, 
                                       base.url=.defaultBaseUrl){
     if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
@@ -659,7 +673,7 @@ setNodeCustomRadialGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0
 #' }
 #' @export
 setNodeCustomPosition<-function(nodeAnchor="C", graphicAnchor="C", justification="c", 
-                                xOffset=0.0, yOffset=0.0, slot=1, style.name='default',
+                                xOffset=0.0, yOffset=0.0, slot=1, style.name=NULL,
                                 base.url = .defaultBaseUrl){
     if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
@@ -687,7 +701,7 @@ setNodeCustomPosition<-function(nodeAnchor="C", graphicAnchor="C", justification
 #' removeNodeCustomGraphics()
 #' }
 #' @export
-removeNodeCustomGraphics<-function(slot=1, style.name='default',
+removeNodeCustomGraphics<-function(slot=1, style.name=NULL,
                                    base.url = .defaultBaseUrl){
     if (!slot %in% seq_len(9))
         stop ('slot must be an integer between 1 and 9')
@@ -711,7 +725,7 @@ removeNodeCustomGraphics<-function(slot=1, style.name='default',
 #' setNodeFillOpacityDefault(50)
 #' }
 #' @export
-setNodeFillOpacityDefault <- function(new.opacity, style.name='default', 
+setNodeFillOpacityDefault <- function(new.opacity, style.name=NULL, 
                                       base.url=.defaultBaseUrl) {
     if (new.opacity < 0 || new.opacity > 255){
         write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
@@ -737,7 +751,7 @@ setNodeFillOpacityDefault <- function(new.opacity, style.name='default',
 #' setNodeFontFaceDefault("Dialog,plain,10")
 #' }
 #' @export
-setNodeFontFaceDefault <- function(new.font, style.name='default', 
+setNodeFontFaceDefault <- function(new.font, style.name=NULL, 
                                    base.url=.defaultBaseUrl) {
     style = list(visualProperty = "NODE_LABEL_FONT_FACE", value = new.font) 
     setVisualPropertyDefault(style, style.name, base.url)
@@ -757,7 +771,7 @@ setNodeFontFaceDefault <- function(new.font, style.name='default',
 #' setNodeFontSizeDefault(12)
 #' }
 #' @export
-setNodeFontSizeDefault <- function(new.size, style.name='default', 
+setNodeFontSizeDefault <- function(new.size, style.name=NULL, 
                                    base.url=.defaultBaseUrl) {
     style = list(visualProperty = "NODE_LABEL_FONT_SIZE", value = new.size)
     setVisualPropertyDefault(style, style.name, base.url)
@@ -778,7 +792,7 @@ setNodeFontSizeDefault <- function(new.size, style.name='default',
 #' setNodeHeightDefault(35)
 #' }
 #' @export
-setNodeHeightDefault <- function(new.height, style.name='default', 
+setNodeHeightDefault <- function(new.height, style.name=NULL, 
                                  base.url=.defaultBaseUrl) {
     lockNodeDimensions(FALSE, style.name, base.url)
     
@@ -800,7 +814,7 @@ setNodeHeightDefault <- function(new.height, style.name='default',
 #' setNodeLabelDefault('unknown')
 #' }
 #' @export
-setNodeLabelDefault <- function(new.label, style.name='default', 
+setNodeLabelDefault <- function(new.label, style.name=NULL, 
                                      base.url=.defaultBaseUrl) {
     style = list(visualProperty = "NODE_LABEL", value = new.label)
     setVisualPropertyDefault(style, style.name, base.url)
@@ -820,7 +834,7 @@ setNodeLabelDefault <- function(new.label, style.name='default',
 #' setNodeLabelColorDefault('#FD5903')
 #' }
 #' @export
-setNodeLabelColorDefault <- function(new.color, style.name='default', 
+setNodeLabelColorDefault <- function(new.color, style.name=NULL, 
                                      base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
@@ -844,7 +858,7 @@ setNodeLabelColorDefault <- function(new.color, style.name='default',
 #' setNodeLabelOpacityDefault(50)
 #' }
 #' @export
-setNodeLabelOpacityDefault <- function(new.opacity, style.name='default', 
+setNodeLabelOpacityDefault <- function(new.opacity, style.name=NULL, 
                                        base.url=.defaultBaseUrl) {
     if (new.opacity < 0 || new.opacity > 255){
         write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
@@ -867,7 +881,7 @@ setNodeLabelOpacityDefault <- function(new.opacity, style.name='default',
 #' getNodeSelectionColorDefault()
 #' }
 #' @export
-getNodeSelectionColorDefault <- function(style.name='default', base.url=.defaultBaseUrl) {
+getNodeSelectionColorDefault <- function(style.name=NULL, base.url=.defaultBaseUrl) {
     return(getVisualPropertyDefault('NODE_SELECTED_PAINT', style.name, base.url))
 }
 
@@ -885,7 +899,7 @@ getNodeSelectionColorDefault <- function(style.name='default', base.url=.default
 #' setNodeSelectionColorDefault('#FD5903')
 #' }
 #' @export
-setNodeSelectionColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setNodeSelectionColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     } 
@@ -906,7 +920,7 @@ setNodeSelectionColorDefault <- function(new.color, style.name='default', base.u
 #' setNodeShapeDefault('ELLIPSE')
 #' }
 #' @export
-setNodeShapeDefault <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
+setNodeShapeDefault <- function(new.shape, style.name=NULL, base.url=.defaultBaseUrl) {
     new.shape <- toupper(new.shape)
     if (new.shape %in% getNodeShapes(base.url)){
         style = list(visualProperty = "NODE_SHAPE", value = new.shape)
@@ -930,7 +944,7 @@ setNodeShapeDefault <- function(new.shape, style.name='default', base.url=.defau
 #' setNodeSizeDefault(35)
 #' }
 #' @export
-setNodeSizeDefault <- function(new.size, style.name='default',
+setNodeSizeDefault <- function(new.size, style.name=NULL,
                                base.url=.defaultBaseUrl) {
     lockNodeDimensions(TRUE, style.name, base.url)
     
@@ -952,7 +966,7 @@ setNodeSizeDefault <- function(new.size, style.name='default',
 #' setNodeWidthDefault(35)
 #' }
 #' @export
-setNodeWidthDefault <- function(new.width, style.name='default',
+setNodeWidthDefault <- function(new.width, style.name=NULL,
                                 base.url=.defaultBaseUrl) {
     lockNodeDimensions(FALSE, style.name, base.url)
     
@@ -973,7 +987,7 @@ setNodeWidthDefault <- function(new.width, style.name='default',
 #' setNodeTooltipDefault('unknown')
 #' }
 #' @export
-setNodeTooltipDefault <- function(new.tooltip, style.name='default', 
+setNodeTooltipDefault <- function(new.tooltip, style.name=NULL, 
                                   base.url=.defaultBaseUrl) {
     style = list(visualProperty = "NODE_TOOLTIP", value = new.tooltip)
     setVisualPropertyDefault(style, style.name, base.url)
@@ -996,7 +1010,7 @@ setNodeTooltipDefault <- function(new.tooltip, style.name='default',
 #' setEdgeColorDefault('#FD5903')
 #' }
 #' @export
-setEdgeColorDefault <- function(new.color, style.name='default', 
+setEdgeColorDefault <- function(new.color, style.name=NULL, 
                                 base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
@@ -1022,7 +1036,7 @@ setEdgeColorDefault <- function(new.color, style.name='default',
 #' setEdgeFontFaceDefault("Dialog,plain,10")
 #' }
 #' @export
-setEdgeFontFaceDefault <- function(new.font, style.name='default', 
+setEdgeFontFaceDefault <- function(new.font, style.name=NULL, 
                                    base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_LABEL_FONT_FACE", value = new.font) 
     setVisualPropertyDefault(style, style.name, base.url)
@@ -1042,7 +1056,7 @@ setEdgeFontFaceDefault <- function(new.font, style.name='default',
 #' setEdgeFontSizeDefault(12)
 #' }
 #' @export
-setEdgeFontSizeDefault <- function(new.size, style.name='default', 
+setEdgeFontSizeDefault <- function(new.size, style.name=NULL, 
                                    base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_LABEL_FONT_SIZE", value = new.size)
     setVisualPropertyDefault(style, style.name, base.url)
@@ -1062,7 +1076,7 @@ setEdgeFontSizeDefault <- function(new.size, style.name='default',
 #' setEdgeLabelDefault('unknown')
 #' }
 #' @export
-setEdgeLabelDefault <- function(new.label, style.name='default', 
+setEdgeLabelDefault <- function(new.label, style.name=NULL, 
                                 base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_LABEL", value = new.label)
     setVisualPropertyDefault(style, style.name, base.url)
@@ -1082,7 +1096,7 @@ setEdgeLabelDefault <- function(new.label, style.name='default',
 #' setEdgeLabelColorDefault("#FD5903")
 #' }
 #' @export
-setEdgeLabelColorDefault <- function(new.color, style.name='default', 
+setEdgeLabelColorDefault <- function(new.color, style.name=NULL, 
                                      base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         stop("Color must be in hex code, e.g., #FD5903")
@@ -1105,7 +1119,7 @@ setEdgeLabelColorDefault <- function(new.color, style.name='default',
 #' setEdgeLabelOpacityDefault(50)
 #' }
 #' @export
-setEdgeLabelOpacityDefault <- function(new.opacity, style.name='default', 
+setEdgeLabelOpacityDefault <- function(new.opacity, style.name=NULL, 
                                        base.url=.defaultBaseUrl) {
     if (new.opacity < 0 || new.opacity > 255){
         write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
@@ -1128,7 +1142,7 @@ setEdgeLabelOpacityDefault <- function(new.opacity, style.name='default',
 #' setEdgeLineWidthDefault(3)
 #' }
 #' @export
-setEdgeLineWidthDefault <- function(new.width, style.name='default', 
+setEdgeLineWidthDefault <- function(new.width, style.name=NULL, 
                                     base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_WIDTH", value = new.width) 
     setVisualPropertyDefault(style, style.name, base.url)
@@ -1148,7 +1162,7 @@ setEdgeLineWidthDefault <- function(new.width, style.name='default',
 #' setEdgeLineStyleDefault('LONG_DASH')
 #' }
 #' @export
-setEdgeLineStyleDefault <- function(new.line.style, style.name='default', 
+setEdgeLineStyleDefault <- function(new.line.style, style.name=NULL, 
                                     base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_LINE_TYPE", value = new.line.style) 
     setVisualPropertyDefault(style, style.name, base.url)
@@ -1168,7 +1182,7 @@ setEdgeLineStyleDefault <- function(new.line.style, style.name='default',
 #' setEdgeOpacityDefault(50)
 #' }
 #' @export
-setEdgeOpacityDefault <- function(new.opacity, style.name='default', 
+setEdgeOpacityDefault <- function(new.opacity, style.name=NULL, 
                                   base.url=.defaultBaseUrl) {
     if (new.opacity < 0 || new.opacity > 255){
         write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
@@ -1191,7 +1205,7 @@ setEdgeOpacityDefault <- function(new.opacity, style.name='default',
 #' getEdgeSelectionColorDefault()
 #' }
 #' @export
-getEdgeSelectionColorDefault <- function(style.name='default', base.url=.defaultBaseUrl) {
+getEdgeSelectionColorDefault <- function(style.name=NULL, base.url=.defaultBaseUrl) {
     matched <- unname(getStyleDependencies()['arrowColorMatchesEdge'])
     if(matched)
         return(getVisualPropertyDefault('EDGE_SELECTED_PAINT',style.name, base.url))
@@ -1213,7 +1227,7 @@ getEdgeSelectionColorDefault <- function(style.name='default', base.url=.default
 #' setEdgeSelectionColorDefault('#FD5903')
 #' }
 #' @export
-setEdgeSelectionColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeSelectionColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         stop("Color must be in hex code, e.g., #FD5903")
     }
@@ -1236,7 +1250,7 @@ setEdgeSelectionColorDefault <- function(new.color, style.name='default', base.u
 #' setEdgeSourceArrowColorDefault('#FD5903')
 #' }
 #' @export
-setEdgeSourceArrowColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeSourceArrowColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     }
@@ -1258,7 +1272,7 @@ setEdgeSourceArrowColorDefault <- function(new.color, style.name='default', base
 #' setEdgeTargetArrowColorDefault('#FD5903')
 #' }
 #' @export
-setEdgeTargetArrowColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeTargetArrowColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     }
@@ -1280,7 +1294,7 @@ setEdgeTargetArrowColorDefault <- function(new.color, style.name='default', base
 #' setEdgeSourceArrowShapeDefault('ARROW')
 #' }
 #' @export
-setEdgeSourceArrowShapeDefault <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeSourceArrowShapeDefault <- function(new.shape, style.name=NULL, base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_SOURCE_ARROW_SHAPE", value = new.shape) 
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -1299,7 +1313,7 @@ setEdgeSourceArrowShapeDefault <- function(new.shape, style.name='default', base
 #' setEdgeTargetArrowShapeDefault('ARROW')
 #' }
 #' @export
-setEdgeTargetArrowShapeDefault <- function(new.shape, style.name='default', base.url=.defaultBaseUrl) {
+setEdgeTargetArrowShapeDefault <- function(new.shape, style.name=NULL, base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_TARGET_ARROW_SHAPE", value = new.shape) 
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -1318,7 +1332,7 @@ setEdgeTargetArrowShapeDefault <- function(new.shape, style.name='default', base
 #' setEdgeTooltipDefault('unknown')
 #' }
 #' @export
-setEdgeTooltipDefault <- function(new.tooltip, style.name='default', 
+setEdgeTooltipDefault <- function(new.tooltip, style.name=NULL, 
                                 base.url=.defaultBaseUrl) {
     style = list(visualProperty = "EDGE_TOOLTIP", value = new.tooltip)
     setVisualPropertyDefault(style, style.name, base.url)
@@ -1341,7 +1355,7 @@ setEdgeTooltipDefault <- function(new.tooltip, style.name='default',
 #' getBackgroundColorDefault()
 #' }
 #' @export
-getBackgroundColorDefault <- function(style.name='default', base.url=.defaultBaseUrl) {
+getBackgroundColorDefault <- function(style.name=NULL, base.url=.defaultBaseUrl) {
     return(getVisualPropertyDefault('NETWORK_BACKGROUND_PAINT',style.name, base.url))
 }
 
@@ -1359,7 +1373,7 @@ getBackgroundColorDefault <- function(style.name='default', base.url=.defaultBas
 #' setBackgroundColorDefault('#888888')
 #' }
 #' @export
-setBackgroundColorDefault <- function(new.color, style.name='default', base.url=.defaultBaseUrl) {
+setBackgroundColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
     if (.isNotHexColor(new.color)){
         return()
     } 

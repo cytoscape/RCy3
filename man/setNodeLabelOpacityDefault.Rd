@@ -6,7 +6,7 @@
 \usage{
 setNodeLabelOpacityDefault(
   new.opacity,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

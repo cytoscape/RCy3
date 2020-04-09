@@ -4,11 +4,7 @@
 \alias{setEdgeFontSizeDefault}
 \title{Set Edge Font Size Default}
 \usage{
-setEdgeFontSizeDefault(
-  new.size,
-  style.name = "default",
-  base.url = .defaultBaseUrl
-)
+setEdgeFontSizeDefault(new.size, style.name = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{new.size}{Numeric value for size}

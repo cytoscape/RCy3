@@ -6,7 +6,7 @@
 \usage{
 setNodeBorderColorDefault(
   new.color,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

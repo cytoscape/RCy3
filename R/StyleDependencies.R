@@ -27,8 +27,12 @@
 #' nodeCustomGraphicsSizeSync
 #' nodeSizeLocked
 
-getStyleDependencies <- function(style.name="default",base.url=.defaultBaseUrl){
-    
+getStyleDependencies <- function(style.name=NULL,base.url=.defaultBaseUrl){
+    # set default style
+    if(is.null(style.name)){
+        style.name <- 'default'
+        message('style.name not specified; accessing "default" style.')
+    }
     # launch error if visual style name is missing
     if (! style.name %in% getVisualStyleNames (base.url)) {
         write (sprintf ('Error in RCy3::lockNodeDimensions. No visual style named "%s"', style.name), stdout ())
@@ -65,8 +69,12 @@ getStyleDependencies <- function(style.name="default",base.url=.defaultBaseUrl){
 #' nodeCustomGraphicsSizeSync
 #' nodeSizeLocked
 
-setStyleDependencies <- function(style.name="default",dependencies,base.url=.defaultBaseUrl){
-    
+setStyleDependencies <- function(style.name=NULL ,dependencies,base.url=.defaultBaseUrl){
+    # set default style
+    if(is.null(style.name)){
+        style.name <- 'default'
+        message('style.name not specified; updating "default" style.')
+    }
     # launch error if visual style name is missing
     if (! style.name %in% getVisualStyleNames (base.url)) {
         write (sprintf ('Error in RCy3::lockNodeDimensions. No visual style named "%s"', style.name), stdout ())
@@ -100,7 +108,7 @@ setStyleDependencies <- function(style.name="default",dependencies,base.url=.def
 #' matchArrowColorToEdge(TRUE)
 #' }
 #' @export
-matchArrowColorToEdge <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
+matchArrowColorToEdge <- function (new.state, style.name=NULL, base.url=.defaultBaseUrl) {
     toggle='false'
     if(new.state)
         toggle='true'
@@ -124,7 +132,7 @@ matchArrowColorToEdge <- function (new.state, style.name='default', base.url=.de
 #' lockNodeDimensions(TRUE)
 #' }
 #' @export
-lockNodeDimensions <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
+lockNodeDimensions <- function (new.state, style.name=NULL, base.url=.defaultBaseUrl) {
     toggle='false'
     if(new.state)
         toggle='true'
@@ -148,7 +156,7 @@ lockNodeDimensions <- function (new.state, style.name='default', base.url=.defau
 #' syncNodeCustomGraphicsSize(TRUE)
 #' }
 #' @export
-syncNodeCustomGraphicsSize <- function (new.state, style.name='default', base.url=.defaultBaseUrl) {
+syncNodeCustomGraphicsSize <- function (new.state, style.name=NULL, base.url=.defaultBaseUrl) {
     toggle='false'
     if(new.state)
         toggle='true'

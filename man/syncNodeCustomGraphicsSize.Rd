@@ -6,7 +6,7 @@
 \usage{
 syncNodeCustomGraphicsSize(
   new.state,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

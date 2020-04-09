@@ -9,7 +9,7 @@ setNodeCustomLinearGradient(
   anchors = c(0, 1),
   angle = 0,
   slot = 1,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

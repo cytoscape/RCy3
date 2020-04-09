@@ -15,7 +15,7 @@ setNodeCustomLineChart(
   axisColor = "#000000",
   axisFontSize = 1,
   slot = 1,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

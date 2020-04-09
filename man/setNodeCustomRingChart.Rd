@@ -10,7 +10,7 @@ setNodeCustomRingChart(
   startAngle = 0,
   holeSize = 0.5,
   slot = 1,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

@@ -4,11 +4,7 @@
 \alias{setNodeLabelDefault}
 \title{Set Node Label Default}
 \usage{
-setNodeLabelDefault(
-  new.label,
-  style.name = "default",
-  base.url = .defaultBaseUrl
-)
+setNodeLabelDefault(new.label, style.name = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{new.label}{String label for unmapped nodes.}

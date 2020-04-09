@@ -4,10 +4,7 @@
 \alias{getNodeSelectionColorDefault}
 \title{Get Node Selection Color Default}
 \usage{
-getNodeSelectionColorDefault(
-  style.name = "default",
-  base.url = .defaultBaseUrl
-)
+getNodeSelectionColorDefault(style.name = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{style.name}{Name of style; default is "default" style}

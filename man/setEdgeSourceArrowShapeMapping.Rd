@@ -9,7 +9,7 @@ setEdgeSourceArrowShapeMapping(
   table.column.values,
   shapes,
   default.shape = NULL,
-  style.name = "default",
+  style.name = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )

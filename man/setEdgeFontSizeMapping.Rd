@@ -10,7 +10,7 @@ setEdgeFontSizeMapping(
   sizes = NULL,
   mapping.type = "c",
   default.size = NULL,
-  style.name = "default",
+  style.name = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )

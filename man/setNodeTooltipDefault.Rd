@@ -6,7 +6,7 @@
 \usage{
 setNodeTooltipDefault(
   new.tooltip,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

@@ -6,7 +6,7 @@
 \usage{
 setEdgeTargetArrowShapeDefault(
   new.shape,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

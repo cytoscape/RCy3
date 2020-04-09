@@ -6,7 +6,7 @@
 \usage{
 setEdgeLineWidthDefault(
   new.width,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

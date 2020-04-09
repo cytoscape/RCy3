@@ -6,7 +6,7 @@
 \usage{
 setNodeBorderWidthDefault(
   new.width,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

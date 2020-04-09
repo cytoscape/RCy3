@@ -10,7 +10,7 @@ setNodeBorderWidthMapping(
   widths = NULL,
   mapping.type = "c",
   default.width = NULL,
-  style.name = "default",
+  style.name = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )

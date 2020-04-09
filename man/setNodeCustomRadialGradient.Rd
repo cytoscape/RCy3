@@ -10,7 +10,7 @@ setNodeCustomRadialGradient(
   xCenter = 0.5,
   yCenter = 0.5,
   slot = 1,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

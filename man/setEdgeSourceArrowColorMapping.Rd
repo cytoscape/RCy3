@@ -10,7 +10,7 @@ setEdgeSourceArrowColorMapping(
   colors = NULL,
   mapping.type = "c",
   default.color = NULL,
-  style.name = "default",
+  style.name = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )

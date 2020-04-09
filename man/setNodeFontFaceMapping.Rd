@@ -10,7 +10,7 @@ setNodeFontFaceMapping(
   fonts,
   mapping.type = "d",
   default.font = NULL,
-  style.name = "default",
+  style.name = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )

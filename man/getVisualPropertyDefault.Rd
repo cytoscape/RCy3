@@ -6,7 +6,7 @@
 \usage{
 getVisualPropertyDefault(
   property,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

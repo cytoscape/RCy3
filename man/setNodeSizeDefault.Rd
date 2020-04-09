@@ -4,11 +4,7 @@
 \alias{setNodeSizeDefault}
 \title{Set Node Size Default}
 \usage{
-setNodeSizeDefault(
-  new.size,
-  style.name = "default",
-  base.url = .defaultBaseUrl
-)
+setNodeSizeDefault(new.size, style.name = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{new.size}{Numeric value for size}

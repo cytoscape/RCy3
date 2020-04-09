@@ -4,11 +4,7 @@
 \alias{setNodeColorDefault}
 \title{Set Node Color Default}
 \usage{
-setNodeColorDefault(
-  new.color,
-  style.name = "default",
-  base.url = .defaultBaseUrl
-)
+setNodeColorDefault(new.color, style.name = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{new.color}{Color as hex code, e.g., #FD5903}

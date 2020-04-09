@@ -5,7 +5,7 @@
 \title{Set Style Dependencies}
 \usage{
 setStyleDependencies(
-  style.name = "default",
+  style.name = NULL,
   dependencies,
   base.url = .defaultBaseUrl
 )

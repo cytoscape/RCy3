@@ -9,7 +9,7 @@ setEdgeLineStyleMapping(
   table.column.values,
   line.styles,
   default.line.style = "SOLID",
-  style.name = "default",
+  style.name = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )

@@ -6,7 +6,7 @@
 \usage{
 setNodeFillOpacityDefault(
   new.opacity,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

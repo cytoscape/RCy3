@@ -4,11 +4,7 @@
 \alias{setNodeFontSizeDefault}
 \title{Set Node Font Size Default}
 \usage{
-setNodeFontSizeDefault(
-  new.size,
-  style.name = "default",
-  base.url = .defaultBaseUrl
-)
+setNodeFontSizeDefault(new.size, style.name = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{new.size}{Numeric value for size}

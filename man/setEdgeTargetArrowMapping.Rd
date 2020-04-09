@@ -9,7 +9,7 @@ setEdgeTargetArrowMapping(
   table.column.values,
   shapes,
   default.shape = "ARROW",
-  style.name = "default",
+  style.name = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )

@@ -6,7 +6,7 @@
 \usage{
 setEdgeLineStyleDefault(
   new.line.style,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

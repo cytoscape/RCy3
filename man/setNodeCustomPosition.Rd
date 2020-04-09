@@ -11,7 +11,7 @@ setNodeCustomPosition(
   xOffset = 0,
   yOffset = 0,
   slot = 1,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

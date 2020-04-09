@@ -9,7 +9,7 @@ setNodeCustomPieChart(
   colors = NULL,
   startAngle = 0,
   slot = 1,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

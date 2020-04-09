@@ -4,10 +4,7 @@
 \alias{getEdgeSelectionColorDefault}
 \title{Get Edge Selection Color Default}
 \usage{
-getEdgeSelectionColorDefault(
-  style.name = "default",
-  base.url = .defaultBaseUrl
-)
+getEdgeSelectionColorDefault(style.name = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{style.name}{Name of style; default is "default" style}

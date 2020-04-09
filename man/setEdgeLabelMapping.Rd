@@ -6,7 +6,7 @@
 \usage{
 setEdgeLabelMapping(
   table.column,
-  style.name = "default",
+  style.name = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )

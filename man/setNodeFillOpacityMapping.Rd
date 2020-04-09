@@ -10,7 +10,7 @@ setNodeFillOpacityMapping(
   opacities = NULL,
   mapping.type = "c",
   default.opacity = NULL,
-  style.name = "default",
+  style.name = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )

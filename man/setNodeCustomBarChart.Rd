@@ -18,7 +18,7 @@ setNodeCustomBarChart(
   axisFontSize = 1,
   separation = 0,
   slot = 1,
-  style.name = "default",
+  style.name = NULL,
   base.url = .defaultBaseUrl
 )
 }

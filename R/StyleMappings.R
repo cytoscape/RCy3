@@ -182,7 +182,11 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
 #' }
 updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
     visual.prop.name = mapping$visualProperty
-    
+    # set default style
+    if(is.null(style.name)){
+        style.name <- 'default'
+        message('style.name not specified; updating "default" style.')
+    }
     # check if vp exists already
     res <- cyrestGET(paste('styles', style.name,'mappings',sep = '/')
                      ,base.url=base.url)
@@ -263,14 +267,14 @@ deleteStyleMapping<-function(style.name, visual.prop,  base.url=.defaultBaseUrl)
 #' }
 #' @export
 setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
-                                       mapping.type='c', default.color=NULL, style.name='default', 
+                                       mapping.type='c', default.color=NULL, style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
         if (.isNotHexColor(color)) return()
     }
     
-    # set default
+    # set default color
     if(!is.null(default.color))
         setNodeBorderColorDefault(default.color, style.name, base.url=base.url)
     
@@ -318,7 +322,7 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
 #' @export
 setNodeBorderOpacityMapping <- function(table.column, table.column.values=NULL, 
                                         opacities=NULL, mapping.type='c', 
-                                        default.opacity=NULL, style.name='default', 
+                                        default.opacity=NULL, style.name=NULL, 
                                         network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column,'node',network, base.url)) 
         stop("Table column does not exist. Please try again.")
@@ -375,7 +379,7 @@ setNodeBorderOpacityMapping <- function(table.column, table.column.values=NULL,
 #' }
 #' @export
 setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, widths=NULL, 
-                                       mapping.type='c', default.width=NULL, style.name='default', 
+                                       mapping.type='c', default.width=NULL, style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.width))
@@ -420,7 +424,7 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
 #' }
 #' @export
 setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
-                                 mapping.type='c', default.color=NULL, style.name='default', 
+                                 mapping.type='c', default.color=NULL, style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
@@ -475,7 +479,7 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
 #' @export
 setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL, 
                                         opacities=NULL, mapping.type='c',
-                                        default.opacity=NULL, style.name='default', 
+                                        default.opacity=NULL, style.name=NULL, 
                                         network=NULL, base.url=.defaultBaseUrl) {
     
     # check if opacities are formatted correctly
@@ -565,7 +569,7 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
 #' @export
 setNodeFillOpacityMapping <- function(table.column, table.column.values=NULL, 
                                         opacities=NULL, mapping.type='c', 
-                                        default.opacity=NULL, style.name='default', 
+                                        default.opacity=NULL, style.name=NULL, 
                                         network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column,'node',network, base.url)) 
         stop("Table column does not exist. Please try again.")
@@ -630,7 +634,7 @@ setNodeFillOpacityMapping <- function(table.column, table.column.values=NULL,
 setNodeFontFaceMapping <- function(table.column, table.column.values, 
                                    fonts, mapping.type='d', 
                                    default.font=NULL,
-                                   style.name = 'default', 
+                                   style.name=NULL, 
                                    network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column,'node',network, base.url)) 
         stop("Table column does not exist. Please try again.")
@@ -676,7 +680,7 @@ setNodeFontFaceMapping <- function(table.column, table.column.values,
 #' }
 #' @export
 setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, sizes=NULL, 
-                                mapping.type='c', default.size=NULL, style.name='default', 
+                                mapping.type='c', default.size=NULL, style.name=NULL, 
                                 network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.size))
@@ -722,7 +726,7 @@ setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, size
 #' }
 #' @export
 setNodeHeightMapping <- function (table.column, table.column.values=NULL, heights=NULL, 
-                                mapping.type='c', default.height=NULL, style.name='default', 
+                                mapping.type='c', default.height=NULL, style.name=NULL, 
                                 network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.height))
@@ -763,7 +767,7 @@ setNodeHeightMapping <- function (table.column, table.column.values=NULL, height
 #' setNodeLabelMapping('name')
 #' }
 #' @export
-setNodeLabelMapping <- function (table.column, style.name = 'default', 
+setNodeLabelMapping <- function (table.column, style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column,'node',network, base.url)) return()
     mvp <- mapVisualProperty("NODE_LABEL", table.column, 'p', 
@@ -793,7 +797,7 @@ setNodeLabelMapping <- function (table.column, style.name = 'default',
 #' }
 #' @export
 setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
-                                       mapping.type='c', default.color=NULL, style.name='default', 
+                                       mapping.type='c', default.color=NULL, style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
@@ -848,7 +852,7 @@ setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, co
 #' @export
 setNodeLabelOpacityMapping <- function(table.column, table.column.values=NULL, 
                                         opacities=NULL, mapping.type='c', 
-                                        default.opacity=NULL, style.name='default', 
+                                        default.opacity=NULL, style.name=NULL, 
                                         network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column,'node',network, base.url)) 
         stop("Table column does not exist. Please try again.")
@@ -904,7 +908,7 @@ setNodeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
 #' }
 #' @export
 setNodeShapeMapping <- function (table.column, table.column.values, shapes, 
-                                 default.shape=NULL , style.name = 'default', 
+                                 default.shape=NULL , style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.shape))
@@ -939,7 +943,7 @@ setNodeShapeMapping <- function (table.column, table.column.values, shapes,
 #' }
 #' @export
 setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NULL, 
-                                mapping.type='c', default.size=NULL, style.name='default', 
+                                mapping.type='c', default.size=NULL, style.name=NULL, 
                                 network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.size))
@@ -980,7 +984,7 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
 #' setNodeTooltipMapping('description')
 #' }
 #' @export
-setNodeTooltipMapping <- function (table.column, style.name = 'default', 
+setNodeTooltipMapping <- function (table.column, style.name=NULL, 
                                    network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column,'node',network, base.url)) return()
     mvp <- mapVisualProperty("NODE_TOOLTIP", table.column, 'p', 
@@ -1009,7 +1013,7 @@ setNodeTooltipMapping <- function (table.column, style.name = 'default',
 #' }
 #' @export
 setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=NULL, 
-                                  mapping.type='c', default.width=NULL, style.name='default', 
+                                  mapping.type='c', default.width=NULL, style.name=NULL, 
                                   network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.width))
@@ -1057,7 +1061,7 @@ setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=
 #' }
 #' @export
 setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
-                                 mapping.type='c', default.color=NULL, style.name='default', 
+                                 mapping.type='c', default.color=NULL, style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
@@ -1134,7 +1138,7 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
 setEdgeFontFaceMapping <- function(table.column, table.column.values, 
                                    fonts, mapping.type='d', 
                                    default.font=NULL,
-                                   style.name = 'default', 
+                                   style.name=NULL, 
                                    network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column,'edge',network, base.url)) 
         stop("Table column does not exist. Please try again.")
@@ -1180,7 +1184,7 @@ setEdgeFontFaceMapping <- function(table.column, table.column.values,
 #' }
 #' @export
 setEdgeFontSizeMapping <- function (table.column, table.column.values=NULL, sizes=NULL, 
-                                    mapping.type='c', default.size=NULL, style.name='default', 
+                                    mapping.type='c', default.size=NULL, style.name=NULL, 
                                     network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.size))
@@ -1220,7 +1224,7 @@ setEdgeFontSizeMapping <- function (table.column, table.column.values=NULL, size
 #' setEdgeLabelMapping('label')
 #' }
 #' @export
-setEdgeLabelMapping <- function (table.column, style.name = 'default', 
+setEdgeLabelMapping <- function (table.column, style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
     mvp <- mapVisualProperty("EDGE_LABEL", table.column, 'p')  
@@ -1248,7 +1252,7 @@ setEdgeLabelMapping <- function (table.column, style.name = 'default',
 #' }
 #' @export
 setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
-                                      mapping.type='c', default.color=NULL, style.name='default', 
+                                      mapping.type='c', default.color=NULL, style.name=NULL, 
                                       network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
@@ -1306,7 +1310,7 @@ setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, co
 setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL, 
                                    opacities=NULL, mapping.type='c', 
                                    default.opacity=NULL,
-                                   style.name = 'default', 
+                                   style.name=NULL, 
                                    network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column,'edge',network, base.url)) 
         stop("Table column does not exist. Please try again.")
@@ -1362,7 +1366,7 @@ setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
 #' }
 #' @export
 setEdgeLineStyleMapping <- function (table.column, table.column.values, line.styles, 
-                                     default.line.style='SOLID', style.name = 'default', 
+                                     default.line.style='SOLID', style.name=NULL, 
                                      network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.line.style))
@@ -1397,7 +1401,7 @@ setEdgeLineStyleMapping <- function (table.column, table.column.values, line.sty
 #' }
 #' @export
 setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, widths=NULL, 
-                                     mapping.type='c', default.width=NULL, style.name='default', 
+                                     mapping.type='c', default.width=NULL, style.name=NULL, 
                                      network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.width))
@@ -1444,7 +1448,7 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
 #' @export
 setEdgeOpacityMapping <- function (table.column, table.column.values=NULL, 
                                    opacities=NULL, mapping.type='c',
-                                   default.opacity=NULL, style.name='default', 
+                                   default.opacity=NULL, style.name=NULL, 
                                    network=NULL, base.url=.defaultBaseUrl) {
     
     # check if opacities are formatted correctly
@@ -1499,7 +1503,7 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
 #' }
 #' @export
 setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes, 
-                                       default.shape='ARROW', style.name = 'default', 
+                                       default.shape='ARROW', style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.shape))
@@ -1533,7 +1537,7 @@ setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes
 #' }
 #' @export
 setEdgeSourceArrowMapping <- function (table.column, table.column.values, shapes, 
-                                       default.shape='ARROW', style.name = 'default', 
+                                       default.shape='ARROW', style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.shape))
@@ -1569,7 +1573,7 @@ setEdgeSourceArrowMapping <- function (table.column, table.column.values, shapes
 #' }
 #' @export
 setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
-                                            mapping.type='c', default.color=NULL, style.name='default', 
+                                            mapping.type='c', default.color=NULL, style.name=NULL, 
                                             network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
@@ -1620,7 +1624,7 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
 #' }
 #' @export
 setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
-                                            mapping.type='c', default.color=NULL, style.name='default', 
+                                            mapping.type='c', default.color=NULL, style.name=NULL, 
                                             network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
@@ -1671,7 +1675,7 @@ setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NU
 #' }
 #' @export
 setEdgeTargetArrowShapeMapping <- function (table.column, table.column.values, shapes, 
-                                 default.shape=NULL , style.name = 'default', 
+                                 default.shape=NULL , style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.shape))
@@ -1706,7 +1710,7 @@ setEdgeTargetArrowShapeMapping <- function (table.column, table.column.values, s
 #' }
 #' @export
 setEdgeSourceArrowShapeMapping <- function (table.column, table.column.values, shapes, 
-                                            default.shape=NULL , style.name = 'default', 
+                                            default.shape=NULL , style.name=NULL, 
                                             network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.shape))
@@ -1735,7 +1739,7 @@ setEdgeSourceArrowShapeMapping <- function (table.column, table.column.values, s
 #' setEdgeTooltipMapping('description')
 #' }
 #' @export
-setEdgeTooltipMapping <- function (table.column, style.name = 'default', 
+setEdgeTooltipMapping <- function (table.column, style.name=NULL, 
                                    network=NULL, base.url=.defaultBaseUrl) {
     if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
     mvp <- mapVisualProperty("EDGE_TOOLTIP", table.column, 'p')  

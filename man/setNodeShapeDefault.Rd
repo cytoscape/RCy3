@@ -4,11 +4,7 @@
 \alias{setNodeShapeDefault}
 \title{Set Node Shape Default}
 \usage{
-setNodeShapeDefault(
-  new.shape,
-  style.name = "default",
-  base.url = .defaultBaseUrl
-)
+setNodeShapeDefault(new.shape, style.name = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{new.shape}{Name of shape, e.g., ELLIPSE, RECTANGLE, etc (see \link{getNodeShapes})}
