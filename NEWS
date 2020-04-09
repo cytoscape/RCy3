@@ -1,9 +1,14 @@
-Changes in version 2.6.1
+Changes in version 2.7.0
++ Better messaging for...
+  - App-related functions, like installApp
+  - When style changes are applied to "default" style
+Changes in version 2.6.x
 + Doc Fixes
   - Roxygen update and man pages
   - Fixes to unitTests
 + Bug Fixes
   - getSelectedNodes/Edges -- #82 fixed missing param in usage
+  - added missing base.url args -- #88
 Changes in version 2.6.0
 + New functions: 
   - createGroupByColumn
