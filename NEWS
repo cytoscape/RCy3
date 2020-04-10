@@ -1,4 +1,4 @@
-Changes in version 2.7.0
+Changes in version 2.8.0
 + Better messaging for...
   - App-related functions, like installApp
   - When style changes are applied to "default" style
