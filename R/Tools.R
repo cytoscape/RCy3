@@ -253,3 +253,105 @@ diffusionAdvanced <- function(heat.column.name=NULL, time=NULL, base.url = .defa
     commandsPOST(paste0('diffusion diffuse_advanced',heat.str,time.str),
                  base.url = base.url)
 }
+
+# ------------------------------------------------------------------------------
+#' @title Merge Networks
+#' 
+#' @description Combine networks via union, intersection, or difference 
+#' operations. Lots of optional parameters choose from!
+#' @param sources List of network names to be merged.
+#' @param title (optional) Title of the resulting merged network. Default is a
+#' concatentation of operation and source network titles.
+#' @param operation (optional) Type of merge: union (default), intersection or
+#' difference.
+#' @param nodeKeys (optional) An order-dependent list of columns to match  
+#' nodes across source networks. Default is "name" column for all sources.
+#' @param nodeMergeMap (optional) A list of column merge records specifying
+#' how to merge node table data. Each record should be of the form: 
+#' c("network1 column", "network2 column", "merged column", "type"), where
+#' column names are provided and type is String, Integer, Double or List.
+#' @param nodesOnly (optional) If TRUE, this will merge the node tables and 
+#' ignore edge and network table data. Default is FALSE.
+#' @param edgeKeys (optional) An order-dependent list of columns to match 
+#' edges across source networks. Default is "name" column for all sources.
+#' @param edgeMergeMap (optional) A list of column merge records specifying
+#' how to merge edge table data. Each record should be of the form: 
+#' c("network1 column", "network2 column", "merged column", "type"), where
+#' column names are provided and type is String, Integer, Double or List.
+#' @param networkMergeMap (optional) A list of column merge records specifying
+#' how to merge network table data. Each record should be of the form: 
+#' c("network1 column", "network2 column", "merged column", "type"), where
+#' column names are provided and type is String, Integer, Double or List.
+#' @param inNetworkMerge (optional) If TRUE (default), nodes and edges with 
+#' matching attributes in the same network will be merged. 
+#' @param base.url (optional) Ignore unless you need to specify a custom 
+#' domain, port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported 
+#' by this version of RCy3.
+#' @return SUID of resulting merged network
+#' @examples \\donttest{
+#' mergeNetworks(c("Network 1", "Network 2"), "Merged Network")
+#' mergeNetworks(c("my network","string network"), "Merged Network", 
+#'               nodeKeys=c("HGNC","query term"))
+#' }
+#' @export
+mergeNetworks <- function(sources = NULL,
+                          title = NULL,
+                          operation = "union",
+                          nodeKeys = NULL,
+                          nodeMergeMap = NULL,
+                          nodesOnly = FALSE,
+                          edgeKeys = NULL,
+                          edgeMergeMap = NULL,
+                          networkMergeMap = NULL,
+                          inNetworkMerge = TRUE,
+                          base.url = .defaultBaseUrl) {
+    cmd.string <- 'network merge' # a good start
+    
+    # sources must be suppled
+    if(is.null(sources)) {
+        message("Missing sources!")
+        return(NULL)
+    } else {
+        sources.str <- paste(sources, collapse = ",")
+        cmd.string <- paste0(cmd.string,' sources="',sources.str,'"')
+    }
+    
+    # defaults
+    cmd.string <- paste0(cmd.string,' operation=',operation)
+    cmd.string <- paste0(cmd.string,' nodesOnly=',nodesOnly)
+    cmd.string <- paste0(cmd.string,' inNetworkMerge=',inNetworkMerge)
+    
+    # optional args
+    if(!is.null(title))
+        cmd.string <- paste0(cmd.string,' netName="',title,'"')
+    if(!is.null(nodeKeys))
+        cmd.string <- paste0(cmd.string,' nodeKeys="',paste(nodeKeys, collapse = ","),'"')
+    if(!is.null(edgeKeys))
+        cmd.string <- paste0(cmd.string,' edgeKeys="',paste(edgeKeys, collapse = ","),'"')
+    if(!is.null(nodeMergeMap)){
+        nodeMergeMap.str <- paste(nodeMergeMap, collapse = ",")
+        nodeMergeMap.str <- gsub("c\\(", "{", nodeMergeMap.str)
+        nodeMergeMap.str <- gsub("\\)", "}", nodeMergeMap.str)
+        cmd.string <- paste0(cmd.string,' nodeMergeMap="',nodeMergeMap.str,'"')
+    }
+    if(!is.null(edgeMergeMap)){
+        edgeMergeMap.str <- paste(edgeMergeMap, collapse = ",")
+        edgeMergeMap.str <- gsub("c\\(", "{", edgeMergeMap.str)
+        edgeMergeMap.str <- gsub("\\)", "}", edgeMergeMap.str)
+        cmd.string <- paste0(cmd.string,' edgeMergeMap="',edgeMergeMap.str,'"')
+    }
+    if(!is.null(networkMergeMap)){
+        networkMergeMap.str <- paste(networkMergeMap, collapse = ",")
+        networkMergeMap.str <- gsub("c\\(", "{", networkMergeMap.str)
+        networkMergeMap.str <- gsub("\\)", "}", networkMergeMap.str)
+        cmd.string <- paste0(cmd.string,' networkMergeMap="',networkMergeMap.str,'"')
+    }
+    
+    res.data <- commandsPOST(cmd.string, base.url = base.url)
+    
+    if(!is.null(res.data$SUID))
+        return(res.data$SUID)
+    else
+        return(res.data)
+}
