@@ -314,7 +314,7 @@ diffusionAdvanced <- function(heat.column.name=NULL, time=NULL, base.url = .defa
 #' http://localhost:1234 and the latest version of the CyREST API supported 
 #' by this version of RCy3.
 #' @return SUID of resulting merged network
-#' @examples \\donttest{
+#' @examples \donttest{
 #' mergeNetworks(c("Network 1", "Network 2"), "Merged Network")
 #' mergeNetworks(c("my network","string network"), "Merged Network", 
 #'               nodeKeys=c("HGNC","query term"))

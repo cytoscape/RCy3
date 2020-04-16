@@ -67,7 +67,7 @@ Combine networks via union, intersection, or difference
 operations. Lots of optional parameters choose from!
 }
 \examples{
-\\donttest{
+\donttest{
 mergeNetworks(c("Network 1", "Network 2"), "Merged Network")
 mergeNetworks(c("my network","string network"), "Merged Network", 
               nodeKeys=c("HGNC","query term"))
