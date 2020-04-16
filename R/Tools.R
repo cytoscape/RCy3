@@ -2,6 +2,31 @@
 # Functions related to TOOLS found in the Tools Menu in Cytoscape.
 # 
 # ------------------------------------------------------------------------------
+#' @title Analyze Network
+#'
+#' @description Calculate various network statistics.
+#' @param directed (optional) If TRUE, the network is considered a directed 
+#' graph. Default is FALSE.
+#' @param base.url (optional) Ignore unless you need to specify a custom 
+#' domain, port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported 
+#' by this version of RCy3.
+#' @return Named list of summary statistics
+#' @details The results are added to the Node and Edge tables and the Results 
+#' Panel. The summary statistics in the Results Panel are also returned by 
+#' the function as a list of named values.
+#' @examples \donttest{
+#' analyzeNetwork()
+#' analyzeNetwork(TRUE)
+#' }
+#' @export
+analyzeNetwork <- function(directed = FALSE, base.url = .defaultBaseUrl){
+    commandsPOST(paste0('analyzer analyze directed=',directed),
+                 base.url = base.url)
+    
+}
+
+# ------------------------------------------------------------------------------
 #' @title Cybrowser Close
 #'
 #' @description Close an internal web browser and remove all content. Provide an 
