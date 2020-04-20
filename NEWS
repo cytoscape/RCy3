@@ -1,6 +1,7 @@
 Changes in version 2.8.0
 + New functions:
   - mergeNetworks
+  - analyzeNetwork
 + Better messaging for...
   - App-related functions, like installApp
   - When style changes are applied to "default" style
