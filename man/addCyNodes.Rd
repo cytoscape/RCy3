@@ -32,6 +32,6 @@ Add one or more nodes to a Cytoscape network.
 }
 \examples{
 \donttest{
-addCyNodes()
+addCyNodes(c('Node A','Node B','Node C'))
 }
 }

@@ -354,7 +354,13 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
     cmd.body <- gsub("\n} \n} \n}", "\n} \n}\\' \n}", cmd.body, perl = TRUE)
     cmd.body <- gsub("\n] \n} \n}", "\n] \n}\\' \n}", cmd.body, perl = TRUE) #for createCompositeFilter
     
-    res=POST(url=cmd.url, body=cmd.body, encode="json", content_type_json())
+    tryCatch(
+        res <- POST(url=cmd.url, body=cmd.body, encode="json", content_type_json()), 
+        error=function(c) .cyError(c, res),
+        warnings=function(c) .cyWarnings(c, res),
+        finally=.cyFinally(res)
+    )
+    
     if(res$status_code > 299){
         write(sprintf("RCy3::.postCreateFilter, HTTP Error Code: %d\n url=%s\n body=%s", 
                       res$status_code, URLencode(cmd.url), cmd.body), stderr())

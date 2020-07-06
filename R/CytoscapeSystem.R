@@ -22,10 +22,12 @@ cytoscapePing<-function(base.url=.defaultBaseUrl) {
     conn.str <- paste(base.url, 'version', sep="/")
     res <- GET(conn.str)
     if(res$status_code == 200) {
-        return("You are connected to Cytoscape!")
+        message("You are connected to Cytoscape!")
     } else {
-        write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
-        stop()
+        stop(sprintf("Oh no! I can't find Cytoscape. RCy3 can not continue!
+Please check that Cytoscape is running, CyREST is installed and your 
+base.url parameter is correct.", 
+                     stderr()))
     }
 }
 

@@ -43,6 +43,6 @@ Adds the specified nodes and edges to the specified group.
 }
 \examples{
 \donttest{
-AddToGroup()
+AddToGroup('myGroup')
 }
 }

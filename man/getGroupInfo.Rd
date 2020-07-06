@@ -23,6 +23,6 @@ Retrieve information about a group by name or identifier.
 }
 \examples{
 \donttest{
-getGroupInfo('mygroup')
+getGroupInfo('myGroup')
 }
 }

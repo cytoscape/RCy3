@@ -278,7 +278,7 @@ setLayoutProperties <- function (layout.name, properties.list, base.url = .defau
     all.properties = list()
     for (prop in names (properties.list)) {
         if (!prop %in% all.possible.props) {
-            write (sprintf ('%s is not a property in layout %s', prop, layout.name), stderr ())
+            stop(sprintf ('%s is not a property in layout %s', prop, layout.name), stderr ())
         } else {
             new.value <- properties.list [[prop]]
             each.property <- list("name"=prop, "value"=new.value)

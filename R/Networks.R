@@ -261,7 +261,7 @@ exportNetwork <- function (filename=NULL, type="SIF",
         cmd.string <- paste0(cmd.string,' network="SUID:',getNetworkSuid(network,base.url),'"')
     type = toupper(type)
     if (type == 'CYS') {
-        write('Saving session as a CYS file...',stderr())
+        message('Saving session as a CYS file...')
         return(saveSession(filename = filename, base.url = base.url))
     }
     else {
@@ -406,7 +406,7 @@ getFirstNeighbors <-
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return A \code{list} of \code{named lists} of name and SUID for each node added.
 #' @examples \donttest{
-#' addCyNodes()
+#' addCyNodes(c('Node A','Node B','Node C'))
 #' }
 #' @importFrom BiocGenerics setdiff
 #' @export
@@ -528,10 +528,8 @@ addCyEdges <-
             lapply(x, function(y)
                 max(length(y))))
         if (as.integer(max(unlist(max.mapping))) > 1) {
-            write(
-                'RCy3::addCyEdges, more than one node found for a given source or target node name. No edges added.',
-                stderr()
-            )
+            message('RCy3::addCyEdges, more than one node found for a given 
+source or target node name. No edges added.')
             return()
         }
         
@@ -903,7 +901,7 @@ createNetworkFromDataFrames <-
                     stringsAsFactors = FALSE
                 )
             } else
-                return("Create Network Failed: Must provide either nodes or edges")
+                stop("Create Network Failed: Must provide either nodes or edges")
         } else {
             nodes <- data.frame(nodes, stringsAsFactors = FALSE) #clear factors
         }
@@ -962,7 +960,7 @@ createNetworkFromDataFrames <-
                                    body = json_network,
                                    base.url = base.url)
         
-        cat("Loading data...\n")
+        message("Loading data...\n")
         # Remove SUID columns if present
         if('SUID' %in% colnames(nodes))
             nodes <- subset(nodes, select = -c(SUID))
@@ -990,10 +988,10 @@ createNetworkFromDataFrames <-
                               network = network.suid, base.url = base.url)
         }
         
-        cat("Applying default style...\n")
+        message("Applying default style...\n")
         commandsPOST('vizmap apply styles="default"', base.url = base.url)
         
-        cat("Applying preferred layout...\n")
+        message("Applying preferred layout...\n")
         layoutNetwork(network=network.suid)
         
         return(network.suid)

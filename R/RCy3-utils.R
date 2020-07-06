@@ -32,12 +32,39 @@
 }
 # ------------------------------------------------------------------------------
 # Validate and provide user feedback when hex color codes are required input.
-.isNotHexColor <- function(color){
+.checkHexColor <- function(color){
     if ((substring(color, 1, 1) != "#") || (nchar(color) !=7)) {
-        write (sprintf ('Error. %s is not a valid hexadecimal color (has to begin with # and be 7 characters long).', color), stderr ())
-        return(TRUE)
-    }else{
-        return(FALSE)
+        stop (simpleError(sprintf ('%s is not a valid hexadecimal color, e.g. #FD39B8.', color)))
+    }
+}
+
+# ------------------------------------------------------------------------------
+# Validate and provide user feedback when opacity value is outside of range.
+.checkOpacity <- function(opacity){
+    if(is.numeric(opacity)){
+        if(opacity%%1 != 0){
+            stop(simpleError('Opacity must be an integer between 0 and 255.'))
+        }
+    } else {
+        stop(simpleError('Opacity must be an integer between 0 and 255.'))
+    }
+    if (opacity < 0 || opacity > 255){
+        stop (simpleError(sprintf ('%i is invalid. Opacity must be between 0 and 255.', opacity)))
+    } 
+}
+
+# ------------------------------------------------------------------------------
+# Validate and provide user feedback when slot number is outside of range.
+.checkSlot <- function(slot){
+    if(is.numeric(slot)){
+        if(slot%%1 != 0){
+            stop(simpleError('Slot must be an integer between 1 and 9.'))
+        }
+    } else {
+        stop(simpleError('Slot must be an integer between 1 and 9.'))
+    }
+    if (!slot %in% seq_len(9)){
+        stop (simpleError(sprintf('%i is invalid. Slot must be an integer between 1 and 9.', slot)))
     }
 }
 
@@ -90,7 +117,7 @@
 # TRUE or FALSE.
 .tableColumnExists <- function(table.column, table, network=network, base.url=base.url){
     if (!table.column %in% getTableColumnNames(table, network=network, base.url=base.url)) {
-        write (sprintf ('Column %s does not exist in the %s table.', table.column, table), stderr ())
+        message (sprintf ('Column %s does not exist in the %s table.', table.column, table))
         return (FALSE)
     }
     return (TRUE)
@@ -108,15 +135,13 @@
     
     nogo <- FALSE
     if(cyrest > vApiNum){
-        write(sprintf("CyREST API version %d or greater is required. You are currently working with version %d.",
-                      cyrest, vApiNum),
-              stderr())
+        message(sprintf("CyREST API version %d or greater is required. You are currently working with version %d.",
+                      cyrest, vApiNum))
         nogo <- TRUE
     }
     if(cytoscape > vCyNum){
-        write(sprintf("Cytoscape version %0.2g or greater is required. You are currently working with version %0.2g.",
-                      cytoscape, vCyNum),
-              stderr())
+        message(sprintf("Cytoscape version %0.2g or greater is required. You are currently working with version %0.2g.",
+                      cytoscape, vCyNum))
         nogo <- TRUE
     }
     if(nogo)

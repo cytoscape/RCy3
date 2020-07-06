@@ -236,7 +236,7 @@ getSelectedNodes <-
         net.SUID <- getNetworkSuid(network,base.url)
         
         if (getSelectedNodeCount(net.SUID, base.url) == 0) {
-            write (sprintf ('No nodes selected.'), stdout ())
+            message('No nodes selected.')
             return(NA)
         } else {
             selected.node.SUIDs <-
@@ -525,6 +525,7 @@ getSelectedEdges <-
     function (edge.suids = FALSE, network = NULL, base.url = .defaultBaseUrl) {
         net.SUID = getNetworkSuid(network,base.url)
         if (getSelectedEdgeCount(net.SUID, base.url) == 0) {
+            message('No edges selected.')
             return (NA)
         } else {
             selected.edges.SUIDs = cyrestGET(

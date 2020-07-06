@@ -154,8 +154,7 @@ mapVisualProperty <- function(visual.prop, table.column, mapping.type, table.col
             }
         }
         else {
-            write ("Error: table.column.values and visual.prop.values don't match up.", stderr ())
-            return ()
+            stop ("Table.column.values and visual.prop.values don't match up.")
         }
         visual.prop.map$points=points
     }
@@ -271,7 +270,7 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
                                        network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
-        if (.isNotHexColor(color)) return()
+        .checkHexColor(color)
     }
     
     # set default color
@@ -291,8 +290,7 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
         mvp <- mapVisualProperty("NODE_BORDER_PAINT",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 } 
@@ -327,16 +325,10 @@ setNodeBorderOpacityMapping <- function(table.column, table.column.values=NULL,
     if(!.tableColumnExists(table.column,'node',network, base.url)) 
         stop("Table column does not exist. Please try again.")
     for (o in opacities){
-        if (o < 0 || o > 255){
-            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(o)
     }
     if(!is.null(default.opacity)){
-        if (default.opacity < 0 || default.opacity > 255){
-            write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(default.opacity)
         setVisualPropertyDefault(
             list(visualProperty = "NODE_BORDER_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
@@ -353,8 +345,7 @@ setNodeBorderOpacityMapping <- function(table.column, table.column.values=NULL,
         mvp1 <- mapVisualProperty("NODE_BORDER_TRANSPARENCY",table.column, 'p',
                                   network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("Mapping.type not recognized.")
     }
     updateStyleMapping(style.name, mvp1, base.url = base.url)
 }
@@ -398,8 +389,7 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
         mvp <- mapVisualProperty("NODE_BORDER_WIDTH",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
@@ -428,7 +418,7 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
                                  network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
-        if (.isNotHexColor(color)) return()
+        .checkHexColor(color)
     }
     
     # set default
@@ -448,8 +438,7 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
         mvp <- mapVisualProperty("NODE_FILL_COLOR",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 } 
@@ -484,18 +473,12 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
     
     # check if opacities are formatted correctly
     for (o in opacities){
-        if (o < 0 || o > 255){
-            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(o)
     }
     
     # set default
     if(!is.null(default.opacity)){
-        if (default.opacity < 0 || default.opacity > 255){
-            write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(default.opacity)
         setVisualPropertyDefault(
             list(visualProperty = "NODE_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
@@ -536,8 +519,7 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
         mvp3 <- mapVisualProperty("NODE_LABEL_TRANSPARENCY",table.column, 'p',
                                   network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
     }
     updateStyleMapping(style.name, mvp1, base.url = base.url)
     updateStyleMapping(style.name, mvp2, base.url = base.url)
@@ -574,16 +556,10 @@ setNodeFillOpacityMapping <- function(table.column, table.column.values=NULL,
     if(!.tableColumnExists(table.column,'node',network, base.url)) 
         stop("Table column does not exist. Please try again.")
     for (o in opacities){
-        if (o < 0 || o > 255){
-            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(o)
     }
     if(!is.null(default.opacity)){
-        if (default.opacity < 0 || default.opacity > 255){
-            write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(default.opacity) 
         setVisualPropertyDefault(
             list(visualProperty = "NODE_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
@@ -600,8 +576,7 @@ setNodeFillOpacityMapping <- function(table.column, table.column.values=NULL,
         mvp1 <- mapVisualProperty("NODE_TRANSPARENCY",table.column, 'p',
                                   network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
     }
     updateStyleMapping(style.name, mvp1, base.url = base.url)
 }
@@ -653,8 +628,7 @@ setNodeFontFaceMapping <- function(table.column, table.column.values,
         mvp1 <- mapVisualProperty("NODE_LABEL_FONT_FACE",table.column, 'p',
                                   network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
     }
     updateStyleMapping(style.name, mvp1, base.url = base.url)
 }
@@ -699,8 +673,7 @@ setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, size
         mvp <- mapVisualProperty("NODE_LABEL_FONT_SIZE",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
@@ -745,8 +718,7 @@ setNodeHeightMapping <- function (table.column, table.column.values=NULL, height
         mvp <- mapVisualProperty("NODE_HEIGHT",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
@@ -801,7 +773,7 @@ setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, co
                                        network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
-        if (.isNotHexColor(color)) return()
+        .checkHexColor(color)
     }
     
     # set default
@@ -821,8 +793,7 @@ setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, co
         mvp <- mapVisualProperty("NODE_LABEL_COLOR",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
@@ -857,16 +828,10 @@ setNodeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
     if(!.tableColumnExists(table.column,'node',network, base.url)) 
         stop("Table column does not exist. Please try again.")
     for (o in opacities){
-        if (o < 0 || o > 255){
-            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(o)
     }
     if(!is.null(default.opacity)){
-        if (default.opacity < 0 || default.opacity > 255){
-            write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(default.opacity)
         setVisualPropertyDefault(
             list(visualProperty = "NODE_LABEL_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
@@ -883,8 +848,8 @@ setNodeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
         mvp1 <- mapVisualProperty("NODE_LABEL_TRANSPARENCY",table.column, 'p',
                                   network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp1, base.url = base.url)
 }
@@ -962,8 +927,8 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
         mvp <- mapVisualProperty("NODE_SIZE",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
@@ -1032,8 +997,8 @@ setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=
         mvp <- mapVisualProperty("NODE_WIDTH",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
@@ -1065,7 +1030,7 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
                                  network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
-        if (.isNotHexColor(color)) return()
+        .checkHexColor(color)
     }
     
     # set default
@@ -1085,8 +1050,8 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
         mvp <- mapVisualProperty("EDGE_UNSELECTED_PAINT",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
     
@@ -1103,8 +1068,8 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
         mvp <- mapVisualProperty("EDGE_STROKE_UNSELECTED_PAINT",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
     
@@ -1157,8 +1122,8 @@ setEdgeFontFaceMapping <- function(table.column, table.column.values,
         mvp1 <- mapVisualProperty("EDGE_LABEL_FONT_FACE",table.column, 'p',
                                   network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp1, base.url = base.url)
 }
@@ -1203,8 +1168,8 @@ setEdgeFontSizeMapping <- function (table.column, table.column.values=NULL, size
         mvp <- mapVisualProperty("EDGE_LABEL_FONT_SIZE",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
@@ -1256,7 +1221,7 @@ setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, co
                                       network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
-        if (.isNotHexColor(color)) return()
+        .checkHexColor(color)
     }
     
     # set default
@@ -1276,8 +1241,8 @@ setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, co
         mvp <- mapVisualProperty("EDGE_LABEL_COLOR",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
@@ -1315,16 +1280,10 @@ setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
     if(!.tableColumnExists(table.column,'edge',network, base.url)) 
         stop("Table column does not exist. Please try again.")
     for (o in opacities){
-        if (o < 0 || o > 255){
-            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(o)
     }
     if(!is.null(default.opacity)){
-        if (default.opacity < 0 || default.opacity > 255){
-            write (sprintf ('Error: opacity must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(default.opacity)
         setVisualPropertyDefault(
             list(visualProperty = "EDGE_LABEL_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
@@ -1341,8 +1300,8 @@ setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
         mvp1 <- mapVisualProperty("EDGE_LABEL_TRANSPARENCY",table.column, 'p',
                                   network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp1, base.url = base.url)
 }
@@ -1420,8 +1379,8 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
         mvp <- mapVisualProperty("EDGE_WIDTH",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 }
@@ -1453,18 +1412,16 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
     
     # check if opacities are formatted correctly
     for (o in opacities){
-        if (o < 0 || o > 255){
-            write (sprintf ('Error: opacities must be between 0 and 255.'), stderr ())
-            return()
-        } 
+        .checkOpacity(o)
     }
     
     # set default
-    if(!is.null(default.opacity))
+    if(!is.null(default.opacity)){
+        .checkOpacity(default.opacity)
         setVisualPropertyDefault(
             list(visualProperty = "EDGE_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
-    
+    }    
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'c',
@@ -1478,8 +1435,8 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
         mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 } 
@@ -1577,7 +1534,7 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
                                             network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
-        if (.isNotHexColor(color)) return()
+        .checkHexColor(color)
     }
     
     # set default
@@ -1597,8 +1554,8 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
         mvp <- mapVisualProperty("EDGE_TARGET_ARROW_UNSELECTED_PAINT",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 } 
@@ -1628,7 +1585,7 @@ setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NU
                                             network=NULL, base.url=.defaultBaseUrl) {
     # check if colors are formatted correctly
     for (color in colors){
-        if (.isNotHexColor(color)) return()
+        .checkHexColor(color)
     }
     
     # set default
@@ -1648,8 +1605,8 @@ setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NU
         mvp <- mapVisualProperty("EDGE_SOURCE_ARROW_UNSELECTED_PAINT",table.column, 'p',
                                  network=network, base.url = base.url)
     } else {
-        write(print("mapping.type not recognized."), stderr())
-        return()
+        stop("mapping.type not recognized.")
+        
     }
     updateStyleMapping(style.name, mvp, base.url = base.url)
 } 

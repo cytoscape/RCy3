@@ -43,6 +43,6 @@ Removes the specified nodes and edges from the specified group.
 }
 \examples{
 \donttest{
-RemoveFromGroup()
+RemoveFromGroup('myGroup')
 }
 }

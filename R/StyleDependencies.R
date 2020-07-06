@@ -35,8 +35,7 @@ getStyleDependencies <- function(style.name=NULL,base.url=.defaultBaseUrl){
     }
     # launch error if visual style name is missing
     if (! style.name %in% getVisualStyleNames (base.url)) {
-        write (sprintf ('Error in RCy3::lockNodeDimensions. No visual style named "%s"', style.name), stdout ())
-        return ()
+        stop (sprintf ('No visual style named "%s"', style.name))
     }
     res <- cyrestGET(paste('styles', style.name, 'dependencies', sep = '/'),
               base.url = base.url)
@@ -77,8 +76,7 @@ setStyleDependencies <- function(style.name=NULL ,dependencies,base.url=.default
     }
     # launch error if visual style name is missing
     if (! style.name %in% getVisualStyleNames (base.url)) {
-        write (sprintf ('Error in RCy3::lockNodeDimensions. No visual style named "%s"', style.name), stdout ())
-        return ()
+        stop (sprintf ('No visual style named "%s"', style.name))
     }
     dep.list <- list()
     for (i in seq_len(length(dependencies))) {

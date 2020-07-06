@@ -87,7 +87,7 @@ getTableColumns <- function(table = 'node',
     for (col in col.list) {
         #check for column names
         if (!col %in% table.col.list) {
-            cat(sprintf("Error: Column %s not found in %s table \n", col, table))
+            message(sprintf("Error: Column %s not found in %s table \n", col, table))
             next()
         }
         #isolate column type
@@ -299,7 +299,7 @@ loadTableData <- function(data,
     
     ##ERROR if table.key.column.values is empty
     if (ncol(table.key.column.values) == 0)
-        return("Failed to load data: Please check table.key.column")
+        stop("Failed to load data: Please check table.key.column")
     
     if (data.key.column == 'row.names')
         # if key in row.names...
@@ -308,13 +308,13 @@ loadTableData <- function(data,
     
     ##ERROR if data.key.column not in data
     if (!data.key.column %in% colnames(data))
-        return("Failed to load data: Please check data.key.column")
+        stop("Failed to load data: Please check data.key.column")
     
     filter = data[, data.key.column] %in% table.key.column.values[, 1]
     
     ##ERROR if filter is empty
     if (!TRUE %in% filter)
-        return("Failed to load data: Provided key columns do not contain any matches")
+        stop("Failed to load data: Provided key columns do not contain any matches")
     
     data.subset = data[filter, ]
     

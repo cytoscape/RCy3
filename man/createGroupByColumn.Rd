@@ -33,6 +33,6 @@ Create a group of nodes defined by a column value.
 }
 \examples{
 \donttest{
-createGroupByColumn('mygroup','Cluster', 'A')
+createGroupByColumn('myGroup','Cluster', 'A')
 }
 }

@@ -104,7 +104,7 @@ hideAllPanels <- function(base.url=.defaultBaseUrl) {
     }else if (tolower(panel.name) %in% c('results panel', 'results', 'r')){
         panel.name <- 'EAST'
     }else if (!(panel.name %in% c('WEST', 'EAST', 'SOUTH', 'SOUTH_WEST'))){
-        stop (sprintf ('ERROR! Define a valid panel name.'), stderr ())
+        stop (sprintf ('Define a valid panel name.'), stderr ())
     }
     return(panel.name)
 }

@@ -35,6 +35,6 @@ Create a group from the specified nodes.
 }
 \examples{
 \donttest{
-createGroup()
+createGroup('myGroup')
 }
 }

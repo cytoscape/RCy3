@@ -26,7 +26,7 @@
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' AddToGroup()
+#' AddToGroup('myGroup')
 #' }
 #' @export
 AddToGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID', 
@@ -89,7 +89,7 @@ collapseGroup <- function(groups=NULL, network=NULL, base.url=.defaultBaseUrl){
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return Group SUID
 #' @examples \donttest{
-#' createGroup()
+#' createGroup('myGroup')
 #' }
 #' @export
 createGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID', 
@@ -119,7 +119,7 @@ createGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID',
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return Group SUID
 #' @examples \donttest{
-#' createGroupByColumn('mygroup','Cluster', 'A')
+#' createGroupByColumn('myGroup','Cluster', 'A')
 #' }
 #' @export
 createGroupByColumn <- function(group.name, column=NULL, value=NULL, 
@@ -166,7 +166,7 @@ expandGroup <- function(groups=NULL, network=NULL, base.url=.defaultBaseUrl){
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return Group information
 #' @examples \donttest{
-#' getGroupInfo('mygroup')
+#' getGroupInfo('myGroup')
 #' }
 #' @export
 getGroupInfo <- function(group, network=NULL, base.url=.defaultBaseUrl){
@@ -225,7 +225,7 @@ listGroups <- function(network=NULL, base.url=.defaultBaseUrl){
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' RemoveFromGroup()
+#' RemoveFromGroup('myGroup')
 #' }
 #' @export
 RemoveFromGroup <- function(group.name, nodes=NULL, nodes.by.col='SUID', 

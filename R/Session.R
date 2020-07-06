@@ -54,7 +54,7 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
     else if(!isAbsolutePath(file.location))
         file.location = paste(getwd(),file.location,sep='/')
         
-    write(sprintf("Opening %s...",file.location), stderr())
+    message(sprintf("Opening %s...",file.location))
     commandsPOST(paste0('session open ',type,'="',file.location,'"'),base.url=base.url)
 }
 

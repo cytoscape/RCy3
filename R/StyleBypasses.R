@@ -53,19 +53,15 @@ setNodePropertyBypass <- function(node.names,
     }
     
     if (length(new.values) != length(node.SUIDs)) {
-        write(
-            sprintf(
-                "ERROR in setNodePropertyBypass():\n   the number of nodes
-                [%d] and new values [%d] are not the same >> node(s)
-                attribute couldn't be set. Note that having multiple nodes 
-                with the same name in the network can cause this error. Use
-                node SUIDs or pass in duplicated names on their own.",
-                length(node.SUIDs),
-                length(new.values)
-            ),
-            stderr()
+        stop(
+            sprintf("The number of nodes
+[%d] and new values [%d] are not the same >> node(s)
+attribute couldn't be set. Note that having multiple nodes 
+with the same name in the network can cause this error. Use
+node SUIDs or pass in duplicated names on their own.",
+length(node.SUIDs),
+length(new.values))
         )
-        return()
     } else {
         body.list <- {}
         for (i in seq_len(length(node.SUIDs))) {
@@ -185,15 +181,12 @@ setEdgePropertyBypass <- function(edge.names,
     }
     
     if (length(new.values) != length(edge.names)) {
-        write(
-            sprintf(
-                "ERROR in setEdgePropertyBypass():\n\t number of
-                edge.names [%d] and new.values [%d] are not the
-                same >> edge(s) attribute could not be set",
-                length(edge.names),
-                length(new.values)
-            ),
-            stderr()
+        stop(
+            sprintf("The number of
+edge.names [%d] and new.values [%d] are not the
+same >> edge(s) attribute could not be set",
+length(edge.names),
+length(new.values))
         )
     } else {
         body.list <- {}
@@ -428,9 +421,7 @@ setNodeColorBypass <-
               base.url = .defaultBaseUrl) {
         for (current.color in new.colors) {
             # ensure the new color string is in correct hexadecimal format
-            if (.isNotHexColor(current.color)) {
-                return()
-            }
+            .checkHexColor(current.color)
         }
         # set the node color bypass
         return(
@@ -479,15 +470,12 @@ setNodeSizeBypass <- function (node.names,
     for (current.size in new.sizes) {
         # ensure the sizes are numbers
         if (!is.double(current.size)) {
-            write (
+            stop (
                 sprintf (
-                    'illegal size string "%s" in RCy3::setNodeSizeBypass.
+                    'Illegal size string "%s".
                     It needs to be a number.',
-                    current.size
-                ),
-                stderr ()
+                    current.size)
             )
-            return ()
         }
     }
     # set the node properties bypass
@@ -568,15 +556,12 @@ setNodeWidthBypass <-
         for (current.width in new.widths) {
             # ensure the width(s) are numbers
             if (!is.double(current.width)) {
-                write (
+                stop (
                     sprintf (
-                        'illegal node width "%s" in RCy3::setNodeWidthBypass.
+                        'Illegal node width "%s".
                         Width needs to be a number.',
-                        current.width
-                    ),
-                    stderr ()
+                        current.width )
                 )
-                return ()
             }
         }
         # set the node property bypass
@@ -621,19 +606,15 @@ setNodeHeightBypass <-
               base.url = .defaultBaseUrl) {
         # unlock node dimensions
         lockNodeDimensions (FALSE)
-        
         for (current.height in new.heights) {
             # ensure the height(s) are numbers
             if (!is.double(current.height)) {
-                write (
+                stop (
                     sprintf (
-                        'illegal height string "%s" in RCy3::setNodeHeightBypass.
+                        'Illegal height string "%s".
                         It needs to be a number.',
-                        current.height
-                    ),
-                    stderr ()
+                        current.height )
                 )
-                return ()
             }
         }
         # set the node property bypass
@@ -742,29 +723,20 @@ setNodeFontSizeBypass <-
              new.sizes,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        size.type.errors = 0
-        
         for (current.size in new.sizes) {
             if (!is.double(current.size)) {
-                write(
+                stop(
                     sprintf(
-                        "ERROR in RCy3::setNodeFontSizeBypass():\n\t font size
+                        "The font size
                         '%s' has to be numerical value",
-                        current.size
-                    ),
-                    stderr()
+                        current.size )
                 )
-                
-                size.type.errors = size.type.errors + 1
             }
         }
-        
-        if (size.type.errors < 1) {
-            setNodePropertyBypass(node.names,
-                                  new.sizes,
-                                  "NODE_LABEL_FONT_SIZE",
-                                  network=network, base.url=base.url)
-        }
+        setNodePropertyBypass(node.names,
+                              new.sizes,
+                              "NODE_LABEL_FONT_SIZE",
+                              network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
@@ -801,9 +773,7 @@ setNodeLabelColorBypass <-
               base.url = .defaultBaseUrl) {
         for (current.color in new.colors) {
             # ensure the color is formated in the correct hexadecimal style
-            if (.isNotHexColor(current.color)) {
-                return()
-            }
+            .checkHexColor(current.color)
         }
         # set the node property bypass
         return(
@@ -851,14 +821,13 @@ setNodeShapeBypass <-
               base.url = .defaultBaseUrl) {
         if (length (node.names) != length (new.shapes)) {
             if (length(new.shapes) != 1) {
-                msg = sprintf (
-                    'error in RCy3::setNodeShapeBypass.  new.shapes count
+                stop(
+                    sprintf (
+                    'new.shapes count
                     (%d) is neither 1 nor same as node.names count (%d)',
                     length (new.shapes),
-                    length (node.names)
+                    length (node.names) )
                 )
-                write (msg, stderr ())
-                return ()
             }
         }
         
@@ -874,16 +843,11 @@ setNodeShapeBypass <-
                                        ! (x %in% getNodeShapes(base.url)), 
                                    logical(1))
         if (any(wrong.node.shape)) {
-            write (
-                sprintf (
-                    'ERROR in RCy3::setNodeShapeBypass. %s is not a valid
-                    shape. Please note that some older shapes are no longer
-                    available. For valid ones check getNodeShapes.',
-                    new.shapes
-                ),
-                stderr ()
-            )
-            return(NA)
+            stop (
+                sprintf ('%s is not a valid
+shape. Please note that some older shapes are no longer
+available. For valid ones check getNodeShapes.',new.shapes)
+                )
         }
         # set the node property bypass
         return(setNodePropertyBypass(node.names, new.shapes, "NODE_SHAPE",
@@ -925,15 +889,13 @@ setNodeBorderWidthBypass <-
         for (current.size in new.sizes) {
             # ensure the widths are numbers
             if (!is.double(current.size)) {
-                write (
+                stop (
                     sprintf (
-                        'illegal width string "%s" in RCy3::setNodeBorderWidthBypass.
+                        'illegal width string "%s".
                         It needs to be a number.',
                         current.size
-                    ),
-                    stderr ()
+                    )
                 )
-                return ()
             }
         }
         # set the node property bypass
@@ -982,9 +944,7 @@ setNodeBorderColorBypass <-
               base.url = .defaultBaseUrl) {
         # ensure the color is formated in correct hexadecimal style
         for (color in new.colors) {
-            if (.isNotHexColor(color)) {
-                return()
-            }
+            .checkHexColor(color)
         }
         # set the node border color bypass
         return(
@@ -1033,18 +993,7 @@ setNodeOpacityBypass <-
               base.url = .defaultBaseUrl) {
         for (current.value in new.values) {
             # ensure the opacity value is a double and between 0 and 255
-            if (!is.double(current.value) ||
-                current.value < 0  || current.value > 255) {
-                write (
-                    sprintf (
-                        'RCy3::setNodeOpacityBypass: illegal opacity string
-                        "%s". It needs to be between 0 and 255.',
-                        current.value
-                    ),
-                    stderr ()
-                )
-                return ()
-            }
+            .checkOpacity(current.value)
         }
         setNodePropertyBypass(node.names,
                               new.values,
@@ -1129,18 +1078,7 @@ setNodeFillOpacityBypass <-
               base.url = .defaultBaseUrl) {
         for (current.value in new.values) {
             # ensure the opacity value is between 0 and 255
-            if (!is.double(current.value) ||
-                current.value < 0  || current.value > 255) {
-                write (
-                    sprintf (
-                        'illegal opacity string "%s" in RCy3::setNodeFillOpacityBypass.
-                        It needs to be a double and between 0 and 255.',
-                        current.value
-                    ),
-                    stderr ()
-                )
-                return ()
-            }
+            .checkOpacity(current.value)
         }
         # set the node border color bypass
         return(
@@ -1186,18 +1124,7 @@ setNodeBorderOpacityBypass <-
               base.url = .defaultBaseUrl) {
         for (current.value in new.values) {
             # ensure the opacity value is a double and between 0 and 255
-            if (!is.double(current.value) ||
-                current.value < 0  || current.value > 255) {
-                write (
-                    sprintf (
-                        'illegal opacity string "%s" in RCy3::setNodeBorderOpacityBypass.
-                        It needs to be between 0 and 255.',
-                        current.value
-                    ),
-                    stderr ()
-                )
-                return ()
-            }
+            .checkOpacity(current.value)
         }
         # set the node property bypass
         return(
@@ -1243,18 +1170,7 @@ setNodeLabelOpacityBypass <-
               base.url = .defaultBaseUrl) {
         for (current.value in new.values) {
             # ensure the opacity value is a double and between 0 and 255
-            if (!is.double(current.value) ||
-                current.value < 0  || current.value > 255) {
-                write (
-                    sprintf (
-                        'illegal opacity string "%s" in RCy3::setNodeLabelOpacityBypass.
-                        It needs to be between 0 and 255.',
-                        current.value
-                    ),
-                    stderr ()
-                )
-                return ()
-            }
+            .checkOpacity(current.value)
         }
         # set the node property bypass
         return(
@@ -1400,17 +1316,7 @@ setEdgeOpacityBypass <-
               base.url = .defaultBaseUrl) {
         for (current.value in new.values) {
             # ensure the opacity value is a double and between 0 and 255
-            if (!is.double(current.value) ||
-                current.value < 0  || current.value > 255) {
-                write (
-                    sprintf (
-                        'illegal opacity string "%s" in RCy3::setEdgeLabelOpacityBypass. It needs to be between 0 and 255.',
-                        current.value
-                    ),
-                    stderr ()
-                )
-                return ()
-            }
+            .checkOpacity(current.value)
         }
         setEdgePropertyBypass(edge.names,
                               new.values,
@@ -1455,9 +1361,7 @@ setEdgeColorBypass <-
               network = NULL,
               base.url = .defaultBaseUrl) {
         for (color in new.colors) {
-            if (.isNotHexColor(color)) {
-                return()
-            }
+            .checkHexColor(color)
         }
         setEdgePropertyBypass(edge.names,
                               new.colors,
@@ -1568,29 +1472,21 @@ setEdgeFontSizeBypass <-
              new.sizes,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        size.type.errors = 0
-        
         for (current.size in new.sizes) {
             # ensure the sizes are valid numbers
             if (!is.numeric(current.size)) {
-                write(
+                stop(
                     sprintf (
-                        'illegal font string "%s" in RCy3::setEdgeFontSizeBypass():\t\n it needs to be a valid number.',
-                        current.size
-                    ),
-                    stderr ()
+                        'Illegal font string "%s".
+                        It needs to be a valid number.',
+                        current.size )
                 )
-                
-                size.type.errors = size.type.errors + 1
             }
         }
-        
-        if (size.type.errors < 1) {
-            setEdgePropertyBypass(edge.names,
-                                  new.sizes,
-                                  "EDGE_LABEL_FONT_SIZE",
-                                  network=network, base.url=base.url)
-        }
+        setEdgePropertyBypass(edge.names,
+                              new.sizes,
+                              "EDGE_LABEL_FONT_SIZE",
+                              network=network, base.url=base.url)
     }
 
 # ------------------------------------------------------------------------------
@@ -1625,9 +1521,7 @@ setEdgeLabelColorBypass <-
               base.url = .defaultBaseUrl) {
         for (current.color in new.colors) {
             # ensure the color is formated in correct hexadecimal style
-            if (.isNotHexColor(current.color)) {
-                return()
-            }
+            .checkHexColor(current.color)
         }
         # set the edge property bypass
         return(
@@ -1673,13 +1567,12 @@ setEdgeTooltipBypass <-
               base.url = .defaultBaseUrl) {
         if (length (edge.names) != length (new.values)) {
             if (length(new.values) != 1) {
-                msg = sprintf (
-                    'error in RCy3::setEdgeTooltipBypass.  new.values count (%d) is neither 1 nor same as edge.names count (%d)',
+                stop(
+                     sprintf (
+                    'new.values count (%d) is neither 1 nor same as edge.names count (%d)',
                     length (new.values),
-                    length (edge.names)
+                    length (edge.names) )
                 )
-                write (msg, stderr ())
-                return ()
             }
         }
         # set the edge property bypass
@@ -1721,14 +1614,11 @@ setEdgeLineWidthBypass <-
         for (current.size in new.widths) {
             # ensure the sizes are numbers
             if (!is.numeric(current.size)) {
-                write (
+                stop (
                     sprintf (
-                        'illegal size string "%s" in RCy3::setEdgeLineWidthBypass. It needs to be a number.',
-                        current.size
-                    ),
-                    stderr ()
+                        'Illegal size string "%s". It needs to be a number.',
+                        current.size)
                 )
-                return ()
             }
         }
         
@@ -1781,15 +1671,14 @@ setEdgeLineStyleBypass <-
             
             error.msg <-
                 paste(
-                    "\n\t\tERROR in setEdgeLineStyleBypass() >> INVALID line
+                    "INVALID line
                     style value(s): ",
                     error.msg,
                     "\n",
                     sep = ""
                 )
             
-            write(error.msg, stderr())
-            return(FALSE)
+            stop(error.msg)
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(
@@ -1848,15 +1737,13 @@ setEdgeSourceArrowShapeBypass <-
             
             error.msg <-
                 paste(
-                    "\n\t\tERROR in setEdgeSourceArrowShapeBypass() >>
-                    INVALID arrow shape value(s): ",
+                    "INVALID arrow shape value(s): ",
                     error.msg,
                     "\n",
                     sep = ""
                 )
             
-            write(error.msg, stderr())
-            return(FALSE)
+            stop(error.msg)
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(
@@ -1915,14 +1802,13 @@ setEdgeTargetArrowShapeBypass <-
             
             error.msg <-
                 paste(
-                    "\n\t\tERROR in setEdgeTargetArrowShapeBypass() >> INVALID arrow shape value(s): ",
+                    "INVALID arrow shape value(s): ",
                     error.msg,
                     "\n",
                     sep = ""
                 )
             
-            write(error.msg, stderr())
-            return(FALSE)
+            stop(error.msg)
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(
@@ -1968,9 +1854,7 @@ setEdgeSourceArrowColorBypass <-
              base.url = .defaultBaseUrl) {
         for (current.color in new.colors) {
             # check the color is represented in hexadecimal format
-            if (.isNotHexColor(current.color)) {
-                return()
-            }
+            .checkHexColor(current.color)
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(
@@ -2015,9 +1899,7 @@ setEdgeTargetArrowColorBypass <-
              network = NULL,
              base.url = .defaultBaseUrl) {
         for (current.color in new.colors) {
-            if (.isNotHexColor(current.color)) {
-                return()
-            }
+            .checkHexColor(current.color)
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(
@@ -2063,19 +1945,7 @@ setEdgeLabelOpacityBypass <-
              base.url = .defaultBaseUrl) {
         for (current.value in new.value) {
             # check that the opacity value is DOUBLE number between 0 and 255
-            if (!is.double(current.value) ||
-                current.value < 0  || current.value > 255) {
-                write(
-                    sprintf(
-                        "\n\t\tERROR in setEdgeLabelOpacityBypass(): illegal opacity
-                        value '%s'. Opacity needs to be number between 0 and 255",
-                        current.value
-                    ),
-                    stderr()
-                )
-                
-                return(FALSE)
-            }
+            .checkOpacity(current.value)
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(

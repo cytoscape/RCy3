@@ -23,8 +23,8 @@ request, and parses the result content into an R list object.
 }
 \examples{
 \donttest{
-commandsGET('layout get preferred')
-commandsGET('network list properties')
+commandsGET('layout get preferred network=current')
+commandsGET('network list properties network=current')
 commandsGET('layout force-directed defaultNodeMass=1')
 }
 }

@@ -56,21 +56,20 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    res <- DELETE(url=URLencode(q.url))
-    if(res$status_code > 299){
-        write(sprintf("RCy3::cyrestGET, HTTP Error Code: %d\n url=%s", 
-                      res$status_code, URLencode(q.url)), stderr())
-        stop()
-    } else {
-        if(length(res$content)>0){
-            res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
-            } else {
-                return(res.char)
-            }
-            invisible(res)
+    tryCatch(
+        res <- DELETE(url=URLencode(q.url)), 
+        error=function(c) .cyError(c, res),
+        warnings=function(c) .cyWarnings(c, res),
+        finally=.cyFinally(res)
+    )
+    if(length(res$content)>0){
+        res.char <- rawToChar(res$content)
+        if (isValidJSON(res.char, asText = TRUE)){
+            return(fromJSON(res.char))
+        } else {
+            return(res.char)
         }
+        invisible(res)
     }
 }
 
@@ -97,22 +96,21 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    res <- GET(url=URLencode(q.url))
-    if(res$status_code > 299){
-        write(sprintf("RCy3::cyrestGET, HTTP Error Code: %d\n url=%s", 
-                      res$status_code, URLencode(q.url)), stderr())
-        stop()
-    } else {
-        if(length(res$content)>0){
-            res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
-            } else {
-                return(res.char)
-            }
-        } else{
-            invisible(res)
+    tryCatch(
+        res <- GET(url=URLencode(q.url)), 
+        error=function(c) .cyError(c, res),
+        warnings=function(c) .cyWarnings(c, res),
+        finally=.cyFinally(res)
+    )
+    if(length(res$content)>0){
+        res.char <- rawToChar(res$content)
+        if (isValidJSON(res.char, asText = TRUE)){
+            return(fromJSON(res.char))
+        } else {
+            return(res.char)
         }
+    } else{
+        invisible(res)
     }
 }
 
@@ -131,8 +129,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' cyrestPOST()
 #' }
 #' @importFrom RJSONIO fromJSON toJSON isValidJSON
-#' @importFrom httr POST
-#' @importFrom httr content_type_json
+#' @importFrom httr POST content_type_json
 #' @importFrom utils URLencode
 #' @export
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
@@ -142,21 +139,20 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         q.url <- paste(q.url, q.params, sep="?")
     }
     q.body <- toJSON(body)
-    res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json())
-    if(res$status_code > 299){
-        write(sprintf("RCy3::cyrestPOST, HTTP Error Code: %d\n url=%s\n body=%s", 
-                      res$status_code, URLencode(q.url), q.body), stderr())
-       stop(fromJSON(rawToChar(res$content))$errors[[1]]$message)
-    } else {
-        if(length(res$content)>0){
-            res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
-            } else {
-                return(res.char)
-            }
-            invisible(res)
+    tryCatch(
+        res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
+        error=function(c) .cyError(c, res),
+        warnings=function(c) .cyWarnings(c, res),
+        finally=.cyFinally(res)
+    )
+    if(length(res$content)>0){
+        res.char <- rawToChar(res$content)
+        if (isValidJSON(res.char, asText = TRUE)){
+            return(fromJSON(res.char))
+        } else {
+            return(res.char)
         }
+        invisible(res)
     }
 }
 
@@ -175,8 +171,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' cyrestPUT()
 #' }
 #' @importFrom RJSONIO fromJSON isValidJSON toJSON
-#' @importFrom httr PUT
-#' @importFrom httr content_type_json
+#' @importFrom httr PUT content_type_json
 #' @importFrom utils URLencode
 #' @export
 cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultBaseUrl){
@@ -186,21 +181,20 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
         q.url <- paste(q.url, q.params, sep="?")
     }
     q.body <- toJSON(body)
-    res <- PUT(url=URLencode(q.url), body=q.body, encode="json", content_type_json())
-    if(res$status_code > 299){
-        write(sprintf("RCy3::cyrestPUT, HTTP Error Code: %d\n url=%s\n body=%s", 
-                      res$status_code, URLencode(q.url), q.body), stderr())
-        stop()
-    } else {
-        if(length(res$content)>0){
-            res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
-            } else {
-                return(res.char)
-            }
-            invisible(res)
+    tryCatch(
+        res <- PUT(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
+        error=function(c) .cyError(c, res),
+        warnings=function(c) .cyWarnings(c, res),
+        finally=.cyFinally(res)
+    )
+    if(length(res$content)>0){
+        res.char <- rawToChar(res$content)
+        if (isValidJSON(res.char, asText = TRUE)){
+            return(fromJSON(res.char))
+        } else {
+            return(res.char)
         }
+        invisible(res)
     }
 }
 
@@ -239,38 +233,35 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' @return A \code{list}, \code{status} or None.
 #' @examples
 #' \donttest{
-#' commandsGET('layout get preferred')
-#' commandsGET('network list properties')
+#' commandsGET('layout get preferred network=current')
+#' commandsGET('network list properties network=current')
 #' commandsGET('layout force-directed defaultNodeMass=1')
 #' }
-#' @importFrom XML htmlParse
-#' @importFrom XML xmlValue
-#' @importFrom XML xpathSApply
+#' @importFrom XML htmlParse xmlValue xpathSApply
 #' @importFrom httr GET
 #' @export
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
     q.url <- .command2getQuery(cmd.string,base.url)
-    res = GET(q.url)
-    if(res$status_code > 299){
-        write(sprintf("RCy3::commandsGET, HTTP Error Code: %d\n url=%s", 
-                      res$status_code, q.url), stderr())
-        stop()
+    tryCatch(
+        res <- GET(q.url), 
+        error=function(c) .cyError(c, res),
+        warnings=function(c) .cyWarnings(c, res),
+        finally=.cyFinally(res)
+    )
+    res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+    res.elem = xpathSApply(res.html, "//p", xmlValue)
+    if(startsWith(res.elem[1],"[")){
+        res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
+        res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
+        res.list = unlist(strsplit(res.elem2,","))
+    }else {
+        res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+        res.list = res.list[!(res.list=="Finished")]
+    }
+    if(length(res.list)>0){
+        res.list
     } else {
-        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
-        res.elem = xpathSApply(res.html, "//p", xmlValue)
-        if(startsWith(res.elem[1],"[")){
-            res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
-            res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
-            res.list = unlist(strsplit(res.elem2,","))
-        }else {
-            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
-            res.list = res.list[!(res.list=="Finished")]
-        }
-        if(length(res.list)>0){
-            res.list
-        } else {
-            invisible(res.list)
-        }
+        invisible(res.list)
     }
 }
 
@@ -292,31 +283,27 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 #' commandsHelp('node')
 #' commandsHelp('node get attribute')
 #' }
-#' @importFrom XML htmlParse
-#' @importFrom XML xmlValue
-#' @importFrom XML xpathSApply
+#' @importFrom XML htmlParse xmlValue xpathSApply
 #' @importFrom httr GET
-#' @importFrom utils head
-#' @importFrom utils tail
+#' @importFrom utils head tail
 #' @export
 commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
     q.url <- .command2getQuery(s,base.url)
-    res = GET(q.url)
-    if(res$status_code > 299){
-        write(sprintf("RCy3::commandsHelp, HTTP Error Code: %d\n url=%s", 
-                      res$status_code, q.url), stderr())
-        stop()
-    } else {
-        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
-        res.elem = xpathSApply(res.html, "//p", xmlValue)
-        res.list = res.elem
-        if (length(res.elem)==1){
-            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
-        }
-        print(head(res.list,1))
-        vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
+    tryCatch(
+        res <- GET(q.url), 
+        error=function(c) .cyError(c, res),
+        warnings=function(c) .cyWarnings(c, res),
+        finally=.cyFinally(res)
+    )
+    res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+    res.elem = xpathSApply(res.html, "//p", xmlValue)
+    res.list = res.elem
+    if (length(res.elem)==1){
+        res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
     }
+    print(head(res.list,1))
+    vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
 }
 
 # ------------------------------------------------------------------------------
@@ -337,29 +324,27 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' commandsPOST('layout force-directed defaultNodeMass=1')
 #' }
 #' @importFrom RJSONIO fromJSON
-#' @importFrom httr POST
-#' @importFrom httr content_type_json
+#' @importFrom httr POST content_type_json
 #' @export
 commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     post.url = .command2postQueryUrl(cmd.string,base.url)
     post.body = .command2postQueryBody(cmd.string)
-    res = POST(url=post.url, body=post.body, encode="json", content_type_json())
-    if(res$status_code > 299){
-        write(sprintf("RCy3::commandsPOST, HTTP Error Code: %d\n url=%s\n body=%s", 
-                      res$status_code, URLencode(post.url), post.body), stderr())
-        stop(fromJSON(rawToChar(res$content))$errors[[1]]$message)
-    } else {
-        if(length(res$content)>0){
-            res.data = fromJSON(rawToChar(res$content))$data
-            if(length(res.data)>0){
-                return(res.data)
-            } else{
-                invisible(res.data)
-            }
-        }else {
-            invisible(res)
-            
+    tryCatch(
+        res <- POST(url=post.url, body=post.body, encode="json", content_type_json()), 
+        error=function(c) .cyError(c, res),
+        warnings=function(c) .cyWarnings(c, res),
+        finally=.cyFinally(res)
+    )
+    if(length(res$content)>0){
+        res.data = fromJSON(rawToChar(res$content))$data
+        if(length(res.data)>0){
+            return(res.data)
+        } else{
+            invisible(res.data)
         }
+    }else {
+        invisible(res)
+        
     }
 }
 
@@ -633,3 +618,56 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     return(cmd.list.ready)
 }
 
+# ------------------------------------------------------------------------------
+# CyRest Message Handler
+#
+# @description Provides helpful messaages for CyREST issues.
+# @c Error condition
+# @res Result with error
+# @return A stop message
+# @examples
+# \donttest{
+# tryCatch(
+#     res <- cyRestGET("version"),
+#     error=function(c) {.cyError(c, res)}
+# )
+#
+
+.cyError<-function(c, res){
+    # Connection Error
+    err_conn = 'Connection refused'
+    if(grep(err_conn,c$message)){
+        message("Oh no! I can't find Cytoscape. RCy3 can not continue!
+Please check that Cytoscape is running, CyREST is installed and your base.url parameter is correct.")
+        write(sprintf("Failed to execute: %s",res[[1]]), stderr())
+        stop(simpleError(conditionMessage(c)))
+    }
+}
+
+.cyWarnings<-function(c, res){
+    #Pass along any warnings and carry on
+    message(c$message)
+}
+
+#' @importFrom RJSONIO fromJSON
+#' @importFrom XML htmlParse xmlValue xpathSApply
+.cyFinally<-function(res){
+    if(!is.null(res)){
+        
+        # Check HTTP Errors
+        if(res$status_code > 299){
+            write(sprintf("Failed to execute: %s",res[[1]]), stderr())
+            if(res[[3]]$`content-type` == "text/plain" ||
+               res[[3]]$`content-type` == "text/html;charset=iso-8859-1"){
+                errmsg <- paste(xpathSApply(htmlParse(rawToChar(res$content), asText=TRUE), "//p", xmlValue),
+                                xpathSApply(htmlParse(rawToChar(res$content), asText=TRUE), "//pre", xmlValue))
+                stop(simpleError(errmsg))
+            } else if (res[[3]]$`content-type` == "application/json"){
+                stop(simpleError(fromJSON(rawToChar(res$content))$errors[[1]]$message))
+            } else {
+                stop()
+            }
+        }
+    }
+}
+    
