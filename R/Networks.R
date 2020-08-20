@@ -992,7 +992,7 @@ createNetworkFromDataFrames <-
         commandsPOST('vizmap apply styles="default"', base.url = base.url)
         
         message("Applying preferred layout...\n")
-        layoutNetwork(network=network.suid)
+        layoutNetwork(network=network.suid, base.url = base.url)
         
         return(network.suid)
     }
