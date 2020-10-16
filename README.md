@@ -66,7 +66,7 @@ install.packages("RUnit")
 library(RUnit)
 setwd("/git/cytoscape/RCy3") #customize to your setup
 devtools::document()
-devtools::check(args = "--no-examples")
+devtools::check(args = "--no-examples", vignettes = F)
 BiocCheck::BiocCheck('./')
 ```
 

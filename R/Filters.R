@@ -46,18 +46,7 @@ applyFilter<-function(filter.name="Default filter", hide=FALSE, network=NULL,
                        cmd.network, 
                        sep=' '), base.url)
     
-    sel.nodes<-getSelectedNodes(network=net.SUID, base.url=base.url)
-    sel.edges<-getSelectedEdges(network=net.SUID, base.url=base.url)
-    
-    if(hide) {
-        unhideAll(net.SUID, base.url)
-        if(!is.na(sel.nodes[1]))
-            hideNodes(invertNodeSelection(net.SUID, base.url)$nodes, net.SUID, base.url)
-        if(!is.na(sel.edges[1]))
-            hideEdges(invertEdgeSelection(net.SUID, base.url)$edges, net.SUID, base.url)
-    }
-    
-    return(list(nodes=sel.nodes, edges=sel.edges))
+    .checkSelected(hide, net.SUID, base.url)
 }
 
 # ------------------------------------------------------------------------------
@@ -147,20 +136,7 @@ createColumnFilter<-function(filter.name, column, criterion, predicate,
     
     .postCreateFilter(cmd.body, base.url)
  
-    commandSleep(1) #Yikes! Have to wait a second for selection to settle!
-    
-    sel.nodes<-getSelectedNodes(network=network, base.url=base.url)
-    sel.edges<-getSelectedEdges(network=network, base.url=base.url)
-    
-    if(hide) {
-        unhideAll(network, base.url)
-        if(!is.na(sel.nodes[1]))
-            hideNodes(invertNodeSelection(network, base.url)$nodes)
-        if(!is.na(sel.edges[1]))
-            hideEdges(invertEdgeSelection(network, base.url)$edges)
-    }
-    
-    return(list(nodes=sel.nodes, edges=sel.edges))
+    .checkSelected(hide, network, base.url)
 }
 # ------------------------------------------------------------------------------
 #' @title Create Composite Filter
@@ -204,18 +180,7 @@ createCompositeFilter<-function(filter.name, filter.list, type="ALL",
 
     .postCreateFilter(cmd.body, base.url)
 
-    sel.nodes<-getSelectedNodes(network=network, base.url=base.url)
-    sel.edges<-getSelectedEdges(network=network, base.url=base.url)
-    
-    if(hide) {
-        unhideAll(network, base.url)
-        if(!is.na(sel.nodes[1]))
-            hideNodes(invertNodeSelection(network, base.url)$nodes)
-        if(!is.na(sel.edges[1]))
-            hideEdges(invertEdgeSelection(network, base.url)$edges)
-    }
-    
-    return(list(nodes=sel.nodes, edges=sel.edges))
+    .checkSelected(hide, network, base.url)
 }
 
 # ------------------------------------------------------------------------------
@@ -258,18 +223,7 @@ createDegreeFilter<-function(filter.name, criterion, predicate="BETWEEN",
     
     .postCreateFilter(cmd.body, base.url)
     
-    sel.nodes<-getSelectedNodes(network=network, base.url=base.url)
-    sel.edges<-getSelectedEdges(network=network, base.url=base.url)
-    
-    if(hide) {
-        unhideAll(network, base.url)
-        if(!is.na(sel.nodes[1]))
-            hideNodes(invertNodeSelection(network, base.url)$nodes)
-        if(!is.na(sel.edges[1]))
-            hideEdges(invertEdgeSelection(network, base.url)$edges)
-    }
-    
-    return(list(nodes=sel.nodes, edges=sel.edges))
+    .checkSelected(hide, network, base.url)
 }
 
 # ------------------------------------------------------------------------------
@@ -340,7 +294,9 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
     if(!isAbsolutePath(filename))
         filename = paste(getwd(),filename,sep='/')
     
-    commandsGET(paste0('filter import file="',filename,'"'),base.url)
+    res <- commandsGET(paste0('filter import file="',filename,'"'),base.url)
+    Sys.sleep(.CATCHUP_FILTER_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
+    return(res)
 }
 
 # ------------------------------------------------------------------------------
@@ -366,6 +322,24 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
                       res$status_code, URLencode(cmd.url), cmd.body), stderr())
         stop(fromJSON(rawToChar(res$content))$errors[[1]]$message)
     } 
+}
+
+# ------------------------------------------------------------------------------
+# Internal function to return (or hide) filter-selected nodes and edges.
+.checkSelected<-function(hide, network, base.url){
+    Sys.sleep(.MODEL_PROPAGATION_SECS) ## NOTE: TEMPORARY SLEEP "FIX"
+    sel.nodes<-getSelectedNodes(network=network, base.url=base.url)
+    sel.edges<-getSelectedEdges(network=network, base.url=base.url)
+    
+    if(hide) {
+        unhideAll(network, base.url)
+        if(!is.na(sel.nodes[1]))
+            hideNodes(invertNodeSelection(network, base.url)$nodes, network, base.url)
+        if(!is.na(sel.edges[1]))
+            hideEdges(invertEdgeSelection(network, base.url)$edges, network, base.url)
+    }
+    
+    return(list(nodes=sel.nodes, edges=sel.edges))
 }
 
 # ------------------------------------------------------------------------------

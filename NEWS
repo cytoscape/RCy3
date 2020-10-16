@@ -1,3 +1,17 @@
+Changes in version 2.10.0
++ Added Sys.sleep to buggy CyREST steps in...
+  - createNetworkFromDataFrames, #98
+  - importNetworkFromFile
+  - importNetworkFromNDEx
+  - exportNetworkToNDEx
+  - updateNetworkInNDEx
+  - importFilters
+  - create***Filter
+  - applyFilter
+  - updateStyleMapping
+  - setVisualPropertyDefault
++ Bug fix #94: added base.url param
++ Overhauled error handling and messaging
 Changes in version 2.8.0
 + New functions:
   - mergeNetworks

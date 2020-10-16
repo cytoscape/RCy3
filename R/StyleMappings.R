@@ -197,15 +197,17 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
     }
     
     if(exists==TRUE){     
-        invisible(cyrestPUT(paste('styles', style.name,'mappings',visual.prop.name, sep = '/'),
+        res <- invisible(cyrestPUT(paste('styles', style.name,'mappings',visual.prop.name, sep = '/'),
                             body=list(mapping), 
                             base.url=base.url))
     }
     else {   
-        invisible(cyrestPOST(paste('styles', style.name,'mappings',sep = '/'),
+        res <- invisible(cyrestPOST(paste('styles', style.name,'mappings',sep = '/'),
                              body=list(mapping), 
                              base.url=base.url))
     }
+    Sys.sleep(.MODEL_PROPAGATION_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
+    return(res)
 }
 
 # ------------------------------------------------------------------------------

@@ -5,9 +5,13 @@
 # 
 # Dev Note: internal variables and functions should be prefixed with a '.'
 # ==============================================================================
-# I. Package Variables
+# I. Package Variables and Constants
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://localhost:1234/v1'
+.CATCHUP_FILTER_SECS <- 4
+.MODEL_PROPAGATION_SECS <- 10
+.CATCHUP_NETWORK_SECS <- 4
+.NDEX_DELAY_SECS <- 10
 
 # ==============================================================================
 # I. Package Utility Functions
