@@ -184,7 +184,7 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
     # set default style
     if(is.null(style.name)){
         style.name <- 'default'
-        message('style.name not specified; updating "default" style.')
+        message('style.name not specified, so updating "default" style.')
     }
     # check if vp exists already
     res <- cyrestGET(paste('styles', style.name,'mappings',sep = '/')

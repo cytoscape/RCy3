@@ -31,7 +31,7 @@ getStyleDependencies <- function(style.name=NULL,base.url=.defaultBaseUrl){
     # set default style
     if(is.null(style.name)){
         style.name <- 'default'
-        message('style.name not specified; accessing "default" style.')
+        message('style.name not specified, so accessing "default" style.')
     }
     # launch error if visual style name is missing
     if (! style.name %in% getVisualStyleNames (base.url)) {
@@ -72,7 +72,7 @@ setStyleDependencies <- function(style.name=NULL ,dependencies,base.url=.default
     # set default style
     if(is.null(style.name)){
         style.name <- 'default'
-        message('style.name not specified; updating "default" style.')
+        message('style.name not specified, so updating "default" style.')
     }
     # launch error if visual style name is missing
     if (! style.name %in% getVisualStyleNames (base.url)) {

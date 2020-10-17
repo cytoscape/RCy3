@@ -207,6 +207,31 @@ getVisualStyleNames <- function(base.url=.defaultBaseUrl) {
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Current Style
+#'
+#' @description Get the current visual style applied to a network.
+#' @param network (optional) Name or SUID of the network. Default is the "current" 
+#' network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Name of style
+#' @examples \donttest{
+#' getCurrentStyle()
+#' getCurrentStyle('myNetwork')
+#' }
+#' @export
+getCurrentStyle <- function(network=NULL, base.url=.defaultBaseUrl) {
+    net.SUID = getNetworkSuid(network,base.url)
+    view.SUID = getNetworkViewSuid(net.SUID, base.url)
+    res <- cyrestGET(paste("networks", net.SUID,
+                    "views",view.SUID,
+                    "currentStyle", sep="/"), 
+              base.url = base.url)
+    return(res$title)
+}
+
+# ------------------------------------------------------------------------------
 #' @title Set Visual Style
 #'
 #' @description Apply a visual style to a network.

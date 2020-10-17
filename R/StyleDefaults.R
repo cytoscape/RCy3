@@ -28,7 +28,7 @@ updateStyleDefaults <- function(style.name, defaults,base.url=.defaultBaseUrl){
     # set default style
     if(is.null(style.name)){
         style.name <- 'default'
-        message('style.name not specified; updating "default" style.')
+        message('style.name not specified, so updating "default" style.')
     }
     def.list <- list()
     for (i in seq_len(length(defaults))) {
@@ -64,7 +64,7 @@ getVisualPropertyDefault <- function(property, style.name=NULL, base.url=.defaul
     # set default style
     if(is.null(style.name)){
         style.name <- 'default'
-        message('style.name not specified; accessing "default" style.')
+        message('style.name not specified, so accessing "default" style.')
     }
     res <- cyrestGET(paste("styles", as.character(style.name), "defaults", property, sep="/"), base.url=base.url)
     return(res[[2]])
@@ -88,7 +88,7 @@ setVisualPropertyDefault <- function(style.string, style.name=NULL, base.url=.de
     # set default style
     if(is.null(style.name)){
         style.name <- 'default'
-        message('style.name not specified; updating "default" style.')
+        message('style.name not specified, so updating "default" style.')
     }
     res <- cyrestPUT(paste("styles", as.character(style.name), "defaults", sep="/"),
                      body = list(style.string),

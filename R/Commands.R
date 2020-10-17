@@ -96,6 +96,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
+    res <- NULL
     tryCatch(
         res <- GET(url=URLencode(q.url)), 
         error=function(c) .cyError(c, res),
@@ -634,14 +635,15 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
 #
 
 .cyError<-function(c, res){
-    # Connection Error
-    err_conn = 'Connection refused'
-    if(grep(err_conn,c$message)){
+    err_conn = 'Connection refused' # Connection Error
+    if (length(grep(err_conn,c$message)) == 0){ # Certain 404 Errors
+        stop(simpleError("Not Found"))
+    } else {
         message("Oh no! I can't find Cytoscape. RCy3 can not continue!
 Please check that Cytoscape is running, CyREST is installed and your base.url parameter is correct.")
         write(sprintf("Failed to execute: %s",res[[1]]), stderr())
         stop(simpleError(conditionMessage(c)))
-    }
+    } 
 }
 
 .cyWarnings<-function(c, res){

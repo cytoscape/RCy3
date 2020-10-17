@@ -34,7 +34,7 @@ getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return (\code{numeric}) Network view suid. The first (presummably only) view 
+#' @return (\code{numeric}) Network view suid. The first (presumably only) view 
 #' associated a network is returned.
 #' @author Alexander Pico
 #' @examples
@@ -44,42 +44,20 @@ getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
 #' # 90
 #' }
 #' @export
-#
-# Dev Notes: analogous to getNetworkSuid, this function attempts to handle all 
-# of the multiple ways we support network view referencing (e.g., title, SUID, 
-# 'current', and NULL). These functions are then used by functions
-# that take a "network" argument and requires a view SUID.
-# 
 getNetworkViewSuid <- function(network = NULL, base.url = .defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network)
 
-    if (is.character(network)) {
-        #network name (or "current") provided, warn if multiple view
-        if(length(getNetworkViews(network,base.url))>1)
-            message("Warning: This network has multiple views. Returning last.")
-        tail(getNetworkViews(network,base.url),n=1)
-    } else if (is.numeric(network)) {
-        #suid provided, but network or view?
-        net.suids <- cyrestGET('networks', base.url = base.url)
-        if (network %in% net.suids){ # network SUID, warn if multiple view
-            if(length(getNetworkViews(network,base.url))>1)
-                message("Warning: This network has multiple views. Returning last.")
-            tail(getNetworkViews(network,base.url),n=1)
-        } else{
-            view.suids <- unlist(lapply(net.suids, function(x) getNetworkViews(x,base.url)))
-            if (network %in% view.suids){ # view SUID, return it
-                return(network)
-            } else {
-                stop(paste0("Network view does not exist for: ", network))
-            }
-        }
-     } else {
-        #use current network, return first view
-        network.title = 'current'
-        #warn if multiple view
-        if(length(getNetworkViews(network,base.url))>1)
-            message("Warning: This network has multiple views. Returning last.")
-        tail(getNetworkViews(network,base.url),n=1)
+    any.views <- getNetworkViews(net.SUID,base.url)
+    
+    if(is.null(any.views)){
+        stop(paste0("Network view does not exist for: ", getNetworkName(net.SUID)))
     }
+    else if(length(any.views)>1) {
+        message("Warning: This network has multiple views. Returning last.")
+        tail(any.views,n=1)
+    } else {
+        any.views
+    } 
 }
 
 # ------------------------------------------------------------------------------

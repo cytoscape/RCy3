@@ -8,10 +8,10 @@
 # I. Package Variables and Constants
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://localhost:1234/v1'
-.CATCHUP_FILTER_SECS <- 4
-.MODEL_PROPAGATION_SECS <- 10
-.CATCHUP_NETWORK_SECS <- 4
-.NDEX_DELAY_SECS <- 10
+.CATCHUP_FILTER_SECS <- 1
+.MODEL_PROPAGATION_SECS <- 1
+.CATCHUP_NETWORK_SECS <- 2
+.NDEX_DELAY_SECS <- 3
 
 # ==============================================================================
 # I. Package Utility Functions

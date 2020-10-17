@@ -16,7 +16,7 @@ port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
-(\code{numeric}) Network view suid. The first (presummably only) view 
+(\code{numeric}) Network view suid. The first (presumably only) view 
 associated a network is returned.
 }
 \description{
