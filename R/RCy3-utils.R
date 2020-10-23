@@ -9,9 +9,9 @@
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://localhost:1234/v1'
 .CATCHUP_FILTER_SECS <- 1
-.MODEL_PROPAGATION_SECS <- 1
+.MODEL_PROPAGATION_SECS <- 5
 .CATCHUP_NETWORK_SECS <- 2
-.NDEX_DELAY_SECS <- 3
+.NDEX_DELAY_SECS <- 5
 
 # ==============================================================================
 # I. Package Utility Functions
