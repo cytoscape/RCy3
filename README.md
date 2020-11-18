@@ -109,6 +109,7 @@ git checkout -b RELEASE_3_12 upstream/RELEASE_3_12
 git push origin RELEASE_3_12
 git checkout master
 git pull upstream master
+git push origin master
 ```
 
 Only bug fixes and documentation updates can be pushed to the official bioconductor release branch. After committing and pushing fixes to `master`, then:
