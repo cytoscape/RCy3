@@ -4,3 +4,6 @@ language: R
 sudo: false
 cache: packages
 bioc_required: true
+env:
+  global:
+    - _R_CHECK_DONTTEST_EXAMPLES_=FALSE
