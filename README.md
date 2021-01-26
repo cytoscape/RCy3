@@ -13,7 +13,7 @@ ecosystem. We are beginning with a major refactor of RCy3 that includes:
 * coordinated development with CyREST and the Cytoscape service model
   * [New API](https://github.com/cytoscape/cyREST/issues?utf8=✓&q=milestone%3A*+label%3A%22new+API%22+is%3A*)
 * coordinated development with other scripting libraries, e.g., 
-  * [py2cytoscape](https://github.com/cytoscape/py2cytoscape)
+  * [py4cytoscape](https://github.com/cytoscape/py4cytoscape)
   * [RCyjs](http://bioconductor.org/packages/release/bioc/html/RCyjs.html)
 
 ## Getting Started
