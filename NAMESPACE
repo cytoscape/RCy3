@@ -51,7 +51,7 @@ export(cybrowserList)
 export(cybrowserSend)
 export(cybrowserShow)
 export(cybrowserVersion)
-export(cyrestAPI)
+export(cyrestAPI)++
 export(cyrestDELETE)
 export(cyrestGET)
 export(cyrestPOST)
