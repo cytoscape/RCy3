@@ -11,7 +11,7 @@
 CHANNEL <- UUIDgenerate()
 
 getBrowserClientChannel<-function(){
-    print(CHANNEL)
+    return(CHANNEL)
 }
 
 # ------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ getBrowserClientChannel<-function(){
 JupyterBRIDGEURL <- 'https://jupyter-bridge.cytoscape.org'
 
 getJupyterBridgeURL<-function(){
-    print(JupyterBRIDGEURL)
+    return(JupyterBRIDGEURL)
 }
 
 # ------------------------------------------------------------------------------
