@@ -7,9 +7,8 @@
 #' getBrowserClientChannel()
 #' }
 #' @importFrom uuid UUIDgenerate
-#' @export
 CHANNEL <- UUIDgenerate()
-
+#' @export
 getBrowserClientChannel<-function(){
     return(CHANNEL)
 }
@@ -22,9 +21,8 @@ getBrowserClientChannel<-function(){
 #' @examples \donttest{
 #' getJupyterBridgeURL()
 #' }
-#' @export
 JupyterBRIDGEURL <- 'https://jupyter-bridge.cytoscape.org'
-
+#' @export
 getJupyterBridgeURL<-function(){
     return(JupyterBRIDGEURL)
 }
