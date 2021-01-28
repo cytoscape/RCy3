@@ -6,8 +6,11 @@
 #' @examples \donttest{
 #' getBrowserClientChannel()
 #' }
-#' @importFrom uuid UUIDgenerate
-CHANNEL <- UUIDgenerate()
+#' @importFrom dplR uuid.gen
+ug <- uuid.gen()
+uuid <- character(1)
+uuid[1] <- ug()
+CHANNEL <- uuid[1]
 #' @export
 getBrowserClientChannel<-function(){
     return(CHANNEL)
