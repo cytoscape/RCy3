@@ -618,6 +618,25 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     }
     return(cmd.list.ready)
 }
+# ==============================================================================
+# IV. Jupyter-bridge 
+#' @title doRequestLocal
+#' @description Call CyREST via a local URL
+#' @param operation A string to be converted to the REST query namespace
+#' @param parameters A named list of values to be converted to REST query parameters 
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return CyREST result content
+#' @examples
+#' \donttest{
+#' doRequestLocal()
+#' }
+#' @import httr
+#' @export
+doRequestLocal<-function(){
+    NULL
+}
 
 # ------------------------------------------------------------------------------
 # CyRest Message Handler
