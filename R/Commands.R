@@ -51,7 +51,7 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 #' @importFrom utils URLencode
 #' @export
 cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, operation, sep="/")
+    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
@@ -91,7 +91,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' @importFrom utils URLencode
 #' @export
 cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, operation, sep="/")
+    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
@@ -134,7 +134,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' @importFrom utils URLencode
 #' @export
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, operation, sep="/")
+    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
@@ -176,7 +176,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' @importFrom utils URLencode
 #' @export
 cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, operation, sep="/")
+    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
@@ -671,5 +671,14 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
             }
         }
     }
+}
+
+# ------------------------------------------------------------------------------
+# Encode Operation
+#
+# Applies URLencode to each step along the URL path without clobbering the path.
+.pathURLencode <- function(operation){
+    steps <- strsplit(operation,"\\/")[[1]]
+    paste(lapply(steps, URLencode, reserved = TRUE), collapse = "/")
 }
     
