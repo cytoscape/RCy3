@@ -244,7 +244,7 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
     q.url <- .command2getQuery(cmd.string,base.url)
     tryCatch(
-        res <- GET(q.url), 
+        res <- doRequest("GET", q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -292,7 +292,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
     q.url <- .command2getQuery(s,base.url)
     tryCatch(
-        res <- GET(q.url), 
+        res <- doRequest("GET", q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -331,7 +331,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     post.url = .command2postQueryUrl(cmd.string,base.url)
     post.body = .command2postQueryBody(cmd.string)
     tryCatch(
-        res <- POST(url=post.url, body=post.body, encode="json", content_type_json()), 
+        res <- doRequest("POST", post.url, post.body), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
