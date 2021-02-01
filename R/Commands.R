@@ -57,7 +57,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         q.url <- paste(q.url, q.params, sep="?")
     }
     tryCatch(
-        res <- DELETE(url=URLencode(q.url)), 
+        res <- doRequest("DELETE", q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -98,7 +98,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     }
     res <- NULL
     tryCatch(
-        res <- GET(url=URLencode(q.url)), 
+        res <- doRequest("GET", q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -141,7 +141,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
     }
     q.body <- toJSON(body)
     tryCatch(
-        res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
+        res <- doRequest("POST", q.url, q.body), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -183,7 +183,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
     }
     q.body <- toJSON(body)
     tryCatch(
-        res <- PUT(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
+        res <- doRequest("PUT", q.url, q.body), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -620,22 +620,30 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
 }
 # ==============================================================================
 # IV. Jupyter-bridge 
-#' @title doRequestLocal
-#' @description Call CyREST via a local URL
-#' @param operation A string to be converted to the REST query namespace
-#' @param parameters A named list of values to be converted to REST query parameters 
-#' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
-#' @return CyREST result content
+#' @title doRequest
+#' @description Call CyREST via a URL
 #' @examples
 #' \donttest{
-#' doRequestLocal()
+#' doRequest()
 #' }
 #' @import httr
 #' @export
-doRequestLocal<-function(){
-    NULL
+doRequest<-function(method, qurl, qbody=NULL){
+    r <- NULL
+    if(method=="GET"){
+    r <- GET(url=URLencode(qurl))
+    }
+    else if (method=="DELETE"){
+    r <- DELETE(url=URLencode(qurl))
+    }
+    else if (method=="POST"){
+    r <- POST(url=URLencode(qurl), body=qbody, encode="json", content_type_json())
+    }
+    else if (method=="PUT"){
+    r <- PUT(url=URLencode(qurl), body=qbody, encode="json", content_type_json())
+    }
+    else{NULL}
+    return(r)
 }
 
 # ------------------------------------------------------------------------------
