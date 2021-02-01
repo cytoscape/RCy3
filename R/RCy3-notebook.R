@@ -48,3 +48,22 @@ getBrowserClientJs<-function(){
 }
 
 # ------------------------------------------------------------------------------
+#' @title doRequestRemote
+#'
+#' @description Do requests remotely
+#' @examples \donttest{
+#' doRequestRemote()
+#' }
+#' @import httr
+#' @export
+doRequestRemote<-function(){
+    x <- list(command = "GET", url = "http://127.0.0.1:1234/v1/version")
+    http_request <- toJSON(x)
+    url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
+    POST(url_post, content_type_json(), body = http_request)
+    url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
+    r1 <- GET(url_get)
+    r1 <- content(r1, "text")
+    return(r1)
+}
+# ------------------------------------------------------------------------------
