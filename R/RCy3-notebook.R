@@ -7,10 +7,10 @@
 spoofResponse <- setClass(
     "spoofResponse",
     slots = c(
-        selfURL = "ANY",
-        selfStatusCode = "ANY",
-        selfReason = "ANY",
-        selfText = "ANY"
+        URL = "ANY",
+        StatusCode = "ANY",
+        Reason = "ANY",
+        Text = "ANY"
     )
 )
 
@@ -20,28 +20,28 @@ setGeneric("raiseForStatus", function(object, ...) standardGeneric("raiseForStat
 
 setMethod(f="initialize", signature="spoofResponse",
           definition=function(.Object) {
-              .Object@selfURL <- "jupyter-bridge"
-              .Object@selfStatusCode <- "0"
-              .Object@selfReason <- "reason"
-              .Object@selfText <- "text"
+              .Object@URL <- "https://jupyter-bridge.cytoscape.org"
+              .Object@StatusCode <- "0"
+              .Object@Reason <- "reason"
+              .Object@Text <- "text"
               return(.Object)
           }
 )
 
 setMethod("repr", "spoofResponse", function(object, ...) {
-    dput(object@selfStatusCode)
+    dput(object@StatusCode)
 }) 
 
 setMethod("jsonLoads", "spoofResponse", function(object, ...) {
-    spoofResponsetext <- fromJSON(object@selfText)
+    spoofResponsetext <- fromJSON(object@Text)
     return(spoofResponsetext)
 }) 
 
 setMethod("raiseForStatus", "spoofResponse", function(object, ...) {
-    if(object@selfStatusCode < 500 & object@selfStatusCode >= 400){
+    if(object@StatusCode < 500 & object@StatusCode >= 400){
         stop("Client Error")
     }
-    else if(object@selfStatusCode < 600 & object@selfStatusCode >= 500){
+    else if(object@statusCode < 600 & object@StatusCode >= 500){
         stop("Server Error")
     }
 }) 
@@ -122,12 +122,12 @@ doRequestRemote<-function(){
     )
     tryCatch(
         expr = {
-            #while (TRUE){
+            while (TRUE){
                 url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
                 r <- GET(url_get)
-                #if(status_code(r) != 408){break}
-            },
-        #},
+                if(status_code(r) != 408){break}
+            }
+        },
         error = function(e){
             message('Error receiving from Jupyter-bridge!')
             print(e)
@@ -137,9 +137,8 @@ doRequestRemote<-function(){
         expr = {
             rContent <- content(r, "text")
             encoding <- detect_str_enc(rContent)
-            message <- str(iconv(rContent, to=encoding))
+            message <- toString((iconv(rContent, to=encoding)))
             cyReply <- fromJSON(message)
-            print(cyReply)
         },
         error = function(e){
             message('Undeciperable message received from Jupyter-bridge!')
@@ -147,9 +146,9 @@ doRequestRemote<-function(){
         }
     )
     r = spoofResponse()
-    r@selfStatusCode <- cyReply
-    r@selfReason <- cyReply
-    r@selfText <- cyReply
+    r@StatusCode <- cyReply[1]
+    r@Reason <- cyReply[2]
+    r@Text <- cyReply[3]
     return(r)
 }
 # ------------------------------------------------------------------------------
