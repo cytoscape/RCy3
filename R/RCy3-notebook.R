@@ -61,6 +61,7 @@ ug <- uuid.gen()
 uuid <- character(1)
 uuid[1] <- ug()
 CHANNEL <- uuid[1]
+cyrestURLV1 = 'http://127.0.0.1:1234/v1'
 #' @export
 getBrowserClientChannel<-function(){
     return(CHANNEL)
@@ -119,7 +120,7 @@ doRequestRemote<-function(method, qurl, params=NULL, headers=NULL, ...){
     }
     tryCatch(
         expr = {
-            request <- list(command = method, url = "http://127.0.0.1:1234/v1/version", data = data, params = params, headers = headers)
+            request <- list(command = method, url = qurl, data = data, params = params, headers = headers)
             http_request <- toJSON(request)
             url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
             r <- POST(url_post, body = http_request, encode="json", content_type_json())
