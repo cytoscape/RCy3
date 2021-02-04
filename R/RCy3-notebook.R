@@ -20,7 +20,7 @@ setGeneric("raiseForStatus", function(object, ...) standardGeneric("raiseForStat
 
 setMethod(f="initialize", signature="spoofResponse",
           definition=function(.Object) {
-              .Object@URL <- "jupyter-bridge"
+              .Object@URL <- "https://jupyter-bridge.cytoscape.org"
               .Object@StatusCode <- "0"
               .Object@Reason <- "reason"
               .Object@Text <- "text"
