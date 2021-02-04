@@ -20,7 +20,7 @@ setGeneric("raiseForStatus", function(object, ...) standardGeneric("raiseForStat
 
 setMethod(f="initialize", signature="spoofResponse",
           definition=function(.Object) {
-              .Object@URL <- "https://jupyter-bridge.cytoscape.org"
+              .Object@URL <- "jupyter-bridge"
               .Object@StatusCode <- "0"
               .Object@Reason <- "reason"
               .Object@Text <- "text"
@@ -41,7 +41,7 @@ setMethod("raiseForStatus", "spoofResponse", function(object, ...) {
     if(object@StatusCode < 500 & object@StatusCode >= 400){
         stop("Client Error")
     }
-    else if(object@statusCode < 600 & object@StatusCode >= 500){
+    else if(object@StatusCode < 600 & object@StatusCode >= 500){
         stop("Server Error")
     }
 }) 
