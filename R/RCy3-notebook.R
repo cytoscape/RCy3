@@ -106,13 +106,13 @@ getBrowserClientJs<-function(){
 #' }
 #' @import httr
 #' @export
-doRequestRemote<-function(){
+doRequestRemote<-function(method, qurl){
     tryCatch(
         expr = {
-            x <- list(command = "GET", url = "http://127.0.0.1:1234/v1/version")
-            http_request <- toJSON(x)
+            request <- list(command = method, url = "http://127.0.0.1:1234/v1/version")
+            http_request <- toJSON(request)
             url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
-            r <- POST(url_post, content_type_json(), body = http_request)
+            r <- POST(url_post, body = http_request, encode="json", content_type_json())
             print(status_code(r))
         },
         error = function(e){
