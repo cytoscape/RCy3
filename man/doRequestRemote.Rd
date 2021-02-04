@@ -4,7 +4,7 @@
 \alias{doRequestRemote}
 \title{doRequestRemote}
 \usage{
-doRequestRemote(method, qurl)
+doRequestRemote(method, qurl, params = NULL, headers = NULL, ...)
 }
 \description{
 Do requests remotely
