@@ -115,7 +115,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL){
     }
     tryCatch(
         expr = {
-            request <- list(command = method, url = qurl, body = qbody)
+            request <- list(command = method, url = qurl, data = qbody)
             print(request)
             http_request <- toJSON(request)
             print(http_request)

@@ -182,7 +182,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
     }
     q.body <- toJSON(body)
     tryCatch(
-        res <- doRequest("PUT", q.url, q.body), 
+        res <- doRequest("PUT", q.url, q.body),
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
