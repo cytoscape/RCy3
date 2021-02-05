@@ -94,7 +94,6 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     q.url <- paste(base.url, .pathURLencode(operation), sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
     }
     res <- NULL
     tryCatch(

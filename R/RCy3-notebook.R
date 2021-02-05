@@ -124,8 +124,9 @@ doRequestRemote<-function(method, qurl, params=NULL, headers=NULL, ...){
         expr = {
             request <- list(command = method, url = qurl, data = data, params = params, headers = headers)
             http_request <- toJSON(request)
+            print(http_request)
             url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
-            r <- POST(url_post, body = http_request, encode="json", content_type_json())
+            r <- POST(URLencode(url_post), body = http_request, encode="json", content_type_json())
             print(status_code(r))
         },
         error = function(e){
@@ -137,7 +138,7 @@ doRequestRemote<-function(method, qurl, params=NULL, headers=NULL, ...){
         expr = {
             while (TRUE){
                 url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
-                r <- GET(url_get)
+                r <- GET(URLencode(url_get))
                 if(status_code(r) != 408){break}
             }
         },
