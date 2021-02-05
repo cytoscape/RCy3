@@ -148,9 +148,6 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         }
     )
     r = spoofResponse()
-    if (cyReply[1] == 0){ 
-        stop("Could not contact url")
-    }
     r@StatusCode <- cyReply[1]
     r@Reason <- cyReply[2]
     r@Text <- cyReply[3]
