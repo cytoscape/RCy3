@@ -112,10 +112,7 @@ getBrowserClientJs<-function(){
 doRequestRemote<-function(method, qurl, qbody=NULL){
     tryCatch(
         expr = {
-            if(!is.null(qbody)){
-                rbody <- fromJSON(qbody)
-            }
-            request <- list(command = method, url = qurl, body = rbody)
+            request <- list(command = method, url = qurl, body = fromJSON(qbody))
             print(request)
             http_request <- toJSON(request)
             print(http_request)
