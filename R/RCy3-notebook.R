@@ -110,6 +110,9 @@ getBrowserClientJs<-function(){
 #' @import httr
 #' @export
 doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
+    if(!is.null(qbody)){
+        qbody <- fromJSON(qbody)
+    }
     tryCatch(
         expr = {
             request <- list(command = method, url = qurl, data = qbody, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
@@ -148,6 +151,9 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         }
     )
     r = spoofResponse()
+    if (cyReply[1] == 0){ 
+        stop("Could not contact url")
+    }
     r@StatusCode <- cyReply[1]
     r@Reason <- cyReply[2]
     r@Text <- cyReply[3]
