@@ -114,6 +114,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         expr = {
             request <- list(command = method, url = qurl, data = qbody, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
             url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
+            print(request)
             r <- POST(url_post, body = request, encode="json", content_type_json(), add_headers("Content-Type" = "application/json"))
             print(status_code(r))
         },
@@ -148,9 +149,6 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         }
     )
     r = spoofResponse()
-    if (cyReply[1] == 0) {
-        stop("Could not contact url")
-    }
     r@StatusCode <- cyReply[1]
     r@Reason <- cyReply[2]
     r@Text <- cyReply[3]
