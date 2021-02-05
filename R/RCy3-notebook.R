@@ -114,7 +114,6 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         expr = {
             request <- list(command = method, url = qurl, data = qbody, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
             url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
-            print(request)
             r <- POST(url_post, body = request, encode="json", content_type_json(), add_headers("Content-Type" = "application/json"))
             print(status_code(r))
         },
@@ -127,7 +126,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         expr = {
             while (TRUE){
                 url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
-                r <- GET(url_get)
+                r <- GET(url_get, accept_json())
                 if(status_code(r) != 408){break}
             }
         },
