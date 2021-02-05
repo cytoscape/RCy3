@@ -113,9 +113,6 @@ doRequestRemote<-function(method, qurl, qbody=NULL){
     tryCatch(
         expr = {
             request <- list(command = method, url = qurl, body = qbody)
-            if(!is.null(request$body)){
-                request$body <- fromJSON(request$body)
-            }
             http_request <- toJSON(request)
             url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
             r <- POST(url_post, body = http_request, encode="json", content_type_json())
