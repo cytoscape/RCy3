@@ -124,11 +124,11 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     )
     tryCatch(
         expr = {
-            while (TRUE){
+            #while (TRUE){
                 url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
-                r <- GET(url_get)
-                if(status_code(r) != 408){break}
-            }
+                r <- GET(url_get, accept_json())
+                #if(status_code(r) != 408){break}
+            #}
         },
         error = function(e){
             message('Error receiving from Jupyter-bridge!')
