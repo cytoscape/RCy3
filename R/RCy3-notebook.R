@@ -126,6 +126,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
             url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
             while (TRUE){
                 r <- GET(url_get, accept_json())
+                print(status_code(r))
                 if(status_code(r) != 408){break}
             }
         },
