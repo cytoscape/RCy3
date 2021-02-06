@@ -109,7 +109,7 @@ getBrowserClientJs<-function(){
 #' }
 #' @import httr
 #' @export
-doRequestRemote<-function (method, qurl, qbody = NULL, headers = NULL) {
+doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     tryCatch(expr = {
         request <- list(command = method, url = qurl, data = qbody, 
                         headers = list(`Content-Type` = "application/json", 
