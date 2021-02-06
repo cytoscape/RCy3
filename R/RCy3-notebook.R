@@ -127,6 +127,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
             while (TRUE){
                 r <- GET(url_get, accept_json())
                 print(content(r, "text"))
+                if(status_code(r) == 500){next}
                 if(status_code(r) != 408){break}
             }
         },
@@ -138,7 +139,6 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     tryCatch(
         expr = {
             rContent <- content(r, "text")
-            print(rContent)
             encoding <- detect_str_enc(rContent)
             message <- toString((iconv(rContent, to=encoding)))
             cyReply <- fromJSON(message)
