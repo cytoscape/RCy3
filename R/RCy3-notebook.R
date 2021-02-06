@@ -153,7 +153,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     }
     r@StatusCode <- cyReply[1]
     r@Reason <- cyReply[2]
-    r@Text <- fromJSON(cyReply[3])
+    r@Text <- cyReply[3]
     return(r)
 }
 # ------------------------------------------------------------------------------
