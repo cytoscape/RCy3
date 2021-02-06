@@ -94,6 +94,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     q.url <- paste(base.url, .pathURLencode(operation), sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
     }
     res <- NULL
     tryCatch(
@@ -138,7 +139,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    q.body <- toJSON(body)
+    q.body <- body
     tryCatch(
         res <- doRequest("POST", q.url, q.body), 
         error=function(c) .cyError(c, res),
@@ -180,9 +181,9 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    q.body <- toJSON(body)
+    q.body <- body
     tryCatch(
-        res <- doRequest("PUT", q.url, q.body),
+        res <- doRequest("PUT", q.url, q.body), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
