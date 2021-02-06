@@ -154,5 +154,4 @@ doRequestRemote<-function (method, qurl, qbody = NULL, headers = NULL) {
     r@Text <- cyReply[3]
     return(r)
 }
-}
 # ------------------------------------------------------------------------------
