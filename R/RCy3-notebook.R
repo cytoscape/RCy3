@@ -159,8 +159,6 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
 #' @examples \donttest{
 #' setNotebookIsRunning()
 #' }
-notebookIsRunning <- NULL
-runningRemote <- NULL
 #' @export
 setNotebookIsRunning<-function(newState=NULL){
     oldState <- .GlobalEnv$notebookIsRunning
@@ -232,5 +230,11 @@ checkRunningRemote<-function(){
         .GlobalEnv$runningRemote <- FALSE 
     }
     return(.GlobalEnv$runningRemote)
+}
+# ------------------------------------------------------------------------------
+.onLoad <- function(libname, pkgname){
+    notebookIsRunning <- NULL
+    runningRemote <- NULL
+    assign('initCheck', checkNotebookIsRunning(), envir = .GlobalEnv)
 }
 # ------------------------------------------------------------------------------
