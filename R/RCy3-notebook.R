@@ -197,4 +197,5 @@ checkNotebookIsRunning<-function(){
         }
     }
 }
+checkNotebookIsRunning()
 # ------------------------------------------------------------------------------
