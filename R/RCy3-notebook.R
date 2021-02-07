@@ -93,7 +93,6 @@ getJupyterBridgeURL<-function(){
 #' @importFrom httr content
 #' @export
 getBrowserClientJs<-function(){
-    checkNotebookIsRunning()
     r <- GET("https://raw.githubusercontent.com/cytoscape/jupyter-bridge/master/client/javascript_bridge.js")
     injectCode <- sprintf('var Channel = "%s"; \n\n var JupyterBridge = "%s"; \n\n %s',CHANNEL, JupyterBRIDGEURL, content(r, 'text') )
     return(injectCode)
@@ -197,5 +196,33 @@ checkNotebookIsRunning<-function(){
             setNotebookIsRunning(FALSE)
         }
     }
+}
+# ------------------------------------------------------------------------------
+#' @title checkRunningRemote
+#' @description checkRunningRemote
+#' @examples \donttest{
+#' checkRunningRemote()
+#' }
+#' @import httr
+#' @export
+checkRunningRemote<-function(){
+    if(getNotebookIsRunning()){
+        if(is.null(.GlobalEnv$runningRemote)){
+            tryCatch(
+                expr = {
+                    r <- GET(url='http://127.0.0.1:1234/v1')
+                    status_code(r)
+                    .GlobalEnv$runningRemote <- FALSE
+                },
+                error = function(e){
+                    doRequestRemote("GET", 'http://127.0.0.1:1234/v1')
+                    .GlobalEnv$runningRemote <- TRUE
+                }
+            )
+        }
+    }else{
+        .GlobalEnv$runningRemote <- FALSE 
+    }
+    return(.GlobalEnv$runningRemote)
 }
 # ------------------------------------------------------------------------------
