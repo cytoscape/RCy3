@@ -151,3 +151,5 @@
     if(nogo)
         stop(simpleError("Function not run due to unsupported version."))
 }
+# ------------------------------------------------------------------------------
+checkNotebookIsRunning()
