@@ -163,8 +163,8 @@ notebookIsRunning <- NULL
 runningRemote <- NULL
 #' @export
 setNotebookIsRunning<-function(newState=NULL){
-    oldState <- notebookIsRunning
-    notebookIsRunning <<- newState
+    oldState <- .GlobalEnv$notebookIsRunning
+    .GlobalEnv$notebookIsRunning <- newState
     return(oldState)
 }
 # ------------------------------------------------------------------------------
@@ -175,7 +175,7 @@ setNotebookIsRunning<-function(newState=NULL){
 #' }
 #' @export
 getNotebookIsRunning<-function(){
-    return(notebookIsRunning)
+    return(.GlobalEnv$notebookIsRunning)
 }
 # ------------------------------------------------------------------------------
 #' @title checkNotebookIsRunning
