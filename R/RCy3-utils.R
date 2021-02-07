@@ -152,4 +152,16 @@
         stop(simpleError("Function not run due to unsupported version."))
 }
 # ------------------------------------------------------------------------------
-checkNotebookIsRunning()
+.checkNotebookIsRunning<-function(){
+    if(is.null(getNotebookIsRunning())){
+        if(getOption("jupyter.in_kernel")){
+            setNotebookIsRunning(TRUE)
+        }
+        else if(!getOption("jupyter.in_kernel")){
+            setNotebookIsRunning(FALSE)
+        }
+        else{
+            setNotebookIsRunning(FALSE)
+        }
+    }
+}

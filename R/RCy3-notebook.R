@@ -178,23 +178,3 @@ getNotebookIsRunning<-function(){
     return(.GlobalEnv$notebookIsRunning)
 }
 # ------------------------------------------------------------------------------
-#' @title checkNotebookIsRunning
-#' @description checkNotebookIsRunning
-#' @examples \donttest{
-#' checkNotebookIsRunning()
-#' }
-#' @export
-checkNotebookIsRunning<-function(){
-    if(is.null(getNotebookIsRunning())){
-        if(getOption("jupyter.in_kernel")){
-            setNotebookIsRunning(TRUE)
-        }
-        else if(!getOption("jupyter.in_kernel")){
-            setNotebookIsRunning(FALSE)
-        }
-        else{
-            setNotebookIsRunning(FALSE)
-        }
-    }
-}
-# ------------------------------------------------------------------------------
