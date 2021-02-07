@@ -156,3 +156,46 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     return(r)
 }
 # ------------------------------------------------------------------------------
+#' @title setNotebookIsRunning
+#' @description setNotebookIsRunning
+#' @examples \donttest{
+#' setNotebookIsRunning()
+#' }
+#' @export
+setNotebookIsRunning<-function(newState=NULL){
+    oldState <- notebookIsRunning
+    notebookIsRunning <<- newState
+    return(oldState)
+}
+# ------------------------------------------------------------------------------
+#' @title getNotebookIsRunning
+#' @description getNotebookIsRunning
+#' @examples \donttest{
+#' getNotebookIsRunning()
+#' }
+#' @export
+getNotebookIsRunning<-function(){
+    return(notebookIsRunning)
+}
+# ------------------------------------------------------------------------------
+#' @title checkNotebookIsRunning
+#' @description checkNotebookIsRunning
+#' @examples \donttest{
+#' checkNotebookIsRunning()
+#' }
+#' @export
+checkNotebookIsRunning<-function(){
+    if(is.null(getNotebookIsRunning())){
+        if(getOption("jupyter.in_kernel")){
+            setNotebookIsRunning(TRUE)
+        }
+        else if(!getOption("jupyter.in_kernel")){
+            setNotebookIsRunning(FALSE)
+        }
+        else{
+            setNotebookIsRunning(FALSE)
+        }
+    }
+}
+checkNotebookIsRunning()
+# ------------------------------------------------------------------------------
