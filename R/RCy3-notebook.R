@@ -232,4 +232,3 @@ checkRunningRemote<-function(){
     return(.GlobalEnv$runningRemote)
 }
 # ------------------------------------------------------------------------------
- 
