@@ -164,7 +164,7 @@ runningRemote <- NULL
 #' @export
 setNotebookIsRunning<-function(newState=NULL){
     oldState <- notebookIsRunning
-    notebookIsRunning <<- newState
+    assign('notebookIsRunning', newState, globalenv())
     return(oldState)
 }
 # ------------------------------------------------------------------------------
