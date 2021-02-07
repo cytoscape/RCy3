@@ -232,7 +232,7 @@ checkRunningRemote<-function(){
     return(.GlobalEnv$runningRemote)
 }
 # ------------------------------------------------------------------------------
-.onLoad <- function(libname, pkgname){
+.onAttach <- function(libname, pkgname){
     notebookIsRunning <- NULL
     runningRemote <- NULL
     checkNotebookIsRunning()
