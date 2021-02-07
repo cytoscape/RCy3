@@ -210,11 +210,12 @@ checkRunningRemote<-function(){
         if(is.null(.GlobalEnv$runningRemote)){
             tryCatch(
                 expr = {
-                    invisible(r <- GET(url='http://127.0.0.1:1234/v1'))
+                    r <- GET(url='http://127.0.0.1:1234/v1')
+                    status_code(r)
                     .GlobalEnv$runningRemote <- FALSE
                 },
                 error = function(e){
-                    invisible(doRequestRemote("GET", 'http://127.0.0.1:1234/v1'))
+                    doRequestRemote("GET", 'http://127.0.0.1:1234/v1', encoding = "UTF-8")
                     .GlobalEnv$runningRemote <- TRUE
                         }
             )
