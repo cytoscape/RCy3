@@ -199,4 +199,3 @@ checkNotebookIsRunning<-function(){
     }
 }
 # ------------------------------------------------------------------------------
-checkNotebookIsRunning()
