@@ -235,6 +235,6 @@ checkRunningRemote<-function(){
 .onLoad <- function(libname, pkgname){
     notebookIsRunning <- NULL
     runningRemote <- NULL
-    assign('initCheck', checkNotebookIsRunning(), envir = .GlobalEnv)
+    checkNotebookIsRunning()
 }
 # ------------------------------------------------------------------------------
