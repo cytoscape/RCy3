@@ -232,3 +232,8 @@ checkRunningRemote<-function(){
     return(.GlobalEnv$runningRemote)
 }
 # ------------------------------------------------------------------------------
+.onAttach <- function(libname, pkgname) {
+    if(!getOption("jupyter.in_kernel")){
+        checkNotebookIsRunning()
+    }
+}
