@@ -214,7 +214,7 @@ checkRunningRemote<-function(){
                     .GlobalEnv$runningRemote <- FALSE
                 },
                 error = function(e){
-                    doRequestRemote("GET", 'http://127.0.0.1:1234/v1')
+                    invisible(doRequestRemote("GET", 'http://127.0.0.1:1234/v1'))
                     .GlobalEnv$runningRemote <- TRUE
                         }
             )
