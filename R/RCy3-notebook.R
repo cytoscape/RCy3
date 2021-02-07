@@ -215,17 +215,9 @@ checkRunningRemote<-function(){
                     .GlobalEnv$runningRemote <- FALSE
                 },
                 error = function(e){
-                    tryCatch(
-                        expr = {
                     doRequestRemote("GET", 'http://127.0.0.1:1234/v1')
                     .GlobalEnv$runningRemote <- TRUE
-                        },
-                    error = function(e){
-                        message('Error initially contacting Jupyter-bridge!')
-                        print(e)
                         }
-                    )
-                }
             )
         }
     }else{
