@@ -62,8 +62,6 @@ uuid <- character(1)
 uuid[1] <- ug()
 CHANNEL <- uuid[1]
 cyrestURLV1 = 'http://127.0.0.1:1234/v1'
-notebookIsRunning <- NULL
-runningRemote <- NULL
 #' @export
 getBrowserClientChannel<-function(){
     return(CHANNEL)
@@ -161,6 +159,8 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
 #' @examples \donttest{
 #' setNotebookIsRunning()
 #' }
+notebookIsRunning <- NULL
+runningRemote <- NULL
 #' @export
 setNotebookIsRunning<-function(newState=NULL){
     oldState <- notebookIsRunning
@@ -197,5 +197,4 @@ checkNotebookIsRunning<-function(){
         }
     }
 }
-checkNotebookIsRunning()
 # ------------------------------------------------------------------------------
