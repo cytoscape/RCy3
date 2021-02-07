@@ -151,3 +151,9 @@
         stop(simpleError("Function not run due to unsupported version."))
 }
 # ------------------------------------------------------------------------------
+.onAttach <- function(libname, pkgname){
+    notebookIsRunning <- NULL
+    runningRemote <- NULL
+    checkNotebookIsRunning()
+} 
+# ------------------------------------------------------------------------------
