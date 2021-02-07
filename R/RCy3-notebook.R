@@ -161,10 +161,9 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
 #' }
 notebookIsRunning <- NULL
 runningRemote <- NULL
-oldState <- NULL
 #' @export
 setNotebookIsRunning<-function(newState=NULL){
-    oldState <<- notebookIsRunning
+    oldState <- notebookIsRunning
     notebookIsRunning <<- newState
     return(oldState)
 }
@@ -196,6 +195,8 @@ checkNotebookIsRunning<-function(){
         else{
             setNotebookIsRunning(FALSE)
         }
+    }else{
+        NULL
     }
 }
 # ------------------------------------------------------------------------------

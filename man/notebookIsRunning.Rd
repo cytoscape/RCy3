@@ -5,7 +5,7 @@
 \alias{notebookIsRunning}
 \title{setNotebookIsRunning}
 \format{
-An object of class \code{logical} of length 1.
+An object of class \code{NULL} of length 0.
 }
 \usage{
 notebookIsRunning
