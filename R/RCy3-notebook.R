@@ -93,6 +93,7 @@ getJupyterBridgeURL<-function(){
 #' @importFrom httr content
 #' @export
 getBrowserClientJs<-function(){
+    checkNotebookIsRunning()
     r <- GET("https://raw.githubusercontent.com/cytoscape/jupyter-bridge/master/client/javascript_bridge.js")
     injectCode <- sprintf('var Channel = "%s"; \n\n var JupyterBridge = "%s"; \n\n %s',CHANNEL, JupyterBRIDGEURL, content(r, 'text') )
     return(injectCode)
