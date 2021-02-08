@@ -12,10 +12,6 @@
 .MODEL_PROPAGATION_SECS <- 5
 .CATCHUP_NETWORK_SECS <- 2
 .NDEX_DELAY_SECS <- 5
-.ug <- uuid.gen()
-.uuid <- character(1)
-.uuid[1] <- .ug()
-.CHANNEL <- .uuid[1]
 # ==============================================================================
 # I. Package Utility Functions
 # ------------------------------------------------------------------------------
