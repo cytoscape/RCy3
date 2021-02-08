@@ -64,7 +64,7 @@ setMethod("raiseForStatus", "spoofResponse", function(object, ...) {
 #' }
 #' @export
 getBrowserClientChannel<-function(){
-    return(CHANNEL)
+    return(.GlobalEnv$CHANNEL)
 }
 
 # ------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ getJupyterBridgeURL<-function(){
 #' @export
 getBrowserClientJs<-function(){
     r <- GET("https://raw.githubusercontent.com/cytoscape/jupyter-bridge/master/client/javascript_bridge.js")
-    injectCode <- sprintf('var Channel = "%s"; \n\n var JupyterBridge = "%s"; \n\n %s',CHANNEL, JupyterBRIDGEURL, content(r, 'text') )
+    injectCode <- sprintf('var Channel = "%s"; \n\n var JupyterBridge = "%s"; \n\n %s',.GlobalEnv$CHANNEL, JupyterBRIDGEURL, content(r, 'text') )
     return(injectCode)
 }
 
@@ -111,7 +111,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     tryCatch(
         expr = {
             request <- list(command = method, url = qurl, data = qbody, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
-            url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
+            url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, .GlobalEnv$CHANNEL)
             r <- POST(url_post, body = request, encode="json", content_type_json(), add_headers("Content-Type" = "application/json"))
         },
         error = function(e){
@@ -122,7 +122,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     tryCatch(
         expr = {
             while (TRUE){
-                url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
+                url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, .GlobalEnv$CHANNEL)
                 r <- GET(url_get, accept_json())
                 if(status_code(r) != 408){break}
             }
