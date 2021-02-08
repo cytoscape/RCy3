@@ -57,13 +57,9 @@ setMethod("raiseForStatus", "spoofResponse", function(object, ...) {
 #' getBrowserClientChannel()
 #' }
 #' @importFrom dplR uuid.gen
-cyrestURLV1 = 'http://127.0.0.1:1234/v1'
+cyrestURLV1 <- 'http://127.0.0.1:1234/v1'
 #' @export
 getBrowserClientChannel<-function(){
-    ug <- uuid.gen()
-    uuid <- character(1)
-    uuid[1] <- ug()
-    CHANNEL <<- uuid[1]
     return(CHANNEL)
 }
 
@@ -91,8 +87,13 @@ getJupyterBridgeURL<-function(){
 #' }
 #' @importFrom httr GET
 #' @importFrom httr content
+#' @importFrom dplR uuid.gen
 #' @export
 getBrowserClientJs<-function(){
+    ug <- uuid.gen()
+    uuid <- character(1)
+    uuid[1] <- ug()
+    CHANNEL <<- uuid[1]
     r <- GET("https://raw.githubusercontent.com/cytoscape/jupyter-bridge/master/client/javascript_bridge.js")
     injectCode <- sprintf('var Channel = "%s"; \n\n var JupyterBridge = "%s"; \n\n %s',CHANNEL, JupyterBRIDGEURL, content(r, 'text') )
     return(injectCode)
