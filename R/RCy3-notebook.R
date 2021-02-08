@@ -61,7 +61,7 @@ ug <- uuid.gen()
 uuid <- character(1)
 uuid[1] <- ug()
 CHANNEL <- uuid[1]
-cyrestURLV1 <- 'http://127.0.0.1:1234/v1'
+cyrestURLV1 = 'http://127.0.0.1:1234/v1'
 #' @export
 getBrowserClientChannel<-function(){
     return(CHANNEL)
