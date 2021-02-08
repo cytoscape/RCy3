@@ -183,6 +183,7 @@ getNotebookIsRunning<-function(){
 #' @examples \donttest{
 #' checkNotebookIsRunning()
 #' }
+#' @export
 checkNotebookIsRunning<-function(){
     if(is.null(getNotebookIsRunning())){
         if(getOption("jupyter.in_kernel")){
@@ -197,6 +198,20 @@ checkNotebookIsRunning<-function(){
     }
 }
 # ------------------------------------------------------------------------------
+#' @title runningRmoteCheck
+#' @description runningRmoteCheck
+#' @examples \donttest{
+#' runningRmoteCheck()
+#' }
+#' @export
+runningRmoteCheck<-function(newState=NULL){
+    oldState <- .GlobalEnv$runningRmote
+    if(!is.null(newState)){
+        .GlobalEnv$runningRmote <- newState
+    }
+    return(oldState)
+}
+# ------------------------------------------------------------------------------
 #' @title checkRunningRemote
 #' @description checkRunningRemote
 #' @examples \donttest{
@@ -205,6 +220,8 @@ checkNotebookIsRunning<-function(){
 #' @import httr
 #' @export
 checkRunningRemote<-function(){
+    tryCatch(
+        expr={
     if(getNotebookIsRunning()){
         if(is.null(.GlobalEnv$runningRemote)){
             tryCatch(
@@ -230,6 +247,11 @@ checkRunningRemote<-function(){
     }else{
         .GlobalEnv$runningRemote <- FALSE 
     }
+        },
+    error = function(e){
+        checkNotebookIsRunning()
+        checkRunningRemote()
+    })
     return(.GlobalEnv$runningRemote)
 }
 # ------------------------------------------------------------------------------
