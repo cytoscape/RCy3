@@ -181,7 +181,6 @@ getNotebookIsRunning<-function(){
 #' @examples \donttest{
 #' checkNotebookIsRunning()
 #' }
-#' @export
 checkNotebookIsRunning<-function(){
     if(is.null(getNotebookIsRunning())){
         if(getOption("jupyter.in_kernel")){
@@ -195,6 +194,7 @@ checkNotebookIsRunning<-function(){
         }
     }
 }
+checkNotebookIsRunning()
 # ------------------------------------------------------------------------------
 #' @title checkRunningRemote
 #' @description checkRunningRemote
