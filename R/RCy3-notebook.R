@@ -63,7 +63,7 @@ getBrowserClientChannel<-function(){
     ug <- uuid.gen()
     uuid <- character(1)
     uuid[1] <- ug()
-    CHANNEL <- uuid[1]
+    CHANNEL <<- uuid[1]
     return(CHANNEL)
 }
 
