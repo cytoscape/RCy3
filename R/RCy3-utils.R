@@ -7,7 +7,6 @@
 # ==============================================================================
 # I. Package Variables and Constants
 # ------------------------------------------------------------------------------
-library(dplR)
 .defaultBaseUrl <- 'http://localhost:1234/v1'
 .CATCHUP_FILTER_SECS <- 1
 .MODEL_PROPAGATION_SECS <- 5
