@@ -151,8 +151,6 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     #r@status_code <- cyReply[1]
     #r@Reason <- cyReply[2]
     #r@Text <- cyReply[3]
-    r$message <- r$reason
-    r$content <- r$text
     return(r)
 }
 # ------------------------------------------------------------------------------
