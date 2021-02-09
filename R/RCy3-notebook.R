@@ -14,7 +14,7 @@ spoofResponse <- setClass(
     "spoofResponse",
     slots = c(
         URL = "ANY",
-        StatusCode = "ANY",
+        status_code = "ANY",
         Reason = "ANY",
         Text = "ANY"
     )
@@ -27,7 +27,7 @@ setGeneric("raiseForStatus", function(object, ...) standardGeneric("raiseForStat
 setMethod(f="initialize", signature="spoofResponse",
           definition=function(.Object) {
               .Object@URL <- "https://jupyter-bridge.cytoscape.org"
-              .Object@StatusCode <- "0"
+              .Object@status_code <- "0"
               .Object@Reason <- "reason"
               .Object@Text <- "text"
               return(.Object)
@@ -35,7 +35,7 @@ setMethod(f="initialize", signature="spoofResponse",
 )
 
 setMethod("repr", "spoofResponse", function(object, ...) {
-    dput(object@StatusCode)
+    dput(object@status_code)
 }) 
 
 setMethod("jsonLoads", "spoofResponse", function(object, ...) {
@@ -44,10 +44,10 @@ setMethod("jsonLoads", "spoofResponse", function(object, ...) {
 }) 
 
 setMethod("raiseForStatus", "spoofResponse", function(object, ...) {
-    if(object@StatusCode < 500 & object@StatusCode >= 400){
+    if(object@status_code < 500 & object@status_code >= 400){
         stop("Client Error")
     }
-    else if(object@StatusCode < 600 & object@StatusCode >= 500){
+    else if(object@status_code < 600 & object@status_code >= 500){
         stop("Server Error")
     }
 }) 
@@ -148,7 +148,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     if (cyReply[1] == 0){ 
         stop("Could not contact url")
     }
-    r@StatusCode <- cyReply[1]
+    r@status_code <- cyReply[1]
     r@Reason <- cyReply[2]
     r@Text <- cyReply[3]
     return(r)
