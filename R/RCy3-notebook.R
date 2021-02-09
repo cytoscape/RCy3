@@ -7,7 +7,6 @@ CHANNEL <- uuid[1]
 # ------------------------------------------------------------------------------
 #' @title spoofResponse
 #' @description class
-#' @import uchardet
 #' @import jsonlite
 #' @export
 spoofResponse <- setClass(
@@ -106,6 +105,7 @@ getBrowserClientJs<-function(){
 #' doRequestRemote()
 #' }
 #' @import httr
+#' @import uchardet
 #' @export
 doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     tryCatch(
