@@ -111,7 +111,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
             return(res.char)
         }
     } else{
-        invisible(res)
+        return(res)
     }
 }
 
@@ -344,7 +344,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
             invisible(res.data)
         }
     }else {
-        return(res)
+        invisible(res)
         
     }
 }
