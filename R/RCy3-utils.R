@@ -7,7 +7,7 @@
 # ==============================================================================
 # I. Package Variables and Constants
 # ------------------------------------------------------------------------------
-.defaultBaseUrl <- 'http://localhost:1234/v1'
+.defaultBaseUrl <- 'http://127.0.0.1:1234/v1/'
 .CATCHUP_FILTER_SECS <- 1
 .MODEL_PROPAGATION_SECS <- 5
 .CATCHUP_NETWORK_SECS <- 2
