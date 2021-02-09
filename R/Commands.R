@@ -344,7 +344,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
             invisible(res.data)
         }
     }else {
-        invisible(res)
+        return(res)
         
     }
 }
