@@ -48,10 +48,10 @@ base.url parameter is correct.",
 #' @export
 cytoscapeVersionInfo<-function(base.url=.defaultBaseUrl) {
     versions <- cyrestGET('version',base.url = base.url)
-    if(length(versions[[1]]) == 0) {
-        write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
-        stop()
-    }
+    #if(length(versions[[1]]) == 0) {
+        #write(sprintf('CyREST connection problem. RCy3 can not continue!'), stderr())
+        #stop()
+    #}
     return(versions)
 }
 
