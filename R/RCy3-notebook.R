@@ -144,14 +144,14 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
             print(e)
         }
     )
-    #r = spoofResponse()
-    #if (cyReply[1] == 0){ 
-        #stop("Could not contact url")
-    #}
-    #r@status_code <- cyReply[1]
-    #r@Reason <- cyReply[2]
-    #r@Text <- cyReply[3]
-    print(http_status(r))
+    rsp = spoofResponse()
+    if (cyReply[1] == 0){ 
+        stop("Could not contact url")
+    }
+    rsp@status_code <- cyReply[1]
+    rsp@Reason <- cyReply[2]
+    rsp@Text <- cyReply[3]
+    print(rsp)
     return(r)
 }
 # ------------------------------------------------------------------------------
