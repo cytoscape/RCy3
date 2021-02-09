@@ -62,8 +62,8 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
     )
-    if(length(res@content)>0){
-        res.char <- rawToChar(res@content)
+    if(length(res$content)>0){
+        res.char <- rawToChar(res$content)
         if (isValidJSON(res.char, asText = TRUE)){
             return(fromJSON(res.char))
         } else {
@@ -97,22 +97,25 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         q.url <- paste(q.url, q.params, sep="?")
     }
     res <- NULL
-    tryCatch(
-        res <- doRequest("GET", q.url), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    if(length(res@content)>0){
-        res.char <- rawToChar(res@content)
-        if (isValidJSON(res.char, asText = TRUE)){
-            return(fromJSON(res.char))
-        } else {
-            return(res.char)
-        }
-    } else{
-        invisible(res)
-    }
+    res <- doRequestWrapper("GET", q.url)
+    res.char <- rawToChar(res$content)
+    return(res.char)
+   #tryCatch(
+        #res <- doRequestWrapper("GET", q.url), 
+        #error=function(c) .cyError(c, res),
+        #warnings=function(c) .cyWarnings(c, res),
+        #finally=.cyFinally(res)
+    #)
+    #if(length(res$content)>0){
+        #res.char <- rawToChar(res$content)
+        #if (isValidJSON(res.char, asText = TRUE)){
+            #return(fromJSON(res.char))
+        #} else {
+            #return(res.char)
+        #}
+    #} else{
+        #invisible(res)
+    #}
 }
 
 # ------------------------------------------------------------------------------
@@ -146,8 +149,8 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
     )
-    if(length(res@content)>0){
-        res.char <- rawToChar(res@content)
+    if(length(res$content)>0){
+        res.char <- rawToChar(res$content)
         if (isValidJSON(res.char, asText = TRUE)){
             return(fromJSON(res.char))
         } else {
@@ -188,8 +191,8 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
     )
-    if(length(res@content)>0){
-        res.char <- rawToChar(res@content)
+    if(length(res$content)>0){
+        res.char <- rawToChar(res$content)
         if (isValidJSON(res.char, asText = TRUE)){
             return(fromJSON(res.char))
         } else {
@@ -249,7 +252,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
     )
-    res.html = htmlParse(rawToChar(res@content), asText=TRUE)
+    res.html = htmlParse(rawToChar(res$content), asText=TRUE)
     res.elem = xpathSApply(res.html, "//p", xmlValue)
     if(startsWith(res.elem[1],"[")){
         res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
@@ -297,7 +300,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
     )
-    res.html = htmlParse(rawToChar(res@content), asText=TRUE)
+    res.html = htmlParse(rawToChar(res$content), asText=TRUE)
     res.elem = xpathSApply(res.html, "//p", xmlValue)
     res.list = res.elem
     if (length(res.elem)==1){
@@ -336,8 +339,8 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
     )
-    if(length(res@content)>0){
-        res.data = fromJSON(rawToChar(res@content))@data
+    if(length(res$content)>0){
+        res.data = fromJSON(rawToChar(res$content))$data
         if(length(res.data)>0){
             return(res.data)
         } else{
@@ -703,7 +706,7 @@ doRequestWrapper<-function(method, qurl, qbody=NULL, ...){
 
 .cyError<-function(c, res){
     err_conn = 'Connection refused' # Connection Error
-    if (length(grep(err_conn,c@message)) == 0){ # Certain 404 Errors
+    if (length(grep(err_conn,c$message)) == 0){ # Certain 404 Errors
         stop(simpleError("Not Found"))
     } else {
         message("Oh no! I can't find Cytoscape. RCy3 can not continue!
@@ -715,7 +718,7 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
 
 .cyWarnings<-function(c, res){
     #Pass along any warnings and carry on
-    message(c@message)
+    message(c$message)
 }
 
 #' @importFrom RJSONIO fromJSON
@@ -724,15 +727,15 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
     if(!is.null(res)){
         
         # Check HTTP Errors
-        if(res@status_code > 299){
+        if(res$status_code > 299){
             write(sprintf("Failed to execute: %s",res[[1]]), stderr())
-            if(res[[3]]@`content-type` == "text/plain" ||
-               res[[3]]@`content-type` == "text/html;charset=iso-8859-1"){
-                errmsg <- paste(xpathSApply(htmlParse(rawToChar(res@content), asText=TRUE), "//p", xmlValue),
-                                xpathSApply(htmlParse(rawToChar(res@content), asText=TRUE), "//pre", xmlValue))
+            if(res[[3]]$`content-type` == "text/plain" ||
+               res[[3]]$`content-type` == "text/html;charset=iso-8859-1"){
+                errmsg <- paste(xpathSApply(htmlParse(rawToChar(res$content), asText=TRUE), "//p", xmlValue),
+                                xpathSApply(htmlParse(rawToChar(res$content), asText=TRUE), "//pre", xmlValue))
                 stop(simpleError(errmsg))
-            } else if (res[[3]]@`content-type` == "application/json"){
-                stop(simpleError(fromJSON(rawToChar(res@content))@errors[[1]]@message))
+            } else if (res[[3]]$`content-type` == "application/json"){
+                stop(simpleError(fromJSON(rawToChar(res$content))$errors[[1]]$message))
             } else {
                 stop()
             }
