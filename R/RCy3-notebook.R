@@ -204,10 +204,11 @@ checkNotebookIsRunning<-function(){
 #' runningRmoteCheck()
 #' }
 #' @export
-runningRmoteCheck<-function(newState=NULL){
-    oldState <- .GlobalEnv$runningRmote
+runningRemoteCheck<-function(newState=NULL){
+    checkRunningRemote()
+    oldState <- .GlobalEnv$runningRemote
     if(!is.null(newState)){
-        .GlobalEnv$runningRmote <- newState
+        .GlobalEnv$runningRemote <- newState
     }
     return(oldState)
 }

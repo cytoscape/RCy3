@@ -645,7 +645,20 @@ doRequest<-function(method, qurl, qbody=NULL){
     else{NULL}
     return(r)
 }
-
+# ------------------------------------------------------------------------------
+#' @title findRemoteCytoscape
+#' @description findRemoteCytoscapeL
+#' @examples
+#' \donttest{
+#' findRemoteCytoscape()
+#' }
+#' @export
+findRemoteCytoscape<-function(){
+    if(is.null(checkRunningRemote())){
+        stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
+    }
+    return(runningRemoteCheck())
+}
 # ------------------------------------------------------------------------------
 # CyRest Message Handler
 #
