@@ -98,7 +98,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     }
     res <- NULL
     tryCatch(
-        res <- doRequest("GET", q.url), 
+        res <- doRequestWrapper("GET", q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -658,6 +658,33 @@ findRemoteCytoscape<-function(){
         stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
     }
     return(runningRemoteCheck())
+}
+# ------------------------------------------------------------------------------
+#' @title getRequester
+#' @description getRequester
+#' @examples
+#' \donttest{
+#' getRequester()
+#' }
+#' @export
+getRequester<-function(){
+    if(findRemoteCytoscape()){
+        return(doRequestRemote)
+    }else{
+        return(doRequest)
+    }
+}
+# ------------------------------------------------------------------------------
+#' @title doRequestWrapper
+#' @description doRequestWrapper
+#' @examples
+#' \donttest{
+#' doRequestWrapper()
+#' }
+#' @export
+doRequestWrapper<-function(method, qurl, qbody=NULL, ...){
+    requester <- getRequester()
+    return(requester(method, qurl, qbody=NULL, ...))
 }
 # ------------------------------------------------------------------------------
 # CyRest Message Handler
