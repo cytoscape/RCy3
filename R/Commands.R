@@ -99,7 +99,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     res <- NULL
     res <- doRequestWrapper("GET", q.url)
     #res.char <- rawToChar(res$content)
-    return(res@Text)
+    return(content(res, "text"))
    #tryCatch(
         #res <- doRequestWrapper("GET", q.url), 
         #error=function(c) .cyError(c, res),
