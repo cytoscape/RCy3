@@ -104,6 +104,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
     )
+    
     if(length(res$content)>0){
         res.char <- rawToChar(res$content)
         if (isValidJSON(res.char, asText = TRUE)){
@@ -148,6 +149,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
     )
+    if(!findRemoteCytoscape()){
     if(length(res$content)>0){
         res.char <- rawToChar(res$content)
         if (isValidJSON(res.char, asText = TRUE)){
@@ -156,6 +158,9 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
             return(res.char)
         }
         invisible(res)
+        }
+    } else {
+        return(fromJSON(rawToChar(res$content))$text)
     }
 }
 
