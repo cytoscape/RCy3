@@ -100,7 +100,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     res <- NULL
     if(!findRemoteCytoscape()){
     tryCatch(
-        res <- doRequestWrapper("GET", q.url),
+        res <- doRequest("GET", q.url),
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
