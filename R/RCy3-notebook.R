@@ -151,7 +151,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     rsp@status_code <- cyReply[1]
     rsp@Reason <- cyReply[2]
     rsp@Text <- cyReply[3]
-    return(r)
+    return(invisible(r))
 }
 # ------------------------------------------------------------------------------
 #' @title setNotebookIsRunning
