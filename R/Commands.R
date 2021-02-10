@@ -57,7 +57,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         q.url <- paste(q.url, q.params, sep="?")
     }
     tryCatch(
-        res <- doRequest("DELETE", q.url), 
+        res <- doRequestWrapper("DELETE", q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -141,7 +141,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
     }
     q.body <- body
     tryCatch(
-        res <- doRequest("POST", q.url, q.body), 
+        res <- doRequestWrapper("POST", q.url, q.body), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -183,7 +183,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
     }
     q.body <- body
     tryCatch(
-        res <- doRequest("PUT", q.url, q.body), 
+        res <- doRequestWrapper("PUT", q.url, q.body), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -244,7 +244,7 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
     q.url <- .command2getQuery(cmd.string,base.url)
     tryCatch(
-        res <- doRequest("GET", q.url), 
+        res <- doRequestWrapper("GET", q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -292,7 +292,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
     q.url <- .command2getQuery(s,base.url)
     tryCatch(
-        res <- doRequest("GET", q.url), 
+        res <- doRequestWrapper("GET", q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -331,7 +331,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     post.url = .command2postQueryUrl(cmd.string,base.url)
     post.body = .command2postQueryBody(cmd.string)
     tryCatch(
-        res <- doRequest("POST", post.url, post.body), 
+        res <- doRequestWrapper("POST", post.url, post.body), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
