@@ -143,7 +143,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
     q.body <- body
     res <- NULL
     tryCatch(
-        res <- doRequest("POST", q.url, q.body), 
+        res <- doRequestWrapper("POST", q.url, q.body), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
