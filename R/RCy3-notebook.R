@@ -112,7 +112,8 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         expr = {
             request <- list(command = method, url = qurl, data = qbody, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
             url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
-            rgo <- POST(url_post, body = request, encode="json", content_type_json(), add_headers("Content-Type" = "application/json"))
+            r <- POST(url_post, body = request, encode="json", content_type_json(), add_headers("Content-Type" = "application/json"))
+            print(content(r, "text"))
         },
         error = function(e){
             message('Error posting to Jupyter-bridge!')
@@ -134,7 +135,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     )
     tryCatch(
         expr = {
-            rContent <- content(rgo, "text")
+            rContent <- content(r, "text")
             encoding <- detect_str_enc(rContent)
             message <- toString((iconv(rContent, to=encoding)))
             cyReply <- fromJSON(message)
