@@ -111,6 +111,9 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         } else {
             return(res.char)
         }
+    if(length(res$text)>0){
+        return(res$text)
+    }
     } else{
         invisible(res)
     }
