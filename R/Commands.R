@@ -98,9 +98,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     }
     res <- NULL
     tryCatch(
-        res <- doRequestWrapper("GET", q.url),
-        print(res)
-        print(res$content)
+        res <- doRequestWrapper("GET", q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
