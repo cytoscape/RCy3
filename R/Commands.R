@@ -116,7 +116,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         invisible(res)
     }
     } else{
-        res <- doRequestWrapper("GET", q.url)
+        res <- doRequestRemote("GET", q.url)
         return(fromJSON(rawToChar(res$content))$text)
     }
 }
@@ -662,6 +662,8 @@ doRequest<-function(method, qurl, qbody=NULL){
 #' }
 #' @export
 findRemoteCytoscape<-function(){
+    checkNotebookIsRunning()
+    checkRunningRemote()
     if(is.null(checkRunningRemote())){
         stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
     }
@@ -691,8 +693,6 @@ getRequester<-function(){
 #' }
 #' @export
 doRequestWrapper<-function(method, qurl, qbody=NULL, ...){
-    checkNotebookIsRunning()
-    checkRunningRemote()
     requester <- getRequester()
     return(requester(method, qurl, qbody=NULL, ...))
 }
