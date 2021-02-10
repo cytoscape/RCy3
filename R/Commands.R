@@ -643,7 +643,7 @@ doRequest<-function(method, qurl, qbody=NULL){
     r <- PUT(url=URLencode(qurl), body=qbody, encode="json", content_type_json())
     }
     else{NULL}
-    return(r)
+    return(content(r))
 }
 # ------------------------------------------------------------------------------
 #' @title findRemoteCytoscape
