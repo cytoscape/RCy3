@@ -123,7 +123,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         expr = {
             while (TRUE){
                 url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
-                r <- GET(URLencode(url_get))
+                rx <- GET(URLencode(url_get))
                 if(status_code(r) != 408){break}
             }
         },
@@ -134,7 +134,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     )
     tryCatch(
         expr = {
-            rContent <- content(r, "text")
+            rContent <- content(rx, "text")
             encoding <- detect_str_enc(rContent)
             message <- toString((iconv(rContent, to=encoding)))
             cyReply <- fromJSON(message)
