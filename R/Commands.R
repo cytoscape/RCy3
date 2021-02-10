@@ -98,9 +98,9 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         q.url <- paste(q.url, q.params, sep="?")
     }
     res <- NULL
+    if(!findRemoteCytoscape()){
     tryCatch(
         res <- doRequestWrapper("GET", q.url),
-        return(fromJSON(rawToChar(res$content))$text),
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -114,6 +114,10 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         }
     } else{
         invisible(res)
+    }
+    } else{
+        res <- doRequestWrapper("GET", q.url)
+        return(fromJSON(rawToChar(res$content))$text)
     }
 }
 
