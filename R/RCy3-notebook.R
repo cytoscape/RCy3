@@ -119,6 +119,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
             print(e)
         }
     )
+    Sys.sleep(5)
     tryCatch(
         expr = {
             while (TRUE){
