@@ -140,21 +140,21 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         q.url <- paste(q.url, q.params, sep="?")
     }
     q.body <- body
-    tryCatch(
+   #tryCatch(
         res <- doRequest("POST", q.url, q.body), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    if(length(res$content)>0){
-        res.char <- rawToChar(res$content)
-        if (isValidJSON(res.char, asText = TRUE)){
-            return(fromJSON(res.char))
-        } else {
-            return(res.char)
-        }
-        invisible(res)
-    }
+        #error=function(c) .cyError(c, res),
+        #warnings=function(c) .cyWarnings(c, res),
+        #finally=.cyFinally(res)
+   # )
+    #if(length(res$content)>0){
+        #res.char <- rawToChar(res$content)
+        #if (isValidJSON(res.char, asText = TRUE)){
+            ##return(fromJSON(res.char))
+        #} else {
+            #return(res.char)
+        #}
+        #invisible(res)
+    #}
 }
 
 # ------------------------------------------------------------------------------
