@@ -111,7 +111,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
             return(res.char)
         }
     } else{
-        return(res)
+        invisible(res)
     }
 }
 
