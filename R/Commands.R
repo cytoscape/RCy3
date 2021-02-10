@@ -56,6 +56,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
+    res <- NULL
     tryCatch(
         res <- doRequestWrapper("DELETE", q.url), 
         error=function(c) .cyError(c, res),
@@ -140,6 +141,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         q.url <- paste(q.url, q.params, sep="?")
     }
     q.body <- body
+    res <- NULL
     tryCatch(
         res <- doRequestWrapper("POST", q.url, q.body), 
         error=function(c) .cyError(c, res),
@@ -182,6 +184,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
         q.url <- paste(q.url, q.params, sep="?")
     }
     q.body <- body
+    res <- NULL
     tryCatch(
         res <- doRequestWrapper("PUT", q.url, q.body), 
         error=function(c) .cyError(c, res),
