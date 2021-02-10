@@ -118,10 +118,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     } else{
         res <- doRequestRemote("GET", q.url)
         return(fromJSON(rawToChar(res$content))$text)
-        if(res == ""){
-            res <- doRequestRemote("GET", q.url)
         }
-    }
 }
 
 # ------------------------------------------------------------------------------
