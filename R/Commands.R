@@ -97,7 +97,6 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    res <- NULL
     if(!findRemoteCytoscape()){
     tryCatch(
         res <- doRequest("GET", q.url),
