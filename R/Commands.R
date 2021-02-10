@@ -100,6 +100,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     res <- NULL
     tryCatch(
         res <- doRequestWrapper("GET", q.url), 
+        invisible(res),
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -686,6 +687,8 @@ getRequester<-function(){
 #' }
 #' @export
 doRequestWrapper<-function(method, qurl, qbody=NULL, ...){
+    checkNotebookIsRunning()
+    checkRunningRemote()
     requester <- getRequester()
     return(requester(method, qurl, qbody=NULL, ...))
 }
