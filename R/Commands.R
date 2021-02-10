@@ -100,7 +100,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     res <- NULL
     #tryCatch(
         res <- doRequestWrapper("GET", q.url)
-        return(fromJSON(rawToChar(res$content)))
+        return(fromJSON(rawToChar(res$content))$text)
         #error=function(c) .cyError(c, res),
         #warnings=function(c) .cyWarnings(c, res),
         #finally=.cyFinally(res)
