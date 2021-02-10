@@ -123,7 +123,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         expr = {
             while (TRUE){
                 url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
-                r <- GET(URLencode(url_get))
+                r <- GET(url_get, accept_json())
                 if(status_code(r) != 408){break}
             }
         },
@@ -132,26 +132,25 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
             print(e)
         }        
     )
-    #tryCatch(
-        #expr = {
-            #rContent <- content(r, "text")
-            #encoding <- detect_str_enc(rContent)
-            #message <- toString((iconv(rContent, to=encoding)))
-            #cyReply <- fromJSON(message)
-        #},
-        #error = function(e){
-            #message('Undeciperable message received from Jupyter-bridge!')
-            #print(e)
-        #}
-    #)
-    #rsp = spoofResponse()
-    #if (cyReply[1] == 0){ 
-        #stop("Could not contact url")
-    #}
-    #rsp@status_code <- cyReply[1]
-    #rsp@Reason <- cyReply[2]
-    #rsp@Text <- cyReply[3]
-    #print(rsp)
+    tryCatch(
+        expr = {
+            rContent <- content(r, "text")
+            encoding <- detect_str_enc(rContent)
+            message <- toString((iconv(rContent, to=encoding)))
+            cyReply <- fromJSON(message)
+        },
+        error = function(e){
+            message('Undeciperable message received from Jupyter-bridge!')
+            print(e)
+        }
+    )
+    rsp = spoofResponse()
+    if (cyReply[1] == 0){ 
+        stop("Could not contact url")
+    }
+    rsp@status_code <- cyReply[1]
+    rsp@Reason <- cyReply[2]
+    rsp@Text <- cyReply[3]
     return(r)
 }
 # ------------------------------------------------------------------------------
