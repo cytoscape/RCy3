@@ -97,22 +97,22 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         q.url <- paste(q.url, q.params, sep="?")
     }
     res <- NULL
-    tryCatch(
+    #tryCatch(
         res <- doRequestWrapper("GET", q.url), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    if(length(res$content)>0){
-        res.char <- rawToChar(res$content)
-        if (isValidJSON(res.char, asText = TRUE)){
-            return(fromJSON(res.char))
-        } else {
-            return(res.char)
-        }
-    } else{
+        #error=function(c) .cyError(c, res),
+        #warnings=function(c) .cyWarnings(c, res),
+        #finally=.cyFinally(res)
+    #)
+    #if(length(res$content)>0){
+        #res.char <- rawToChar(res$content)
+        #if (isValidJSON(res.char, asText = TRUE)){
+           #return(fromJSON(res.char))
+        #} else {
+            #return(res.char)
+        #}
+    #} else{
         invisible(res)
-    }
+    #}
 }
 
 # ------------------------------------------------------------------------------
