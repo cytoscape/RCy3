@@ -56,7 +56,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    res <- NULL
+    if(!findRemoteCytoscape()){
     tryCatch(
         res <- doRequest("DELETE", q.url), 
         error=function(c) .cyError(c, res),
@@ -71,6 +71,10 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
             return(res.char)
         }
         invisible(res)
+    }
+    } else {
+        res <- doRequestRemote("DELETE", q.url)
+        return(fromJSON(rawToChar(res$content))$text)
     }
 }
 
@@ -116,9 +120,6 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     }
     } else{
         res <- doRequestRemote("GET", q.url)
-        if(fromJSON(rawToChar(res$content))$text == ""){
-            return(res)
-        }else {
         return(fromJSON(rawToChar(res$content))$text)
         }
         }
