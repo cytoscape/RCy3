@@ -51,12 +51,12 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 #' @importFrom utils URLencode
 #' @export
 cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
-    if(!is.null(parameters)){
-        q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
-    }
     if(!findRemoteCytoscape()){
+        q.url <- paste(base.url, .pathURLencode(operation), sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
+        }
     tryCatch(
         res <- doRequest("DELETE", q.url), 
         error=function(c) .cyError(c, res),
@@ -73,7 +73,13 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         invisible(res)
     }
     } else{
+        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
+        }
         res <- doRequestRemote("DELETE", q.url)
+        return(fromJSON(rawToChar(res$content))$text)
     }
 }
 
@@ -124,6 +130,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
             q.url <- paste(q.url, q.params, sep="?")
         }
         res <- doRequestRemote("GET", q.url)
+        return(fromJSON(rawToChar(res$content))$text)
         }
 }
 
@@ -646,6 +653,7 @@ doRequest<-function(method, qurl, qbody=NULL){
     r <- NULL
     if(method=="GET"){
     r <- GET(url=URLencode(qurl))
+    print(content(r, "text"))
     }
     else if (method=="DELETE"){
     r <- DELETE(url=URLencode(qurl))
