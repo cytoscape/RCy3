@@ -73,7 +73,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         invisible(res)
     }
     } else{
-        res <- doRequestRemote("GET", q.url)
+        res <- doRequestRemote("DELETE", q.url)
         return(res)
     }
 }
