@@ -74,7 +74,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
     }
     } else {
         res <- doRequestRemote("DELETE", q.url)
-        return(res)
+        return(fromJSON(rawToChar(res$content))$text)
     }
 }
 
@@ -120,7 +120,8 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     }
     } else{
         res <- doRequestRemote("GET", q.url)
-        return(res)
+        return(fromJSON(rawToChar(res$content))$text)
+        }
         }
 }
 
