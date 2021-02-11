@@ -120,7 +120,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     }
     } else{
         res <- doRequestRemote("GET", q.url)
-        return((rawToChar(res)))
+        return(res)
         }
 }
 
