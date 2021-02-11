@@ -107,13 +107,12 @@ getBrowserClientJs<-function(){
 #' @import httr
 #' @import uchardet
 #' @export
-doRequestRemote<-function(method, qurl){
+doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     tryCatch(
         expr = {
-            request <- list(command = method, url = qurl)
-            http_request <- toJSON(request)
+            request <- list(command = method, url = qurl, data = qbody, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
             url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
-            r <- POST(url_post, content_type_json(),  body = http_request)
+            r <- POST(url_post, body = request, content_type_json(), add_headers("Content-Type" = "application/json"))
         },
         error = function(e){
             message('Error posting to Jupyter-bridge!')
@@ -133,25 +132,25 @@ doRequestRemote<-function(method, qurl){
             print(e)
         }        
     )
-    #tryCatch(
-        #expr = {
-            #rContent <- content(r, "text")
-            #encoding <- detect_str_enc(rContent)
-            #message <- toString((iconv(rContent, to=encoding)))
-            #cyReply <- fromJSON(message)
-        #},
-        #error = function(e){
-            #message('Undeciperable message received from Jupyter-bridge!')
-            #print(e)
-        #}
-    #)
-    #jsonMessage = spoofResponse()
-    #if (cyReply[1] == 0){ 
-        #stop("Could not contact url")
-    #}
-    #jsonMessage@status_code <- cyReply[1]
-    #jsonMessage@Reason <- cyReply[2]
-    #jsonMessage@Text <- cyReply[3]
+    tryCatch(
+        expr = {
+            rContent <- content(r, "text")
+            encoding <- detect_str_enc(rContent)
+            message <- toString((iconv(rContent, to=encoding)))
+            cyReply <- fromJSON(message)
+        },
+        error = function(e){
+            message('Undeciperable message received from Jupyter-bridge!')
+            print(e)
+        }
+    )
+    jsonMessage = spoofResponse()
+    if (cyReply[1] == 0){ 
+        stop("Could not contact url")
+    }
+    jsonMessage@status_code <- cyReply[1]
+    jsonMessage@Reason <- cyReply[2]
+    jsonMessage@Text <- cyReply[3]
     return(r)
 }
 # ------------------------------------------------------------------------------
