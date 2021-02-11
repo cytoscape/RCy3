@@ -141,7 +141,7 @@ layoutCopycat <- function(sourceNetwork, targetNetwork, sourceColumn='name', tar
 #' @export
 getLayoutNames <- function(base.url=.defaultBaseUrl) {
     res <- cyrestGET("apply/layouts",base.url=base.url)
-    available.layouts <- unname(res)
+    available.layouts <- (res)
     return(available.layouts)
 }
 
