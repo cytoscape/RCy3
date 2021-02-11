@@ -56,6 +56,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
+    res <- NULL
     tryCatch(
         res <- doRequest("DELETE", q.url), 
         error=function(c) .cyError(c, res),
@@ -116,7 +117,6 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     } else{
         res <- doRequestRemote("GET", q.url)
         return(fromJSON(rawToChar(res$content))$text)
-        }
         }
 }
 
