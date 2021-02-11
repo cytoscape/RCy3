@@ -118,6 +118,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         invisible(res)
     }
     } else{
+        print(q.url)
         res <- doRequestRemote("GET", q.url)
         }
 }
