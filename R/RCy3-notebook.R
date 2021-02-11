@@ -132,25 +132,25 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
             print(e)
         }        
     )
-    tryCatch(
-        expr = {
-            rContent <- content(r, "text")
-            encoding <- detect_str_enc(rContent)
-            message <- toString((iconv(rContent, to=encoding)))
-            cyReply <- fromJSON(message)
-        },
-        error = function(e){
-            message('Undeciperable message received from Jupyter-bridge!')
-            print(e)
-        }
-    )
-    jsonMessage = spoofResponse()
-    if (cyReply[1] == 0){ 
-        stop("Could not contact url")
-    }
-    jsonMessage@status_code <- cyReply[1]
-    jsonMessage@Reason <- cyReply[2]
-    jsonMessage@Text <- cyReply[3]
+    #tryCatch(
+        #expr = {
+            #rContent <- content(r, "text")
+            #encoding <- detect_str_enc(rContent)
+            #message <- toString((iconv(rContent, to=encoding)))
+            #cyReply <- fromJSON(message)
+        #},
+        #error = function(e){
+            #message('Undeciperable message received from Jupyter-bridge!')
+            #print(e)
+        #}
+    #)
+    #jsonMessage = spoofResponse()
+    #if (cyReply[1] == 0){ 
+        #stop("Could not contact url")
+    #}
+    #jsonMessage@status_code <- cyReply[1]
+    #jsonMessage@Reason <- cyReply[2]
+    #jsonMessage@Text <- cyReply[3]
     return(r)
 }
 # ------------------------------------------------------------------------------
