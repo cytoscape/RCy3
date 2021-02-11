@@ -654,6 +654,7 @@ doRequest<-function(method, qurl, qbody=NULL){
     if(method=="GET"){
     r <- GET(url=URLencode(qurl))
     print(content(r, "text"))
+    print(headers(r))
     }
     else if (method=="DELETE"){
     r <- DELETE(url=URLencode(qurl))
