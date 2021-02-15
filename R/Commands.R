@@ -410,9 +410,9 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' @importFrom httr POST content_type_json
 #' @export
 commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
+    if(!findRemoteCytoscape()){
     post.url = .command2postQueryUrl(cmd.string,base.url)
     post.body = .command2postQueryBody(cmd.string)
-    if(!findRemoteCytoscape()){
     tryCatch(
         res <- POST(url=post.url, body=post.body, encode="json", content_type_json()), 
         error=function(c) .cyError(c, res),
@@ -431,6 +431,9 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         
     }
     } else {
+        post.url = .command2postQueryUrl(cmd.string,"http://127.0.0.1:1234/v1")
+        post.body = .command2postQueryBody(cmd.string)
+        post.body = fromJSON(post.body)
         res <- doRequestRemote("POST", post.url, post.body)
         if(length(res$content)>0){
             res.data = fromJSON(rawToChar(res$content))$data
@@ -683,7 +686,7 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     args2 = unlist(strsplit(args," *[A-Za-z0-9_-]+="))
     args2 = args2[-1]
     names(args2) <- args1
-    return((args2))
+    return(toJSON(args2))
 }
 # Takes a named list and makes a string for GET query urls
 #' @importFrom utils URLencode
