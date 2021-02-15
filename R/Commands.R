@@ -140,9 +140,9 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         }
         res <- doRequestRemote("GET", URLencode(q.url))
         if(length(res$content)>0){
-            res.char <- (rawToChar(res$content))$text
+            res.char <- rawToChar(res$content)
             if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
+                return(fromJSON(res.char)$text)
             } else {
                 return(res.char)
             }
