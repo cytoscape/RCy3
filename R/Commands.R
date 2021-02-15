@@ -372,6 +372,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     post.url = .command2postQueryUrl(cmd.string,base.url)
     post.body = .command2postQueryBody(cmd.string)
+    if(!findRemoteCytoscape()){
     tryCatch(
         res <- POST(url=post.url, body=post.body, encode="json", content_type_json()), 
         error=function(c) .cyError(c, res),
@@ -388,6 +389,20 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     }else {
         invisible(res)
         
+    }
+    } else {
+        res <- doRequestRemote("POST", post.url, post.body)
+        if(length(res$content)>0){
+            res.data = fromJSON(rawToChar(res$content))$data
+            if(length(res.data)>0){
+                return(res.data)
+            } else{
+                invisible(res.data)
+            }
+        }else {
+            invisible(res)
+            
+        }
     }
 }
 
