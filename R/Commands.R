@@ -116,7 +116,6 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    res <- NULL
     tryCatch(
         res <- GET(url=URLencode(q.url)), 
         error=function(c) .cyError(c, res),
@@ -140,8 +139,8 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
             q.url <- paste(q.url, q.params, sep="?")
         }
         res <- doRequestRemote("GET", URLencode(q.url))
-        if(length(res$content)>0){
-            res.char <- rawToChar(res$content)
+        if(length(res$content$text)>0){
+            res.char <- rawToChar(res$content$text)
             if (isValidJSON(res.char, asText = TRUE)){
                 return(fromJSON(res.char))
             } else {
