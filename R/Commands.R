@@ -683,7 +683,7 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     args2 = unlist(strsplit(args," *[A-Za-z0-9_-]+="))
     args2 = args2[-1]
     names(args2) <- args1
-    return(toJSON(args2))
+    return((args2))
 }
 # Takes a named list and makes a string for GET query urls
 #' @importFrom utils URLencode
