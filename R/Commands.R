@@ -235,7 +235,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
         }
-        q.body <- toJSON(body)
+        q.body <- body
         res <- doRequestRemote("PUT", q.url, q.body)
         return(rawToChar(res$content))
     }
