@@ -52,13 +52,13 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 #' @export
 cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
     if(!findRemoteCytoscape()){
-        q.url <- paste(base.url, .pathURLencode(operation), sep="/")
-        if(!is.null(parameters)){
-            q.params <- .prepGetQueryArgs(parameters)
-            q.url <- paste(q.url, q.params, sep="?")
-        }
+    q.url <- paste(base.url, operation, sep="/")
+    if(!is.null(parameters)){
+        q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
+    }
     tryCatch(
-        res <- doRequest("DELETE", q.url), 
+        res <- DELETE(url=URLencode(q.url)), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -72,14 +72,14 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         }
         invisible(res)
     }
-    } else{
+    } else {
         q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
         }
         res <- doRequestRemote("DELETE", q.url)
-        return(res)
+        return(fromJSON(rawToChar(res$content))$text)
     }
 }
 
@@ -102,13 +102,14 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' @export
 cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
     if(!findRemoteCytoscape()){
-        q.url <- paste(base.url, .pathURLencode(operation), sep="/")
-        if(!is.null(parameters)){
-            q.params <- .prepGetQueryArgs(parameters)
-            q.url <- paste(q.url, q.params, sep="?")
-        }
+    q.url <- paste(base.url, operation, sep="/")
+    if(!is.null(parameters)){
+        q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
+    }
+    res <- NULL
     tryCatch(
-        res <- doRequest("GET", q.url),
+        res <- GET(url=URLencode(q.url)), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -123,15 +124,15 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     } else{
         invisible(res)
     }
-    } else{
+    } else {
         q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
         }
         res <- doRequestRemote("GET", q.url)
-        return(res)
-        }
+        return(fromJSON(rawToChar(res$content))$text)
+    }
 }
 
 # ------------------------------------------------------------------------------
@@ -153,15 +154,14 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' @importFrom utils URLencode
 #' @export
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
+    q.url <- paste(base.url, operation, sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    q.body <- body
-    res <- NULL
+    q.body <- toJSON(body)
     tryCatch(
-        res <- doRequest("POST", q.url, q.body), 
+        res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -196,15 +196,14 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' @importFrom utils URLencode
 #' @export
 cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
+    q.url <- paste(base.url, operation, sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
-    q.body <- body
-    res <- NULL
+    q.body <- toJSON(body)
     tryCatch(
-        res <- doRequest("PUT", q.url, q.body), 
+        res <- PUT(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -265,7 +264,7 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
     q.url <- .command2getQuery(cmd.string,base.url)
     tryCatch(
-        res <- doRequest("GET", q.url), 
+        res <- GET(q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -313,7 +312,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
     q.url <- .command2getQuery(s,base.url)
     tryCatch(
-        res <- doRequest("GET", q.url), 
+        res <- GET(q.url), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -352,7 +351,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     post.url = .command2postQueryUrl(cmd.string,base.url)
     post.body = .command2postQueryBody(cmd.string)
     tryCatch(
-        res <- doRequest("POST", post.url, post.body), 
+        res <- POST(url=post.url, body=post.body, encode="json", content_type_json()), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -641,32 +640,6 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
 }
 # ==============================================================================
 # IV. Jupyter-bridge 
-#' @title doRequest
-#' @description Call CyREST via a URL
-#' @examples
-#' \donttest{
-#' doRequest()
-#' }
-#' @import httr
-#' @export
-doRequest<-function(method, qurl, qbody=NULL){
-    r <- NULL
-    if(method=="GET"){
-    r <- GET(url=URLencode(qurl))
-    print(content(r, "text"))
-    }
-    else if (method=="DELETE"){
-    r <- DELETE(url=URLencode(qurl))
-    }
-    else if (method=="POST"){
-    r <- POST(url=URLencode(qurl), body=qbody, encode="json", content_type_json())
-    }
-    else if (method=="PUT"){
-    r <- PUT(url=URLencode(qurl), body=qbody, encode="json", content_type_json())
-    }
-    else{NULL}
-    return(r)
-}
 # ------------------------------------------------------------------------------
 #' @title findRemoteCytoscape
 #' @description findRemoteCytoscapeL
