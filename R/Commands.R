@@ -73,7 +73,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         invisible(res)
     }
     } else {
-        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
+        q.url <- paste('http://localhost:1234/v1', .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
@@ -125,7 +125,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         invisible(res)
     }
     } else {
-        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
+        q.url <- paste('http://localhost:1234/v1', .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
@@ -177,7 +177,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         invisible(res)
     }
     } else {
-        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
+        q.url <- paste('http://localhost:1234/v1', .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
@@ -230,7 +230,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
         invisible(res)
     }
     } else {
-        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
+        q.url <- paste('http://localhost:1234/v1', .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
