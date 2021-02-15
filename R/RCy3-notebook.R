@@ -145,13 +145,12 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         }
     )
     jsonMessage = spoofResponse()
-    #if (cyReply[1] == 0){ 
-        #stop("Could not contact url")
-    #}
+    if (cyReply[1] == 0){ 
+        stop("Could not contact url")
+    }
     jsonMessage@status_code <- cyReply[1]
     jsonMessage@Reason <- cyReply[2]
     jsonMessage@Text <- cyReply[3]
-    print(jsonMessage)
     return(r)
 }
 # ------------------------------------------------------------------------------
