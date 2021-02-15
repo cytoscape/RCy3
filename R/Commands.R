@@ -78,8 +78,17 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
         }
-        res <- doRequestRemote("DELETE", q.url)
-        return(fromJSON(rawToChar(res$content))$text)
+        res <- doRequestRemote("DELETE", URLencode(q.url))
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
     }
 }
 
@@ -130,8 +139,17 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
         }
-        res <- doRequestRemote("GET", q.url)
-        return(rawToChar(res$content))
+        res <- doRequestRemote("GET", URLencode(q.url))
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
     }
 }
 
@@ -183,8 +201,17 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
             q.url <- paste(q.url, q.params, sep="?")
         }
         q.body <- toJSON(body)
-        res <- doRequestRemote("POST", q.url, q.body)
-        return(rawToChar(res$content))
+        res <- doRequestRemote("POST", URLencode(q.url), q.body)
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
     }
 }
 
@@ -236,8 +263,16 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
             q.url <- paste(q.url, q.params, sep="?")
         }
         q.body <- toJSON(body)
-        res <- doRequestRemote("PUT", q.url, q.body)
-        return(rawToChar(res$content))
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
     }
 }
 
