@@ -154,6 +154,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' @importFrom utils URLencode
 #' @export
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
+    if(!findRemoteCytoscape()){
     q.url <- paste(base.url, operation, sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
@@ -174,6 +175,16 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
             return(res.char)
         }
         invisible(res)
+    }
+    } else {
+        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
+        }
+        q.body <- toJSON(body)
+        res <- doRequestRemote("POST", q.url, q.body)
+        return(rawToChar(res$content))
     }
 }
 
@@ -226,7 +237,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
         }
         q.body <- toJSON(body)
         res <- doRequestRemote("PUT", q.url, q.body)
-        return(fromJSON(rawToChar(res$content))$text)
+        return(rawToChar(res$content))
     }
 }
 
