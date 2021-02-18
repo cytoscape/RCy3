@@ -344,7 +344,8 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
     }
     } else {
         res <- doRequestRemote("GET", q.url)
-        return(res)
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        return(res.html)
     }
 }
 
