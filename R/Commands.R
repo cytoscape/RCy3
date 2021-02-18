@@ -320,6 +320,7 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' @export
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
     q.url <- .command2getQuery(cmd.string,base.url)
+    if(!findRemoteCytoscape()){
     tryCatch(
         res <- GET(q.url), 
         error=function(c) .cyError(c, res),
@@ -340,6 +341,24 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
         res.list
     } else {
         invisible(res.list)
+    }
+    } else {
+        res <- doRequestRemote("GET", q.url)
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        if(startsWith(res.elem[1],"[")){
+            res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
+            res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
+            res.list = unlist(strsplit(res.elem2,","))
+        }else {
+            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+            res.list = res.list[!(res.list=="Finished")]
+        }
+        if(length(res.list)>0){
+            res.list
+        } else {
+            invisible(res.list)
+        }
     }
 }
 
