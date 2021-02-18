@@ -319,8 +319,8 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' @importFrom httr GET
 #' @export
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
-    q.url <- .command2getQuery(cmd.string,base.url)
     if(!findRemoteCytoscape()){
+    q.url <- .command2getQuery(cmd.string,base.url)
     tryCatch(
         res <- GET(q.url), 
         error=function(c) .cyError(c, res),
@@ -343,8 +343,9 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
         invisible(res.list)
     }
     } else {
+        q.url <- .command2getQuery(cmd.string, 'http://127.0.0.1:1234/v1')
         res <- doRequestRemote("GET", q.url)
-        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.html = rawToChar(res$content)
         return(res.html)
     }
 }
