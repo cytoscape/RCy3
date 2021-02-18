@@ -7,7 +7,7 @@ CHANNEL <- uuid[1]
 # ------------------------------------------------------------------------------
 #' @title spoofResponse
 #' @description class
-#' @import jsonlite
+#' @import RJSONIO
 #' @export
 spoofResponse <- setClass(
     "spoofResponse",
