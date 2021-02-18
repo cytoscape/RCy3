@@ -345,7 +345,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
     } else {
         q.url <- .command2getQuery(cmd.string, 'http://127.0.0.1:1234/v1')
         res <- doRequestRemote("GET", q.url)
-        res.html = rawToChar(res$content)
+        res.html = res$content
         return(res.html)
     }
 }
