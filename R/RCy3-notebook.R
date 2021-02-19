@@ -110,9 +110,9 @@ getBrowserClientJs<-function(){
 doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     tryCatch(
         expr = {
-            request <- list(command = method, url = qurl, data = qbody, headers=list("Content-Type" = "text/html", "Accept" = "text/html"))
+            request <- list(command = method, url = qurl, data = qbody, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
             url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
-            r <- POST(url_post, body = request, encode="json", content_type_json(), add_headers("Content-Type" = "text/html"))
+            r <- POST(url_post, body = request, encode="json", content_type_json(), add_headers("Content-Type" = "application/json"))
         },
         error = function(e){
             message('Error posting to Jupyter-bridge!')
@@ -151,6 +151,43 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     jsonMessage@status_code <- cyReply[1]
     jsonMessage@Reason <- cyReply[2]
     jsonMessage@Text <- cyReply[3]
+    return(r)
+}
+# ------------------------------------------------------------------------------
+#' @title doRequestRemoteCommands
+#'
+#' @description Do requests remotely
+#' @examples \donttest{
+#' doRequestRemoteCommands()
+#' }
+#' @import httr
+#' @import uchardet
+#' @export
+doRequestRemoteCommands<-function(method, qurl, qbody=NULL, headers=NULL){
+    tryCatch(
+        expr = {
+            request <- list(command = method, url = qurl, data = qbody, headers=list("Content-Type" = "text/html", "Accept" = "text/html"))
+            url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
+            r <- POST(url_post, body = request, add_headers("Content-Type" = "text/html"))
+        },
+        error = function(e){
+            message('Error posting to Jupyter-bridge!')
+            print(e)
+        }
+    )
+    tryCatch(
+        expr = {
+            while (TRUE){
+                url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
+                r <- GET(url_get, accept_json())
+                if(status_code(r) != 408){break}
+            }
+        },
+        error = function(e){
+            message('Error receiving from Jupyter-bridge!')
+            print(e)
+        }        
+    )
     return(r)
 }
 # ------------------------------------------------------------------------------
