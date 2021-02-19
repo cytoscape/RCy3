@@ -327,6 +327,8 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
     )
+    print(q.url)
+    print(rawToChar(res$content))
     res.html = htmlParse(rawToChar(res$content), asText=TRUE)
     res.elem = xpathSApply(res.html, "//p", xmlValue)
     if(startsWith(res.elem[1],"[")){
@@ -344,9 +346,10 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
     }
     } else {
         q.url <- .command2getQuery(cmd.string, 'http://127.0.0.1:1234/v1')
-        res <- doRequestRemote("GET", q.url)
-        res.html = htmlParse(rawToChar(res$content$text), asText=TRUE)
-        return(res.html)
+        print(q.url)
+        res <- doRequestRemote("GET", URLencode(q.url))
+        print(names(res))
+        return(res)
     }
 }
 

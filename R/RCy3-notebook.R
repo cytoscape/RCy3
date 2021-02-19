@@ -151,7 +151,6 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     jsonMessage@status_code <- cyReply[1]
     jsonMessage@Reason <- cyReply[2]
     jsonMessage@Text <- cyReply[3]
-    print(rawToChar(r$content))
     return(r)
 }
 # ------------------------------------------------------------------------------
