@@ -461,7 +461,6 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         post.url = .command2postQueryUrl(cmd.string, 'http://127.0.0.1:1234/v1')
         post.body = .command2postQueryBody(cmd.string)
         res <- doRequestRemote("POST", URLencode(post.url), post.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
-        print(content(res, "text"))
         return(rawToChar(res$content))
     }
 }
@@ -702,7 +701,7 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     args2 = unlist(strsplit(args," *[A-Za-z0-9_-]+="))
     args2 = args2[-1]
     names(args2) <- args1
-    return(toJSON(args2))
+    return(args2)
 }
 # Takes a named list and makes a string for GET query urls
 #' @importFrom utils URLencode
