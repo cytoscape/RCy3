@@ -441,6 +441,8 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     if(!findRemoteCytoscape()){
     post.url = .command2postQueryUrl(cmd.string,base.url)
     post.body = .command2postQueryBody(cmd.string)
+    print(post.url)
+    print(post.body)
     tryCatch(
         res <- POST(url=post.url, body=post.body, encode="json", content_type_json()), 
         error=function(c) .cyError(c, res),
@@ -702,7 +704,7 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     args2 = unlist(strsplit(args," *[A-Za-z0-9_-]+="))
     args2 = args2[-1]
     names(args2) <- args1
-    return(toJSON(args2))
+    return(args2)
 }
 # Takes a named list and makes a string for GET query urls
 #' @importFrom utils URLencode
