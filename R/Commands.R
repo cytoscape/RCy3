@@ -199,7 +199,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
         }
-        q.body <- toJSON(body)
+        q.body <- body
         res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
@@ -261,7 +261,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
         }
-        q.body <- toJSON(body)
+        q.body <- body
         res <- doRequestRemote("PUT", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
@@ -701,7 +701,7 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     args2 = unlist(strsplit(args," *[A-Za-z0-9_-]+="))
     args2 = args2[-1]
     names(args2) <- args1
-    return(args2)
+    return(toJSON(args2))
 }
 # Takes a named list and makes a string for GET query urls
 #' @importFrom utils URLencode
