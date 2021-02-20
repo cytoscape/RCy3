@@ -387,6 +387,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 #' @export
 commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
+    if(!findRemoteCytoscape()){
     q.url <- .command2getQuery(s,base.url)
     tryCatch(
         res <- GET(q.url), 
@@ -402,6 +403,18 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     }
     print(head(res.list,1))
     vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
+    } else {
+        q.url <- .command2getQuery(s, 'http://127.0.0.1:1234/v1')
+        res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        res.list = res.elem
+        if (length(res.elem)==1){
+            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+        }
+        print(head(res.list,1))
+        vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
+    }
 }
 
 # ------------------------------------------------------------------------------
