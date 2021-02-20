@@ -177,6 +177,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
     }
+    print(q.url)
     q.body <- toJSON(body)
     tryCatch(
         res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
@@ -200,6 +201,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
             q.url <- paste(q.url, q.params, sep="?")
         }
         q.body <- body
+        print(q.url)
         res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
         return(rawToChar(res$content))
     }
