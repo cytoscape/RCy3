@@ -199,7 +199,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
         }
-        q.body <- body
+        q.body <- toJSON(body)
         res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
@@ -261,7 +261,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
         }
-        q.body <- body
+        q.body <- toJSON(body)
         res <- doRequestRemote("PUT", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
@@ -460,7 +460,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     } else {
         post.url = .command2postQueryUrl(cmd.string, 'http://127.0.0.1:1234/v1')
         post.body = .command2postQueryBody(cmd.string)
-        res <- doRequestRemote("POST", qurl=URLencode(post.url), qbody=post.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
+        res <- doRequestRemote("POST", URLencode(post.url), post.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
         return(rawToChar(res$content))
     }
 }
