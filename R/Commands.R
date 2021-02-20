@@ -223,7 +223,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' @importFrom httr PUT content_type_json
 #' @importFrom utils URLencode
 #' @export
-cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultBaseUrl){
+cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
     if(!findRemoteCytoscape()){
     q.url <- paste(base.url, operation, sep="/")
     if(!is.null(parameters)){
