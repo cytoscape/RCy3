@@ -179,7 +179,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
     }
     q.body <- toJSON(body)
     tryCatch(
-        res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
+        res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json(), headers=list("Content-Type" = "application/json", "Accept" = "application/json")), 
         error=function(c) .cyError(c, res),
         warnings=function(c) .cyWarnings(c, res),
         finally=.cyFinally(res)
@@ -200,7 +200,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
             q.url <- paste(q.url, q.params, sep="?")
         }
         q.body <- body
-        res <- doRequestRemote("POST", URLencode(q.url), q.body)
+        res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
             if (isValidJSON(res.char, asText = TRUE)){
