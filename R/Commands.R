@@ -172,27 +172,27 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' @export
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
     if(!findRemoteCytoscape()){
-    q.url <- paste(base.url, operation, sep="/")
-    if(!is.null(parameters)){
-        q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
-    }
-    q.body <- toJSON(body)
-    tryCatch(
-        res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    if(length(res$content)>0){
-        res.char <- rawToChar(res$content)
-        if (isValidJSON(res.char, asText = TRUE)){
-            return(fromJSON(res.char))
-        } else {
-            return(res.char)
+        q.url <- paste(base.url, operation, sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
         }
-        invisible(res)
-    }
+        q.body <- toJSON(body)
+        tryCatch(
+            res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
+            error=function(c) .cyError(c, res),
+            warnings=function(c) .cyWarnings(c, res),
+            finally=.cyFinally(res)
+        )
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+            invisible(res)
+        }
     } else {
         q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
@@ -201,7 +201,16 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         }
         q.body <- body
         res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
-        return(rawToChar(res$content))
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
     }
 }
 

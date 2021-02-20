@@ -7,7 +7,7 @@
 cyrestPUT(
   operation,
   parameters = NULL,
-  body = FALSE,
+  body = NULL,
   base.url = .defaultBaseUrl
 )
 }
