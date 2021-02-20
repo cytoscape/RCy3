@@ -142,7 +142,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
             if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char)$text)
+                return(fromJSON(fromJSON(res.char)$text))
             } else {
                 return(res.char)
             }
