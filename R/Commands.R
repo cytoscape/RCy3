@@ -356,7 +356,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
             res.list = res.list[!(res.list=="Finished")]
         }
         if(length(res.list)>0){
-            res.list
+            fromJSON(res.list)
         } else {
             invisible(res.list)
         }
