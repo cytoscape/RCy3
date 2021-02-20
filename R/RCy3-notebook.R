@@ -106,7 +106,7 @@ getBrowserClientJs<-function(){
 #' }
 #' @import httr
 #' @import uchardet
-#' @import RJSONIO
+#' @importFrom RJSONIO fromJSON toJSON isValidJSON
 #' @export
 doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     tryCatch(
