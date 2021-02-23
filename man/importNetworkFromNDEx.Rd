@@ -9,6 +9,7 @@ importNetworkFromNDEx(
   username = NULL,
   password = NULL,
   accessKey = NULL,
+  subdomain = NULL,
   base.url = .defaultBaseUrl
 )
 }
@@ -20,7 +21,9 @@ same as a Cytoscape SUID.}
 
 \item{password}{(optional) NDEx account password; required for private content}
 
-\item{accessKey}{(optional) NDEx accessKey; alternate acccess to private content}
+\item{accessKey}{(optional) NDEx accessKey; alternate access to private content}
+
+\item{subdomain}{(optional) For test or dev instances of NDEx}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

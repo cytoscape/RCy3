@@ -10,6 +10,7 @@ updateNetworkInNDEx(
   isPublic,
   network = NULL,
   metadata = NULL,
+  subdomain = NULL,
   base.url = .defaultBaseUrl
 )
 }
@@ -25,6 +26,8 @@ accessible at NDEx.}
 network active in Cytoscape.}
 
 \item{metadata}{(optional) A list of structured information describing the network}
+
+\item{subdomain}{(optional) For test or dev instances of NDEx}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

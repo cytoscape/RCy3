@@ -8,7 +8,8 @@
 #' same as a Cytoscape SUID.
 #' @param username (optional) NDEx account username; required for private content
 #' @param password (optional) NDEx account password; required for private content
-#' @param accessKey (optional) NDEx accessKey; alternate acccess to private content
+#' @param accessKey (optional) NDEx accessKey; alternate access to private content
+#' @param subdomain (optional) For test or dev instances of NDEx
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -18,9 +19,14 @@
 #' }
 #' @export
 importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL, 
-                                   accessKey=NULL, base.url = .defaultBaseUrl){
-    ndex.body <- list(serverUrl="http://ndexbio.org/v2",
-                      uuid=ndex.id)
+                                   accessKey=NULL, subdomain=NULL,
+                                   base.url = .defaultBaseUrl){
+    if(!is.null(subdomain))
+        subdomain <- paste0(subdomain,".")
+    server.url <- paste0("http://",subdomain,".ndexbio.org/v2")
+    
+    ndex.body <- list(serverUrl=server.url, uuid=ndex.id)
+    
     if(!is.null(username))
         ndex.body[['username']] <- username
     if(!is.null(password))
@@ -46,6 +52,7 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
 #' network active in Cytoscape.
 #' @param metadata (optional) A list of structured information describing the network
+#' @param subdomain (optional) For test or dev instances of NDEx
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -56,12 +63,16 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
 #' @export
 exportNetworkToNDEx <- function(username, password, isPublic, 
                                 network=NULL, metadata=NULL, 
-                                base.url = .defaultBaseUrl){
+                                subdomain=NULL, base.url = .defaultBaseUrl){
     
     suid <- getNetworkSuid(network,base.url)
     
+    if(!is.null(subdomain))
+        subdomain <- paste0(subdomain,".")
+    server.url <- paste0("http://",subdomain,".ndexbio.org/v2")
+    
     res <- cyrestPOST(paste('networks',suid,sep = '/'),
-                      body = list(serverUrl="http://ndexbio.org/v2",
+                      body = list(serverUrl=server.url,
                                   username=username,
                                   password=password,
                                   metadata=metadata,
@@ -84,6 +95,7 @@ exportNetworkToNDEx <- function(username, password, isPublic,
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
 #' network active in Cytoscape.
 #' @param metadata (optional) A list of structured information describing the network
+#' @param subdomain (optional) For test or dev instances of NDEx
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -94,9 +106,13 @@ exportNetworkToNDEx <- function(username, password, isPublic,
 #' @export
 updateNetworkInNDEx <- function(username, password, isPublic, 
                                 network=NULL, metadata=NULL, 
-                                 base.url = .defaultBaseUrl){
+                                subdomain=NULL, base.url = .defaultBaseUrl){
     
     suid <- getNetworkSuid(network,base.url)
+    
+    if(!is.null(subdomain))
+        subdomain <- paste0(subdomain,".")
+    server.url <- paste0("http://",subdomain,".ndexbio.org/v2")
     
     res <- cyrestPUT(paste('networks',suid,sep = '/'),
                       body = list(serverUrl="http://ndexbio.org/v2",
