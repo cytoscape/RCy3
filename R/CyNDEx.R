@@ -23,7 +23,7 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
                                    base.url = .defaultBaseUrl){
     if(!is.null(subdomain))
         subdomain <- paste0(subdomain,".")
-    server.url <- paste0("http://",subdomain,".ndexbio.org/v2")
+    server.url <- paste0("http://",subdomain,"ndexbio.org/v2")
     
     ndex.body <- list(serverUrl=server.url, uuid=ndex.id)
     
@@ -69,7 +69,7 @@ exportNetworkToNDEx <- function(username, password, isPublic,
     
     if(!is.null(subdomain))
         subdomain <- paste0(subdomain,".")
-    server.url <- paste0("http://",subdomain,".ndexbio.org/v2")
+    server.url <- paste0("http://",subdomain,"ndexbio.org/v2")
     
     res <- cyrestPOST(paste('networks',suid,sep = '/'),
                       body = list(serverUrl=server.url,
@@ -112,10 +112,10 @@ updateNetworkInNDEx <- function(username, password, isPublic,
     
     if(!is.null(subdomain))
         subdomain <- paste0(subdomain,".")
-    server.url <- paste0("http://",subdomain,".ndexbio.org/v2")
+    server.url <- paste0("http://",subdomain,"ndexbio.org/v2")
     
     res <- cyrestPUT(paste('networks',suid,sep = '/'),
-                      body = list(serverUrl="http://ndexbio.org/v2",
+                      body = list(serverUrl=server.url,
                                   username=username,
                                   password=password,
                                   metadata=metadata,
