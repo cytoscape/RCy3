@@ -441,7 +441,6 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     if(!findRemoteCytoscape()){
     post.url = .command2postQueryUrl(cmd.string,base.url)
     post.body = .command2postQueryBody(cmd.string)
-    print(post.body)
     tryCatch(
         res <- POST(url=post.url, body=post.body, encode="json", content_type_json()), 
         error=function(c) .cyError(c, res),
@@ -464,15 +463,14 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         post.body = fromJSON(post.body)
         res <- doRequestRemote("POST", post.url, post.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
         if(length(res$content)>0){
-        res.data = fromJSON(fromJSON(rawToChar(res$content))$text)$data
+            res.data = fromJSON(fromJSON(rawToChar(res$content))$text)$data
             if(length(res.data)>0){
                 return(res.data)
-            } else {
+            } else{
                 invisible(res.data)
             }
-            } else {
+        }else {
             invisible(res)
-            }
         }
     }
 }
