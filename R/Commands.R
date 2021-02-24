@@ -463,7 +463,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         post.body = .command2postQueryBody(cmd.string)
         post.body = fromJSON(post.body)
         res <- doRequestRemote("POST", post.url, post.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
-        return(fromJSON(rawToChar(res$content))$text)
+        return(fromJSON(fromJSON(rawToChar(res$content))$text)$data)
     }
 }
 # ------------------------------------------------------------------------------
