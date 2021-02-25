@@ -114,7 +114,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
             request <- list(command = method, url = qurl, data = qbody, headers=headers)
             request <- toJSON(request)
             url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
-            r <- POST(url_post, body = request, add_headers("Content-Type" = "application/json"))
+            r <- POST(url_post, body = request, add_headers("Content-Type" = "application/json"), encoding = "UTF-8")
         },
         error = function(e){
             message('Error posting to Jupyter-bridge!')
@@ -125,7 +125,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
         expr = {
             while (TRUE){
                 url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
-                r <- GET(url_get, encoding = "UTF-8")
+                r <- GET(url_get)
                 if(status_code(r) != 408){break}
             }
         },
