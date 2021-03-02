@@ -19,6 +19,7 @@
 #' @export
 cytoscapePing<-function(base.url=.defaultBaseUrl) {
     .verifySupportedVersions(1,3.6,base.url)
+    if(!findRemoteCytoscape()){
     conn.str <- paste(base.url, 'version', sep="/")
     res <- GET(conn.str)
     if(res$status_code == 200) {
@@ -28,6 +29,17 @@ cytoscapePing<-function(base.url=.defaultBaseUrl) {
 Please check that Cytoscape is running, CyREST is installed and your 
 base.url parameter is correct.", 
                      stderr()))
+        }
+    } else {
+        res <- doRequestRemote("GET","http://127.0.0.1:1234/v1/version")
+        if(res$status_code == 200) {
+            message("You are connected to Cytoscape!")
+        } else {
+            stop(sprintf("Oh no! I can't find Cytoscape. RCy3 can not continue!
+Please check that Cytoscape is running, CyREST is installed and your 
+base.url parameter is correct.", 
+                         stderr()))
+        }
     }
 }
 
