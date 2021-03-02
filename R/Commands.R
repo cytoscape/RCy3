@@ -408,7 +408,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
         res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
         res.html = htmlParse(rawToChar(res$content), asText=TRUE)
         res.elem = xpathSApply(res.html, "//p", xmlValue)
-        res.list = res.elem
+        res.list = fromJSON(res.elem)
         print(res.list)
         
         if (length(res.elem)==1){
