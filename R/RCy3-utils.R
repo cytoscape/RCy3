@@ -135,6 +135,7 @@
     vCyStr <- unname(vStr[2])
     vApiNum <- as.numeric(gsub("v([0-9]+)$", "\\1", vApiStr))
     vCyNum <- as.numeric(gsub("([0-9]+\\.[0-9]+)\\..*$", "\\1", vCyStr))
+    print(vCyNum)
     
     nogo <- FALSE
     if(cyrest > vApiNum){
