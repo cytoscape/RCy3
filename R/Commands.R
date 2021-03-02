@@ -265,13 +265,14 @@ cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBa
         res <- doRequestRemote("PUT", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
+            print(res.char)
             if (isValidJSON(res.char, asText = TRUE)){
                 return(fromJSON(res.char))
             } else {
                 return(res.char)
             }
         } else{
-            (res)
+            invisible(res)
         }
     }
 }
