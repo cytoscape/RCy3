@@ -18,7 +18,7 @@ run.tests = function()
     
     test.deleteNetwork ()
     test.deleteAllNetworks ()
-    test.getNetworkSuid ()
+    #test.getNetworkSuid ()
     test.getNetworkName ()
     test.getNetworkList ()
     deleteAllNetworks ()
