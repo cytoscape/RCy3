@@ -412,7 +412,6 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
         if (length(res.elem)==1){
             res.list = fromJSON(unlist(strsplit(res.elem[1],"\n\\s*")))
         }
-        print(head(res.list,1))
         vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
     }
 }
