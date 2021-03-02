@@ -406,7 +406,14 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     } else {
         q.url <- .command2getQuery(s, 'http://127.0.0.1:1234/v1')
         res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
-
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        res.list = res.elem
+        if (length(res.elem)==1){
+            res.list = fromJSON(unlist(strsplit(res.elem[1],"\n\\s*")))
+        }
+        print(head(res.list,1))
+        vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
     }
 }
 
