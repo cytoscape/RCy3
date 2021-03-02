@@ -407,9 +407,10 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
         q.url <- .command2getQuery(s, 'http://127.0.0.1:1234/v1')
         res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
         res.html = htmlParse(rawToChar(res$content), asText=TRUE)
-        print(res.html)
         res.elem = xpathSApply(res.html, "//p", xmlValue)
         res.list = res.elem
+        print(res.list)
+        
         if (length(res.elem)==1){
             res.list = fromJSON(unlist(strsplit(res.elem[1],"\n\\s*")))
         }
