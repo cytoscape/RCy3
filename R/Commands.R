@@ -356,8 +356,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
             res.list = res.list[!(res.list=="Finished")]
         }
         if(length(res.list)>0){
-            gsub("[[\n]]", "", fromJSON(res.list)$text)
-            
+            strsplit(fromJSON(res.list)$text,"\n")
         } else {
             invisible(res.list)
         }
