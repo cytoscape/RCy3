@@ -34,7 +34,7 @@ run.tests = function()
     test.setLayoutProperties ()
     test.panelOperations ()
 
-    test.showGraphicsDetails ()
+    #test.showGraphicsDetails ()
     test.setNodeShapeDefault ()
     test.setNodeColorDefault ()
     test.setNodeSizeDefault ()
