@@ -271,7 +271,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBa
                 return(res.char)
             }
         } else{
-            invisible(res)
+            (res)
         }
     }
 }
