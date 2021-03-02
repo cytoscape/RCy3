@@ -133,7 +133,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         invisible(res)
     }
     } else {
-        q.url <- 'http://127.0.0.1:1234/v1'
+        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
