@@ -217,6 +217,43 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         }
     }
 }
+# ------------------------------------------------------------------------------
+#' @title CyREST POSTNDEX
+#'
+#' @description Constructs the query and body, makes POST call and processes the result
+#' @param operation A string to be converted to the REST query namespace
+#' @param parameters A named list of values to be converted to REST query parameters 
+#' @param body A named list of values to be converted to JSON
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return CyREST result content
+#' @examples \donttest{
+#' cyrestPOSTNDEX()
+#' }
+#' @importFrom RJSONIO fromJSON toJSON isValidJSON
+#' @importFrom httr POST content_type_json
+#' @importFrom utils URLencode
+#' @export
+cyrestPOSTNDEX <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
+        q.urlL <- gsub('(.+?)\\/(v\\d+)$','\\1\\/cyndex2\\/\\2','http://127.0.0.1:1234/v1')
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
+        }
+        q.body <- body
+        res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(fromJSON(res.char)$text))
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
+}
 
 # ------------------------------------------------------------------------------
 #' @title CyREST PUT
