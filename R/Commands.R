@@ -236,7 +236,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' @importFrom utils URLencode
 #' @export
 cyrestPOSTNDEX <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
-        q.urlL <- gsub('(.+?)\\/(v\\d+)$','\\1\\/cyndex2\\/\\2','http://127.0.0.1:1234/v1')
+        q.url <- gsub('(.+?)\\/(v\\d+)$','\\1\\/cyndex2\\/\\2','http://127.0.0.1:1234/v1')
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
