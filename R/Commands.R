@@ -243,16 +243,7 @@ cyrestPOSTNDEX <- function(operation, parameters=NULL, body=NULL, base.url=.defa
         }
         q.body <- body
         res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
-        if(length(res$content)>0){
-            res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(fromJSON(res.char)$text))
-            } else {
-                return(res.char)
-            }
-        } else{
-            invisible(res)
-        }
+        return(res)
 }
 
 # ------------------------------------------------------------------------------
