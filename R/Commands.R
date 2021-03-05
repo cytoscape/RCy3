@@ -243,7 +243,8 @@ cyrestPOSTNDEX <- function(operation, parameters=NULL, body=NULL, base.url=.defa
         }
         q.body <- body
         res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
-        return(res)
+        res.char <- rawToChar(res$content)
+        return(res.char)
 }
 
 # ------------------------------------------------------------------------------
