@@ -8,10 +8,14 @@
 # I. Package Variables and Constants
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://localhost:1234/v1'
-.CATCHUP_FILTER_SECS <- 1
-.MODEL_PROPAGATION_SECS <- 5
-.CATCHUP_NETWORK_SECS <- 2
-.NDEX_DELAY_SECS <- 5
+
+RCy3env <- new.env()
+# Exported setter functions for these delays are in RCy3.R
+assign(".CATCHUP_FILTER_SECS", 1, envir = RCy3env)
+assign(".MODEL_PROPAGATION_SECS", 5, envir = RCy3env)
+assign(".CATCHUP_NETWORK_SECS", 2, envir = RCy3env)
+
+
 
 # ==============================================================================
 # I. Package Utility Functions

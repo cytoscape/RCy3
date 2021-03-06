@@ -988,7 +988,7 @@ createNetworkFromDataFrames <-
                               network = network.suid, base.url = base.url)
         }
         
-        Sys.sleep(.CATCHUP_NETWORK_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
+        Sys.sleep(get(".CATCHUP_NETWORK_SECS",envir = RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX" 
         
         message("Applying default style...\n")
         commandsPOST('vizmap apply styles="default"', base.url = base.url)
@@ -1021,7 +1021,7 @@ importNetworkFromFile <- function(file=NULL, base.url=.defaultBaseUrl){
         file = paste(getwd(),file,sep='/')
     
     res <- commandsPOST(paste('network load file file',file,sep = "="))
-    Sys.sleep(.CATCHUP_NETWORK_SECS) ## NOTE: TEMPORARY SLEEP "FIX"
+    Sys.sleep(get(".CATCHUP_NETWORK_SECS",envir = RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX"
     return(res)
 }
 

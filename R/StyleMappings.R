@@ -206,7 +206,7 @@ updateStyleMapping <- function(style.name, mapping, base.url=.defaultBaseUrl){
                              body=list(mapping), 
                              base.url=base.url))
     }
-    Sys.sleep(.MODEL_PROPAGATION_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
+    Sys.sleep(get(".MODEL_PROPAGATION_SECS", envir=RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX" 
     return(res)
 }
 

@@ -295,7 +295,7 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
         filename = paste(getwd(),filename,sep='/')
     
     res <- commandsGET(paste0('filter import file="',filename,'"'),base.url)
-    Sys.sleep(.CATCHUP_FILTER_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
+    Sys.sleep(get(".CATCHUP_FILTER_SECS",envir = RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX" 
     return(res)
 }
 
@@ -327,7 +327,7 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
 # ------------------------------------------------------------------------------
 # Internal function to return (or hide) filter-selected nodes and edges.
 .checkSelected<-function(hide, network, base.url){
-    Sys.sleep(.MODEL_PROPAGATION_SECS) ## NOTE: TEMPORARY SLEEP "FIX"
+    Sys.sleep(get(".MODEL_PROPAGATION_SECS",envir = RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX"
     sel.nodes<-getSelectedNodes(network=network, base.url=base.url)
     sel.edges<-getSelectedEdges(network=network, base.url=base.url)
     

@@ -43,7 +43,6 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
     res <- cyrestPOST('networks',
                        body = ndex.body,
                        base.url = .CyndexBaseUrl(base.url))
-    Sys.sleep(.NDEX_DELAY_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
     return(res$data$suid)
 }
 
@@ -89,7 +88,6 @@ exportNetworkToNDEx <- function(username, password, isPublic,
                                   metadata=metadata,
                                   isPublic=isPublic),
                       base.url = .CyndexBaseUrl(base.url))
-    Sys.sleep(.NDEX_DELAY_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
     return(res$data$uuid)
 }
 
@@ -137,7 +135,6 @@ updateNetworkInNDEx <- function(username, password, isPublic,
                                   metadata=metadata,
                                   isPublic=isPublic),
                       base.url = .CyndexBaseUrl(base.url))
-    Sys.sleep(.NDEX_DELAY_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
     return(res$data$uuid)
 }
 
