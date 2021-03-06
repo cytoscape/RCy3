@@ -100,8 +100,10 @@
         test <- vapply(edge.names, function(x){x %in% dict[,'SUID']}, logical(1))
         if(all(test))  #provided SUIDs already!
             return(edge.names)
-        # Using %in% to support multigraphs: multiple edges with the same name
-        edge.SUIDs <- dict$SUID[dict$name %in% edge.names] 
+        # Using match to sort (like normal) plus %in% to support 
+        # multigraphs: multiple edges with the same name
+        sorted.dict <- dict[match(edge.names,dict$name),] 
+        edge.SUIDs <- sorted.dict$SUID[sorted.dict$name %in% edge.names] 
         return(edge.SUIDs)
 }
 
