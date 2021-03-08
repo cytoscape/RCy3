@@ -155,8 +155,23 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     res <- cyrestGET(paste('networks', suid,sep = '/'),
                      base.url = .CyndexBaseUrl(base.url))
     } else {
-        res <- .CyndexGET(paste('networks', suid,sep = '/'),
-                          base.url = .CyndexBaseUrl(base.url))
+        parameters <- paste('networks', suid,sep = '/')
+        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
+            res <- doRequestRemote("GET", URLencode(q.url))
+        if(length(res$content)>0){
+                res.char <- rawToChar(res$content)
+                if (isValidJSON(res.char, asText = TRUE)){
+                    return(fromJSON(fromJSON(res.char)$text))
+                } else {
+                    return(res.char)
+                }
+            } else{
+                invisible(res)
+            }
+        }
     }
     return(res$data$members[[1]]$uuid)
 }
@@ -194,30 +209,3 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     }
 }
 # ------------------------------------------------------------------------------
-# @title CyndexGET
-# 
-# @description Transforms generic base.url into a specific cyndex.base.url
-.CyndexGET <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl)
-{
-    if(!is.null(operation)){
-        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
-    } else {
-        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1')
-    }
-    if(!is.null(parameters)){
-        q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
-    }
-    q.body <- body
-    res <- doRequestRemote("GET", URLencode(q.url))
-    if(length(res$content)>0){
-        res.char <- rawToChar(res$content)
-        if (isValidJSON(res.char, asText = TRUE)){
-            return(fromJSON(fromJSON(res.char)$text))
-        } else {
-            return(res.char)
-        }
-    } else{
-        invisible(res)
-    }
-}
