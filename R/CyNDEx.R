@@ -156,7 +156,6 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
                      base.url = .CyndexBaseUrl(base.url))
     } else {
         res <- .CyndexGET(paste('networks',suid,sep = '/'),
-                           body = list(serverUrl="http://ndexbio.org/v2"),
                            base.url = .CyndexBaseUrl(base.url))
     }
     return(res$data$members[[1]]$uuid)
@@ -206,7 +205,7 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
         q.url <- paste(q.url, q.params, sep="?")
     }
     q.body <- body
-    res <- doRequestRemote("GET", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
+    res <- doRequestRemote("GET", URLencode(q.url), q.body)
     if(length(res$content)>0){
         res.char <- rawToChar(res$content)
         if (isValidJSON(res.char, asText = TRUE)){
