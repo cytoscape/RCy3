@@ -155,9 +155,8 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     res <- cyrestGET(paste('networks', suid,sep = '/'),
                      base.url = .CyndexBaseUrl(base.url))
     } else {
-        parameters <- paste('networks', suid,sep = '/')
-        operation <- NULL
-        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1')
+        operation <- paste('networks', suid,sep = '/')
+        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
