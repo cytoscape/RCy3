@@ -27,9 +27,15 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
         ndex.body[['password']] <- password
     if(!is.null(accessKey))
         ndex.body[['accessKey']] <- accessKey
+    if(!findRemoteCytoscape()){
     res <- cyrestPOST('networks',
                        body = ndex.body,
                        base.url = .CyndexBaseUrl(base.url))
+    } else {
+        res <- .CyndexPOST('networks',
+                           body = ndex.body,
+                           base.url = .CyndexBaseUrl(base.url))
+    }
     Sys.sleep(.NDEX_DELAY_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
     return(res$data$suid)
 }
@@ -140,4 +146,28 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
 .CyndexBaseUrl <- function(base.url)
 {
     gsub('(.+?)\\/(v\\d+)$','\\1\\/cyndex2\\/\\2', base.url)
+}
+# ------------------------------------------------------------------------------
+# @title CyndexRemote
+# 
+# @description Transforms generic base.url into a specific cyndex.base.url
+.CyndexPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl)
+{
+    q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
+    if(!is.null(parameters)){
+        q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
+    }
+    q.body <- body
+    res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
+    if(length(res$content)>0){
+        res.char <- rawToChar(res$content)
+        if (isValidJSON(res.char, asText = TRUE)){
+            return(fromJSON(fromJSON(res.char)$text))
+        } else {
+            return(res.char)
+        }
+    } else{
+        invisible(res)
+    }
 }
