@@ -206,7 +206,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         q.body <- body
         print(q.url)
         print(q.body)
-        res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
+        res <- doRequestRemote("POST", URLencode(q.url), q.body)
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
             if (isValidJSON(res.char, asText = TRUE)){
