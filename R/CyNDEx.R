@@ -27,7 +27,6 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
         ndex.body[['password']] <- password
     if(!is.null(accessKey))
         ndex.body[['accessKey']] <- accessKey
-    
     res <- cyrestPOST('networks',
                        body = ndex.body,
                        base.url = .CyndexBaseUrl(base.url))
