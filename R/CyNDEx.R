@@ -199,7 +199,11 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
 # @description Transforms generic base.url into a specific cyndex.base.url
 .CyndexGET <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl)
 {
-    q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
+    if(!is.null(operation)){
+        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
+    } else {
+        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1')
+    }
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
