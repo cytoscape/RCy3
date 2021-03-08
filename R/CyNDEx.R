@@ -156,11 +156,7 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
                      base.url = .CyndexBaseUrl(base.url))
     } else {
         res <- .CyndexGET(paste('networks',suid,sep = '/'),
-                           body = list(serverUrl="http://ndexbio.org/v2",
-                                       username=username,
-                                       password=password,
-                                       metadata=metadata,
-                                       isPublic=isPublic),
+                           body = list(serverUrl="http://ndexbio.org/v2"),
                            base.url = .CyndexBaseUrl(base.url))
     }
     return(res$data$members[[1]]$uuid)
