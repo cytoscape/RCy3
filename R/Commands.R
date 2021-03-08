@@ -204,6 +204,8 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
             q.url <- paste(q.url, q.params, sep="?")
         }
         q.body <- body
+        print(q.url)
+        print(q.body)
         res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
@@ -259,7 +261,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBa
         invisible(res)
     }
     } else {
-        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
+        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
