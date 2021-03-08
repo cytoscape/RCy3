@@ -151,23 +151,8 @@ updateNetworkInNDEx <- function(username, password, isPublic,
 #' @export
 getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     suid <- getNetworkSuid(network,base.url)
-    if(!findRemoteCytoscape()){
     res <- cyrestGET(paste('networks', suid,sep = '/'),
                      base.url = .CyndexBaseUrl(base.url))
-    } else {
-        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1')
-        res <- doRequestRemote("GET", URLencode(q.url))
-        if(length(res$content)>0){
-            res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(fromJSON(res.char)$text))
-            } else {
-                return(res.char)
-            }
-        } else{
-            invisible(res)
-        }
-    }
     return(res$data$members[[1]]$uuid)
 }
 
