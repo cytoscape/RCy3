@@ -204,10 +204,7 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     } else {
         q.url <- paste('http://127.0.0.1:1234/cyndex2/v1')
     }
-    if(!is.null(parameters)){
-        q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
-    }
+    print(URLencode(q.url))
     res <- doRequestRemote("GET", URLencode(q.url))
     if(length(res$content)>0){
         res.char <- rawToChar(res$content)
