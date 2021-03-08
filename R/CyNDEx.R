@@ -155,8 +155,7 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     res <- cyrestGET(paste('networks', suid,sep = '/'),
                      base.url = .CyndexBaseUrl(base.url))
     } else {
-    res <- .CyndexGET(paste('networks', suid,sep = '/'),
-                      base.url = .CyndexBaseUrl(base.url))
+    res <- .CyndexGET(paste('networks', suid,sep = '/'))
     }
     return(res$data$members[[1]]$uuid)
 }
@@ -204,7 +203,6 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     } else {
         q.url <- paste('http://127.0.0.1:1234/cyndex2/v1')
     }
-    print(URLencode(q.url))
     res <- doRequestRemote("GET", URLencode(q.url))
     if(length(res$content)>0){
         res.char <- rawToChar(res$content)
