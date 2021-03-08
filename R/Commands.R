@@ -110,7 +110,6 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' @importFrom utils URLencode
 #' @export
 cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    print(parameters)
     if(!findRemoteCytoscape()){
     q.url <- paste(base.url, operation, sep="/")
     if(!is.null(parameters)){
