@@ -157,7 +157,7 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     } else {
         parameters <- paste('networks', suid,sep = '/')
         operation <- NULL
-        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
+        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1')
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
