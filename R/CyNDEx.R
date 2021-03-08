@@ -151,13 +151,8 @@ updateNetworkInNDEx <- function(username, password, isPublic,
 #' @export
 getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     suid <- getNetworkSuid(network,base.url)
-    if(!findRemoteCytoscape()){
     res <- cyrestGET(paste('networks', suid,sep = '/'),
                      base.url = .CyndexBaseUrl(base.url))
-    } else {
-        res <- .CyndexGET(paste('networks',suid,sep = '/'),
-                           base.url = .CyndexBaseUrl(base.url))
-    }
     return(res$data$members[[1]]$uuid)
 }
 
@@ -182,30 +177,6 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     }
     q.body <- body
     res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
-    if(length(res$content)>0){
-        res.char <- rawToChar(res$content)
-        if (isValidJSON(res.char, asText = TRUE)){
-            return(fromJSON(fromJSON(res.char)$text))
-        } else {
-            return(res.char)
-        }
-    } else{
-        invisible(res)
-    }
-}
-# ------------------------------------------------------------------------------
-# @title CyndexGET
-# 
-# @description Transforms generic base.url into a specific cyndex.base.url
-.CyndexGET <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl)
-{
-    q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
-    if(!is.null(parameters)){
-        q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
-    }
-    q.body <- body
-    res <- doRequestRemote("GET", URLencode(q.url), q.body)
     if(length(res$content)>0){
         res.char <- rawToChar(res$content)
         if (isValidJSON(res.char, asText = TRUE)){
