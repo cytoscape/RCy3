@@ -106,29 +106,23 @@ exportNetworkToNDEx <- function(username, password, isPublic,
 #' updateNetworkInNDEx("user", "pass", TRUE)
 #' }
 #' @export
-updateNetworkInNDEx <- function(username, password, isPublic, 
-                                network=NULL, metadata=NULL, 
-                                 base.url = .defaultBaseUrl){
-    
-    suid <- getNetworkSuid(network,base.url)
-    if(!findRemoteCytoscape()){
-    res <- cyrestPUT(paste('networks',suid,sep = '/'),
-                      body = list(serverUrl="http://ndexbio.org/v2",
-                                  username=username,
-                                  password=password,
-                                  metadata=metadata,
-                                  isPublic=isPublic),
-                      base.url = .CyndexBaseUrl(base.url))
-    } else {
-        res <- .CyndexPUT(paste('networks',suid,sep = '/'),
-                           body = list(serverUrl="http://ndexbio.org/v2",
-                                       username=username,
-                                       password=password,
-                                       metadata=metadata,
-                                       isPublic=isPublic),
-                           base.url = .CyndexBaseUrl(base.url))
+updateNetworkInNDEx <- function (username, password, isPublic, network = NULL, metadata = NULL, 
+                                 base.url = .defaultBaseUrl) 
+{
+    suid <- getNetworkSuid(network, base.url)
+    if (!findRemoteCytoscape()) {
+        res <- cyrestPUT(paste("networks", suid, sep = "/"), 
+                         body = list(serverUrl = "http://ndexbio.org/v2", 
+                                     username = username, password = password, metadata = metadata, 
+                                     isPublic = isPublic), base.url = .CyndexBaseUrl(base.url))
     }
-    Sys.sleep(.NDEX_DELAY_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
+    else {
+        res <- .CyndexPUT(paste("networks", suid, sep = "/"), 
+                          body = list(serverUrl = "http://ndexbio.org/v2", 
+                                      username = username, password = password, metadata = metadata, 
+                                      isPublic = isPublic), base.url = .CyndexBaseUrl(base.url))
+    }
+    Sys.sleep(.NDEX_DELAY_SECS)
     return(res$data$uuid)
 }
 
@@ -188,6 +182,7 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
         invisible(res)
     }
 }
+# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 # @title CyndexPUT
 # 
