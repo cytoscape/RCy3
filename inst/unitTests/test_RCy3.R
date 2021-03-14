@@ -1,4 +1,5 @@
 # RCytoscape/inst/test_cytoscape.R
+# Do not run this in cloud via jupyter-bridge. It will fail.
 #-------------------------------------------------------------------------------
 library (RCy3)
 library (RUnit)

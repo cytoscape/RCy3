@@ -51,8 +51,6 @@ setMethod("raiseForStatus", "spoofResponse", function(object, ...) {
     }
 }) 
 
-
-
 # ------------------------------------------------------------------------------
 #' @title getBrowserClientChannel
 #'
@@ -155,6 +153,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     jsonMessage@Text <- cyReply[3]
     return(r)
 }
+
 # ------------------------------------------------------------------------------
 #' @title setNotebookIsRunning
 #' @description setNotebookIsRunning
@@ -169,6 +168,7 @@ setNotebookIsRunning<-function(newState=NULL){
     .GlobalEnv$notebookIsRunning <- newState
     return(oldState)
 }
+
 # ------------------------------------------------------------------------------
 #' @title getNotebookIsRunning
 #' @description getNotebookIsRunning
@@ -179,6 +179,7 @@ setNotebookIsRunning<-function(newState=NULL){
 getNotebookIsRunning<-function(){
     return(.GlobalEnv$notebookIsRunning)
 }
+
 # ------------------------------------------------------------------------------
 #' @title checkNotebookIsRunning
 #' @description checkNotebookIsRunning
@@ -199,6 +200,7 @@ checkNotebookIsRunning<-function(){
         }
     }
 }
+
 # ------------------------------------------------------------------------------
 #' @title runningRmoteCheck
 #' @description runningRmoteCheck
@@ -214,6 +216,7 @@ runningRemoteCheck<-function(newState=NULL){
     }
     return(oldState)
 }
+
 # ------------------------------------------------------------------------------
 #' @title checkRunningRemote
 #' @description checkRunningRemote
@@ -257,4 +260,5 @@ checkRunningRemote<-function(){
     })
     return(.GlobalEnv$runningRemote)
 }
+
 # ------------------------------------------------------------------------------
