@@ -73,7 +73,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         invisible(res)
     }
     } else {
-        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
+        q.url <- paste(.jupyterBridgeUrl, .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
@@ -134,9 +134,9 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
     }
     } else {
         if(!is.null(operation)){
-        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
+        q.url <- paste(.jupyterBridgeUrl, .pathURLencode(operation), sep="/")
         } else {
-            q.url <- paste('http://127.0.0.1:1234/v1')
+            q.url <- paste(.jupyterBridgeUrl)
         }
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
@@ -198,7 +198,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
             invisible(res)
         }
     } else {
-        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
+        q.url <- paste(.jupyterBridgeUrl, .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
@@ -260,7 +260,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBa
         invisible(res)
     }
     } else {
-        q.url <- paste('http://127.0.0.1:1234/v1', .pathURLencode(operation), sep="/")
+        q.url <- paste(.jupyterBridgeUrl, .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
@@ -346,7 +346,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
         invisible(res.list)
     }
     } else {
-        q.url <- .command2getQuery(cmd.string, 'http://127.0.0.1:1234/v1')
+        q.url <- .command2getQuery(cmd.string, .jupyterBridgeUrl)
         res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
         res.html = htmlParse(rawToChar(res$content), asText=TRUE)
         res.elem = xpathSApply(res.html, "//p", xmlValue)
@@ -407,7 +407,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     print(head(res.list,1))
     vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
     } else {
-        q.url <- .command2getQuery(s, 'http://127.0.0.1:1234/v1')
+        q.url <- .command2getQuery(s, .jupyterBridgeUrl)
         res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
         res.html = htmlParse(rawToChar(res$content), asText=TRUE)
         res.elem = xpathSApply(res.html, "//p", xmlValue)
@@ -461,7 +461,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         invisible(res)
     }
     } else {
-        post.url = .command2postQueryUrl(cmd.string, 'http://127.0.0.1:1234/v1')
+        post.url = .command2postQueryUrl(cmd.string, .jupyterBridgeUrl)
         post.body = .command2postQueryBody(cmd.string)
         post.body = fromJSON(post.body)
         res <- doRequestRemote("POST", post.url, post.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
@@ -827,4 +827,5 @@ findRemoteCytoscape<-function(){
     }
     return(runningRemoteCheck())
 }
+
 # ==============================================================================
