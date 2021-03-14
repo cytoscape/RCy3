@@ -48,7 +48,6 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
                            body = ndex.body,
                            base.url = .CyndexBaseUrl(base.url))
     }
-    Sys.sleep(.NDEX_DELAY_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
     return(res$data$suid)
 }
 
@@ -103,7 +102,6 @@ exportNetworkToNDEx <- function(username, password, isPublic,
                                        isPublic=isPublic),
                            base.url = .CyndexBaseUrl(base.url))
     }
-    Sys.sleep(.NDEX_DELAY_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
     return(res$data$uuid)
 }
 
@@ -148,7 +146,6 @@ updateNetworkInNDEx <- function (username, password, isPublic, network = NULL, m
                                       username = username, password = password, metadata = metadata, 
                                       isPublic = isPublic), base.url = .CyndexBaseUrl(base.url))
     }
-    Sys.sleep(.NDEX_DELAY_SECS)
     return(res$data$uuid)
 }
 
