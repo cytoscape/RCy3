@@ -51,7 +51,7 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 #' @importFrom utils URLencode
 #' @export
 cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    if(!findRemoteCytoscape()){
+    if(!.findRemoteCytoscape()){
     q.url <- paste(base.url, operation, sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
@@ -110,7 +110,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' @importFrom utils URLencode
 #' @export
 cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    if(!findRemoteCytoscape()){
+    if(!.findRemoteCytoscape()){
     q.url <- paste(base.url, operation, sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
@@ -175,7 +175,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' @importFrom utils URLencode
 #' @export
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
-    if(!findRemoteCytoscape()){
+    if(!.findRemoteCytoscape()){
         q.url <- paste(base.url, operation, sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
@@ -236,7 +236,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' @importFrom utils URLencode
 #' @export
 cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
-    if(!findRemoteCytoscape()){
+    if(!.findRemoteCytoscape()){
     q.url <- paste(base.url, operation, sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
@@ -322,7 +322,7 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' @importFrom httr GET
 #' @export
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
-    if(!findRemoteCytoscape()){
+    if(!.findRemoteCytoscape()){
     q.url <- .command2getQuery(cmd.string,base.url)
     tryCatch(
         res <- GET(q.url), 
@@ -390,7 +390,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 #' @export
 commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
-    if(!findRemoteCytoscape()){
+    if(!.findRemoteCytoscape()){
     q.url <- .command2getQuery(s,base.url)
     tryCatch(
         res <- GET(q.url), 
@@ -441,7 +441,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' @importFrom httr POST content_type_json
 #' @export
 commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
-    if(!findRemoteCytoscape()){
+    if(!.findRemoteCytoscape()){
     post.url = .command2postQueryUrl(cmd.string,base.url)
     post.body = .command2postQueryBody(cmd.string)
     tryCatch(
@@ -746,24 +746,6 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     }
     return(cmd.list.ready)
 }
-# ==============================================================================
-# IV. Jupyter-bridge 
-# ------------------------------------------------------------------------------
-#' @title findRemoteCytoscape
-#' @description findRemoteCytoscapeL
-#' @examples
-#' \donttest{
-#' findRemoteCytoscape()
-#' }
-#' @export
-findRemoteCytoscape<-function(){
-    checkNotebookIsRunning()
-    checkRunningRemote()
-    if(is.null(checkRunningRemote())){
-        stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
-    }
-    return(runningRemoteCheck())
-}
 # ------------------------------------------------------------------------------
 # CyRest Message Handler
 #
@@ -826,4 +808,21 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
     steps <- strsplit(operation,"\\/")[[1]]
     paste(lapply(steps, URLencode, reserved = TRUE), collapse = "/")
 }
-    
+# ==============================================================================
+# IV. Jupyter-bridge 
+# ------------------------------------------------------------------------------
+#' @title .findRemoteCytoscape
+#' @description Figure out whether CyREST is local or remote. If remote, we'll want to go through Jupyter-Bridge.
+#' @examples
+#' \donttest{
+#' .findRemoteCytoscape()
+#' }
+.findRemoteCytoscape<-function(){
+    checkNotebookIsRunning()
+    checkRunningRemote()
+    if(is.null(checkRunningRemote())){
+        stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
+    }
+    return(runningRemoteCheck())
+}
+# ==============================================================================
