@@ -7,6 +7,7 @@
 # I. CyREST API functions
 # II. Commands API functions
 # III. Internal functions 
+# IV. Jupyter-bridge
 # 
 # Note: This is where the bulk of the dependencies for other packages are used,
 # e.g., utils, httr, RJSONIO, etc. Follow the use of @importFrom where prudent.
@@ -28,7 +29,6 @@
 #' cyrestAPI()
 #' }
 #' @importFrom utils browseURL
-
 cyrestAPI<-function(base.url=.defaultBaseUrl){
     browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/swagger.json#/',sep=""))
 }
@@ -217,6 +217,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         }
     }
 }
+
 # ------------------------------------------------------------------------------
 #' @title CyREST PUT
 #'
@@ -296,7 +297,6 @@ cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBa
 #' commandsAPI()
 #' }
 #' @importFrom utils browseURL
-
 commandsAPI<-function(base.url=.defaultBaseUrl){
     browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/commands/swagger.json#/',sep=""))
 }
@@ -477,6 +477,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
         }
     }
 }
+
 # ------------------------------------------------------------------------------
 #' @title Run a Command
 #'
@@ -556,6 +557,7 @@ commandPause <- function(message="", base.url = .defaultBaseUrl){
     commandsPOST(paste0('command pause message="',message,'"'),
                  base.url = base.url)
 }
+
 # ------------------------------------------------------------------------------
 #' @title Command Quit
 #'
@@ -573,6 +575,7 @@ commandQuit <- function(base.url = .defaultBaseUrl){
     commandsPOST('command quit',
                  base.url = base.url)
 }
+
 # ------------------------------------------------------------------------------
 #' @title Command Run File
 #'
@@ -701,10 +704,8 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     cmd.string = sub(" ([A-Za-z0-9_-]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     args = cmdargs[2]
-    
     if (is.na(args))
         args = 'atLeastOneArg=required' #supply a benign "filler" if NULL
-    
     args = gsub("\"","",args)
     p = "[A-Za-z0-9_-]+="
     m = gregexpr(p,args)
@@ -746,6 +747,7 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     }
     return(cmd.list.ready)
 }
+
 # ------------------------------------------------------------------------------
 # CyRest Message Handler
 #
@@ -760,7 +762,6 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
 #     error=function(c) {.cyError(c, res)}
 # )
 #
-
 .cyError<-function(c, res){
     err_conn = 'Connection refused' # Connection Error
     if (length(grep(err_conn,c$message)) == 0){ # Certain 404 Errors
@@ -808,6 +809,7 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
     steps <- strsplit(operation,"\\/")[[1]]
     paste(lapply(steps, URLencode, reserved = TRUE), collapse = "/")
 }
+
 # ==============================================================================
 # IV. Jupyter-bridge 
 # ------------------------------------------------------------------------------
@@ -825,5 +827,5 @@ findRemoteCytoscape<-function(){
         stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
     }
     return(runningRemoteCheck())
-}
+
 # ==============================================================================
