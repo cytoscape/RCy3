@@ -93,7 +93,7 @@ setVisualPropertyDefault <- function(style.string, style.name=NULL, base.url=.de
     res <- cyrestPUT(paste("styles", as.character(style.name), "defaults", sep="/"),
                      body = list(style.string),
                      base.url=base.url)
-    Sys.sleep(.MODEL_PROPAGATION_SECS) ## NOTE: TEMPORARY SLEEP "FIX" 
+    Sys.sleep(get(".MODEL_PROPAGATION_SECS", envir=RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX" 
     invisible(res)
 }
 

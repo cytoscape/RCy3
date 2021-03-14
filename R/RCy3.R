@@ -94,3 +94,66 @@ makeSimpleIgraph = function() {
     ig <- igraph::set.edge.attribute(ig, 'weight', value=c(5.1,3.0,5.2,9.9))
     return (ig)
 } 
+
+#-------------------------------------------------------------------------------
+#' @title Set Catchup Filter Delay
+#'
+#' @description This function sets an internal delay variable that allows
+#' Cytoscape to "catchup" prior to subsequent functions. Call without specifying
+#' \code{secs} to restore default value. 
+#' @param secs Number of seconds to delay.
+#' @return None
+#' @details This delay is only necessary while concurrency bugs exist in the
+#' Cytoscape application. This delay may need to be increased from the default
+#' value in certain use cases, e.g., larger networks.
+#' @seealso setModelPropagationSecs, setCatchupNetworkSecs
+#' @examples {
+#' setCatchupFilterSecs(2)
+#' setCatchupFilterSecs() #restores default delay
+#' }
+#' @export
+setCatchupFilterSecs <- function(secs=1){
+    assign(".CATCHUP_FILTER_SECS", secs, envir = RCy3env)
+}
+
+#-------------------------------------------------------------------------------
+#' @title Set Model Propagation Delay
+#'
+#' @description This function sets an internal delay variable that allows
+#' Cytoscape to "catchup" prior to subsequent functions. Call without specifying
+#' \code{secs} to restore default value.
+#' @param secs Number of seconds to delay.
+#' @return None
+#' @details This delay is only necessary while concurrency bugs exist in the
+#' Cytoscape application. This delay may need to be increased from the default
+#' value in certain use cases, e.g., larger networks.
+#' @seealso setCatchupFilterSecs, setCatchupNetworkSecs
+#' @examples {
+#' setModelPropagationSecs(2)
+#' setModelPropagationSecs() #restores default delay
+#' }
+#' @export
+setModelPropagationSecs <- function(secs=5){
+    assign(".MODEL_PROPAGATION_SECS", secs, envir = RCy3env)
+}
+
+#-------------------------------------------------------------------------------
+#' @title Set Catchup Network Delay
+#'
+#' @description This function sets an internal delay variable that allows
+#' Cytoscape to "catchup" prior to subsequent functions. Call without specifying
+#' \code{secs} to restore default value.
+#' @param secs Number of seconds to delay.
+#' @return None
+#' @details This delay is only necessary while concurrency bugs exist in the
+#' Cytoscape application. This delay may need to be increased from the default
+#' value in certain use cases, e.g., larger networks.
+#' @seealso setModelPropagationSecs, setCatchupFilterSecs
+#' @examples {
+#' setCatchupNetworkSecs(2)
+#' setCatchupNetworkSecs() #restores default delay
+#' }
+#' @export
+setCatchupNetworkSecs <- function(secs=2){
+    assign(".CATCHUP_NETWORK_SECS", secs, envir = RCy3env)
+}

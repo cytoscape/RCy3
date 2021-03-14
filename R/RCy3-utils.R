@@ -8,10 +8,14 @@
 # I. Package Variables and Constants
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://localhost:1234/v1'
-.CATCHUP_FILTER_SECS <- 1
-.MODEL_PROPAGATION_SECS <- 5
-.CATCHUP_NETWORK_SECS <- 2
 .NDEX_DELAY_SECS <- 5
+
+RCy3env <- new.env()
+# Exported setter functions for these delays are in RCy3.R
+assign(".CATCHUP_FILTER_SECS", 1, envir = RCy3env)
+assign(".MODEL_PROPAGATION_SECS", 5, envir = RCy3env)
+assign(".CATCHUP_NETWORK_SECS", 2, envir = RCy3env)
+
 # ==============================================================================
 # I. Package Utility Functions
 # ------------------------------------------------------------------------------
@@ -78,7 +82,20 @@
         test <- vapply(node.names, function(x){x %in% dict[,'SUID']}, logical(1))
         if(all(test))  #provided SUIDs already!
             return(node.names)
-        node.SUIDs <- dict$SUID[match(node.names, dict$name)]
+        sorted.dict <- NULL
+        if(length(node.names) == length(unique(node.names))){ #unique node names
+            sorted.dict <- dict[match(node.names, dict$name), ] 
+        } else { #multiple nodes with the same name
+            message("Finding unique SUIDs for nodes with the same name...\n")
+            match_list <- list()
+            for(i in 1:length(node.names)){ #perform match with removal
+                name_match <- dict[match(node.names[[i]], dict$name),]
+                match_list[[i]] <- name_match
+                dict <- subset(dict, SUID != name_match$SUID)
+            }
+            sorted.dict <- do.call(rbind, match_list)
+        }
+        node.SUIDs <- sorted.dict$SUID
         return(node.SUIDs)
 }
 # ------------------------------------------------------------------------------
@@ -99,8 +116,20 @@
         test <- vapply(edge.names, function(x){x %in% dict[,'SUID']}, logical(1))
         if(all(test))  #provided SUIDs already!
             return(edge.names)
-        # Using %in% to support multigraphs: multiple edges with the same name
-        edge.SUIDs <- dict$SUID[dict$name %in% edge.names] 
+        sorted.dict <- NULL
+        if(length(edge.names) == length(unique(edge.names))){ #unique edge names
+            sorted.dict <- dict[match(edge.names, dict$name), ] 
+        } else { #multigraph: multiple edges with the same name
+            message("Finding unique SUIDs for edges with the same name...\n")
+            match_list <- list()
+            for(i in 1:length(edge.names)){ #perform match with removal
+                name_match <- dict[match(edge.names[[i]], dict$name),]
+                match_list[[i]] <- name_match
+                dict <- subset(dict, SUID != name_match$SUID)
+            }
+            sorted.dict <- do.call(rbind, match_list)
+        }
+        edge.SUIDs <- sorted.dict$SUID
         return(edge.SUIDs)
 }
 

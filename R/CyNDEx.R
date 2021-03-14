@@ -8,7 +8,11 @@
 #' same as a Cytoscape SUID.
 #' @param username (optional) NDEx account username; required for private content
 #' @param password (optional) NDEx account password; required for private content
-#' @param accessKey (optional) NDEx accessKey; alternate acccess to private content
+#' @param accessKey (optional) NDEx accessKey; alternate access to private content
+#' @param ndex.url (optional) For alternative instances or deployments of NDEx; 
+#' default is "http://ndexbio.org"
+#' @param ndex.version (optional) For alternative versions of the NDEx API; 
+#' default is "v2"
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -18,9 +22,17 @@
 #' }
 #' @export
 importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL, 
-                                   accessKey=NULL, base.url = .defaultBaseUrl){
-    ndex.body <- list(serverUrl="http://ndexbio.org/v2",
-                      uuid=ndex.id)
+                                   accessKey=NULL, 
+                                   ndex.url="http://ndexbio.org",
+                                   ndex.version="v2",
+                                   base.url = .defaultBaseUrl){
+    if (!grepl("^https?://", ndex.url))
+        ndex.url <- paste0("http://",ndex.url)
+    
+    server.url <- paste(ndex.url,ndex.version, sep = "/")
+    
+    ndex.body <- list(serverUrl=server.url, uuid=ndex.id)
+    
     if(!is.null(username))
         ndex.body[['username']] <- username
     if(!is.null(password))
@@ -51,6 +63,10 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
 #' network active in Cytoscape.
 #' @param metadata (optional) A list of structured information describing the network
+#' @param ndex.url (optional) For alternative instances or deployments of NDEx; 
+#' default is "http://ndexbio.org"
+#' @param ndex.version (optional) For alternative versions of the NDEx API; 
+#' default is "v2"
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -61,12 +77,18 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
 #' @export
 exportNetworkToNDEx <- function(username, password, isPublic, 
                                 network=NULL, metadata=NULL, 
+                                ndex.url="http://ndexbio.org",
+                                ndex.version="v2",
                                 base.url = .defaultBaseUrl){
+    if (!grepl("^https?://", ndex.url))
+        ndex.url <- paste0("http://",ndex.url)
     
+    server.url <- paste(ndex.url,ndex.version, sep = "/")
+
     suid <- getNetworkSuid(network,base.url)
     if(!findRemoteCytoscape()){
     res <- cyrestPOST(paste('networks',suid,sep = '/'),
-                      body = list(serverUrl="http://ndexbio.org/v2",
+                      body = list(serverUrl=server.url,
                                   username=username,
                                   password=password,
                                   metadata=metadata,
@@ -98,6 +120,10 @@ exportNetworkToNDEx <- function(username, password, isPublic,
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
 #' network active in Cytoscape.
 #' @param metadata (optional) A list of structured information describing the network
+#' @param ndex.url (optional) For alternative instances or deployments of NDEx; 
+#' default is "http://ndexbio.org"
+#' @param ndex.version (optional) For alternative versions of the NDEx API; 
+#' default is "v2"
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.

@@ -13,6 +13,11 @@ run.tests = function()
     # before doing anything else, make sure that the Cytoscape plugin version is one we can respond to
     test.app.version()
     
+    # minimize all delays
+    setCatchupFilterSecs(0)
+    setModelPropagationSecs(1)
+    setCatchupNetworkSecs(0)
+    
     # start with a clean slate, and no windows
     deleteAllNetworks()     
     
@@ -130,6 +135,12 @@ run.tests = function()
     
     closeSession(FALSE)
     options('warn'=0)
+    
+    # reset all delays
+    setCatchupFilterSecs()
+    setModelPropagationSecs()
+    setCatchupNetworkSecs()
+
     
 } # run.tests
 #-------------------------------------------------------------------------------
