@@ -8,6 +8,7 @@
 # I. Package Variables and Constants
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://localhost:1234/v1'
+.jupyterBridgeUrl <- 'http://127.0.0.1:1234/v1'
 .NDEX_DELAY_SECS <- 5
 
 RCy3env <- new.env()

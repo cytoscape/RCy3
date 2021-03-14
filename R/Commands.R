@@ -783,7 +783,6 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
 #' @importFrom XML htmlParse xmlValue xpathSApply
 .cyFinally<-function(res){
     if(!is.null(res)){
-        
         # Check HTTP Errors
         if(res$status_code > 299){
             write(sprintf("Failed to execute: %s",res[[1]]), stderr())
@@ -827,5 +826,5 @@ findRemoteCytoscape<-function(){
         stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
     }
     return(runningRemoteCheck())
-
+}
 # ==============================================================================
