@@ -1,9 +1,11 @@
 # ------------------------------------------------------------------------------
+# Create a unique channel that identifies this process so other processes don't mix up messages
 #' @importFrom dplR uuid.gen
 ug <- uuid.gen()
 uuid <- character(1)
 uuid[1] <- ug()
 CHANNEL <- uuid[1]
+
 # ------------------------------------------------------------------------------
 #' @title spoofResponse
 #' @description class
@@ -98,7 +100,7 @@ getBrowserClientJs<-function(){
 # ------------------------------------------------------------------------------
 #' @title doRequestRemote
 #'
-#' @description Do requests remotely
+#' @description Do requests remotely by connecting over Jupyter-Bridge.
 #' @examples \donttest{
 #' doRequestRemote()
 #' }
@@ -160,7 +162,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
 #' @examples \donttest{
 #' setNotebookIsRunning()
 #' }
-runningRemote <- NULL
+runningRemote <- NULL # NULL means "Don't know whether Cytoscape is local or remote yet"
 notebookIsRunning <- NULL
 #' @export
 setNotebookIsRunning<-function(newState=NULL){
@@ -219,7 +221,11 @@ runningRemoteCheck<-function(newState=NULL){
 
 # ------------------------------------------------------------------------------
 #' @title checkRunningRemote
-#' @description checkRunningRemote
+#' @description Determine whether we're running locally or on a remote server. If locally (either via raw R or via a
+#' locally installed Notebook), we prefer to connect to Cytoscape over a local socket. If remote, we have to
+#' connect over Jupyter-Bridge. Either way, we can determine which by whether Cytoscape answers to a version
+#' check. If Cytoscape doesn't answer, we have no information ... and we have to wait until Cytoscape is
+#' started and becomes reachable before we can determine local vs remote.
 #' @examples \donttest{
 #' checkRunningRemote()
 #' }
