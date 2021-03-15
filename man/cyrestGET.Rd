@@ -23,6 +23,6 @@ Constructs the query, makes GET call and processes the result
 }
 \examples{
 \donttest{
-cyrestGET()
+cyrestGET('version')
 }
 }

@@ -173,7 +173,7 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
                      base.url = .CyndexBaseUrl(base.url))
     return(res$data$members[[1]]$uuid)
     } else {
-        res <- cyrestGET(paste('networks', suid,sep = '/'),
+        res <- cyrestGET(operation=TRUE, paste('networks', suid,sep = '/'),
                          base.url = .CyndexBaseUrl(.jupyterBridgeUrl))
         return(res)
     }

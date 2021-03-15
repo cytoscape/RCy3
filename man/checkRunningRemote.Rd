@@ -7,7 +7,11 @@
 checkRunningRemote()
 }
 \description{
-checkRunningRemote
+Determine whether we're running locally or on a remote server. If locally (either via raw R or via a
+locally installed Notebook), we prefer to connect to Cytoscape over a local socket. If remote, we have to
+connect over Jupyter-Bridge. Either way, we can determine which by whether Cytoscape answers to a version
+check. If Cytoscape doesn't answer, we have no information ... and we have to wait until Cytoscape is
+started and becomes reachable before we can determine local vs remote.
 }
 \examples{
 \donttest{

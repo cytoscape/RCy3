@@ -23,6 +23,6 @@ Constructs the query, makes DELETE call and processes the result
 }
 \examples{
 \donttest{
-cyrestDELETE()
+cyrestDELETE('session')
 }
 }

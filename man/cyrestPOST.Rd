@@ -30,6 +30,6 @@ Constructs the query and body, makes POST call and processes the result
 }
 \examples{
 \donttest{
-cyrestPOST()
+cyrestPOST('networks/51/views')
 }
 }

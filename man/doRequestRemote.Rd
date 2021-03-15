@@ -7,7 +7,7 @@
 doRequestRemote(method, qurl, qbody = NULL, headers = NULL)
 }
 \description{
-Do requests remotely
+Do requests remotely by connecting over Jupyter-Bridge.
 }
 \examples{
 \donttest{
