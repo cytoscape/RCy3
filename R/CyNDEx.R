@@ -168,9 +168,15 @@ updateNetworkInNDEx <- function (username, password, isPublic, network = NULL, m
 #' @export
 getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     suid <- getNetworkSuid(network,base.url)
+    if (!findRemoteCytoscape()) {
     res <- cyrestGET(paste('networks', suid,sep = '/'),
                      base.url = .CyndexBaseUrl(base.url))
     return(res$data$members[[1]]$uuid)
+    } else {
+        res <- cyrestGET(paste('networks', suid,sep = '/'),
+                         base.url = .CyndexBaseUrl(.jupyterBridgeUrl))
+        return(res)
+    }
 }
 
 # ------------------------------------------------------------------------------
