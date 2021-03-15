@@ -173,9 +173,9 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
                      base.url = .CyndexBaseUrl(base.url))
     return(res$data$members[[1]]$uuid)
     } else {
-        res <- cyrestGET(operation=TRUE, paste('networks', suid,sep = '/'),
-                         base.url = .CyndexBaseUrl(.jupyterBridgeUrl))
-        return(res)
+        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1/networks/',suid, sep = '')
+        res <- doRequestRemote("GET", q.url)
+        return(fromJSON(fromJSON(rawToChar(res$content))$text)$data$members[[1]]$uuid)
     }
 }
 
