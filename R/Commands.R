@@ -44,7 +44,7 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return CyREST result content
 #' @examples \donttest{
-#' cyrestDELETE()
+#' cyrestDELETE('session')
 #' }
 #' @importFrom RJSONIO fromJSON isValidJSON
 #' @importFrom httr DELETE
@@ -103,7 +103,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return CyREST result content
 #' @examples \donttest{
-#' cyrestGET()
+#' cyrestGET('version')
 #' }
 #' @importFrom RJSONIO fromJSON isValidJSON
 #' @importFrom httr GET
@@ -168,7 +168,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return CyREST result content
 #' @examples \donttest{
-#' cyrestPOST()
+#' cyrestPOST('networks/51/views')
 #' }
 #' @importFrom RJSONIO fromJSON toJSON isValidJSON
 #' @importFrom httr POST content_type_json
