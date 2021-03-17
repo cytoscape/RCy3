@@ -8,7 +8,7 @@ CHANNEL <- uuid[1]
 
 # ------------------------------------------------------------------------------
 #' @title spoofResponse
-#' @description class
+#' @description Call CyREST as a remote service via Jupyter-bridge
 #' @import RJSONIO
 #' @export
 spoofResponse <- setClass(
