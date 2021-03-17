@@ -36,7 +36,9 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title CyREST DELETE
 #'
-#' @description Constructs the query, makes DELETE call and processes the result
+#' @description Constructs the query, makes DELETE call and processes the result.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param operation A string to be converted to the REST query namespace
 #' @param parameters A named list of values to be converted to REST query parameters 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -95,7 +97,9 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 # ------------------------------------------------------------------------------
 #' @title CyREST GET
 #'
-#' @description Constructs the query, makes GET call and processes the result
+#' @description Constructs the query, makes GET call and processes the result.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param operation A string to be converted to the REST query namespace
 #' @param parameters A named list of values to be converted to REST query parameters 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -159,7 +163,9 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 # ------------------------------------------------------------------------------
 #' @title CyREST POST
 #'
-#' @description Constructs the query and body, makes POST call and processes the result
+#' @description Constructs the query and body, makes POST call and processes the result.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param operation A string to be converted to the REST query namespace
 #' @param parameters A named list of values to be converted to REST query parameters 
 #' @param body A named list of values to be converted to JSON
@@ -221,7 +227,9 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 # ------------------------------------------------------------------------------
 #' @title CyREST PUT
 #'
-#' @description Constructs the query and body, makes PUT call and processes the result
+#' @description Constructs the query and body, makes PUT call and processes the result.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param operation A string to be converted to the REST query namespace
 #' @param parameters A named list of values to be converted to REST query parameters 
 #' @param body A named list of values to be converted to JSON
@@ -286,7 +294,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBa
 #' Open Swagger docs for CyREST Commands API 
 #'
 #' @description Opens swagger docs in default browser for a live
-#' instance of Commands available via CyREST.
+#' instance of Commands available via CyREST. 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -307,6 +315,8 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function converts a command string into a CyREST query URL, executes a GET
 #' request, and parses the result content into an R list object.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param cmd.string (char) command
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -371,6 +381,8 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 #'
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function returns a list of available commands or args.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @details Works with or without 'help' command prefix. Note that if you ask about a command that doesn't
 #' have any arguments, this function will run the command!
 #' @param cmd.string (char) command
@@ -426,6 +438,8 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function converts a command string into a CyREST query URL, executes a
 #' POST request, and parses the result content into an R list object.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param cmd.string (char) command
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234

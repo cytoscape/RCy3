@@ -19,7 +19,9 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 CyREST result content
 }
 \description{
-Constructs the query, makes DELETE call and processes the result
+Constructs the query, makes DELETE call and processes the result.
+The function check whether actual call is local or remote first. If remote,
+requests will go through Jupyter-Bridge.
 }
 \examples{
 \donttest{

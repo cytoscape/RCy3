@@ -6,5 +6,5 @@
 \alias{spoofResponse}
 \title{spoofResponse}
 \description{
-class
+Call CyREST as a remote service via Jupyter-bridge
 }
