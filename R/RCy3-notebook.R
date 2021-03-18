@@ -238,7 +238,7 @@ checkRunningRemote<-function(){
         if(is.null(.GlobalEnv$runningRemote)){
             tryCatch(
                 expr = {
-                    r <- GET(url=.jupyterBridgeUrl)
+                    r <- GET(url=.defaultBaseUrl)
                     status_code(r)
                     .GlobalEnv$runningRemote <- FALSE
                 },
