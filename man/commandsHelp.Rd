@@ -19,6 +19,8 @@ List of available commands or args
 \description{
 Using the same syntax as Cytoscape's Command Line Dialog,
 this function returns a list of available commands or args.
+The function check whether actual call is local or remote first. If remote,
+requests will go through Jupyter-Bridge.
 }
 \details{
 Works with or without 'help' command prefix. Note that if you ask about a command that doesn't

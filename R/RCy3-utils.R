@@ -8,14 +8,13 @@
 # I. Package Variables and Constants
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://localhost:1234/v1'
+.jupyterBridgeUrl <- 'http://127.0.0.1:1234/v1'
 
 RCy3env <- new.env()
 # Exported setter functions for these delays are in RCy3.R
 assign(".CATCHUP_FILTER_SECS", 1, envir = RCy3env)
 assign(".MODEL_PROPAGATION_SECS", 5, envir = RCy3env)
 assign(".CATCHUP_NETWORK_SECS", 2, envir = RCy3env)
-
-
 
 # ==============================================================================
 # I. Package Utility Functions
@@ -165,7 +164,7 @@ assign(".CATCHUP_NETWORK_SECS", 2, envir = RCy3env)
     vCyStr <- unname(vStr[2])
     vApiNum <- as.numeric(gsub("v([0-9]+)$", "\\1", vApiStr))
     vCyNum <- as.numeric(gsub("([0-9]+\\.[0-9]+)\\..*$", "\\1", vCyStr))
-    
+
     nogo <- FALSE
     if(cyrest > vApiNum){
         message(sprintf("CyREST API version %d or greater is required. You are currently working with version %d.",
@@ -180,3 +179,4 @@ assign(".CATCHUP_NETWORK_SECS", 2, envir = RCy3env)
     if(nogo)
         stop(simpleError("Function not run due to unsupported version."))
 }
+# ------------------------------------------------------------------------------

@@ -39,10 +39,15 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
         ndex.body[['password']] <- password
     if(!is.null(accessKey))
         ndex.body[['accessKey']] <- accessKey
-    
+    if(!findRemoteCytoscape()){
     res <- cyrestPOST('networks',
                        body = ndex.body,
                        base.url = .CyndexBaseUrl(base.url))
+    } else {
+        res <- .CyndexPOST('networks',
+                           body = ndex.body,
+                           base.url = .CyndexBaseUrl(base.url))
+    }
     return(res$data$suid)
 }
 
@@ -80,7 +85,7 @@ exportNetworkToNDEx <- function(username, password, isPublic,
     server.url <- paste(ndex.url,ndex.version, sep = "/")
 
     suid <- getNetworkSuid(network,base.url)
-
+    if(!findRemoteCytoscape()){
     res <- cyrestPOST(paste('networks',suid,sep = '/'),
                       body = list(serverUrl=server.url,
                                   username=username,
@@ -88,6 +93,15 @@ exportNetworkToNDEx <- function(username, password, isPublic,
                                   metadata=metadata,
                                   isPublic=isPublic),
                       base.url = .CyndexBaseUrl(base.url))
+    } else {
+        res <- .CyndexPOST(paste('networks',suid,sep = '/'),
+                           body = list(serverUrl="http://ndexbio.org/v2",
+                                       username=username,
+                                       password=password,
+                                       metadata=metadata,
+                                       isPublic=isPublic),
+                           base.url = .CyndexBaseUrl(base.url))
+    }
     return(res$data$uuid)
 }
 
@@ -116,25 +130,22 @@ exportNetworkToNDEx <- function(username, password, isPublic,
 #' updateNetworkInNDEx("user", "pass", TRUE)
 #' }
 #' @export
-updateNetworkInNDEx <- function(username, password, isPublic, 
-                                network=NULL, metadata=NULL, 
-                                ndex.url="http://ndexbio.org",
-                                ndex.version="v2",
-                                base.url = .defaultBaseUrl){
-    if (!grepl("^https?://", ndex.url))
-        ndex.url <- paste0("http://",ndex.url)
-    
-    server.url <- paste(ndex.url,ndex.version, sep = "/")
-    
-    suid <- getNetworkSuid(network,base.url)
-    
-    res <- cyrestPUT(paste('networks',suid,sep = '/'),
-                      body = list(serverUrl=server.url,
-                                  username=username,
-                                  password=password,
-                                  metadata=metadata,
-                                  isPublic=isPublic),
-                      base.url = .CyndexBaseUrl(base.url))
+updateNetworkInNDEx <- function (username, password, isPublic, network = NULL, metadata = NULL, 
+                                 base.url = .defaultBaseUrl) 
+{
+    suid <- getNetworkSuid(network, base.url)
+    if (!findRemoteCytoscape()) {
+        res <- cyrestPUT(paste("networks", suid, sep = "/"), 
+                         body = list(serverUrl = "http://ndexbio.org/v2", 
+                                     username = username, password = password, metadata = metadata, 
+                                     isPublic = isPublic), base.url = .CyndexBaseUrl(base.url))
+    }
+    else {
+        res <- .CyndexPUT(paste("networks", suid, sep = "/"), 
+                          body = list(serverUrl = "http://ndexbio.org/v2", 
+                                      username = username, password = password, metadata = metadata, 
+                                      isPublic = isPublic), base.url = .CyndexBaseUrl(base.url))
+    }
     return(res$data$uuid)
 }
 
@@ -157,10 +168,15 @@ updateNetworkInNDEx <- function(username, password, isPublic,
 #' @export
 getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     suid <- getNetworkSuid(network,base.url)
+    if (!findRemoteCytoscape()) {
     res <- cyrestGET(paste('networks', suid,sep = '/'),
                      base.url = .CyndexBaseUrl(base.url))
-    
     return(res$data$members[[1]]$uuid)
+    } else {
+        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1/networks/',suid, sep = '')
+        res <- doRequestRemote("GET", q.url)
+        return(fromJSON(fromJSON(rawToChar(res$content))$text)$data$members[[1]]$uuid)
+    }
 }
 
 # ------------------------------------------------------------------------------
@@ -171,3 +187,53 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
 {
     gsub('(.+?)\\/(v\\d+)$','\\1\\/cyndex2\\/\\2', base.url)
 }
+# ------------------------------------------------------------------------------
+# @title CyndexPOST
+# 
+# @description Transforms generic base.url into a specific cyndex.base.url
+.CyndexPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl)
+{
+    q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
+    if(!is.null(parameters)){
+        q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
+    }
+    q.body <- body
+    res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
+    if(length(res$content)>0){
+        res.char <- rawToChar(res$content)
+        if (isValidJSON(res.char, asText = TRUE)){
+            return(fromJSON(fromJSON(res.char)$text))
+        } else {
+            return(res.char)
+        }
+    } else{
+        invisible(res)
+    }
+}
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# @title CyndexPUT
+# 
+# @description Transforms generic base.url into a specific cyndex.base.url
+.CyndexPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl)
+{
+    q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
+    if(!is.null(parameters)){
+        q.params <- .prepGetQueryArgs(parameters)
+        q.url <- paste(q.url, q.params, sep="?")
+    }
+    q.body <- body
+    res <- doRequestRemote("PUT", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
+    if(length(res$content)>0){
+        res.char <- rawToChar(res$content)
+        if (isValidJSON(res.char, asText = TRUE)){
+            return(fromJSON(fromJSON(res.char)$text))
+        } else {
+            return(res.char)
+        }
+    } else{
+        invisible(res)
+    }
+}
+# ------------------------------------------------------------------------------

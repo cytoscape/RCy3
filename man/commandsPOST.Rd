@@ -20,6 +20,8 @@ A \code{list}, \code{named list}, \code{status} or None.
 Using the same syntax as Cytoscape's Command Line Dialog,
 this function converts a command string into a CyREST query URL, executes a
 POST request, and parses the result content into an R list object.
+The function check whether actual call is local or remote first. If remote,
+requests will go through Jupyter-Bridge.
 }
 \examples{
 \donttest{

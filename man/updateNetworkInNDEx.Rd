@@ -10,8 +10,6 @@ updateNetworkInNDEx(
   isPublic,
   network = NULL,
   metadata = NULL,
-  ndex.url = "http://ndexbio.org",
-  ndex.version = "v2",
   base.url = .defaultBaseUrl
 )
 }
@@ -28,15 +26,15 @@ network active in Cytoscape.}
 
 \item{metadata}{(optional) A list of structured information describing the network}
 
+\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.}
+
 \item{ndex.url}{(optional) For alternative instances or deployments of NDEx; 
 default is "http://ndexbio.org"}
 
 \item{ndex.version}{(optional) For alternative versions of the NDEx API; 
 default is "v2"}
-
-\item{base.url}{(optional) Ignore unless you need to specify a custom domain,
-port or version to connect to the CyREST API. Default is http://localhost:1234
-and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 NDEx identifier (\code{externalId}) for the updated submission
