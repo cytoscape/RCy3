@@ -166,6 +166,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
 # ------------------------------------------------------------------------------
 #' @title setNotebookIsRunning
 #' @description setNotebookIsRunning
+#' @param newState new state of running remote
 #' @return oldSatte
 #' @examples \donttest{
 #' setNotebookIsRunning()
@@ -191,7 +192,6 @@ getNotebookIsRunning<-function(){
 # ------------------------------------------------------------------------------
 #' @title checkNotebookIsRunning
 #' @description checkNotebookIsRunning
-#' @param newState new state of running remote
 #' @return NULL
 #' @examples \donttest{
 #' checkNotebookIsRunning()
