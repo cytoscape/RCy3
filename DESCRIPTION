@@ -25,5 +25,4 @@ BugReports: https://github.com/cytoscape/RCy3/issues
 LazyLoad: yes
 biocViews: Visualization, GraphAndNetwork, ThirdPartyClient, Network
 NeedsCompilation: no
-VignetteBuilder: knitr
 RoxygenNote: 7.1.1
