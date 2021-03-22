@@ -7,6 +7,7 @@
 # I. CyREST API functions
 # II. Commands API functions
 # III. Internal functions 
+# IV. Jupyter-bridge
 # 
 # Note: This is where the bulk of the dependencies for other packages are used,
 # e.g., utils, httr, RJSONIO, etc. Follow the use of @importFrom where prudent.
@@ -28,7 +29,6 @@
 #' cyrestAPI()
 #' }
 #' @importFrom utils browseURL
-
 cyrestAPI<-function(base.url=.defaultBaseUrl){
     browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/swagger.json#/',sep=""))
 }
@@ -36,7 +36,9 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title CyREST DELETE
 #'
-#' @description Constructs the query, makes DELETE call and processes the result
+#' @description Constructs the query, makes DELETE call and processes the result.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param operation A string to be converted to the REST query namespace
 #' @param parameters A named list of values to be converted to REST query parameters 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -44,39 +46,60 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return CyREST result content
 #' @examples \donttest{
-#' cyrestDELETE()
+#' cyrestDELETE('session')
 #' }
 #' @importFrom RJSONIO fromJSON isValidJSON
 #' @importFrom httr DELETE
 #' @importFrom utils URLencode
 #' @export
 cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
-    if(!is.null(parameters)){
-        q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
-    }
-    tryCatch(
-        res <- DELETE(url=URLencode(q.url)), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    if(length(res$content)>0){
-        res.char <- rawToChar(res$content)
-        if (isValidJSON(res.char, asText = TRUE)){
-            return(fromJSON(res.char))
-        } else {
-            return(res.char)
+    if(!findRemoteCytoscape()){
+        q.url <- paste(base.url, operation, sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
         }
-        invisible(res)
+        tryCatch(
+            res <- DELETE(url=URLencode(q.url)), 
+            error=function(c) .cyError(c, res),
+            warnings=function(c) .cyWarnings(c, res),
+            finally=.cyFinally(res)
+        )
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+            invisible(res)
+        }
+    } else {
+        q.url <- paste(.jupyterBridgeUrl, .pathURLencode(operation), sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
+        }
+        res <- doRequestRemote("DELETE", URLencode(q.url))
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
     }
 }
 
 # ------------------------------------------------------------------------------
 #' @title CyREST GET
 #'
-#' @description Constructs the query, makes GET call and processes the result
+#' @description Constructs the query, makes GET call and processes the result.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param operation A string to be converted to the REST query namespace
 #' @param parameters A named list of values to be converted to REST query parameters 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -84,41 +107,65 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return CyREST result content
 #' @examples \donttest{
-#' cyrestGET()
+#' cyrestGET('version')
 #' }
 #' @importFrom RJSONIO fromJSON isValidJSON
 #' @importFrom httr GET
 #' @importFrom utils URLencode
 #' @export
 cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
-    if(!is.null(parameters)){
-        q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
-    }
-    res <- NULL
-    tryCatch(
-        res <- GET(url=URLencode(q.url)), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    if(length(res$content)>0){
-        res.char <- rawToChar(res$content)
-        if (isValidJSON(res.char, asText = TRUE)){
-            return(fromJSON(res.char))
-        } else {
-            return(res.char)
+    if(!findRemoteCytoscape()){
+        q.url <- paste(base.url, operation, sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
         }
-    } else{
-        invisible(res)
+        tryCatch(
+            res <- GET(url=URLencode(q.url)), 
+            error=function(c) .cyError(c, res),
+            warnings=function(c) .cyWarnings(c, res),
+            finally=.cyFinally(res)
+        )
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
+    } else {
+        if(!is.null(operation)){
+            q.url <- paste(.jupyterBridgeUrl, .pathURLencode(operation), sep="/")
+        } else {
+            q.url <- paste(.jupyterBridgeUrl)
+        }
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
+        }
+        res <- doRequestRemote("GET", URLencode(q.url))
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(fromJSON(res.char)$text))
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
     }
 }
 
 # ------------------------------------------------------------------------------
 #' @title CyREST POST
 #'
-#' @description Constructs the query and body, makes POST call and processes the result
+#' @description Constructs the query and body, makes POST call and processes the result.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param operation A string to be converted to the REST query namespace
 #' @param parameters A named list of values to be converted to REST query parameters 
 #' @param body A named list of values to be converted to JSON
@@ -127,40 +174,62 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return CyREST result content
 #' @examples \donttest{
-#' cyrestPOST()
+#' cyrestPOST('networks/51/views')
 #' }
 #' @importFrom RJSONIO fromJSON toJSON isValidJSON
 #' @importFrom httr POST content_type_json
 #' @importFrom utils URLencode
 #' @export
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
-    if(!is.null(parameters)){
-        q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
-    }
-    q.body <- toJSON(body)
-    tryCatch(
-        res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    if(length(res$content)>0){
-        res.char <- rawToChar(res$content)
-        if (isValidJSON(res.char, asText = TRUE)){
-            return(fromJSON(res.char))
-        } else {
-            return(res.char)
+    if(!findRemoteCytoscape()){
+        q.url <- paste(base.url, operation, sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
         }
-        invisible(res)
+        q.body <- toJSON(body)
+        tryCatch(
+            res <- POST(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
+            error=function(c) .cyError(c, res),
+            warnings=function(c) .cyWarnings(c, res),
+            finally=.cyFinally(res)
+        )
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+            invisible(res)
+        }
+    } else {
+        q.url <- paste(.jupyterBridgeUrl, .pathURLencode(operation), sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
+        }
+        q.body <- body
+        res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(fromJSON(res.char)$text))
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
     }
 }
 
 # ------------------------------------------------------------------------------
 #' @title CyREST PUT
 #'
-#' @description Constructs the query and body, makes PUT call and processes the result
+#' @description Constructs the query and body, makes PUT call and processes the result.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param operation A string to be converted to the REST query namespace
 #' @param parameters A named list of values to be converted to REST query parameters 
 #' @param body A named list of values to be converted to JSON
@@ -175,27 +244,47 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' @importFrom httr PUT content_type_json
 #' @importFrom utils URLencode
 #' @export
-cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultBaseUrl){
-    q.url <- paste(base.url, .pathURLencode(operation), sep="/")
-    if(!is.null(parameters)){
-        q.params <- .prepGetQueryArgs(parameters)
-        q.url <- paste(q.url, q.params, sep="?")
-    }
-    q.body <- toJSON(body)
-    tryCatch(
-        res <- PUT(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    if(length(res$content)>0){
-        res.char <- rawToChar(res$content)
-        if (isValidJSON(res.char, asText = TRUE)){
-            return(fromJSON(res.char))
-        } else {
-            return(res.char)
+cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
+    if(!findRemoteCytoscape()){
+        q.url <- paste(base.url, operation, sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
         }
-        invisible(res)
+        q.body <- toJSON(body)
+        tryCatch(
+            res <- PUT(url=URLencode(q.url), body=q.body, encode="json", content_type_json()), 
+            error=function(c) .cyError(c, res),
+            warnings=function(c) .cyWarnings(c, res),
+            finally=.cyFinally(res)
+        )
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char))
+            } else {
+                return(res.char)
+            }
+            invisible(res)
+        }
+    } else {
+        q.url <- paste(.jupyterBridgeUrl, .pathURLencode(operation), sep="/")
+        if(!is.null(parameters)){
+            q.params <- .prepGetQueryArgs(parameters)
+            q.url <- paste(q.url, q.params, sep="?")
+        }
+        q.body <- body
+        res <- doRequestRemote("PUT", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
+        if(length(res$content)>0){
+            res.char <- rawToChar(res$content)
+            if (isValidJSON(res.char, asText = TRUE)){
+                return(fromJSON(res.char)$text)
+            } else {
+                return(res.char)
+            }
+        } else{
+            invisible(res)
+        }
     }
 }
 
@@ -205,7 +294,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
 #' Open Swagger docs for CyREST Commands API 
 #'
 #' @description Opens swagger docs in default browser for a live
-#' instance of Commands available via CyREST.
+#' instance of Commands available via CyREST. 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -216,7 +305,6 @@ cyrestPUT <- function(operation, parameters=NULL, body=FALSE, base.url=.defaultB
 #' commandsAPI()
 #' }
 #' @importFrom utils browseURL
-
 commandsAPI<-function(base.url=.defaultBaseUrl){
     browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/commands/swagger.json#/',sep=""))
 }
@@ -227,6 +315,8 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function converts a command string into a CyREST query URL, executes a GET
 #' request, and parses the result content into an R list object.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param cmd.string (char) command
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -242,27 +332,47 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' @importFrom httr GET
 #' @export
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
-    q.url <- .command2getQuery(cmd.string,base.url)
-    tryCatch(
-        res <- GET(q.url), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    res.html = htmlParse(rawToChar(res$content), asText=TRUE)
-    res.elem = xpathSApply(res.html, "//p", xmlValue)
-    if(startsWith(res.elem[1],"[")){
-        res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
-        res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
-        res.list = unlist(strsplit(res.elem2,","))
-    }else {
-        res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
-        res.list = res.list[!(res.list=="Finished")]
-    }
-    if(length(res.list)>0){
-        res.list
+    if(!findRemoteCytoscape()){
+        q.url <- .command2getQuery(cmd.string,base.url)
+        tryCatch(
+            res <- GET(q.url), 
+            error=function(c) .cyError(c, res),
+            warnings=function(c) .cyWarnings(c, res),
+            finally=.cyFinally(res)
+        )
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        if(startsWith(res.elem[1],"[")){
+            res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
+            res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
+            res.list = unlist(strsplit(res.elem2,","))
+        }else {
+            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+            res.list = res.list[!(res.list=="Finished")]
+        }
+        if(length(res.list)>0){
+            res.list
+        } else {
+            invisible(res.list)
+        }
     } else {
-        invisible(res.list)
+        q.url <- .command2getQuery(cmd.string, .jupyterBridgeUrl)
+        res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        if(startsWith(res.elem[1],"[")){
+            res.elem[1] = gsub("\\[|\\]|\"","",res.elem[1])
+            res.elem2 = unlist(strsplit(res.elem[1],"\n"))[1]
+            res.list = unlist(strsplit(res.elem2,","))
+        }else {
+            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+            res.list = res.list[!(res.list=="Finished")]
+        }
+        if(length(res.list)>0){
+            unlist(strsplit(fromJSON(res.list)$text,"\n"))
+        } else {
+            invisible(res.list)
+        }
     }
 }
 
@@ -271,6 +381,8 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 #'
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function returns a list of available commands or args.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @details Works with or without 'help' command prefix. Note that if you ask about a command that doesn't
 #' have any arguments, this function will run the command!
 #' @param cmd.string (char) command
@@ -290,21 +402,34 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 #' @export
 commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     s=sub('help *','',cmd.string)
-    q.url <- .command2getQuery(s,base.url)
-    tryCatch(
-        res <- GET(q.url), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    res.html = htmlParse(rawToChar(res$content), asText=TRUE)
-    res.elem = xpathSApply(res.html, "//p", xmlValue)
-    res.list = res.elem
-    if (length(res.elem)==1){
-        res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+    if(!findRemoteCytoscape()){
+        q.url <- .command2getQuery(s,base.url)
+        tryCatch(
+            res <- GET(q.url), 
+            error=function(c) .cyError(c, res),
+            warnings=function(c) .cyWarnings(c, res),
+            finally=.cyFinally(res)
+        )
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        res.list = res.elem
+        if (length(res.elem)==1){
+            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+        }
+        print(head(res.list,1))
+        vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
+    } else {
+        q.url <- .command2getQuery(s, .jupyterBridgeUrl)
+        res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
+        res.html = htmlParse(rawToChar(res$content), asText=TRUE)
+        res.elem = xpathSApply(res.html, "//p", xmlValue)
+        res.elem = (fromJSON(res.elem))$text
+        res.list = res.elem
+        if (length(res.elem)==1){
+            res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
+        }
+        vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
     }
-    print(head(res.list,1))
-    vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
 }
 
 # ------------------------------------------------------------------------------
@@ -313,6 +438,8 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' @description Using the same syntax as Cytoscape's Command Line Dialog,
 #' this function converts a command string into a CyREST query URL, executes a
 #' POST request, and parses the result content into an R list object.
+#' The function check whether actual call is local or remote first. If remote,
+#' requests will go through Jupyter-Bridge.
 #' @param cmd.string (char) command
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -328,24 +455,40 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' @importFrom httr POST content_type_json
 #' @export
 commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
-    post.url = .command2postQueryUrl(cmd.string,base.url)
-    post.body = .command2postQueryBody(cmd.string)
-    tryCatch(
-        res <- POST(url=post.url, body=post.body, encode="json", content_type_json()), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    if(length(res$content)>0){
-        res.data = fromJSON(rawToChar(res$content))$data
-        if(length(res.data)>0){
-            return(res.data)
-        } else{
-            invisible(res.data)
+    if(!findRemoteCytoscape()){
+        post.url = .command2postQueryUrl(cmd.string,base.url)
+        post.body = .command2postQueryBody(cmd.string)
+        tryCatch(
+            res <- POST(url=post.url, body=post.body, encode="json", content_type_json()), 
+            error=function(c) .cyError(c, res),
+            warnings=function(c) .cyWarnings(c, res),
+            finally=.cyFinally(res)
+        )
+        if(length(res$content)>0){
+            res.data = fromJSON(rawToChar(res$content))$data
+            if(length(res.data)>0){
+                return(res.data)
+            } else{
+                invisible(res.data)
+            }
+        }else {
+            invisible(res)
         }
-    }else {
-        invisible(res)
-        
+    } else {
+        post.url = .command2postQueryUrl(cmd.string, .jupyterBridgeUrl)
+        post.body = .command2postQueryBody(cmd.string)
+        post.body = fromJSON(post.body)
+        res <- doRequestRemote("POST", post.url, post.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
+        if(length(res$content)>0){
+            res.data = fromJSON(fromJSON(rawToChar(res$content))$text)$data
+            if(length(res.data)>0){
+                return(res.data)
+            } else{
+                invisible(res.data)
+            }
+        }else {
+            invisible(res)
+        }
     }
 }
 
@@ -428,6 +571,7 @@ commandPause <- function(message="", base.url = .defaultBaseUrl){
     commandsPOST(paste0('command pause message="',message,'"'),
                  base.url = base.url)
 }
+
 # ------------------------------------------------------------------------------
 #' @title Command Quit
 #'
@@ -445,6 +589,7 @@ commandQuit <- function(base.url = .defaultBaseUrl){
     commandsPOST('command quit',
                  base.url = base.url)
 }
+
 # ------------------------------------------------------------------------------
 #' @title Command Run File
 #'
@@ -573,10 +718,8 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
     cmd.string = sub(" ([A-Za-z0-9_-]*=)","XXXXXX\\1",cmd.string)
     cmdargs = unlist(strsplit(cmd.string,"XXXXXX"))
     args = cmdargs[2]
-    
     if (is.na(args))
         args = 'atLeastOneArg=required' #supply a benign "filler" if NULL
-    
     args = gsub("\"","",args)
     p = "[A-Za-z0-9_-]+="
     m = gregexpr(p,args)
@@ -633,7 +776,6 @@ commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
 #     error=function(c) {.cyError(c, res)}
 # )
 #
-
 .cyError<-function(c, res){
     err_conn = 'Connection refused' # Connection Error
     if (length(grep(err_conn,c$message)) == 0){ # Certain 404 Errors
@@ -655,7 +797,6 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
 #' @importFrom XML htmlParse xmlValue xpathSApply
 .cyFinally<-function(res){
     if(!is.null(res)){
-        
         # Check HTTP Errors
         if(res$status_code > 299){
             write(sprintf("Failed to execute: %s",res[[1]]), stderr())
@@ -681,4 +822,22 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
     steps <- strsplit(operation,"\\/")[[1]]
     paste(lapply(steps, URLencode, reserved = TRUE), collapse = "/")
 }
-    
+
+# ==============================================================================
+# IV. Jupyter-bridge 
+# ------------------------------------------------------------------------------
+#' @title findRemoteCytoscape
+#' @description Figure out whether CyREST is local or remote. If remote, we'll want to go through Jupyter-Bridge.
+#' @examples
+#' \donttest{
+#' findRemoteCytoscape()
+#' }
+#' @export
+findRemoteCytoscape<-function(){
+    checkNotebookIsRunning()
+    checkRunningRemote()
+    if(is.null(checkRunningRemote())){
+        stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
+    }
+    return(runningRemoteCheck())
+}
