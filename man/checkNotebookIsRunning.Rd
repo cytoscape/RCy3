@@ -6,6 +6,9 @@
 \usage{
 checkNotebookIsRunning()
 }
+\arguments{
+\item{newState}{new state of running remote}
+}
 \description{
 checkNotebookIsRunning
 }

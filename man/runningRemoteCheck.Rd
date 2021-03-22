@@ -6,6 +6,12 @@
 \usage{
 runningRemoteCheck(newState = NULL)
 }
+\arguments{
+\item{newState}{new state of running remote}
+}
+\value{
+old state
+}
 \description{
 runningRmoteCheck
 }
