@@ -5,6 +5,9 @@ ug <- uuid.gen()
 uuid <- character(1)
 uuid[1] <- ug()
 CHANNEL <- uuid[1]
+JupyterBRIDGEURL <- 'https://jupyter-bridge.cytoscape.org'
+runningRemote <- NULL # NULL means "Don't know whether Cytoscape is local or remote yet"
+notebookIsRunning <- NULL
 
 # ------------------------------------------------------------------------------
 #' @title spoofResponse
@@ -74,7 +77,6 @@ getBrowserClientChannel<-function(){
 #' @examples \donttest{
 #' getJupyterBridgeURL()
 #' }
-JupyterBRIDGEURL <- 'https://jupyter-bridge.cytoscape.org'
 #' @export
 getJupyterBridgeURL<-function(){
     return(JupyterBRIDGEURL)
@@ -101,6 +103,11 @@ getBrowserClientJs<-function(){
 #' @title doRequestRemote
 #'
 #' @description Do requests remotely by connecting over Jupyter-Bridge.
+#' @param method A string to be converted to the REST query namespace
+#' @param qurl A named list of values to be converted to REST query parameters
+#' @param qbody A named list of values to be converted to JSON
+#' @param headers httr headers
+#' @return httr response
 #' @examples \donttest{
 #' doRequestRemote()
 #' }
@@ -159,11 +166,10 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
 # ------------------------------------------------------------------------------
 #' @title setNotebookIsRunning
 #' @description setNotebookIsRunning
+#' @return oldSatte
 #' @examples \donttest{
 #' setNotebookIsRunning()
 #' }
-runningRemote <- NULL # NULL means "Don't know whether Cytoscape is local or remote yet"
-notebookIsRunning <- NULL
 #' @export
 setNotebookIsRunning<-function(newState=NULL){
     oldState <- .GlobalEnv$notebookIsRunning
