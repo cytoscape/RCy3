@@ -6,6 +6,9 @@
 \usage{
 setNotebookIsRunning(newState = NULL)
 }
+\arguments{
+\item{newState}{new state of running remote}
+}
 \value{
 oldSatte
 }
