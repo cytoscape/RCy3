@@ -191,6 +191,8 @@ getNotebookIsRunning<-function(){
 # ------------------------------------------------------------------------------
 #' @title checkNotebookIsRunning
 #' @description checkNotebookIsRunning
+#' @param newState new state of running remote
+#' @return NULL
 #' @examples \donttest{
 #' checkNotebookIsRunning()
 #' }
@@ -212,6 +214,8 @@ checkNotebookIsRunning<-function(){
 # ------------------------------------------------------------------------------
 #' @title runningRmoteCheck
 #' @description runningRmoteCheck
+#' @param newState new state of running remote
+#' @return old state
 #' @examples \donttest{
 #' runningRmoteCheck()
 #' }
