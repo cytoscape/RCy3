@@ -10,7 +10,7 @@ sandboxInitializer(newSandbox = NULL, ...)
 sandbox
 }
 \description{
-sandboxInitializer.
+sandboxInitializer
 }
 \examples{
 \donttest{
