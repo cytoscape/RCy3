@@ -30,7 +30,11 @@
 #' }
 #' @importFrom utils browseURL
 cyrestAPI<-function(base.url=.defaultBaseUrl){
+    if(!findRemoteCytoscape()){
     browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/swagger.json#/',sep=""))
+    } else {
+        doRequestRemote("webbrowser", paste(.jupyterBridgeUrl, '/swaggerUI/swagger-ui/index.html?url=',.jupyterBridgeUrl,'/swagger.json#/',sep=""))
+    }
 }
 
 # ------------------------------------------------------------------------------
