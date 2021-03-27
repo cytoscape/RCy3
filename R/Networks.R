@@ -409,6 +409,7 @@ getFirstNeighbors <-
 #' addCyNodes(c('Node A','Node B','Node C'))
 #' }
 #' @importFrom BiocGenerics setdiff
+#' @importFrom RJSONIO fromJSON
 #' @export
 addCyNodes <- function(node.names,
                        skip.duplicate.names = TRUE,
@@ -420,11 +421,16 @@ addCyNodes <- function(node.names,
         node.names <-
             setdiff(node.names, getAllNodes(net.suid, base.url))
     
-    cyrestPOST(
+    res <- cyrestPOST(
         paste("networks", net.suid, "nodes", sep = "/"),
         body = node.names,
         base.url = base.url
     )
+    if(!findRemoteCytoscape()){
+        return(res)
+    } else {
+        return(fromJSON(res$text))
+    }
 }
 
 # ------------------------------------------------------------------------------
@@ -500,6 +506,7 @@ getAllNodes <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' addCyEdges(list(c('s1','t1'),c('s2','t2')))
 #' }
 #' @importFrom stats setNames
+#' @importFrom RJSONIO fromJSON
 #' @export
 addCyEdges <-
     function (source.target.list,
@@ -542,11 +549,16 @@ source or target node name. No edges added.')
                                     interaction = edgeType
                                 ))
         
-        cyrestPOST(
+        res <- cyrestPOST(
             paste("networks", net.suid, "edges", sep = "/"),
             body = edge.data,
             base.url = base.url
         )
+        if(!findRemoteCytoscape()){
+            return(res)
+        } else {
+            return(fromJSON(res$text))
+        }
     }
 
 # ------------------------------------------------------------------------------
@@ -765,7 +777,6 @@ createSubnetwork <- function(nodes=NULL,
 #' @importFrom igraph as_data_frame
 #' @importFrom BiocGenerics colnames
 #' @importFrom RJSONIO fromJSON
-
 #' @export
 createNetworkFromIgraph <- function(igraph,
                                     title = "From igraph",
