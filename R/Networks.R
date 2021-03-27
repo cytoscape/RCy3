@@ -728,7 +728,11 @@ createSubnetwork <- function(nodes=NULL,
         'commands/network/create',
         body = as.list(json_sub),
         base.url = base.url)
-    return(res$data['network'])
+    if(!findRemoteCytoscape()){
+        return(res$data['network'])
+    } else {
+        return(fromJSON(res$text)$data['network'])
+    }
 }
 
 # ------------------------------------------------------------------------------
