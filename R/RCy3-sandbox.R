@@ -54,6 +54,33 @@ getDefaultSandbox <- function(){
 }
 
 # ------------------------------------------------------------------------------
+#' @title setDefaultSandboxPath
+#'
+#' @description setDefaultSandboxPath
+#' @return default sandbox path
+#' @examples \donttest{
+#' setDefaultSandboxPath()
+#' }
+#' @export
+setDefaultSandboxPath <- function(newPath){
+    .GlobalEnv$defaultSandboxPath <- newPath
+    return(.GlobalEnv$defaultSandboxPath)
+}
+
+# ------------------------------------------------------------------------------
+#' @title getDefaultSandboxPath
+#'
+#' @description getDefaultSandboxPath
+#' @return default sandbox path
+#' @examples \donttest{
+#' getDefaultSandboxPath()
+#' }
+#' @export
+getDefaultSandboxPath <- function(){
+    return(.GlobalEnv$defaultSandboxPath)
+}
+
+# ------------------------------------------------------------------------------
 #' @title getCurrentSandboxName
 #'
 #' @description getCurrentSandboxName

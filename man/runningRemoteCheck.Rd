@@ -10,7 +10,7 @@ runningRemoteCheck(newState = NULL)
 \item{newState}{new state of running remote}
 }
 \value{
-old state
+oldState
 }
 \description{
 runningRmoteCheck
