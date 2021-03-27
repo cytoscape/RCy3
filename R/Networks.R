@@ -764,6 +764,8 @@ createSubnetwork <- function(nodes=NULL,
 #' @seealso createNetworkFromDataFrames, createIgraphFromNetwork
 #' @importFrom igraph as_data_frame
 #' @importFrom BiocGenerics colnames
+#' @importFrom RJSONIO fromJSON
+
 #' @export
 createNetworkFromIgraph <- function(igraph,
                                     title = "From igraph",
@@ -999,8 +1001,11 @@ createNetworkFromDataFrames <-
         
         message("Applying preferred layout...\n")
         layoutNetwork(network=network.suid, base.url = base.url)
-        
-        return(network.suid)
+        if(!findRemoteCytoscape()){
+            return(network.suid)
+        } else {
+            return(fromJSON(network.suid$text))
+        }
     }
 
 # ------------------------------------------------------------------------------
