@@ -17,6 +17,7 @@ sandboxTemplate <- list('sandboxName' = NULL,  'copySamples' = TRUE, 'reinitiali
 #' }
 #' @export
 sandboxInitializer <- function(newSandbox=NULL, ...){
+    resetDefaultSandbox()
     if (length(newSandbox) == 1 && !is.null(newSandbox[['init']])){
         params <- newSandbox[['init']]
     } else{
@@ -171,8 +172,17 @@ getSandboxReinitialize <- function(){
 #' getAbsSandboxPath()
 #' }
 #' @export
-getAbsSandboxPath <- function(){
-    return(NULL)
+getAbsSandboxPath <- function(fileLocation){
+    box <- getCurrentSandbox()
+    boxName <- box[1]
+    boxPath <- box[2]
+    if (is.null(boxName)){
+        return(normalizePath(fileLocation))
+    } else if (!is.null(boxName) && !is.null(boxPath)){
+        return(paste(boxPath, fileLocation,sep="/"))
+    } else {
+        return(fileLocation)
+    }
 }
 
 # ------------------------------------------------------------------------------

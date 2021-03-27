@@ -4,7 +4,7 @@
 \alias{getAbsSandboxPath}
 \title{getAbsSandboxPath}
 \usage{
-getAbsSandboxPath()
+getAbsSandboxPath(fileLocation)
 }
 \value{
 file location
