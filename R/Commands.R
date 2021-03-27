@@ -8,6 +8,7 @@
 # II. Commands API functions
 # III. Internal functions 
 # IV. Jupyter-bridge
+# V. Sandbox
 # 
 # Note: This is where the bulk of the dependencies for other packages are used,
 # e.g., utils, httr, RJSONIO, etc. Follow the use of @importFrom where prudent.
@@ -844,4 +845,18 @@ findRemoteCytoscape<-function(){
         stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
     }
     return(runningRemoteCheck())
+}
+
+# ==============================================================================
+# V. Sandbox
+# ------------------------------------------------------------------------------
+#' @title doSetSandbox
+#' @description doSetSandbox
+#' @examples
+#' \donttest{
+#' doSetSandbox()
+#' }
+#' @export
+doSetSandbox <- function(){
+    return(NULL)
 }
