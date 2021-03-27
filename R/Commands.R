@@ -218,7 +218,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
             if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(fromJSON(res.char)$text))
+                return(fromJSON(res.char))
             } else {
                 return(res.char)
             }
