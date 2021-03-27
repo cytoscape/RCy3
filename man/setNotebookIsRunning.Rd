@@ -10,7 +10,7 @@ setNotebookIsRunning(newState = NULL)
 \item{newState}{new state of running remote}
 }
 \value{
-oldSatte
+oldState
 }
 \description{
 setNotebookIsRunning
