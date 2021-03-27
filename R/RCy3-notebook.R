@@ -192,7 +192,6 @@ getNotebookIsRunning<-function(){
 # ------------------------------------------------------------------------------
 #' @title checkNotebookIsRunning
 #' @description checkNotebookIsRunning
-#' @return NULL
 #' @examples \donttest{
 #' checkNotebookIsRunning()
 #' }
