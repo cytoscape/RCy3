@@ -731,7 +731,7 @@ createSubnetwork <- function(nodes=NULL,
     if(!findRemoteCytoscape()){
         return(res$data['network'])
     } else {
-        return(res)
+        return(res$text$data)
     }
 }
 
