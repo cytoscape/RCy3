@@ -23,7 +23,6 @@ sandboxInitializer <- function(newSandbox=NULL, ...){
     } else{
         params <- newSandbox
     }
-    print(params)
     sandbox <- sandboxTemplate
     return(sandbox)
 }

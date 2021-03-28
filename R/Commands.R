@@ -850,6 +850,18 @@ findRemoteCytoscape<-function(){
 # ==============================================================================
 # V. Sandbox
 # ------------------------------------------------------------------------------
+#' @title doInitializeSandbox
+#' @description doInitializeSandbox
+#' @examples
+#' \donttest{
+#' doInitializeSandbox()
+#' }
+#' @export
+doInitializeSandbox <- function(requester=NULL, base.url = .defaultBaseUrl){
+    return(NULL)
+}
+
+# ------------------------------------------------------------------------------
 #' @title doSetSandbox
 #' @description doSetSandbox
 #' @examples
@@ -860,3 +872,5 @@ findRemoteCytoscape<-function(){
 doSetSandbox <- function(){
     return(NULL)
 }
+
+# ------------------------------------------------------------------------------
