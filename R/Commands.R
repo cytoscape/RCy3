@@ -869,7 +869,7 @@ doInitializeSandbox <- function(requester=NULL, base.url = .defaultBaseUrl){
 #' doSetSandbox()
 #' }
 #' @export
-doSetSandbox <- function(){
+doSetSandbox <- function(sandboxToSet, requster=NULL, base.url = .defaultBaseUrl){
     return(NULL)
 }
 

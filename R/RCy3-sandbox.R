@@ -51,7 +51,7 @@ setDefaultSandbox <- function(newSandbox=NULL, ...){
 #' }
 #' @export
 getDefaultSandbox <- function(){
-    return(.GlobalEnv$defaultSandbox)
+    return(defaultSandbox)
 }
 
 # ------------------------------------------------------------------------------

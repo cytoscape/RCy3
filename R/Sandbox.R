@@ -11,8 +11,39 @@
 sandboxSet <- function(sandboxName, copySamples=TRUE, reinitialize=TRUE, base.url=.defaultBaseUrl){
     if(!is.null(sandboxName)){
         sandboxName = trimws(sandboxName)
-        return(sandboxName)
+        box <- doSetSandbox(list('sandboxName' = sandboxName,  'copySamples' = copySamples, 'reinitialize' = reinitialize))
+        boxName <- box[1]
+        boxPath <- box[2]
+        return(boxPath)
     }
+}
+
+# ------------------------------------------------------------------------------
+#' @title sandboxRemove
+#'
+#' @description sandboxRemove
+#' @return sandboxRemove
+#' @examples \donttest{
+#' sandboxRemove()
+#' }
+#' @export
+sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
+    if(!is.null(sandboxName)){
+        sandboxName <- trimws(sandboxName)
+    }
+    defaultSandboxName <- getDefaultSandbox()['sandboxName']
+    currentSandboxBeforeRemove <- getCurrentSandboxName()
+    res <- sandboxOp('filetransfer removeSandbox', sandboxName, base.url=base.url)
+    if(is.null(sandboxName) || sandboxName == currentSandboxBeforeRemove){
+        setCurrentSandbox(defaultSandboxName, getDefaultSandboxPath())
+        sandboxName <- currentSandboxBeforeRemove
+    }
+    if(sandboxName == defaultSandboxName && defaultSandboxName == currentSandboxBeforeRemove){
+        setSandboxReinitialize()
+    } else if (sandboxName == currentSandboxBeforeRemove){
+        doSetSandbox(list('sandboxName' = defaultSandboxName,  'copySamples' = FALSE, 'reinitialize' = FALSE))
+    }
+    return(res)
 }
 
 # ------------------------------------------------------------------------------
