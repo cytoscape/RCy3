@@ -56,6 +56,51 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
 #' }
 #' @export
 sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBaseUrl){
+    tryCatch(
+        expr = {
+            return(sandboxOp('filetransfer getFileInfo', sandboxName, fileName, base.url=base.url))
+        },
+        error = function(e){
+            if(is.null(sandboxName) && is.null(getCurrentSandboxName()) && !is.null(fileName) && !is.null(trimws(fileName))){
+                filePath <- normalizePath(fileName)
+                if (file.exists(filePath)){
+                    isFile <- file_test("-f", fileName)
+                    modifiedTime <- format(file.info(fileName)$mtime, usetz=FALSE)
+                } else {
+                    isFile <- FALSE
+                    modifiedTime <- ''
+                }
+                return(list('filePath' = filePath,  'modifiedTime' = modifiedTime, 'isFile' = isFile))
+            } else {
+                stop()
+            }
+        }
+    )
+}
+
+# ------------------------------------------------------------------------------
+#' @title sandboxSendTo
+#'
+#' @description sandboxSendTo
+#' @return sandboxSendTo
+#' @examples \donttest{
+#' sandboxSendTo()
+#' }
+#' @export
+sandboxSendTo <- function(){
+    
+}
+
+# ------------------------------------------------------------------------------
+#' @title sandboxGetFrom
+#'
+#' @description sandboxGetFrom
+#' @return sandboxGetFrom
+#' @examples \donttest{
+#' sandboxGetFrom()
+#' }
+#' @export
+sandboxGetFrom <- function(){
     
 }
 
