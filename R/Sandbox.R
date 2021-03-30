@@ -87,7 +87,7 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
 #' sandboxSendTo()
 #' }
 #' @export
-sandboxSendTo <- function(){
+sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=base.url){
     
 }
 
@@ -100,7 +100,7 @@ sandboxSendTo <- function(){
 #' sandboxGetFrom()
 #' }
 #' @export
-sandboxGetFrom <- function(){
+sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=base.url){
     
 }
 
