@@ -1,9 +1,9 @@
-defaultSandbox <- list() # Once a sandbox is explicitly defined, it'll override this default
-defaultSandboxPath <- NULL
-predefinedSandboxName <- 'default_sandbox'
-currentSandboxName <- NULL
-currentSandboxPath <- NULL # Resolve this by explicitly setting it or when first Cytoscape command is issued
-sandboxReinitialize <- TRUE
+defaultSandbox <<- list() # Once a sandbox is explicitly defined, it'll override this default
+defaultSandboxPath <<- NULL
+predefinedSandboxName <<- 'default_sandbox'
+currentSandboxName <<- NULL
+currentSandboxPath <<- NULL # Resolve this by explicitly setting it or when first Cytoscape command is issued
+sandboxReinitialize <<- TRUE
 
 sandboxTemplate <- list('sandboxName' = NULL,  'copySamples' = TRUE, 'reinitialize' = TRUE)
 
@@ -51,7 +51,7 @@ setDefaultSandbox <- function(newSandbox=NULL, ...){
 #' }
 #' @export
 getDefaultSandbox <- function(){
-    return(defaultSandbox)
+    return(.GlobalEnv$defaultSandbox)
 }
 
 # ------------------------------------------------------------------------------

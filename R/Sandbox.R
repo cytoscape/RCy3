@@ -47,6 +47,19 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
 }
 
 # ------------------------------------------------------------------------------
+#' @title sandboxGetFileInfo
+#'
+#' @description sandboxGetFileInfo
+#' @return sandboxGetFileInfo
+#' @examples \donttest{
+#' sandboxGetFileInfo()
+#' }
+#' @export
+sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBaseUrl){
+    
+}
+
+# ------------------------------------------------------------------------------
 #' @title sandboxRemoveFile
 #'
 #' @description sandboxRemoveFile

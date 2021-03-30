@@ -864,6 +864,11 @@ doInitializeSandbox <- function(requester=NULL, base.url = .defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title doSetSandbox
 #' @description doSetSandbox
+#' @param sandboxToSet sandbox to set
+#' @param requster requster
+#' @param base.url base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @examples
 #' \donttest{
 #' doSetSandbox()
