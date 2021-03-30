@@ -6,8 +6,8 @@ uuid <- character(1)
 uuid[1] <- ug()
 CHANNEL <- uuid[1]
 JupyterBRIDGEURL <- 'https://jupyter-bridge.cytoscape.org'
-runningRemote <- NULL # NULL means "Don't know whether Cytoscape is local or remote yet"
-notebookIsRunning <- NULL
+runningRemote <<- NULL # NULL means "Don't know whether Cytoscape is local or remote yet"
+notebookIsRunning <<- NULL
 
 # ------------------------------------------------------------------------------
 #' @title spoofResponse
