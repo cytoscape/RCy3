@@ -6,8 +6,17 @@
 \usage{
 sandboxOp(command, sandboxName, fileName = NULL, base.url = .defaultBaseUrl)
 }
+\arguments{
+\item{command}{command}
+
+\item{sandboxName}{Name of file to read (as absolute path or sandbox-relative path)}
+
+\item{fileName}{Name of file to read (as absolute path or sandbox-relative path)}
+
+\item{base.url}{Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.}
+}
 \value{
-sandboxOp
+sandbox result
 }
 \description{
 sandboxOp

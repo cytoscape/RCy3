@@ -9,13 +9,15 @@ sandboxGetFrom(
   destFile = NULL,
   overwrite = TRUE,
   sandboxName = NULL,
-  base.url = base.url
+  base.url = .defaultBaseUrl
 )
 }
 \arguments{
 \item{sourceFile}{Name of file to read (as absolute path or sandbox-relative path)}
 
 \item{destFile}{Name of file in the R workflow's file system ... if None, use file name in source_file}
+
+\item{overwrite}{Name of sandbox containing file. None means "the current sandbox".}
 
 \item{sandboxName}{Name of sandbox containing file. None means "the current sandbox".}
 

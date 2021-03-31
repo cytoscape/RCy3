@@ -11,8 +11,17 @@ sandboxSet(
   base.url = .defaultBaseUrl
 )
 }
+\arguments{
+\item{sandboxName}{Name of new default sandbox. None means to use the original default sandbox}
+
+\item{copySamples}{True to copy the Cytoscape sampleData into the sandbox}
+
+\item{reinitialize}{True to delete sandbox contents (if any) if sandbox already exists}
+
+\item{base.url}{Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.}
+}
 \value{
-sandboxPath
+sandbox path in Cytoscape workstation's file system
 }
 \description{
 sandboxSet

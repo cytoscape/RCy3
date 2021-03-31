@@ -6,8 +6,13 @@
 \usage{
 sandboxRemove(sandboxName = NULL, base.url = .defaultBaseUrl)
 }
+\arguments{
+\item{sandboxName}{Name of sandbox to delete. None means to delete the current sandbox. If that sandbox is the default sandbox, it is automatically re-created.}
+
+\item{base.url}{Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.}
+}
 \value{
-sandboxRemove
+dict: {'sandboxPath': <directory on Cytoscape workstation>, 'existed': <True if sandbox existed>}
 }
 \description{
 sandboxRemove
