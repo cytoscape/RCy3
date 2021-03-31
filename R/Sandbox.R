@@ -95,12 +95,27 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
 #' @title sandboxGetFrom
 #'
 #' @description sandboxGetFrom
+#' @param sourceFile Name of file to read (as absolute path or sandbox-relative path)
+#' @param destFile  Name of file in the R workflow's file system ... if None, use file name in source_file
+#' @param sandboxName Name of sandbox containing file. None means "the current sandbox".
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
 #' @return sandboxGetFrom
 #' @examples \donttest{
 #' sandboxGetFrom()
 #' }
+#' @import glue
 #' @export
 sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=base.url){
+    if(!is.null(sourceFile)){
+        sourceFile <- trimws(sourceFile)
+    } else {
+        sourceFile <- ''
+    }
+    if(!overwrite && file.exists(destFile)){
+        errorMessage <- "File {destFile} already exists"
+        stop(glue(errorMessage))
+    }
+    res <- sandboxOp('filetransfer fromSandbox', sandboxName, fileName=sourceFile, base.url=base.url)
     
 }
 

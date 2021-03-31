@@ -4,7 +4,22 @@
 \alias{sandboxGetFrom}
 \title{sandboxGetFrom}
 \usage{
-sandboxGetFrom()
+sandboxGetFrom(
+  sourceFile,
+  destFile = NULL,
+  overwrite = TRUE,
+  sandboxName = NULL,
+  base.url = base.url
+)
+}
+\arguments{
+\item{sourceFile}{Name of file to read (as absolute path or sandbox-relative path)}
+
+\item{destFile}{Name of file in the R workflow's file system ... if None, use file name in source_file}
+
+\item{sandboxName}{Name of sandbox containing file. None means "the current sandbox".}
+
+\item{base.url}{Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 sandboxGetFrom

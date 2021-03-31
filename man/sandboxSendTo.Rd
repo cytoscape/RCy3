@@ -4,7 +4,13 @@
 \alias{sandboxSendTo}
 \title{sandboxSendTo}
 \usage{
-sandboxSendTo()
+sandboxSendTo(
+  sourceFile,
+  destFile = NULL,
+  overwrite = TRUE,
+  sandboxName = NULL,
+  base.url = base.url
+)
 }
 \value{
 sandboxSendTo
