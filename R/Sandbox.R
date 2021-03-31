@@ -1,9 +1,14 @@
 # ==============================================================================
+# I. Sandbox functions
 # ------------------------------------------------------------------------------
 #' @title sandboxSet
 #'
 #' @description sandboxSet
-#' @return sandboxPath
+#' @param sandboxName Name of new default sandbox. None means to use the original default sandbox 
+#' @param copySamples True to copy the Cytoscape sampleData into the sandbox
+#' @param reinitialize True to delete sandbox contents (if any) if sandbox already exists
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
+#' @return sandbox path in Cytoscape workstation's file system
 #' @examples \donttest{
 #' sandboxSet()
 #' }
@@ -11,7 +16,7 @@
 sandboxSet <- function(sandboxName, copySamples=TRUE, reinitialize=TRUE, base.url=.defaultBaseUrl){
     if(!is.null(sandboxName)){
         sandboxName = trimws(sandboxName)
-        box <- doSetSandbox(list('sandboxName' = sandboxName,  'copySamples' = copySamples, 'reinitialize' = reinitialize))
+        box <- doSetSandbox(list('sandboxName'=sandboxName, 'copySamples'=copySamples, 'reinitialize'=reinitialize), base.url=base.url)
         boxName <- box[1]
         boxPath <- box[2]
         return(boxPath)
@@ -22,7 +27,9 @@ sandboxSet <- function(sandboxName, copySamples=TRUE, reinitialize=TRUE, base.ur
 #' @title sandboxRemove
 #'
 #' @description sandboxRemove
-#' @return sandboxRemove
+#' @param sandboxName Name of sandbox to delete. None means to delete the current sandbox. If that sandbox is the default sandbox, it is automatically re-created.
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
+#' @return dict: {'sandboxPath': <directory on Cytoscape workstation>, 'existed': <True if sandbox existed>}
 #' @examples \donttest{
 #' sandboxRemove()
 #' }
@@ -41,7 +48,7 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
     if(sandboxName == defaultSandboxName && defaultSandboxName == currentSandboxBeforeRemove){
         setSandboxReinitialize()
     } else if (sandboxName == currentSandboxBeforeRemove){
-        doSetSandbox(list('sandboxName' = defaultSandboxName,  'copySamples' = FALSE, 'reinitialize' = FALSE))
+        doSetSandbox(list('sandboxName'=defaultSandboxName, 'copySamples'=FALSE, 'reinitialize'=FALSE))
     }
     return(res)
 }
@@ -50,7 +57,10 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
 #' @title sandboxGetFileInfo
 #'
 #' @description sandboxGetFileInfo
-#' @return sandboxGetFileInfo
+#' @param fileName Name of file whose metadata to return ... can be sandbox-relative path ... ``.`` returns metadata on sandbox itself
+#' @param sandboxName Name of sandbox containing file. None means "the current sandbox".
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
+#' @return dict: {'filePath': <full path on Cytoscape workstation>, 'modifiedTime': <last changed time, '' if file doesn't exist>, 'isFile': <True if file, False if directory>}
 #' @examples \donttest{
 #' sandboxGetFileInfo()
 #' }
@@ -58,7 +68,7 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
 sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBaseUrl){
     tryCatch(
         expr = {
-            return(sandboxOp('filetransfer getFileInfo', sandboxName, fileName, base.url=base.url))
+            return(sandboxOp('filetransfer getFileInfo', sandboxName, fileName=fileName, base.url=base.url))
         },
         error = function(e){
             if(is.null(sandboxName) && is.null(getCurrentSandboxName()) && !is.null(fileName) && !is.null(trimws(fileName))){
@@ -70,7 +80,7 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
                     isFile <- FALSE
                     modifiedTime <- ''
                 }
-                return(list('filePath' = filePath,  'modifiedTime' = modifiedTime, 'isFile' = isFile))
+                return(list('filePath'=filePath, 'modifiedTime'=modifiedTime, 'isFile'=isFile))
             } else {
                 stop()
             }
@@ -83,7 +93,8 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
 #'
 #' @description sandboxSendTo
 #' @param sourceFile Name of file to read (as absolute path or sandbox-relative path)
-#' @param destFile  Name of file in the R workflow's file system ... if None, use file name in source_file
+#' @param destFile Name of file in the R workflow's file system ... if None, use file name in source_file
+#' @param overwrite Name of sandbox containing file. None means "the current sandbox".
 #' @param sandboxName Name of sandbox containing file. None means "the current sandbox".
 #' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
 #' @return sandboxSendTo
@@ -92,7 +103,7 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
 #' }
 #' @import glue
 #' @export
-sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=base.url){
+sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
     if(is.null(destFile) || is.null(trimws(destFile))){
         head <- dirname(sourceFile)
         destFile <- basename(sourceFile)
@@ -105,7 +116,12 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
 #' @title sandboxUrlTo
 #'
 #' @description sandboxUrlTo
-#' @return sandboxUrlTo
+#' @param sourceURL URL addressing cloud file to download
+#' @param destFile Name of file in the R workflow's file system ... if None, use file name in source_file
+#' @param overwrite Name of sandbox containing file. None means "the current sandbox".
+#' @param sandboxName Name of sandbox containing file. None means "the current sandbox".
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
+#' @return dict: {'filePath': <new file's absolute path in Cytoscape workstation>, 'fileByteCount': number of bytes read}
 #' @examples \donttest{
 #' sandboxUrlTo()
 #' }
@@ -127,7 +143,8 @@ sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, 
 #'
 #' @description sandboxGetFrom
 #' @param sourceFile Name of file to read (as absolute path or sandbox-relative path)
-#' @param destFile  Name of file in the R workflow's file system ... if None, use file name in source_file
+#' @param destFile Name of file in the R workflow's file system ... if None, use file name in source_file
+#' @param overwrite Name of sandbox containing file. None means "the current sandbox".
 #' @param sandboxName Name of sandbox containing file. None means "the current sandbox".
 #' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
 #' @return sandboxGetFrom
@@ -136,7 +153,7 @@ sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, 
 #' }
 #' @import glue
 #' @export
-sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=base.url){
+sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
     if(!is.null(sourceFile)){
         sourceFile <- trimws(sourceFile)
     } else {
@@ -158,7 +175,10 @@ sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxNam
 #' @title sandboxRemoveFile
 #'
 #' @description sandboxRemoveFile
-#' @return sandboxRemoveFile
+#' @param fileName Name of file to delete (as absolute path or sandbox-relative path)
+#' @param sandboxName Name of sandbox containing file. None means "the current sandbox".
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
+#' @return dict: {'filePath': <file's absolute path in Cytoscape workstation>, 'existed': True if file existed before being deleted}
 #' @examples \donttest{
 #' sandboxRemoveFile()
 #' }
@@ -171,7 +191,11 @@ sandboxRemoveFile <- function(fileName, sandboxName=NULL, base.url=.defaultBaseU
 #' @title sandboxOp
 #'
 #' @description sandboxOp
-#' @return sandboxOp
+#' @param command command
+#' @param sandboxName Name of file to read (as absolute path or sandbox-relative path)
+#' @param fileName Name of file to read (as absolute path or sandbox-relative path)
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
+#' @return sandbox result
 #' @examples \donttest{
 #' sandboxOp()
 #' }
