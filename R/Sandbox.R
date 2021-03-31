@@ -82,13 +82,44 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
 #' @title sandboxSendTo
 #'
 #' @description sandboxSendTo
+#' @param sourceFile Name of file to read (as absolute path or sandbox-relative path)
+#' @param destFile  Name of file in the R workflow's file system ... if None, use file name in source_file
+#' @param sandboxName Name of sandbox containing file. None means "the current sandbox".
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
 #' @return sandboxSendTo
 #' @examples \donttest{
 #' sandboxSendTo()
 #' }
+#' @import glue
 #' @export
 sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=base.url){
-    
+    if(is.null(destFile) || is.null(trimws(destFile))){
+        head <- dirname(sourceFile)
+        destFile <- basename(sourceFile)
+    }
+    res <- sandboxOp(glue('filetransfer toSandbox fileByteCount={fileByteCount} overwrite={overwrite}, fileBase64="{fileContent64}"'), sandboxName, fileName=destFile, base.url=base.url)
+    return(res)
+}
+
+# ------------------------------------------------------------------------------
+#' @title sandboxUrlTo
+#'
+#' @description sandboxUrlTo
+#' @return sandboxUrlTo
+#' @examples \donttest{
+#' sandboxUrlTo()
+#' }
+#' @import glue
+#' @export
+sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
+    if(is.null(sourceURL)){
+        stop('Source URL cannot be null')
+    }
+    if(is.null(destFile)){
+        stop('Destination file cannot be null')
+    }
+    res <- sandboxOp(glue('filetransfer urlToSandbox overwrite={overwrite} sourceURL={sourceURL}'), sandboxName, fileName=destFile, base.url=basr.url)
+    return(res)
 }
 
 # ------------------------------------------------------------------------------
@@ -111,12 +142,16 @@ sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxNam
     } else {
         sourceFile <- ''
     }
+    if(is.null(destFile) || is.null(trimws(destFile))){
+        head <- dirname(sourceFile)
+        destFile <- basename(sourceFile)
+    }
     if(!overwrite && file.exists(destFile)){
         errorMessage <- "File {destFile} already exists"
         stop(glue(errorMessage))
     }
     res <- sandboxOp('filetransfer fromSandbox', sandboxName, fileName=sourceFile, base.url=base.url)
-    
+    return(res)
 }
 
 # ------------------------------------------------------------------------------
