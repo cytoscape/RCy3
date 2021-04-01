@@ -1,3 +1,4 @@
+# ------------------------------------------------------------------------------
 defaultSandbox <<- list() # Once a sandbox is explicitly defined, it'll override this default
 defaultSandboxPath <<- NULL
 predefinedSandboxName <<- 'default_sandbox'
@@ -58,6 +59,7 @@ getDefaultSandbox <- function(){
 #' @title setDefaultSandboxPath
 #'
 #' @description setDefaultSandboxPath
+#' @param newPath new path of default sandbox 
 #' @return default sandbox path
 #' @examples \donttest{
 #' setDefaultSandboxPath()
@@ -125,6 +127,8 @@ getCurrentSandbox <- function(){
 #' @title setCurrentSandbox
 #'
 #' @description setCurrentSandbox
+#' @param sandboxName sandboxName 
+#' @param sandboxPath sandboxPath 
 #' @return current sandbox
 #' @examples \donttest{
 #' setCurrentSandbox()
@@ -140,6 +144,7 @@ setCurrentSandbox <- function(sandboxName, sandboxPath){
 #' @title setSandboxReinitialize
 #'
 #' @description setSandboxReinitialize
+#' @param doReinitialize default is TRUE 
 #' @return sandbox reinitialize
 #' @examples \donttest{
 #' setCurrentSandbox()
@@ -167,6 +172,7 @@ getSandboxReinitialize <- function(){
 #' @title getAbsSandboxPath
 #'
 #' @description getAbsSandboxPath
+#' @param fileLocation fileLocation 
 #' @return file location
 #' @examples \donttest{
 #' getAbsSandboxPath()
@@ -179,7 +185,7 @@ getAbsSandboxPath <- function(fileLocation){
     if (is.null(boxName)){
         return(normalizePath(fileLocation))
     } else if (!is.null(boxName) && !is.null(boxPath)){
-        return(paste(boxPath, fileLocation,sep="/"))
+        return(paste(boxPath, fileLocation, sep="/"))
     } else {
         return(fileLocation)
     }
@@ -189,7 +195,6 @@ getAbsSandboxPath <- function(fileLocation){
 #' @title resetDefaultSandbox
 #'
 #' @description resetDefaultSandbox
-#' @return NULL
 #' @examples \donttest{
 #' resetDefaultSandbox()
 #' }
