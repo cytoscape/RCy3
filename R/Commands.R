@@ -852,6 +852,7 @@ findRemoteCytoscape<-function(){
 # ------------------------------------------------------------------------------
 #' @title doInitializeSandbox
 #' @description doInitializeSandbox
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
 #' @examples
 #' \donttest{
 #' doInitializeSandbox()
@@ -866,9 +867,7 @@ doInitializeSandbox <- function(requester=NULL, base.url = .defaultBaseUrl){
 #' @description doSetSandbox
 #' @param sandboxToSet sandbox to set
 #' @param requster requster
-#' @param base.url base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
 #' @examples
 #' \donttest{
 #' doSetSandbox()
@@ -879,3 +878,21 @@ doSetSandbox <- function(sandboxToSet, requster=NULL, base.url = .defaultBaseUrl
 }
 
 # ------------------------------------------------------------------------------
+#' @title .getDefaultSandbox
+#' @description .getDefaultSandbox
+#' @examples
+#' \donttest{
+#' .getDefaultSandbox()
+#' }
+.getDefaultSandbox <- function(){
+    default <- getDefaultSandbox()
+    if(length(default) == 0){
+        if(getNotebookIsRunning() || runningRemoteCheck()){
+            default <- sandboxInitializer(sandboxName=predefinedSandboxName)
+        } else {
+            default <- sandboxInitializer(sandboxName=NULL)
+        }
+        setDefaultSandbox()
+    }
+    return(default)
+}
