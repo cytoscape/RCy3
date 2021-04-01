@@ -6,6 +6,9 @@
 \usage{
 setDefaultSandboxPath(newPath)
 }
+\arguments{
+\item{newPath}{new path of default sandbox}
+}
 \value{
 default sandbox path
 }

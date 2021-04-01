@@ -6,6 +6,9 @@
 \usage{
 setSandboxReinitialize(doReinitialize = TRUE)
 }
+\arguments{
+\item{doReinitialize}{default is TRUE}
+}
 \value{
 sandbox reinitialize
 }

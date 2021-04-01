@@ -6,6 +6,11 @@
 \usage{
 setCurrentSandbox(sandboxName, sandboxPath)
 }
+\arguments{
+\item{sandboxName}{sandboxName}
+
+\item{sandboxPath}{sandboxPath}
+}
 \value{
 current sandbox
 }
