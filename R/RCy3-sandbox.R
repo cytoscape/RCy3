@@ -25,6 +25,13 @@ sandboxInitializer <- function(newSandbox=NULL, ...){
         params <- newSandbox
     }
     sandbox <- sandboxTemplate
+    for (name in names(params)) {
+        if(name %in% names(sandbox)){
+            sandbox[name] <- params[[name]]
+        } else {
+            stop('Invalid key in sandbox parameter list')
+        }
+    }
     return(sandbox)
 }
 
