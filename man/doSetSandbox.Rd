@@ -4,7 +4,7 @@
 \alias{doSetSandbox}
 \title{doSetSandbox}
 \usage{
-doSetSandbox(sandboxToSet, requster = NULL, base.url = .defaultBaseUrl)
+doSetSandbox(sandboxToSet, requster = FALSE, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{sandboxToSet}{sandbox to set}

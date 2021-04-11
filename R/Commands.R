@@ -841,6 +841,7 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
 findRemoteCytoscape<-function(){
     checkNotebookIsRunning()
     checkRunningRemote()
+    doInitializeSandbox(requester, base.url=.defaultBaseUrl) # make sure there's a sandbox before executing a command
     if(is.null(checkRunningRemote())){
         stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
     }
@@ -858,8 +859,12 @@ findRemoteCytoscape<-function(){
 #' doInitializeSandbox()
 #' }
 #' @export
-doInitializeSandbox <- function(requester=NULL, base.url = .defaultBaseUrl){
-    return(NULL)
+doInitializeSandbox <- function(requester=FALSE, base.url = .defaultBaseUrl){
+    if(getSandboxReinitialize()){
+        return(doSetSandbox(getDefaultSandbox(), requester, base.url = base.url))
+    } else {
+        return(getCurrentSandbox())
+    }
 }
 
 # ------------------------------------------------------------------------------
@@ -873,7 +878,7 @@ doInitializeSandbox <- function(requester=NULL, base.url = .defaultBaseUrl){
 #' doSetSandbox()
 #' }
 #' @export
-doSetSandbox <- function(sandboxToSet, requster=NULL, base.url = .defaultBaseUrl){
+doSetSandbox <- function(sandboxToSet, requster=FALSE, base.url = .defaultBaseUrl){
     return(NULL)
 }
 
@@ -888,11 +893,26 @@ doSetSandbox <- function(sandboxToSet, requster=NULL, base.url = .defaultBaseUrl
     default <- getDefaultSandbox()
     if(length(default) == 0){
         if(getNotebookIsRunning() || runningRemoteCheck()){
-            default <- sandboxInitializer(sandboxName=predefinedSandboxName)
+            default <- sandboxInitializer(list(sandboxName=predefinedSandboxName))
         } else {
-            default <- sandboxInitializer(sandboxName=NULL)
+            default <- sandboxInitializer(list(sandboxName=NULL))
         }
-        setDefaultSandbox()
+        setDefaultSandbox(default)
     }
     return(default)
+}
+
+# ------------------------------------------------------------------------------
+#' @title .getRequester
+#' @description .getRequester
+#' @examples
+#' \donttest{
+#' .getRequester()
+#' }
+.getRequester <- function(){
+    if(findRemoteCytoscape()){
+        return(TRUE)
+    } else {
+        return(FALSE)
+    }
 }
