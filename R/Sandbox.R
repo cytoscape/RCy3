@@ -104,11 +104,23 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
 #' @import glue
 #' @export
 sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
+    tryCatch(
+        expr = {
+            finfo = file.info(sourceFile)
+            read.filename <- file(sourceFile, "rb")
+            fileContent <- readBin(read.filename, character(), n = finfo$size)
+            close(read.filename)
+        },
+        error = function(e){
+            message(glue('Could not read file {sourceFile}'))
+            print(e)
+        }
+    )
     if(is.null(destFile) || is.null(trimws(destFile))){
         head <- dirname(sourceFile)
         destFile <- basename(sourceFile)
     }
-    res <- sandboxOp(glue('filetransfer toSandbox fileByteCount={fileByteCount} overwrite={overwrite}, fileBase64="{fileContent64}"'), sandboxName, fileName=destFile, base.url=base.url)
+    res <- sandboxOp(glue('filetransfer toSandbox fileByteCount={finfo$size} overwrite={overwrite}, fileBase64="{fileContent64}"'), sandboxName, fileName=destFile, base.url=base.url)
     return(res)
 }
 
