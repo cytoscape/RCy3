@@ -102,13 +102,15 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
 #' sandboxSendTo()
 #' }
 #' @import glue
+#' @import RCurl
 #' @export
 sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
     tryCatch(
         expr = {
             finfo = file.info(sourceFile)
             read.filename <- file(sourceFile, "rb")
-            fileContent <- readBin(read.filename, character(), n = finfo$size)
+            fileContent <- readChar(read.filename, file.info('test.csv')$size)
+            fileContent64 <- base64Encode(fileContent)
             close(read.filename)
         },
         error = function(e){
