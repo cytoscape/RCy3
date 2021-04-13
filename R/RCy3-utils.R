@@ -9,6 +9,9 @@
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://127.0.0.1:1234/v1'
 
+# initialize jupyter.in_kernel
+IRkernel::jupyter_option_defaults
+
 RCy3env <- new.env()
 # Exported setter functions for these delays are in RCy3.R
 assign(".CATCHUP_FILTER_SECS", 1, envir = RCy3env)
