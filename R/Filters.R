@@ -81,21 +81,24 @@ applyFilter<-function(filter.name="Default filter", hide=FALSE, network=NULL,
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param apply (bool) True to execute filter immediately (default); False to
+#' define filter but not execute it (available in Cytoscape 3.9+).
 #' @return List of selected nodes and edges.
 #' @examples \donttest{
 #' createColumnFilter('myFilter', 'log2FC', c(-1,1), "IS_NOT_BETWEEN")
 #' createColumnFilter('myFilter', 'pValue', 0.05, "LESS_THAN")
 #' createColumnFilter('myFilter', 'function', "kinase", "CONTAINS", FALSE)
 #' createColumnFilter('myFilter', 'name', "^Y.*C$", "REGEX")
-#' createColumnFilter('myFilter', 'isTarget', TRUE , "IS")
-#' createColumnFilter('myFilter', 'isTarget', TRUE , "IS", hide = TRUE)
+#' createColumnFilter('myFilter', 'isTarget', TRUE , "IS", apply=FALSE)
+#' createColumnFilter('myFilter', 'isTarget', TRUE , "IS", hide=TRUE)
 #' }
 #' @importFrom RJSONIO fromJSON
 #' @export
 createColumnFilter<-function(filter.name, column, criterion, predicate, 
                              caseSensitive=FALSE, anyMatch=TRUE, 
                              type="nodes", hide = FALSE, network = NULL,
-                             base.url = .defaultBaseUrl){
+                             base.url = .defaultBaseUrl,
+                             apply = TRUE){
 
     setCurrentNetwork(network,base.url)
     
@@ -133,7 +136,11 @@ createColumnFilter<-function(filter.name, column, criterion, predicate,
                                                         anyMatch=anyMatch,
                                                         type=type))
     cmd.body <- toJSON(list(name=filter.name, json=cmd.json))
-    
+    if(apply==FALSE){
+        .verifySupportedVersions(cytoscape=3.9, base.url=base.url)
+        cmd.body <- toJSON(list(name=filter.name,apply=apply, json=cmd.json))
+    }
+
     .postCreateFilter(cmd.body, base.url)
  
     .checkSelected(hide, network, base.url)
@@ -155,17 +162,20 @@ createColumnFilter<-function(filter.name, column, criterion, predicate,
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param apply (bool) True to execute filter immediately (default); False to
+#' define filter but not execute it (available in Cytoscape 3.9+).
 #' @return List of selected nodes and edges.
 #' @examples \donttest{
 #' createCompositeFilter("comp1", c("filter1", "filter2"))
 #' createCompositeFilter("comp2", c("filter1", "filter2"), "ANY")
-#' createCompositeFilter("comp3", c("comp1", "filter3"))
+#' createCompositeFilter("comp3", c("comp1", "filter3"), apply=FALSE)
 #' }
 #' @importFrom RJSONIO fromJSON
 #' @export
 createCompositeFilter<-function(filter.name, filter.list, type="ALL", 
                                 hide = FALSE, network = NULL,
-                                base.url = .defaultBaseUrl){
+                                base.url = .defaultBaseUrl,
+                                apply = TRUE){
     
     setCurrentNetwork(network,base.url)
     
@@ -177,6 +187,10 @@ createCompositeFilter<-function(filter.name, filter.list, type="ALL",
     #return(trans.list)
     cmd.json <- list(id="CompositeFilter", parameters=list(type=type), transformers=trans.list)
     cmd.body <- toJSON(list(name=filter.name, json=cmd.json))
+    if(apply==FALSE){
+        .verifySupportedVersions(cytoscape=3.9, base.url=base.url)
+        cmd.body <- toJSON(list(name=filter.name,apply=apply, json=cmd.json))
+    }
 
     .postCreateFilter(cmd.body, base.url)
 
@@ -200,15 +214,19 @@ createCompositeFilter<-function(filter.name, filter.list, type="ALL",
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param apply (bool) True to execute filter immediately (default); False to
+#' define filter but not execute it (available in Cytoscape 3.9+).
 #' @return List of selected nodes and edges.
 #' @examples \donttest{
-#' createDegreeFilter('myFilter', c(2,5))
+#' createDegreeFilter('myFilter', c(4,5))
+#' createDegreeFilter('myFilter', c(2,5), apply=FALSE)
 #' }
 #' @importFrom RJSONIO fromJSON
 #' @export
 createDegreeFilter<-function(filter.name, criterion, predicate="BETWEEN", 
                              edgeType="ANY", hide = FALSE, network = NULL,
-                             base.url = .defaultBaseUrl){
+                             base.url = .defaultBaseUrl,
+                             apply = TRUE){
     
     setCurrentNetwork(network,base.url)
     
@@ -220,6 +238,10 @@ createDegreeFilter<-function(filter.name, criterion, predicate="BETWEEN",
                                                         predicate=predicate,
                                                         edgeType=edgeType))
     cmd.body <- toJSON(list(name=filter.name, json=cmd.json))
+    if(apply==FALSE){
+        .verifySupportedVersions(cytoscape=3.9, base.url=base.url)
+        cmd.body <- toJSON(list(name=filter.name,apply=apply, json=cmd.json))
+    }
     
     .postCreateFilter(cmd.body, base.url)
     

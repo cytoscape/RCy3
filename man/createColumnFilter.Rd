@@ -14,7 +14,8 @@ createColumnFilter(
   type = "nodes",
   hide = FALSE,
   network = NULL,
-  base.url = .defaultBaseUrl
+  base.url = .defaultBaseUrl,
+  apply = TRUE
 )
 }
 \arguments{
@@ -53,6 +54,9 @@ filtering for node and edge selection.}
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
+
+\item{apply}{(bool) True to execute filter immediately (default); False to
+define filter but not execute it (available in Cytoscape 3.9+).}
 }
 \value{
 List of selected nodes and edges.
@@ -68,7 +72,7 @@ createColumnFilter('myFilter', 'log2FC', c(-1,1), "IS_NOT_BETWEEN")
 createColumnFilter('myFilter', 'pValue', 0.05, "LESS_THAN")
 createColumnFilter('myFilter', 'function', "kinase", "CONTAINS", FALSE)
 createColumnFilter('myFilter', 'name', "^Y.*C$", "REGEX")
-createColumnFilter('myFilter', 'isTarget', TRUE , "IS")
-createColumnFilter('myFilter', 'isTarget', TRUE , "IS", hide = TRUE)
+createColumnFilter('myFilter', 'isTarget', TRUE , "IS", apply=FALSE)
+createColumnFilter('myFilter', 'isTarget', TRUE , "IS", hide=TRUE)
 }
 }

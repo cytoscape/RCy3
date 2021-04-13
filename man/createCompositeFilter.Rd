@@ -10,7 +10,8 @@ createCompositeFilter(
   type = "ALL",
   hide = FALSE,
   network = NULL,
-  base.url = .defaultBaseUrl
+  base.url = .defaultBaseUrl,
+  apply = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ filtering for node and edge selection.}
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
+
+\item{apply}{(bool) True to execute filter immediately (default); False to
+define filter but not execute it (available in Cytoscape 3.9+).}
 }
 \value{
 List of selected nodes and edges.
@@ -43,6 +47,6 @@ previously created filters.
 \donttest{
 createCompositeFilter("comp1", c("filter1", "filter2"))
 createCompositeFilter("comp2", c("filter1", "filter2"), "ANY")
-createCompositeFilter("comp3", c("comp1", "filter3"))
+createCompositeFilter("comp3", c("comp1", "filter3"), apply=FALSE)
 }
 }

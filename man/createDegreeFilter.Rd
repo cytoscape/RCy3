@@ -11,7 +11,8 @@ createDegreeFilter(
   edgeType = "ANY",
   hide = FALSE,
   network = NULL,
-  base.url = .defaultBaseUrl
+  base.url = .defaultBaseUrl,
+  apply = TRUE
 )
 }
 \arguments{
@@ -34,6 +35,9 @@ filtering for node and edge selection.}
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
+
+\item{apply}{(bool) True to execute filter immediately (default); False to
+define filter but not execute it (available in Cytoscape 3.9+).}
 }
 \value{
 List of selected nodes and edges.
@@ -43,6 +47,7 @@ Creates a filter to control node selection base on in/out degree.
 }
 \examples{
 \donttest{
-createDegreeFilter('myFilter', c(2,5))
+createDegreeFilter('myFilter', c(4,5))
+createDegreeFilter('myFilter', c(2,5), apply=FALSE)
 }
 }
