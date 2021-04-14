@@ -227,13 +227,14 @@ sandboxOp <- function(command, sandboxName, fileName=NULL, base.url=.defaultBase
         sandboxPath <- box[2]
     }
     if(!is.null(sandboxName)){
-        command <- paste(command, sprintf(" sandboxName=%s", sandboxName))
+        command <- paste(command, sprintf("sandboxName=%s", sandboxName))
     } else if(!is.null(fileName)){
         fileName <- file.path(sandboxPath, fileName)
     }
     if(!is.null(fileName)){
-        command <- paste(command, sprintf(" fileName=%s", fileName))
+        command <- paste(command, sprintf("fileName=%s", fileName))
     }
+    print(command)
     res <- commandsPOST(command, base.url = base.url)
     return(res)
 }
