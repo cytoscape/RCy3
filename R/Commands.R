@@ -879,7 +879,22 @@ doInitializeSandbox <- function(requester=FALSE, base.url = .defaultBaseUrl){
 #' }
 #' @export
 doSetSandbox <- function(sandboxToSet, requster=FALSE, base.url = .defaultBaseUrl){
-    return(NULL)
+    if(is.null(sandboxToset[['sandboxNmae']])){
+        sandboxToSet[['sandboxName']] <- getDefaultSandbox()[['sandboxName']]
+    }
+    sandboxName <- sandboxToSet[['sandboxName']]
+    if(!is.null(sandboxName)){
+        
+    } else {
+        defaultSandboxPath <- getDefaultSandboxPath()
+        if(is.null(defaultSandboxPath)){
+            
+        } else {
+            defaultSandboxPath <- getwd()
+        }
+    }
+    setSandboxReinitialize(FALSE)
+    return(newSandbox)
 }
 
 # ------------------------------------------------------------------------------
