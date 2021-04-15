@@ -884,14 +884,33 @@ doSetSandbox <- function(sandboxToSet, requster=FALSE, base.url = .defaultBaseUr
     }
     sandboxName <- sandboxToSet[['sandboxName']]
     if(!is.null(sandboxName)){
-        
+        tryCatch(
+            expr = {
+                
+            },
+            error = function(e){
+                caller <- deparse(sys.call())
+   
+            }
+        )
     } else {
         defaultSandboxPath <- getDefaultSandboxPath()
         if(is.null(defaultSandboxPath)){
-            
-        } else {
-            defaultSandboxPath <- getwd()
+            if(getNotebookIsRunning()){
+                tryCatch(
+                    expr = {
+                    
+                    },
+                    error = function(e){
+                        defaultSandboxPath <- NULL
+                        print('Warning: FileTransfer app is not available, so sandbox operations will fail')
+                    }
+                )
+            } else {
+                defaultSandboxPath <- getwd()
+            }
         }
+        newSandbox <- setCurrentSandbox(NULL, defaultSandboxPath)
     }
     setSandboxReinitialize(FALSE)
     return(newSandbox)
