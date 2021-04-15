@@ -877,6 +877,7 @@ doInitializeSandbox <- function(requester=FALSE, base.url = .defaultBaseUrl){
 #' \donttest{
 #' doSetSandbox()
 #' }
+#' @import glue
 #' @export
 doSetSandbox <- function(sandboxToSet, requster=FALSE, base.url = .defaultBaseUrl){
     if(is.null(sandboxToset[['sandboxNmae']])){
@@ -886,11 +887,16 @@ doSetSandbox <- function(sandboxToSet, requster=FALSE, base.url = .defaultBaseUr
     if(!is.null(sandboxName)){
         tryCatch(
             expr = {
-                
+                if(!requester){
+                    r <- POST(url=glue('{base.url}/commands/filetransfer/setSandbox'), body=sandboxToSet, encode="json", content_type_json())
+                    newSandbox <- setCurrentSandbox(sandboxName, fromJSON(rawToChar(r$content))$data[['sandboxPath']])
+                } else {
+                    r <- doRequestRemote("POST", glue('{base.url}/commands/filetransfer/setSandbox'), sandboxToSet, headers=list("Content-Type" = "application/json"))
+                }
             },
             error = function(e){
                 caller <- deparse(sys.call())
-   
+                message <- fromJSON(rawToChar(r$content))
             }
         )
     } else {
