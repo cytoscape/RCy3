@@ -841,7 +841,7 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
 findRemoteCytoscape<-function(){
     checkNotebookIsRunning()
     checkRunningRemote()
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl) # make sure there's a sandbox before executing a command
+    #doInitializeSandbox(requester, base.url=.defaultBaseUrl) # make sure there's a sandbox before executing a command
     if(is.null(checkRunningRemote())){
         stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
     }
