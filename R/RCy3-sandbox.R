@@ -1,13 +1,11 @@
 # ------------------------------------------------------------------------------
-defaultSandbox <<- list('sandboxName' = "testsandbox",  'copySamples' = TRUE, 'reinitialize' = TRUE) # Once a sandbox is explicitly defined, it'll override this default
-defaultSandboxPath <<- NULL
-predefinedSandboxName <<- 'default_sandbox'
-currentSandboxName <<- NULL
-currentSandboxPath <<- NULL # Resolve this by explicitly setting it or when first Cytoscape command is issued
-sandboxReinitialize <<- TRUE
-
-sandboxTemplate <- list('sandboxName' = NULL,  'copySamples' = TRUE, 'reinitialize' = TRUE)
-
+.defaultSandbox <- list('sandboxName' = "testsandbox",  'copySamples' = TRUE, 'reinitialize' = TRUE)
+.defaultSandboxPath <- NULL
+.predefinedSandboxName <- 'default_sandbox'
+.currentSandboxName <- NULL
+.currentSandboxPath <- NULL # Resolve this by explicitly setting it or when first Cytoscape command is issued
+.sandboxReinitialize <- TRUE
+.sandboxTemplate <- list('sandboxName' = NULL,  'copySamples' = TRUE, 'reinitialize' = TRUE)
 # ------------------------------------------------------------------------------
 #' @title sandboxInitializer
 #'
@@ -45,8 +43,8 @@ sandboxInitializer <- function(newSandbox=NULL, ...){
 #' }
 #' @export
 setDefaultSandbox <- function(newSandbox=NULL, ...){
-    .GlobalEnv$defaultSandbox <- sandboxInitializer(init=newSandbox)
-    return(.GlobalEnv$defaultSandbox)
+    .defaultSandbox <- sandboxInitializer(init=newSandbox)
+    return(.defaultSandbox)
 }
 
 # ------------------------------------------------------------------------------
@@ -59,7 +57,7 @@ setDefaultSandbox <- function(newSandbox=NULL, ...){
 #' }
 #' @export
 getDefaultSandbox <- function(){
-    return(.GlobalEnv$defaultSandbox)
+    return(.defaultSandbox)
 }
 
 # ------------------------------------------------------------------------------
@@ -73,8 +71,8 @@ getDefaultSandbox <- function(){
 #' }
 #' @export
 setDefaultSandboxPath <- function(newPath){
-    .GlobalEnv$defaultSandboxPath <- newPath
-    return(.GlobalEnv$defaultSandboxPath)
+    .defaultSandboxPath <- newPath
+    return(.defaultSandboxPath)
 }
 
 # ------------------------------------------------------------------------------
@@ -87,7 +85,7 @@ setDefaultSandboxPath <- function(newPath){
 #' }
 #' @export
 getDefaultSandboxPath <- function(){
-    return(.GlobalEnv$defaultSandboxPath)
+    return(.defaultSandboxPath)
 }
 
 # ------------------------------------------------------------------------------
@@ -100,7 +98,7 @@ getDefaultSandboxPath <- function(){
 #' }
 #' @export
 getCurrentSandboxName <- function(){
-    return(.GlobalEnv$currentSandboxName)
+    return(.currentSandboxName)
 }
 
 # ------------------------------------------------------------------------------
@@ -113,7 +111,7 @@ getCurrentSandboxName <- function(){
 #' }
 #' @export
 getCurrentSandboxPath <- function(){
-    return(.GlobalEnv$currentSandboxPath)
+    return(.currentSandboxPath)
 }
 
 # ------------------------------------------------------------------------------
@@ -126,7 +124,7 @@ getCurrentSandboxPath <- function(){
 #' }
 #' @export
 getCurrentSandbox <- function(){
-    currentSandbox <- list("currentSandboxName" = .GlobalEnv$currentSandboxName, "currentSandboxPath" = .GlobalEnv$currentSandboxPath)
+    currentSandbox <- list("currentSandboxName" = .currentSandboxName, "currentSandboxPath" = .currentSandboxPath)
     return(currentSandbox)
 }
 
@@ -142,8 +140,8 @@ getCurrentSandbox <- function(){
 #' }
 #' @export
 setCurrentSandbox <- function(sandboxName, sandboxPath){
-    .GlobalEnv$currentSandboxName <- sandboxName
-    .GlobalEnv$currentSandboxPath <- sandboxPath
+    .currentSandboxName <- sandboxName
+    .currentSandboxPath <- sandboxPath
     return(getCurrentSandbox())
 }
 
@@ -158,8 +156,8 @@ setCurrentSandbox <- function(sandboxName, sandboxPath){
 #' }
 #' @export
 setSandboxReinitialize <- function(doReinitialize=TRUE){
-    .GlobalEnv$sandboxReinitialize <- doReinitialize
-    return(.GlobalEnv$sandboxReinitialize)
+    .sandboxReinitialize <- doReinitialize
+    return(.sandboxReinitialize)
 }
 
 # ------------------------------------------------------------------------------
@@ -172,7 +170,7 @@ setSandboxReinitialize <- function(doReinitialize=TRUE){
 #' }
 #' @export
 getSandboxReinitialize <- function(){
-    return(.GlobalEnv$sandboxReinitialize)
+    return(.sandboxReinitialize)
 }
 
 # ------------------------------------------------------------------------------
@@ -207,10 +205,10 @@ getAbsSandboxPath <- function(fileLocation){
 #' }
 #' @export
 resetDefaultSandbox <- function(){
-    .GlobalEnv$defaultSandbox <- list()
-    .GlobalEnv$defaultSandboxPath <- NULL
+    .defaultSandbox <- list()
+    .defaultSandboxPath <- NULL
     setCurrentSandbox(NULL, NULL)
-    .GlobalEnv$sandboxReinitialize <- TRUE
+    .sandboxReinitialize <- TRUE
 }
 
 # ------------------------------------------------------------------------------
