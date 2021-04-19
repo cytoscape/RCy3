@@ -38,7 +38,7 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
     if(!is.null(sandboxName)){
         sandboxName <- trimws(sandboxName)
     }
-    defaultSandboxName <- getDefaultSandbox()['sandboxName']
+    defaultSandboxName <- getDefaultSandbox()[['sandboxName']]
     currentSandboxBeforeRemove <- getCurrentSandboxName()
     res <- sandboxOp('filetransfer removeSandbox', sandboxName, base.url=base.url)
     if(is.null(sandboxName) || sandboxName == currentSandboxBeforeRemove){
