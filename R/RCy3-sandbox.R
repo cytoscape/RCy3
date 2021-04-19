@@ -14,7 +14,7 @@ sandboxInitializer <- function(newSandbox=NULL, ...){
     } else{
         params <- newSandbox
     }
-    sandbox <- sandboxTemplate
+    sandbox <- RCy3env$.sandboxTemplate
     for (name in names(params)) {
         if(name %in% names(sandbox)){
             sandbox[name] <- params[[name]]
