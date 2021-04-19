@@ -879,7 +879,8 @@ doInitializeSandbox <- function(requester=FALSE, base.url = .defaultBaseUrl){
 #' }
 #' @importFrom glue glue
 #' @export
-doSetSandbox <- function(sandboxToSet, requester=FALSE, base.url = .defaultBaseUrl){
+doSetSandbox <- function(sandboxToSet, requester=NULL, base.url = .defaultBaseUrl){
+    requester <- .getRequester()
     if(is.null(sandboxToSet[['sandboxName']])){
         sandboxToSet[['sandboxName']] <- getDefaultSandbox()[['sandboxName']]
     }
