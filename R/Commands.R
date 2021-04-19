@@ -877,7 +877,7 @@ doInitializeSandbox <- function(requester=FALSE, base.url = .defaultBaseUrl){
 #' \donttest{
 #' doSetSandbox()
 #' }
-#' @import glue
+#' @importFrom glue glue
 #' @export
 doSetSandbox <- function(sandboxToSet, requster=FALSE, base.url = .defaultBaseUrl){
     if(is.null(sandboxToset[['sandboxNmae']])){
@@ -891,7 +891,8 @@ doSetSandbox <- function(sandboxToSet, requster=FALSE, base.url = .defaultBaseUr
                     r <- POST(url=glue('{base.url}/commands/filetransfer/setSandbox'), body=sandboxToSet, encode="json", content_type_json())
                     newSandbox <- setCurrentSandbox(sandboxName, fromJSON(rawToChar(r$content))$data[['sandboxPath']])
                 } else {
-                    r <- doRequestRemote("POST", glue('{base.url}/commands/filetransfer/setSandbox'), sandboxToSet, headers=list("Content-Type" = "application/json"))
+                    r <- doRequestRemote("POST", glue('{base.url}/commands/filetransfer/setSandbox'), qbody=sandboxToSet, headers=list("Content-Type" = "application/json"))
+                    newSandbox <- setCurrentSandbox(sandboxName, fromJSON(fromJSON(rawToChar(r$content))$text)$data[['sandboxPath']])
                 }
             },
             error = function(e){
@@ -905,7 +906,13 @@ doSetSandbox <- function(sandboxToSet, requster=FALSE, base.url = .defaultBaseUr
             if(getNotebookIsRunning()){
                 tryCatch(
                     expr = {
-                    
+                        if(!requester){
+                        r <- POST(url=glue('{base.url}/commands/filetransfer/getFileInfo'), body=list('sandboxName' = NULL,'fileName' = '.'), encode="json", content_type_json())
+                        defaultSandboxPath <- setDefaultSandboxPath(fromJSON(rawToChar(r$content))$data[['filePath']])
+                        } else {
+                            r <- doRequestRemote("POST", glue('{base.url}/commands/filetransfer/getFileInfo'), qbody=list('sandboxName' = NULL,'fileName' = '.'), headers=list("Content-Type" = "application/json"))
+                            defaultSandboxPath <- setDefaultSandboxPath(fromJSON(fromJSON(rawToChar(r$content))$text)$data[['filePath']])
+                        }
                     },
                     error = function(e){
                         defaultSandboxPath <- NULL
