@@ -4,14 +4,14 @@
 \alias{doSetSandbox}
 \title{doSetSandbox}
 \usage{
-doSetSandbox(sandboxToSet, requster = FALSE, base.url = .defaultBaseUrl)
+doSetSandbox(sandboxToSet, requester = FALSE, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{sandboxToSet}{sandbox to set}
 
-\item{requster}{requster}
-
 \item{base.url}{Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.}
+
+\item{requster}{requster}
 }
 \description{
 doSetSandbox
