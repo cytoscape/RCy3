@@ -8,6 +8,7 @@
 # I. Package Variables and Constants
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://127.0.0.1:1234/v1'
+.defaultSandbox <<- list('sandboxName' = "testsandbox",  'copySamples' = TRUE, 'reinitialize' = TRUE)
 
 # initialize jupyter.in_kernel
 IRkernel::jupyter_option_defaults
@@ -17,7 +18,6 @@ RCy3env <- new.env()
 assign(".CATCHUP_FILTER_SECS", 1, envir = RCy3env)
 assign(".MODEL_PROPAGATION_SECS", 5, envir = RCy3env)
 assign(".CATCHUP_NETWORK_SECS", 2, envir = RCy3env)
-assign("defaultSandbox", list('sandboxName' = "testsandbox",  'copySamples' = TRUE, 'reinitialize' = TRUE), envir = RCy3env)
 
 
 # ==============================================================================
