@@ -168,6 +168,7 @@ sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, 
 #' }
 #' @import glue
 #' @importFrom base64Decode RCurl
+#' @importFrom file RJSONIO
 #' @export
 sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
     if(!is.null(sourceFile)){
