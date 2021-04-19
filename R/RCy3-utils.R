@@ -17,6 +17,8 @@ RCy3env <- new.env()
 assign(".CATCHUP_FILTER_SECS", 1, envir = RCy3env)
 assign(".MODEL_PROPAGATION_SECS", 5, envir = RCy3env)
 assign(".CATCHUP_NETWORK_SECS", 2, envir = RCy3env)
+assign(".defaultSandbox", list('sandboxName' = "testsandbox",  'copySamples' = TRUE, 'reinitialize' = TRUE), envir = RCy3env)
+
 
 
 # ==============================================================================
