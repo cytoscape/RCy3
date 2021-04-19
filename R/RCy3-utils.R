@@ -8,7 +8,6 @@
 # I. Package Variables and Constants
 # ------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://127.0.0.1:1234/v1'
-.defaultSandbox <- list('sandboxName' = "testsandbox",  'copySamples' = TRUE, 'reinitialize' = TRUE)
 
 # initialize jupyter.in_kernel
 IRkernel::jupyter_option_defaults

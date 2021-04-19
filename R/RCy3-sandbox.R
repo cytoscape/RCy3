@@ -1,4 +1,5 @@
 # ------------------------------------------------------------------------------
+defaultSandbox <<- list('sandboxName' = "testsandbox",  'copySamples' = TRUE, 'reinitialize' = TRUE) # Once a sandbox is explicitly defined, it'll override this default
 defaultSandboxPath <<- NULL
 predefinedSandboxName <<- 'default_sandbox'
 currentSandboxName <<- NULL
@@ -58,7 +59,7 @@ setDefaultSandbox <- function(newSandbox=NULL, ...){
 #' }
 #' @export
 getDefaultSandbox <- function(){
-    return(.defaultSandbox)
+    return(.GlobalEnv$defaultSandbox)
 }
 
 # ------------------------------------------------------------------------------
