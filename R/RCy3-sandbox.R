@@ -1,11 +1,4 @@
 # ------------------------------------------------------------------------------
-defaultSandboxPath <<- NULL
-predefinedSandboxName <<- 'default_sandbox'
-currentSandboxName <<- NULL
-currentSandboxPath <<- NULL # Resolve this by explicitly setting it or when first Cytoscape command is issued
-sandboxReinitialize <<- TRUE
-sandboxTemplate <- list('sandboxName' = NULL,  'copySamples' = TRUE, 'reinitialize' = TRUE)
-# ------------------------------------------------------------------------------
 #' @title sandboxInitializer
 #'
 #' @description sandboxInitializer
@@ -42,8 +35,8 @@ sandboxInitializer <- function(newSandbox=NULL, ...){
 #' }
 #' @export
 setDefaultSandbox <- function(newSandbox=NULL, ...){
-    .GlobalEnv$defaultSandbox <- sandboxInitializer(init=newSandbox)
-    return(.GlobalEnv$defaultSandbox)
+    RCy3env$.defaultSandbox <- sandboxInitializer(init=newSandbox)
+    return(RCy3env$.defaultSandbox)
 }
 
 # ------------------------------------------------------------------------------
@@ -70,8 +63,8 @@ getDefaultSandbox <- function(){
 #' }
 #' @export
 setDefaultSandboxPath <- function(newPath){
-    .GlobalEnv$defaultSandboxPath <- newPath
-    return(.GlobalEnv$defaultSandboxPath)
+    RCy3env$.defaultSandboxPath <- newPath
+    return(RCy3env$.defaultSandboxPath)
 }
 
 # ------------------------------------------------------------------------------
@@ -84,7 +77,7 @@ setDefaultSandboxPath <- function(newPath){
 #' }
 #' @export
 getDefaultSandboxPath <- function(){
-    return(.GlobalEnv$defaultSandboxPath)
+    return(RCy3env$.defaultSandboxPath)
 }
 
 # ------------------------------------------------------------------------------
@@ -97,7 +90,7 @@ getDefaultSandboxPath <- function(){
 #' }
 #' @export
 getCurrentSandboxName <- function(){
-    return(.GlobalEnv$currentSandboxName)
+    return(RCy3env$.currentSandboxName)
 }
 
 # ------------------------------------------------------------------------------
@@ -110,7 +103,7 @@ getCurrentSandboxName <- function(){
 #' }
 #' @export
 getCurrentSandboxPath <- function(){
-    return(.GlobalEnv$currentSandboxPath)
+    return(RCy3env$.currentSandboxPath)
 }
 
 # ------------------------------------------------------------------------------
@@ -123,7 +116,7 @@ getCurrentSandboxPath <- function(){
 #' }
 #' @export
 getCurrentSandbox <- function(){
-    currentSandbox <- list("currentSandboxName" = .GlobalEnv$currentSandboxName, "currentSandboxPath" = .GlobalEnv$currentSandboxPath)
+    currentSandbox <- list("currentSandboxName" = RCy3env$.currentSandboxName, "currentSandboxPath" = RCy3env$.currentSandboxPath)
     return(currentSandbox)
 }
 
@@ -139,8 +132,8 @@ getCurrentSandbox <- function(){
 #' }
 #' @export
 setCurrentSandbox <- function(sandboxName, sandboxPath){
-    .GlobalEnv$currentSandboxName <- sandboxName
-    .GlobalEnv$currentSandboxPath <- sandboxPath
+    RCy3env$.currentSandboxName <- sandboxName
+    RCy3env$.currentSandboxPath <- sandboxPath
     return(getCurrentSandbox())
 }
 
@@ -155,8 +148,8 @@ setCurrentSandbox <- function(sandboxName, sandboxPath){
 #' }
 #' @export
 setSandboxReinitialize <- function(doReinitialize=TRUE){
-    .GlobalEnv$sandboxReinitialize <- doReinitialize
-    return(.GlobalEnv$sandboxReinitialize)
+    RCy3env$.sandboxReinitialize <- doReinitialize
+    return(RCy3env$.sandboxReinitialize)
 }
 
 # ------------------------------------------------------------------------------
@@ -169,7 +162,7 @@ setSandboxReinitialize <- function(doReinitialize=TRUE){
 #' }
 #' @export
 getSandboxReinitialize <- function(){
-    return(.GlobalEnv$sandboxReinitialize)
+    return(RCy3env$.sandboxReinitialize)
 }
 
 # ------------------------------------------------------------------------------
@@ -204,10 +197,10 @@ getAbsSandboxPath <- function(fileLocation){
 #' }
 #' @export
 resetDefaultSandbox <- function(){
-    .GlobalEnv$defaultSandbox <- list()
-    .GlobalEnv$defaultSandboxPath <- NULL
+    RCy3env$.defaultSandbox <- list()
+    RCy3env$.defaultSandboxPath <- NULL
     setCurrentSandbox(NULL, NULL)
-    .GlobalEnv$sandboxReinitialize <- TRUE
+    RCy3env$.sandboxReinitialize <- TRUE
 }
 
 # ------------------------------------------------------------------------------
