@@ -109,7 +109,7 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
         expr = {
             finfo = file.info(sourceFile)
             read.filename <- file(sourceFile, "rb")
-            fileContent <- readChar(read.filename, file.info('test.csv')$size)
+            fileContent <- readChar(read.filename, file.info(sourceFile)$size)
             fileContent64 <- base64Encode(fileContent)
             close(read.filename)
         },
@@ -167,6 +167,7 @@ sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, 
 #' sandboxGetFrom()
 #' }
 #' @import glue
+#' @importFrom base64Decode RCurl
 #' @export
 sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
     if(!is.null(sourceFile)){
