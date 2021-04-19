@@ -16,11 +16,11 @@
 sandboxSet <- function(sandboxName, copySamples=TRUE, reinitialize=TRUE, base.url=.defaultBaseUrl){
     if(!is.null(sandboxName)){
         sandboxName = trimws(sandboxName)
-        box <- doSetSandbox(list('sandboxName'=sandboxName, 'copySamples'=copySamples, 'reinitialize'=reinitialize), base.url=base.url)
-        boxName <- box[1]
-        boxPath <- box[2]
-        return(boxPath)
     }
+    box <- doSetSandbox(list('sandboxName'=sandboxName, 'copySamples'=copySamples, 'reinitialize'=reinitialize), base.url=base.url)
+    boxName <- box[1]
+    boxPath <- box[2]
+    return(boxPath)
 }
 
 # ------------------------------------------------------------------------------
