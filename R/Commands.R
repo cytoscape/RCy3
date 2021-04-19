@@ -898,7 +898,8 @@ doSetSandbox <- function(sandboxToSet, requester=NULL, base.url = .defaultBaseUr
             },
             error = function(e){
                 caller <- deparse(sys.call())
-                message <- fromJSON(rawToChar(r$content))
+                message <- fromJSON(rawToChar(r$content))[['errors']]
+                stop(message, caller)
             }
         )
     } else {
