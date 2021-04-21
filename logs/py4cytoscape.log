@@ -1,0 +1,5 @@
+2021-04-21 01:08:55,184 [DEBUG] py4...: HTTP POST(http://127.0.0.1:1234/v1/commands/filetransfer/setSandbox), json: {'sandboxName': 'Yihang', 'copySamples': True, 'reinitialize': True}
+2021-04-21 01:08:55,376 [DEBUG] py4...: OK[200], content: {
+ "data": {"sandboxPath":"/Users/yxin/CytoscapeConfiguration/filetransfer/Yihang"},
+ "errors":[]
+}

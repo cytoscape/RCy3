@@ -196,7 +196,7 @@ sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxNam
             print(e)
         }
     )
-    within(res, rm(fileBase64))
+    res[4] <- NULL
     return(res)
 }
 
