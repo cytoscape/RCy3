@@ -149,7 +149,7 @@ sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, 
     if(is.null(destFile)){
         stop('Destination file cannot be null')
     }
-    res <- sandboxOp(glue('filetransfer urlToSandbox overwrite={overwrite} sourceURL={sourceURL}'), sandboxName, fileName=destFile, base.url=basr.url)
+    res <- sandboxOp(glue('filetransfer urlToSandbox overwrite={overwrite} sourceURL={sourceURL}'), sandboxName, fileName=destFile, base.url=base.url)
     return(res)
 }
 
