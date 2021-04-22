@@ -197,7 +197,7 @@ sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxNam
             print(e)
         }
     )
-    #res[['fileBase64']] <- NULL
+    res[['fileBase64']] <- NULL
     return(res)
 }
 
