@@ -123,7 +123,7 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
         head <- dirname(sourceFile)
         destFile <- basename(sourceFile)
     }
-    res <- sandboxOp(glue('filetransfer toSandbox fileByteCount={finfo$size} overwrite={overwrite} fileBase64={fileContent64}'), sandboxName, fileName=destFile, base.url=base.url)
+    res <- sandboxOp(glue('filetransfer toSandbox fileByteCount={finfo$size} overwrite={overwrite} fileBase64="{fileContent64}"'), sandboxName, fileName=destFile, base.url=base.url)
     return(res)
 }
 
