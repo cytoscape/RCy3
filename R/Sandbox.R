@@ -103,6 +103,7 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
 #' }
 #' @import glue
 #' @import RCurl
+#' @importFrom base64url base64_urlencode
 #' @export
 sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
     tryCatch(
@@ -110,7 +111,7 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
             finfo = file.info(sourceFile)
             read.filename <- file(sourceFile, "rb")
             fileContent <- readChar(read.filename, file.info(sourceFile)$size)
-            fileContent64 <- base64Encode(fileContent)
+            fileContent64 <- base64_urlencode(fileContent)
             close(read.filename)
         },
         error = function(e){
@@ -122,7 +123,7 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
         head <- dirname(sourceFile)
         destFile <- basename(sourceFile)
     }
-    res <- sandboxOp(glue('filetransfer toSandbox fileByteCount={finfo$size} overwrite={overwrite}, fileBase64="{fileContent64}"'), sandboxName, fileName=destFile, base.url=base.url)
+    res <- sandboxOp(glue('filetransfer toSandbox fileByteCount={finfo$size} overwrite={overwrite} fileBase64="{fileContent64}"'), sandboxName, fileName=destFile, base.url=base.url)
     return(res)
 }
 
@@ -196,7 +197,7 @@ sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxNam
             print(e)
         }
     )
-    res[4] <- NULL
+    #res[['fileBase64']] <- NULL
     return(res)
 }
 
