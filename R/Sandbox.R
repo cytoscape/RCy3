@@ -123,7 +123,7 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
         head <- dirname(sourceFile)
         destFile <- basename(sourceFile)
     }
-    res <- sandboxOp(glue('filetransfer toSandbox fileByteCount={finfo$size} overwrite={overwrite} fileBase64="{fileContent64}"'), sandboxName, fileName=destFile, base.url=base.url)
+    res <- sandboxOp(glue('filetransfer toSandbox fileByteCount={nchar(fileContent)} overwrite={overwrite}, fileBase64="{fileContent64}"'), sandboxName, fileName=destFile, base.url=base.url)
     return(res)
 }
 
@@ -181,7 +181,7 @@ sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxNam
         destFile <- basename(sourceFile)
     }
     if(!overwrite && file.exists(destFile)){
-        errorMessage <- "File {destFile} already exists"
+        errorMessage <- "File already exists"
         stop(glue(errorMessage))
     }
     res <- sandboxOp('filetransfer fromSandbox', sandboxName, fileName=sourceFile, base.url=base.url)
