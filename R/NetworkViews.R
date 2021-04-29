@@ -174,7 +174,7 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
     if (!grepl(ext,filename))
         filename <- paste0(filename,".",tolower(type))
     if(!isAbsolutePath(filename))
-        filename <- paste(getwd(),filename,sep="/")
+        filename <- getAbsSandboxPath(filename)
     if (file.exists(filename))
         warning("This file already exists. A Cytoscape popup 
                 will be generated to confirm overwrite.",

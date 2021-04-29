@@ -616,7 +616,7 @@ commandRunFile <- function(file, args=NULL, base.url = .defaultBaseUrl){
     if(!is.null(args))
         args.str <- paste0(' args="',args,'"')
     
-    commandsPOST(paste0('command run',args.str,' file="',file,'"'),
+    commandsPOST(paste0('command run',args.str,' file="',getAbsSandboxPath(file),'"'),
                  base.url = base.url)
 }
 

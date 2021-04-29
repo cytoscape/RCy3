@@ -275,7 +275,7 @@ exportNetwork <- function (filename=NULL, type="SIF",
     if (!grepl(ext,filename))
         filename <- paste0(filename,".",tolower(type))
     if(!isAbsolutePath(filename))
-        filename <- paste(getwd(),filename,sep="/")
+        filename <- getAbsSandboxPath(filename)
     if (file.exists(filename))
         warning("This file already exists. A Cytoscape popup 
                 will be generated to confirm overwrite.",
@@ -1022,7 +1022,7 @@ importNetworkFromFile <- function(file=NULL, base.url=.defaultBaseUrl){
     if(is.null(file))
         file <- system.file("extdata","galFiltered.sif",package="RCy3")
     else if(!isAbsolutePath(file))
-        file = paste(getwd(),file,sep='/')
+        file = getAbsSandboxPath(file)
     
     res <- commandsPOST(paste('network load file file',file,sep = "="))
     Sys.sleep(get(".CATCHUP_NETWORK_SECS",envir = RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX"

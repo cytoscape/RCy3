@@ -150,7 +150,7 @@ exportVisualStyles<-function(filename=NULL, type="XML", styles=NULL, base.url=.d
     if (!grepl(ext,filename))
         filename <- paste0(filename,".",tolower(type))
     if(!isAbsolutePath(filename))
-        filename <- paste(getwd(),filename,sep="/")
+        filename <- getAbsSandboxPath(filename)
     if (file.exists(filename))
         warning("This file already exists. A Cytoscape popup 
                 will be generated to confirm overwrite.",
@@ -183,7 +183,7 @@ exportVisualStyles<-function(filename=NULL, type="XML", styles=NULL, base.url=.d
 #' @export
 importVisualStyles<-function(filename="styles.xml", base.url=.defaultBaseUrl){
     if(!isAbsolutePath(filename))
-        filename = paste(getwd(),filename,sep='/')
+        filename = getAbsSandboxPath(filename)
     
     cmd.string <- paste0('vizmap load file',' file="',filename,'"')
     commandsPOST(cmd.string, base.url = base.url)

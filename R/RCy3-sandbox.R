@@ -177,8 +177,8 @@ getSandboxReinitialize <- function(){
 #' @export
 getAbsSandboxPath <- function(fileLocation){
     box <- getCurrentSandbox()
-    boxName <- box[1]
-    boxPath <- box[2]
+    boxName <- box[[1]]
+    boxPath <- box[[2]]
     if (is.null(boxName)){
         return(normalizePath(fileLocation))
     } else if (!is.null(boxName) && !is.null(boxPath)){
