@@ -2,6 +2,8 @@
 #' @title sandboxInitializer
 #'
 #' @description sandboxInitializer
+#' @param newSandbox newSandbox
+#' @param ... ...
 #' @return sandbox
 #' @examples \donttest{
 #' sandboxInitializer()
@@ -29,6 +31,8 @@ sandboxInitializer <- function(newSandbox=NULL, ...){
 #' @title setDefaultSandbox
 #'
 #' @description setDefaultSandbox
+#' @param newSandbox newSandbox
+#' @param ... ...
 #' @return default sandbox
 #' @examples \donttest{
 #' setDefaultSandbox()
