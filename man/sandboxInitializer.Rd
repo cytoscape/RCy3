@@ -6,6 +6,11 @@
 \usage{
 sandboxInitializer(newSandbox = NULL, ...)
 }
+\arguments{
+\item{newSandbox}{newSandbox}
+
+\item{...}{...}
+}
 \value{
 sandbox
 }

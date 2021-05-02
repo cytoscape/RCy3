@@ -6,6 +6,11 @@
 \usage{
 setDefaultSandbox(newSandbox = NULL, ...)
 }
+\arguments{
+\item{newSandbox}{newSandbox}
+
+\item{...}{...}
+}
 \value{
 default sandbox
 }
