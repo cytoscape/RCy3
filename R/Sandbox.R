@@ -169,6 +169,7 @@ sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, 
 #' }
 #' @import glue
 #' @import RCurl
+#' @import base64enc
 #' @export
 sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
     if(!is.null(sourceFile)){
@@ -185,12 +186,12 @@ sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxNam
         stop(glue(errorMessage))
     }
     res <- sandboxOp('filetransfer fromSandbox', sandboxName, fileName=sourceFile, base.url=base.url)
-    fileContent <- base64Decode(res$fileBase64)
+    fileContent <- res$fileBase64
     tryCatch(
         expr = {
-            write.filename <- file(destFile, "wb")
-            writeChar(fileContent, write.filename)
-            close(write.filename)
+            outconn <- file(destFile,"wb")
+            base64decode(what=fileContent, output=outconn)
+            close(outconn)
         },
         error = function(e){
             message(glue('Could not write to file {destFile}'))
