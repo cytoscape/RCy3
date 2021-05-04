@@ -25,7 +25,6 @@ assign(".currentSandboxPath", NULL, envir = RCy3env)
 assign(".sandboxReinitialize", TRUE, envir = RCy3env)
 assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 'reinitialize' = TRUE), envir = RCy3env)
 
-
 # ==============================================================================
 # I. Package Utility Functions
 # ------------------------------------------------------------------------------
