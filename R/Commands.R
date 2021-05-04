@@ -943,7 +943,7 @@ doSetSandbox <- function(sandboxToSet, requester=NULL, base.url = .defaultBaseUr
     default <- getDefaultSandbox()
     if(length(default) == 0){
         if(getNotebookIsRunning() || runningRemoteCheck()){
-            default <- sandboxInitializer(list(sandboxName=predefinedSandboxName))
+            default <- sandboxInitializer(list(sandboxName=.predefinedSandboxName))
         } else {
             default <- sandboxInitializer(list(sandboxName=NULL))
         }
