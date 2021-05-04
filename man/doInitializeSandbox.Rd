@@ -4,7 +4,7 @@
 \alias{doInitializeSandbox}
 \title{doInitializeSandbox}
 \usage{
-doInitializeSandbox(requester = FALSE, base.url = .defaultBaseUrl)
+doInitializeSandbox(requester = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{requester}{requester}

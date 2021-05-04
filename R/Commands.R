@@ -860,9 +860,9 @@ findRemoteCytoscape<-function(){
 #' doInitializeSandbox()
 #' }
 #' @export
-doInitializeSandbox <- function(requester=FALSE, base.url = .defaultBaseUrl){
+doInitializeSandbox <- function(requester=NULL, base.url = .defaultBaseUrl){
     if(getSandboxReinitialize()){
-        return(doSetSandbox(getDefaultSandbox(), requester, base.url = base.url))
+        return(doSetSandbox(.getDefaultSandbox(), requester, base.url = base.url))
     } else {
         return(getCurrentSandbox())
     }
