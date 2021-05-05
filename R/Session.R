@@ -52,7 +52,7 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
     else if(startsWith(file.location,'http'))
         type = 'url'
     else if(!isAbsolutePath(file.location))
-        file.location = paste(getwd(),file.location,sep='/')
+        file.location = getAbsSandboxPath(file.location)
         
     message(sprintf("Opening %s...",file.location))
     commandsPOST(paste0('session open ',type,'="',file.location,'"'),base.url=base.url)
@@ -93,7 +93,7 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
         if (!grepl(ext,filename))
             filename <- paste0(filename,".cys")
         if(!isAbsolutePath(filename))
-            filename <- paste(getwd(),filename,sep="/")
+            filename <- getAbsSandboxPath(filename)
         if (file.exists(filename))
             warning("This file has been overwritten.",
                     call. = FALSE,

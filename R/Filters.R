@@ -288,7 +288,7 @@ exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl){
     if (!grepl(ext,filename))
         filename <- paste0(filename,".json")
     if(!isAbsolutePath(filename))
-        filename <- paste(getwd(),filename,sep="/")
+        filename <- getAbsSandboxPath(filename)
     if (file.exists(filename))
         warning("This file has been overwritten.",
                 call. = FALSE,
@@ -314,7 +314,7 @@ exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl){
 #' @export
 importFilters<-function(filename , base.url = .defaultBaseUrl){
     if(!isAbsolutePath(filename))
-        filename = paste(getwd(),filename,sep='/')
+        filename = getAbsSandboxPath(filename)
     
     res <- commandsGET(paste0('filter import file="',filename,'"'),base.url)
     Sys.sleep(get(".CATCHUP_FILTER_SECS",envir = RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX" 

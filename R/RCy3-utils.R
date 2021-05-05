@@ -17,6 +17,13 @@ RCy3env <- new.env()
 assign(".CATCHUP_FILTER_SECS", 1, envir = RCy3env)
 assign(".MODEL_PROPAGATION_SECS", 5, envir = RCy3env)
 assign(".CATCHUP_NETWORK_SECS", 2, envir = RCy3env)
+assign(".defaultSandbox", list(), envir = RCy3env)
+assign(".defaultSandboxPath", NULL, envir = RCy3env)
+assign(".predefinedSandboxName", 'default_sandbox', envir = RCy3env)
+assign(".currentSandboxName", NULL, envir = RCy3env)
+assign(".currentSandboxPath", NULL, envir = RCy3env)
+assign(".sandboxReinitialize", TRUE, envir = RCy3env)
+assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 'reinitialize' = TRUE), envir = RCy3env)
 
 # ==============================================================================
 # I. Package Utility Functions
