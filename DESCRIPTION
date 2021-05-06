@@ -17,7 +17,7 @@ Authors@R: c(person("Alex", "Pico", role = c("aut","cre"),
              person("Yihang", "Xin", role = "ctb")
           )
 Imports: httr, methods, RJSONIO, XML, utils, BiocGenerics, igraph, stats, graph, R.utils, dplR, uchardet, IRkernel, glue, RCurl, base64url, base64enc
-Suggests: knitr
+Suggests: rmarkdown, knitr
 SystemRequirements: Cytoscape (>= 3.7.1), CyREST (>= 3.8.0)
 Description: Vizualize, analyze and explore networks using Cytoscape via R.
 License: MIT + file LICENSE
