@@ -1,6 +1,8 @@
 # Welcome to RCy3: 2.0 and Beyond
 [![Travis-CI Build Status](https://travis-ci.org/cytoscape/RCy3.svg?branch=master)](https://travis-ci.org/cytoscape/RCy3)
 
+[![BioC Build Status](http://bioconductor.org/shields/build/devel/bioc/RCy3.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/RCy3/)
+
 Building upon the phenominal success of RCytoscape and RCy3, Cytoscape is adopting 
 this project to provide a robust R package for the rapidly evolving Cytoscape 
 ecosystem. We are beginning with a major refactor of RCy3 that includes:
