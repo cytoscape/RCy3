@@ -31,11 +31,10 @@
 #' }
 #' @importFrom utils browseURL
 cyrestAPI<-function(base.url=.defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
     if(!findRemoteCytoscape()){
     browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/swagger.json#/',sep=""))
     } else {
-        doRequestRemote("webbrowser", paste(.defaultBaseUrl, '/swaggerUI/swagger-ui/index.html?url=',.defaultBaseUrl,'/swagger.json#/',sep=""))
+        doRequestRemote("webbrowser", paste(base.url, '/swaggerUI/swagger-ui/index.html?url=',base.url,'/swagger.json#/',sep=""))
     }
 }
 
@@ -59,7 +58,7 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 #' @importFrom utils URLencode
 #' @export
 cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
+    doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         q.url <- paste(base.url, operation, sep="/")
         if(!is.null(parameters)){
@@ -82,7 +81,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
             invisible(res)
         }
     } else {
-        q.url <- paste(.defaultBaseUrl, .pathURLencode(operation), sep="/")
+        q.url <- paste(base.url, .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
@@ -121,7 +120,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' @importFrom utils URLencode
 #' @export
 cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
+    doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         q.url <- paste(base.url, operation, sep="/")
         if(!is.null(parameters)){
@@ -146,9 +145,9 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         }
     } else {
         if(!is.null(operation)){
-            q.url <- paste(.defaultBaseUrl, .pathURLencode(operation), sep="/")
+            q.url <- paste(base.url, .pathURLencode(operation), sep="/")
         } else {
-            q.url <- paste(.defaultBaseUrl)
+            q.url <- paste(base.url)
         }
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
@@ -189,7 +188,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' @importFrom utils URLencode
 #' @export
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
+    doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         q.url <- paste(base.url, operation, sep="/")
         if(!is.null(parameters)){
@@ -213,7 +212,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
             invisible(res)
         }
     } else {
-        q.url <- paste(.defaultBaseUrl, .pathURLencode(operation), sep="/")
+        q.url <- paste(base.url, .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
@@ -254,7 +253,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' @importFrom utils URLencode
 #' @export
 cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
+    doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         q.url <- paste(base.url, operation, sep="/")
         if(!is.null(parameters)){
@@ -278,7 +277,7 @@ cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBa
             invisible(res)
         }
     } else {
-        q.url <- paste(.defaultBaseUrl, .pathURLencode(operation), sep="/")
+        q.url <- paste(base.url, .pathURLencode(operation), sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
             q.url <- paste(q.url, q.params, sep="?")
@@ -316,7 +315,6 @@ cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBa
 #' }
 #' @importFrom utils browseURL
 commandsAPI<-function(base.url=.defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
     browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/commands/swagger.json#/',sep=""))
 }
 
@@ -343,7 +341,7 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' @importFrom httr GET
 #' @export
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
+    doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         q.url <- .command2getQuery(cmd.string,base.url)
         tryCatch(
@@ -368,7 +366,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
             invisible(res.list)
         }
     } else {
-        q.url <- .command2getQuery(cmd.string, .defaultBaseUrl)
+        q.url <- .command2getQuery(cmd.string, base.url)
         res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
         res.html = htmlParse(rawToChar(res$content), asText=TRUE)
         res.elem = xpathSApply(res.html, "//p", xmlValue)
@@ -413,7 +411,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 #' @importFrom utils head tail
 #' @export
 commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
+    doInitializeSandbox(requester, base.url=base.url)
     s=sub('help *','',cmd.string)
     if(!findRemoteCytoscape()){
         q.url <- .command2getQuery(s,base.url)
@@ -432,7 +430,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
         print(head(res.list,1))
         vapply(tail(res.list,-1), trimws, character(1), USE.NAMES = FALSE)
     } else {
-        q.url <- .command2getQuery(s, .defaultBaseUrl)
+        q.url <- .command2getQuery(s, base.url)
         res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
         res.html = htmlParse(rawToChar(res$content), asText=TRUE)
         res.elem = xpathSApply(res.html, "//p", xmlValue)
@@ -468,7 +466,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' @importFrom httr POST content_type_json
 #' @export
 commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
+    doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         post.url = .command2postQueryUrl(cmd.string,base.url)
         post.body = .command2postQueryBody(cmd.string)
@@ -489,7 +487,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
             invisible(res)
         }
     } else {
-        post.url = .command2postQueryUrl(cmd.string, .defaultBaseUrl)
+        post.url = .command2postQueryUrl(cmd.string, base.url)
         post.body = .command2postQueryBody(cmd.string)
         post.body = fromJSON(post.body)
         res <- doRequestRemote("POST", post.url, post.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
@@ -525,7 +523,6 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
 #' }
 #' @export
 commandsRun<-function(cmd.string, base.url = .defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
     commandsGET(cmd.string,base.url)
 }
 
@@ -545,7 +542,6 @@ commandsRun<-function(cmd.string, base.url = .defaultBaseUrl){
 #' }
 #' @export
 commandEcho <- function(variable.name="*", base.url = .defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
     commandsPOST(paste0('command echo variableName="',variable.name,'"'),
                  base.url = base.url)
 }
@@ -565,7 +561,6 @@ commandEcho <- function(variable.name="*", base.url = .defaultBaseUrl){
 #' }
 #' @export
 commandOpenDialog <- function(base.url = .defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
     commandsPOST('command open dialog',
                  base.url = base.url)
 }
@@ -585,7 +580,6 @@ commandOpenDialog <- function(base.url = .defaultBaseUrl){
 #' }
 #' @export
 commandPause <- function(message="", base.url = .defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
     commandsPOST(paste0('command pause message="',message,'"'),
                  base.url = base.url)
 }
@@ -604,7 +598,6 @@ commandPause <- function(message="", base.url = .defaultBaseUrl){
 #' }
 #' @export
 commandQuit <- function(base.url = .defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
     commandsPOST('command quit',
                  base.url = base.url)
 }
@@ -626,7 +619,6 @@ commandQuit <- function(base.url = .defaultBaseUrl){
 #' }
 #' @export
 commandRunFile <- function(file, args=NULL, base.url = .defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
     args.str <- ""
     if(!is.null(args))
         args.str <- paste0(' args="',args,'"')
@@ -648,7 +640,6 @@ commandRunFile <- function(file, args=NULL, base.url = .defaultBaseUrl){
 #' }
 #' @export
 commandSleep <- function(duration=NULL, base.url = .defaultBaseUrl){
-    doInitializeSandbox(requester, base.url=.defaultBaseUrl)
     dur.str <- ""
     if(!is.null(duration))
         dur.str <- paste0(' duration="',duration,'"')
