@@ -39,7 +39,7 @@ sandboxInitializer <- function(newSandbox=NULL, ...){
 #' }
 #' @export
 setDefaultSandbox <- function(newSandbox=NULL, ...){
-    RCy3env$.defaultSandbox <- sandboxInitializer(init=newSandbox)
+    RCy3env$.defaultSandbox <- sandboxInitializer(newSandbox)
     return(RCy3env$.defaultSandbox)
 }
 
