@@ -146,7 +146,11 @@ cytoscapeMemoryStatus<-function(base.url=.defaultBaseUrl) {
 #' @export
 cytoscapeFreeMemory<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url, 'gc', sep="/")
-              res <- GET(conn.str)
+              if(!findRemoteCytoscape()){
+                    res <- GET(conn.str)
+              } else {
+                    res <- doRequestRemote("GET", conn.str)
+              }
               if(res$status_code == 204) {
                   return(message("Unused memory freed up."))
               } else {
