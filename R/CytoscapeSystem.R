@@ -143,20 +143,27 @@ cytoscapeMemoryStatus<-function(base.url=.defaultBaseUrl) {
 #' cytoscapeFreeMemory()
 #' # [1] "Unused memory freed up."
 #' }
+#' @importFrom RJSONIO fromJSON
 #' @export
 cytoscapeFreeMemory<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url, 'gc', sep="/")
               if(!findRemoteCytoscape()){
-                    res <- GET(conn.str)
+                res <- GET(conn.str)
+                if(res$status_code == 204) {
+                    return(message("Unused memory freed up."))
+                } else {
+                    message(sprintf('CyREST connection problem. RCy3 can not continue! '), stderr())
+                    stop()
+                }
               } else {
-                    res <- doRequestRemote("GET", conn.str)
+                  res <- doRequestRemote("GET", conn.str)
+                  if(fromJSON(rawToChar(r$content))$status == 204) {
+                      return(message("Unused memory freed up."))
+                  } else {
+                      message(sprintf('CyREST connection problem. RCy3 can not continue! '), stderr())
+                      stop()
+                  }
               }
-              if(res$status_code == 204) {
-                  return(message("Unused memory freed up."))
-              } else {
-                  message(sprintf('CyREST connection problem. RCy3 can not continue! '), stderr())
-                  stop()
-              }
-          }
+}
 
 
