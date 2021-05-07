@@ -157,7 +157,7 @@ cytoscapeFreeMemory<-function(base.url=.defaultBaseUrl) {
                 }
               } else {
                   res <- doRequestRemote("GET", conn.str)
-                  if(fromJSON(rawToChar(r$content))$status == 204) {
+                  if(fromJSON(rawToChar(res$content))$status == 204) {
                       return(message("Unused memory freed up."))
                   } else {
                       message(sprintf('CyREST connection problem. RCy3 can not continue! '), stderr())
