@@ -85,8 +85,13 @@ cytoscapeVersionInfo<-function(base.url=.defaultBaseUrl) {
 #' @export
 cytoscapeApiVersions<-function(base.url=.defaultBaseUrl) {
     uri <- strsplit(base.url,'/v')[[1]][1]
-    res <- GET(uri)
-    available.api.versions <- fromJSON(rawToChar(res$content))$availableApiVersion
+    if(!findRemoteCytoscape()){
+        res <- GET(uri)
+        available.api.versions <- fromJSON(rawToChar(res$content))$availableApiVersion
+    } else {
+        res <- doRequestRemote("GET", uri)
+        available.api.versions <- fromJSON(fromJSON(rawToChar(res$content))$text)$availableApiVersions
+    }
     return(available.api.versions)
 }
 
