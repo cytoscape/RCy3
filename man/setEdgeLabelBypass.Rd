@@ -12,7 +12,7 @@ setEdgeLabelBypass(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names or SUIDs}
 
 \item{new.labels}{List of labels, or single value}
 

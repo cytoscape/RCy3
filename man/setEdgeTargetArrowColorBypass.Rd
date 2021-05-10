@@ -12,7 +12,7 @@ setEdgeTargetArrowColorBypass(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names or SUIDs}
 
 \item{new.colors}{List of hex colors, or single value}
 

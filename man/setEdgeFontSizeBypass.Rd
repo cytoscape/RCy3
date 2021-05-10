@@ -12,7 +12,7 @@ setEdgeFontSizeBypass(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names or SUIDs}
 
 \item{new.sizes}{List of size values, or single value}
 

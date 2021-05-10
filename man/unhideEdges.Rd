@@ -7,7 +7,7 @@
 unhideEdges(edge.names, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names or SUIDs}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}

@@ -7,7 +7,7 @@
 selectAllNodes(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{network}{name or suid of the network into which you want to select; 
+\item{network}{(optional) Name or SUID of the network into which you want to select; 
 default is "current" network}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,

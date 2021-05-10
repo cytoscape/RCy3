@@ -12,7 +12,7 @@ setNodeFontSizeBypass(
 )
 }
 \arguments{
-\item{node.names}{List of node names}
+\item{node.names}{List of node names or SUIDs}
 
 \item{new.sizes}{List of size values, or single value}
 

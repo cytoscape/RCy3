@@ -12,8 +12,8 @@ clearEdgePropertyBypass(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names. Pending CyREST updates, if set to 
-'all', then the property is cleared for all edges.}
+\item{edge.names}{List of edge names or SUIDs. Pending CyREST updates, 
+if set to 'all', then the property is cleared for all edges.}
 
 \item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}
 

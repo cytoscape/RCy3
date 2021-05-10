@@ -12,7 +12,7 @@ setNodeWidthBypass(
 )
 }
 \arguments{
-\item{node.names}{List of node names}
+\item{node.names}{List of node names or SUIDs}
 
 \item{new.widths}{List of width values, or single value}
 

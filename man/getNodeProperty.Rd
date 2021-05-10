@@ -12,7 +12,8 @@ getNodeProperty(
 )
 }
 \arguments{
-\item{node.names}{List of node names. Default is NULL for all nodes.}
+\item{node.names}{List of node names or SUIDs. Default is NULL for all 
+nodes.}
 
 \item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}
 

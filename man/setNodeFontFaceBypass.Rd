@@ -12,7 +12,7 @@ setNodeFontFaceBypass(
 )
 }
 \arguments{
-\item{node.names}{List of node names}
+\item{node.names}{List of node names or SUIDs}
 
 \item{new.fonts}{List of font faces, or single value}
 

@@ -13,7 +13,8 @@ addCyEdges(
 )
 }
 \arguments{
-\item{source.target.list}{A \code{list} (or \code{list of lists}) of source and target node pairs}
+\item{source.target.list}{A \code{list} (or \code{list of lists}) of source 
+and target node name or SUID pairs}
 
 \item{edgeType}{The type of interaction. Default is 'interacts with'.}
 

@@ -12,7 +12,7 @@ setEdgeLineWidthBypass(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names or SUIDs}
 
 \item{new.widths}{List of width values, or single value}
 

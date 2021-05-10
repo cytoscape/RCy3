@@ -12,7 +12,7 @@ clearNodePropertyBypass(
 )
 }
 \arguments{
-\item{node.names}{List of node names. Pending CyREST updates, if set to 
+\item{node.names}{List of node names or SUIDs. Pending CyREST updates, if set to 
 'all', then the property is cleared for all nodes.}
 
 \item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}

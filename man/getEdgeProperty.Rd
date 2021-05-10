@@ -12,7 +12,7 @@ getEdgeProperty(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names. Default is NULL for all edges.}
+\item{edge.names}{List of edge names or SUIDs. Default is NULL for all edges.}
 
 \item{visual.property}{Name of a visual property. See \link{getVisualPropertyNames}.}
 

@@ -12,7 +12,7 @@ setEdgeFontFaceBypass(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names or SUIDs}
 
 \item{new.fonts}{List of font faces, or single value}
 

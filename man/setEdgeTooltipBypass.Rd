@@ -12,7 +12,7 @@ setEdgeTooltipBypass(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names or SUIDs}
 
 \item{new.values}{List of tooltip values, or single value}
 

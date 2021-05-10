@@ -12,7 +12,7 @@ setEdgeOpacityBypass(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names or SUIDs}
 
 \item{new.values}{List of values to set, or single value}
 

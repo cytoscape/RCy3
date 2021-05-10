@@ -12,7 +12,7 @@ setEdgeSourceArrowShapeBypass(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names or SUIDs}
 
 \item{new.shapes}{List of shapes, or single value. See \link{getArrowShapes}.}
 

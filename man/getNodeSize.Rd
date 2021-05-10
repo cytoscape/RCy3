@@ -7,7 +7,7 @@
 getNodeSize(node.names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{node.names}{List of node names. Default is NULL for all nodes.}
+\item{node.names}{List of node names or SUIDs. Default is NULL for all nodes.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}

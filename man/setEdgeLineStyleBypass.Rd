@@ -12,7 +12,7 @@ setEdgeLineStyleBypass(
 )
 }
 \arguments{
-\item{edge.names}{List of edge names}
+\item{edge.names}{List of edge names or SUIDs}
 
 \item{new.styles}{List of style values, or single value}
 

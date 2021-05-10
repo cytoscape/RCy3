@@ -12,7 +12,7 @@ getFirstNeighbors(
 )
 }
 \arguments{
-\item{node.names}{A \code{list} of node names from the \code{name} column 
+\item{node.names}{A \code{list} of SUIDs or names from the \code{name} column 
 of the \code{node table}. Default is currently selected nodes.}
 
 \item{as.nested.list}{\code{logical} Whether to return lists of neighbors per query node}
@@ -27,7 +27,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 A list of unique node names, optionally nested per query node name.
 }
 \description{
-Returns a non-redundan list of first
+Returns a non-redundant list of first
 neighbors of the supplied list of nodes or current node selection.
 }
 \examples{

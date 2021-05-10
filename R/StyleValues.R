@@ -10,7 +10,8 @@
 #' @title Get Node Property Values
 #'
 #' @description Get values for any node property of the specified nodes.
-#' @param node.names List of node names. Default is NULL for all nodes.
+#' @param node.names List of node names or SUIDs. Default is NULL for all 
+#' nodes.
 #' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -70,7 +71,7 @@ getNodeProperty <- function(node.names = NULL,
 #' @title Get Edge Property Values
 #'
 #' @description Get values for any edge property of the specified edges.
-#' @param edge.names List of edge names. Default is NULL for all edges.
+#' @param edge.names List of edge names or SUIDs. Default is NULL for all edges.
 #' @param visual.property Name of a visual property. See \link{getVisualPropertyNames}.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
@@ -170,7 +171,7 @@ getNetworkProperty <- function(visual.property,
 #' @title Get Node Color
 #'
 #' @description Retrieve the actual fill color of specified nodes.
-#' @param node.names List of node names. Default is NULL for all nodes.
+#' @param node.names List of node names or SUIDs. Default is NULL for all nodes.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -189,7 +190,7 @@ getNodeColor <- function (node.names=NULL, network=NULL, base.url =.defaultBaseU
 #' @title Get Node Size
 #'
 #' @description Retrieve the actual size of specified nodes.
-#' @param node.names List of node names. Default is NULL for all nodes.
+#' @param node.names List of node names or SUIDs. Default is NULL for all nodes.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -208,7 +209,7 @@ getNodeSize <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUr
 #' @title Get Node Width
 #'
 #' @description Retrieve the actual width of specified nodes.
-#' @param node.names List of node names. Default is NULL for all nodes.
+#' @param node.names List of node names or SUIDs. Default is NULL for all nodes.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -227,7 +228,7 @@ getNodeWidth <- function (node.names=NULL, network=NULL, base.url =.defaultBaseU
 #' @title Get Node Height
 #'
 #' @description Retrieve the actual height of specified nodes.
-#' @param node.names List of node names. Default is NULL for all nodes.
+#' @param node.names List of node names or SUIDs. Default is NULL for all nodes.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -247,7 +248,7 @@ getNodeHeight <- function (node.names=NULL, network=NULL, base.url =.defaultBase
 #' @title Get Node Position
 #'
 #' @description Retrieve the actual x,y position of specified nodes.
-#' @param node.names List of node names. Default is NULL for all nodes.
+#' @param node.names List of node names or SUIDs. Default is NULL for all nodes.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -273,7 +274,7 @@ getNodePosition <- function (node.names=NULL, network=NULL, base.url =.defaultBa
 #' @title Get Edge Line Width
 #'
 #' @description Retrieve the actual line width of specified edges.
-#' @param edge.names List of edge names. Default is NULL for all edges.
+#' @param edge.names List of edge names or SUIDs. Default is NULL for all edges.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -292,7 +293,7 @@ getEdgeLineWidth <- function (edge.names=NULL, network=NULL, base.url =.defaultB
 #' @title Get Edge Color
 #'
 #' @description Retrieve the actual line color of specified edges.
-#' @param edge.names List of edge names. Default is NULL for all edges.
+#' @param edge.names List of edge names or SUIDs. Default is NULL for all edges.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -311,7 +312,7 @@ getEdgeColor <- function (edge.names=NULL, network=NULL, base.url =.defaultBaseU
 #' @title Get Edge Line Style
 #'
 #' @description Retrieve the actual line style of specified edges.
-#' @param edge.names List of edge names. Default is NULL for all edges.
+#' @param edge.names List of edge names or SUIDs. Default is NULL for all edges.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -330,7 +331,7 @@ getEdgeLineStyle <- function (edge.names=NULL, network=NULL, base.url =.defaultB
 #' @title Get Edge Target Arrow Shape
 #'
 #' @description Retrieve the actual target arrow shape of specified edges.
-#' @param edge.names List of edge names. Default is NULL for all edges.
+#' @param edge.names List of edge names or SUIDs. Default is NULL for all edges.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,

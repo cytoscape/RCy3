@@ -7,7 +7,7 @@
 getEdgeLineWidth(edge.names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{edge.names}{List of edge names. Default is NULL for all edges.}
+\item{edge.names}{List of edge names or SUIDs. Default is NULL for all edges.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}

@@ -151,7 +151,7 @@ selectNodes <-
 #' Select all nodes
 #'
 #' @description Selects all nodes in a Cytoscape Network
-#' @param network name or suid of the network into which you want to select; 
+#' @param network (optional) Name or SUID of the network into which you want to select; 
 #' default is "current" network
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234

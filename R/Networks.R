@@ -19,7 +19,7 @@
 #' @title Set current network
 #'
 #' @description Selects the given network as "current"
-#' @param network name or suid of the network that you want set as current
+#' @param network (optional) Name or suid of the network that you want set as current
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -41,7 +41,7 @@ setCurrentNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @description Sets a new name for this network
 #' @details Duplicate network names are not allowed
 #' @param title New name for the network
-#' @param network name or suid of the network that you want to rename; default is "current" network
+#' @param network (optional) Name or suid of the network that you want to rename; default is "current" network
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -88,8 +88,8 @@ getNetworkCount <- function(base.url = .defaultBaseUrl) {
 #' @title Get the name of a network
 #'
 #' @description Retrieve the title of a network
-#' @param suid SUID of the network; default is current network. If a name is 
-#' provided, then it is validated and returned.
+#' @param suid (optional) SUID of the network; default is current network. If a
+#' name is provided, then it is validated and returned.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -142,8 +142,8 @@ getNetworkName <- function(suid = NULL, base.url = .defaultBaseUrl) {
 #' @title Get the SUID of a network
 #'
 #' @description Retrieve the SUID of a network
-#' @param title Name of the network; default is "current" network. If an SUID is 
-#' provided, then it is validated and returned.
+#' @param title (optional) Name of the network; default is "current" network. If
+#' an SUID is provided, then it is validated and returned.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -291,7 +291,8 @@ exportNetwork <- function (filename=NULL, type="SIF",
 #' @title Delete Network
 #'
 #' @description Delete a network from the current Cytoscape session.
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -328,9 +329,9 @@ deleteAllNetworks <- function (base.url = .defaultBaseUrl) {
 # ------------------------------------------------------------------------------
 #' Get list of nodes neighboring provided list
 #'
-#' @description Returns a non-redundan list of first
+#' @description Returns a non-redundant list of first
 #' neighbors of the supplied list of nodes or current node selection.
-#' @param node.names A \code{list} of node names from the \code{name} column 
+#' @param node.names A \code{list} of SUIDs or names from the \code{name} column 
 #' of the \code{node table}. Default is currently selected nodes.
 #' @param as.nested.list \code{logical} Whether to return lists of neighbors per query node
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
@@ -493,7 +494,8 @@ getAllNodes <- function(network = NULL, base.url = .defaultBaseUrl) {
 #'
 #' @description Add one or more edges to a Cytoscape network by listing source and 
 #' target node pairs.
-#' @param source.target.list A \code{list} (or \code{list of lists}) of source and target node pairs
+#' @param source.target.list A \code{list} (or \code{list of lists}) of source 
+#' and target node name or SUID pairs
 #' @param edgeType The type of interaction. Default is 'interacts with'.
 #' @param directed \code{boolean} for whether interactions are directed. Default is \code{FALSE}.
 #' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
@@ -653,7 +655,8 @@ getAllEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' @title Clone a Cytoscape Network
 #'
 #' @description Makes a copy of a Cytoscape Network with all of its edges and nodes.
-#' @param network name or suid of the network you want to clone; default is "current" network
+#' @param network (optional) Name or SUID of the network you want to clone; 
+#' default is "current" network
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -674,23 +677,29 @@ cloneNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 # ------------------------------------------------------------------------------
 #' @title Create subnetwork from existing network
 #'
-#' @description Copies a subset of nodes and edges into a newly created subnetwork.
-#' @details If you spe@param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.cify both nodes and edges, the resulting subset will be the union of those sets.
-#' Typical usage only requires specifying either nodes or edges. Note that selected nodes will bring
-#' along their connecting edges by default (see exclude.edges arg) and selected edges will always
+#' @description Copies a subset of nodes and edges into a newly created 
+#' subnetwork.
+#' @details If you specify both nodes and edges, the resulting subset will be 
+#' the union of those sets. Typical usage only requires specifying either nodes
+#' or edges. Note that selected nodes will bring along their connecting edges 
+#' by default (see exclude.edges arg) and selected edges will always
 #' bring along their source and target nodes.
-#' @param nodes list of node names or keyword: selected, unselected or all. Default
-#' is currently selected nodes.
-#' @param nodes.by.col name of node table column corresponding to provided nodes list; default is 'SUID'
-#' @param edges list of edge names or keyword: selected, unselected or all. Default
-#' is currently selected edges.
-#' @param edges.by.col name of edge table column corresponding to provided edges list; default is 'SUID'
-#' @param exclude.edges (boolean) whether to exclude connecting edges; default is FALSE
+#' @param nodes list of nodes by SUID, by specified nodes.by.col value
+#' (e.g., name) or by keyword: selected, unselected or all. 
+#' Default is currently selected nodes.
+#' @param nodes.by.col name of node table column corresponding to provided 
+#' nodes list; default is 'SUID'
+#' @param edges list of edges by SUID, by specified nodes.by.col value
+#' (e.g., name) or by keyword: selected, unselected or all. 
+#' Default is currently selected edges.
+#' @param edges.by.col name of edge table column corresponding to provided 
+#' edges list; default is 'SUID'
+#' @param exclude.edges (boolean) whether to exclude connecting edges; default
+#' is FALSE
 #' @param subnetwork.name name of new subnetwork to be created;
 #' default is to add a numbered suffix to source network name
-#' @param network (optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.

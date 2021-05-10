@@ -9,7 +9,7 @@ renameNetwork(title, network = NULL, base.url = .defaultBaseUrl)
 \arguments{
 \item{title}{New name for the network}
 
-\item{network}{name or suid of the network that you want to rename; default is "current" network}
+\item{network}{(optional) Name or suid of the network that you want to rename; default is "current" network}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

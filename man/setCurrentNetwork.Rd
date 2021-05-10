@@ -7,7 +7,7 @@
 setCurrentNetwork(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{network}{name or suid of the network that you want set as current}
+\item{network}{(optional) Name or suid of the network that you want set as current}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

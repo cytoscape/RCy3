@@ -7,8 +7,8 @@
 getNetworkName(suid = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{suid}{SUID of the network; default is current network. If a name is 
-provided, then it is validated and returned.}
+\item{suid}{(optional) SUID of the network; default is current network. If a
+name is provided, then it is validated and returned.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

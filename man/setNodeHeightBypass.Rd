@@ -12,7 +12,7 @@ setNodeHeightBypass(
 )
 }
 \arguments{
-\item{node.names}{List of node names}
+\item{node.names}{List of node names or SUIDs}
 
 \item{new.heights}{List of height values, or single value}
 

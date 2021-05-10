@@ -7,7 +7,8 @@
 cloneNetwork(network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{network}{name or suid of the network you want to clone; default is "current" network}
+\item{network}{(optional) Name or SUID of the network you want to clone; 
+default is "current" network}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234

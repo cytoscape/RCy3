@@ -16,22 +16,28 @@ createSubnetwork(
 )
 }
 \arguments{
-\item{nodes}{list of node names or keyword: selected, unselected or all. Default
-is currently selected nodes.}
+\item{nodes}{list of nodes by SUID, by specified nodes.by.col value
+(e.g., name) or by keyword: selected, unselected or all. 
+Default is currently selected nodes.}
 
-\item{nodes.by.col}{name of node table column corresponding to provided nodes list; default is 'SUID'}
+\item{nodes.by.col}{name of node table column corresponding to provided 
+nodes list; default is 'SUID'}
 
-\item{edges}{list of edge names or keyword: selected, unselected or all. Default
-is currently selected edges.}
+\item{edges}{list of edges by SUID, by specified nodes.by.col value
+(e.g., name) or by keyword: selected, unselected or all. 
+Default is currently selected edges.}
 
-\item{edges.by.col}{name of edge table column corresponding to provided edges list; default is 'SUID'}
+\item{edges.by.col}{name of edge table column corresponding to provided 
+edges list; default is 'SUID'}
 
-\item{exclude.edges}{(boolean) whether to exclude connecting edges; default is FALSE}
+\item{exclude.edges}{(boolean) whether to exclude connecting edges; default
+is FALSE}
 
 \item{subnetwork.name}{name of new subnetwork to be created;
 default is to add a numbered suffix to source network name}
 
-\item{network}{(optional) Name or SUID of the network. Default is the "current" network active in Cytoscape.}
+\item{network}{(optional) Name or SUID of the network. Default is the 
+"current" network active in Cytoscape.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -41,14 +47,14 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 SUID of new subnetwork
 }
 \description{
-Copies a subset of nodes and edges into a newly created subnetwork.
+Copies a subset of nodes and edges into a newly created 
+subnetwork.
 }
 \details{
-If you spe@param base.url (optional) Ignore unless you need to specify a custom domain,
-port or version to connect to the CyREST API. Default is http://localhost:1234
-and the latest version of the CyREST API supported by this version of RCy3.cify both nodes and edges, the resulting subset will be the union of those sets.
-Typical usage only requires specifying either nodes or edges. Note that selected nodes will bring
-along their connecting edges by default (see exclude.edges arg) and selected edges will always
+If you specify both nodes and edges, the resulting subset will be 
+the union of those sets. Typical usage only requires specifying either nodes
+or edges. Note that selected nodes will bring along their connecting edges 
+by default (see exclude.edges arg) and selected edges will always
 bring along their source and target nodes.
 }
 \examples{

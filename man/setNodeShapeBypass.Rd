@@ -12,7 +12,7 @@ setNodeShapeBypass(
 )
 }
 \arguments{
-\item{node.names}{List of node names}
+\item{node.names}{List of node names or SUIDs}
 
 \item{new.shapes}{List of shapes, or single value. See \link{getNodeShapes}.}
 
