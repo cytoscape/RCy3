@@ -197,12 +197,10 @@ getNotebookIsRunning<-function(){
 #' }
 #' @export
 checkNotebookIsRunning<-function(){
+    
     if(is.null(getNotebookIsRunning())){
-        if(getOption("jupyter.in_kernel")){
+        if(isTRUE(getOption("jupyter.in_kernel"))){
             setNotebookIsRunning(TRUE)
-        }
-        else if(!getOption("jupyter.in_kernel")){
-            setNotebookIsRunning(FALSE)
         }
         else{
             setNotebookIsRunning(FALSE)
