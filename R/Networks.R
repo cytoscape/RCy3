@@ -242,6 +242,8 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param overwriteFile (optional) FALSE allows Cytoscape show a message box before overwriting the file if the file already
+#' exists; TRUE. allows Cytoscape to overwrite it without asking. Default value is TRUE.
 #' @return None.
 #' @examples \donttest{
 #' exportNetwork('/path/filename','SIF')
@@ -249,7 +251,7 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #' @importFrom R.utils isAbsolutePath
 #' @export
 exportNetwork <- function (filename=NULL, type="SIF", 
-                           network=NULL, base.url = .defaultBaseUrl) {
+                           network=NULL, base.url = .defaultBaseUrl, overwriteFile = TRUE) {
     cmd.string <- 'network export' # a good start
     
     # filename must be suppled
@@ -274,16 +276,21 @@ exportNetwork <- function (filename=NULL, type="SIF",
     ext <- paste0(".",tolower(type),"$")
     if (!grepl(ext,filename))
         filename <- paste0(filename,".",tolower(type))
-    if(!isAbsolutePath(filename))
-        filename <- getAbsSandboxPath(filename)
-    if (file.exists(filename))
-        warning("This file already exists. A Cytoscape popup 
-                will be generated to confirm overwrite.",
-                call. = FALSE,
-                immediate. = TRUE)
-    
+    fileInfo <- sandboxGetFileInfo(filename, base.url=base.url)
+    if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
+        if (overwriteFile){
+            sandboxRemoveFile(filename, base.url=base.url)
+        }
+        else {
+            warning("This file already exists. A Cytoscape popup will be 
+                    generated to confirm overwrite.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        }
+    }
+    fullFilename <- fileInfo[['filePath']]
     commandsPOST(paste0(cmd.string,' OutputFile="',
-                        filename,'"'),
+                        fullFilename,'"'),
                  base.url = base.url)
 }
 

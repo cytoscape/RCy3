@@ -71,6 +71,8 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param overwriteFile (optional) FALSE allows an error to be generated if the file already exists;
+#' TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.
 #' @return server response
 #' @details Unlike most export functions in RCy3, Cytoscape will automatically
 #' overwrite CYS session files with the same name. You will not be prompted to
@@ -81,8 +83,9 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
 #' saveSession() 
 #' }
 #' @importFrom R.utils isAbsolutePath
+#' @import glue
 #' @export
-saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
+saveSession<-function(filename=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE){
     if(is.null(filename)){
         filename <- unname(cyrestGET('session/name', base.url=base.url))
         if(filename=="")
@@ -92,15 +95,19 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl){
         ext <- ".cys$"
         if (!grepl(ext,filename))
             filename <- paste0(filename,".cys")
-        if(!isAbsolutePath(filename))
-            filename <- getAbsSandboxPath(filename)
-        if (file.exists(filename))
-            warning("This file has been overwritten.",
-                    call. = FALSE,
-                    immediate. = TRUE)
+        fileInfo <- sandboxGetFileInfo(filename, base.url = base.url)
+        if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
+            if (overwriteFile){
+                warning("This file has been overwritten.",
+                        call. = FALSE,
+                        immediate. = TRUE)
+            }
+            else {
+                stop(glue('File {filename} already exists ... sessions not saved.'))
+            }
+        }
         commandsPOST(paste0('session save as file="',
-                            filename,'"'), 
+                            getAbsSandboxPath(filename),'"'), 
                      base.url=base.url)
     }
-    
 }

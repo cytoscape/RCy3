@@ -4,7 +4,11 @@
 \alias{exportFilters}
 \title{Export Filters}
 \usage{
-exportFilters(filename = "filters.json", base.url = .defaultBaseUrl)
+exportFilters(
+  filename = "filters.json",
+  base.url = .defaultBaseUrl,
+  overwriteFile = TRUE
+)
 }
 \arguments{
 \item{filename}{(char) Full path or path relavtive to current 
@@ -14,6 +18,9 @@ working directory, in addition to the name of the file. Default is
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
+
+\item{overwriteFile}{(optional) FALSE allows an error to be generated if the file already exists;
+TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.}
 }
 \value{
 None

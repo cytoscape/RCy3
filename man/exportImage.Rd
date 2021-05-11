@@ -13,7 +13,8 @@ exportImage(
   width = NULL,
   zoom = NULL,
   network = NULL,
-  base.url = .defaultBaseUrl
+  base.url = .defaultBaseUrl,
+  overwriteFile = TRUE
 )
 }
 \arguments{
@@ -48,6 +49,9 @@ associated a network is used if a specific view SUID is not provided.}
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
+
+\item{overwriteFile}{(optional) FALSE allows Cytoscape show a message box before overwriting the file if the file already
+exists; TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.}
 }
 \value{
 server response

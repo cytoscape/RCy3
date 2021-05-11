@@ -274,6 +274,8 @@ getFilterList<-function(base.url=.defaultBaseUrl){
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param overwriteFile (optional) FALSE allows an error to be generated if the file already exists;
+#' TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.
 #' @return None
 #' @details Unlike other export functions, Cytoscape will automatically
 #' overwrite files with the same name. You will not be prompted to confirm
@@ -282,20 +284,26 @@ getFilterList<-function(base.url=.defaultBaseUrl){
 #' exportFilters()
 #' }
 #' @importFrom R.utils isAbsolutePath
+#' @import glue
 #' @export
-exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl){
+exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl, overwriteFile = TRUE){
     ext <- ".json$"
     if (!grepl(ext,filename))
         filename <- paste0(filename,".json")
-    if(!isAbsolutePath(filename))
-        filename <- getAbsSandboxPath(filename)
-    if (file.exists(filename))
-        warning("This file has been overwritten.",
-                call. = FALSE,
-                immediate. = TRUE)
-    
+    fileInfo <- sandboxGetFileInfo(filename, base.url = base.url)
+    if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
+        if (overwriteFile){
+            warning("This file has been overwritten.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        }
+        else {
+            stop(glue('File {filename} already exists ... filters not saved.'))
+        }
+    }
+    fullFilename <- fileInfo[['filePath']]
     commandsGET(paste0('filter export file="',
-                       filename,'"'),
+                       fullFilename,'"'),
                 base.url)
 }
 

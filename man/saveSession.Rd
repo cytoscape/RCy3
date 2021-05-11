@@ -4,7 +4,7 @@
 \alias{saveSession}
 \title{Save Session to File}
 \usage{
-saveSession(filename = NULL, base.url = .defaultBaseUrl)
+saveSession(filename = NULL, base.url = .defaultBaseUrl, overwriteFile = TRUE)
 }
 \arguments{
 \item{filename}{Full path or path relavtive to current working directory, 
@@ -14,6 +14,9 @@ automatically added. Leave blank to update previously saved session file.}
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
+
+\item{overwriteFile}{(optional) FALSE allows an error to be generated if the file already exists;
+TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.}
 }
 \value{
 server response
