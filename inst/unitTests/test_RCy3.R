@@ -134,6 +134,8 @@ run.tests = function()
     test.customGraphics()
     test.filters()
     
+    test.annotations()
+    
     closeSession(FALSE)
     options('warn'=0)
     
@@ -1844,4 +1846,27 @@ test.filters = function ()
     flist<-getFilterList()
     checkEqualsNumeric(length(flist),11)
     
+}
+
+#-------------------------------------------------------------------------------
+test.filters = function ()
+{
+    
+    title = 'test.annotations'
+    test.prep (title,FALSE)
+    
+    addAnnotationText("test1")
+    addAnnotationText("test2", 1000, 1000, name="T2")
+    addAnnotationText("test!@#$%^3", 1000, 1000, 30, "Helvetica", "bolditalic", "#990000",680,name="T3", canvas="background",z=10)
+    addAnnotationText("test\n2", 1200, 1000, 30, "Courier New", "bold", "#009900",0,name="T2", canvas="foreground",z=1)
+    addAnnotationText("test\t1", 1400, 1000, 30, "Comic sans MS", "italic", "#000099",40,name="T1", canvas="foreground",z=0)
+    
+    checkEqualsNumeric(length(getAnnotationList()),5)
+    ann.uuids <- sapply(getAnnotationList(), '[[', 'uuid')
+    
+    deleteAnnotation(ann.uuids[1])
+    checkEqualsNumeric(length(getAnnotationList()),4)
+    
+    deleteAnnotation(ann.uuids)
+    checkEqualsNumeric(length(getAnnotationList()),0)
 }

@@ -67,6 +67,45 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
 }
 
 # ------------------------------------------------------------------------------
+# Validates and fixes rotation values from -180 to +180 range to match GUI
+.normalizeRotation <- function(degree){
+    if(!is.numeric(degree))
+        stop(simpleError('Angle must be a number.'))
+    while (degree <= -180) 
+        degree <- degree + 360
+    while (degree > 180)
+        degree <- degree - 360
+    return(degree)
+}
+# ------------------------------------------------------------------------------
+# Validates unique value against provided set
+.checkUnique <- function(value, existing.values){
+    if(value %in% existing.values)
+        stop(simpleError(sprintf ('%s is not unique. Please provide a unique value.', as.character(value))))
+}
+# ------------------------------------------------------------------------------
+# Validates positive number
+.checkPositive <- function(number){
+    if(!is.numeric(number))
+        stop(simpleError('Value must be a positive number.'))
+    if (number <= 0){
+        stop (simpleError(sprintf ('%s is invalid. Number must be positive.', as.character(number))))
+    } 
+}
+# ------------------------------------------------------------------------------
+# Validates acceptable font style
+.checkFontStyle <- function(style){
+    if(!style %in% c("plain","bold","italic","bolditalic"))
+        stop (simpleError(sprintf ('%s is invalid. Use "plain", "bold", "italic" or "bolditalic"', style)))
+}
+# ------------------------------------------------------------------------------
+# Validates acceptable canvas
+.checkCanvas <- function(canvas){
+    if(!canvas %in% c("foreground","background"))
+        stop (simpleError(sprintf ('%s is invalid. Use "foreground" or "background"', canvas)))
+}
+
+# ------------------------------------------------------------------------------
 # Validate and provide user feedback when slot number is outside of range.
 .checkSlot <- function(slot){
     if(is.numeric(slot)){
@@ -94,7 +133,7 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
         } else { #multiple nodes with the same name
             message("Finding unique SUIDs for nodes with the same name...\n")
             match_list <- list()
-            for(i in 1:length(node.names)){ #perform match with removal
+            for(i in seq_along(node.names)){ #perform match with removal
                 name_match <- dict[match(node.names[[i]], dict$name),]
                 match_list[[i]] <- name_match
                 dict <- subset(dict, SUID != name_match$SUID)
@@ -128,7 +167,7 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
         } else { #multigraph: multiple edges with the same name
             message("Finding unique SUIDs for edges with the same name...\n")
             match_list <- list()
-            for(i in 1:length(edge.names)){ #perform match with removal
+            for(i in seq_along(edge.names)){ #perform match with removal
                 name_match <- dict[match(edge.names[[i]], dict$name),]
                 match_list[[i]] <- name_match
                 dict <- subset(dict, SUID != name_match$SUID)
