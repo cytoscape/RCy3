@@ -64,6 +64,7 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
 #' @examples \donttest{
 #' sandboxGetFileInfo()
 #' }
+#' @importFrom file_test utils
 #' @export
 sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBaseUrl){
     tryCatch(
@@ -74,7 +75,7 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
             if(is.null(sandboxName) && is.null(getCurrentSandboxName()) && !is.null(fileName) && !is.null(trimws(fileName))){
                 filePath <- normalizePath(fileName)
                 if (file.exists(filePath)){
-                    isFile <- file_test("-f", fileName)
+                    isFile <- utils::file_test("-f", fileName)
                     modifiedTime <- format(file.info(fileName)$mtime, usetz=FALSE)
                 } else {
                     isFile <- FALSE

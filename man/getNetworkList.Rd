@@ -18,7 +18,7 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 Returns the list of Cytoscape network names in the current Cytoscape session
 }
 \examples{
-\dontrun{
+\donttest{
 getNetworkList()
 # 3
 }

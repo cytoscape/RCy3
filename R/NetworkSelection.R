@@ -403,7 +403,7 @@ selectEdges <-
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return Selects all edges in a specified network.
 #' @author Alexander Pico, Julia Gustavsen
-#' @examples \dontrun{
+#' @examples \donttest{
 #' cw <- CytoscapeWindow('new.demo', new('graphNEL'))
 #' selectAllEdges(cw)
 #' }
@@ -553,7 +553,7 @@ getSelectedEdges <-
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return Lists of SUIDs for selected nodes and edges
-#' @examples \dontrun{
+#' @examples \donttest{
 #' selectEdgesConnectingSelectedNodes()
 #' }
 #' @author Alexander Pico, Julia Gustavsen

@@ -21,7 +21,7 @@ The \code{suid} of the new network
 Makes a copy of a Cytoscape Network with all of its edges and nodes.
 }
 \examples{
-\dontrun{
+\donttest{
 cloneNetwork("cloned network")
 }
 }

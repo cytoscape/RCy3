@@ -22,7 +22,7 @@ Selects edges in a Cytoscape Network connecting the selected
 nodes, including self loops connecting single nodes.
 }
 \examples{
-\dontrun{
+\donttest{
 selectEdgesConnectingSelectedNodes()
 }
 }

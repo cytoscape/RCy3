@@ -47,7 +47,7 @@ setCurrentNetwork <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @author Alexander Pico, Julia Gustavsen
-#' @examples \dontrun{
+#' @examples \donttest{
 #' renameNetwork("renamed network")
 #' }
 #' @export
@@ -74,7 +74,7 @@ renameNetwork <-  function(title,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return \code{numeric}
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
-#' @examples \dontrun{
+#' @examples \donttest{
 #' getNetworkCount()
 #' # 3
 #' }
@@ -208,7 +208,7 @@ getNetworkSuid <- function(title = NULL, base.url = .defaultBaseUrl) {
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return \code{list}
 #' @author Alexander Pico, Tanja Muetze, Georgi Kolishovski, Paul Shannon
-#' @examples \dontrun{
+#' @examples \donttest{
 #' getNetworkList()
 #' # 3
 #' }
@@ -661,7 +661,7 @@ getAllEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return The \code{suid} of the new network
-#' @examples \dontrun{
+#' @examples \donttest{
 #' cloneNetwork("cloned network")
 #' }
 #' @author Alexander Pico, Julia Gustavsen

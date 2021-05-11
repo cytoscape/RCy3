@@ -25,7 +25,7 @@ Sets a new name for this network
 Duplicate network names are not allowed
 }
 \examples{
-\dontrun{
+\donttest{
 renameNetwork("renamed network")
 }
 }
