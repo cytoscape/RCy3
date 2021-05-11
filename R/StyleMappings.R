@@ -242,6 +242,61 @@ deleteStyleMapping<-function(style.name, visual.prop,  base.url=.defaultBaseUrl)
     }
 }
 
+# ------------------------------------------------------------------------------
+#' @title Get Style Mapping
+#'
+#' @description Retrieve the values the define the mappings for a given
+#' visual property in a style.
+#' @param visual.prop Name of the visual property, e.g., NODE_FILL_COLOR
+#' @param style.name Name for style; default is the 'default' style
+#' @param base_url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
+#' @return List of named values defining the visual property mappings
+#' @examples \donttest{
+#' getStyleMapping()
+#' }
+#' @seealso getVisualPropertyNames
+#' @export
+getStyleMapping <- function(visual.prop, style.name=NULL,
+                            base.url=.defaultBaseUrl){
+    if(is.null(style.name)){
+        style.name <- 'default'
+        message('style.name not specified, so using "default" style.')
+    }
+    
+    cyrestGET(paste('styles',style.name,'mappings', visual.prop, sep = '/'), 
+              base.url=base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Get All Style Mappings
+#'
+#' @description Retrieve the values the define all the mappings per visual 
+#' property in a given style.
+#' @param style.name Name for style; default is the 'default' style
+#' @param base_url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
+#' @return List of lists with named values defining the visual property mappings
+#' @examples \donttest{
+#' getStyleMapping()
+#' }
+#' @export
+getAllStyleMappings <- function(style.name=NULL,
+                            base.url=.defaultBaseUrl){
+    if(is.null(style.name)){
+        style.name <- 'default'
+        message('style.name not specified, so using "default" style.')
+    }
+    
+    cyrestGET(paste('styles',style.name,'mappings', sep = '/'), 
+              base.url=base.url)
+}
+
+
 # ==============================================================================
 # II. Specific Functions
 # ==============================================================================
