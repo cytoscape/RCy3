@@ -636,15 +636,10 @@ deleteDuplicateEdges <-
         net.suid <- getNetworkSuid(network,base.url)
         
         allEdges <- getAllEdges(net.suid, base.url)
-        dupEdges <- unique(allEdges[duplicated(allEdges)])
+        dupEdges <- allEdges[duplicated(allEdges)]
         
         #get list of duplicate edge SUIDs to select and delete
-        dupEdgeSuids <- c()
-        for (de in dupEdges){
-            edgeSuids <- .edgeNameToEdgeSUID(de, network = net.suid, base.url = base.url)
-            if(length(edgeSuids) > 1)
-                dupEdgeSuids <- c(dupEdgeSuids, edgeSuids[-1]) #pick all by one
-        }    
+        dupEdgeSuids <- .edgeNameToEdgeSUID(dupEdges, network = net.suid, base.url = base.url)
         
         selectEdges(
             dupEdgeSuids,
