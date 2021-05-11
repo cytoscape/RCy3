@@ -13,7 +13,7 @@ getAbsSandboxPath(fileLocation)
 file location
 }
 \description{
-getAbsSandboxPath
+Get absolute sandbox path.
 }
 \examples{
 \donttest{

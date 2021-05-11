@@ -10,7 +10,7 @@ getCurrentSandboxPath()
 current sandbox path
 }
 \description{
-getCurrentSandboxPath
+Return the current sandbox path.
 }
 \examples{
 \donttest{

@@ -19,7 +19,7 @@ sandboxOp(command, sandboxName, fileName = NULL, base.url = .defaultBaseUrl)
 sandbox result
 }
 \description{
-sandboxOp
+internal function for sandbox operation
 }
 \examples{
 \donttest{

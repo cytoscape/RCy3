@@ -27,7 +27,14 @@ sandboxSendTo(
 sandboxSendTo
 }
 \description{
-sandboxSendTo
+Transfer a file to a sandbox.
+The source file is transferred to the named (or current) sandbox, overwriting an existing file if one
+already exists. The destFile can be an absolute path if the sandbox is the entire file system (i.e., for
+standalone R execution) or a path relative to the sandbox (i.e., for Notebook or remote execution or if a
+sandbox was explicitly created).
+Note that there is no function that transfers an entire directory. Note, though, that when using sandboxSet()
+to make a sandbox current, it is possible to copy the Cytoscape sample data directories into to the sandbox at the
+same time.
 }
 \examples{
 \donttest{

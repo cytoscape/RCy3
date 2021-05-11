@@ -17,7 +17,11 @@ sandboxRemoveFile(fileName, sandboxName = NULL, base.url = .defaultBaseUrl)
 dict: {'filePath': <file's absolute path in Cytoscape workstation>, 'existed': True if file existed before being deleted}
 }
 \description{
-sandboxRemoveFile
+Remove a file from a sandbox.
+The named file is removed from the named sandbox. If the sandbox is the entire file system (i.e., for standalone
+R execution), the file name can be an absolute path. Otherwise, it is a path relative to the named sandbox.
+Note that there is no function that deletes a directory, except for sandboxRemove(), which deletes a sandbox
+and all of its contents.
 }
 \examples{
 \donttest{

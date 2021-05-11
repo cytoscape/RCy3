@@ -7,7 +7,7 @@
 resetDefaultSandbox()
 }
 \description{
-resetDefaultSandbox
+Reset the entire state of the sandbox system.
 }
 \examples{
 \donttest{

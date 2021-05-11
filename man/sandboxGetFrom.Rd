@@ -27,7 +27,11 @@ sandboxGetFrom(
 sandboxGetFrom
 }
 \description{
-sandboxGetFrom
+Transfer a file from a sandbox.
+The source file is transferred from the named (or current) sandbox to the R workflow's file system,
+overwriting an existing file if one already exists. The sourceFile can be an absolute path if the sandbox is
+the entire file system (i.e., for standalone R execution) or a path relative to the sandbox
+(i.e., for Notebook or remote execution or if a sandbox was explicitly created).
 }
 \examples{
 \donttest{

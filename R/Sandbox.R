@@ -3,7 +3,16 @@
 # ------------------------------------------------------------------------------
 #' @title sandboxSet
 #'
-#' @description sandboxSet
+#' @description Set a new default sandbox, creating it if necessary.
+#' A sandbox is the root for the file system used for all file operations. When running standalone
+#' on the same workstation as Cytoscape, the default sandbox is the directory that's current for
+#' the R kernel. When running in a Notebook or remote server, the default sandbox is the
+#' 'default_sandbox' created automatically under the under the filetransfer directory in the
+#' CytoscapeConfiguration directory. Naming a sandbox with this function creates a new
+#' sub-directory as a sibling to 'default_sandbox' and uses it for subsequent file operations.
+#' Setting a None sandbox uses the default sandbox instead.
+#' Sandboxes are highly recommended as an aid to creating workflows that can be shared with
+#' others.
 #' @param sandboxName Name of new default sandbox. None means to use the original default sandbox 
 #' @param copySamples True to copy the Cytoscape sampleData into the sandbox
 #' @param reinitialize True to delete sandbox contents (if any) if sandbox already exists
@@ -26,7 +35,14 @@ sandboxSet <- function(sandboxName, copySamples=TRUE, reinitialize=TRUE, base.ur
 # ------------------------------------------------------------------------------
 #' @title sandboxRemove
 #'
-#' @description sandboxRemove
+#' @description Delete sandbox contents and remove its directory.
+#' If the current sandbox is the entire file system on a Cytoscape workstation, trying to delete it
+#' is an error. Otherwise, deleting the current sandbox results in the default sandbox becoming the
+#' new current sandbox. When running standalone on the same workstation as Cytoscape, the default
+#' sandbox is the entire file system on the Cytoscape workstation. When running in a Notebook or
+#' remote server, the default sandbox is the 'default_sandbox' created automatically under the
+#' under the filetransfer directory in the CytoscapeConfiguration directory. If that sandbox is
+#' deleted, it will be re-created so that subsequent file operations can complete successfully.
 #' @param sandboxName Name of sandbox to delete. None means to delete the current sandbox. If that sandbox is the default sandbox, it is automatically re-created.
 #' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
 #' @return dict: {'sandboxPath': <directory on Cytoscape workstation>, 'existed': <True if sandbox existed>}
@@ -56,7 +72,15 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
 # ------------------------------------------------------------------------------
 #' @title sandboxGetFileInfo
 #'
-#' @description sandboxGetFileInfo
+#' @description Get metadata on file in sandbox (or entire sandbox).
+#' If the current sandbox is the entire file system on a Cytoscape workstation, trying to delete it
+#' is an error. Otherwise, deleting the current sandbox results in the default sandbox becoming the
+#' new current sandbox. When running standalone on the same workstation as Cytoscape, the default
+#' sandbox is the entire file system on the Cytoscape workstation. When running in a Notebook or
+#' remote server, the default sandbox is the 'default_sandbox' created automatically under the
+#' under the filetransfer directory in the CytoscapeConfiguration directory. If that sandbox is
+#' deleted, it will be re-created so that subsequent file operations can complete successfully.
+#' Note that this function can be used to query either a file or a directory.
 #' @param fileName Name of file whose metadata to return ... can be sandbox-relative path ... ``.`` returns metadata on sandbox itself
 #' @param sandboxName Name of sandbox containing file. None means "the current sandbox".
 #' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
@@ -64,7 +88,7 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
 #' @examples \donttest{
 #' sandboxGetFileInfo()
 #' }
-#' @importFrom file_test utils
+#' @importFrom utils file_test
 #' @export
 sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBaseUrl){
     tryCatch(
@@ -92,7 +116,14 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
 # ------------------------------------------------------------------------------
 #' @title sandboxSendTo
 #'
-#' @description sandboxSendTo
+#' @description Transfer a file to a sandbox.
+#' The source file is transferred to the named (or current) sandbox, overwriting an existing file if one
+#' already exists. The destFile can be an absolute path if the sandbox is the entire file system (i.e., for
+#' standalone R execution) or a path relative to the sandbox (i.e., for Notebook or remote execution or if a
+#' sandbox was explicitly created).
+#' Note that there is no function that transfers an entire directory. Note, though, that when using sandboxSet()
+#' to make a sandbox current, it is possible to copy the Cytoscape sample data directories into to the sandbox at the
+#' same time.
 #' @param sourceFile Name of file to read (as absolute path or sandbox-relative path)
 #' @param destFile Name of file in the R workflow's file system ... if None, use file name in source_file
 #' @param overwrite Name of sandbox containing file. None means "the current sandbox".
@@ -138,7 +169,11 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
 # ------------------------------------------------------------------------------
 #' @title sandboxUrlTo
 #'
-#' @description sandboxUrlTo
+#' @description Transfer a cloud-based file to a sandbox.
+#' The source URL identifies a file to be transferred to the named (or current) sandbox, overwriting an existing
+#' file if one already exists. The destFile can be an absolute path if the sandbox is the entire file
+#' system (i.e., for standalone R execution), or it can be a path relative to the sandbox (i.e., for Notebook or
+#' remote execution or if a sandbox was explicitly created).                                                                                     
 #' @param sourceURL URL addressing cloud file to download
 #' @param destFile Name of file in the R workflow's file system ... if None, use file name in source_file
 #' @param overwrite Name of sandbox containing file. None means "the current sandbox".
@@ -165,7 +200,11 @@ sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, 
 # ------------------------------------------------------------------------------
 #' @title sandboxGetFrom
 #'
-#' @description sandboxGetFrom
+#' @description Transfer a file from a sandbox.
+#' The source file is transferred from the named (or current) sandbox to the R workflow's file system,
+#' overwriting an existing file if one already exists. The sourceFile can be an absolute path if the sandbox is
+#' the entire file system (i.e., for standalone R execution) or a path relative to the sandbox
+#' (i.e., for Notebook or remote execution or if a sandbox was explicitly created).
 #' @param sourceFile Name of file to read (as absolute path or sandbox-relative path)
 #' @param destFile Name of file in the R workflow's file system ... if None, use file name in source_file
 #' @param overwrite Name of sandbox containing file. None means "the current sandbox".
@@ -213,7 +252,11 @@ sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxNam
 # ------------------------------------------------------------------------------
 #' @title sandboxRemoveFile
 #'
-#' @description sandboxRemoveFile
+#' @description Remove a file from a sandbox.
+#' The named file is removed from the named sandbox. If the sandbox is the entire file system (i.e., for standalone
+#' R execution), the file name can be an absolute path. Otherwise, it is a path relative to the named sandbox.
+#' Note that there is no function that deletes a directory, except for sandboxRemove(), which deletes a sandbox
+#' and all of its contents.
 #' @param fileName Name of file to delete (as absolute path or sandbox-relative path)
 #' @param sandboxName Name of sandbox containing file. None means "the current sandbox".
 #' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
@@ -229,7 +272,7 @@ sandboxRemoveFile <- function(fileName, sandboxName=NULL, base.url=.defaultBaseU
 # ------------------------------------------------------------------------------
 #' @title sandboxOp
 #'
-#' @description sandboxOp
+#' @description internal function for sandbox operation
 #' @param command command
 #' @param sandboxName Name of file to read (as absolute path or sandbox-relative path)
 #' @param fileName Name of file to read (as absolute path or sandbox-relative path)

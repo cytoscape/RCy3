@@ -15,7 +15,7 @@ sandboxInitializer(newSandbox = NULL, ...)
 sandbox
 }
 \description{
-sandboxInitializer
+Start with a sandbox template and update properties using whatever is found in the new_sandbox.
 }
 \examples{
 \donttest{

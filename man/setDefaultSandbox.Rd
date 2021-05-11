@@ -15,7 +15,7 @@ setDefaultSandbox(newSandbox = NULL, ...)
 default sandbox
 }
 \description{
-setDefaultSandbox
+Set and return the sandbox properties to be used as a default, probably based on whether a Notebook is running.
 }
 \examples{
 \donttest{

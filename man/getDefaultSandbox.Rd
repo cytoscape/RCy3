@@ -10,7 +10,7 @@ getDefaultSandbox()
 default sandbox
 }
 \description{
-getDefaultSandbox
+Return whatever is the current default sandbox properties.
 }
 \examples{
 \donttest{

@@ -13,7 +13,7 @@ setDefaultSandboxPath(newPath)
 default sandbox path
 }
 \description{
-setDefaultSandboxPath
+Set and return the default path, which isn't one of the properties tracked in the default_sandbox.
 }
 \examples{
 \donttest{

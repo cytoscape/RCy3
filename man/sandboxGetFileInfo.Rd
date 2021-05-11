@@ -17,7 +17,15 @@ sandboxGetFileInfo(fileName, sandboxName = NULL, base.url = .defaultBaseUrl)
 dict: {'filePath': <full path on Cytoscape workstation>, 'modifiedTime': <last changed time, '' if file doesn't exist>, 'isFile': <True if file, False if directory>}
 }
 \description{
-sandboxGetFileInfo
+Get metadata on file in sandbox (or entire sandbox).
+If the current sandbox is the entire file system on a Cytoscape workstation, trying to delete it
+is an error. Otherwise, deleting the current sandbox results in the default sandbox becoming the
+new current sandbox. When running standalone on the same workstation as Cytoscape, the default
+sandbox is the entire file system on the Cytoscape workstation. When running in a Notebook or
+remote server, the default sandbox is the 'default_sandbox' created automatically under the
+under the filetransfer directory in the CytoscapeConfiguration directory. If that sandbox is
+deleted, it will be re-created so that subsequent file operations can complete successfully.
+Note that this function can be used to query either a file or a directory.
 }
 \examples{
 \donttest{

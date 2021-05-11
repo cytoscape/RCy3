@@ -10,7 +10,7 @@ getSandboxReinitialize()
 sandbox reinitialize
 }
 \description{
-getSandboxReinitialize
+Return flag indicating that next command should reinitialize the sandbox according to the default_sandbox.
 }
 \examples{
 \donttest{

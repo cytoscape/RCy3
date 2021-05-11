@@ -27,7 +27,11 @@ sandboxUrlTo(
 dict: {'filePath': <new file's absolute path in Cytoscape workstation>, 'fileByteCount': number of bytes read}
 }
 \description{
-sandboxUrlTo
+Transfer a cloud-based file to a sandbox.
+The source URL identifies a file to be transferred to the named (or current) sandbox, overwriting an existing
+file if one already exists. The destFile can be an absolute path if the sandbox is the entire file
+system (i.e., for standalone R execution), or it can be a path relative to the sandbox (i.e., for Notebook or
+remote execution or if a sandbox was explicitly created).
 }
 \examples{
 \donttest{

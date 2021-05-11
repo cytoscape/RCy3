@@ -15,7 +15,7 @@ setCurrentSandbox(sandboxName, sandboxPath)
 current sandbox
 }
 \description{
-setCurrentSandbox
+Set and return the current sandbox name and path.
 }
 \examples{
 \donttest{

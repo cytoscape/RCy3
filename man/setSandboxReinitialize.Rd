@@ -13,7 +13,7 @@ setSandboxReinitialize(doReinitialize = TRUE)
 sandbox reinitialize
 }
 \description{
-setSandboxReinitialize
+Set and return flag indicating that next command should reinitialize the sandbox according to the default_sandbox.
 }
 \examples{
 \donttest{

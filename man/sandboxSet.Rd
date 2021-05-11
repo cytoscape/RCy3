@@ -24,7 +24,16 @@ sandboxSet(
 sandbox path in Cytoscape workstation's file system
 }
 \description{
-sandboxSet
+Set a new default sandbox, creating it if necessary.
+A sandbox is the root for the file system used for all file operations. When running standalone
+on the same workstation as Cytoscape, the default sandbox is the directory that's current for
+the R kernel. When running in a Notebook or remote server, the default sandbox is the
+'default_sandbox' created automatically under the under the filetransfer directory in the
+CytoscapeConfiguration directory. Naming a sandbox with this function creates a new
+sub-directory as a sibling to 'default_sandbox' and uses it for subsequent file operations.
+Setting a None sandbox uses the default sandbox instead.
+Sandboxes are highly recommended as an aid to creating workflows that can be shared with
+others.
 }
 \examples{
 \donttest{

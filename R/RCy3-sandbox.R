@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 #' @title sandboxInitializer
 #'
-#' @description sandboxInitializer
+#' @description Start with a sandbox template and update properties using whatever is found in the new_sandbox.
 #' @param newSandbox newSandbox
 #' @param ... ...
 #' @return sandbox
@@ -30,7 +30,7 @@ sandboxInitializer <- function(newSandbox=NULL, ...){
 # ------------------------------------------------------------------------------
 #' @title setDefaultSandbox
 #'
-#' @description setDefaultSandbox
+#' @description Set and return the sandbox properties to be used as a default, probably based on whether a Notebook is running.
 #' @param newSandbox newSandbox
 #' @param ... ...
 #' @return default sandbox
@@ -46,7 +46,7 @@ setDefaultSandbox <- function(newSandbox=NULL, ...){
 # ------------------------------------------------------------------------------
 #' @title getDefaultSandbox
 #'
-#' @description getDefaultSandbox
+#' @description Return whatever is the current default sandbox properties.
 #' @return default sandbox
 #' @examples \donttest{
 #' getDefaultSandbox()
@@ -59,7 +59,7 @@ getDefaultSandbox <- function(){
 # ------------------------------------------------------------------------------
 #' @title setDefaultSandboxPath
 #'
-#' @description setDefaultSandboxPath
+#' @description Set and return the default path, which isn't one of the properties tracked in the default_sandbox.
 #' @param newPath new path of default sandbox 
 #' @return default sandbox path
 #' @examples \donttest{
@@ -74,7 +74,7 @@ setDefaultSandboxPath <- function(newPath){
 # ------------------------------------------------------------------------------
 #' @title getDefaultSandboxPath
 #'
-#' @description getDefaultSandboxPath
+#' @description Return the default path, which isn't one of the properties tracked in the default_sandbox.
 #' @return default sandbox path
 #' @examples \donttest{
 #' getDefaultSandboxPath()
@@ -87,7 +87,7 @@ getDefaultSandboxPath <- function(){
 # ------------------------------------------------------------------------------
 #' @title getCurrentSandboxName
 #'
-#' @description getCurrentSandboxName
+#' @description Return the current sandbox name.
 #' @return current sandbox name
 #' @examples \donttest{
 #' getCurrentSandboxName()
@@ -100,7 +100,7 @@ getCurrentSandboxName <- function(){
 # ------------------------------------------------------------------------------
 #' @title getCurrentSandboxPath
 #'
-#' @description getCurrentSandboxPath
+#' @description Return the current sandbox path.
 #' @return current sandbox path
 #' @examples \donttest{
 #' getCurrentSandboxPath()
@@ -113,7 +113,7 @@ getCurrentSandboxPath <- function(){
 # ------------------------------------------------------------------------------
 #' @title getCurrentSandbox
 #'
-#' @description getCurrentSandbox
+#' @description Return both the current sandbox name and path.
 #' @return current sandbox
 #' @examples \donttest{
 #' getCurrentSandbox()
@@ -127,7 +127,7 @@ getCurrentSandbox <- function(){
 # ------------------------------------------------------------------------------
 #' @title setCurrentSandbox
 #'
-#' @description setCurrentSandbox
+#' @description Set and return the current sandbox name and path.
 #' @param sandboxName sandboxName 
 #' @param sandboxPath sandboxPath 
 #' @return current sandbox
@@ -144,7 +144,7 @@ setCurrentSandbox <- function(sandboxName, sandboxPath){
 # ------------------------------------------------------------------------------
 #' @title setSandboxReinitialize
 #'
-#' @description setSandboxReinitialize
+#' @description Set and return flag indicating that next command should reinitialize the sandbox according to the default_sandbox.
 #' @param doReinitialize default is TRUE 
 #' @return sandbox reinitialize
 #' @examples \donttest{
@@ -159,7 +159,7 @@ setSandboxReinitialize <- function(doReinitialize=TRUE){
 # ------------------------------------------------------------------------------
 #' @title getSandboxReinitialize
 #'
-#' @description getSandboxReinitialize
+#' @description Return flag indicating that next command should reinitialize the sandbox according to the default_sandbox.
 #' @return sandbox reinitialize
 #' @examples \donttest{
 #' getSandboxReinitialize()
@@ -172,7 +172,7 @@ getSandboxReinitialize <- function(){
 # ------------------------------------------------------------------------------
 #' @title getAbsSandboxPath
 #'
-#' @description getAbsSandboxPath
+#' @description Get absolute sandbox path.
 #' @param fileLocation fileLocation 
 #' @return file location
 #' @examples \donttest{
@@ -195,7 +195,7 @@ getAbsSandboxPath <- function(fileLocation){
 # ------------------------------------------------------------------------------
 #' @title resetDefaultSandbox
 #'
-#' @description resetDefaultSandbox
+#' @description Reset the entire state of the sandbox system.
 #' @examples \donttest{
 #' resetDefaultSandbox()
 #' }

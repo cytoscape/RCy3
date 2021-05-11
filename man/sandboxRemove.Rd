@@ -15,7 +15,14 @@ sandboxRemove(sandboxName = NULL, base.url = .defaultBaseUrl)
 dict: {'sandboxPath': <directory on Cytoscape workstation>, 'existed': <True if sandbox existed>}
 }
 \description{
-sandboxRemove
+Delete sandbox contents and remove its directory.
+If the current sandbox is the entire file system on a Cytoscape workstation, trying to delete it
+is an error. Otherwise, deleting the current sandbox results in the default sandbox becoming the
+new current sandbox. When running standalone on the same workstation as Cytoscape, the default
+sandbox is the entire file system on the Cytoscape workstation. When running in a Notebook or
+remote server, the default sandbox is the 'default_sandbox' created automatically under the
+under the filetransfer directory in the CytoscapeConfiguration directory. If that sandbox is
+deleted, it will be re-created so that subsequent file operations can complete successfully.
 }
 \examples{
 \donttest{

@@ -10,7 +10,7 @@ getDefaultSandboxPath()
 default sandbox path
 }
 \description{
-getDefaultSandboxPath
+Return the default path, which isn't one of the properties tracked in the default_sandbox.
 }
 \examples{
 \donttest{

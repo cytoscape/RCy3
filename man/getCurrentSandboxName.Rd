@@ -10,7 +10,7 @@ getCurrentSandboxName()
 current sandbox name
 }
 \description{
-getCurrentSandboxName
+Return the current sandbox name.
 }
 \examples{
 \donttest{
