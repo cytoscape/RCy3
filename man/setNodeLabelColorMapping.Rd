@@ -22,7 +22,7 @@ setNodeLabelColorMapping(
 mapping. Leave NULL to perform an automatic mapping to all column values.}
 
 \item{colors}{List of hex colors to map to table.column.values or a color
-scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+palette function, e.g., paletteColorBrewerSet3 (without quotes). See 
 RColorBrewer::display.brewer.all()}
 
 \item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); 
@@ -49,7 +49,7 @@ Map table column values to colors to set the node border color.
 \examples{
 \donttest{
 setNodeLabelColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
-setNodeLabelColorMapping('score', colors=schemeColorBrewerRdBu)
-setNodeLabelColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
+setNodeLabelColorMapping('score', colors=paletteColorBrewerRdBu)
+setNodeLabelColorMapping('score', colors=paletteColorBrewerSet3, mapping.type='d')
 }
 }

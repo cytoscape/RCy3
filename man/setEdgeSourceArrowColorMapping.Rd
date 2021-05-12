@@ -22,7 +22,7 @@ setEdgeSourceArrowColorMapping(
 mapping. Leave NULL to perform an automatic mapping to all column values.}
 
 \item{colors}{List of hex colors to map to table.column.values or a color
-scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+palette function, e.g., paletteColorBrewerSet3 (without quotes). See 
 RColorBrewer::display.brewer.all()}
 
 \item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); 
@@ -49,7 +49,7 @@ Map table column values to colors to set the source arrow color.
 \examples{
 \donttest{
 setEdgeSourceArrowColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
-setEdgeSourceArrowColorMapping('score', colors=schemeColorBrewerRdBu)
-setEdgeSourceArrowColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
+setEdgeSourceArrowColorMapping('score', colors=paletteColorBrewerRdBu)
+setEdgeSourceArrowColorMapping('score', colors=paletteColorBrewerSet3, mapping.type='d')
 }
 }

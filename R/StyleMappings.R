@@ -314,7 +314,7 @@ getAllStyleMappings <- function(style.name=NULL,
 #' @param table.column.values List of values from Cytoscape table to be used in
 #' mapping. Leave NULL to perform an automatic mapping to all column values.
 #' @param colors List of hex colors to map to table.column.values or a color
-#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' palette function, e.g., paletteColorBrewerSet3 (without quotes). See 
 #' RColorBrewer::display.brewer.all()
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
@@ -329,15 +329,15 @@ getAllStyleMappings <- function(style.name=NULL,
 #' @return None
 #' @examples \donttest{
 #' setNodeBorderColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
-#' setNodeBorderColorMapping('score', colors=schemeColorBrewerRdBu)
-#' setNodeBorderColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
+#' setNodeBorderColorMapping('score', colors=paletteColorBrewerRdBu)
+#' setNodeBorderColorMapping('score', colors=paletteColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                        mapping.type='c', default.color=NULL, style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
-    # check for color scheme use case
-    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+    # check for color palette use case
+    if(typeof(colors) == "closure"){ #i.e., name of palette function
         if(is.null(table.column.values)){
             auto.map<-.genColorMap('node',table.column,colors,mapping.type,
                               network,base.url)
@@ -502,7 +502,7 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
 #' @param table.column.values List of values from Cytoscape table to be used in
 #' mapping. Leave NULL to perform an automatic mapping to all column values.
 #' @param colors List of hex colors to map to table.column.values or a color
-#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' palette function, e.g., paletteColorBrewerSet3 (without quotes). See 
 #' RColorBrewer::display.brewer.all()
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
@@ -517,15 +517,15 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
 #' @return None
 #' @examples \donttest{
 #' setNodeColorMapping('score', c(-5,0,5), c('#5577FF','#FFFFFF','#FF7755'))
-#' setNodeColorMapping('score', colors=schemeColorBrewerRdBu)
-#' setNodeColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
+#' setNodeColorMapping('score', colors=paletteColorBrewerRdBu)
+#' setNodeColorMapping('score', colors=paletteColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                  mapping.type='c', default.color=NULL, style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
-    # check for color scheme use case
-    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+    # check for color palette use case
+    if(typeof(colors) == "closure"){ #i.e., name of palette function
         if(is.null(table.column.values)){
             auto.map<-.genColorMap('node',table.column,colors,mapping.type,
                               network,base.url)
@@ -917,7 +917,7 @@ setNodeLabelMapping <- function (table.column, style.name=NULL,
 #' @param table.column.values List of values from Cytoscape table to be used in
 #' mapping. Leave NULL to perform an automatic mapping to all column values.
 #' @param colors List of hex colors to map to table.column.values or a color
-#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' palette function, e.g., paletteColorBrewerSet3 (without quotes). See 
 #' RColorBrewer::display.brewer.all()
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
@@ -932,15 +932,15 @@ setNodeLabelMapping <- function (table.column, style.name=NULL,
 #' @return None
 #' @examples \donttest{
 #' setNodeLabelColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
-#' setNodeLabelColorMapping('score', colors=schemeColorBrewerRdBu)
-#' setNodeLabelColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
+#' setNodeLabelColorMapping('score', colors=paletteColorBrewerRdBu)
+#' setNodeLabelColorMapping('score', colors=paletteColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                        mapping.type='c', default.color=NULL, style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
-    # check for color scheme use case
-    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+    # check for color palette use case
+    if(typeof(colors) == "closure"){ #i.e., name of palette function
         if(is.null(table.column.values)){
             auto.map<-.genColorMap('node',table.column,colors,mapping.type,
                               network,base.url)
@@ -1235,7 +1235,7 @@ setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=
 #' @param table.column.values List of values from Cytoscape table to be used in
 #' mapping. Leave NULL to perform an automatic mapping to all column values.
 #' @param colors List of hex colors to map to table.column.values or a color
-#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' palette function, e.g., paletteColorBrewerSet3 (without quotes). See 
 #' RColorBrewer::display.brewer.all()
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
@@ -1250,15 +1250,15 @@ setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=
 #' @return None
 #' @examples \donttest{
 #' setEdgeColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
-#' setEdgeColorMapping('score', colors=schemeColorBrewerRdBu)
-#' setEdgeColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
+#' setEdgeColorMapping('score', colors=paletteColorBrewerRdBu)
+#' setEdgeColorMapping('score', colors=paletteColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                  mapping.type='c', default.color=NULL, style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
-    # check for color scheme use case
-    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+    # check for color palette use case
+    if(typeof(colors) == "closure"){ #i.e., name of palette function
         if(is.null(table.column.values)){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
@@ -1455,7 +1455,7 @@ setEdgeLabelMapping <- function (table.column, style.name=NULL,
 #' @param table.column.values List of values from Cytoscape table to be used in
 #' mapping. Leave NULL to perform an automatic mapping to all column values.
 #' @param colors List of hex colors to map to table.column.values or a color
-#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' palette function, e.g., paletteColorBrewerSet3 (without quotes). See 
 #' RColorBrewer::display.brewer.all()
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
@@ -1470,15 +1470,15 @@ setEdgeLabelMapping <- function (table.column, style.name=NULL,
 #' @return None
 #' @examples \donttest{
 #' setEdgeLabelColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
-#' setEdgeLabelColorMapping('score', colors=schemeColorBrewerRdBu)
-#' setEdgeLabelColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
+#' setEdgeLabelColorMapping('score', colors=paletteColorBrewerRdBu)
+#' setEdgeLabelColorMapping('score', colors=paletteColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                       mapping.type='c', default.color=NULL, style.name=NULL, 
                                       network=NULL, base.url=.defaultBaseUrl) {
-    # check for color scheme use case
-    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+    # check for color palette use case
+    if(typeof(colors) == "closure"){ #i.e., name of palette function
         if(is.null(table.column.values)){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
@@ -1822,7 +1822,7 @@ setEdgeSourceArrowMapping <- function (table.column, table.column.values=NULL,
 #' @param table.column.values List of values from Cytoscape table to be used in
 #' mapping. Leave NULL to perform an automatic mapping to all column values.
 #' @param colors List of hex colors to map to table.column.values or a color
-#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' palette function, e.g., paletteColorBrewerSet3 (without quotes). See 
 #' RColorBrewer::display.brewer.all()
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
@@ -1837,15 +1837,15 @@ setEdgeSourceArrowMapping <- function (table.column, table.column.values=NULL,
 #' @return None
 #' @examples \donttest{
 #' setEdgeTargetArrowColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
-#' setEdgeTargetArrowColorMapping('score', colors=schemeColorBrewerRdBu)
-#' setEdgeTargetArrowColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
+#' setEdgeTargetArrowColorMapping('score', colors=paletteColorBrewerRdBu)
+#' setEdgeTargetArrowColorMapping('score', colors=paletteColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                             mapping.type='c', default.color=NULL, style.name=NULL, 
                                             network=NULL, base.url=.defaultBaseUrl) {
-    # check for color scheme use case
-    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+    # check for color palette use case
+    if(typeof(colors) == "closure"){ #i.e., name of palette function
         if(is.null(table.column.values)){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
@@ -1891,7 +1891,7 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
 #' @param table.column.values List of values from Cytoscape table to be used in
 #' mapping. Leave NULL to perform an automatic mapping to all column values.
 #' @param colors List of hex colors to map to table.column.values or a color
-#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' palette function, e.g., paletteColorBrewerSet3 (without quotes). See 
 #' RColorBrewer::display.brewer.all()
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
@@ -1906,15 +1906,15 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
 #' @return None
 #' @examples \donttest{
 #' setEdgeSourceArrowColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
-#' setEdgeSourceArrowColorMapping('score', colors=schemeColorBrewerRdBu)
-#' setEdgeSourceArrowColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
+#' setEdgeSourceArrowColorMapping('score', colors=paletteColorBrewerRdBu)
+#' setEdgeSourceArrowColorMapping('score', colors=paletteColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                             mapping.type='c', default.color=NULL, style.name=NULL, 
                                             network=NULL, base.url=.defaultBaseUrl) {
-    # check for color scheme use case
-    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+    # check for color palette use case
+    if(typeof(colors) == "closure"){ #i.e., name of palette function
         if(is.null(table.column.values)){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
@@ -2065,21 +2065,21 @@ setEdgeTooltipMapping <- function (table.column, style.name=NULL,
 }
 
 # ==============================================================================
-# III. Scheme property value generators
+# III. Palette property value generators
 # ------------------------------------------------------------------------------
 #'@export
 # ------------------------------------------------------------------------------
-#' @title schemeColorRandom Qualitative
+#' @title paletteColorRandom Qualitative
 #'
 #' @description Generate random color map of a given size
 #' @param value.count Number of colors to generate; default is 1
 #' @return List of random colors
 #' @examples \donttest{
-#' schemeColorRandom()
+#' paletteColorRandom()
 #' }
 #' @seealso genNodeColorMap genEdgeColorMap
 #' @export
-schemeColorRandom<-function(value.count=1){
+paletteColorRandom<-function(value.count=1){
     rgb(sample(0:255,size=value.count,replace=TRUE), 
         sample(0:255,size=value.count,replace=TRUE), 
         sample(0:255,size=value.count,replace=TRUE), 
@@ -2087,471 +2087,471 @@ schemeColorRandom<-function(value.count=1){
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerPastel2 Qualitative
+#' @title paletteColorBrewerPastel2 Qualitative
 #'
 #' @description Generate Pastel2 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerPastel2()
+#' paletteColorBrewerPastel2()
 #' }
 #' @export
-schemeColorBrewerPastel2<-function(value.count=3) {
+paletteColorBrewerPastel2<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Pastel2'))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerPastel1 Qualitative
+#' @title paletteColorBrewerPastel1 Qualitative
 #'
 #' @description Generate Pastel1 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerPastel1()
+#' paletteColorBrewerPastel1()
 #' }
 #' @export
-schemeColorBrewerPastel1<-function(value.count=3) {
+paletteColorBrewerPastel1<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Pastel1'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerDark2 Qualitative
+#' @title paletteColorBrewerDark2 Qualitative
 #'
 #' @description Generate Dark2 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerDark2()
+#' paletteColorBrewerDark2()
 #' }
 #' @export
-schemeColorBrewerDark2<-function(value.count=3) {
+paletteColorBrewerDark2<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Dark2'))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerAccent Qualitative
+#' @title paletteColorBrewerAccent Qualitative
 #'
 #' @description Generate Accent Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerAccent()
+#' paletteColorBrewerAccent()
 #' }
 #' @export
-schemeColorBrewerAccent<-function(value.count=3) {
+paletteColorBrewerAccent<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Accent'))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerPaired Qualitative
+#' @title paletteColorBrewerPaired Qualitative
 #'
 #' @description Generate Paired Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 
 #' 12. See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerPaired()
+#' paletteColorBrewerPaired()
 #' }
 #' @export
-schemeColorBrewerPaired<-function(value.count=3) {
+paletteColorBrewerPaired<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Paired'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerSet1 Qualitative
+#' @title paletteColorBrewerSet1 Qualitative
 #'
 #' @description Generate Set1 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerSet1()
+#' paletteColorBrewerSet1()
 #' }
 #' @export
-schemeColorBrewerSet1<-function(value.count=3) {
+paletteColorBrewerSet1<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Set1'))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerSet2 Qualitative
+#' @title paletteColorBrewerSet2 Qualitative
 #'
 #' @description Generate Set2 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerSet2()
+#' paletteColorBrewerSet2()
 #' }
 #' @export
-schemeColorBrewerSet2<-function(value.count=3) {
+paletteColorBrewerSet2<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Set2'))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerSet3 Qualitative
+#' @title paletteColorBrewerSet3 Qualitative
 #'
 #' @description Generate Set3 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 
 #' 12. See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerSet3()
+#' paletteColorBrewerSet3()
 #' }
 #' @export
-schemeColorBrewerSet3<-function(value.count=3) {
+paletteColorBrewerSet3<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Set3'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerYlOrRd Sequential
+#' @title paletteColorBrewerYlOrRd Sequential
 #'
 #' @description Generate YlOrRd Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerYlOrRd()
+#' paletteColorBrewerYlOrRd()
 #' }
 #' @export
-schemeColorBrewerYlOrRd<-function(value.count=3) {
+paletteColorBrewerYlOrRd<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'YlOrRd'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerYlOrBr Sequential
+#' @title paletteColorBrewerYlOrBr Sequential
 #'
 #' @description Generate YlOrBr Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerYlOrBr()
+#' paletteColorBrewerYlOrBr()
 #' }
 #' @export
-schemeColorBrewerYlOrBr<-function(value.count=3) {
+paletteColorBrewerYlOrBr<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'YlOrBr'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerYlGnBu Sequential
+#' @title paletteColorBrewerYlGnBu Sequential
 #'
 #' @description Generate YlGnBu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerYlGnBu()
+#' paletteColorBrewerYlGnBu()
 #' }
 #' @export
-schemeColorBrewerYlGnBu<-function(value.count=3) {
+paletteColorBrewerYlGnBu<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'YlGnBu'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerYlGn Sequential
+#' @title paletteColorBrewerYlGn Sequential
 #'
 #' @description Generate YlGn Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerYlGn()
+#' paletteColorBrewerYlGn()
 #' }
 #' @export
-schemeColorBrewerYlGn<-function(value.count=3) {
+paletteColorBrewerYlGn<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'YlGn'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerReds Sequential
+#' @title paletteColorBrewerReds Sequential
 #'
 #' @description Generate Reds Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerReds()
+#' paletteColorBrewerReds()
 #' }
 #' @export
-schemeColorBrewerReds<-function(value.count=3) {
+paletteColorBrewerReds<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Reds'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerRdPu Sequential
+#' @title paletteColorBrewerRdPu Sequential
 #'
 #' @description Generate RdPu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerRdPu()
+#' paletteColorBrewerRdPu()
 #' }
 #' @export
-schemeColorBrewerRdPu<-function(value.count=3) {
+paletteColorBrewerRdPu<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'RdPu'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerPurples Sequential
+#' @title paletteColorBrewerPurples Sequential
 #'
 #' @description Generate Purples Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerPurples()
+#' paletteColorBrewerPurples()
 #' }
 #' @export
-schemeColorBrewerPurples<-function(value.count=3) {
+paletteColorBrewerPurples<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Purples'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerPuRd Sequential
+#' @title paletteColorBrewerPuRd Sequential
 #'
 #' @description Generate PuRd Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerPuRd()
+#' paletteColorBrewerPuRd()
 #' }
 #' @export
-schemeColorBrewerPuRd<-function(value.count=3) {
+paletteColorBrewerPuRd<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'PuRd'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerPuBuGn Sequential
+#' @title paletteColorBrewerPuBuGn Sequential
 #'
 #' @description Generate PuBuGn Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerPuBuGn()
+#' paletteColorBrewerPuBuGn()
 #' }
 #' @export
-schemeColorBrewerPuBuGn<-function(value.count=3) {
+paletteColorBrewerPuBuGn<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'PuBuGn'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerPuBu Sequential
+#' @title paletteColorBrewerPuBu Sequential
 #'
 #' @description Generate PuBu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerPuBu()
+#' paletteColorBrewerPuBu()
 #' }
 #' @export
-schemeColorBrewerPuBu<-function(value.count=3) {
+paletteColorBrewerPuBu<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'PuBu'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerOrRd Sequential
+#' @title paletteColorBrewerOrRd Sequential
 #'
 #' @description Generate OrRd Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerOrRd()
+#' paletteColorBrewerOrRd()
 #' }
 #' @export
-schemeColorBrewerOrRd<-function(value.count=3) {
+paletteColorBrewerOrRd<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'OrRd'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerOranges Sequential
+#' @title paletteColorBrewerOranges Sequential
 #'
 #' @description Generate Oranges Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerOranges()
+#' paletteColorBrewerOranges()
 #' }
 #' @export
-schemeColorBrewerOranges<-function(value.count=3) {
+paletteColorBrewerOranges<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Oranges'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerGreys Sequential
+#' @title paletteColorBrewerGreys Sequential
 #'
 #' @description Generate Greys Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerGreys()
+#' paletteColorBrewerGreys()
 #' }
 #' @export
-schemeColorBrewerGreys<-function(value.count=3) {
+paletteColorBrewerGreys<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Greys'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerGreens Sequential
+#' @title paletteColorBrewerGreens Sequential
 #'
 #' @description Generate Greens Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerGreens()
+#' paletteColorBrewerGreens()
 #' }
 #' @export
-schemeColorBrewerGreens<-function(value.count=3) {
+paletteColorBrewerGreens<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Greens'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerGnBu Sequential
+#' @title paletteColorBrewerGnBu Sequential
 #'
 #' @description Generate GnBu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerGnBu()
+#' paletteColorBrewerGnBu()
 #' }
 #' @export
-schemeColorBrewerGnBu<-function(value.count=3) {
+paletteColorBrewerGnBu<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'GnBu'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerBuPu Sequential
+#' @title paletteColorBrewerBuPu Sequential
 #'
 #' @description Generate BuPu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerBuPu()
+#' paletteColorBrewerBuPu()
 #' }
 #' @export
-schemeColorBrewerBuPu<-function(value.count=3) {
+paletteColorBrewerBuPu<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'BuPu'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerBuGn Sequential
+#' @title paletteColorBrewerBuGn Sequential
 #'
 #' @description Generate BuGn Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerBuGn()
+#' paletteColorBrewerBuGn()
 #' }
 #' @export
-schemeColorBrewerBuGn<-function(value.count=3) {
+paletteColorBrewerBuGn<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'BuGn'))
 }
 
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerBlues Sequential
+#' @title paletteColorBrewerBlues Sequential
 #'
 #' @description Generate Blues Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerBlues()
+#' paletteColorBrewerBlues()
 #' }
 #' @export
-schemeColorBrewerBlues<-function(value.count=3) {
+paletteColorBrewerBlues<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Blues'))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerRdYlBu Divergent
+#' @title paletteColorBrewerRdYlBu Divergent
 #'
 #' @description Generate RdYlBu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerRdYlBu()
+#' paletteColorBrewerRdYlBu()
 #' }
 #' @export
-schemeColorBrewerRdYlBu<-function(value.count=3) {
+paletteColorBrewerRdYlBu<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'RdYlBu')))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerRdBu Divergent
+#' @title paletteColorBrewerRdBu Divergent
 #'
 #' @description Generate RdBu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerRdBu()
+#' paletteColorBrewerRdBu()
 #' }
 #' @export
-schemeColorBrewerRdBu<-function(value.count=3) {
+paletteColorBrewerRdBu<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'RdBu')))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerPuOr Divergent
+#' @title paletteColorBrewerPuOr Divergent
 #'
 #' @description Generate PuOr Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerPuOr()
+#' paletteColorBrewerPuOr()
 #' }
 #' @export
-schemeColorBrewerPuOr<-function(value.count=3) {
+paletteColorBrewerPuOr<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'PuOr')))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerPRGn Divergent
+#' @title paletteColorBrewerPRGn Divergent
 #'
 #' @description Generate PRGn Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerPRGn()
+#' paletteColorBrewerPRGn()
 #' }
 #' @export
-schemeColorBrewerPRGn<-function(value.count=3) {
+paletteColorBrewerPRGn<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'PRGn')))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerPiYG Divergent
+#' @title paletteColorBrewerPiYG Divergent
 #'
 #' @description Generate PiYG Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerPiYG()
+#' paletteColorBrewerPiYG()
 #' }
 #' @export
-schemeColorBrewerPiYG<-function(value.count=3) {
+paletteColorBrewerPiYG<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'PiYG')))
 }
 # ------------------------------------------------------------------------------
-#' @title schemeColorBrewerBrBG Divergent
+#' @title paletteColorBrewerBrBG Divergent
 #'
 #' @description Generate BrBG Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
 #' @examples \donttest{
-#' schemeColorBrewerBrBG()
+#' paletteColorBrewerBrBG()
 #' }
 #' @export
-schemeColorBrewerBrBG<-function(value.count=3) {
+paletteColorBrewerBrBG<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'BrBG')))
 }
 
@@ -2589,14 +2589,14 @@ schemeColorBrewerBrBG<-function(value.count=3) {
             return(c(-max.max.value, 0, max.max.value))
         }
     } else {
-        stop("Automatic scheme mapping doesn't work for passthrough mappings.")
+        stop("Automatic palette mapping doesn't work for passthrough mappings.")
     }
 }
 
 # description Internal function to generate a color map
 # param table Node, Edge or Network table
 # param table.column Name of column
-# param color.scheme Name of scheme function (without quotes)
+# param color.palette Name of palette function (without quotes)
 # param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #  default is continuous
 # param network (optional) Name or SUID of the network. Default is the 
@@ -2608,14 +2608,14 @@ schemeColorBrewerBrBG<-function(value.count=3) {
 # return A named list of lists providing a mapping of column values and colors
 .genColorMap<-function(table=NULL,
                       table.column=NULL,
-                      color.scheme=NULL,
+                      color.palette=NULL,
                       mapping.type=NULL,
                       network=NULL,
                       base.url=.defaultBaseUrl){
 
     table.column.values <- .autoTableColumnValues(table, table.column,
                                                   mapping.type,network, base.url)
-    colors <- color.scheme(length(table.column.values))
+    colors <- color.palette(length(table.column.values))
     
     return (list('table.column.values'=table.column.values, 'colors'=colors))
 }
@@ -2626,7 +2626,7 @@ schemeColorBrewerBrBG<-function(value.count=3) {
 # 
 # description FUNCTION_DESCRIPTION
 # param table_column DESCRIPTION
-# param number_scheme DESCRIPTION
+# param number_palette DESCRIPTION
 # param default_number DESCRIPTION
 # param style_name DESCRIPTION
 # param network DESCRIPTION
@@ -2663,7 +2663,7 @@ schemeColorBrewerBrBG<-function(value.count=3) {
 # 
 # description FUNCTION_DESCRIPTION
 # param table_column DESCRIPTION
-# param number_scheme DESCRIPTION
+# param number_palette DESCRIPTION
 # param default_number DESCRIPTION
 # param style_name DESCRIPTION
 # param network DESCRIPTION
@@ -2762,7 +2762,7 @@ schemeColorBrewerBrBG<-function(value.count=3) {
 # style_mapping setter function
 # param table DESCRIPTION
 # param table.column DESCRIPTION
-# param scheme DESCRIPTION
+# param palette DESCRIPTION
 # param value.name DESCRIPTION
 # param default.name DESCRIPTION
 # param default.value DESCRIPTION
