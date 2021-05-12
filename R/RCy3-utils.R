@@ -225,3 +225,15 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
         stop(simpleError("Function not run due to unsupported version."))
 }
 # ------------------------------------------------------------------------------
+# Internal function for deleteDuplicateEdges in NetworkSelection.R.
+# Convert edge list into list of parts: ["xxx (pp) yyy", "zzz (pp) aaa"] into [("xxx", "pp", "yyy"), ("zzz", "pp", "aaa")]
+.parseEdges <- function(edgeList){
+    splitEdge <- function(edge){
+        res1 <- gsub('(.*) \\((.*)\\) (.*)', "\\1", regmatches(edge,gregexpr('(.*) \\((.*)\\) (.*)',edge)))
+        res2 <- gsub('(.*) \\((.*)\\) (.*)', "\\2", regmatches(edge,gregexpr('(.*) \\((.*)\\) (.*)',edge)))
+        res3 <- gsub('(.*) \\((.*)\\) (.*)', "\\3", regmatches(edge,gregexpr('(.*) \\((.*)\\) (.*)',edge)))
+        return(list(res1, res2, res3))
+    }
+    return(lapply(edgeList, splitEdge))
+}
+# ------------------------------------------------------------------------------

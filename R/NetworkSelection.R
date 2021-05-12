@@ -641,6 +641,18 @@ deleteDuplicateEdges <-
         #get list of duplicate edge SUIDs to select and delete
         dupEdgeSuids <- .edgeNameToEdgeSUID(dupEdges, network = net.suid, base.url = base.url)
         
+        #To Do
+        buildSortedEdgeEquivalents <- function(parsedEdge){
+            if(parsedEdge[[1]] < parsedEdge[[3]]){
+                forwards <- sprintf("%s (%s) %s", parsedEdge[[1]], parsedEdge[[2]], parsedEdge[[3]])
+                backwards <- sprintf("%s (%s) %s", parsedEdge[[3]], parsedEdge[[2]], parsedEdge[[1]])
+            } else {
+                forwards <- sprintf("%s (%s) %s", parsedEdge[[3]], parsedEdge[[2]], parsedEdge[[1]])
+                backwards <- sprintf("%s (%s) %s", parsedEdge[[1]], parsedEdge[[2]], parsedEdge[[3]])
+            }
+            return(list(forwards, backwards))
+        }
+        
         selectEdges(
             dupEdgeSuids,
             by.col = 'SUID',
