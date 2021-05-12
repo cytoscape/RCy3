@@ -19,9 +19,10 @@ setNodeComboOpacityMapping(
 \item{table.column}{Name of Cytoscape table column to map values from}
 
 \item{table.column.values}{List of values from Cytoscape table to be used in 
-mapping}
+mapping. Leave NULL to perform an automatic mapping to all column values.}
 
-\item{opacities}{(integer) values between 0 and 255; 0 is invisible}
+\item{opacities}{(integer) values between 0 and 255; 0 is invisible. A range
+of 50 to 255 is used by default for automatic mapping.}
 
 \item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); 
 default is continuous}
@@ -46,6 +47,8 @@ Sets opacity for node fill, border and label all together.
 }
 \examples{
 \donttest{
+setNodeComboOpacityMapping('score')
+setNodeComboOpacityMapping('score', opacities=c(0,100))
 setNodeComboOpacityMapping('score', c(-5,5), c(50,255))
 }
 }

@@ -18,9 +18,11 @@ setEdgeOpacityMapping(
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}
 
-\item{table.column.values}{List of values from Cytoscape table to be used in mapping}
+\item{table.column.values}{List of values from Cytoscape table to be used 
+in mapping. Leave NULL to perform an automatic mapping to all column values.}
 
-\item{opacities}{(integer) values between 0 and 255; 0 is invisible}
+\item{opacities}{(integer) values between 0 and 255; 0 is invisible. A range
+of 50 to 255 is used by default for automatic mapping.}
 
 \item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
 
@@ -43,6 +45,8 @@ Map table column values to opacities to set the edge opacity.
 }
 \examples{
 \donttest{
-setEdgeOpacityMapping ('weight', c(1,10), c(50,255))
+setEdgeOpacityMapping('weight')
+setEdgeOpacityMapping('weight', opacities=c(0,100))
+setEdgeOpacityMapping('weight', c(1,10), c(50,255))
 }
 }

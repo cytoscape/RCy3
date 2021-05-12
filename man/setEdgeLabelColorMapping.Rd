@@ -18,22 +18,27 @@ setEdgeLabelColorMapping(
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}
 
-\item{table.column.values}{List of values from Cytoscape table to be used in mapping}
+\item{table.column.values}{List of values from Cytoscape table to be used in
+mapping. Leave NULL to perform an automatic mapping to all column values.}
 
-\item{colors}{(integer) values between 0 and 255; 0 is invisible}
+\item{colors}{List of hex colors to map to table.column.values or a color
+scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+RColorBrewer::display.brewer.all()}
 
-\item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
+\item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); 
+default is continuous}
 
 \item{default.color}{Hex color to set as default}
 
 \item{style.name}{Name of style; default is "default" style}
 
-\item{network}{(optional) Name or SUID of the network. Default is the "current" 
-network active in Cytoscape.}
+\item{network}{(optional) Name or SUID of the network. Default is the 
+"current" network active in Cytoscape.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
-port or version to connect to the CyREST API. Default is http://localhost:1234
-and the latest version of the CyREST API supported by this version of RCy3.}
+port or version to connect to the CyREST API. Default is 
+http://localhost:1234 and the latest version of the CyREST API supported by 
+this version of RCy3.}
 }
 \value{
 None
@@ -44,5 +49,7 @@ Map table column values to colors to set the edge border color.
 \examples{
 \donttest{
 setEdgeLabelColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
+setEdgeLabelColorMapping('score', colors=schemeColorBrewerRdBu)
+setEdgeLabelColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
 }
 }
