@@ -1,9 +1,13 @@
 # ==============================================================================
-# Functions for defining MAPPINGS between table column values and visual properties,
-# organized into sections:
+# Functions for defining MAPPINGS between table column values and visual 
+# properties, organized into sections:
 #
-# I. General functions for creating and applying mappings for node, edge and network properties
-# II. Specific functions for defining particular node, edge and network properties
+# I.   General functions for creating and applying mappings for node, edge and 
+#      network properties
+# II.  Specific functions for defining particular node, edge and network 
+#      properties
+# III. Functions for generating and mapping property values to colors, 
+#      opacities, sizes, heights, widths and shapes
 #
 # ==============================================================================
 # I. General Functions
@@ -242,6 +246,61 @@ deleteStyleMapping<-function(style.name, visual.prop,  base.url=.defaultBaseUrl)
     }
 }
 
+# ------------------------------------------------------------------------------
+#' @title Get Style Mapping
+#'
+#' @description Retrieve the values the define the mappings for a given
+#' visual property in a style.
+#' @param visual.prop Name of the visual property, e.g., NODE_FILL_COLOR
+#' @param style.name Name for style; default is the 'default' style
+#' @param base_url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
+#' @return List of named values defining the visual property mappings
+#' @examples \donttest{
+#' getStyleMapping()
+#' }
+#' @seealso getVisualPropertyNames
+#' @export
+getStyleMapping <- function(visual.prop, style.name=NULL,
+                            base.url=.defaultBaseUrl){
+    if(is.null(style.name)){
+        style.name <- 'default'
+        message('style.name not specified, so using "default" style.')
+    }
+    
+    cyrestGET(paste('styles',style.name,'mappings', visual.prop, sep = '/'), 
+              base.url=base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title Get All Style Mappings
+#'
+#' @description Retrieve the values the define all the mappings per visual 
+#' property in a given style.
+#' @param style.name Name for style; default is the 'default' style
+#' @param base_url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
+#' @return List of lists with named values defining the visual property mappings
+#' @examples \donttest{
+#' getStyleMapping()
+#' }
+#' @export
+getAllStyleMappings <- function(style.name=NULL,
+                            base.url=.defaultBaseUrl){
+    if(is.null(style.name)){
+        style.name <- 'default'
+        message('style.name not specified, so using "default" style.')
+    }
+    
+    cyrestGET(paste('styles',style.name,'mappings', sep = '/'), 
+              base.url=base.url)
+}
+
+
 # ==============================================================================
 # II. Specific Functions
 # ==============================================================================
@@ -252,24 +311,43 @@ deleteStyleMapping<-function(style.name, visual.prop,  base.url=.defaultBaseUrl)
 #'
 #' @description Map table column values to colors to set the node border color.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param colors (integer) values between 0 and 255; 0 is invisible
-#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param table.column.values List of values from Cytoscape table to be used in
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param colors List of hex colors to map to table.column.values or a color
+#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' RColorBrewer::display.brewer.all()
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
 #' @param default.color Hex color to set as default
 #' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
 #' @return None
 #' @examples \donttest{
 #' setNodeBorderColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
+#' setNodeBorderColorMapping('score', colors=schemeColorBrewerRdBu)
+#' setNodeBorderColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                        mapping.type='c', default.color=NULL, style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
+    # check for color scheme use case
+    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+        if(is.null(table.column.values)){
+            auto.map<-.genColorMap('node',table.column,colors,mapping.type,
+                              network,base.url)
+            table.column.values<-auto.map$table.column.values
+            colors<-auto.map$colors
+        } else {
+            colors <- colors(length(table.column.values))
+        }
+    }
+    
     # check if colors are formatted correctly
     for (color in colors){
         .checkHexColor(color)
@@ -303,8 +381,9 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
 #' @description Sets opacity for node border only.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in 
-#' mapping
-#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param opacities (integer) values between 0 and 255; 0 is invisible. A range
+#' of 50 to 255 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
 #' @param default.opacity Opacity value to set as default for all unmapped 
@@ -317,6 +396,8 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setNodeBorderOpacityMapping('score')
+#' setNodeBorderOpacityMapping('score', opacities=c(0,100))
 #' setNodeBorderOpacityMapping('score', c(-5,5), c(50,255))
 #' }
 #' @export
@@ -334,6 +415,13 @@ setNodeBorderOpacityMapping <- function(table.column, table.column.values=NULL,
         setVisualPropertyDefault(
             list(visualProperty = "NODE_BORDER_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
+    }
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
+                            network,base.url)
+        table.column.values<-auto.map$table.column.values
+        opacities<-auto.map$opacities
     }
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp1 <- mapVisualProperty("NODE_BORDER_TRANSPARENCY",table.column, 'c',
@@ -356,8 +444,10 @@ setNodeBorderOpacityMapping <- function(table.column, table.column.values=NULL,
 #'
 #' @description Map table column values to widths to set the node border width.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param widths List of width values to map to table.column.values
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param widths List of width values to map to table.column.values. A range
+#' of 10 to 100 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
 #' @param default.width Width value to set as default for all unmapped values 
 #' @param style.name Name of style; default is "default" style
@@ -368,6 +458,8 @@ setNodeBorderOpacityMapping <- function(table.column, table.column.values=NULL,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setNodeBorderWidthMapping('score')
+#' setNodeBorderWidthMapping('score', widths=c(1,10))
 #' setNodeBorderWidthMapping('score', c(0,30), c(1,5))
 #' }
 #' @export
@@ -378,6 +470,13 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
     if(!is.null(default.width))
         setNodeBorderWidthDefault(default.width, style.name, base.url=base.url)
     
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genDimMap('node',table.column,widths,mapping.type,
+                            network,base.url)
+        table.column.values<-auto.map$table.column.values
+        widths<-auto.map$dims
+    }
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("NODE_BORDER_WIDTH",table.column, 'c',
@@ -400,24 +499,43 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
 #'
 #' @description Map table column values to colors to set the node fill color.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param colors List of hex colors to map to table.column.values
-#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param table.column.values List of values from Cytoscape table to be used in
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param colors List of hex colors to map to table.column.values or a color
+#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' RColorBrewer::display.brewer.all()
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
 #' @param default.color Hex color to set as default
 #' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
 #' @return None
 #' @examples \donttest{
 #' setNodeColorMapping('score', c(-5,0,5), c('#5577FF','#FFFFFF','#FF7755'))
+#' setNodeColorMapping('score', colors=schemeColorBrewerRdBu)
+#' setNodeColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                  mapping.type='c', default.color=NULL, style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
+    # check for color scheme use case
+    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+        if(is.null(table.column.values)){
+            auto.map<-.genColorMap('node',table.column,colors,mapping.type,
+                              network,base.url)
+            table.column.values<-auto.map$table.column.values
+            colors<-auto.map$colors
+        } else {
+                colors <- colors(length(table.column.values))
+        }
+    }
+    
     # check if colors are formatted correctly
     for (color in colors){
         .checkHexColor(color)
@@ -451,8 +569,9 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
 #' @description Sets opacity for node fill, border and label all together.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in 
-#' mapping
-#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param opacities (integer) values between 0 and 255; 0 is invisible. A range
+#' of 50 to 255 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
 #' @param default.opacity Opacity value to set as default for all unmapped 
@@ -465,6 +584,8 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setNodeComboOpacityMapping('score')
+#' setNodeComboOpacityMapping('score', opacities=c(0,100))
 #' setNodeComboOpacityMapping('score', c(-5,5), c(50,255))
 #' }
 #' @export
@@ -491,7 +612,13 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
             list(visualProperty = "NODE_LABEL_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
     }
-    
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
+                            network,base.url)
+        table.column.values<-auto.map$table.column.values
+        opacities<-auto.map$opacities
+    }
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp1 <- mapVisualProperty("NODE_TRANSPARENCY",table.column, 'c',
@@ -534,8 +661,9 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
 #' @description Sets opacity for node fill only.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in 
-#' mapping
-#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param opacities (integer) values between 0 and 255; 0 is invisible. A range
+#' of 50 to 255 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
 #' @param default.opacity Opacity value to set as default for all unmapped 
@@ -548,6 +676,8 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setNodeFillOpacityMapping('score')
+#' setNodeFillOpacityMapping('score', opacities=c(0,100))
 #' setNodeFillOpacityMapping('score', c(-5,5), c(50,255))
 #' }
 #' @export
@@ -565,6 +695,13 @@ setNodeFillOpacityMapping <- function(table.column, table.column.values=NULL,
         setVisualPropertyDefault(
             list(visualProperty = "NODE_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
+    }
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
+                            network,base.url)
+        table.column.values<-auto.map$table.column.values
+        opacities<-auto.map$opacities
     }
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp1 <- mapVisualProperty("NODE_TRANSPARENCY",table.column, 'c',
@@ -640,8 +777,10 @@ setNodeFontFaceMapping <- function(table.column, table.column.values,
 #'
 #' @description Map table column values to sizes to set the node size.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param sizes List of size values to mape to table.column.values
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param sizes List of sizes to map to table.column.values. A range
+#' of 10 to 100 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
 #' @param default.size Size value to set as default
 #' @param style.name Name of style; default is "default" style
@@ -652,6 +791,8 @@ setNodeFontFaceMapping <- function(table.column, table.column.values,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setNodeFontSizeMapping('score')
+#' setNodeFontSizeMapping('score', sizes=c(6,24))
 #' setNodeFontSizeMapping('score', c(0,30), c(35,55))
 #' }
 #' @export
@@ -662,6 +803,13 @@ setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, size
     if(!is.null(default.size))
         setNodeFontSizeDefault(default.size, style.name, base.url=base.url)
     
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genDimMap('node',table.column,sizes,mapping.type,
+                             network,base.url)
+        table.column.values<-auto.map$table.column.values
+        sizes<-auto.map$dims
+    }
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("NODE_LABEL_FONT_SIZE",table.column, 'c',
@@ -685,8 +833,10 @@ setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, size
 #'
 #' @description Map table column values to the node heights.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param heights List of height values to mape to table.column.values
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param heights List of height values to map to table.column.values. A range
+#' of 10 to 100 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
 #' @param default.height Size value to set as default
 #' @param style.name Name of style; default is "default" style
@@ -697,6 +847,8 @@ setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, size
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setNodeHeightMapping('score')
+#' setNodeHeightMapping('score', heights=c(30,80))
 #' setNodeHeightMapping('score', c(0,30), c(35,55))
 #' }
 #' @export
@@ -707,6 +859,13 @@ setNodeHeightMapping <- function (table.column, table.column.values=NULL, height
     if(!is.null(default.height))
         setNodeHeightDefault(default.height, style.name, base.url=base.url)
     
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genDimMap('node',table.column,heights,mapping.type,
+                             network,base.url)
+        table.column.values<-auto.map$table.column.values
+        heights<-auto.map$dims
+    }
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("NODE_HEIGHT",table.column, 'c',
@@ -755,24 +914,43 @@ setNodeLabelMapping <- function (table.column, style.name=NULL,
 #'
 #' @description Map table column values to colors to set the node border color.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param colors (integer) values between 0 and 255; 0 is invisible
-#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param table.column.values List of values from Cytoscape table to be used in
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param colors List of hex colors to map to table.column.values or a color
+#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' RColorBrewer::display.brewer.all()
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
 #' @param default.color Hex color to set as default
 #' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
 #' @return None
 #' @examples \donttest{
 #' setNodeLabelColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
+#' setNodeLabelColorMapping('score', colors=schemeColorBrewerRdBu)
+#' setNodeLabelColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                        mapping.type='c', default.color=NULL, style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
+    # check for color scheme use case
+    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+        if(is.null(table.column.values)){
+            auto.map<-.genColorMap('node',table.column,colors,mapping.type,
+                              network,base.url)
+            table.column.values<-auto.map$table.column.values
+            colors<-auto.map$colors
+        } else {
+            colors <- colors(length(table.column.values))
+        }
+    }
+    
     # check if colors are formatted correctly
     for (color in colors){
         .checkHexColor(color)
@@ -806,8 +984,9 @@ setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, co
 #' @description Sets opacity for node label only.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in 
-#' mapping
-#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param opacities (integer) values between 0 and 255; 0 is invisible. A range
+#' of 50 to 255 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
 #' @param default.opacity Opacity value to set as default for all unmapped 
@@ -820,6 +999,8 @@ setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, co
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setNodeLabelOpacityMapping('score')
+#' setNodeLabelOpacityMapping('score', opacities=c(0,100))
 #' setNodeLabelOpacityMapping('score', c(-5,5), c(50,255))
 #' }
 #' @export
@@ -837,6 +1018,13 @@ setNodeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
         setVisualPropertyDefault(
             list(visualProperty = "NODE_LABEL_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
+    }
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
+                            network,base.url)
+        table.column.values<-auto.map$table.column.values
+        opacities<-auto.map$opacities
     }
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp1 <- mapVisualProperty("NODE_LABEL_TRANSPARENCY",table.column, 'c',
@@ -860,8 +1048,10 @@ setNodeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
 #'
 #' @description Map table column values to shapes to set the node shape.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param shapes List of shapes to map to table.column.values. See \link{getNodeShapes}
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param shapes List of shapes to map to table.column.values. Leave NULL to 
+#' perform an automatic mapping to available shapes. See \link{getNodeShapes}
 #' @param default.shape Shape to set as default. See \link{getNodeShapes}
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
@@ -871,16 +1061,24 @@ setNodeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setNodeShapeMapping('type')
 #' setNodeShapeMapping('type',c('protein','dna'),c('ELLIPSE','RECTANGLE'))
 #' }
 #' @export
-setNodeShapeMapping <- function (table.column, table.column.values, shapes, 
+setNodeShapeMapping <- function (table.column, table.column.values=NULL, 
+                                 shapes=NULL, 
                                  default.shape=NULL , style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.shape))
         setNodeShapeDefault(default.shape, style.name, base.url=base.url)
-    
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genShapeMap(table.column,
+                               network,base.url)
+        table.column.values<-auto.map$table.column.values
+        shapes<-auto.map$shapes
+    }
     # perform mapping
     mvp <- mapVisualProperty("NODE_SHAPE",table.column, 'd',
                              table.column.values, shapes, 
@@ -894,8 +1092,10 @@ setNodeShapeMapping <- function (table.column, table.column.values, shapes,
 #'
 #' @description Map table column values to node font sizes.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param sizes List of font size values to mape to table.column.values
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param sizes List of sizes to map to table.column.values. A range
+#' of 10 to 100 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
 #' @param default.size Size value to set as default
 #' @param style.name Name of style; default is "default" style
@@ -906,6 +1106,8 @@ setNodeShapeMapping <- function (table.column, table.column.values, shapes,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setNodeSizeMapping('score')
+#' setNodeSizeMapping('score', sizes=c(30,80))
 #' setNodeSizeMapping('score', c(0,30), c(35,55))
 #' }
 #' @export
@@ -916,6 +1118,13 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
     if(!is.null(default.size))
         setNodeSizeDefault(default.size, style.name, base.url=base.url)
     
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genDimMap('node',table.column,sizes,mapping.type,
+                             network,base.url)
+        table.column.values<-auto.map$table.column.values
+        sizes<-auto.map$dims
+    }
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("NODE_SIZE",table.column, 'c',
@@ -964,18 +1173,23 @@ setNodeTooltipMapping <- function (table.column, style.name=NULL,
 #'
 #' @description Map table column values to the node widths.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param widths List of width values to mape to table.column.values
-#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param widths List of width values to map to table.column.values. A range
+#' of 10 to 100 is used by default for automatic mapping.
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
 #' @param default.width Size value to set as default
 #' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. 
+#' Default is the "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setNodeWidthMapping('score')
+#' setNodeWidthMapping('score', widths=c(30,80))
 #' setNodeWidthMapping('score', c(0,30), c(35,55))
 #' }
 #' @export
@@ -985,7 +1199,13 @@ setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=
     # set default
     if(!is.null(default.width))
         setNodeWidthDefault(default.width, style.name, base.url=base.url)
-    
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genDimMap('node',table.column,widths,mapping.type,
+                             network,base.url)
+        table.column.values<-auto.map$table.column.values
+        widths<-auto.map$dims
+    }
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("NODE_WIDTH",table.column, 'c',
@@ -1012,24 +1232,43 @@ setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=
 #'
 #' @description Map table column values to colors to set the edge color.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param colors List of hex colors to map to table.column.values
-#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param table.column.values List of values from Cytoscape table to be used in
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param colors List of hex colors to map to table.column.values or a color
+#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' RColorBrewer::display.brewer.all()
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
 #' @param default.color Hex color to set as default
 #' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
+#' setEdgeColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
+#' setEdgeColorMapping('score', colors=schemeColorBrewerRdBu)
+#' setEdgeColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                  mapping.type='c', default.color=NULL, style.name=NULL, 
                                  network=NULL, base.url=.defaultBaseUrl) {
+    # check for color scheme use case
+    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+        if(is.null(table.column.values)){
+            auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
+                              network,base.url)
+            table.column.values<-auto.map$table.column.values
+            colors<-auto.map$colors
+        } else {
+            colors <- colors(length(table.column.values))
+        }
+    }
+    
     # check if colors are formatted correctly
     for (color in colors){
         .checkHexColor(color)
@@ -1135,8 +1374,10 @@ setEdgeFontFaceMapping <- function(table.column, table.column.values,
 #'
 #' @description Map table column values to sizes to set the edge size.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param sizes List of size values to mape to table.column.values
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param sizes List of sizes to map to table.column.values. A range
+#' of 10 to 100 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
 #' @param default.size Size value to set as default
 #' @param style.name Name of style; default is "default" style
@@ -1147,6 +1388,8 @@ setEdgeFontFaceMapping <- function(table.column, table.column.values,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setEdgeFontSizeMapping('score')
+#' setEdgeFontSizeMapping('score', sizes=c(6,24))
 #' setEdgeFontSizeMapping('score', c(0,30), c(35,55))
 #' }
 #' @export
@@ -1156,7 +1399,13 @@ setEdgeFontSizeMapping <- function (table.column, table.column.values=NULL, size
     # set default
     if(!is.null(default.size))
         setEdgeFontSizeDefault(default.size, style.name, base.url=base.url)
-    
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genDimMap('edge',table.column,sizes,mapping.type,
+                             network,base.url)
+        table.column.values<-auto.map$table.column.values
+        sizes<-auto.map$dims
+    }
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("EDGE_LABEL_FONT_SIZE",table.column, 'c',
@@ -1203,24 +1452,43 @@ setEdgeLabelMapping <- function (table.column, style.name=NULL,
 #'
 #' @description Map table column values to colors to set the edge border color.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param colors (integer) values between 0 and 255; 0 is invisible
-#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param table.column.values List of values from Cytoscape table to be used in
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param colors List of hex colors to map to table.column.values or a color
+#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' RColorBrewer::display.brewer.all()
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
 #' @param default.color Hex color to set as default
 #' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
 #' @return None
 #' @examples \donttest{
 #' setEdgeLabelColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
+#' setEdgeLabelColorMapping('score', colors=schemeColorBrewerRdBu)
+#' setEdgeLabelColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                       mapping.type='c', default.color=NULL, style.name=NULL, 
                                       network=NULL, base.url=.defaultBaseUrl) {
+    # check for color scheme use case
+    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+        if(is.null(table.column.values)){
+            auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
+                              network,base.url)
+            table.column.values<-auto.map$table.column.values
+            colors<-auto.map$colors
+        } else {
+            colors <- colors(length(table.column.values))
+        }
+    }
+    
     # check if colors are formatted correctly
     for (color in colors){
         .checkHexColor(color)
@@ -1255,8 +1523,9 @@ setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, co
 #' @description Sets opacity for edge label only.
 #' @param table.column Name of Cytoscape table column to map values from
 #' @param table.column.values List of values from Cytoscape table to be used in 
-#' mapping
-#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param opacities (integer) values between 0 and 255; 0 is invisible. A range
+#' of 50 to 255 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
 #' default is continuous
 #' @param default.opacity Opacity value to set as default for all unmapped 
@@ -1264,14 +1533,14 @@ setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, co
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeLabelOpacityMapping ('weight', c(1,10), c(50,255))
+#' setEdgeLabelOpacityMapping('weight')
+#' setEdgeLabelOpacityMapping('weight', opacities=c(0,100))
+#' setEdgeLabelOpacityMapping('weight', c(1,10), c(50,255))
 #' }
 #' @export
 setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL, 
@@ -1289,6 +1558,13 @@ setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
         setVisualPropertyDefault(
             list(visualProperty = "EDGE_LABEL_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
+    }
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genOpacityMap('edge',table.column,opacities,mapping.type,
+                            network,base.url)
+        table.column.values<-auto.map$table.column.values
+        opacities<-auto.map$opacities
     }
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp1 <- mapVisualProperty("EDGE_LABEL_TRANSPARENCY",table.column, 'c',
@@ -1312,8 +1588,10 @@ setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
 #'
 #' @description Map table column values to styles to set the edge style.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param line.styles List of line styles. See \link{getLineStyles}.
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param line.styles List of line styles. Leave NULL to perform
+#' an automatic mapping to available line styles. See \link{getLineStyles}.
 #' @param default.line.style Style to set as default. See \link{getLineStyles}.
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
@@ -1323,16 +1601,24 @@ setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setEdgeLineStyleMapping('type')
 #' setEdgeLineStyleMapping('type',c('pp','pd'),c('SOLID','LONG_DASH'))
 #' }
 #' @export
-setEdgeLineStyleMapping <- function (table.column, table.column.values, line.styles, 
+setEdgeLineStyleMapping <- function (table.column, table.column.values=NULL, 
+                                     line.styles=NULL, 
                                      default.line.style='SOLID', style.name=NULL, 
                                      network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.line.style))
         setEdgeLineStyleDefault(default.line.style, style.name, base.url=base.url)
-    
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genLineStyleMap(table.column,
+                                 network,base.url)
+        table.column.values<-auto.map$table.column.values
+        line.styles<-auto.map$line.styles
+    }
     # perform mapping
     mvp <- mapVisualProperty("EDGE_LINE_TYPE",table.column, 'd',
                              table.column.values, line.styles, 
@@ -1346,8 +1632,10 @@ setEdgeLineStyleMapping <- function (table.column, table.column.values, line.sty
 #'
 #' @description Map table column values to widths to set the edge line width.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param widths List of width values to map to table.column.values
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param widths List of width values to map to table.column.values. A range
+#' of 10 to 100 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
 #' @param default.width Width value to set as default for all unmapped values for all unmapped values.
 #' @param style.name Name of style; default is "default" style
@@ -1358,6 +1646,8 @@ setEdgeLineStyleMapping <- function (table.column, table.column.values, line.sty
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setEdgeLineWidthMapping('score')
+#' setEdgeLineWidthMapping('score', widths=c(1,10))
 #' setEdgeLineWidthMapping('score', c(0,30), c(1,5))
 #' }
 #' @export
@@ -1367,7 +1657,13 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
     # set default
     if(!is.null(default.width))
         setEdgeLineWidthDefault(default.width, style.name, base.url=base.url)
-    
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genDimMap('edge',table.column,widths,mapping.type,
+                             network,base.url)
+        table.column.values<-auto.map$table.column.values
+        widths<-auto.map$dims
+    }
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("EDGE_WIDTH",table.column, 'c',
@@ -1392,8 +1688,10 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
 #'
 #' @description Map table column values to opacities to set the edge opacity.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param opacities (integer) values between 0 and 255; 0 is invisible
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param opacities (integer) values between 0 and 255; 0 is invisible. A range
+#' of 50 to 255 is used by default for automatic mapping.
 #' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
 #' @param default.opacity Opacity value to set as default for all unmapped values
 #' @param style.name Name of style; default is "default" style
@@ -1404,7 +1702,9 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setEdgeOpacityMapping ('weight', c(1,10), c(50,255))
+#' setEdgeOpacityMapping('weight')
+#' setEdgeOpacityMapping('weight', opacities=c(0,100))
+#' setEdgeOpacityMapping('weight', c(1,10), c(50,255))
 #' }
 #' @export
 setEdgeOpacityMapping <- function (table.column, table.column.values=NULL, 
@@ -1423,7 +1723,14 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
         setVisualPropertyDefault(
             list(visualProperty = "EDGE_TRANSPARENCY", value = default.opacity), 
             style.name, base.url)
-    }    
+    }   
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genOpacityMap('edge',table.column,opacities,mapping.type,
+                            network,base.url)
+        table.column.values<-auto.map$table.column.values
+        opacities<-auto.map$opacities
+    }
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("EDGE_TRANSPARENCY",table.column, 'c',
@@ -1447,8 +1754,10 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
 #'
 #' @description Map table column values to shapes to set the target arrow shape.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param shapes List of shapes to map to table.column.values. See \link{getArrowShapes}
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param shapes List of shapes to map to table.column.values. Leave NULL to 
+#' perform an automatic mapping to available shapes. See \link{getArrowShapes}
 #' @param default.shape Shape to set as default. See \link{getArrowShapes}
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
@@ -1458,22 +1767,18 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setEdgeTargetArrowMapping('type')
 #' setEdgeTargetArrowMapping('type',c('activation','inhibition'),c('ARROW','T'))
 #' }
 #' @export
-setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes, 
+setEdgeTargetArrowMapping <- function (table.column, table.column.values=NULL, 
+                                       shapes=NULL, 
                                        default.shape='ARROW', style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
-    # set default
-    if(!is.null(default.shape))
-        setEdgeTargetArrowShapeDefault(default.shape, style.name, base.url=base.url)
-    
-    # perform mapping
-    mvp <- mapVisualProperty("EDGE_TARGET_ARROW_SHAPE",table.column, 'd',
-                             table.column.values, shapes, 
-                             network=network, base.url = base.url)
-    
-    updateStyleMapping(style.name, mvp, base.url = base.url)
+    #Whoops! Duplicate?? TODO: Deprecate?
+    setEdgeTargetArrowShapeMapping(table.column, table.column.values, shapes, 
+                                   default.shape , style.name, 
+                                   network, base.url) 
 }
 
 # ------------------------------------------------------------------------------
@@ -1481,8 +1786,10 @@ setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes
 #'
 #' @description Map table column values to shapes to set the source arrow shape.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param shapes List of shapes to map to table.column.values. See \link{getArrowShapes}
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param shapes List of shapes to map to table.column.values. Leave NULL to 
+#' perform an automatic mapping to available shapes. See \link{getArrowShapes}
 #' @param default.shape Shape to set as default. See \link{getArrowShapes}
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
@@ -1492,22 +1799,18 @@ setEdgeTargetArrowMapping <- function (table.column, table.column.values, shapes
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setEdgeSourceArrowMapping('type')
 #' setEdgeSourceArrowMapping('type',c('activation','inhibition'),c('ARROW','T'))
 #' }
 #' @export
-setEdgeSourceArrowMapping <- function (table.column, table.column.values, shapes, 
+setEdgeSourceArrowMapping <- function (table.column, table.column.values=NULL, 
+                                       shapes=NULL, 
                                        default.shape='ARROW', style.name=NULL, 
                                        network=NULL, base.url=.defaultBaseUrl) {
-    # set default
-    if(!is.null(default.shape))
-        setEdgeSourceArrowShapeDefault(default.shape, style.name, base.url=base.url)
-    
-    # perform mapping
-    mvp <- mapVisualProperty("EDGE_SOURCE_ARROW_SHAPE",table.column, 'd',
-                             table.column.values, shapes, 
-                             network=network, base.url = base.url)
-    
-    updateStyleMapping(style.name, mvp, base.url = base.url)
+    #Whoops! Duplicate?? TODO: Deprecate?
+    setEdgeSourceArrowShapeMapping(table.column, table.column.values, shapes, 
+                                   default.shape , style.name, 
+                                   network, base.url) 
 }
 
 
@@ -1516,24 +1819,42 @@ setEdgeSourceArrowMapping <- function (table.column, table.column.values, shapes
 #'
 #' @description Map table column values to colors to set the target arrow color.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param colors List of hex colors to map to table.column.values
-#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param table.column.values List of values from Cytoscape table to be used in
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param colors List of hex colors to map to table.column.values or a color
+#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' RColorBrewer::display.brewer.all()
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
 #' @param default.color Hex color to set as default
 #' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
 #' @return None
 #' @examples \donttest{
 #' setEdgeTargetArrowColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
+#' setEdgeTargetArrowColorMapping('score', colors=schemeColorBrewerRdBu)
+#' setEdgeTargetArrowColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                             mapping.type='c', default.color=NULL, style.name=NULL, 
                                             network=NULL, base.url=.defaultBaseUrl) {
+    # check for color scheme use case
+    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+        if(is.null(table.column.values)){
+            auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
+                              network,base.url)
+            table.column.values<-auto.map$table.column.values
+            colors<-auto.map$colors
+        } else {
+            colors <- colors(length(table.column.values))
+        }
+    }
     # check if colors are formatted correctly
     for (color in colors){
         .checkHexColor(color)
@@ -1567,24 +1888,42 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
 #'
 #' @description Map table column values to colors to set the source arrow color.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param colors List of hex colors to map to table.column.values
-#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); default is continuous
+#' @param table.column.values List of values from Cytoscape table to be used in
+#' mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param colors List of hex colors to map to table.column.values or a color
+#' scheme function, e.g., schemeColorBrewerSet3 (without quotes). See 
+#' RColorBrewer::display.brewer.all()
+#' @param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#' default is continuous
 #' @param default.color Hex color to set as default
 #' @param style.name Name of style; default is "default" style
-#' @param network (optional) Name or SUID of the network. Default is the "current" 
-#' network active in Cytoscape.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
-#' port or version to connect to the CyREST API. Default is http://localhost:1234
-#' and the latest version of the CyREST API supported by this version of RCy3.
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
 #' @return None
 #' @examples \donttest{
 #' setEdgeSourceArrowColorMapping('score', c(0,5), c('#FFFFFF','#FF7755'))
+#' setEdgeSourceArrowColorMapping('score', colors=schemeColorBrewerRdBu)
+#' setEdgeSourceArrowColorMapping('score', colors=schemeColorBrewerSet3, mapping.type='d')
 #' }
 #' @export
 setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NULL, colors=NULL, 
                                             mapping.type='c', default.color=NULL, style.name=NULL, 
                                             network=NULL, base.url=.defaultBaseUrl) {
+    # check for color scheme use case
+    if(typeof(colors) == "closure"){ #i.e., name of scheme function
+        if(is.null(table.column.values)){
+            auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
+                              network,base.url)
+            table.column.values<-auto.map$table.column.values
+            colors<-auto.map$colors
+        } else {
+            colors <- colors(length(table.column.values))
+        }
+    }
     # check if colors are formatted correctly
     for (color in colors){
         .checkHexColor(color)
@@ -1618,8 +1957,10 @@ setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NU
 #'
 #' @description Map table column values to shapes to set the target arrow shape.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param shapes List of arrow shapes to map to table.column.values. See \link{getArrowShapes}
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param shapes List of shapes to map to table.column.values. Leave NULL to 
+#' perform an automatic mapping to available shapes. See \link{getArrowShapes}
 #' @param default.shape Shape to set as default. See \link{getArrowShapes}
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
@@ -1629,17 +1970,25 @@ setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NU
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setEdgeTargetArrowShapeMapping('type')
 #' setEdgeTargetArrowShapeMapping('type',c('activation','inhibition'),
-#' c('ARROW','T'))
+#'   c('ARROW','T'))
 #' }
 #' @export
-setEdgeTargetArrowShapeMapping <- function (table.column, table.column.values, shapes, 
-                                 default.shape=NULL , style.name=NULL, 
-                                 network=NULL, base.url=.defaultBaseUrl) {
+setEdgeTargetArrowShapeMapping <- function(table.column, 
+                          table.column.values=NULL, shapes=NULL, 
+                          default.shape=NULL , style.name=NULL, 
+                          network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.shape))
         setEdgeTargetArrowShapeDefault(default.shape, style.name, base.url=base.url)
-    
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genArrowMap(table.column,
+                                   network,base.url)
+        table.column.values<-auto.map$table.column.values
+        shapes<-auto.map$shapes
+    }
     # perform mapping
     mvp <- mapVisualProperty("EDGE_TARGET_ARROW_SHAPE",table.column, 'd',
                              table.column.values, shapes, 
@@ -1653,8 +2002,10 @@ setEdgeTargetArrowShapeMapping <- function (table.column, table.column.values, s
 #'
 #' @description Map table column values to shapes to set the source arrow shape.
 #' @param table.column Name of Cytoscape table column to map values from
-#' @param table.column.values List of values from Cytoscape table to be used in mapping
-#' @param shapes List of arrow shapes to map to table.column.values. See \link{getArrowShapes}
+#' @param table.column.values List of values from Cytoscape table to be used 
+#' in mapping. Leave NULL to perform an automatic mapping to all column values.
+#' @param shapes List of shapes to map to table.column.values. Leave NULL to 
+#' perform an automatic mapping to available shapes. See \link{getArrowShapes}
 #' @param default.shape Shape to set as default. See \link{getArrowShapes}
 #' @param style.name Name of style; default is "default" style
 #' @param network (optional) Name or SUID of the network. Default is the "current" 
@@ -1664,17 +2015,25 @@ setEdgeTargetArrowShapeMapping <- function (table.column, table.column.values, s
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
+#' setEdgeSourceArrowShapeMapping('type')
 #' setEdgeSourceArrowShapeMapping('type',c('activation','inhibition'),
-#' c('ARROW','T'))
+#'   c('ARROW','T'))
 #' }
 #' @export
-setEdgeSourceArrowShapeMapping <- function (table.column, table.column.values, shapes, 
-                                            default.shape=NULL , style.name=NULL, 
-                                            network=NULL, base.url=.defaultBaseUrl) {
+setEdgeSourceArrowShapeMapping <- function(table.column, 
+                               table.column.values=NULL, shapes=NULL, 
+                               default.shape=NULL , style.name=NULL, 
+                               network=NULL, base.url=.defaultBaseUrl) {
     # set default
     if(!is.null(default.shape))
         setEdgeSourceArrowShapeDefault(default.shape, style.name, base.url=base.url)
-    
+    # check table.column.values to map
+    if(is.null(table.column.values)){
+        auto.map<-.genArrowMap(table.column,
+                                   network,base.url)
+        table.column.values<-auto.map$table.column.values
+        shapes<-auto.map$shapes
+    }
     # perform mapping
     mvp <- mapVisualProperty("EDGE_SOURCE_ARROW_SHAPE",table.column, 'd',
                              table.column.values, shapes, 
@@ -1703,5 +2062,727 @@ setEdgeTooltipMapping <- function (table.column, style.name=NULL,
     if(!.tableColumnExists(table.column, 'edge',network, base.url)) return()
     mvp <- mapVisualProperty("EDGE_TOOLTIP", table.column, 'p')  
     updateStyleMapping(style.name, mvp, base.url = base.url)
+}
+
+# ==============================================================================
+# III. Scheme property value generators
+# ------------------------------------------------------------------------------
+#'@export
+# ------------------------------------------------------------------------------
+#' @title schemeColorRandom Qualitative
+#'
+#' @description Generate random color map of a given size
+#' @param value.count Number of colors to generate; default is 1
+#' @return List of random colors
+#' @examples \donttest{
+#' schemeColorRandom()
+#' }
+#' @seealso genNodeColorMap genEdgeColorMap
+#' @export
+schemeColorRandom<-function(value.count=1){
+    rgb(sample(0:255,size=value.count,replace=TRUE), 
+        sample(0:255,size=value.count,replace=TRUE), 
+        sample(0:255,size=value.count,replace=TRUE), 
+        maxColorValue=255)
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerPastel2 Qualitative
+#'
+#' @description Generate Pastel2 Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 8
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerPastel2()
+#' }
+#' @export
+schemeColorBrewerPastel2<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Pastel2'))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerPastel1 Qualitative
+#'
+#' @description Generate Pastel1 Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerPastel1()
+#' }
+#' @export
+schemeColorBrewerPastel1<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Pastel1'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerDark2 Qualitative
+#'
+#' @description Generate Dark2 Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 8
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerDark2()
+#' }
+#' @export
+schemeColorBrewerDark2<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Dark2'))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerAccent Qualitative
+#'
+#' @description Generate Accent Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 8
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerAccent()
+#' }
+#' @export
+schemeColorBrewerAccent<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Accent'))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerPaired Qualitative
+#'
+#' @description Generate Paired Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 
+#' 12. See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerPaired()
+#' }
+#' @export
+schemeColorBrewerPaired<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Paired'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerSet1 Qualitative
+#'
+#' @description Generate Set1 Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerSet1()
+#' }
+#' @export
+schemeColorBrewerSet1<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Set1'))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerSet2 Qualitative
+#'
+#' @description Generate Set2 Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 8
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerSet2()
+#' }
+#' @export
+schemeColorBrewerSet2<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Set2'))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerSet3 Qualitative
+#'
+#' @description Generate Set3 Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 
+#' 12. See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerSet3()
+#' }
+#' @export
+schemeColorBrewerSet3<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Set3'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerYlOrRd Sequential
+#'
+#' @description Generate YlOrRd Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerYlOrRd()
+#' }
+#' @export
+schemeColorBrewerYlOrRd<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'YlOrRd'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerYlOrBr Sequential
+#'
+#' @description Generate YlOrBr Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerYlOrBr()
+#' }
+#' @export
+schemeColorBrewerYlOrBr<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'YlOrBr'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerYlGnBu Sequential
+#'
+#' @description Generate YlGnBu Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerYlGnBu()
+#' }
+#' @export
+schemeColorBrewerYlGnBu<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'YlGnBu'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerYlGn Sequential
+#'
+#' @description Generate YlGn Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerYlGn()
+#' }
+#' @export
+schemeColorBrewerYlGn<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'YlGn'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerReds Sequential
+#'
+#' @description Generate Reds Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerReds()
+#' }
+#' @export
+schemeColorBrewerReds<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Reds'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerRdPu Sequential
+#'
+#' @description Generate RdPu Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerRdPu()
+#' }
+#' @export
+schemeColorBrewerRdPu<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'RdPu'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerPurples Sequential
+#'
+#' @description Generate Purples Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerPurples()
+#' }
+#' @export
+schemeColorBrewerPurples<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Purples'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerPuRd Sequential
+#'
+#' @description Generate PuRd Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerPuRd()
+#' }
+#' @export
+schemeColorBrewerPuRd<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'PuRd'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerPuBuGn Sequential
+#'
+#' @description Generate PuBuGn Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerPuBuGn()
+#' }
+#' @export
+schemeColorBrewerPuBuGn<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'PuBuGn'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerPuBu Sequential
+#'
+#' @description Generate PuBu Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerPuBu()
+#' }
+#' @export
+schemeColorBrewerPuBu<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'PuBu'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerOrRd Sequential
+#'
+#' @description Generate OrRd Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerOrRd()
+#' }
+#' @export
+schemeColorBrewerOrRd<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'OrRd'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerOranges Sequential
+#'
+#' @description Generate Oranges Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerOranges()
+#' }
+#' @export
+schemeColorBrewerOranges<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Oranges'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerGreys Sequential
+#'
+#' @description Generate Greys Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerGreys()
+#' }
+#' @export
+schemeColorBrewerGreys<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Greys'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerGreens Sequential
+#'
+#' @description Generate Greens Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerGreens()
+#' }
+#' @export
+schemeColorBrewerGreens<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Greens'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerGnBu Sequential
+#'
+#' @description Generate GnBu Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerGnBu()
+#' }
+#' @export
+schemeColorBrewerGnBu<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'GnBu'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerBuPu Sequential
+#'
+#' @description Generate BuPu Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerBuPu()
+#' }
+#' @export
+schemeColorBrewerBuPu<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'BuPu'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerBuGn Sequential
+#'
+#' @description Generate BuGn Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerBuGn()
+#' }
+#' @export
+schemeColorBrewerBuGn<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'BuGn'))
+}
+
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerBlues Sequential
+#'
+#' @description Generate Blues Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerBlues()
+#' }
+#' @export
+schemeColorBrewerBlues<-function(value.count=3) {
+    return(RColorBrewer::brewer.pal(value.count, 'Blues'))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerRdYlBu Divergent
+#'
+#' @description Generate RdYlBu Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerRdYlBu()
+#' }
+#' @export
+schemeColorBrewerRdYlBu<-function(value.count=3) {
+    return(rev(RColorBrewer::brewer.pal(value.count, 'RdYlBu')))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerRdBu Divergent
+#'
+#' @description Generate RdBu Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerRdBu()
+#' }
+#' @export
+schemeColorBrewerRdBu<-function(value.count=3) {
+    return(rev(RColorBrewer::brewer.pal(value.count, 'RdBu')))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerPuOr Divergent
+#'
+#' @description Generate PuOr Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerPuOr()
+#' }
+#' @export
+schemeColorBrewerPuOr<-function(value.count=3) {
+    return(rev(RColorBrewer::brewer.pal(value.count, 'PuOr')))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerPRGn Divergent
+#'
+#' @description Generate PRGn Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerPRGn()
+#' }
+#' @export
+schemeColorBrewerPRGn<-function(value.count=3) {
+    return(rev(RColorBrewer::brewer.pal(value.count, 'PRGn')))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerPiYG Divergent
+#'
+#' @description Generate PiYG Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerPiYG()
+#' }
+#' @export
+schemeColorBrewerPiYG<-function(value.count=3) {
+    return(rev(RColorBrewer::brewer.pal(value.count, 'PiYG')))
+}
+# ------------------------------------------------------------------------------
+#' @title schemeColorBrewerBrBG Divergent
+#'
+#' @description Generate BrBG Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' . See RColorBrewer::display.brewer.all()
+#' @return List of palette colors
+#' @examples \donttest{
+#' schemeColorBrewerBrBG()
+#' }
+#' @export
+schemeColorBrewerBrBG<-function(value.count=3) {
+    return(rev(RColorBrewer::brewer.pal(value.count, 'BrBG')))
+}
+
+# ==============================================================================
+# III.a Internal mapping generators
+# ------------------------------------------------------------------------------
+
+# Automatic construction of table.column.values for mapping
+.autoTableColumnValues<-function(table=NULL,
+                                 table.column=NULL,
+                                 mapping.type=NULL,
+                                 network=NULL,
+                                 base.url=.defaultBaseUrl){
+    # Find out all of the values in the named column
+    df.values = getTableColumns(table=table, columns=table.column, 
+                                network=network, base.url=base.url)
+    
+    if(mapping.type == 'd'){
+        # Find the frequency distribution, with most common elements first 
+        # Note: not same ordering as Cytoscape
+        df.freq = table(df.values[table.column])
+        
+        # Create the mapped values that correspond to the unique elements
+        return(names(df.freq))
+    } else if (mapping.type == 'c'){
+        #Determine min and max
+        max.value <- max(df.values,na.rm=TRUE)
+        min.value <- min(df.values,na.rm=TRUE)
+        if(sign(max.value) == sign(min.value)){ #one-tailed; seq
+            mid.value = min.value + (max.value - min.value)/2
+            return(c(min.value,mid.value,max.value))
+        } else {  #two-tailed; div
+            #Find max abs value
+            max.max.value <- max(max.value, abs(min.value))
+            return(c(-max.max.value, 0, max.max.value))
+        }
+    } else {
+        stop("Automatic scheme mapping doesn't work for passthrough mappings.")
+    }
+}
+
+# description Internal function to generate a color map
+# param table Node, Edge or Network table
+# param table.column Name of column
+# param color.scheme Name of scheme function (without quotes)
+# param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#  default is continuous
+# param network (optional) Name or SUID of the network. Default is the 
+#  "current" network active in Cytoscape.
+# param base.url (optional) Ignore unless you need to specify a custom domain,
+#  port or version to connect to the CyREST API. Default is 
+#  http://localhost:1234 and the latest version of the CyREST API supported by 
+#  this version of RCy3.
+# return A named list of lists providing a mapping of column values and colors
+.genColorMap<-function(table=NULL,
+                      table.column=NULL,
+                      color.scheme=NULL,
+                      mapping.type=NULL,
+                      network=NULL,
+                      base.url=.defaultBaseUrl){
+
+    table.column.values <- .autoTableColumnValues(table, table.column,
+                                                  mapping.type,network, base.url)
+    colors <- color.scheme(length(table.column.values))
+    
+    return (list('table.column.values'=table.column.values, 'colors'=colors))
+}
+
+
+# ------------------------------------------------------------------------------
+# title generate opacity map
+# 
+# description FUNCTION_DESCRIPTION
+# param table_column DESCRIPTION
+# param number_scheme DESCRIPTION
+# param default_number DESCRIPTION
+# param style_name DESCRIPTION
+# param network DESCRIPTION
+# param base_url DESCRIPTION
+# return RETURN_DESCRIPTION
+# examples \donttest{
+#  .gen.opacity.map()
+#  }
+.genOpacityMap<-function(table=NULL,
+                           table.column=NULL,
+                           opacities=NULL,
+                           mapping.type=NULL,
+                           network=NULL,
+                           base.url=.defaultBaseUrl){
+    table.column.values <- .autoTableColumnValues(table, table.column,
+                                                  mapping.type,network, base.url)
+    if(is.null(opacities))
+        opacities <- c(50,255) #default range
+    if(length(opacities) > 2){
+        warning("More than 2 opacity values provided. Only using min and max.")
+        opacities <- c(min(opacities), max(opacities))
+    }else if (length(opacities) < 2){
+        stop("Please provide min and max opacity values between from 0 to 255")
+    }
+    
+    opacities <- seq(min(opacities), max(opacities), along.with = table.column.values)
+    
+    return (list('table.column.values'=table.column.values, 'opacities'=opacities))
+}
+
+
+# ------------------------------------------------------------------------------
+# title generate dimension map
+# 
+# description FUNCTION_DESCRIPTION
+# param table_column DESCRIPTION
+# param number_scheme DESCRIPTION
+# param default_number DESCRIPTION
+# param style_name DESCRIPTION
+# param network DESCRIPTION
+# param base_url DESCRIPTION
+# return RETURN_DESCRIPTION
+# examples \donttest{
+# .gen.dim.map()
+# }
+.genDimMap<-function(table=NULL,
+                     table.column=NULL,
+                     dims=NULL,
+                     mapping.type=NULL,
+                     network=NULL,
+                     base.url=.defaultBaseUrl){
+    
+    table.column.values <- .autoTableColumnValues(table, table.column,
+                                                  mapping.type,network, base.url)
+    if(is.null(dims))
+        dims <- c(10,100) #default range
+    if(length(dims) > 2){
+        warning("More than 2 dimension values provided. Only using min and max.")
+        dims <- c(min(dims), max(dims))
+    }else if (length(dims) < 2){
+        stop("Please provide min and max dimension values.")
+    }
+    
+    dims <- seq(min(dims), max(dims), along.with = table.column.values)
+    
+    return (list('table.column.values'=table.column.values, 'dims'=dims))
+    }
+
+
+# ------------------------------------------------------------------------------
+# title .gen.line.style.map
+# 
+# description FUNCTION_DESCRIPTION
+# param table_column DESCRIPTION
+# param default_line_style DESCRIPTION
+# param style_name DESCRIPTION
+# param network DESCRIPTION
+# param base_url DESCRIPTION
+# return RETURN_DESCRIPTION
+# examples \donttest{
+# .gen.line.style.map()
+# }
+.genLineStyleMap<-function(table.column=NULL,
+                           network=NULL,
+                           base.url=.defaultBaseUrl){
+    
+    table.column.values <- .autoTableColumnValues('edge', table.column,
+                                                  'd',network, base.url)
+    value.count <- length(table.column.values)
+    
+    if(value.count > 16)
+        stop("A maximum of 16 line styles are available.")
+
+    line.styles <- getLineStyles()[1:value.count]
+    
+    return (list('table.column.values'=table.column.values, 'line.styles'=line.styles))
+}
+    
+# ------------------------------------------------------------------------------
+# title .gen.arrow.map
+# 
+# description FUNCTION_DESCRIPTION
+# param table_column DESCRIPTION
+# param default_shape DESCRIPTION
+# param style_name DESCRIPTION
+# param network DESCRIPTION
+# param base_url DESCRIPTION
+# return RETURN_DESCRIPTION
+# examples \donttest{
+# .gen.arrow.map()
+# }
+.genArrowMap<-function(table.column=NULL,
+                       network=NULL,
+                       base.url=.defaultBaseUrl){
+    
+    table.column.values <- .autoTableColumnValues('edge', table.column,
+                                                  'd',network, base.url)
+    value.count <- length(table.column.values)
+    
+    if(value.count > 22)
+        stop("A maximum of 22 ArrowShapes are available.")
+    
+    shapes <- getArrowShapes()[1:value.count]
+    
+    return (list('table.column.values'=table.column.values, 'shapes'=shapes))
+}
+
+# ------------------------------------------------------------------------------
+# title .gen.shape.map
+#  
+# description Find the unique values in a column, map them to desired target
+# shapes, and return a dictionary of parameter values suiteable for passing to
+# style_mapping setter function
+# param table DESCRIPTION
+# param table.column DESCRIPTION
+# param scheme DESCRIPTION
+# param value.name DESCRIPTION
+# param default.name DESCRIPTION
+# param default.value DESCRIPTION
+# param style.name DESCRIPTION
+# param network DESCRIPTION
+# param base.url DESCRIPTION
+# return RETURN_DESCRIPTION
+.genShapeMap<-function(table.column=NULL,
+                       network=NULL,
+                       base.url=.defaultBaseUrl){
+    
+    table.column.values <- .autoTableColumnValues('node', table.column,
+                                                  'd',network, base.url)
+    value.count <- length(table.column.values)
+    
+    if(value.count > 9)
+        stop("A maximum of 9 shapes are available.")
+    
+    shapes <- getNodeShapes()[1:value.count]
+    
+    return (list('table.column.values'=table.column.values, 'shapes'=shapes))
 }
 

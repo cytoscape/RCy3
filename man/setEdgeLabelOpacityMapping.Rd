@@ -19,9 +19,10 @@ setEdgeLabelOpacityMapping(
 \item{table.column}{Name of Cytoscape table column to map values from}
 
 \item{table.column.values}{List of values from Cytoscape table to be used in 
-mapping}
+mapping. Leave NULL to perform an automatic mapping to all column values.}
 
-\item{opacities}{(integer) values between 0 and 255; 0 is invisible}
+\item{opacities}{(integer) values between 0 and 255; 0 is invisible. A range
+of 50 to 255 is used by default for automatic mapping.}
 
 \item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); 
 default is continuous}
@@ -32,9 +33,7 @@ values}
 \item{style.name}{Name of style; default is "default" style}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
-"current" network active in Cytoscape.
-port or version to connect to the CyREST API. Default is http://localhost:1234
-and the latest version of the CyREST API supported by this version of RCy3.}
+"current" network active in Cytoscape.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
@@ -48,6 +47,8 @@ Sets opacity for edge label only.
 }
 \examples{
 \donttest{
-setEdgeLabelOpacityMapping ('weight', c(1,10), c(50,255))
+setEdgeLabelOpacityMapping('weight')
+setEdgeLabelOpacityMapping('weight', opacities=c(0,100))
+setEdgeLabelOpacityMapping('weight', c(1,10), c(50,255))
 }
 }

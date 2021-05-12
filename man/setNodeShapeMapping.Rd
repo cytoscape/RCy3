@@ -6,8 +6,8 @@
 \usage{
 setNodeShapeMapping(
   table.column,
-  table.column.values,
-  shapes,
+  table.column.values = NULL,
+  shapes = NULL,
   default.shape = NULL,
   style.name = NULL,
   network = NULL,
@@ -17,9 +17,11 @@ setNodeShapeMapping(
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}
 
-\item{table.column.values}{List of values from Cytoscape table to be used in mapping}
+\item{table.column.values}{List of values from Cytoscape table to be used 
+in mapping. Leave NULL to perform an automatic mapping to all column values.}
 
-\item{shapes}{List of shapes to map to table.column.values. See \link{getNodeShapes}}
+\item{shapes}{List of shapes to map to table.column.values. Leave NULL to 
+perform an automatic mapping to available shapes. See \link{getNodeShapes}}
 
 \item{default.shape}{Shape to set as default. See \link{getNodeShapes}}
 
@@ -40,6 +42,7 @@ Map table column values to shapes to set the node shape.
 }
 \examples{
 \donttest{
+setNodeShapeMapping('type')
 setNodeShapeMapping('type',c('protein','dna'),c('ELLIPSE','RECTANGLE'))
 }
 }

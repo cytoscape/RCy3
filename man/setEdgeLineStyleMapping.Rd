@@ -6,8 +6,8 @@
 \usage{
 setEdgeLineStyleMapping(
   table.column,
-  table.column.values,
-  line.styles,
+  table.column.values = NULL,
+  line.styles = NULL,
   default.line.style = "SOLID",
   style.name = NULL,
   network = NULL,
@@ -17,9 +17,11 @@ setEdgeLineStyleMapping(
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}
 
-\item{table.column.values}{List of values from Cytoscape table to be used in mapping}
+\item{table.column.values}{List of values from Cytoscape table to be used 
+in mapping. Leave NULL to perform an automatic mapping to all column values.}
 
-\item{line.styles}{List of line styles. See \link{getLineStyles}.}
+\item{line.styles}{List of line styles. Leave NULL to perform
+an automatic mapping to available line styles. See \link{getLineStyles}.}
 
 \item{default.line.style}{Style to set as default. See \link{getLineStyles}.}
 
@@ -40,6 +42,7 @@ Map table column values to styles to set the edge style.
 }
 \examples{
 \donttest{
+setEdgeLineStyleMapping('type')
 setEdgeLineStyleMapping('type',c('pp','pd'),c('SOLID','LONG_DASH'))
 }
 }

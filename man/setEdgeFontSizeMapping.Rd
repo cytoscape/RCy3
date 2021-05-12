@@ -18,9 +18,11 @@ setEdgeFontSizeMapping(
 \arguments{
 \item{table.column}{Name of Cytoscape table column to map values from}
 
-\item{table.column.values}{List of values from Cytoscape table to be used in mapping}
+\item{table.column.values}{List of values from Cytoscape table to be used 
+in mapping. Leave NULL to perform an automatic mapping to all column values.}
 
-\item{sizes}{List of size values to mape to table.column.values}
+\item{sizes}{List of sizes to map to table.column.values. A range
+of 10 to 100 is used by default for automatic mapping.}
 
 \item{mapping.type}{(char) continuous, discrete or passthrough (c,d,p); default is continuous}
 
@@ -43,6 +45,8 @@ Map table column values to sizes to set the edge size.
 }
 \examples{
 \donttest{
+setEdgeFontSizeMapping('score')
+setEdgeFontSizeMapping('score', sizes=c(6,24))
 setEdgeFontSizeMapping('score', c(0,30), c(35,55))
 }
 }
