@@ -56,7 +56,7 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
     }
     defaultSandboxName <- getDefaultSandbox()[['sandboxName']]
     currentSandboxBeforeRemove <- getCurrentSandboxName()
-    res <- sandboxOp('filetransfer removeSandbox', sandboxName, base.url=base.url)
+    res <- .sandboxOp('filetransfer removeSandbox', sandboxName, base.url=base.url)
     if(is.null(sandboxName) || sandboxName == currentSandboxBeforeRemove){
         setCurrentSandbox(defaultSandboxName, getDefaultSandboxPath())
         sandboxName <- currentSandboxBeforeRemove
@@ -93,7 +93,7 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
 sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBaseUrl){
     tryCatch(
         expr = {
-            return(sandboxOp('filetransfer getFileInfo', sandboxName, fileName=fileName, base.url=base.url))
+            return(.sandboxOp('filetransfer getFileInfo', sandboxName, fileName=fileName, base.url=base.url))
         },
         error = function(e){
             if(is.null(sandboxName) && is.null(getCurrentSandboxName()) && !is.null(fileName) && !is.null(trimws(fileName))){
@@ -162,7 +162,7 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
         head <- dirname(sourceFile)
         destFile <- basename(sourceFile)
     }
-    res <- sandboxOp(glue('filetransfer toSandbox fileByteCount={fileByteCount} overwrite={overwrite}, fileBase64="{fileContent64}"'), sandboxName, fileName=destFile, base.url=base.url)
+    res <- .sandboxOp(glue('filetransfer toSandbox fileByteCount={fileByteCount} overwrite={overwrite}, fileBase64="{fileContent64}"'), sandboxName, fileName=destFile, base.url=base.url)
     return(res)
 }
 
@@ -193,7 +193,7 @@ sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, 
     if(is.null(destFile)){
         stop('Destination file cannot be null')
     }
-    res <- sandboxOp(glue('filetransfer urlToSandbox overwrite={overwrite} sourceURL={sourceURL}'), sandboxName, fileName=destFile, base.url=base.url)
+    res <- .sandboxOp(glue('filetransfer urlToSandbox overwrite={overwrite} sourceURL={sourceURL}'), sandboxName, fileName=destFile, base.url=base.url)
     return(res)
 }
 
@@ -232,7 +232,7 @@ sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxNam
         errorMessage <- "File already exists"
         stop(glue(errorMessage))
     }
-    res <- sandboxOp('filetransfer fromSandbox', sandboxName, fileName=sourceFile, base.url=base.url)
+    res <- .sandboxOp('filetransfer fromSandbox', sandboxName, fileName=sourceFile, base.url=base.url)
     fileContent <- res$fileBase64
     tryCatch(
         expr = {
@@ -266,23 +266,18 @@ sandboxGetFrom <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxNam
 #' }
 #' @export
 sandboxRemoveFile <- function(fileName, sandboxName=NULL, base.url=.defaultBaseUrl){
-    return(sandboxOp('filetransfer removeFile', sandboxName, fileName=fileName, base.url=base.url))
+    return(.sandboxOp('filetransfer removeFile', sandboxName, fileName=fileName, base.url=base.url))
 }
 
 # ------------------------------------------------------------------------------
-#' @title sandboxOp
-#'
-#' @description internal function for sandbox operation
-#' @param command command
-#' @param sandboxName Name of file to read (as absolute path or sandbox-relative path)
-#' @param fileName Name of file to read (as absolute path or sandbox-relative path)
-#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
-#' @return sandbox result
-#' @examples \donttest{
-#' sandboxOp()
-#' }
-#' @export
-sandboxOp <- function(command, sandboxName, fileName=NULL, base.url=.defaultBaseUrl){
+# title .sandboxOp
+# description internal function for sandbox operation
+# param command command
+# param sandboxName Name of file to read (as absolute path or sandbox-relative path)
+# param fileName Name of file to read (as absolute path or sandbox-relative path)
+# param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
+# return sandbox result
+.sandboxOp <- function(command, sandboxName, fileName=NULL, base.url=.defaultBaseUrl){
     if(!is.null(fileName)){
         fileName <- trimws(fileName)
     }
