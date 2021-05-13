@@ -1,3 +1,26 @@
+Changes in version 2.12.0
++ New support for cloud-hosted Jupyter notebooks!
+  - Jyputer notebooks running RCy3 in the cloud can communicate with local Cytoscape instances
+  - Includes a Sandbox mechanism to manage file transfers between cloud and local dir
++ New functions:
+  - addAnnotationText
+  - getAnnotationList
+  - deleteAnnotation
+  - setters for Filter, Model Propagation and Catchup delays
+  - many sandbox-related funcitons
+  - getStyleMapping
+  - getAllStyleMappings
+  - paletteColorRandom
+  - paletteColorBrewer* (33 in total!)
+  - internal mapping value generators for color, opacity, dimension, line styles, arrows and shapes
++ New parameters:
+  - overwrite_file added to export functions
+  - apply added to create_*_filter functions
+  - ndex.url and ndex.version added to CyNDEx functions
++ Consistent interchangeable handling of node|edge|network names and SUIDs
++ createNetworkFromDataframes plays nice with tibbles
++ Bug fixes:
+  - .edgeNameToEdgeSUID revamped to better handle duplicate edge names
 Changes in version 2.10.0
 + New functions:
   - getCurrentStyle, #15

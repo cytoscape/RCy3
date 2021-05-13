@@ -2606,7 +2606,7 @@ paletteColorBrewerBrBG<-function(value.count=3) {
     }
 }
 
-# description Internal function to generate a color map
+# Internal function to generate a color map
 # param table Node, Edge or Network table
 # param table.column Name of column
 # param color.palette Name of palette function (without quotes)
@@ -2635,19 +2635,19 @@ paletteColorBrewerBrBG<-function(value.count=3) {
 
 
 # ------------------------------------------------------------------------------
-# title generate opacity map
-# 
-# description FUNCTION_DESCRIPTION
-# param table_column DESCRIPTION
-# param number_palette DESCRIPTION
-# param default_number DESCRIPTION
-# param style_name DESCRIPTION
-# param network DESCRIPTION
-# param base_url DESCRIPTION
-# return RETURN_DESCRIPTION
-# examples \donttest{
-#  .gen.opacity.map()
-#  }
+# Internal function to generate an opacity map
+# param table Node, Edge or Network table
+# param table.column Name of column
+# param opacities Range of opacity values to work with; default is 50-255
+# param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#  default is continuous
+# param network (optional) Name or SUID of the network. Default is the 
+#  "current" network active in Cytoscape.
+# param base.url (optional) Ignore unless you need to specify a custom domain,
+#  port or version to connect to the CyREST API. Default is 
+#  http://localhost:1234 and the latest version of the CyREST API supported by 
+#  this version of RCy3.
+# return A named list of lists providing a mapping of column values and opacities
 .genOpacityMap<-function(table=NULL,
                            table.column=NULL,
                            opacities=NULL,
@@ -2672,19 +2672,20 @@ paletteColorBrewerBrBG<-function(value.count=3) {
 
 
 # ------------------------------------------------------------------------------
-# title generate dimension map
-# 
-# description FUNCTION_DESCRIPTION
-# param table_column DESCRIPTION
-# param number_palette DESCRIPTION
-# param default_number DESCRIPTION
-# param style_name DESCRIPTION
-# param network DESCRIPTION
-# param base_url DESCRIPTION
-# return RETURN_DESCRIPTION
-# examples \donttest{
-# .gen.dim.map()
-# }
+# Internal function to generate a dimensions map
+# param table Node, Edge or Network table
+# param table.column Name of column
+# param dims Range of dimension values to work with; default is 10-100
+# param mapping.type (char) continuous, discrete or passthrough (c,d,p); 
+#  default is continuous
+# param network (optional) Name or SUID of the network. Default is the 
+#  "current" network active in Cytoscape.
+# param base.url (optional) Ignore unless you need to specify a custom domain,
+#  port or version to connect to the CyREST API. Default is 
+#  http://localhost:1234 and the latest version of the CyREST API supported by 
+#  this version of RCy3.
+# return A named list of lists providing a mapping of column values and 
+#   dimension values
 .genDimMap<-function(table=NULL,
                      table.column=NULL,
                      dims=NULL,
@@ -2710,18 +2711,16 @@ paletteColorBrewerBrBG<-function(value.count=3) {
 
 
 # ------------------------------------------------------------------------------
-# title .gen.line.style.map
-# 
-# description FUNCTION_DESCRIPTION
-# param table_column DESCRIPTION
-# param default_line_style DESCRIPTION
-# param style_name DESCRIPTION
-# param network DESCRIPTION
-# param base_url DESCRIPTION
-# return RETURN_DESCRIPTION
-# examples \donttest{
-# .gen.line.style.map()
-# }
+# Internal function to generate a line style map
+# param table.column Name of column
+# param network (optional) Name or SUID of the network. Default is the 
+#  "current" network active in Cytoscape.
+# param base.url (optional) Ignore unless you need to specify a custom domain,
+#  port or version to connect to the CyREST API. Default is 
+#  http://localhost:1234 and the latest version of the CyREST API supported by 
+#  this version of RCy3.
+# return A named list of lists providing a mapping of column values and line 
+#  styles
 .genLineStyleMap<-function(table.column=NULL,
                            network=NULL,
                            base.url=.defaultBaseUrl){
@@ -2739,18 +2738,16 @@ paletteColorBrewerBrBG<-function(value.count=3) {
 }
     
 # ------------------------------------------------------------------------------
-# title .gen.arrow.map
-# 
-# description FUNCTION_DESCRIPTION
-# param table_column DESCRIPTION
-# param default_shape DESCRIPTION
-# param style_name DESCRIPTION
-# param network DESCRIPTION
-# param base_url DESCRIPTION
-# return RETURN_DESCRIPTION
-# examples \donttest{
-# .gen.arrow.map()
-# }
+# Internal function to generate an arrow shape map
+# param table.column Name of column
+# param network (optional) Name or SUID of the network. Default is the 
+#  "current" network active in Cytoscape.
+# param base.url (optional) Ignore unless you need to specify a custom domain,
+#  port or version to connect to the CyREST API. Default is 
+#  http://localhost:1234 and the latest version of the CyREST API supported by 
+#  this version of RCy3.
+# return A named list of lists providing a mapping of column values and arrow
+#  shapes
 .genArrowMap<-function(table.column=NULL,
                        network=NULL,
                        base.url=.defaultBaseUrl){
@@ -2768,21 +2765,15 @@ paletteColorBrewerBrBG<-function(value.count=3) {
 }
 
 # ------------------------------------------------------------------------------
-# title .gen.shape.map
-#  
-# description Find the unique values in a column, map them to desired target
-# shapes, and return a dictionary of parameter values suiteable for passing to
-# style_mapping setter function
-# param table DESCRIPTION
-# param table.column DESCRIPTION
-# param palette DESCRIPTION
-# param value.name DESCRIPTION
-# param default.name DESCRIPTION
-# param default.value DESCRIPTION
-# param style.name DESCRIPTION
-# param network DESCRIPTION
-# param base.url DESCRIPTION
-# return RETURN_DESCRIPTION
+# Internal function to generate a shape map
+# param table.column Name of column
+# param network (optional) Name or SUID of the network. Default is the 
+#  "current" network active in Cytoscape.
+# param base.url (optional) Ignore unless you need to specify a custom domain,
+#  port or version to connect to the CyREST API. Default is 
+#  http://localhost:1234 and the latest version of the CyREST API supported by 
+#  this version of RCy3.
+# return A named list of lists providing a mapping of column values and shapes
 .genShapeMap<-function(table.column=NULL,
                        network=NULL,
                        base.url=.defaultBaseUrl){
