@@ -43,6 +43,10 @@ None
 \description{
 Map table column values to node font sizes.
 }
+\details{
+Using this function will lock node width and height to use a 
+singular "size" value.
+}
 \examples{
 \donttest{
 setNodeSizeMapping('score')

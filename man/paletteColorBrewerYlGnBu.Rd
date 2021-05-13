@@ -14,7 +14,7 @@ paletteColorBrewerYlGnBu(value.count = 3)
 List of palette colors
 }
 \description{
-Generate YlGnBu Brewer palette of a given size
+Generate a sequential YlGnBu Brewer palette of a given size
 }
 \examples{
 \donttest{

@@ -14,7 +14,7 @@ paletteColorBrewerPurples(value.count = 3)
 List of palette colors
 }
 \description{
-Generate Purples Brewer palette of a given size
+Generate a sequential Purples Brewer palette of a given size
 }
 \examples{
 \donttest{

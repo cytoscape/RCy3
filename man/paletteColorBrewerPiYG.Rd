@@ -14,7 +14,7 @@ paletteColorBrewerPiYG(value.count = 3)
 List of palette colors
 }
 \description{
-Generate PiYG Brewer palette of a given size
+Generate a divergent PiYG Brewer palette of a given size
 }
 \examples{
 \donttest{

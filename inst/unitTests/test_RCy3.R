@@ -44,8 +44,8 @@ run.tests = function()
     test.setNodeShapeDefault ()
     test.setNodeColorDefault ()
     test.setNodeSizeDefault ()
-    test.setNodeBorderColorDefault ()
     test.setNodeBorderWidthDefault ()
+    test.setNodeBorderColorDefault ()
     test.setNodeFontSizeDefault ()
     test.setNodeLabelColorDefault ()
     test.setEdgeLineWidthDefault ()
@@ -56,8 +56,8 @@ run.tests = function()
     test.setNodeTooltipMapping ()
     test.setEdgeTooltipMapping ()
     test.setNodeColorMapping ()
-    test.setNodeBorderColorMapping ()
     test.setNodeBorderWidthMapping ()
+    test.setNodeBorderColorMapping ()
     test.setNodeSizeMapping ()
     test.setNodeShapeMapping ()
     test.setNodeComboOpacityMapping ()
@@ -544,37 +544,49 @@ test.setNodeColorMapping = function ()
     node.attribute.values = c (0.0, 10.0, 20.0)
     node.colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
     setNodeColorMapping ('score', node.attribute.values, node.colors, 'c')
+    setNodeColorMapping('score',colors = paletteColorBrewerBlues)
+    setNodeColorMapping('score',colors = paletteColorBrewerBrBG)
+    setNodeColorMapping('score',colors = paletteColorBrewerBuGn)
+    setNodeColorMapping('score',colors = paletteColorBrewerBuPu)
+    setNodeColorMapping('score',colors = paletteColorBrewerGnBu)
+    setNodeColorMapping('score',colors = paletteColorBrewerGreens)
+    setNodeColorMapping('score',colors = paletteColorBrewerGreys)
+    setNodeColorMapping('score',colors = paletteColorBrewerOranges)
+    setNodeColorMapping('score',colors = paletteColorBrewerOrRd)
+    setNodeColorMapping('score',colors = paletteColorBrewerPiYG)
+    setNodeColorMapping('score',colors = paletteColorBrewerPRGn)
+    setNodeColorMapping('score',colors = paletteColorBrewerPuBu)
+    setNodeColorMapping('score',colors = paletteColorBrewerPuBuGn)
+    setNodeColorMapping('score',colors = paletteColorBrewerPuOr)
+    setNodeColorMapping('score',colors = paletteColorBrewerPuRd)
+    setNodeColorMapping('score',colors = paletteColorBrewerPurples)
+    setNodeColorMapping('score',colors = paletteColorBrewerRdBu)
+    setNodeColorMapping('score',colors = paletteColorBrewerRdPu)
+    setNodeColorMapping('score',colors = paletteColorBrewerRdYlBu)
+    setNodeColorMapping('score',colors = paletteColorBrewerReds)
+    setNodeColorMapping('score',colors = paletteColorBrewerYlGn)
+    setNodeColorMapping('score',colors = paletteColorBrewerYlGnBu)
+    setNodeColorMapping('score',colors = paletteColorBrewerYlOrBr)
+    setNodeColorMapping('score',colors = paletteColorBrewerYlOrRd)
     
     # now, discrete
     node.attribute.values = c ("A",  "B")
     node.colors =           c ('#8888FF', "#00CCCC")
     setNodeColorMapping ('group', node.attribute.values, node.colors, 'd')
+    setNodeColorMapping('score',colors = paletteColorBrewerSet1)
+    setNodeColorMapping('score',colors = paletteColorBrewerSet2)
+    setNodeColorMapping('score',colors = paletteColorBrewerSet3)
+    setNodeColorMapping('score',colors = paletteColorBrewerDark2)
+    setNodeColorMapping('score',colors = paletteColorRandom)
+    setNodeColorMapping('score',colors = paletteColorBrewerAccent)
+    setNodeColorMapping('score',colors = paletteColorBrewerPaired)
+    setNodeColorMapping('score',colors = paletteColorBrewerPastel1)
+    setNodeColorMapping('score',colors = paletteColorBrewerPastel2)
     
     # now, test default
     node.attribute.values = c ("A")
     node.colors =           c ('#8888FF')
     setNodeColorMapping ('group', node.attribute.values, node.colors, 'd', default.color = '#5588FF')
-} 
-#-------------------------------------------------------------------------------
-test.setNodeBorderColorMapping = function ()
-{
-    title = 'test.setNodeColorMapping'
-    test.prep (title,FALSE)
-    
-    # first, continuous
-    node.attribute.values = c (0.0, 10.0, 20.0)
-    node.colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
-    setNodeBorderColorMapping ('score', node.attribute.values, node.colors, 'c')
-    
-    # now, discrete
-    node.attribute.values = c ("A",  "B")
-    node.colors =           c ('#8888FF', "#00CCCC")
-    setNodeBorderColorMapping ('group', node.attribute.values, node.colors, 'd')
-    
-    # now, test default
-    node.attribute.values = c ("A")
-    node.colors =           c ('#8888FF')
-    setNodeBorderColorMapping ('group', node.attribute.values, node.colors, 'd', default.color = '#5588FF')
 } 
 #-------------------------------------------------------------------------------
 test.setNodeBorderWidthMapping = function ()
@@ -598,6 +610,29 @@ test.setNodeBorderWidthMapping = function ()
     setNodeBorderWidthMapping ('group', node.attribute.values, border.widths, 'd')
 }
 #-------------------------------------------------------------------------------
+test.setNodeBorderColorMapping = function ()
+{
+    title = 'test.setNodeBorderColorMapping'
+    test.prep (title,FALSE)
+    
+    # first, continuous
+    node.attribute.values = c (0.0, 10.0, 20.0)
+    node.colors = c ('#008800', '#00FF00', '#FFFFFF', '#FF0000', '#880000')
+    setNodeBorderColorMapping ('score', node.attribute.values, node.colors, 'c')
+    setNodeBorderColorMapping('score', colors = paletteColorBrewerReds)
+    
+    # now, discrete
+    node.attribute.values = c ("A",  "B")
+    node.colors =           c ('#8888FF', "#00CCCC")
+    setNodeBorderColorMapping ('group', node.attribute.values, node.colors, 'd')
+    setNodeBorderColorMapping('score', colors = paletteColorBrewerSet3)
+    
+    # now, test default
+    node.attribute.values = c ("A")
+    node.colors =           c ('#8888FF')
+    setNodeBorderColorMapping ('group', node.attribute.values, node.colors, 'd', default.color = '#5588FF')
+} 
+#-------------------------------------------------------------------------------
 test.setNodeSizeMapping = function ()
 {
     title = 'test.setNodeSizeMapping'
@@ -608,19 +643,14 @@ test.setNodeSizeMapping = function ()
     setNodeHeightMapping ('score', count.control.points, node.sizes, 'c')
     setNodeWidthMapping ('score', count.control.points, node.sizes, 'c')
     setNodeSizeMapping ('score', count.control.points, node.sizes, 'c')
-    system ('sleep 0.3')
-    
-    # now chop off the below & above values.  A should grow to 80, almost as big as B, and C should shrink to 120, larger that B
-    
-    count.control.points = c(5,  20)
-    node.sizes           = c(80,  120)
-    setNodeSizeMapping ('score', count.control.points, node.sizes, 'c')
-    system ('sleep 0.3')
+    setNodeSizeMapping ('score')
+    setNodeSizeMapping ('score', sizes = c(30,60))
     
     # now use a 'd' Mapping. 
     molecule.types = c('A')
     node.sizes     = c(60)
     setNodeSizeMapping ('group', molecule.types,  node.sizes, default.size= 5, 'd')
+    setNodeSizeMapping ('score', mapping.type = 'd')
 } 
 #-------------------------------------------------------------------------------
 test.setNodeShapeMapping = function ()

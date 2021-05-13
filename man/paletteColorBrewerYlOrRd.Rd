@@ -14,7 +14,7 @@ paletteColorBrewerYlOrRd(value.count = 3)
 List of palette colors
 }
 \description{
-Generate YlOrRd Brewer palette of a given size
+Generate a sequential YlOrRd Brewer palette of a given size
 }
 \examples{
 \donttest{

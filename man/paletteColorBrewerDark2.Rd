@@ -14,7 +14,7 @@ paletteColorBrewerDark2(value.count = 3)
 List of palette colors
 }
 \description{
-Generate Dark2 Brewer palette of a given size
+Generate a qualitative Dark2 Brewer palette of a given size
 }
 \examples{
 \donttest{

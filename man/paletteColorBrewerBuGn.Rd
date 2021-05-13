@@ -14,7 +14,7 @@ paletteColorBrewerBuGn(value.count = 3)
 List of palette colors
 }
 \description{
-Generate BuGn Brewer palette of a given size
+Generate a sequential BuGn Brewer palette of a given size
 }
 \examples{
 \donttest{

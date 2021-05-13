@@ -43,6 +43,10 @@ None
 \description{
 Map table column values to the node heights.
 }
+\details{
+Using this function will unlock node width and height to use  
+separate values.
+}
 \examples{
 \donttest{
 setNodeHeightMapping('score')

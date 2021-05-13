@@ -14,7 +14,7 @@ paletteColorBrewerBlues(value.count = 3)
 List of palette colors
 }
 \description{
-Generate Blues Brewer palette of a given size
+Generate a sequential Blues Brewer palette of a given size
 }
 \examples{
 \donttest{

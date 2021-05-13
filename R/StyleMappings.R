@@ -846,6 +846,8 @@ setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, size
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
+#' @details Using this function will unlock node width and height to use  
+#' separate values.
 #' @examples \donttest{
 #' setNodeHeightMapping('score')
 #' setNodeHeightMapping('score', heights=c(30,80))
@@ -855,6 +857,8 @@ setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, size
 setNodeHeightMapping <- function (table.column, table.column.values=NULL, heights=NULL, 
                                 mapping.type='c', default.height=NULL, style.name=NULL, 
                                 network=NULL, base.url=.defaultBaseUrl) {
+    lockNodeDimensions(FALSE, style.name,base.url)
+    
     # set default
     if(!is.null(default.height))
         setNodeHeightDefault(default.height, style.name, base.url=base.url)
@@ -1105,6 +1109,8 @@ setNodeShapeMapping <- function (table.column, table.column.values=NULL,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
+#' @details Using this function will lock node width and height to use a 
+#' singular "size" value.
 #' @examples \donttest{
 #' setNodeSizeMapping('score')
 #' setNodeSizeMapping('score', sizes=c(30,80))
@@ -1114,6 +1120,9 @@ setNodeShapeMapping <- function (table.column, table.column.values=NULL,
 setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NULL, 
                                 mapping.type='c', default.size=NULL, style.name=NULL, 
                                 network=NULL, base.url=.defaultBaseUrl) {
+    
+    lockNodeDimensions(TRUE,style.name, base.url)
+    
     # set default
     if(!is.null(default.size))
         setNodeSizeDefault(default.size, style.name, base.url=base.url)
@@ -1187,6 +1196,8 @@ setNodeTooltipMapping <- function (table.column, style.name=NULL,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
+#' #' @details Using this function will unlock node width and height to use  
+#' separate values.
 #' @examples \donttest{
 #' setNodeWidthMapping('score')
 #' setNodeWidthMapping('score', widths=c(30,80))
@@ -1196,6 +1207,8 @@ setNodeTooltipMapping <- function (table.column, style.name=NULL,
 setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=NULL, 
                                   mapping.type='c', default.width=NULL, style.name=NULL, 
                                   network=NULL, base.url=.defaultBaseUrl) {
+    lockNodeDimensions(FALSE, style.name, base.url)
+    
     # set default
     if(!is.null(default.width))
         setNodeWidthDefault(default.width, style.name, base.url=base.url)
@@ -2071,7 +2084,7 @@ setEdgeTooltipMapping <- function (table.column, style.name=NULL,
 # ------------------------------------------------------------------------------
 #' @title paletteColorRandom Qualitative
 #'
-#' @description Generate random color map of a given size
+#' @description Generate a qualitative random color map of a given size
 #' @param value.count Number of colors to generate; default is 1
 #' @return List of random colors
 #' @examples \donttest{
@@ -2089,7 +2102,7 @@ paletteColorRandom<-function(value.count=1){
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerPastel2 Qualitative
 #'
-#' @description Generate Pastel2 Brewer palette of a given size
+#' @description Generate a qualitative Pastel2 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2103,7 +2116,7 @@ paletteColorBrewerPastel2<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerPastel1 Qualitative
 #'
-#' @description Generate Pastel1 Brewer palette of a given size
+#' @description Generate a qualitative Pastel1 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2118,7 +2131,7 @@ paletteColorBrewerPastel1<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerDark2 Qualitative
 #'
-#' @description Generate Dark2 Brewer palette of a given size
+#' @description Generate a qualitative Dark2 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2132,7 +2145,7 @@ paletteColorBrewerDark2<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerAccent Qualitative
 #'
-#' @description Generate Accent Brewer palette of a given size
+#' @description Generate a qualitative Accent Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2146,7 +2159,7 @@ paletteColorBrewerAccent<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerPaired Qualitative
 #'
-#' @description Generate Paired Brewer palette of a given size
+#' @description Generate a qualitative Paired Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 
 #' 12. See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2161,7 +2174,7 @@ paletteColorBrewerPaired<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerSet1 Qualitative
 #'
-#' @description Generate Set1 Brewer palette of a given size
+#' @description Generate a qualitative Set1 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2175,7 +2188,7 @@ paletteColorBrewerSet1<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerSet2 Qualitative
 #'
-#' @description Generate Set2 Brewer palette of a given size
+#' @description Generate a qualitative Set2 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2189,7 +2202,7 @@ paletteColorBrewerSet2<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerSet3 Qualitative
 #'
-#' @description Generate Set3 Brewer palette of a given size
+#' @description Generate a qualitative Set3 Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 
 #' 12. See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2204,7 +2217,7 @@ paletteColorBrewerSet3<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerYlOrRd Sequential
 #'
-#' @description Generate YlOrRd Brewer palette of a given size
+#' @description Generate a sequential YlOrRd Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2219,7 +2232,7 @@ paletteColorBrewerYlOrRd<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerYlOrBr Sequential
 #'
-#' @description Generate YlOrBr Brewer palette of a given size
+#' @description Generate a sequential YlOrBr Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2234,7 +2247,7 @@ paletteColorBrewerYlOrBr<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerYlGnBu Sequential
 #'
-#' @description Generate YlGnBu Brewer palette of a given size
+#' @description Generate a sequential YlGnBu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2249,7 +2262,7 @@ paletteColorBrewerYlGnBu<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerYlGn Sequential
 #'
-#' @description Generate YlGn Brewer palette of a given size
+#' @description Generate a sequential YlGn Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2264,7 +2277,7 @@ paletteColorBrewerYlGn<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerReds Sequential
 #'
-#' @description Generate Reds Brewer palette of a given size
+#' @description Generate a sequential Reds Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2279,7 +2292,7 @@ paletteColorBrewerReds<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerRdPu Sequential
 #'
-#' @description Generate RdPu Brewer palette of a given size
+#' @description Generate a sequential RdPu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2294,7 +2307,7 @@ paletteColorBrewerRdPu<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerPurples Sequential
 #'
-#' @description Generate Purples Brewer palette of a given size
+#' @description Generate a sequential Purples Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2309,7 +2322,7 @@ paletteColorBrewerPurples<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerPuRd Sequential
 #'
-#' @description Generate PuRd Brewer palette of a given size
+#' @description Generate a sequential PuRd Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2324,7 +2337,7 @@ paletteColorBrewerPuRd<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerPuBuGn Sequential
 #'
-#' @description Generate PuBuGn Brewer palette of a given size
+#' @description Generate a sequential PuBuGn Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2339,7 +2352,7 @@ paletteColorBrewerPuBuGn<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerPuBu Sequential
 #'
-#' @description Generate PuBu Brewer palette of a given size
+#' @description Generate a sequential PuBu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2354,7 +2367,7 @@ paletteColorBrewerPuBu<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerOrRd Sequential
 #'
-#' @description Generate OrRd Brewer palette of a given size
+#' @description Generate a sequential OrRd Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2369,7 +2382,7 @@ paletteColorBrewerOrRd<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerOranges Sequential
 #'
-#' @description Generate Oranges Brewer palette of a given size
+#' @description Generate a sequential Oranges Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2384,7 +2397,7 @@ paletteColorBrewerOranges<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerGreys Sequential
 #'
-#' @description Generate Greys Brewer palette of a given size
+#' @description Generate a sequential Greys Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2399,7 +2412,7 @@ paletteColorBrewerGreys<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerGreens Sequential
 #'
-#' @description Generate Greens Brewer palette of a given size
+#' @description Generate a sequential Greens Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2414,7 +2427,7 @@ paletteColorBrewerGreens<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerGnBu Sequential
 #'
-#' @description Generate GnBu Brewer palette of a given size
+#' @description Generate a sequential GnBu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2429,7 +2442,7 @@ paletteColorBrewerGnBu<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerBuPu Sequential
 #'
-#' @description Generate BuPu Brewer palette of a given size
+#' @description Generate a sequential BuPu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2444,7 +2457,7 @@ paletteColorBrewerBuPu<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerBuGn Sequential
 #'
-#' @description Generate BuGn Brewer palette of a given size
+#' @description Generate a sequential BuGn Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2459,7 +2472,7 @@ paletteColorBrewerBuGn<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerBlues Sequential
 #'
-#' @description Generate Blues Brewer palette of a given size
+#' @description Generate a sequential Blues Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2473,7 +2486,7 @@ paletteColorBrewerBlues<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerRdYlBu Divergent
 #'
-#' @description Generate RdYlBu Brewer palette of a given size
+#' @description Generate a divergent RdYlBu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2487,7 +2500,7 @@ paletteColorBrewerRdYlBu<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerRdBu Divergent
 #'
-#' @description Generate RdBu Brewer palette of a given size
+#' @description Generate a divergent RdBu Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2501,7 +2514,7 @@ paletteColorBrewerRdBu<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerPuOr Divergent
 #'
-#' @description Generate PuOr Brewer palette of a given size
+#' @description Generate a divergent PuOr Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2515,7 +2528,7 @@ paletteColorBrewerPuOr<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerPRGn Divergent
 #'
-#' @description Generate PRGn Brewer palette of a given size
+#' @description Generate a divergent PRGn Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2529,7 +2542,7 @@ paletteColorBrewerPRGn<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerPiYG Divergent
 #'
-#' @description Generate PiYG Brewer palette of a given size
+#' @description Generate a divergent PiYG Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
@@ -2543,7 +2556,7 @@ paletteColorBrewerPiYG<-function(value.count=3) {
 # ------------------------------------------------------------------------------
 #' @title paletteColorBrewerBrBG Divergent
 #'
-#' @description Generate BrBG Brewer palette of a given size
+#' @description Generate a divergent BrBG Brewer palette of a given size
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors

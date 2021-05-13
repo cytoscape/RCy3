@@ -40,6 +40,8 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 }
 \value{
 None
+#' @details Using this function will unlock node width and height to use  
+separate values.
 }
 \description{
 Map table column values to the node widths.

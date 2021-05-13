@@ -14,7 +14,7 @@ paletteColorBrewerGreys(value.count = 3)
 List of palette colors
 }
 \description{
-Generate Greys Brewer palette of a given size
+Generate a sequential Greys Brewer palette of a given size
 }
 \examples{
 \donttest{

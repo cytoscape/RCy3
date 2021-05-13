@@ -14,7 +14,7 @@ paletteColorBrewerRdYlBu(value.count = 3)
 List of palette colors
 }
 \description{
-Generate RdYlBu Brewer palette of a given size
+Generate a divergent RdYlBu Brewer palette of a given size
 }
 \examples{
 \donttest{

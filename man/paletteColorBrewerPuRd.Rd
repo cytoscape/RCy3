@@ -14,7 +14,7 @@ paletteColorBrewerPuRd(value.count = 3)
 List of palette colors
 }
 \description{
-Generate PuRd Brewer palette of a given size
+Generate a sequential PuRd Brewer palette of a given size
 }
 \examples{
 \donttest{

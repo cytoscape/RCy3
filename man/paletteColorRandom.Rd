@@ -13,7 +13,7 @@ paletteColorRandom(value.count = 1)
 List of random colors
 }
 \description{
-Generate random color map of a given size
+Generate a qualitative random color map of a given size
 }
 \examples{
 \donttest{

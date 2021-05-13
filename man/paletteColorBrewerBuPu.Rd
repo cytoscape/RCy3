@@ -14,7 +14,7 @@ paletteColorBrewerBuPu(value.count = 3)
 List of palette colors
 }
 \description{
-Generate BuPu Brewer palette of a given size
+Generate a sequential BuPu Brewer palette of a given size
 }
 \examples{
 \donttest{

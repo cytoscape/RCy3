@@ -14,7 +14,7 @@ paletteColorBrewerPuOr(value.count = 3)
 List of palette colors
 }
 \description{
-Generate PuOr Brewer palette of a given size
+Generate a divergent PuOr Brewer palette of a given size
 }
 \examples{
 \donttest{
