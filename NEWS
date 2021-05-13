@@ -7,7 +7,7 @@ Changes in version 2.12.0
   - getAnnotationList
   - deleteAnnotation
   - setters for Filter, Model Propagation and Catchup delays
-  - many sandbox-related funcitons
+  - many sandbox-related functions
   - getStyleMapping
   - getAllStyleMappings
   - paletteColorRandom
