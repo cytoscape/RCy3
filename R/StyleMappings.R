@@ -253,7 +253,7 @@ deleteStyleMapping<-function(style.name, visual.prop,  base.url=.defaultBaseUrl)
 #' visual property in a style.
 #' @param visual.prop Name of the visual property, e.g., NODE_FILL_COLOR
 #' @param style.name Name for style; default is the 'default' style
-#' @param base_url (optional) Ignore unless you need to specify a custom domain,
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is 
 #' http://localhost:1234 and the latest version of the CyREST API supported by 
 #' this version of RCy3.
@@ -280,7 +280,7 @@ getStyleMapping <- function(visual.prop, style.name=NULL,
 #' @description Retrieve the values the define all the mappings per visual 
 #' property in a given style.
 #' @param style.name Name for style; default is the 'default' style
-#' @param base_url (optional) Ignore unless you need to specify a custom domain,
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is 
 #' http://localhost:1234 and the latest version of the CyREST API supported by 
 #' this version of RCy3.
@@ -2109,6 +2109,7 @@ paletteColorRandom<-function(value.count=1){
 #' @examples \donttest{
 #' paletteColorBrewerPastel2()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPastel2<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Pastel2'))
@@ -2123,6 +2124,7 @@ paletteColorBrewerPastel2<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerPastel1()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPastel1<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Pastel1'))
@@ -2137,7 +2139,8 @@ paletteColorBrewerPastel1<-function(value.count=3) {
 #' @return List of palette colors
 #' @examples \donttest{
 #' paletteColorBrewerDark2()
-#' }
+#' } 
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerDark2<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Dark2'))
@@ -2152,6 +2155,7 @@ paletteColorBrewerDark2<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerAccent()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerAccent<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Accent'))
@@ -2166,6 +2170,7 @@ paletteColorBrewerAccent<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerPaired()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPaired<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Paired'))
@@ -2181,6 +2186,7 @@ paletteColorBrewerPaired<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerSet1()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerSet1<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Set1'))
@@ -2195,6 +2201,7 @@ paletteColorBrewerSet1<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerSet2()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerSet2<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Set2'))
@@ -2209,6 +2216,7 @@ paletteColorBrewerSet2<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerSet3()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerSet3<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Set3'))
@@ -2224,6 +2232,7 @@ paletteColorBrewerSet3<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerYlOrRd()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerYlOrRd<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'YlOrRd'))
@@ -2239,6 +2248,7 @@ paletteColorBrewerYlOrRd<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerYlOrBr()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerYlOrBr<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'YlOrBr'))
@@ -2254,6 +2264,7 @@ paletteColorBrewerYlOrBr<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerYlGnBu()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerYlGnBu<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'YlGnBu'))
@@ -2269,6 +2280,7 @@ paletteColorBrewerYlGnBu<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerYlGn()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerYlGn<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'YlGn'))
@@ -2284,6 +2296,7 @@ paletteColorBrewerYlGn<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerReds()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerReds<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Reds'))
@@ -2299,6 +2312,7 @@ paletteColorBrewerReds<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerRdPu()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerRdPu<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'RdPu'))
@@ -2314,6 +2328,7 @@ paletteColorBrewerRdPu<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerPurples()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPurples<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Purples'))
@@ -2329,6 +2344,7 @@ paletteColorBrewerPurples<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerPuRd()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPuRd<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'PuRd'))
@@ -2344,6 +2360,7 @@ paletteColorBrewerPuRd<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerPuBuGn()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPuBuGn<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'PuBuGn'))
@@ -2359,6 +2376,7 @@ paletteColorBrewerPuBuGn<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerPuBu()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPuBu<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'PuBu'))
@@ -2374,6 +2392,7 @@ paletteColorBrewerPuBu<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerOrRd()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerOrRd<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'OrRd'))
@@ -2389,6 +2408,7 @@ paletteColorBrewerOrRd<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerOranges()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerOranges<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Oranges'))
@@ -2404,6 +2424,7 @@ paletteColorBrewerOranges<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerGreys()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerGreys<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Greys'))
@@ -2419,6 +2440,7 @@ paletteColorBrewerGreys<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerGreens()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerGreens<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Greens'))
@@ -2434,6 +2456,7 @@ paletteColorBrewerGreens<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerGnBu()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerGnBu<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'GnBu'))
@@ -2449,6 +2472,7 @@ paletteColorBrewerGnBu<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerBuPu()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerBuPu<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'BuPu'))
@@ -2464,6 +2488,7 @@ paletteColorBrewerBuPu<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerBuGn()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerBuGn<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'BuGn'))
@@ -2479,6 +2504,7 @@ paletteColorBrewerBuGn<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerBlues()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerBlues<-function(value.count=3) {
     return(RColorBrewer::brewer.pal(value.count, 'Blues'))
@@ -2493,6 +2519,7 @@ paletteColorBrewerBlues<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerRdYlBu()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerRdYlBu<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'RdYlBu')))
@@ -2507,6 +2534,7 @@ paletteColorBrewerRdYlBu<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerRdBu()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerRdBu<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'RdBu')))
@@ -2521,6 +2549,7 @@ paletteColorBrewerRdBu<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerPuOr()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPuOr<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'PuOr')))
@@ -2535,6 +2564,7 @@ paletteColorBrewerPuOr<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerPRGn()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPRGn<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'PRGn')))
@@ -2549,6 +2579,7 @@ paletteColorBrewerPRGn<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerPiYG()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPiYG<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'PiYG')))
@@ -2563,6 +2594,7 @@ paletteColorBrewerPiYG<-function(value.count=3) {
 #' @examples \donttest{
 #' paletteColorBrewerBrBG()
 #' }
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerBrBG<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'BrBG')))
