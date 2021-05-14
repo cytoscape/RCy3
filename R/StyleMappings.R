@@ -2087,9 +2087,9 @@ setEdgeTooltipMapping <- function (table.column, style.name=NULL,
 #' @description Generate a qualitative random color map of a given size
 #' @param value.count Number of colors to generate; default is 1
 #' @return List of random colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorRandom()
-#' }
+
 #' @seealso genNodeColorMap genEdgeColorMap
 #' @export
 paletteColorRandom<-function(value.count=1){
@@ -2106,9 +2106,9 @@ paletteColorRandom<-function(value.count=1){
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerPastel2()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPastel2<-function(value.count=3) {
@@ -2121,9 +2121,9 @@ paletteColorBrewerPastel2<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerPastel1()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPastel1<-function(value.count=3) {
@@ -2137,9 +2137,9 @@ paletteColorBrewerPastel1<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerDark2()
-#' } 
+ 
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerDark2<-function(value.count=3) {
@@ -2152,9 +2152,9 @@ paletteColorBrewerDark2<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerAccent()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerAccent<-function(value.count=3) {
@@ -2167,9 +2167,9 @@ paletteColorBrewerAccent<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 
 #' 12. See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerPaired()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPaired<-function(value.count=3) {
@@ -2183,9 +2183,9 @@ paletteColorBrewerPaired<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerSet1()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerSet1<-function(value.count=3) {
@@ -2198,9 +2198,9 @@ paletteColorBrewerSet1<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 8
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerSet2()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerSet2<-function(value.count=3) {
@@ -2213,9 +2213,9 @@ paletteColorBrewerSet2<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 
 #' 12. See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerSet3()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerSet3<-function(value.count=3) {
@@ -2229,9 +2229,9 @@ paletteColorBrewerSet3<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerYlOrRd()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerYlOrRd<-function(value.count=3) {
@@ -2245,9 +2245,9 @@ paletteColorBrewerYlOrRd<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerYlOrBr()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerYlOrBr<-function(value.count=3) {
@@ -2261,9 +2261,9 @@ paletteColorBrewerYlOrBr<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerYlGnBu()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerYlGnBu<-function(value.count=3) {
@@ -2277,9 +2277,9 @@ paletteColorBrewerYlGnBu<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerYlGn()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerYlGn<-function(value.count=3) {
@@ -2293,9 +2293,9 @@ paletteColorBrewerYlGn<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerReds()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerReds<-function(value.count=3) {
@@ -2309,9 +2309,9 @@ paletteColorBrewerReds<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerRdPu()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerRdPu<-function(value.count=3) {
@@ -2325,9 +2325,9 @@ paletteColorBrewerRdPu<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerPurples()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPurples<-function(value.count=3) {
@@ -2341,9 +2341,9 @@ paletteColorBrewerPurples<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerPuRd()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPuRd<-function(value.count=3) {
@@ -2357,9 +2357,9 @@ paletteColorBrewerPuRd<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerPuBuGn()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPuBuGn<-function(value.count=3) {
@@ -2373,9 +2373,9 @@ paletteColorBrewerPuBuGn<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerPuBu()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPuBu<-function(value.count=3) {
@@ -2389,9 +2389,9 @@ paletteColorBrewerPuBu<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerOrRd()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerOrRd<-function(value.count=3) {
@@ -2405,9 +2405,9 @@ paletteColorBrewerOrRd<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerOranges()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerOranges<-function(value.count=3) {
@@ -2421,9 +2421,9 @@ paletteColorBrewerOranges<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerGreys()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerGreys<-function(value.count=3) {
@@ -2437,9 +2437,9 @@ paletteColorBrewerGreys<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerGreens()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerGreens<-function(value.count=3) {
@@ -2453,9 +2453,9 @@ paletteColorBrewerGreens<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerGnBu()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerGnBu<-function(value.count=3) {
@@ -2469,9 +2469,9 @@ paletteColorBrewerGnBu<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerBuPu()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerBuPu<-function(value.count=3) {
@@ -2485,9 +2485,9 @@ paletteColorBrewerBuPu<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples 
 #' paletteColorBrewerBuGn()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerBuGn<-function(value.count=3) {
@@ -2501,9 +2501,9 @@ paletteColorBrewerBuGn<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerBlues()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerBlues<-function(value.count=3) {
@@ -2516,9 +2516,9 @@ paletteColorBrewerBlues<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerRdYlBu()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerRdYlBu<-function(value.count=3) {
@@ -2531,9 +2531,9 @@ paletteColorBrewerRdYlBu<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerRdBu()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerRdBu<-function(value.count=3) {
@@ -2546,9 +2546,9 @@ paletteColorBrewerRdBu<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerPuOr()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPuOr<-function(value.count=3) {
@@ -2561,9 +2561,9 @@ paletteColorBrewerPuOr<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerPRGn()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPRGn<-function(value.count=3) {
@@ -2576,9 +2576,9 @@ paletteColorBrewerPRGn<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerPiYG()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerPiYG<-function(value.count=3) {
@@ -2591,9 +2591,9 @@ paletteColorBrewerPiYG<-function(value.count=3) {
 #' @param value.count Number of colors to generate; min is 3 (default); max is 9
 #' . See RColorBrewer::display.brewer.all()
 #' @return List of palette colors
-#' @examples \donttest{
+#' @examples
 #' paletteColorBrewerBrBG()
-#' }
+
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 paletteColorBrewerBrBG<-function(value.count=3) {

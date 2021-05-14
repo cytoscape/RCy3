@@ -17,7 +17,5 @@ List of palette colors
 Generate a divergent PiYG Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerPiYG()
-}
 }

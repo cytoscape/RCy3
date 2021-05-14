@@ -17,7 +17,5 @@ List of palette colors
 Generate a sequential Oranges Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerOranges()
-}
 }

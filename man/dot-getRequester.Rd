@@ -6,6 +6,9 @@
 \usage{
 .getRequester()
 }
+\value{
+None
+}
 \description{
 .getRequester
 }

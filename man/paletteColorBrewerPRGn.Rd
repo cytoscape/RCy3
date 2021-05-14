@@ -17,7 +17,5 @@ List of palette colors
 Generate a divergent PRGn Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerPRGn()
-}
 }

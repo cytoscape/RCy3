@@ -6,6 +6,9 @@
 \usage{
 resetDefaultSandbox()
 }
+\value{
+None
+}
 \description{
 Reset the entire state of the sandbox system.
 }

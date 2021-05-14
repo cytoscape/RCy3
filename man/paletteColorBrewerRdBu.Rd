@@ -17,7 +17,5 @@ List of palette colors
 Generate a divergent RdBu Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerRdBu()
-}
 }

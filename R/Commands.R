@@ -839,7 +839,9 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
 # IV. Jupyter-bridge 
 # ------------------------------------------------------------------------------
 #' @title findRemoteCytoscape
-#' @description Figure out whether CyREST is local or remote. If remote, we'll want to go through Jupyter-Bridge.
+#' @description Figure out whether CyREST is local or remote. If remote, we'll 
+#' want to go through Jupyter-Bridge.
+#' @return None
 #' @examples
 #' \donttest{
 #' findRemoteCytoscape()
@@ -848,7 +850,8 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
 findRemoteCytoscape<-function(){
     checkNotebookIsRunning()
     checkRunningRemote()
-    #doInitializeSandbox(requester, base.url=.defaultBaseUrl) # make sure there's a sandbox before executing a command
+    #doInitializeSandbox(requester, base.url=.defaultBaseUrl) 
+    # make sure there's a sandbox before executing a command
     if(is.null(checkRunningRemote())){
         stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
     }
@@ -861,7 +864,10 @@ findRemoteCytoscape<-function(){
 #' @title doInitializeSandbox
 #' @description doInitializeSandbox
 #' @param requester requester 
-#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
+#' @param base.url Ignore unless you need to specify a custom domain, port or 
+#' version to connect to the CyREST API. Default is http://127.0.0.1:1234 and 
+#' the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples
 #' \donttest{
 #' doInitializeSandbox()
@@ -880,7 +886,10 @@ doInitializeSandbox <- function(requester=NULL, base.url = .defaultBaseUrl){
 #' @description doSetSandbox
 #' @param sandboxToSet sandbox to set
 #' @param requester requester
-#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
+#' @param base.url Ignore unless you need to specify a custom domain, port or 
+#' version to connect to the CyREST API. Default is http://127.0.0.1:1234 and 
+#' the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
 #' @examples
 #' \donttest{
 #' doSetSandbox()
@@ -942,6 +951,7 @@ doSetSandbox <- function(sandboxToSet, requester=NULL, base.url = .defaultBaseUr
 # ------------------------------------------------------------------------------
 #' @title .getDefaultSandbox
 #' @description .getDefaultSandbox
+#' @return None
 #' @examples
 #' \donttest{
 #' .getDefaultSandbox()
@@ -962,6 +972,7 @@ doSetSandbox <- function(sandboxToSet, requester=NULL, base.url = .defaultBaseUr
 # ------------------------------------------------------------------------------
 #' @title .getRequester
 #' @description .getRequester
+#' @return None
 #' @examples
 #' \donttest{
 #' .getRequester()

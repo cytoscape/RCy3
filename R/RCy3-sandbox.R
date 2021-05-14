@@ -196,6 +196,7 @@ getAbsSandboxPath <- function(fileLocation){
 #' @title resetDefaultSandbox
 #'
 #' @description Reset the entire state of the sandbox system.
+#' @return None
 #' @examples \donttest{
 #' resetDefaultSandbox()
 #' }

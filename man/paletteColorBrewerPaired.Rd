@@ -17,7 +17,5 @@ List of palette colors
 Generate a qualitative Paired Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerPaired()
-}
 }

@@ -17,7 +17,5 @@ List of palette colors
 Generate a sequential PuBuGn Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerPuBuGn()
-}
 }

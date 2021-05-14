@@ -17,7 +17,5 @@ List of palette colors
 Generate a qualitative Accent Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerAccent()
-}
 }

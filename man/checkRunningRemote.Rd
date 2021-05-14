@@ -6,6 +6,9 @@
 \usage{
 checkRunningRemote()
 }
+\value{
+None
+}
 \description{
 Determine whether we're running locally or on a remote server. If locally (either via raw R or via a
 locally installed Notebook), we prefer to connect to Cytoscape over a local socket. If remote, we have to

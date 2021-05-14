@@ -181,6 +181,7 @@ setNotebookIsRunning<-function(newState=NULL){
 # ------------------------------------------------------------------------------
 #' @title getNotebookIsRunning
 #' @description getNotebookIsRunning
+#' @return None
 #' @examples \donttest{
 #' getNotebookIsRunning()
 #' }
@@ -192,6 +193,7 @@ getNotebookIsRunning<-function(){
 # ------------------------------------------------------------------------------
 #' @title checkNotebookIsRunning
 #' @description checkNotebookIsRunning
+#' @return None
 #' @examples \donttest{
 #' checkNotebookIsRunning()
 #' }
@@ -234,6 +236,7 @@ runningRemoteCheck<-function(newState=NULL){
 #' connect over Jupyter-Bridge. Either way, we can determine which by whether Cytoscape answers to a version
 #' check. If Cytoscape doesn't answer, we have no information ... and we have to wait until Cytoscape is
 #' started and becomes reachable before we can determine local vs remote.
+#' @return None
 #' @examples \donttest{
 #' checkRunningRemote()
 #' }

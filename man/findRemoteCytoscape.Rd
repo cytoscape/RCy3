@@ -6,8 +6,12 @@
 \usage{
 findRemoteCytoscape()
 }
+\value{
+None
+}
 \description{
-Figure out whether CyREST is local or remote. If remote, we'll want to go through Jupyter-Bridge.
+Figure out whether CyREST is local or remote. If remote, we'll 
+want to go through Jupyter-Bridge.
 }
 \examples{
 \donttest{

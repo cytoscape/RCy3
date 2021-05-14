@@ -6,6 +6,9 @@
 \usage{
 getNotebookIsRunning()
 }
+\value{
+None
+}
 \description{
 getNotebookIsRunning
 }

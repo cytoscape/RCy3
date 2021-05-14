@@ -17,7 +17,5 @@ List of palette colors
 Generate a sequential Reds Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerReds()
-}
 }

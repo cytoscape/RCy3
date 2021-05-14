@@ -6,6 +6,9 @@
 \usage{
 checkNotebookIsRunning()
 }
+\value{
+None
+}
 \description{
 checkNotebookIsRunning
 }

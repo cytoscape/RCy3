@@ -17,7 +17,5 @@ List of palette colors
 Generate a qualitative Dark2 Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerDark2()
-} 
 }

@@ -17,7 +17,5 @@ List of palette colors
 Generate a sequential BuPu Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerBuPu()
-}
 }

@@ -17,7 +17,5 @@ List of palette colors
 Generate a sequential YlOrRd Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerYlOrRd()
-}
 }

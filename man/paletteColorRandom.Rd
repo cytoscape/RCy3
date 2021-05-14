@@ -16,9 +16,7 @@ List of random colors
 Generate a qualitative random color map of a given size
 }
 \examples{
-\donttest{
 paletteColorRandom()
-}
 }
 \seealso{
 genNodeColorMap genEdgeColorMap

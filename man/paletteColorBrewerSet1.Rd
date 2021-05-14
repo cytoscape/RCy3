@@ -17,7 +17,5 @@ List of palette colors
 Generate a qualitative Set1 Brewer palette of a given size
 }
 \examples{
-\donttest{
 paletteColorBrewerSet1()
-}
 }
