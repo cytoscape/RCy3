@@ -195,9 +195,10 @@ getNotebookIsRunning<-function(){
 #' @examples \donttest{
 #' checkNotebookIsRunning()
 #' }
+#' @import IRkernel
 #' @export
 checkNotebookIsRunning<-function(){
-    
+    IRkernel::jupyter_option_defaults
     if(is.null(getNotebookIsRunning())){
         if(isTRUE(getOption("jupyter.in_kernel"))){
             setNotebookIsRunning(TRUE)
