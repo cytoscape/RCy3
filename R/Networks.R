@@ -276,11 +276,17 @@ exportNetwork <- function (filename=NULL, type="SIF",
     ext <- paste0(".",tolower(type),"$")
     if (!grepl(ext,filename))
         filename <- paste0(filename,".",tolower(type))
-    fileInfo <- sandboxGetFileInfo(filename)
+    fileInfo <- sandboxGetFileInfo(filename, base.url=base.url)
     if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
-        print("This file already exists. A Cytoscape popup will be 
-                    generated to confirm overwrite.")
-        
+        if (overwriteFile){
+            sandboxRemoveFile(filename, base.url=base.url)
+        }
+        else {
+            warning("This file already exists. A Cytoscape popup will be 
+                    generated to confirm overwrite.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        }
     }
     fullFilename <- fileInfo[['filePath']]
     commandsPOST(paste0(cmd.string,' OutputFile="',
