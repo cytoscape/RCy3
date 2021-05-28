@@ -1,0 +1,127 @@
+2021-05-27 17:35:59,721 [DEBUG] py4...: Calling export_image('test')
+2021-05-27 17:35:59,721 [DEBUG] py4...: ǀCalling get_network_view_suid(None, base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:35:59,721 [DEBUG] py4...: ǀǀCalling get_network_views(None, base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:35:59,721 [DEBUG] py4...: ǀǀǀCalling get_network_suid(None, base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:35:59,721 [DEBUG] py4...: ǀǀǀǀCalling commands_post('network get attribute network="current" namespace="default" columnList="SUID"', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:35:59,722 [DEBUG] py4...: ǀǀǀǀHTTP POST(http://127.0.0.1:1234/v1/commands/network/get%20attribute), json: {'network': 'current', 'namespace': 'default', 'columnList': 'SUID'}
+2021-05-27 17:35:59,756 [DEBUG] py4...: ǀǀǀǀOK[200], content: {
+ "data": [ {
+  "SUID": 4947
+}
+],
+ "errors":[]
+}
+2021-05-27 17:35:59,757 [DEBUG] py4...: ǀǀǀǀReturning 'commands_post': [{'SUID': 4947}]
+2021-05-27 17:35:59,757 [DEBUG] py4...: ǀǀǀReturning 'get_network_suid': 4947
+2021-05-27 17:35:59,757 [DEBUG] py4...: ǀǀǀCalling cyrest_get('networks/4947/views', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:35:59,757 [DEBUG] py4...: ǀǀǀHTTP GET(http://127.0.0.1:1234/v1/networks/4947/views)
+2021-05-27 17:35:59,789 [DEBUG] py4...: ǀǀǀOK[200], content: [4992]
+2021-05-27 17:35:59,790 [DEBUG] py4...: ǀǀǀReturning 'cyrest_get': [4992]
+2021-05-27 17:35:59,790 [DEBUG] py4...: ǀǀReturning 'get_network_views': [4992]
+2021-05-27 17:35:59,790 [DEBUG] py4...: ǀReturning 'get_network_view_suid': 4992
+2021-05-27 17:35:59,790 [DEBUG] py4...: ǀCalling sandbox_get_file_info('test.png')
+2021-05-27 17:35:59,790 [DEBUG] py4...: ǀǀCalling commands_post('filetransfer getFileInfo fileName="/Users/yxin/git/cytoscape/RCy3/test.png"', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:35:59,790 [DEBUG] py4...: ǀǀHTTP POST(http://127.0.0.1:1234/v1/commands/filetransfer/getFileInfo), json: {'fileName': '/Users/yxin/git/cytoscape/RCy3/test.png'}
+2021-05-27 17:35:59,808 [DEBUG] py4...: ǀǀOK[200], content: {
+ "data": {"filePath":"/Users/yxin/git/cytoscape/RCy3/test.png","modifiedTime":"","isFile":false},
+ "errors":[]
+}
+2021-05-27 17:35:59,809 [DEBUG] py4...: ǀǀReturning 'commands_post': {'filePath': '/Users/yxin/git/cytoscape/RCy3/test.png', 'modifiedTime': '', 'isFile': False}
+2021-05-27 17:35:59,809 [DEBUG] py4...: ǀReturning 'sandbox_get_file_info': {'filePath': '/Users/yxin/git/cytoscape/RCy3/test.png', 'modifiedTime': '', 'isFile': False}
+2021-05-27 17:35:59,810 [DEBUG] py4...: ǀCalling commands_post('view export OutputFile="/Users/yxin/git/cytoscape/RCy3/test.png" options="PNG" view="SUID:4992"', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:35:59,810 [DEBUG] py4...: ǀHTTP POST(http://127.0.0.1:1234/v1/commands/view/export), json: {'OutputFile': '/Users/yxin/git/cytoscape/RCy3/test.png', 'options': 'PNG', 'view': 'SUID:4992'}
+2021-05-27 17:36:00,068 [DEBUG] py4...: ǀOK[200], content: {
+ "data": {"file":"/Users/yxin/git/cytoscape/RCy3/test.png"},
+ "errors":[]
+}
+2021-05-27 17:36:00,069 [DEBUG] py4...: ǀReturning 'commands_post': {'file': '/Users/yxin/git/cytoscape/RCy3/test.png'}
+2021-05-27 17:36:00,069 [DEBUG] py4...: Returning 'export_image': {'file': '/Users/yxin/git/cytoscape/RCy3/test.png'}
+2021-05-27 17:36:00,069 [DEBUG] py4...: --------------------
+2021-05-27 17:37:16,656 [DEBUG] py4...: Calling export_image('/R/test')
+2021-05-27 17:37:16,657 [DEBUG] py4...: ǀCalling get_network_view_suid(None, base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:16,657 [DEBUG] py4...: ǀǀCalling get_network_views(None, base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:16,657 [DEBUG] py4...: ǀǀǀCalling get_network_suid(None, base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:16,657 [DEBUG] py4...: ǀǀǀǀCalling commands_post('network get attribute network="current" namespace="default" columnList="SUID"', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:16,658 [DEBUG] py4...: ǀǀǀǀHTTP POST(http://127.0.0.1:1234/v1/commands/network/get%20attribute), json: {'network': 'current', 'namespace': 'default', 'columnList': 'SUID'}
+2021-05-27 17:37:16,698 [DEBUG] py4...: ǀǀǀǀOK[200], content: {
+ "data": [ {
+  "SUID": 4947
+}
+],
+ "errors":[]
+}
+2021-05-27 17:37:16,699 [DEBUG] py4...: ǀǀǀǀReturning 'commands_post': [{'SUID': 4947}]
+2021-05-27 17:37:16,699 [DEBUG] py4...: ǀǀǀReturning 'get_network_suid': 4947
+2021-05-27 17:37:16,699 [DEBUG] py4...: ǀǀǀCalling cyrest_get('networks/4947/views', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:16,699 [DEBUG] py4...: ǀǀǀHTTP GET(http://127.0.0.1:1234/v1/networks/4947/views)
+2021-05-27 17:37:16,714 [DEBUG] py4...: ǀǀǀOK[200], content: [4992]
+2021-05-27 17:37:16,714 [DEBUG] py4...: ǀǀǀReturning 'cyrest_get': [4992]
+2021-05-27 17:37:16,715 [DEBUG] py4...: ǀǀReturning 'get_network_views': [4992]
+2021-05-27 17:37:16,715 [DEBUG] py4...: ǀReturning 'get_network_view_suid': 4992
+2021-05-27 17:37:16,715 [DEBUG] py4...: ǀCalling sandbox_get_file_info('/R/test.png')
+2021-05-27 17:37:16,715 [DEBUG] py4...: ǀǀCalling commands_post('filetransfer getFileInfo fileName="/R/test.png"', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:16,715 [DEBUG] py4...: ǀǀHTTP POST(http://127.0.0.1:1234/v1/commands/filetransfer/getFileInfo), json: {'fileName': '/R/test.png'}
+2021-05-27 17:37:16,754 [DEBUG] py4...: ǀǀOK[200], content: {
+ "data": {"filePath":"/R/test.png","modifiedTime":"","isFile":false},
+ "errors":[]
+}
+2021-05-27 17:37:16,754 [DEBUG] py4...: ǀǀReturning 'commands_post': {'filePath': '/R/test.png', 'modifiedTime': '', 'isFile': False}
+2021-05-27 17:37:16,755 [DEBUG] py4...: ǀReturning 'sandbox_get_file_info': {'filePath': '/R/test.png', 'modifiedTime': '', 'isFile': False}
+2021-05-27 17:37:16,755 [DEBUG] py4...: ǀCalling commands_post('view export OutputFile="/R/test.png" options="PNG" view="SUID:4992"', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:16,755 [DEBUG] py4...: ǀHTTP POST(http://127.0.0.1:1234/v1/commands/view/export), json: {'OutputFile': '/R/test.png', 'options': 'PNG', 'view': 'SUID:4992'}
+2021-05-27 17:37:16,814 [DEBUG] py4...: ǀInternal Server Error[500], content: {
+ "data": {},
+ "errors":[{"status":500,"type":"urn:cytoscape:ci:cyrest-core:v1:handle-json-command:errors:2","message":"/R/test.png (No such file or directory)","link":"file:/Users/yxin/CytoscapeConfiguration/3/framework-cytoscape.log"}]
+}
+2021-05-27 17:37:16,815 [DEBUG] py4...: ǀ'commands_post' exception CyError('In commands_post(): /R/test.png (No such file or directory)')
+2021-05-27 17:37:16,815 [DEBUG] py4...: 'export_image' exception CyError('In commands_post(): /R/test.png (No such file or directory)')
+2021-05-27 17:37:16,815 [DEBUG] py4...: --------------------
+2021-05-27 17:37:20,582 [DEBUG] py4...: Calling export_image('R/test')
+2021-05-27 17:37:20,583 [DEBUG] py4...: ǀCalling get_network_view_suid(None, base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:20,583 [DEBUG] py4...: ǀǀCalling get_network_views(None, base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:20,584 [DEBUG] py4...: ǀǀǀCalling get_network_suid(None, base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:20,584 [DEBUG] py4...: ǀǀǀǀCalling commands_post('network get attribute network="current" namespace="default" columnList="SUID"', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:20,585 [DEBUG] py4...: ǀǀǀǀHTTP POST(http://127.0.0.1:1234/v1/commands/network/get%20attribute), json: {'network': 'current', 'namespace': 'default', 'columnList': 'SUID'}
+2021-05-27 17:37:20,614 [DEBUG] py4...: ǀǀǀǀOK[200], content: {
+ "data": [ {
+  "SUID": 4947
+}
+],
+ "errors":[]
+}
+2021-05-27 17:37:20,615 [DEBUG] py4...: ǀǀǀǀReturning 'commands_post': [{'SUID': 4947}]
+2021-05-27 17:37:20,615 [DEBUG] py4...: ǀǀǀReturning 'get_network_suid': 4947
+2021-05-27 17:37:20,615 [DEBUG] py4...: ǀǀǀCalling cyrest_get('networks/4947/views', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:20,615 [DEBUG] py4...: ǀǀǀHTTP GET(http://127.0.0.1:1234/v1/networks/4947/views)
+2021-05-27 17:37:20,649 [DEBUG] py4...: ǀǀǀOK[200], content: [4992]
+2021-05-27 17:37:20,649 [DEBUG] py4...: ǀǀǀReturning 'cyrest_get': [4992]
+2021-05-27 17:37:20,650 [DEBUG] py4...: ǀǀReturning 'get_network_views': [4992]
+2021-05-27 17:37:20,650 [DEBUG] py4...: ǀReturning 'get_network_view_suid': 4992
+2021-05-27 17:37:20,650 [DEBUG] py4...: ǀCalling sandbox_get_file_info('R/test.png')
+2021-05-27 17:37:20,651 [DEBUG] py4...: ǀǀCalling commands_post('filetransfer getFileInfo fileName="/Users/yxin/git/cytoscape/RCy3/R/test.png"', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:20,651 [DEBUG] py4...: ǀǀHTTP POST(http://127.0.0.1:1234/v1/commands/filetransfer/getFileInfo), json: {'fileName': '/Users/yxin/git/cytoscape/RCy3/R/test.png'}
+2021-05-27 17:37:20,692 [DEBUG] py4...: ǀǀOK[200], content: {
+ "data": {"filePath":"/Users/yxin/git/cytoscape/RCy3/R/test.png","modifiedTime":"","isFile":false},
+ "errors":[]
+}
+2021-05-27 17:37:20,693 [DEBUG] py4...: ǀǀReturning 'commands_post': {'filePath': '/Users/yxin/git/cytoscape/RCy3/R/test.png', 'modifiedTime': '', 'isFile': False}
+2021-05-27 17:37:20,693 [DEBUG] py4...: ǀReturning 'sandbox_get_file_info': {'filePath': '/Users/yxin/git/cytoscape/RCy3/R/test.png', 'modifiedTime': '', 'isFile': False}
+2021-05-27 17:37:20,693 [DEBUG] py4...: ǀCalling commands_post('view export OutputFile="/Users/yxin/git/cytoscape/RCy3/R/test.png" options="PNG" view="SUID:4992"', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 17:37:20,693 [DEBUG] py4...: ǀHTTP POST(http://127.0.0.1:1234/v1/commands/view/export), json: {'OutputFile': '/Users/yxin/git/cytoscape/RCy3/R/test.png', 'options': 'PNG', 'view': 'SUID:4992'}
+2021-05-27 17:37:20,919 [DEBUG] py4...: ǀOK[200], content: {
+ "data": {"file":"/Users/yxin/git/cytoscape/RCy3/R/test.png"},
+ "errors":[]
+}
+2021-05-27 17:37:20,919 [DEBUG] py4...: ǀReturning 'commands_post': {'file': '/Users/yxin/git/cytoscape/RCy3/R/test.png'}
+2021-05-27 17:37:20,920 [DEBUG] py4...: Returning 'export_image': {'file': '/Users/yxin/git/cytoscape/RCy3/R/test.png'}
+2021-05-27 17:37:20,920 [DEBUG] py4...: --------------------
+2021-05-27 21:44:14,425 [DEBUG] py4...: Calling sandbox_get_file_info('/Users/yxin/git/cytoscape/RCy3/R/test.png')
+2021-05-27 21:44:14,427 [DEBUG] py4...: ǀCalling commands_post('filetransfer getFileInfo fileName="/Users/yxin/git/cytoscape/RCy3/R/test.png"', base_url='http://127.0.0.1:1234/v1')
+2021-05-27 21:44:14,428 [DEBUG] py4...: ǀHTTP POST(http://127.0.0.1:1234/v1/commands/filetransfer/getFileInfo), json: {'fileName': '/Users/yxin/git/cytoscape/RCy3/R/test.png'}
+2021-05-27 21:44:14,491 [DEBUG] py4...: ǀOK[200], content: {
+ "data": {"filePath":"/Users/yxin/git/cytoscape/RCy3/R/test.png","modifiedTime":"2021-05-27 21:36:11.0596","isFile":true},
+ "errors":[]
+}
+2021-05-27 21:44:14,492 [DEBUG] py4...: ǀReturning 'commands_post': {'filePath': '/Users/yxin/git/cytoscape/RCy3/R/test.png', 'modifiedTime': '2021-05-27 21:36:11.0596', 'isFile': True}
+2021-05-27 21:44:14,492 [DEBUG] py4...: Returning 'sandbox_get_file_info': {'filePath': '/Users/yxin/git/cytoscape/RCy3/R/test.png', 'modifiedTime': '2021-05-27 21:36:11.0596', 'isFile': True}
+2021-05-27 21:44:14,493 [DEBUG] py4...: --------------------

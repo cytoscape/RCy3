@@ -95,19 +95,14 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl, overwriteFile=TRU
         ext <- ".cys$"
         if (!grepl(ext,filename))
             filename <- paste0(filename,".cys")
-        fileInfo <- sandboxGetFileInfo(filename, base.url = base.url)
-        if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
-            if (overwriteFile){
-                warning("This file has been overwritten.",
-                        call. = FALSE,
-                        immediate. = TRUE)
-            }
-            else {
-                stop(glue('File {filename} already exists ... sessions not saved.'))
-            }
-        }
+        if(!isAbsolutePath(filename))
+            filename <- getAbsSandboxPath(filename)
+        if (file.exists(filename))
+            warning("This file has been overwritten.",
+                    call. = FALSE,
+                    immediate. = TRUE)
         commandsPOST(paste0('session save as file="',
-                            getAbsSandboxPath(filename),'"'), 
+                            filename,'"'), 
                      base.url=base.url)
     }
 }
