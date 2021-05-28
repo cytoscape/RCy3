@@ -286,18 +286,17 @@ sandboxRemoveFile <- function(fileName, sandboxName=NULL, base.url=.defaultBaseU
         sandboxPath <- getCurrentSandboxPath()
     } else {
         box <- doInitializeSandbox(base.url=base.url)
-        sandboxName <- box[1]
-        sandboxPath <- box[2]
+        sandboxName <- box[[1]]
+        sandboxPath <- box[[2]]
     }
     if(!is.null(sandboxName)){
         command <- paste(command, sprintf("sandboxName=%s", sandboxName))
     } else if(!is.null(fileName)){
-        fileName <- file.path(sandboxPath, fileName)
+        fileName <- file.path(sandboxPath, basename(fileName))
     }
     if(!is.null(fileName)){
         command <- paste(command, sprintf("fileName=%s", fileName))
     }
-    print(command)
     res <- commandsPOST(command, base.url = base.url)
     return(res)
 }
