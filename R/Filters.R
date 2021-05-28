@@ -290,14 +290,20 @@ exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl, o
     ext <- ".json$"
     if (!grepl(ext,filename))
         filename <- paste0(filename,".json")
-    if(!isAbsolutePath(filename))
-        filename <- getAbsSandboxPath(filename)
-    if (file.exists(filename))
-        warning("This file has been overwritten.",
-                call. = FALSE,
-                immediate. = TRUE)
+    fileInfo <- sandboxGetFileInfo(filename, base.url = base.url)
+    if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
+        if (overwriteFile){
+            warning("This file has been overwritten.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        }
+        else {
+            stop(glue('File {filename} already exists ... filters not saved.'))
+        }
+    }
+    fullFilename <- fileInfo[['filePath']]
     commandsGET(paste0('filter export file="',
-                       filename,'"'),
+                       fullFilename,'"'),
                 base.url)
 }
 

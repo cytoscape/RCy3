@@ -151,15 +151,20 @@ exportVisualStyles<-function(filename=NULL, type="XML", styles=NULL, base.url=.d
     ext <- paste0(".",tolower(type),"$")
     if (!grepl(ext,filename))
         filename <- paste0(filename,".",tolower(type))
-    if(!isAbsolutePath(filename))
-        filename <- getAbsSandboxPath(filename)
-    if (file.exists(filename))
-        warning("This file already exists. A Cytoscape popup 
-                will be generated to confirm overwrite.",
-                call. = FALSE,
-                immediate. = TRUE)
-    
-    cmd.string <- paste0(cmd.string,' OutputFile="',filename,'"',
+    fileInfo <- sandboxGetFileInfo(filename, base.url=base.url)
+    if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
+        if (overwriteFile){
+            sandboxRemoveFile(filename, base.url=base.url)
+        }
+        else {
+            warning("This file already exists. A Cytoscape popup will be 
+                    generated to confirm overwrite.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        }
+    }
+    fullFilename <- fileInfo[['filePath']]
+    cmd.string <- paste0(cmd.string,' OutputFile="',fullFilename,'"',
                          ' options="',type,'"')
     commandsPOST(cmd.string, base.url = base.url)
     
