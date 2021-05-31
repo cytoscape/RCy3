@@ -258,8 +258,9 @@ setVisualStyle <- function(style.name, network=NULL, base.url=.defaultBaseUrl) {
     if(!style.name %in% current.names) { 
         stop(sprintf('Cannot call setVisualStyle on a non-existent visual style (%s)', style.name))
     }
-    cyrestGET(paste("apply/styles", style.name, net.SUID, sep="/"), base.url = base.url)
+    res <- cyrestGET(paste("apply/styles", style.name, net.SUID, sep="/"), base.url = base.url)
     Sys.sleep(get(".MODEL_PROPAGATION_SECS", envir=RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX" 
+    return(res)
 }
 
 # ==============================================================================
