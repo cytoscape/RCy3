@@ -1,3 +1,7 @@
+Changes in version 2.12.x
++ Bug Fixes
+  - filepath handling in export functions, #122
+  - Sys.sleep added to setVisualStyle, #137
 Changes in version 2.12.0
 + New support for cloud-hosted Jupyter notebooks!
   - Jyputer notebooks running RCy3 in the cloud can communicate with local Cytoscape instances

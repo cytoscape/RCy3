@@ -302,7 +302,6 @@ exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl, o
         }
     }
     fullFilename <- fileInfo[['filePath']]
-    print(fullFilename)
     commandsGET(paste0('filter export file="',
                        fullFilename,'"'),
                 base.url)
