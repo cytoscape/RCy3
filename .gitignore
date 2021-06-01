@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 RCy3.Rproj
+.DS_Store
+*/.DS_Store
