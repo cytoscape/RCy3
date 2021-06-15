@@ -293,9 +293,10 @@ sandboxRemoveFile <- function(fileName, sandboxName=NULL, base.url=.defaultBaseU
         command <- paste(command, sprintf("sandboxName=%s", sandboxName))
     } else if(!is.null(fileName)){
         if(isAbsolutePath(fileName)){
-            fileName <- basename(fileName)
-        }
+            fileName <- fileName
+        } else {
         fileName <- file.path(sandboxPath, fileName)
+        }
     }
     if(!is.null(fileName)){
         command <- paste(command, sprintf("fileName=%s", fileName))

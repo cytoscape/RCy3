@@ -321,9 +321,7 @@ exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl, o
 #' }
 #' @export
 importFilters<-function(filename , base.url = .defaultBaseUrl){
-    if(!isAbsolutePath(filename))
-        filename = getAbsSandboxPath(filename)
-    
+    filename = getAbsSandboxPath(filename)
     res <- commandsGET(paste0('filter import file="',filename,'"'),base.url)
     Sys.sleep(get(".CATCHUP_FILTER_SECS",envir = RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX" 
     return(res)
