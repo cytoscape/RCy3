@@ -107,7 +107,6 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl, overwriteFile=TRU
             }
         }
         fullFilename <- fileInfo[['filePath']]
-        
         commandsPOST(paste0('session save as file="',
                             fullFilename,'"'), 
                      base.url=base.url)

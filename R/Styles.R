@@ -187,9 +187,7 @@ exportVisualStyles<-function(filename=NULL, type="XML", styles=NULL, base.url=.d
 #' @seealso exportVisualStyles
 #' @export
 importVisualStyles<-function(filename="styles.xml", base.url=.defaultBaseUrl){
-    if(!isAbsolutePath(filename))
-        filename = getAbsSandboxPath(filename)
-    
+    filename = getAbsSandboxPath(filename)
     cmd.string <- paste0('vizmap load file',' file="',filename,'"')
     commandsPOST(cmd.string, base.url = base.url)
     }
