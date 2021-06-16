@@ -97,7 +97,11 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
         },
         error = function(e){
             if(is.null(sandboxName) && is.null(getCurrentSandboxName()) && !is.null(fileName) && !is.null(trimws(fileName))){
+                if(isAbsolutePath(fileName)){
+                    filePath <- fileName
+                } else {
                 filePath <- (file.path(getwd(), fileName)) 
+                }
                 if (file.exists(filePath)){
                     isFile <- utils::file_test("-f", fileName)
                     modifiedTime <- format(file.info(fileName)$mtime, usetz=FALSE)
