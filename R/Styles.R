@@ -163,8 +163,7 @@ exportVisualStyles<-function(filename=NULL, type="XML", styles=NULL, base.url=.d
                     immediate. = TRUE)
         }
     }
-    fullFilename <- fileInfo[['filePath']]
-    cmd.string <- paste0(cmd.string,' OutputFile="',fullFilename,'"',
+    cmd.string <- paste0(cmd.string,' OutputFile="',getAbsSandboxPath(filename),'"',
                          ' options="',type,'"')
     commandsPOST(cmd.string, base.url = base.url)
     

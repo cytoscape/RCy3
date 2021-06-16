@@ -187,9 +187,8 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
                     immediate. = TRUE)
         }
     }
-    fullFilename <- fileInfo[['filePath']]
     commandsPOST(paste0(cmd.string,
-                        ' OutputFile="',fullFilename,'"',
+                        ' OutputFile="',getAbsSandboxPath(filename),'"',
                         ' options="',toupper(type),'"',
                         ' view=SUID:"',view.SUID,'"'), 
                  base.url = base.url)

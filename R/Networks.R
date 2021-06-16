@@ -288,9 +288,8 @@ exportNetwork <- function (filename=NULL, type="SIF",
                     immediate. = TRUE)
         }
     }
-    fullFilename <- fileInfo[['filePath']]
     commandsPOST(paste0(cmd.string,' OutputFile="',
-                        fullFilename,'"'),
+                        getAbsSandboxPath(filename),'"'),
                  base.url = base.url)
 }
 

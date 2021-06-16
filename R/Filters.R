@@ -301,9 +301,8 @@ exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl, o
             stop(glue('File {filename} already exists ... filters not saved.'))
         }
     }
-    fullFilename <- fileInfo[['filePath']]
     commandsGET(paste0('filter export file="',
-                       fullFilename,'"'),
+                       getAbsSandboxPath(filename),'"'),
                 base.url)
 }
 
