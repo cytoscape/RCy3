@@ -184,7 +184,12 @@ getAbsSandboxPath <- function(fileLocation){
     boxName <- box[[1]]
     boxPath <- box[[2]]
     if (is.null(boxName)){
-        return(file.path(getwd(),fileLocation)) 
+        if(isAbsolutePath(fileLocation)){
+            filePath <- fileLocation
+        } else {
+            filePath <- (file.path(getwd(), fileLocation)) 
+        } 
+        return(filePath)
     } else if (!is.null(boxName) && !is.null(boxPath)){
         return(paste(boxPath, fileLocation, sep="/"))
     } else {
