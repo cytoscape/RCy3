@@ -106,9 +106,8 @@ saveSession<-function(filename=NULL, base.url=.defaultBaseUrl, overwriteFile=TRU
                 stop(glue('File {filename} already exists ... sessions not saved.'))
             }
         }
-        fullFilename <- fileInfo[['filePath']]
         commandsPOST(paste0('session save as file="',
-                            fullFilename,'"'), 
+                            getAbsSandboxPath(filename),'"'), 
                      base.url=base.url)
     }
 }

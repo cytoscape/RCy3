@@ -97,7 +97,7 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
         },
         error = function(e){
             if(is.null(sandboxName) && is.null(getCurrentSandboxName()) && !is.null(fileName) && !is.null(trimws(fileName))){
-                filePath <- normalizePath(fileName)
+                filePath <- (file.path(getwd(), fileName)) 
                 if (file.exists(filePath)){
                     isFile <- utils::file_test("-f", fileName)
                     modifiedTime <- format(file.info(fileName)$mtime, usetz=FALSE)
@@ -295,7 +295,7 @@ sandboxRemoveFile <- function(fileName, sandboxName=NULL, base.url=.defaultBaseU
         if(isAbsolutePath(fileName)){
             fileName <- fileName
         } else {
-        fileName <- file.path(sandboxPath, fileName)
+            fileName <- file.path(sandboxPath, fileName)
         }
     }
     if(!is.null(fileName)){

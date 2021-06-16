@@ -1,0 +1,38 @@
+2021-06-15 00:43:56,397 [DEBUG] py4...: Calling save_session('python.cys')
+2021-06-15 00:43:56,398 [DEBUG] py4...: ǀCalling sandbox_get_file_info('python.cys')
+2021-06-15 00:43:56,399 [DEBUG] py4...: ǀǀCalling commands_post('filetransfer getFileInfo fileName="/Users/yxin/git/cytoscape/RCy3/python.cys"', base_url='http://127.0.0.1:1234/v1')
+2021-06-15 00:43:56,400 [DEBUG] py4...: ǀǀHTTP POST(http://127.0.0.1:1234/v1/commands/filetransfer/getFileInfo), json: {'fileName': '/Users/yxin/git/cytoscape/RCy3/python.cys'}
+2021-06-15 00:43:56,463 [DEBUG] py4...: ǀǀOK[200], content: {
+ "data": {"filePath":"/Users/yxin/git/cytoscape/RCy3/python.cys","modifiedTime":"","isFile":false},
+ "errors":[]
+}
+2021-06-15 00:43:56,463 [DEBUG] py4...: ǀǀReturning 'commands_post': {'filePath': '/Users/yxin/git/cytoscape/RCy3/python.cys', 'modifiedTime': '', 'isFile': False}
+2021-06-15 00:43:56,463 [DEBUG] py4...: ǀReturning 'sandbox_get_file_info': {'filePath': '/Users/yxin/git/cytoscape/RCy3/python.cys', 'modifiedTime': '', 'isFile': False}
+2021-06-15 00:43:56,463 [DEBUG] py4...: ǀCalling commands_post('session save as file="/Users/yxin/git/cytoscape/RCy3/python.cys"', base_url='http://127.0.0.1:1234/v1')
+2021-06-15 00:43:56,464 [DEBUG] py4...: ǀHTTP POST(http://127.0.0.1:1234/v1/commands/session/save%20as), json: {'file': '/Users/yxin/git/cytoscape/RCy3/python.cys'}
+2021-06-15 00:44:10,614 [DEBUG] py4...: ǀOK[200], content: {
+ "data": {},
+ "errors":[]
+}
+2021-06-15 00:44:10,614 [DEBUG] py4...: ǀReturning 'commands_post': {}
+2021-06-15 00:44:10,615 [DEBUG] py4...: Returning 'save_session': {}
+2021-06-15 00:44:10,615 [DEBUG] py4...: --------------------
+2021-06-15 00:44:34,598 [DEBUG] py4...: Calling save_session('/Users/yxin/Desktop/pip.cys')
+2021-06-15 00:44:34,599 [DEBUG] py4...: ǀCalling sandbox_get_file_info('/Users/yxin/Desktop/pip.cys')
+2021-06-15 00:44:34,599 [DEBUG] py4...: ǀǀCalling commands_post('filetransfer getFileInfo fileName="/Users/yxin/Desktop/pip.cys"', base_url='http://127.0.0.1:1234/v1')
+2021-06-15 00:44:34,599 [DEBUG] py4...: ǀǀHTTP POST(http://127.0.0.1:1234/v1/commands/filetransfer/getFileInfo), json: {'fileName': '/Users/yxin/Desktop/pip.cys'}
+2021-06-15 00:44:34,621 [DEBUG] py4...: ǀǀOK[200], content: {
+ "data": {"filePath":"/Users/yxin/Desktop/pip.cys","modifiedTime":"","isFile":false},
+ "errors":[]
+}
+2021-06-15 00:44:34,621 [DEBUG] py4...: ǀǀReturning 'commands_post': {'filePath': '/Users/yxin/Desktop/pip.cys', 'modifiedTime': '', 'isFile': False}
+2021-06-15 00:44:34,622 [DEBUG] py4...: ǀReturning 'sandbox_get_file_info': {'filePath': '/Users/yxin/Desktop/pip.cys', 'modifiedTime': '', 'isFile': False}
+2021-06-15 00:44:34,622 [DEBUG] py4...: ǀCalling commands_post('session save as file="/Users/yxin/Desktop/pip.cys"', base_url='http://127.0.0.1:1234/v1')
+2021-06-15 00:44:34,622 [DEBUG] py4...: ǀHTTP POST(http://127.0.0.1:1234/v1/commands/session/save%20as), json: {'file': '/Users/yxin/Desktop/pip.cys'}
+2021-06-15 00:44:48,527 [DEBUG] py4...: ǀOK[200], content: {
+ "data": {},
+ "errors":[]
+}
+2021-06-15 00:44:48,527 [DEBUG] py4...: ǀReturning 'commands_post': {}
+2021-06-15 00:44:48,528 [DEBUG] py4...: Returning 'save_session': {}
+2021-06-15 00:44:48,528 [DEBUG] py4...: --------------------
