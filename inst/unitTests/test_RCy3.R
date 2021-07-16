@@ -16,7 +16,7 @@ run.tests = function()
     
     # minimize all delays
     setCatchupFilterSecs(0)
-    setModelPropagationSecs(1)
+    setModelPropagationSecs(0)
     setCatchupNetworkSecs(0)
     
     # start with a clean slate, and no windows
@@ -1879,7 +1879,7 @@ test.filters = function ()
 }
 
 #-------------------------------------------------------------------------------
-test.filters = function ()
+test.annotations = function ()
 {
     
     title = 'test.annotations'
