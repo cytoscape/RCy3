@@ -345,6 +345,7 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
         )
     } else {
         cmd.body <- fromJSON(cmd.body)
+        print(cmd.body)
         res <- .doRequestRemoteFilter("POST", cmd.url, cmd.body, headers=list("Content-Type" = "application/json"))
     }
     if(res$status_code > 299){
