@@ -333,16 +333,20 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
 #' @importFrom httr content_type_json
 .postCreateFilter<-function(cmd.body, base.url){
     cmd.url <- paste0(base.url, '/commands/filter/create')
-    cmd.body <- gsub("json\": {\n", "json\": \\'{\n", cmd.body, perl = TRUE)
-    cmd.body <- gsub("\n} \n} \n}", "\n} \n}\\' \n}", cmd.body, perl = TRUE)
-    cmd.body <- gsub("\n] \n} \n}", "\n] \n}\\' \n}", cmd.body, perl = TRUE) #for createCompositeFilter
-    tryCatch(
-        res <- POST(url=cmd.url, body=cmd.body, encode="json", content_type_json()), 
-        error=function(c) .cyError(c, res),
-        warnings=function(c) .cyWarnings(c, res),
-        finally=.cyFinally(res)
-    )
-    
+    if(!findRemoteCytoscape()){
+        cmd.body <- gsub("json\": {\n", "json\": \\'{\n", cmd.body, perl = TRUE)
+        cmd.body <- gsub("\n} \n} \n}", "\n} \n}\\' \n}", cmd.body, perl = TRUE)
+        cmd.body <- gsub("\n] \n} \n}", "\n] \n}\\' \n}", cmd.body, perl = TRUE) #for createCompositeFilter
+        tryCatch(
+            res <- POST(url=cmd.url, body=cmd.body, encode="json", content_type_json()), 
+            error=function(c) .cyError(c, res),
+            warnings=function(c) .cyWarnings(c, res),
+            finally=.cyFinally(res)
+        )
+    } else {
+        cmd.body <- fromJSON(cmd.body)
+        res <- .doRequestRemoteFilter("POST", cmd.url, cmd.body, headers=list("Content-Type" = "application/json"))
+    }
     if(res$status_code > 299){
         write(sprintf("RCy3::.postCreateFilter, HTTP Error Code: %d\n url=%s\n body=%s", 
                       res$status_code, URLencode(cmd.url), cmd.body), stderr())
@@ -373,4 +377,71 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
 .getFilterJson<-function(filter.name, base.url){
     commandsPOST(paste0('filter get name="',filter.name,'"'),
                  base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' @title .doRequestRemoteFilter
+#'
+#' @description Do requests remotely by connecting over Jupyter-Bridge.
+#' @param method A string to be converted to the REST query namespace
+#' @param qurl A named list of values to be converted to REST query parameters
+#' @param qbody A named list of values to be converted to JSON
+#' @param headers httr headers
+#' @return httr response
+#' @examples \donttest{
+#' .doRequestRemoteFilter()
+#' }
+#' @import httr
+#' @import uchardet
+#' @importFrom RJSONIO fromJSON toJSON isValidJSON
+#' @export
+.doRequestRemoteFilter<-function(method, qurl, qbody=NULL, headers=NULL){
+    tryCatch(
+        expr = {
+            request <- list(command = method, url = qurl, data = qbody, headers=headers)
+            request <- toJSON(request)
+            request <- gsub("json\": {\n", "json\": \\'{\n", request, perl = TRUE)
+            request <- gsub("\n} \n} \n}", "\n} \n}\\' \n}", request, perl = TRUE)
+            request <- gsub("\n] \n} \n}", "\n] \n}\\' \n}", request, perl = TRUE) #for createCompositeFilter
+            url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
+            r <- POST(url_post, body = request, add_headers("Content-Type" = "application/json"))
+        },
+        error = function(e){
+            message('Error posting to Jupyter-bridge!')
+            print(e)
+        }
+    )
+    tryCatch(
+        expr = {
+            while (TRUE){
+                url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
+                r <- GET(url_get)
+                if(status_code(r) != 408){break}
+            }
+        },
+        error = function(e){
+            message('Error receiving from Jupyter-bridge!')
+            print(e)
+        }        
+    )
+    tryCatch(
+        expr = {
+            rContent <- content(r, "text", encoding = "UTF-8")
+            encoding <- detect_str_enc(rContent)
+            message <- toString((iconv(rContent, to=encoding)))
+            cyReply <- fromJSON(message)
+        },
+        error = function(e){
+            message('Undeciperable message received from Jupyter-bridge!')
+            print(e)
+        }
+    )
+    jsonMessage = spoofResponse()
+    if (cyReply[1] == 0){ 
+        stop("Could not contact url")
+    }
+    jsonMessage@status_code <- cyReply[1]
+    jsonMessage@Reason <- cyReply[2]
+    jsonMessage@Text <- cyReply[3]
+    return(r)
 }
