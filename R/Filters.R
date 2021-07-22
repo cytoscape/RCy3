@@ -237,6 +237,7 @@ createDegreeFilter<-function(filter.name, criterion, predicate="BETWEEN",
     cmd.json <- list(id="DegreeFilter", parameters=list(criterion=criterion, 
                                                         predicate=predicate,
                                                         edgeType=edgeType))
+    cmd.json <- list(name=filter.name, json=cmd.json)
     cmd.body <- toJSON(list(name=filter.name, json=cmd.json))
     if(apply==FALSE){
         .verifySupportedVersions(cytoscape=3.9, base.url=base.url)
