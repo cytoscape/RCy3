@@ -243,7 +243,11 @@ createDegreeFilter<-function(filter.name, criterion, predicate="BETWEEN",
         cmd.body <- toJSON(list(name=filter.name,apply=apply, json=cmd.json))
     }
     
+    if(!findRemoteCytoscape()){
     .postCreateFilter(cmd.body, base.url)
+    } else {
+        .postCreateFilter(cmd.json, base.url)
+    }
     
     .checkSelected(hide, network, base.url)
 }
@@ -344,8 +348,6 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
             finally=.cyFinally(res)
         )
     } else {
-        cmd.body <- fromJSON(cmd.body)
-        print(cmd.body)
         res <- doRequestRemote("POST", cmd.url, cmd.body, headers=list("Content-Type" = "application/json"))
     }
     
