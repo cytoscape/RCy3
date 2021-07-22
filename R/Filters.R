@@ -237,18 +237,13 @@ createDegreeFilter<-function(filter.name, criterion, predicate="BETWEEN",
     cmd.json <- list(id="DegreeFilter", parameters=list(criterion=criterion, 
                                                         predicate=predicate,
                                                         edgeType=edgeType))
-    cmd.json <- list(name=filter.name, json=cmd.json)
     cmd.body <- toJSON(list(name=filter.name, json=cmd.json))
     if(apply==FALSE){
         .verifySupportedVersions(cytoscape=3.9, base.url=base.url)
         cmd.body <- toJSON(list(name=filter.name,apply=apply, json=cmd.json))
     }
     
-    if(!findRemoteCytoscape()){
     .postCreateFilter(cmd.body, base.url)
-    } else {
-        .postCreateFilter(cmd.json, base.url)
-    }
     
     .checkSelected(hide, network, base.url)
 }
@@ -338,19 +333,15 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
 #' @importFrom httr content_type_json
 .postCreateFilter<-function(cmd.body, base.url){
     cmd.url <- paste0(base.url, '/commands/filter/create')
-    if(!findRemoteCytoscape()){
-        cmd.body <- gsub("json\": {\n", "json\": \\'{\n", cmd.body, perl = TRUE)
-        cmd.body <- gsub("\n} \n} \n}", "\n} \n}\\' \n}", cmd.body, perl = TRUE)
-        cmd.body <- gsub("\n] \n} \n}", "\n] \n}\\' \n}", cmd.body, perl = TRUE) #for createCompositeFilter
-        tryCatch(
-            res <- POST(url=cmd.url, body=cmd.body, encode="json", content_type_json()), 
-            error=function(c) .cyError(c, res),
-            warnings=function(c) .cyWarnings(c, res),
-            finally=.cyFinally(res)
-        )
-    } else {
-        res <- doRequestRemote("POST", cmd.url, cmd.body, headers=list("Content-Type" = "application/json"))
-    }
+    cmd.body <- gsub("json\": {\n", "json\": \\'{\n", cmd.body, perl = TRUE)
+    cmd.body <- gsub("\n} \n} \n}", "\n} \n}\\' \n}", cmd.body, perl = TRUE)
+    cmd.body <- gsub("\n] \n} \n}", "\n] \n}\\' \n}", cmd.body, perl = TRUE) #for createCompositeFilter
+    tryCatch(
+        res <- POST(url=cmd.url, body=cmd.body, encode="json", content_type_json()), 
+        error=function(c) .cyError(c, res),
+        warnings=function(c) .cyWarnings(c, res),
+        finally=.cyFinally(res)
+    )
     
     if(res$status_code > 299){
         write(sprintf("RCy3::.postCreateFilter, HTTP Error Code: %d\n url=%s\n body=%s", 
