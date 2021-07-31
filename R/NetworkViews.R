@@ -195,6 +195,27 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
 }
 
 # ------------------------------------------------------------------------------
+#' @title Show Image in Notebook
+#'
+#' @description Show Image in Notebook
+#' @details Show Image in Notebook
+#' @param filename (\code{character}) Full path or path relavtive to current 
+#' working directory, in addition to the name of the file. Extension is 
+#' automatically added based on the \code{type} argument. If blank, the current
+#' network name will be used.
+#' @return None
+#' @examples \donttest{
+#' showImageInNotebook()
+#' }
+#' @importFrom IRdisplay display_png
+#' @export
+showImageInNotebook <- function (filename) {
+    exportImage(filename, overwriteFile = TRUE)
+    sandboxGetFrom(filename)
+    display_png(filename)
+}
+
+# ------------------------------------------------------------------------------
 #' @title Toggle Graphics Details
 #'
 #' @description Regardless of the current zoom level and network size,
