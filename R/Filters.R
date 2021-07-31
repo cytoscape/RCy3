@@ -333,12 +333,9 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
 #' @importFrom httr content_type_json
 .postCreateFilter<-function(cmd.body, base.url){
     cmd.url <- paste0(base.url, '/commands/filter/create')
-    print(fromJSON(cmd.body))
     cmd.body <- gsub("json\": {\n", "json\": \\'{\n", cmd.body, perl = TRUE)
     cmd.body <- gsub("\n} \n} \n}", "\n} \n}\\' \n}", cmd.body, perl = TRUE)
     cmd.body <- gsub("\n] \n} \n}", "\n] \n}\\' \n}", cmd.body, perl = TRUE) #for createCompositeFilter
-    print(fromJSON(cmd.body))
-    
     tryCatch(
         res <- POST(url=cmd.url, body=cmd.body, encode="json", content_type_json()), 
         error=function(c) .cyError(c, res),

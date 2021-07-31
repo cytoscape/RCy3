@@ -212,7 +212,7 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
 showImageInNotebook <- function (filename) {
     exportImage(filename, overwriteFile = TRUE)
     sandboxGetFrom(filename)
-    display_png(filename)
+    display_png(file=filename)
 }
 
 # ------------------------------------------------------------------------------
