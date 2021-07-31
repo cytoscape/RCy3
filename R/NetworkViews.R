@@ -217,7 +217,7 @@ showImageInNotebook <- function (filename) {
     sandboxGetFrom(filename)
     display_png(file=filename)
     } else {
-        print("This function ONLY works in notebook environment!")
+        print("This function ONLY works in notebook environment")
     }
 }
 
