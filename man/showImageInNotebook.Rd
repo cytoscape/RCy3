@@ -16,10 +16,10 @@ network name will be used.}
 None
 }
 \description{
-Show Image in Notebook
+Show Image in Jupyter Notebook
 }
 \details{
-Show Image in Notebook
+Show Image in Jupyter Notebook
 }
 \examples{
 \donttest{

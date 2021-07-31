@@ -197,8 +197,8 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
 # ------------------------------------------------------------------------------
 #' @title Show Image in Notebook
 #'
-#' @description Show Image in Notebook
-#' @details Show Image in Notebook
+#' @description Show Image in Jupyter Notebook
+#' @details Show Image in Jupyter Notebook
 #' @param filename (\code{character}) Full path or path relavtive to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
@@ -208,11 +208,20 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
 #' showImageInNotebook()
 #' }
 #' @importFrom IRdisplay display_png
+#' @importFrom imager load.image
+#' @importFrom imager plot
+
 #' @export
 showImageInNotebook <- function (filename) {
+    checkNotebookIsRunning()
+    checkRunningRemote()
+    if (getNotebookIsRunning()){
     exportImage(filename, overwriteFile = TRUE)
     sandboxGetFrom(filename)
     display_png(file=filename)
+    } else {
+        print("This function ONLY works in notebook environment!")
+    }
 }
 
 # ------------------------------------------------------------------------------
