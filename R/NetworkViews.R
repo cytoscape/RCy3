@@ -208,9 +208,6 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
 #' showImageInNotebook()
 #' }
 #' @importFrom IRdisplay display_png
-#' @importFrom imager load.image
-#' @importFrom imager plot
-
 #' @export
 showImageInNotebook <- function (filename) {
     checkNotebookIsRunning()
