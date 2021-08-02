@@ -3,6 +3,11 @@
 # networks, including operations to import and export filters. In the Cytoscape
 # user interface, filters are managed in the Select tab of the Control Panel.
 #
+#' @importFrom dplR uuid.gen
+ug <- uuid.gen()
+uuid <- character(1)
+uuid[1] <- ug()
+CHANNEL <- uuid[1]
 # ==============================================================================
 #' @title Apply Filter
 #'
@@ -418,7 +423,7 @@ doRequestRemoteFilter<-function(method, qurl, qbody=NULL, headers=NULL){
     tryCatch(
         expr = {
             while (TRUE){
-                url_get <- sprintf('%s/dequeue_reply?channel=%s',JupyterBRIDGEURL, CHANNEL)
+                url_get <- sprintf('%s/dequeue_reply?channel=%s','https://jupyter-bridge.cytoscape.org', CHANNEL)
                 r <- GET(url_get)
                 if(status_code(r) != 408){break}
             }
