@@ -135,15 +135,10 @@ createColumnFilter<-function(filter.name, column, criterion, predicate,
                                                         caseSensitive=caseSensitive,
                                                         anyMatch=anyMatch,
                                                         type=type))
-    if(!findRemoteCytoscape()){
     cmd.body <- toJSON(list(name=filter.name, json=cmd.json))
-    
     if(apply==FALSE){
         .verifySupportedVersions(cytoscape=3.9, base.url=base.url)
         cmd.body <- toJSON(list(name=filter.name,apply=apply, json=cmd.json))
-    }
-    }else {
-        cmd.body <- list(name=filter.name, json=cmd.json)
     }
 
     .postCreateFilter(cmd.body, base.url)
@@ -338,7 +333,6 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
 #' @importFrom httr content_type_json
 .postCreateFilter<-function(cmd.body, base.url){
     cmd.url <- paste0(base.url, '/commands/filter/create')
-    if(!findRemoteCytoscape()){
     cmd.body <- gsub("json\": {\n", "json\": \\'{\n", cmd.body, perl = TRUE)
     cmd.body <- gsub("\n} \n} \n}", "\n} \n}\\' \n}", cmd.body, perl = TRUE)
     cmd.body <- gsub("\n] \n} \n}", "\n] \n}\\' \n}", cmd.body, perl = TRUE) #for createCompositeFilter
@@ -354,9 +348,6 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
                       res$status_code, URLencode(cmd.url), cmd.body), stderr())
         stop(fromJSON(rawToChar(res$content))$errors[[1]]$message)
     } 
-    } else {
-        res <- doRequestRemote("POST", URLencode(cmd.url), cmd.body, headers=list("Content-Type" = "application/json"))
-    }
 }
 
 # ------------------------------------------------------------------------------
