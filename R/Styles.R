@@ -90,9 +90,15 @@ createVisualStyle <- function(style.name, defaults, mappings, base.url=.defaultB
         }
     }
     style <- list(title=style.name, defaults=styleDef,mappings=mappings)
+    if(!findRemoteCytoscape()){
     jsonStyle <- toJSON(style)
     style.url <- paste(base.url,'styles', sep = '/')
     invisible(POST(url=style.url,body=jsonStyle, encode="json"))
+    } else {
+        jsonStyle <- style
+        style.url <- paste(base.url,'styles', sep = '/')
+        invisible(doRequestRemote("POST", URLencode(style.url), jsonStyle, headers=list("Content-Type" = "application/json")))
+    }
 }
 
 # ------------------------------------------------------------------------------
