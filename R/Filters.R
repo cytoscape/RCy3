@@ -3,11 +3,6 @@
 # networks, including operations to import and export filters. In the Cytoscape
 # user interface, filters are managed in the Select tab of the Control Panel.
 #
-#' @importFrom dplR uuid.gen
-ug <- uuid.gen()
-uuid <- character(1)
-uuid[1] <- ug()
-CHANNEL <- uuid[1]
 # ==============================================================================
 #' @title Apply Filter
 #'
@@ -142,12 +137,13 @@ createColumnFilter<-function(filter.name, column, criterion, predicate,
                                                         type=type))
     if(!findRemoteCytoscape()){
     cmd.body <- toJSON(list(name=filter.name, json=cmd.json))
-    } else {
-        cmd.body <- list(name=filter.name, json=cmd.json)
-    }
+    
     if(apply==FALSE){
         .verifySupportedVersions(cytoscape=3.9, base.url=base.url)
         cmd.body <- toJSON(list(name=filter.name,apply=apply, json=cmd.json))
+    }
+    }else {
+        cmd.body <- list(name=filter.name, json=cmd.json)
     }
 
     .postCreateFilter(cmd.body, base.url)
@@ -359,7 +355,7 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
         stop(fromJSON(rawToChar(res$content))$errors[[1]]$message)
     } 
     } else {
-        doRequestRemoteFilter("POST", URLencode(cmd.url), cmd.body, headers=list("Content-Type" = "application/json"))
+        res <- doRequestRemote("POST", URLencode(cmd.url), cmd.body, headers=list("Content-Type" = "application/json"))
     }
 }
 
@@ -386,71 +382,4 @@ importFilters<-function(filename , base.url = .defaultBaseUrl){
 .getFilterJson<-function(filter.name, base.url){
     commandsPOST(paste0('filter get name="',filter.name,'"'),
                  base.url = base.url)
-}
-
-# ------------------------------------------------------------------------------
-#' @title doRequestRemoteFilter
-#'
-#' @description Do requests remotely by connecting over Jupyter-Bridge.
-#' @param method A string to be converted to the REST query namespace
-#' @param qurl A named list of values to be converted to REST query parameters
-#' @param qbody A named list of values to be converted to JSON
-#' @param headers httr headers
-#' @return httr response
-#' @examples \donttest{
-#' doRequestRemote()
-#' }
-#' @import httr
-#' @import uchardet
-#' @importFrom RJSONIO fromJSON toJSON isValidJSON
-#' @export
-doRequestRemoteFilter<-function(method, qurl, qbody=NULL, headers=NULL){
-    tryCatch(
-        expr = {
-            request <- list(command = method, url = qurl, data = qbody, headers=headers)
-            request <- toJSON(request)
-            request <- gsub("json\": {\n", "json\": \\'{\n", request, perl = TRUE)
-            request <- gsub("\n} \n} \n}", "\n} \n}\\' \n}", request, perl = TRUE)
-            request <- gsub("\n] \n} \n}", "\n] \n}\\' \n}", request, perl = TRUE)
-            url_post <- sprintf('%s/queue_request?channel=%s',JupyterBRIDGEURL, CHANNEL)
-            r <- POST(url_post, body = request, add_headers("Content-Type" = "application/json"))
-        },
-        error = function(e){
-            message('Error posting to Jupyter-bridge!')
-            print(e)
-        }
-    )
-    tryCatch(
-        expr = {
-            while (TRUE){
-                url_get <- sprintf('%s/dequeue_reply?channel=%s','https://jupyter-bridge.cytoscape.org', CHANNEL)
-                r <- GET(url_get)
-                if(status_code(r) != 408){break}
-            }
-        },
-        error = function(e){
-            message('Error receiving from Jupyter-bridge!')
-            print(e)
-        }        
-    )
-    tryCatch(
-        expr = {
-            rContent <- content(r, "text", encoding = "UTF-8")
-            encoding <- detect_str_enc(rContent)
-            message <- toString((iconv(rContent, to=encoding)))
-            cyReply <- fromJSON(message)
-        },
-        error = function(e){
-            message('Undeciperable message received from Jupyter-bridge!')
-            print(e)
-        }
-    )
-    jsonMessage = spoofResponse()
-    if (cyReply[1] == 0){ 
-        stop("Could not contact url")
-    }
-    jsonMessage@status_code <- cyReply[1]
-    jsonMessage@Reason <- cyReply[2]
-    jsonMessage@Text <- cyReply[3]
-    return(r)
 }
