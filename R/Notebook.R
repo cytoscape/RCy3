@@ -8,7 +8,7 @@
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
 #' @param type (\code{character}) Type of image to export, e.g., PNG (default), 
-#' JPEG, PDF, SVG, PS (PostScript). 
+#' JPEG, PDF, SVG. 
 #' @param resolution (\code{numeric}) The resolution of the exported image, in DPI. Valid 
 #' only for bitmap formats, when the selected width and height 'units' is inches. The 
 #' possible values are: 72 (default), 100, 150, 300, 600. 
@@ -34,6 +34,9 @@
 #' notebookShowImage()
 #' }
 #' @importFrom IRdisplay display_png
+#' @importFrom IRdisplay display_jpeg
+#' @importFrom IRdisplay display_pdf
+#' @importFrom IRdisplay display_svg
 #' @export
 notebookShowImage <- function (filename=NULL, type="PNG", resolution=NULL, units=NULL, height=NULL, 
                                width=NULL, zoom=NULL, sandboxName=NULL, network=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE) {
@@ -42,7 +45,7 @@ notebookShowImage <- function (filename=NULL, type="PNG", resolution=NULL, units
   if (getNotebookIsRunning()){
     exportImage(filename=filename, type=type, resolution=resolution, units=units, height=height, 
                 width=width, zoom=zoom, network=network, base.url=base.url, overwriteFile=overwriteFile)
-    sandboxGetFrom(filename, overwrite=overwriteFile, sandboxName=sandboxName, base.url=base.url)
+    sandboxGetFrom(filename, filename, overwrite=overwriteFile, sandboxName=sandboxName, base.url=base.url)
     display_png(file=filename)
   } else {
     stop("Cannot display network view image unless running as a Jupyter Notebook.")
