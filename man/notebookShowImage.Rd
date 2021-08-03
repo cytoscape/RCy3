@@ -25,7 +25,7 @@ automatically added based on the \code{type} argument. If blank, the current
 network name will be used.}
 
 \item{type}{(\code{character}) Type of image to export, e.g., PNG (default), 
-JPEG, PDF, SVG, PS (PostScript).}
+JPEG, PDF, SVG.}
 
 \item{resolution}{(\code{numeric}) The resolution of the exported image, in DPI. Valid 
 only for bitmap formats, when the selected width and height 'units' is inches. The 

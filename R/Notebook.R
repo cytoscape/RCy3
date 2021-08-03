@@ -46,8 +46,18 @@ notebookShowImage <- function (filename=NULL, type="PNG", resolution=NULL, units
     exportImage(filename=filename, type=type, resolution=resolution, units=units, height=height, 
                 width=width, zoom=zoom, network=network, base.url=base.url, overwriteFile=overwriteFile)
     sandboxGetFrom(filename, overwrite=overwriteFile, sandboxName=sandboxName, base.url=base.url)
+    if (type == "PNG"){
     display_png(file=filename)
-  } else {
-    stop("Cannot display network view image unless running as a Jupyter Notebook.")
-  }
+    } else if (type == "JPEG"){
+      display_jpeg(file=filename)
+    } else if (type == "PDF"){
+      display_pdf(file=filename)
+    } else if (type == "SVG"){
+      display_svg(file=filename)
+    } else {
+      stop("Valid only for PNG, JPEG, PDF, SVG.")
+    }
+    } else {
+      stop("Cannot display network view image unless running as a Jupyter Notebook.")
+    }
 }
