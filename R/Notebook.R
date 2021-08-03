@@ -50,12 +50,10 @@ notebookShowImage <- function (filename=NULL, type="PNG", resolution=NULL, units
     display_png(file=filename)
     } else if (type == "JPEG"){
       display_jpeg(file=filename)
-    } else if (type == "PDF"){
-      display_pdf(file=filename)
     } else if (type == "SVG"){
       display_svg(file=filename)
     } else {
-      stop("Valid only for PNG, JPEG, PDF, SVG.")
+      stop("Valid only for PNG, JPEG, SVG.")
     }
     } else {
       stop("Cannot display network view image unless running as a Jupyter Notebook.")
