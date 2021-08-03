@@ -45,7 +45,7 @@ notebookShowImage <- function (filename=NULL, type="PNG", resolution=NULL, units
   if (getNotebookIsRunning()){
     exportImage(filename=filename, type=type, resolution=resolution, units=units, height=height, 
                 width=width, zoom=zoom, network=network, base.url=base.url, overwriteFile=overwriteFile)
-    sandboxGetFrom(filename)
+    sandboxGetFrom(filename, overwrite=overwriteFile, sandboxName=sandboxName, base.url=base.url)
     display_png(file=filename)
   } else {
     stop("Cannot display network view image unless running as a Jupyter Notebook.")
