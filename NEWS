@@ -1,5 +1,6 @@
 Changes in version 2.12.x
 + Bug Fixes
+  - regression bug for relative paths, #141
   - filepath handling in export functions, #122
   - Sys.sleep added to setVisualStyle, #137
 Changes in version 2.12.0
