@@ -1,5 +1,7 @@
 Changes in version 2.12.x
-+ Bug Fixes
++ Doc fixes
+  - note about metabolite databases, #146
++ Bug fixes
   - regression bug for relative paths, #141
   - filepath handling in export functions, #122
   - Sys.sleep added to setVisualStyle, #137
