@@ -43,7 +43,7 @@ notebookShowImage <- function (filename='image', type="PNG", resolution=NULL, un
   checkNotebookIsRunning()
   checkRunningRemote()
   if (getNotebookIsRunning()){
-    if (grep(paste(".",tolower(type),"$", sep=""), filename) != 1){
+    if (length(grep(paste(".",tolower(type),"$", sep=""), filename)) != 1){
       filename = paste(filename, tolower(type), sep = ".") 
     }
     exportImage(filename=filename, type=type, resolution=resolution, units=units, height=height, 
