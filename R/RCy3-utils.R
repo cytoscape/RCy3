@@ -44,6 +44,22 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
     return(pal)
 }
 # ------------------------------------------------------------------------------
+# Validate and provide user feedback when brightness or contrast values are 
+# outside of range.
+.checkBrightnessContrast <- function(bc){
+    if(is.numeric(bc)){
+        if(bc%%1 != 0){
+            stop(simpleError('Value must be an integer between -100 and 100'))
+        }
+    } else {
+        stop(simpleError('Value must be an integer between -100 and 100.'))
+    }
+    if (bc < -100 || bc > 100){
+        stop (simpleError(sprintf ('%i is invalid. Value must be between -100 and 100.', opacity)))
+    } 
+}
+
+# ------------------------------------------------------------------------------
 # Validate and provide user feedback when hex color codes are required input.
 .checkHexColor <- function(color){
     if ((substring(color, 1, 1) != "#") || (nchar(color) !=7)) {

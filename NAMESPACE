@@ -2,6 +2,9 @@
 
 export(AddToGroup)
 export(RemoveFromGroup)
+export(addAnnotationBoundedText)
+export(addAnnotationImage)
+export(addAnnotationShape)
 export(addAnnotationText)
 export(addCyEdges)
 export(addCyNodes)
