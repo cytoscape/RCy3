@@ -38,11 +38,14 @@
 #' @importFrom IRdisplay display_pdf
 #' @importFrom IRdisplay display_svg
 #' @export
-notebookShowImage <- function (filename=NULL, type="PNG", resolution=NULL, units=NULL, height=NULL, 
+notebookShowImage <- function (filename='image', type="PNG", resolution=NULL, units=NULL, height=NULL, 
                                width=NULL, zoom=NULL, sandboxName=NULL, network=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE) {
   checkNotebookIsRunning()
   checkRunningRemote()
   if (getNotebookIsRunning()){
+    if (length(grep(paste(".",tolower(type),"$", sep=""), filename)) != 1){
+      filename = paste(filename, tolower(type), sep = ".") 
+    }
     exportImage(filename=filename, type=type, resolution=resolution, units=units, height=height, 
                 width=width, zoom=zoom, network=network, base.url=base.url, overwriteFile=overwriteFile)
     sandboxGetFrom(filename, overwrite=overwriteFile, sandboxName=sandboxName, base.url=base.url)
