@@ -155,9 +155,9 @@ addAnnotationText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
 #' @return A named list of annotation properties, including UUID
 #' @examples \donttest{
 #' addAnnotationBoundedText("test1")
-#' addAnnotationBoundedText("test2", 1000, 1000, name="T2")
+#' addAnnotationBoundedText("test2", 1000, 1000, name="B2")
 #' addAnnotationBoundedText("test3", 1200, 1000, 30, "Helvetica", "bold", "#990000",
-#'     40,name="T3", canvas="foreground",z=4)
+#'     40,name="B3", canvas="foreground",z=4)
 #' }
 #' @export
 addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
@@ -313,10 +313,10 @@ addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
 #' this version of RCy3.
 #' @return A named list of annotation properties, including UUID
 #' @examples \donttest{
-#' addAnnotationImage("file:/Users/janedoe/Desktop/image.png")
-#' addAnnotationImage("https://", 1000, 1000, name="I2")
-#' addAnnotationImage("rectangle", 1200, 1000, 30, "#990000",
-#'     40,name="I3", canvas="background",z=4)
+#' addAnnotationImage("image.png")
+#' addAnnotationImage("/Users/janedoe/Desktop/image.png", 1000, 1000, name="I2")
+#' addAnnotationImage("https://www.example.com/image.png", 1200, 1000, 30, 
+#'     40, name="I3", canvas="background",z=4)
 #' }
 #' @export
 addAnnotationImage<-function(url = NULL, x.pos = NULL, y.pos = NULL,

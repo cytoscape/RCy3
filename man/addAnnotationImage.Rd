@@ -83,9 +83,9 @@ object will also be added to the Annotation Panel in the GUI.
 }
 \examples{
 \donttest{
-addAnnotationImage("file:/Users/janedoe/Desktop/image.png")
-addAnnotationImage("https://", 1000, 1000, name="I2")
-addAnnotationImage("rectangle", 1200, 1000, 30, "#990000",
-    40,name="I3", canvas="background",z=4)
+addAnnotationImage("image.png")
+addAnnotationImage("/Users/janedoe/Desktop/image.png", 1000, 1000, name="I2")
+addAnnotationImage("https://www.example.com/image.png", 1200, 1000, 30, 
+    40, name="I3", canvas="background",z=4)
 }
 }

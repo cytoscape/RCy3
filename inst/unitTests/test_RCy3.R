@@ -1886,17 +1886,27 @@ test.annotations = function ()
     test.prep (title,FALSE)
     
     addAnnotationText("test1")
-    addAnnotationText("test2", 1000, 1000, name="T2")
-    addAnnotationText("test!@#$%^3", 1000, 1000, 30, "Helvetica", "bolditalic", "#990000",680,name="T3", canvas="background",z=10)
-    addAnnotationText("test\n2", 1200, 1000, 30, "Courier New", "bold", "#009900",0,name="T2", canvas="foreground",z=1)
-    addAnnotationText("test\t1", 1400, 1000, 30, "Comic sans MS", "italic", "#000099",40,name="T1", canvas="foreground",z=0)
+    addAnnotationText("test2", 1000, 1000, name="T1")
+    addAnnotationText("test!@#$%^3", 1000, 1000, 30, "Helvetica", "bolditalic", "#990000",680,name="T2", canvas="background",z=10)
+    addAnnotationText("test\n2", 1200, 1000, 30, "Courier New", "bold", "#009900",0,name="T3", canvas="foreground",z=1)
+    addAnnotationText("test\t1", 1400, 1000, 30, "Comic sans MS", "italic", "#000099",40,name="T4", canvas="foreground",z=0)
     
     checkEqualsNumeric(length(getAnnotationList()),5)
     ann.uuids <- sapply(getAnnotationList(), '[[', 'uuid')
     
     deleteAnnotation(ann.uuids[1])
     checkEqualsNumeric(length(getAnnotationList()),4)
+    deleteAnnotation(ann.uuids)
     
+    addAnnotationBoundedText("test1")
+    addAnnotationBoundedText("test2", 1000, 1000, name="B2")
+    addAnnotationBoundedText("test3", 1200, 1000, 30, "Helvetica", "bold", "#990000",40,name="B3", canvas="foreground",z=4)
+
+    addAnnotationShape("rectangle")
+    addAnnotationShape("rectangle", 1000, 1000, name="S2")
+    addAnnotationShape("rectangle", 1200, 1000, 30, "#990000", 40,name="S3", canvas="background",z=4)
+
+    ann.uuids <- sapply(getAnnotationList(), '[[', 'uuid')
     deleteAnnotation(ann.uuids)
     checkEqualsNumeric(length(getAnnotationList()),0)
 }

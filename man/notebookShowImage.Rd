@@ -5,7 +5,7 @@
 \title{notebookShowImage}
 \usage{
 notebookShowImage(
-  filename = NULL,
+  filename = "image",
   type = "PNG",
   resolution = NULL,
   units = NULL,
