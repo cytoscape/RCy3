@@ -94,8 +94,8 @@ object will also be added to the Annotation Panel in the GUI.
 \examples{
 \donttest{
 addAnnotationBoundedText("test1")
-addAnnotationBoundedText("test2", 1000, 1000, name="T2")
+addAnnotationBoundedText("test2", 1000, 1000, name="B2")
 addAnnotationBoundedText("test3", 1200, 1000, 30, "Helvetica", "bold", "#990000",
-    40,name="T3", canvas="foreground",z=4)
+    40,name="B3", canvas="foreground",z=4)
 }
 }
