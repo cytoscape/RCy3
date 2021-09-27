@@ -178,13 +178,14 @@ getSandboxReinitialize <- function(){
 #' @examples \donttest{
 #' getAbsSandboxPath()
 #' }
+#' @importFrom fs is_absolute_path
 #' @export
 getAbsSandboxPath <- function(fileLocation){
     box <- getCurrentSandbox()
     boxName <- box[[1]]
     boxPath <- box[[2]]
     if (is.null(boxName)){
-        if(isAbsolutePath(fileLocation)){
+        if(is_absolute_path(fileLocation)){
             filePath <- fileLocation
         } else {
             filePath <- (file.path(getwd(), fileLocation)) 

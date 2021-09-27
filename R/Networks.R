@@ -248,7 +248,6 @@ getNetworkList <- function(base.url = .defaultBaseUrl) {
 #' @examples \donttest{
 #' exportNetwork('/path/filename','SIF')
 #' }
-#' @importFrom R.utils isAbsolutePath
 #' @export
 exportNetwork <- function (filename=NULL, type="SIF", 
                            network=NULL, base.url = .defaultBaseUrl, overwriteFile = TRUE) {
