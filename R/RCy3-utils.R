@@ -224,16 +224,21 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
     vApiStr <- unname(vStr[1])
     vCyStr <- unname(vStr[2])
     vApiNum <- as.numeric(gsub("v([0-9]+)$", "\\1", vApiStr))
-    vCyNum <- as.numeric(gsub("([0-9]+\\.[0-9]+)\\..*$", "\\1", vCyStr))
-
+    vCyNum <- gsub("([0-9]+\\.[0-9]+)\\..*$", "\\1", vCyStr)
+    vCyNum.a <- as.numeric(strsplit(vCyNum, "\\.")[[1]][[1]])
+    vCyNum.b <- as.numeric(strsplit(vCyNum, "\\.")[[1]][[2]])
+    cytoscape <- as.character(cytoscape)
+    cy.a <- as.numeric(strsplit(cytoscape, "\\.")[[1]][[1]])
+    cy.b <- as.numeric(strsplit(cytoscape, "\\.")[[1]][[2]])
+    
     nogo <- FALSE
     if(cyrest > vApiNum){
         message(sprintf("CyREST API version %d or greater is required. You are currently working with version %d.",
                       cyrest, vApiNum))
         nogo <- TRUE
     }
-    if(cytoscape > vCyNum){
-        message(sprintf("Cytoscape version %0.2g or greater is required. You are currently working with version %0.2g.",
+    if(cy.a > vCyNum.a | (cy.a == vCyNum.a & cy.b > vCyNum.b)){
+        message(sprintf("Cytoscape version %s or greater is required. You are currently working with version %s.",
                       cytoscape, vCyNum))
         nogo <- TRUE
     }
