@@ -75,11 +75,12 @@ makeSimpleGraph = function() {
 #' @examples {
 #' makeSimpleIgraph()
 #' }
-#' @importFrom igraph make_graph
-#' @importFrom igraph set.vertex.attribute
-#' @importFrom igraph set.edge.attribute
 #' @export
 makeSimpleIgraph = function() {
+    if (!requireNamespace("igraph", quietly = TRUE)) {
+        stop("Package \"igraph\" needed for this function to work. Please install it.",
+             call. = FALSE)
+    }
     ig <- igraph::make_graph(c("node 0","node 1",
                                "node 0","node 2",
                                "node 0","node 3",

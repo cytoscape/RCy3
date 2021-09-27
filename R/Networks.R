@@ -789,7 +789,6 @@ createSubnetwork <- function(nodes=NULL,
 #' createNetworkFromIgraph(ig)
 #' }
 #' @seealso createNetworkFromDataFrames, createIgraphFromNetwork
-#' @importFrom igraph as_data_frame
 #' @importFrom BiocGenerics colnames
 #' @importFrom RJSONIO fromJSON
 #' @export
@@ -798,9 +797,13 @@ createNetworkFromIgraph <- function(igraph,
                                     collection = "My Igraph Network Collection",
                                     base.url = .defaultBaseUrl,
                                     ...) {
+    if (!requireNamespace("igraph", quietly = TRUE)) {
+        stop("Package \"igraph\" needed for this function to work. Please install it.",
+             call. = FALSE)
+    }
     #extract dataframes
-    igedges = as_data_frame(igraph, what = "edges")
-    ignodes = as_data_frame(igraph, what = "vertices")
+    igedges = igraph::as_data_frame(igraph, what = "edges")
+    ignodes = igraph::as_data_frame(igraph, what = "vertices")
     
     #setup columns for Cytoscape import
     ignodes$id <- row.names(ignodes)
@@ -858,12 +861,15 @@ createNetworkFromIgraph <- function(igraph,
 #' g <- makeSimpleGraph()
 #' createNetworkFromGraph(g)
 #' }
-#' @importFrom igraph igraph.from.graphNEL
 #' @export
 createNetworkFromGraph <- function (graph,
                                     title = "From graph",
                                     collection = "My GraphNEL Network Collection",
                                     base.url = .defaultBaseUrl) {
+    if (!requireNamespace("igraph", quietly = TRUE)) {
+        stop("Package \"igraph\" needed for this function to work. Please install it.",
+             call. = FALSE)
+    }
     createNetworkFromIgraph(igraph::igraph.from.graphNEL(graph),
                             title = title,
                             collection = collection,
@@ -1086,7 +1092,6 @@ importNetworkFromFile <- function(file=NULL, base.url=.defaultBaseUrl){
 #' ig <- createIgraphFromNetwork('myNetwork')
 #' }
 #' @seealso createNetworkFromDataFrames, createNetworkFromIgraph
-#' @importFrom igraph graph_from_data_frame
 #' @importFrom BiocGenerics do.call
 #' @importFrom BiocGenerics cbind
 #' @importFrom BiocGenerics colnames
@@ -1095,6 +1100,10 @@ createIgraphFromNetwork <-
     function(network = NULL,
              base.url = .defaultBaseUrl) {
         suid = getNetworkSuid(network,base.url)
+        if (!requireNamespace("igraph", quietly = TRUE)) {
+            stop("Package \"igraph\" needed for this function to work. Please install it.",
+                 call. = FALSE)
+        }
         #get dataframes
         cyedges <-
             getTableColumns('edge', network = suid, base.url = base.url)
@@ -1133,10 +1142,13 @@ createIgraphFromNetwork <-
 #' g <- createGraphFromNetwork()
 #' g <- createGraphFromNetwork('myNetwork')
 #' }
-#' @importFrom igraph igraph.to.graphNEL
 #' @export
 createGraphFromNetwork <-
     function (network = NULL, base.url = .defaultBaseUrl) {
+        if (!requireNamespace("igraph", quietly = TRUE)) {
+            stop("Package \"igraph\" needed for this function to work. Please install it.",
+                 call. = FALSE)
+        }
         ig <- createIgraphFromNetwork(network, base.url)
         g <- igraph::igraph.to.graphNEL(ig)
         return(g)
