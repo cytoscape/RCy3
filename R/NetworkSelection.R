@@ -626,17 +626,19 @@ selectEdgesAdjacentToSelectedNodes <-
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param ignoreDirection (optional)  True to treat x->y as equal to y->x.
+#' Default is FALSE.
 #' @return Lists of SUIDs for selected nodes and edges
 #' @examples \donttest{
 #' deleteDuplicateEdges()
 #' }
 #' @export
 deleteDuplicateEdges <-
-    function(network = NULL, base.url = .defaultBaseUrl){
+    function(network = NULL, base.url = .defaultBaseUrl, ignoreDirection=FALSE){
         net.suid <- getNetworkSuid(network,base.url)
-        
         allEdges <- getAllEdges(net.suid, base.url)
         dupEdges <- allEdges[duplicated(allEdges)]
+        suidToNameMapDf = getTableColumns('edge', 'name', 'default', net.suid, base.url)
         
         #get list of duplicate edge SUIDs to select and delete
         dupEdgeSuids <- .edgeNameToEdgeSUID(dupEdges, network = net.suid, base.url = base.url)
