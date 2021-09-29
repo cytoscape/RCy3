@@ -659,11 +659,11 @@ deleteDuplicateEdges <-
         allEdgesDirections <- list()
         if(ignoreDirection) {
             for (x in 1:length(parseEdges(allEdges)))
-                allEdgesDirections <- append(allEdgesDirections, list(key=buildSortedEdgeEquivalents(parseEdges(allEdges)[x]),value=0))
+                allEdgesDirections <- append(allEdgesDirections, list(buildSortedEdgeEquivalents(parseEdges(allEdges)[x])))
         } else {
             print('TODO')
         }
-        
+
         selectEdges(
             dupEdgeSuids,
             by.col = 'SUID',
