@@ -632,6 +632,7 @@ selectEdgesAdjacentToSelectedNodes <-
 #' @examples \donttest{
 #' deleteDuplicateEdges()
 #' }
+#' @importFrom sets tuple
 #' @export
 deleteDuplicateEdges <-
     function(network = NULL, base.url = .defaultBaseUrl, ignoreDirection=FALSE){
@@ -645,14 +646,22 @@ deleteDuplicateEdges <-
         
         #To Do
         buildSortedEdgeEquivalents <- function(parsedEdge){
-            if(parsedEdge[[1]] < parsedEdge[[3]]){
-                forwards <- sprintf("%s (%s) %s", parsedEdge[[1]], parsedEdge[[2]], parsedEdge[[3]])
-                backwards <- sprintf("%s (%s) %s", parsedEdge[[3]], parsedEdge[[2]], parsedEdge[[1]])
+            if(toString(parsedEdge[[1]][1]) < toString(parsedEdge[[1]][3])){
+                forwards <- sprintf("%s (%s) %s", parsedEdge[[1]][1], parsedEdge[[1]][2], parsedEdge[[1]][3])
+                backwards <- sprintf("%s (%s) %s", parsedEdge[[1]][3], parsedEdge[[1]][2], parsedEdge[[1]][1])
             } else {
-                forwards <- sprintf("%s (%s) %s", parsedEdge[[3]], parsedEdge[[2]], parsedEdge[[1]])
-                backwards <- sprintf("%s (%s) %s", parsedEdge[[1]], parsedEdge[[2]], parsedEdge[[3]])
+                forwards <- sprintf("%s (%s) %s", parsedEdge[[1]][3], parsedEdge[[1]][2], parsedEdge[[1]][1])
+                backwards <- sprintf("%s (%s) %s", parsedEdge[[1]][1], parsedEdge[[1]][2], parsedEdge[[1]][3])
             }
-            return(list(forwards, backwards))
+            return(tuple(toString(forwards), toString(backwards)))
+        }
+        
+        allEdgesDirections <- list()
+        if(ignoreDirection) {
+            for (x in 1:length(parseEdges(allEdges)))
+                allEdgesDirections <- append(allEdgesDirections, list(key=buildSortedEdgeEquivalents(parseEdges(allEdges)[x]),value=0))
+        } else {
+            print('TODO')
         }
         
         selectEdges(
