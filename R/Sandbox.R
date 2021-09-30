@@ -144,25 +144,26 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
 #' @importFrom base64url base64_urlencode
 #' @export
 sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
-    tryCatch(
-        expr = {
+    #tryCatch(
+        #expr = {
             finfo = file.info(sourceFile)
-            read.filename <- file(sourceFile, "rb")
-            fileContent <- try(readChar(read.filename, file.info(sourceFile)$size), silent = TRUE)
-            if(inherits(fileContent, "try-error")){
+            ##read.filename <- file(sourceFile, "rb")
+            ##fileContent <- try(readChar(read.filename, file.info(sourceFile)$size), silent = TRUE)
+            ##print(fileContent)
+            ##if(inherits(fileContent, "try-error")){
                 fileContent64 <- base64encode(sourceFile)
                 fileByteCount <- finfo$size
-            } else {
-                fileContent64 <- base64_urlencode(fileContent)
-                fileByteCount <- nchar(fileContent)
-            }
-            close(read.filename)
-        },
-        error = function(e){
-            message(glue('Could not read file {sourceFile}'))
-            print(e)
-        }
-    )
+               ## print('tes')
+            ##} else {
+                ##fileContent64 <- base64_urlencode(fileContent)
+                ##fileByteCount <- nchar(fileContent)
+            ##}
+            ##close(read.filename)
+       ## },
+        #error = function(e){
+            ##print(e)
+        #}
+    #)
     if(is.null(destFile) || is.null(trimws(destFile))){
         head <- dirname(sourceFile)
         destFile <- basename(sourceFile)
