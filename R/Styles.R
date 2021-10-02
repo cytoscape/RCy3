@@ -145,6 +145,7 @@ deleteVisualStyle<-function(style.name, base.url=.defaultBaseUrl){
 #' exportVisualStyles('/fullpath/myStyle', style = 'Minimal,default,Directed')
 #' }
 #' @seealso importVisualStyles
+#' @importFrom R.utils isAbsolutePath
 #' @export
 exportVisualStyles<-function(filename=NULL, type="XML", styles=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE){
     cmd.string <- 'vizmap export'  # minmum command
