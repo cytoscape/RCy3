@@ -181,7 +181,7 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
             sorted.dict <- dict[match(edge.names, dict$name), ] 
         } else { #multigraph: multiple edges with the same name
             if(uniqueList){
-                stop(glue('Invalid name in edge name list: {edge.names}'))
+                stop(glue('Invalid name in edge name list: {list(edge.names)}'))
             } else {
                 sorted.dict <- dict[match(edge.names, dict$name), ] 
             }
