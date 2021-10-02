@@ -630,7 +630,6 @@ selectEdgesAdjacentToSelectedNodes <-
 #' @examples \donttest{
 #' deleteDuplicateEdges()
 #' }
-#' @importFrom sets tuple
 #' @export
 deleteDuplicateEdges <-
     function(network = NULL, base.url = .defaultBaseUrl){
