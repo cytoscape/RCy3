@@ -283,7 +283,6 @@ getFilterList<-function(base.url=.defaultBaseUrl){
 #' @examples \donttest{
 #' exportFilters()
 #' }
-#' @importFrom R.utils isAbsolutePath
 #' @import glue
 #' @export
 exportFilters<-function(filename = "filters.json", base.url = .defaultBaseUrl, overwriteFile = TRUE){
