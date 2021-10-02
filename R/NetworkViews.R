@@ -147,6 +147,7 @@ setCurrentView <- function(network = NULL,
 #' \donttest{
 #' exportImage('/fullpath/myNetwork','PDF')
 #' }
+#' @importFrom R.utils isAbsolutePath
 #' @export
 exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, height=NULL, 
                       width=NULL, zoom=NULL, network=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE){

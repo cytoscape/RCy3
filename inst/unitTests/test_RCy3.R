@@ -4,9 +4,6 @@
 library (RCy3)
 library (RUnit)
 library (graph)
-if(!"igraph" %in% installed.packages()){
-    install.packages("igraph")
-}
 library (igraph)
 
 #-------------------------------------------------------------------------------

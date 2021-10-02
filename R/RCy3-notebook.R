@@ -1,7 +1,10 @@
 # ------------------------------------------------------------------------------
 # Create a unique channel that identifies this process so other processes don't mix up messages
-#' @import uuid
-CHANNEL <- UUIDgenerate()
+#' @importFrom dplR uuid.gen
+ug <- uuid.gen()
+uuid <- character(1)
+uuid[1] <- ug()
+CHANNEL <- uuid[1]
 JupyterBRIDGEURL <- 'https://jupyter-bridge.cytoscape.org'
 runningRemote <<- NULL # NULL means "Don't know whether Cytoscape is local or remote yet"
 notebookIsRunning <<- NULL
