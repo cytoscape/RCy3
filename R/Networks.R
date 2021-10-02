@@ -370,7 +370,7 @@ getFirstNeighbors <-
         
         for (node.name in node.names) {
             # get first neighbors for each node
-            node.SUID = .nodeNameToNodeSUID(node.name, net.SUID, base.url)
+            node.SUID = .nodeNameToNodeSUID(node.name, net.SUID, base.url, uniqueList=TRUE)
             first.neighbors.SUIDs <- cyrestGET(
                 paste(
                     "networks",

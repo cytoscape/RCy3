@@ -45,7 +45,7 @@ setNodePropertyBypass <- function(node.names,
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     node.SUIDs <-
-        .nodeNameToNodeSUID(node.names, network=net.SUID, base.url=base.url)
+        .nodeNameToNodeSUID(node.names, network=net.SUID, base.url=base.url, uniqueList=TRUE)
     # there can be more than one node.SUID per node.name!
     # 'node.SUIDs' and 'new.values' must have the same length
     if (length(new.values) == 1) {
@@ -121,7 +121,7 @@ clearNodePropertyBypass <-  function(node.names,
                              base.url = base.url )
     }else {
         node.SUIDs <-
-            .nodeNameToNodeSUID(node.names, network=net.SUID, base.url=base.url)
+            .nodeNameToNodeSUID(node.names, network=net.SUID, base.url=base.url, uniqueList=TRUE)
         
         for (i in seq_len(length(node.SUIDs))) {
             node.SUID <- as.character(node.SUIDs[i])
@@ -174,7 +174,7 @@ setEdgePropertyBypass <- function(edge.names,
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
     edge.SUIDs <-
-        .edgeNameToEdgeSUID(edge.names, network=net.SUID, base.url=base.url)
+        .edgeNameToEdgeSUID(edge.names, network=net.SUID, base.url=base.url, uniqueList=TRUE)
     # 'edge.names' and 'new.values' must have the same length
     if (length(new.values) == 1) {
         new.values <- rep(new.values, length(edge.names))
@@ -247,7 +247,7 @@ clearEdgePropertyBypass <- function(edge.names,
                              base.url = base.url )
     }else {
         edge.SUIDs <-
-            .edgeNameToEdgeSUID(edge.names, network=net.SUID, base.url=base.url)
+            .edgeNameToEdgeSUID(edge.names, network=net.SUID, base.url=base.url, uniqueList=TRUE)
     
         for (i in seq_len(length(edge.SUIDs))) {
             edge.SUID <- as.character(edge.SUIDs[i])
