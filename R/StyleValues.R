@@ -47,7 +47,7 @@ getNodeProperty <- function(node.names = NULL,
         return(node.props)
     } else {
         node.SUIDs <-
-            .nodeNameToNodeSUID(node.names, net.SUID, base.url)
+            .nodeNameToNodeSUID(node.names, net.SUID, base.url, uniqueList=TRUE)
         node.props <- c()
         for (i in seq_len(length(node.SUIDs))) {
             node.SUID <- as.character(node.SUIDs[i])
@@ -108,7 +108,7 @@ getEdgeProperty <- function(edge.names = NULL,
         return(edge.props)
     } else {
         edge.SUIDs <-
-            .edgeNameToEdgeSUID(edge.names, network=net.SUID, base.url=base.url)
+            .edgeNameToEdgeSUID(edge.names, network=net.SUID, base.url=base.url, uniqueList=TRUE)
         edge.props <- c()
         for (i in seq_len(length(edge.SUIDs))) {
             edge.SUID <- as.character(edge.SUIDs[i])

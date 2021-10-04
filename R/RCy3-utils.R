@@ -138,7 +138,8 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
 
 # ------------------------------------------------------------------------------
 # Replaces node names with SUIDs.
-.nodeNameToNodeSUID<-function(node.names, network=NULL, base.url=.defaultBaseUrl) {
+#' @importFrom glue glue
+.nodeNameToNodeSUID<-function(node.names, network=NULL, base.url=.defaultBaseUrl, uniqueList=FALSE) {
         dict <- getTableColumns('node',c('SUID','name'),'default',network, base.url)
         test <- vapply(node.names, function(x){x %in% dict[,'SUID']}, logical(1))
         if(all(test))  #provided SUIDs already!
@@ -146,15 +147,12 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
         sorted.dict <- NULL
         if(length(node.names) == length(unique(node.names))){ #unique node names
             sorted.dict <- dict[match(node.names, dict$name), ] 
-        } else { #multiple nodes with the same name
-            message("Finding unique SUIDs for nodes with the same name...\n")
-            match_list <- list()
-            for(i in seq_along(node.names)){ #perform match with removal
-                name_match <- dict[match(node.names[[i]], dict$name),]
-                match_list[[i]] <- name_match
-                dict <- subset(dict, SUID != name_match$SUID)
-            }
-            sorted.dict <- do.call(rbind, match_list)
+        } else { 
+            if(uniqueList){
+                stop(glue('Invalid name in node name list: {list(node.names)} \n'))
+            } else {
+                sorted.dict <- dict[match(node.names, dict$name), ] 
+          } 
         }
         node.SUIDs <- sorted.dict$SUID
         return(node.SUIDs)
@@ -172,7 +170,8 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
 
 # ------------------------------------------------------------------------------
 # Replaces edge names with SUIDs.
-.edgeNameToEdgeSUID<-function(edge.names, network=NULL, base.url=.defaultBaseUrl) {
+#' @importFrom glue glue
+.edgeNameToEdgeSUID<-function(edge.names, network=NULL, base.url=.defaultBaseUrl, uniqueList=FALSE) {
         dict <- getTableColumns('edge',c('SUID','name'),'default',network, base.url)
         test <- vapply(edge.names, function(x){x %in% dict[,'SUID']}, logical(1))
         if(all(test))  #provided SUIDs already!
@@ -181,14 +180,11 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
         if(length(edge.names) == length(unique(edge.names))){ #unique edge names
             sorted.dict <- dict[match(edge.names, dict$name), ] 
         } else { #multigraph: multiple edges with the same name
-            message("Finding unique SUIDs for edges with the same name...\n")
-            match_list <- list()
-            for(i in seq_along(edge.names)){ #perform match with removal
-                name_match <- dict[match(edge.names[[i]], dict$name),]
-                match_list[[i]] <- name_match
-                dict <- subset(dict, SUID != name_match$SUID)
+            if(uniqueList){
+                stop(glue('Invalid name in edge name list: {list(edge.names)}'))
+            } else {
+                sorted.dict <- dict[match(edge.names, dict$name), ] 
             }
-            sorted.dict <- do.call(rbind, match_list)
         }
         edge.SUIDs <- sorted.dict$SUID
         return(edge.SUIDs)

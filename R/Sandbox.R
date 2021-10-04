@@ -89,6 +89,7 @@ sandboxRemove <- function(sandboxName=NULL, base.url=.defaultBaseUrl){
 #' sandboxGetFileInfo()
 #' }
 #' @importFrom utils file_test
+#' @importFrom fs is_absolute_path
 #' @export
 sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBaseUrl){
     tryCatch(
@@ -97,7 +98,7 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
         },
         error = function(e){
             if(is.null(sandboxName) && is.null(getCurrentSandboxName()) && !is.null(fileName) && !is.null(trimws(fileName))){
-                if(isAbsolutePath(fileName)){
+                if(is_absolute_path(fileName)){
                     filePath <- fileName
                 } else {
                 filePath <- (file.path(getwd(), fileName)) 
@@ -149,7 +150,8 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
             read.filename <- file(sourceFile, "rb")
             fileContent <- try(readChar(read.filename, file.info(sourceFile)$size), silent = TRUE)
             if(inherits(fileContent, "try-error")){
-                fileContent64 <- base64encode(sourceFile)
+                fileContent64 <- base64encode(sourceFile, linewidth = 4, newline = ' ')
+                fileContent64 <- gsub("=", "", fileContent64)
                 fileByteCount <- finfo$size
             } else {
                 fileContent64 <- base64_urlencode(fileContent)
@@ -281,6 +283,7 @@ sandboxRemoveFile <- function(fileName, sandboxName=NULL, base.url=.defaultBaseU
 # param fileName Name of file to read (as absolute path or sandbox-relative path)
 # param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
 # return sandbox result
+#' @importFrom fs is_absolute_path
 .sandboxOp <- function(command, sandboxName, fileName=NULL, base.url=.defaultBaseUrl){
     if(!is.null(fileName)){
         fileName <- trimws(fileName)
@@ -296,7 +299,7 @@ sandboxRemoveFile <- function(fileName, sandboxName=NULL, base.url=.defaultBaseU
     if(!is.null(sandboxName)){
         command <- paste(command, sprintf("sandboxName=%s", sandboxName))
     } else if(!is.null(fileName)){
-        if(isAbsolutePath(fileName)){
+        if(is_absolute_path(fileName)){
             fileName <- fileName
         } else {
             fileName <- file.path(sandboxPath, fileName)

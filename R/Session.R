@@ -51,7 +51,7 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
         file.location <- './sampleData/sessions/Yeast Perturbation.cys'
     else if(startsWith(file.location,'http'))
         type = 'url'
-    else if(!isAbsolutePath(file.location))
+    else if(!is_absolute_path(file.location))
         file.location = getAbsSandboxPath(file.location)
         
     message(sprintf("Opening %s...",file.location))
@@ -82,7 +82,6 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
 #' saveSession('/fullpath/mySession')
 #' saveSession() 
 #' }
-#' @importFrom R.utils isAbsolutePath
 #' @import glue
 #' @export
 saveSession<-function(filename=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE){
