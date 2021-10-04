@@ -150,7 +150,8 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
             read.filename <- file(sourceFile, "rb")
             fileContent <- try(readChar(read.filename, file.info(sourceFile)$size), silent = TRUE)
             if(inherits(fileContent, "try-error")){
-                fileContent64 <- base64encode(sourceFile)
+                fileContent64 <- base64encode(sourceFile, linewidth = 4, newline = ' ')
+                fileContent64 <- gsub("=", "", fileContent64)
                 fileByteCount <- finfo$size
             } else {
                 fileContent64 <- base64_urlencode(fileContent)
