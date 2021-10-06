@@ -413,7 +413,6 @@ addAnnotationImage<-function(url = NULL, x.pos = NULL, y.pos = NULL,
   
   # execute command
   res <- commandsPOST(cmd.string, base.url)
-  print(cmd.string)
   return(as.list(res))
 }
 
