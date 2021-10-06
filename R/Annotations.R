@@ -626,12 +626,14 @@ getAnnotationList<-function(network = NULL, base.url = .defaultBaseUrl){
 #' like so: sapply(getAnnotationList(), '[[', 'uuid')
 #' @return None
 #' @examples \donttest{
-#' ungroupAnnotation()
+#' ungroupAnnotation("016a4af1-69bc-4b99-8183-d6f118847f96")
+#' ungroupAnnotation("T1")
+#' ungroupAnnotation(c("T2","T3"))
 #' }
 #' @export
 ungroupAnnotation<-function(names = NULL, network = NULL, base.url = .defaultBaseUrl){
   if(is.null(names))
-    stop('Must provide the UUID (or list of UUIDs) to delete')
+    stop('Must provide the UUID (or list of UUIDs) to ungroup')
   
   net.SUID = getNetworkSuid(network,base.url)
   view.SUID = getNetworkViewSuid(net.SUID, base.url)
@@ -645,4 +647,3 @@ ungroupAnnotation<-function(names = NULL, network = NULL, base.url = .defaultBas
   
   invisible(commandsGET(paste0('annotation ungroup uuidOrName="',names,'"', ' view=SUID:"',view.SUID,'"', base.url)))
 }
-
