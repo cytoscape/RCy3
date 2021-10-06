@@ -301,6 +301,8 @@ loadTableData <- function(data,
     if (ncol(table.key.column.values) == 0)
         stop("Failed to load data: Please check table.key.column")
     
+    data <- data.frame(data, stringsAsFactors = FALSE) #clear factors and handle tibbles
+    
     if (data.key.column == 'row.names')
         # if key in row.names...
         data$row.names <-
