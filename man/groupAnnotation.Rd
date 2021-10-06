@@ -29,7 +29,9 @@ like so: sapply(getAnnotationList(), '[[', 'uuid')
 }
 \examples{
 \donttest{
-groupAnnotation("29ac8349-7be4-404e-8363-9537cc39d1ad, 3846e949-3130-4362-83de-d02f5368e3ad")
-groupAnnotation("annotation1, annotation2, annotation3")
+groupAnnotation(c("29ac8349-7be4-404e-8363-9537cc39d1ad","3846e949-3130-4362-83de-d02f5368e3ad"))
+groupAnnotation(c("annotation1","annotation2", "annotation3"))
+groupAnnotation("annotation1")
+groupAnnotation(sapply(getAnnotationList(), '[[', 'uuid'))
 }
 }
