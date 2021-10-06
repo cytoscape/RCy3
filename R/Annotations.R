@@ -573,6 +573,7 @@ deleteAnnotation<-function(names = NULL, base.url = .defaultBaseUrl){
   
   if(is.vector(names) ){
     lapply(names, function(u){
+      print()
       commandsGET(paste0('annotation delete uuidOrName="',u,'"'), base.url)
     })
     invisible()
@@ -610,3 +611,39 @@ getAnnotationList<-function(network = NULL, base.url = .defaultBaseUrl){
   
   commandsPOST(cmd.string, base.url)
 }
+
+# ------------------------------------------------------------------------------
+#' @title Ungroup Annotation Group
+#'
+#' @description Ungroup annotation group from the network view in Cytoscape
+#' @param names Name of annotation group by UUID or Name
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
+#' @details You can obtain a list of UUIDs by applying a subset function
+#' like so: sapply(getAnnotationList(), '[[', 'uuid')
+#' @return None
+#' @examples \donttest{
+#' ungroupAnnotation()
+#' }
+#' @export
+ungroupAnnotation<-function(names = NULL, network = NULL, base.url = .defaultBaseUrl){
+  if(is.null(names))
+    stop('Must provide the UUID (or list of UUIDs) to delete')
+  
+  net.SUID = getNetworkSuid(network,base.url)
+  view.SUID = getNetworkViewSuid(net.SUID, base.url)
+  
+  if(is.vector(names) ){
+    lapply(names, function(u){
+      commandsGET(paste0('annotation ungroup uuidOrName="',u,'"', ' view=SUID:"', view.SUID,'"'), base.url)
+    })
+    invisible()
+  }
+  
+  invisible(commandsGET(paste0('annotation ungroup uuidOrName="',names,'"', ' view=SUID:"',view.SUID,'"', base.url)))
+}
+
