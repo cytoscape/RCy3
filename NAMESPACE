@@ -2,6 +2,7 @@
 
 export(AddToGroup)
 export(RemoveFromGroup)
+export(UpdateAnnotationBoundedText)
 export(addAnnotationBoundedText)
 export(addAnnotationImage)
 export(addAnnotationShape)
