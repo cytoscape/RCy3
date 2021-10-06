@@ -7,7 +7,7 @@
 ungroupAnnotation(names = NULL, network = NULL, base.url = .defaultBaseUrl)
 }
 \arguments{
-\item{names}{List of annotations by UUID or Name}
+\item{names}{Name of annotation group by UUID or Name}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
@@ -21,7 +21,7 @@ this version of RCy3.}
 None
 }
 \description{
-Ungroup annotation group
+Ungroup annotation group from the network view in Cytoscape
 }
 \details{
 You can obtain a list of UUIDs by applying a subset function

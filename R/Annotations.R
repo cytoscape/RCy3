@@ -573,7 +573,6 @@ deleteAnnotation<-function(names = NULL, base.url = .defaultBaseUrl){
   
   if(is.vector(names) ){
     lapply(names, function(u){
-      print()
       commandsGET(paste0('annotation delete uuidOrName="',u,'"'), base.url)
     })
     invisible()
