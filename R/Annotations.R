@@ -551,6 +551,7 @@ addAnnotationShape<-function(customShape = NULL, x.pos = NULL, y.pos = NULL,
   res <- commandsPOST(cmd.string, base.url)
   return(as.list(res))
 }
+
 # ------------------------------------------------------------------------------
 #' @title Delete Annotation
 #'
