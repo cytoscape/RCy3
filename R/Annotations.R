@@ -627,8 +627,8 @@ getAnnotationList<-function(network = NULL, base.url = .defaultBaseUrl){
 #' @return None
 #' @examples \donttest{
 #' ungroupAnnotation("016a4af1-69bc-4b99-8183-d6f118847f96")
-#' ungroupAnnotation("T1")
-#' ungroupAnnotation(c("T2","T3"))
+#' ungroupAnnotation("Group 1")
+#' ungroupAnnotation(c("Group1","Group2", "Group3"))
 #' }
 #' @export
 ungroupAnnotation<-function(names = NULL, network = NULL, base.url = .defaultBaseUrl){

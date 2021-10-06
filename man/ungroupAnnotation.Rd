@@ -29,6 +29,8 @@ like so: sapply(getAnnotationList(), '[[', 'uuid')
 }
 \examples{
 \donttest{
-ungroupAnnotation()
+ungroupAnnotation("016a4af1-69bc-4b99-8183-d6f118847f96")
+ungroupAnnotation("Group 1")
+ungroupAnnotation(c("Group1","Group2", "Group3"))
 }
 }
