@@ -627,6 +627,7 @@ getAnnotationList<-function(network = NULL, base.url = .defaultBaseUrl){
 #' @return None
 #' @examples \donttest{
 #' ungroupAnnotation("016a4af1-69bc-4b99-8183-d6f118847f96")
+#' ungroupAnnotation(c("316869a4-39fc-4731-8f45-199dec9af10d","c3621eb4-4687-490f-9396-b829dd8767d5"))
 #' ungroupAnnotation("Group 1")
 #' ungroupAnnotation(c("Group1","Group2", "Group3"))
 #' }
@@ -646,4 +647,40 @@ ungroupAnnotation<-function(names = NULL, network = NULL, base.url = .defaultBas
   }
   
   invisible(commandsGET(paste0('annotation ungroup uuidOrName="',names,'"', ' view=SUID:"',view.SUID,'"', base.url)))
+}
+
+# ------------------------------------------------------------------------------
+#' @title Group Annotation
+#'
+#' @description Group annotation from the network view in Cytoscape
+#' @param names Name of annotation by UUID or Name
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by 
+#' this version of RCy3.
+#' @details You can obtain a list of UUIDs by applying a subset function
+#' like so: sapply(getAnnotationList(), '[[', 'uuid')
+#' @return None
+#' @examples \donttest{
+#' groupAnnotation("29ac8349-7be4-404e-8363-9537cc39d1ad, 3846e949-3130-4362-83de-d02f5368e3ad")
+#' groupAnnotation("annotation1, annotation2, annotation3")
+#' }
+#' @export
+groupAnnotation<-function(names = NULL, network = NULL, base.url = .defaultBaseUrl){
+  if(is.null(names))
+    stop('Must provide the UUID (or list of UUIDs) to group')
+  
+  net.SUID = getNetworkSuid(network,base.url)
+  view.SUID = getNetworkViewSuid(net.SUID, base.url)
+  
+  if(is.vector(names) ){
+    lapply(names, function(u){
+      commandsGET(paste0('annotation group annotationlist="',u,'"', ' view=SUID:"', view.SUID,'"'), base.url)
+    })
+    invisible()
+  }
+  
+  invisible(commandsGET(paste0('annotation group annotationlist="',names,'"', ' view=SUID:"',view.SUID,'"', base.url)))
 }
