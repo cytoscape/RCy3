@@ -1,3 +1,11 @@
+Changes in version 2.14.0
++ New functions:
+  - add and update Annotations
+  - uniqueList parameter added to edgeNameToEdgeSUID and nodeNameToNodeSUID, #139
++ Bug fixes:
+  - loadTableData now works with tibbles, #143
+  - sandboxSendTo now works with cys and png, #138
+  - .verifySupportedVersions fixed comparisons, #152
 Changes in version 2.12.x
 + Doc fixes
   - note about metabolite databases, #146
