@@ -2091,7 +2091,6 @@ setEdgeTooltipMapping <- function (table.column, style.name=NULL,
 #' paletteColorRandom()
 
 #' @seealso genNodeColorMap genEdgeColorMap
-#' @importFrom grDevices rgb
 #' @export
 paletteColorRandom<-function(value.count=1){
         if (!requireNamespace("grDevices", quietly = TRUE)) {
