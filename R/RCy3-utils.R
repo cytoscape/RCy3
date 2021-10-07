@@ -55,7 +55,7 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
         stop(simpleError('Value must be an integer between -100 and 100.'))
     }
     if (bc < -100 || bc > 100){
-        stop (simpleError(sprintf ('%i is invalid. Value must be between -100 and 100.', opacity)))
+        stop (simpleError(sprintf ('%i is invalid. Value must be between -100 and 100.', bc)))
     } 
 }
 

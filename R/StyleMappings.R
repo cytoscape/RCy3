@@ -2091,9 +2091,14 @@ setEdgeTooltipMapping <- function (table.column, style.name=NULL,
 #' paletteColorRandom()
 
 #' @seealso genNodeColorMap genEdgeColorMap
+#' @importFrom grDevices rgb
 #' @export
 paletteColorRandom<-function(value.count=1){
-    rgb(sample(0:255,size=value.count,replace=TRUE), 
+        if (!requireNamespace("grDevices", quietly = TRUE)) {
+            stop("Package \"grDevices\" needed for this function to work. Please install it.",
+                call. = FALSE)
+        }
+        grDevices::rgb(sample(0:255,size=value.count,replace=TRUE), 
         sample(0:255,size=value.count,replace=TRUE), 
         sample(0:255,size=value.count,replace=TRUE), 
         maxColorValue=255)
@@ -2764,7 +2769,7 @@ paletteColorBrewerBrBG<-function(value.count=3) {
     if(value.count > 16)
         stop("A maximum of 16 line styles are available.")
 
-    line.styles <- getLineStyles()[1:value.count]
+    line.styles <- getLineStyles()[seq_len(value.count)]
     
     return (list('table.column.values'=table.column.values, 'line.styles'=line.styles))
 }
@@ -2791,7 +2796,7 @@ paletteColorBrewerBrBG<-function(value.count=3) {
     if(value.count > 22)
         stop("A maximum of 22 ArrowShapes are available.")
     
-    shapes <- getArrowShapes()[1:value.count]
+    shapes <- getArrowShapes()[seq_len(value.count)]
     
     return (list('table.column.values'=table.column.values, 'shapes'=shapes))
 }
@@ -2817,7 +2822,7 @@ paletteColorBrewerBrBG<-function(value.count=3) {
     if(value.count > 9)
         stop("A maximum of 9 shapes are available.")
     
-    shapes <- getNodeShapes()[1:value.count]
+    shapes <- getNodeShapes()[seq_len(value.count)]
     
     return (list('table.column.values'=table.column.values, 'shapes'=shapes))
 }
