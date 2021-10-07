@@ -58,6 +58,7 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 #' @importFrom utils URLencode
 #' @export
 cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
+    requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         q.url <- paste(base.url, operation, sep="/")
@@ -120,6 +121,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 #' @importFrom utils URLencode
 #' @export
 cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
+    requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         q.url <- paste(base.url, operation, sep="/")
@@ -188,6 +190,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 #' @importFrom utils URLencode
 #' @export
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
+    requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         q.url <- paste(base.url, operation, sep="/")
@@ -253,6 +256,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 #' @importFrom utils URLencode
 #' @export
 cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
+    requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         q.url <- paste(base.url, operation, sep="/")
@@ -341,6 +345,7 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 #' @importFrom httr GET
 #' @export
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
+    requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         q.url <- .command2getQuery(cmd.string,base.url)
@@ -411,6 +416,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
 #' @importFrom utils head tail
 #' @export
 commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
+    requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
     s=sub('help *','',cmd.string)
     if(!findRemoteCytoscape()){
@@ -466,6 +472,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 #' @importFrom httr POST content_type_json
 #' @export
 commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
+    requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
     if(!findRemoteCytoscape()){
         post.url = .command2postQueryUrl(cmd.string,base.url)
