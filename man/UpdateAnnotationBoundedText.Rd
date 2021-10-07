@@ -98,7 +98,7 @@ object will also be added to the Annotation Panel in the GUI.
 \donttest{
 UpdateAnnotationBoundedText("test1", "annotationName")
 UpdateAnnotationBoundedText("test2", "annotationName", 1000, 1000, name="B2")
-UpdateAnnotationBoundedText("test3", "annotationName", 1200, 1000, 30, "Helvetica", "bold", "#990000",
-    40,name="B3", canvas="foreground",z=4)
+UpdateAnnotationBoundedText("test3", "annotationName", 1200, 1000, 30, "Helvetica", 
+"bold", "#990000", 40, name="B3", canvas="foreground",z=4)
 }
 }

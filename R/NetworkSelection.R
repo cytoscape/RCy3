@@ -642,16 +642,16 @@ deleteDuplicateEdges <-
         dupEdgeSuids <- .edgeNameToEdgeSUID(dupEdges, network = net.suid, base.url = base.url)
         
         #To Do
-        buildSortedEdgeEquivalents <- function(parsedEdge){
-            if(toString(parsedEdge[[1]][1]) < toString(parsedEdge[[1]][3])){
-                forwards <- sprintf("%s (%s) %s", parsedEdge[[1]][1], parsedEdge[[1]][2], parsedEdge[[1]][3])
-                backwards <- sprintf("%s (%s) %s", parsedEdge[[1]][3], parsedEdge[[1]][2], parsedEdge[[1]][1])
-            } else {
-                forwards <- sprintf("%s (%s) %s", parsedEdge[[1]][3], parsedEdge[[1]][2], parsedEdge[[1]][1])
-                backwards <- sprintf("%s (%s) %s", parsedEdge[[1]][1], parsedEdge[[1]][2], parsedEdge[[1]][3])
-            }
-            return(tuple(toString(forwards), toString(backwards)))
-        }
+        #buildSortedEdgeEquivalents <- function(parsedEdge){
+            #if(toString(parsedEdge[[1]][1]) < toString(parsedEdge[[1]][3])){
+                #forwards <- sprintf("%s (%s) %s", parsedEdge[[1]][1], parsedEdge[[1]][2], parsedEdge[[1]][3])
+                #backwards <- sprintf("%s (%s) %s", parsedEdge[[1]][3], parsedEdge[[1]][2], parsedEdge[[1]][1])
+            #} else {
+                #forwards <- sprintf("%s (%s) %s", parsedEdge[[1]][3], parsedEdge[[1]][2], parsedEdge[[1]][1])
+                #backwards <- sprintf("%s (%s) %s", parsedEdge[[1]][1], parsedEdge[[1]][2], parsedEdge[[1]][3])
+            #}
+            #return(tuple(toString(forwards), toString(backwards)))
+       #}
         
         selectEdges(
             dupEdgeSuids,

@@ -841,8 +841,8 @@ updateAnnotationText<-function(text = NULL, annotationName = NULL, x.pos = NULL,
 #' @examples \donttest{
 #' UpdateAnnotationBoundedText("test1", "annotationName")
 #' UpdateAnnotationBoundedText("test2", "annotationName", 1000, 1000, name="B2")
-#' UpdateAnnotationBoundedText("test3", "annotationName", 1200, 1000, 30, "Helvetica", "bold", "#990000",
-#'     40,name="B3", canvas="foreground",z=4)
+#' UpdateAnnotationBoundedText("test3", "annotationName", 1200, 1000, 30, "Helvetica", 
+#' "bold", "#990000", 40, name="B3", canvas="foreground",z=4)
 #' }
 #' @export
 UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos = NULL, y.pos = NULL,
@@ -1263,7 +1263,9 @@ updateAnnotationImage<-function(url = NULL, annotationName = NULL, x.pos = NULL,
 #' @param canvas (optional) Canvas to display annotation, i.e., foreground 
 #' (default) or background
 #' @param z.order (optional) Arrangement order specified by number (larger
-#' values are in front of smaller values); default is 0 
+#' values are in front of smaller values); default is 0
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape. 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is 
 #' http://localhost:1234 and the latest version of the CyREST API supported by
