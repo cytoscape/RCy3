@@ -410,7 +410,6 @@ addAnnotationImage<-function(url = NULL, x.pos = NULL, y.pos = NULL,
                                  z.order)))
     cmd.string <- paste0(cmd.string,' z="',z.order,'"')
   }
-  
   # execute command
   res <- commandsPOST(cmd.string, base.url)
   return(as.list(res))
@@ -909,6 +908,144 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
       stop (simpleError(sprintf('%s is invalid. Choose a shape from getNodeShapes()',
                                 customShape)))
     cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
+  }
+  if(!is.null(fillColor)){
+    .checkHexColor(fillColor)
+    cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
+  }
+  if(!is.null(opacity)){
+    .checkOpacity(opacity)
+    cmd.string <- paste0(cmd.string,' opacity="',opacity,'"')
+  }
+  if(!is.null(borderThickness)){
+    if(!is.numeric(borderThickness)){
+      if(borderThickness%%1 != 0){
+        stop(simpleError('Value must be an integer greater than or equal to 0.'))
+      }
+    }
+    if (borderThickness < 0)
+      stop (simpleError(sprintf ('%s is invalid. Value must be an integer greater than or equal to 0.', as.character(borderThickness))))
+    cmd.string <- paste0(cmd.string,' borderThickness="',borderThickness,'"')
+  }
+  if(!is.null(borderColor)){
+    .checkHexColor(borderColor)
+    cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
+  }
+  if(!is.null(borderOpacity)){
+    .checkOpacity(borderOpacity)
+    cmd.string <- paste0(cmd.string,' borderOpacity="',borderOpacity,'"')
+  }
+  if(!is.null(height)){
+    .checkPositive(height)
+    cmd.string <- paste0(cmd.string,' height="',height,'"')
+  }
+  if(!is.null(width)){
+    .checkPositive(width)
+    cmd.string <- paste0(cmd.string,' width="',width,'"')
+  }
+  if(!is.null(name)){
+    .checkUnique(name, vapply(getAnnotationList(), '[[', 'character', 'name'))
+    cmd.string <- paste0(cmd.string,' newName="',name,'"')
+  }
+  if(!is.null(canvas)){
+    .checkCanvas(canvas)
+    cmd.string <- paste0(cmd.string,' canvas="',canvas,'"')
+  }
+  if(!is.null(z.order)){
+    if(!is.numeric(z.order))
+      stop (simpleError(sprintf ('%d is invalid. Z order must be an number', 
+                                 z.order)))
+    cmd.string <- paste0(cmd.string,' z="',z.order,'"')
+  }
+  
+  # execute command
+  res <- commandsPOST(cmd.string, base.url)
+  return(as.list(res))
+}
+
+# ------------------------------------------------------------------------------
+#' @title Update Shape Annotation
+#'
+#' @description Updates a shape annotation to a Cytoscape network view. The 
+#' object will also be added to the Annotation Panel in the GUI.
+#' @param customShape (optional) Shape; default is RECTANGLE. See
+#'  getNodeShapes() for valid options.
+#' @param x.pos (optional) X position in pixels from left; default is center 
+#' of current view
+#' @param y.pos (optional) Y position in pixels from top; default is center 
+#' of current view
+#' @param angle (optional) Angle of text orientation; default is 0.0 
+#' (horizontal)
+#' @param fillColor (optional) Hexidecimal color; default is #000000 (black)
+#' @param opacity (optional) Opacity of fill color. Must be an integer between 
+#' 0 and 100; default is 100.
+#' @param borderThickness (optional) Integer
+#' @param borderColor (optional) Hexidecimal color; default is #000000 (black)
+#' @param borderOpacity (optional) Integer between 0 and 100; default is 100.
+#' @param height (optional) Height of shape; default is based on text
+#' height.
+#' @param width (optional) Width of shape; default is based on text
+#' length.
+#' @param name (optional) Name of annotation object; default is "Shape"
+#' @param canvas (optional) Canvas to display annotation, i.e., foreground 
+#' (default) or background
+#' @param z.order (optional) Arrangement order specified by number (larger
+#' values are in front of smaller values); default is 0 
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by
+#' this version of RCy3.
+#' @return A named list of annotation properties, including UUID
+#' @examples \donttest{
+#' updateAnnotationShape("rectangle", "annotationName")
+#' updateAnnotationShape("rectangle", "annotationName", 1000, 1000, name="S2")
+#' updateAnnotationShape("rectangle", "annotationName", 1200, 1000, 30, "#990000",
+#'     40,name="S3", canvas="background",z=4)
+#' }
+#' @export
+updateAnnotationShape<-function(customShape = NULL, annotationName = NULL, x.pos = NULL, y.pos = NULL,
+                             angle = NULL, fillColor = NULL, 
+                             opacity = NULL, borderThickness = NULL,
+                             borderColor = NULL, borderOpacity = NULL,
+                             height = NULL, width = NULL,
+                             name = NULL, canvas = NULL, z.order = NULL,
+                             network = NULL, base.url = .defaultBaseUrl){
+  
+  cmd.string <- 'annotation update shape'  # a good start
+  
+  net.SUID = getNetworkSuid(network,base.url)
+  view.SUID = getNetworkViewSuid(net.SUID, base.url)
+  
+  # add view
+  cmd.string <- paste0(cmd.string,' view="SUID:',view.SUID,'"')
+  
+  # add type
+  cmd.string <- paste0(cmd.string, ' type="org.cytoscape.view.presentation.annotations.ShapeAnnotation"')
+  
+  # shape to add
+  if(!is.null(customShape)){
+    customShape <- toupper(customShape)
+    if(!customShape %in% getNodeShapes())
+      stop (simpleError(sprintf('%s is invalid. Choose a shape from getNodeShapes()',
+                                customShape)))
+    cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
+  }
+  if(is.null(annotationName))
+    stop('Must provide the UUID (or list of UUIDs) to group')
+  cmd.string <- paste0(cmd.string,' uuidOrName="',annotationName,'"')
+  # x and y position
+  if(is.null(x.pos))
+    x.pos <- getNetworkCenter(net.SUID, base.url)$x
+  if(is.null(y.pos))
+    y.pos <- getNetworkCenter(net.SUID, base.url)$y
+  cmd.string <- paste0(cmd.string,' x="',x.pos,'" y="',y.pos,'"')
+  
+  # optional params
+  if(!is.null(angle)){
+    rotation <- .normalizeRotation(angle)
+    cmd.string <- paste0(cmd.string,' angle="',rotation,'"')
   }
   if(!is.null(fillColor)){
     .checkHexColor(fillColor)
