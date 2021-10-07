@@ -1247,3 +1247,76 @@ updateAnnotationImage<-function(url = NULL, annotationName = NULL, x.pos = NULL,
   res <- commandsPOST(cmd.string, base.url)
   return(as.list(res))
 }
+
+# ------------------------------------------------------------------------------
+#' @title Update Group Annotation
+#'
+#' @description Updates a group annotation, changing the given properties.
+#' @param name (optional) Name of annotation object
+#' @param annotationName Name of annotation by UUID or Name
+#' @param x.pos (optional) X position in pixels from left; default is center 
+#' of current view
+#' @param y.pos (optional) Y position in pixels from top; default is center 
+#' of current view
+#' @param angle (optional) Angle of text orientation; default is 0.0 
+#' (horizontal)
+#' @param canvas (optional) Canvas to display annotation, i.e., foreground 
+#' (default) or background
+#' @param z.order (optional) Arrangement order specified by number (larger
+#' values are in front of smaller values); default is 0 
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is 
+#' http://localhost:1234 and the latest version of the CyREST API supported by
+#' this version of RCy3.
+#' @return A named list of annotation properties, including UUID
+#' @examples \donttest{
+#' updateGroupAnnotation("test1", "annotationName")
+#' }
+#' @export
+updateGroupAnnotation<-function(name = NULL, annotationName= NULL, x.pos = NULL, y.pos = NULL,
+                                      angle = NULL, canvas = NULL, z.order = NULL,
+                                      network= NULL, base.url = .defaultBaseUrl){
+  
+  cmd.string <- 'annotation update group'
+  
+  net.SUID = getNetworkSuid(network, base.url)
+  view.SUID = getNetworkViewSuid(network, base.url)
+  
+  # add view
+  cmd.string <- paste0(cmd.string,' view="SUID:',view.SUID,'"')
+  
+  if(is.null(annotationName))
+    stop('Must provide the UUID (or list of UUIDs) to group')
+  cmd.string <- paste0(cmd.string,' uuidOrName="',annotationName,'"')
+  
+  # x and y position
+  if(is.null(x.pos))
+    x.pos <- getNetworkCenter(net.SUID, base.url)$x
+  if(is.null(y.pos))
+    y.pos <- getNetworkCenter(net.SUID, base.url)$y
+  cmd.string <- paste0(cmd.string,' x="',x.pos,'" y="',y.pos,'"')
+  
+  if(!is.null(angle)){
+    rotation <- .normalizeRotation(angle)
+    cmd.string <- paste0(cmd.string,' angle="',rotation,'"')
+  }
+  
+  if(!is.null(name)){
+    .checkUnique(name, vapply(getAnnotationList(), '[[', 'character', 'name'))
+    cmd.string <- paste0(cmd.string,' newName="',name,'"')
+  }
+  if(!is.null(canvas)){
+    .checkCanvas(canvas)
+    cmd.string <- paste0(cmd.string,' canvas="',canvas,'"')
+  }
+  if(!is.null(z.order)){
+    if(!is.numeric(z.order))
+      stop (simpleError(sprintf ('%d is invalid. Z order must be an number', 
+                                 z.order)))
+    cmd.string <- paste0(cmd.string,' z="',z.order,'"')
+  }
+  
+  # execute command
+  res <- commandsPOST(cmd.string, base.url)
+  return(as.list(res))
+}
