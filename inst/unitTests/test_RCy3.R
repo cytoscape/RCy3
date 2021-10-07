@@ -1912,4 +1912,15 @@ test.annotations = function ()
     ann.uuids <- sapply(getAnnotationList(), '[[', 'uuid')
     deleteAnnotation(ann.uuids)
     checkEqualsNumeric(length(getAnnotationList()),0)
+    
+    addAnnotationText("test1", name="test1")
+    addAnnotationText("test2", name="test2")
+    groupAnnotation(c("test1","test2"))
+    checkEqualsNumeric(length(getAnnotationList()),3)
+    ungroupAnnotation("Group 1")
+    checkEqualsNumeric(length(getAnnotationList()),2)
+    ann.uuids <- sapply(getAnnotationList(), '[[', 'uuid')
+    deleteAnnotation(ann.uuids)
+    checkEqualsNumeric(length(getAnnotationList()),0)
+    
 }
