@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cytoscape and NDEx • RCy3</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Cytoscape and NDEx">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="RCy3">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RCy3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.7.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.15.0</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -97,8 +97,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/cytoscape/RCy3">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/cytoscape/RCy3/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -112,13 +112,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="Cytoscape-and-NDEx_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Cytoscape and NDEx</h1>
+      <h1 data-toc-skip>Cytoscape and NDEx</h1>
                         <h4 class="author">by Alexander Pico, Florian Auer</h4>
             
-            <h4 class="date">2020-02-29</h4>
+            <h4 class="date">2021-11-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cytoscape/RCy3/blob/master/vignettes/Cytoscape-and-NDEx.Rmd"><code>vignettes/Cytoscape-and-NDEx.Rmd</code></a></small>
       <div class="hidden name"><code>Cytoscape-and-NDEx.Rmd</code></div>
@@ -131,17 +131,18 @@
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="cf">if</span>(<span class="op">!</span><span class="st">"RCy3"</span> <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()){</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">    <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">    BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"RCy3"</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">}</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(RCy3)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="cf">if</span>(<span class="op">!</span><span class="st">"ndexr"</span> <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span>()){</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">    <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">    BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"ndexr"</span>)</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">}</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ndexr)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="st">"RCy3"</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+    <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"RCy3"</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cytoscape/RCy3">RCy3</a></span><span class="op">)</span>
+
+<span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="st">"ndexr"</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+    <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"ndexr"</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ndexr</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="prerequisites" class="section level1">
 <h1 class="hasAnchor">
@@ -157,23 +158,28 @@
 <a href="#finding-networks" class="anchor"></a>Finding networks</h1>
 <p>The Network Data Exchange (NDEx) is a platform for network storage, retrieval and exchange. Developed in close collaboration with Cytoscape, it is a natural partner for Cytoscape network queries and management.</p>
 <p>You can start with NDEx by first establishing a connection.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">ndexcon &lt;-<span class="st"> </span><span class="kw">ndex_connect</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ndexcon</span> <span class="op">&lt;-</span> <span class="fu">ndex_connect</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>We will use <strong>ndexcon</strong> throughout the other ndexr calls. For example, a basic search.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">networks &lt;-<span class="st"> </span><span class="kw">ndex_find_networks</span>(ndexcon, <span class="st">"Breast Cancer"</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(networks[,<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"name"</span>,<span class="st">"externalId"</span>,<span class="st">"nodeCount"</span>,<span class="st">"edgeCount"</span>)])</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">networks</span> <span class="op">&lt;-</span> <span class="fu">ndex_find_networks</span><span class="op">(</span><span class="va">ndexcon</span>, <span class="st">"Breast Cancer"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">networks</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>,<span class="st">"externalId"</span>,<span class="st">"nodeCount"</span>,<span class="st">"edgeCount"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p>That <em>print</em> statement provides a nifty way to browse the search results. You’ll notice that we got results that hit each of the search terms individually, thus including any pathway with “cancer” in the name. That’s perhaps a bit too broad…</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">networks &lt;-<span class="st"> </span><span class="kw">ndex_find_networks</span>(ndexcon, <span class="st">"BRCA"</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(networks[,<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"name"</span>,<span class="st">"externalId"</span>,<span class="st">"nodeCount"</span>,<span class="st">"edgeCount"</span>)])</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">networks</span> <span class="op">&lt;-</span> <span class="fu">ndex_find_networks</span><span class="op">(</span><span class="va">ndexcon</span>, <span class="st">"BRCA"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">networks</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>,<span class="st">"externalId"</span>,<span class="st">"nodeCount"</span>,<span class="st">"edgeCount"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p>Ok. We can work with this list. Let’s use the first hit. <strong>Note: you are going to get different hits as this database changes over time, so proceed with any hit you like.</strong></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">networkId =<span class="st"> </span>networks<span class="op">$</span>externalId[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">network =<span class="st"> </span><span class="kw">ndex_get_network</span>(ndexcon, networkId)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(network)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">networkId</span> <span class="op">=</span> <span class="va">networks</span><span class="op">$</span><span class="va">externalId</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
+<span class="va">network</span> <span class="op">=</span> <span class="fu">ndex_get_network</span><span class="op">(</span><span class="va">ndexcon</span>, <span class="va">networkId</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="viewing-networks" class="section level1">
 <h1 class="hasAnchor">
 <a href="#viewing-networks" class="anchor"></a>Viewing networks</h1>
 <p>If we want to visualize and interact with this network, Cytoscape is our best choice. Both NDEx and Cytoscape work with the CX network data format, so the import can directly be managed by the CyNDEx component of Cytoscape, supported by RCy3…</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">brca.net.suid &lt;-<span class="st"> </span><span class="kw"><a href="../reference/importNetworkFromNDEx.html">importNetworkFromNDEx</a></span>(networkId) </a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">brca.net.suid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/importNetworkFromNDEx.html">importNetworkFromNDEx</a></span><span class="op">(</span><span class="va">networkId</span><span class="op">)</span> </code></pre></div>
 <p><strong>Note: Do not use the “rcx” frunctions provided by ndexr to pass through igraph in order to import into Cytoscape. This unnecessary intermediate step will result in scientific notation values being translated to type “other” (denoted by “x”) and ultimately converted to Strings in Cytoscape. All style information is lost as well.</strong></p>
 </div>
 <div id="sending-networks-to-ndex" class="section level1">
@@ -181,30 +187,23 @@
 <a href="#sending-networks-to-ndex" class="anchor"></a>Sending networks to NDEx</h1>
 <p>Now say you have a network in Cytoscape and you want to send it to NDEx for storage, sharing or exchange. First, you need to have an NDEx account. Go to <a href="http://www.ndexbio.org" class="uri">http://www.ndexbio.org</a> to create one if you haven’t already. You will need your username and password coming up soon.</p>
 <p>But first, let’s get a fresh network into Cytoscape. This could be any network, we’re just using the demo igraph network as an example.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">ig2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/makeSimpleIgraph.html">makeSimpleIgraph</a></span>()</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">net.suid &lt;-<span class="st"> </span><span class="kw"><a href="../reference/createNetworkFromIgraph.html">createNetworkFromIgraph</a></span>(ig2, <span class="st">'Simple Network'</span>, <span class="st">'Simple Collection'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ig2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/makeSimpleIgraph.html">makeSimpleIgraph</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">net.suid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createNetworkFromIgraph.html">createNetworkFromIgraph</a></span><span class="op">(</span><span class="va">ig2</span>, <span class="st">'Simple Network'</span>, <span class="st">'Simple Collection'</span><span class="op">)</span></code></pre></div>
 <p>And, now we send it off to NDEx.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">user &lt;-<span class="st"> "your_NDEx_account_username"</span>  <span class="co">#replace with your info</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">pass &lt;-<span class="st"> "your_NDEx_account_password"</span>  <span class="co">#replace with your info</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="../reference/exportNetworkToNDEx.html">exportNetworkToNDEx</a></span>(user, pass, <span class="dt">isPublic=</span><span class="ot">TRUE</span>, <span class="dt">network=</span>net.suid)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">user</span> <span class="op">&lt;-</span> <span class="st">"your_NDEx_account_username"</span>  <span class="co">#replace with your info</span>
+<span class="va">pass</span> <span class="op">&lt;-</span> <span class="st">"your_NDEx_account_password"</span>  <span class="co">#replace with your info</span>
+<span class="fu"><a href="../reference/exportNetworkToNDEx.html">exportNetworkToNDEx</a></span><span class="op">(</span><span class="va">user</span>, <span class="va">pass</span>, isPublic<span class="op">=</span><span class="cn">TRUE</span>, network<span class="op">=</span><span class="va">net.suid</span><span class="op">)</span></code></pre></div>
 <p>Voila! Now anyone can search or browse to find your network and then use it in their research together with the full history and attribution of your contributions to the network.</p>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#installation">Installation</a></li>
-      <li><a href="#prerequisites">Prerequisites</a></li>
-      <li><a href="#finding-networks">Finding networks</a></li>
-      <li><a href="#viewing-networks">Viewing networks</a></li>
-      <li><a href="#sending-networks-to-ndex">Sending networks to NDEx</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -215,7 +214,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

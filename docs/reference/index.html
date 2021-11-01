@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -53,7 +57,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -67,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RCy3</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.7.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.15.0</span>
       </span>
     </div>
 
@@ -75,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -133,8 +137,8 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/cytoscape/RCy3">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/cytoscape/RCy3/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -169,6 +173,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -190,6 +199,36 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="UpdateAnnotationBoundedText.html">UpdateAnnotationBoundedText()</a></code> </p>
+        </td>
+        <td><p>Update Bounded Text Annotation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="addAnnotationBoundedText.html">addAnnotationBoundedText()</a></code> </p>
+        </td>
+        <td><p>Add Bounded Text Annotation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="addAnnotationImage.html">addAnnotationImage()</a></code> </p>
+        </td>
+        <td><p>Add Image Annotation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="addAnnotationShape.html">addAnnotationShape()</a></code> </p>
+        </td>
+        <td><p>Add Shape Annotation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="addAnnotationText.html">addAnnotationText()</a></code> </p>
+        </td>
+        <td><p>Add Text Annotation</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="addCyEdges.html">addCyEdges()</a></code> </p>
         </td>
         <td><p>Add CyEdges</p></td>
@@ -202,6 +241,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="analyzeNetwork.html">analyzeNetwork()</a></code> </p>
+        </td>
+        <td><p>Analyze Network</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="applyFilter.html">applyFilter()</a></code> </p>
         </td>
         <td><p>Apply Filter</p></td>
@@ -211,6 +256,18 @@
           <p><code><a href="bundleEdges.html">bundleEdges()</a></code> </p>
         </td>
         <td><p>Bundle Edges</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="checkNotebookIsRunning.html">checkNotebookIsRunning()</a></code> </p>
+        </td>
+        <td><p>checkNotebookIsRunning</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="checkRunningRemote.html">checkRunningRemote()</a></code> </p>
+        </td>
+        <td><p>checkRunningRemote</p></td>
       </tr><tr>
         
         <td>
@@ -538,6 +595,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="deleteAnnotation.html">deleteAnnotation()</a></code> </p>
+        </td>
+        <td><p>Delete Annotation</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="deleteDuplicateEdges.html">deleteDuplicateEdges()</a></code> </p>
         </td>
         <td><p>Delete Duplicate Edges</p></td>
@@ -610,9 +673,45 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="doInitializeSandbox.html">doInitializeSandbox()</a></code> </p>
+        </td>
+        <td><p>doInitializeSandbox</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="doRequestRemote.html">doRequestRemote()</a></code> </p>
+        </td>
+        <td><p>doRequestRemote</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="doSetSandbox.html">doSetSandbox()</a></code> </p>
+        </td>
+        <td><p>doSetSandbox</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="dockPanel.html">dockPanel()</a></code> </p>
         </td>
         <td><p>Dock Panel</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dot-exportShowImage.html">.exportShowImage()</a></code> </p>
+        </td>
+        <td><p>.exportShowImage</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dot-getDefaultSandbox.html">.getDefaultSandbox()</a></code> </p>
+        </td>
+        <td><p>.getDefaultSandbox</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dot-getRequester.html">.getRequester()</a></code> </p>
+        </td>
+        <td><p>.getRequester</p></td>
       </tr><tr>
         
         <td>
@@ -658,6 +757,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="findRemoteCytoscape.html">findRemoteCytoscape()</a></code> </p>
+        </td>
+        <td><p>findRemoteCytoscape</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="fitContent.html">fitContent()</a></code> </p>
         </td>
         <td><p>Fit Content</p></td>
@@ -670,6 +775,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="getAbsSandboxPath.html">getAbsSandboxPath()</a></code> </p>
+        </td>
+        <td><p>getAbsSandboxPath</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="getAllEdges.html">getAllEdges()</a></code> </p>
         </td>
         <td><p>Get All Edges</p></td>
@@ -679,6 +790,18 @@
           <p><code><a href="getAllNodes.html">getAllNodes()</a></code> </p>
         </td>
         <td><p>Get All Nodes</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getAllStyleMappings.html">getAllStyleMappings()</a></code> </p>
+        </td>
+        <td><p>Get All Style Mappings</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getAnnotationList.html">getAnnotationList()</a></code> </p>
+        </td>
+        <td><p>Get Annotation List</p></td>
       </tr><tr>
         
         <td>
@@ -718,6 +841,18 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="getBrowserClientChannel.html">getBrowserClientChannel()</a></code> </p>
+        </td>
+        <td><p>getBrowserClientChannel</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getBrowserClientJs.html">getBrowserClientJs()</a></code> </p>
+        </td>
+        <td><p>getBrowserClientJs</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="getCollectionList.html">getCollectionList()</a></code> </p>
         </td>
         <td><p>Get Collection List</p></td>
@@ -739,6 +874,42 @@
           <p><code><a href="getCollectionSuid.html">getCollectionSuid()</a></code> </p>
         </td>
         <td><p>Get Collection Suid</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getCurrentSandbox.html">getCurrentSandbox()</a></code> </p>
+        </td>
+        <td><p>getCurrentSandbox</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getCurrentSandboxName.html">getCurrentSandboxName()</a></code> </p>
+        </td>
+        <td><p>getCurrentSandboxName</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getCurrentSandboxPath.html">getCurrentSandboxPath()</a></code> </p>
+        </td>
+        <td><p>getCurrentSandboxPath</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getCurrentStyle.html">getCurrentStyle()</a></code> </p>
+        </td>
+        <td><p>Get Current Style</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getDefaultSandbox.html">getDefaultSandbox()</a></code> </p>
+        </td>
+        <td><p>getDefaultSandbox</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getDefaultSandboxPath.html">getDefaultSandboxPath()</a></code> </p>
+        </td>
+        <td><p>getDefaultSandboxPath</p></td>
       </tr><tr>
         
         <td>
@@ -817,6 +988,12 @@
           <p><code><a href="getInstalledApps.html">getInstalledApps()</a></code> </p>
         </td>
         <td><p>List Installed Apps</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getJupyterBridgeURL.html">getJupyterBridgeURL()</a></code> </p>
+        </td>
+        <td><p>getJupyterBridgeURL</p></td>
       </tr><tr>
         
         <td>
@@ -970,6 +1147,18 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="getNotebookIsRunning.html">getNotebookIsRunning()</a></code> </p>
+        </td>
+        <td><p>getNotebookIsRunning</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getSandboxReinitialize.html">getSandboxReinitialize()</a></code> </p>
+        </td>
+        <td><p>getSandboxReinitialize</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="getSelectedEdgeCount.html">getSelectedEdgeCount()</a></code> </p>
         </td>
         <td><p>Get Selected Edge Count</p></td>
@@ -997,6 +1186,12 @@
           <p><code><a href="getStyleDependencies.html">getStyleDependencies()</a></code> </p>
         </td>
         <td><p>Get the values of dependencies in a style</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getStyleMapping.html">getStyleMapping()</a></code> </p>
+        </td>
+        <td><p>Get Style Mapping</p></td>
       </tr><tr>
         
         <td>
@@ -1045,6 +1240,12 @@
           <p><code><a href="getVisualStyleNames.html">getVisualStyleNames()</a></code> </p>
         </td>
         <td><p>Get Visual Style Names</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="groupAnnotation.html">groupAnnotation()</a></code> </p>
+        </td>
+        <td><p>Group Annotation</p></td>
       </tr><tr>
         
         <td>
@@ -1186,6 +1387,24 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="mergeNetworks.html">mergeNetworks()</a></code> </p>
+        </td>
+        <td><p>Merge Networks</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="notebookExportShowImage.html">notebookExportShowImage()</a></code> </p>
+        </td>
+        <td><p>notebookExportShowImage</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="notebookShowImage.html">notebookShowImage()</a></code> </p>
+        </td>
+        <td><p>notebookShowImage</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="openAppStore.html">openAppStore()</a></code> </p>
         </td>
         <td><p>Open App Store Page</p></td>
@@ -1195,6 +1414,204 @@
           <p><code><a href="openSession.html">openSession()</a></code> </p>
         </td>
         <td><p>Open Session File or URL</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerAccent.html">paletteColorBrewerAccent()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerAccent Qualitative</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerBlues.html">paletteColorBrewerBlues()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerBlues Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerBrBG.html">paletteColorBrewerBrBG()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerBrBG Divergent</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerBuGn.html">paletteColorBrewerBuGn()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerBuGn Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerBuPu.html">paletteColorBrewerBuPu()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerBuPu Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerDark2.html">paletteColorBrewerDark2()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerDark2 Qualitative</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerGnBu.html">paletteColorBrewerGnBu()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerGnBu Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerGreens.html">paletteColorBrewerGreens()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerGreens Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerGreys.html">paletteColorBrewerGreys()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerGreys Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerOrRd.html">paletteColorBrewerOrRd()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerOrRd Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerOranges.html">paletteColorBrewerOranges()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerOranges Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerPRGn.html">paletteColorBrewerPRGn()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerPRGn Divergent</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerPaired.html">paletteColorBrewerPaired()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerPaired Qualitative</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerPastel1.html">paletteColorBrewerPastel1()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerPastel1 Qualitative</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerPastel2.html">paletteColorBrewerPastel2()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerPastel2 Qualitative</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerPiYG.html">paletteColorBrewerPiYG()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerPiYG Divergent</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerPuBu.html">paletteColorBrewerPuBu()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerPuBu Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerPuBuGn.html">paletteColorBrewerPuBuGn()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerPuBuGn Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerPuOr.html">paletteColorBrewerPuOr()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerPuOr Divergent</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerPuRd.html">paletteColorBrewerPuRd()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerPuRd Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerPurples.html">paletteColorBrewerPurples()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerPurples Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerRdBu.html">paletteColorBrewerRdBu()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerRdBu Divergent</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerRdPu.html">paletteColorBrewerRdPu()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerRdPu Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerRdYlBu.html">paletteColorBrewerRdYlBu()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerRdYlBu Divergent</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerReds.html">paletteColorBrewerReds()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerReds Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerSet1.html">paletteColorBrewerSet1()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerSet1 Qualitative</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerSet2.html">paletteColorBrewerSet2()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerSet2 Qualitative</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerSet3.html">paletteColorBrewerSet3()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerSet3 Qualitative</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerYlGn.html">paletteColorBrewerYlGn()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerYlGn Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerYlGnBu.html">paletteColorBrewerYlGnBu()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerYlGnBu Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerYlOrBr.html">paletteColorBrewerYlOrBr()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerYlOrBr Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorBrewerYlOrRd.html">paletteColorBrewerYlOrRd()</a></code> </p>
+        </td>
+        <td><p>paletteColorBrewerYlOrRd Sequential</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="paletteColorRandom.html">paletteColorRandom()</a></code> </p>
+        </td>
+        <td><p>paletteColorRandom Qualitative</p></td>
       </tr><tr>
         
         <td>
@@ -1213,6 +1630,66 @@
           <p><code><a href="renameTableColumn.html">renameTableColumn()</a></code> </p>
         </td>
         <td><p>Rename Table Column</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="resetDefaultSandbox.html">resetDefaultSandbox()</a></code> </p>
+        </td>
+        <td><p>resetDefaultSandbox</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="runningRemoteCheck.html">runningRemoteCheck()</a></code> </p>
+        </td>
+        <td><p>runningRmoteCheck</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sandboxGetFileInfo.html">sandboxGetFileInfo()</a></code> </p>
+        </td>
+        <td><p>sandboxGetFileInfo</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sandboxGetFrom.html">sandboxGetFrom()</a></code> </p>
+        </td>
+        <td><p>sandboxGetFrom</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sandboxInitializer.html">sandboxInitializer()</a></code> </p>
+        </td>
+        <td><p>sandboxInitializer</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sandboxRemove.html">sandboxRemove()</a></code> </p>
+        </td>
+        <td><p>sandboxRemove</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sandboxRemoveFile.html">sandboxRemoveFile()</a></code> </p>
+        </td>
+        <td><p>sandboxRemoveFile</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sandboxSendTo.html">sandboxSendTo()</a></code> </p>
+        </td>
+        <td><p>sandboxSendTo</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sandboxSet.html">sandboxSet()</a></code> </p>
+        </td>
+        <td><p>sandboxSet</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sandboxUrlTo.html">sandboxUrlTo()</a></code> </p>
+        </td>
+        <td><p>sandboxUrlTo</p></td>
       </tr><tr>
         
         <td>
@@ -1276,15 +1753,45 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="setCatchupFilterSecs.html">setCatchupFilterSecs()</a></code> </p>
+        </td>
+        <td><p>Set Catchup Filter Delay</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="setCatchupNetworkSecs.html">setCatchupNetworkSecs()</a></code> </p>
+        </td>
+        <td><p>Set Catchup Network Delay</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="setCurrentNetwork.html">setCurrentNetwork()</a></code> </p>
         </td>
         <td><p>Set current network</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="setCurrentSandbox.html">setCurrentSandbox()</a></code> </p>
+        </td>
+        <td><p>setCurrentSandbox</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="setCurrentView.html">setCurrentView()</a></code> </p>
         </td>
         <td><p>Set Current View</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="setDefaultSandbox.html">setDefaultSandbox()</a></code> </p>
+        </td>
+        <td><p>setDefaultSandbox</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="setDefaultSandboxPath.html">setDefaultSandboxPath()</a></code> </p>
+        </td>
+        <td><p>setDefaultSandboxPath</p></td>
       </tr><tr>
         
         <td>
@@ -1567,6 +2074,12 @@
           <p><code><a href="setLayoutProperties.html">setLayoutProperties()</a></code> </p>
         </td>
         <td><p>Set Layout Properties</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="setModelPropagationSecs.html">setModelPropagationSecs()</a></code> </p>
+        </td>
+        <td><p>Set Model Propagation Delay</p></td>
       </tr><tr>
         
         <td>
@@ -1936,6 +2449,18 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="setNotebookIsRunning.html">setNotebookIsRunning()</a></code> </p>
+        </td>
+        <td><p>setNotebookIsRunning</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="setSandboxReinitialize.html">setSandboxReinitialize()</a></code> </p>
+        </td>
+        <td><p>setSandboxReinitialize</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="setStyleDependencies.html">setStyleDependencies()</a></code> </p>
         </td>
         <td><p>Set Style Dependencies</p></td>
@@ -1954,6 +2479,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="spoofResponse-class.html">spoofResponse-class</a></code> </p>
+        </td>
+        <td><p>spoofResponse</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="syncNodeCustomGraphicsSize.html">syncNodeCustomGraphicsSize()</a></code> </p>
         </td>
         <td><p>Sync Node Custom Graphics Size</p></td>
@@ -1963,6 +2494,12 @@
           <p><code><a href="toggleGraphicsDetails.html">toggleGraphicsDetails()</a></code> </p>
         </td>
         <td><p>Toggle Graphics Details</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ungroupAnnotation.html">ungroupAnnotation()</a></code> </p>
+        </td>
+        <td><p>Ungroup Annotation Group</p></td>
       </tr><tr>
         
         <td>
@@ -1990,9 +2527,33 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="updateAnnotationImage.html">updateAnnotationImage()</a></code> </p>
+        </td>
+        <td><p>Update Image Annotation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="updateAnnotationShape.html">updateAnnotationShape()</a></code> </p>
+        </td>
+        <td><p>Update Shape Annotation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="updateAnnotationText.html">updateAnnotationText()</a></code> </p>
+        </td>
+        <td><p>Update Text Annotation</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="updateApp.html">updateApp()</a></code> </p>
         </td>
         <td><p>Update App</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="updateGroupAnnotation.html">updateGroupAnnotation()</a></code> </p>
+        </td>
+        <td><p>Update Group Annotation</p></td>
       </tr><tr>
         
         <td>
@@ -2016,11 +2577,10 @@
     </table>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -2031,7 +2591,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

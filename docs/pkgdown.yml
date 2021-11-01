@@ -1,5 +1,5 @@
-pandoc: 2.3.1
-pkgdown: 1.4.1
+pandoc: 2.14.0.3
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   Cancer-networks-and-data: Cancer-networks-and-data.html
@@ -15,4 +15,5 @@ articles:
   Overview-of-RCy3: Overview-of-RCy3.html
   Phylogenetic-trees: Phylogenetic-trees.html
   Upgrading-existing-scripts: Upgrading-existing-scripts.html
+last_built: 2021-11-01T22:02Z
 
