@@ -14,7 +14,8 @@ Authors@R: c(person("Alex", "Pico", role = c("aut","cre"),
              person("Shraddha", "Pai", role = "ctb"),
              person("Julia", "Gustavsen", role = "ctb"),
              person("Georgi", "Kolishovski", role = "ctb"),
-             person("Yihang", "Xin", role = "ctb")
+             person("Yihang", "Xin", role = "ctb",
+                     email = "xinsg0@gmail.com")
           )
 Imports: httr, methods, RJSONIO, XML, utils, BiocGenerics, stats, graph, fs, uuid, uchardet, glue, RCurl, base64url, base64enc, IRkernel, IRdisplay, RColorBrewer
 Suggests: BiocStyle, knitr, rmarkdown, igraph, grDevices
