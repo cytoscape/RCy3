@@ -5,6 +5,7 @@
 \title{Add Shape Annotation}
 \usage{
 addAnnotationShape(
+  type = NULL,
   customShape = NULL,
   x.pos = NULL,
   y.pos = NULL,
@@ -24,8 +25,11 @@ addAnnotationShape(
 )
 }
 \arguments{
-\item{customShape}{(optional) Shape; default is RECTANGLE. See
-getNodeShapes() for valid options.}
+\item{type}{(optional) The type of the shape, default is RECTANGLE.
+See getNodeShapes() for valid options.}
+
+\item{customShape}{(optional) If a custom shape, this is the text of the 
+shape}
 
 \item{x.pos}{(optional) X position in pixels from left; default is center 
 of current view}
