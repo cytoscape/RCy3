@@ -129,8 +129,10 @@ addAnnotationText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
 #' @param color (optional) Hexidecimal color; default is #000000 (black)
 #' @param angle (optional) Angle of text orientation; default is 0.0 
 #' (horizontal)
-#' @param customShape (optional) Bounding shape; default is RECTANGLE. See
-#'  getNodeShapes() for valid options.
+#' @param type (optional) The type of the shape, default is RECTANGLE.
+#'  See getNodeShapes() for valid options.
+#' @param customShape (optional) If a custom shape, this is the text of the 
+#' shape
 #' @param fillColor (optional) Hexidecimal color; default is #000000 (black)
 #' @param opacity (optional) Opacity of fill color. Must be an integer between 
 #' 0 and 100; default is 100.
@@ -162,7 +164,7 @@ addAnnotationText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
 #' @export
 addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
                             fontSize = NULL, fontFamily = NULL, fontStyle = NULL,
-                            color = NULL, angle = NULL, 
+                            color = NULL, angle = NULL, type = NULL,
                             customShape = NULL, fillColor = NULL, 
                             opacity = NULL, borderThickness = NULL,
                             borderColor = NULL, borderOpacity = NULL,
@@ -177,9 +179,6 @@ addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
   
   # add view
   cmd.string <- paste0(cmd.string,' view="SUID:',view.SUID,'"')
-  
-  # add type
-  cmd.string <- paste0(cmd.string, ' type="org.cytoscape.view.presentation.annotations.BoundedTextAnnotation"')
   
   # text to add
   if(is.null(text))
@@ -213,12 +212,22 @@ addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
     rotation <- .normalizeRotation(angle)
     cmd.string <- paste0(cmd.string,' angle="',rotation,'"')
   }
+  if(!is.null(type)){
+      type <- toupper(type)
+      if(!type %in% getNodeShapes())
+          stop (simpleError(sprintf('%s is invalid. Choose a shape from getNodeShapes()',
+                                    type)))
+      if(type == "ROUND_RECTANGLE"){
+          type <- "Rounded Rectangle"
+      }
+      if(type == "VEE"){
+          type <- "V"
+      }
+      cmd.string <- paste0(cmd.string,' type="',type,'"')
+  }
+  
   if(!is.null(customShape)){
-    customShape <- toupper(customShape)
-    if(!customShape %in% getNodeShapes())
-      stop (simpleError(sprintf('%s is invalid. Choose a shape from getNodeShapes()',
-                        customShape)))
-    cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
+      cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
   }
   if(!is.null(fillColor)){
     .checkHexColor(fillColor)
@@ -420,8 +429,10 @@ addAnnotationImage<-function(url = NULL, x.pos = NULL, y.pos = NULL,
 #'
 #' @description Adds a shape annotation to a Cytoscape network view. The 
 #' object will also be added to the Annotation Panel in the GUI.
-#' @param customShape (optional) Shape; default is RECTANGLE. See
-#'  getNodeShapes() for valid options.
+#' @param type (optional) The type of the shape, default is RECTANGLE.
+#'  See getNodeShapes() for valid options.
+#' @param customShape (optional) If a custom shape, this is the text of the 
+#' shape
 #' @param x.pos (optional) X position in pixels from left; default is center 
 #' of current view
 #' @param y.pos (optional) Y position in pixels from top; default is center 
@@ -457,7 +468,7 @@ addAnnotationImage<-function(url = NULL, x.pos = NULL, y.pos = NULL,
 #'     40,name="S3", canvas="background",z=4)
 #' }
 #' @export
-addAnnotationShape<-function(customShape = NULL, x.pos = NULL, y.pos = NULL,
+addAnnotationShape<-function(type = NULL, customShape = NULL, x.pos = NULL, y.pos = NULL,
                                    angle = NULL, fillColor = NULL, 
                                    opacity = NULL, borderThickness = NULL,
                                    borderColor = NULL, borderOpacity = NULL,
@@ -473,16 +484,23 @@ addAnnotationShape<-function(customShape = NULL, x.pos = NULL, y.pos = NULL,
   # add view
   cmd.string <- paste0(cmd.string,' view="SUID:',view.SUID,'"')
   
-  # add type
-  cmd.string <- paste0(cmd.string, ' type="org.cytoscape.view.presentation.annotations.ShapeAnnotation"')
-  
   # shape to add
-  if(!is.null(customShape)){
-    customShape <- toupper(customShape)
-    if(!customShape %in% getNodeShapes())
+  if(!is.null(type)){
+      type <- toupper(type)
+    if(!type %in% getNodeShapes())
       stop (simpleError(sprintf('%s is invalid. Choose a shape from getNodeShapes()',
-                                customShape)))
-    cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
+                                type)))
+     if(type == "ROUND_RECTANGLE"){
+         type <- "Rounded Rectangle"
+     }
+      if(type == "VEE"){
+          type <- "V"
+      }
+    cmd.string <- paste0(cmd.string,' type="',type,'"')
+  }
+  
+  if(!is.null(customShape)){
+      cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
   }
   
   # x and y position
@@ -814,8 +832,10 @@ updateAnnotationText<-function(text = NULL, annotationName = NULL, x.pos = NULL,
 #' @param color (optional) Hexidecimal color; default is #000000 (black)
 #' @param angle (optional) Angle of text orientation; default is 0.0 
 #' (horizontal)
-#' @param customShape (optional) Bounding shape; default is RECTANGLE. See
-#'  getNodeShapes() for valid options.
+#' @param type (optional) The type of the shape, default is RECTANGLE.
+#'  See getNodeShapes() for valid options.
+#' @param customShape (optional) If a custom shape, this is the text of the 
+#' shape
 #' @param fillColor (optional) Hexidecimal color; default is #000000 (black)
 #' @param opacity (optional) Opacity of fill color. Must be an integer between 
 #' 0 and 100; default is 100.
@@ -847,7 +867,7 @@ updateAnnotationText<-function(text = NULL, annotationName = NULL, x.pos = NULL,
 #' @export
 UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos = NULL, y.pos = NULL,
                                    fontSize = NULL, fontFamily = NULL, fontStyle = NULL,
-                                   color = NULL, angle = NULL, 
+                                   color = NULL, angle = NULL, type = NULL,
                                    customShape = NULL, fillColor = NULL, 
                                    opacity = NULL, borderThickness = NULL,
                                    borderColor = NULL, borderOpacity = NULL,
@@ -862,9 +882,6 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
   
   # add view
   cmd.string <- paste0(cmd.string,' view="SUID:',view.SUID,'"')
-  
-  # add type
-  cmd.string <- paste0(cmd.string, ' type="org.cytoscape.view.presentation.annotations.BoundedTextAnnotation"')
   
   # text to add
   if(is.null(text))
@@ -902,12 +919,22 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
     rotation <- .normalizeRotation(angle)
     cmd.string <- paste0(cmd.string,' angle="',rotation,'"')
   }
+  if(!is.null(type)){
+      type <- toupper(type)
+      if(!type %in% getNodeShapes())
+          stop (simpleError(sprintf('%s is invalid. Choose a shape from getNodeShapes()',
+                                    type)))
+      if(type == "ROUND_RECTANGLE"){
+          type <- "Rounded Rectangle"
+      }
+      if(type == "VEE"){
+          type <- "V"
+      }
+      cmd.string <- paste0(cmd.string,' type="',type,'"')
+  }
+  
   if(!is.null(customShape)){
-    customShape <- toupper(customShape)
-    if(!customShape %in% getNodeShapes())
-      stop (simpleError(sprintf('%s is invalid. Choose a shape from getNodeShapes()',
-                                customShape)))
-    cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
+      cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
   }
   if(!is.null(fillColor)){
     .checkHexColor(fillColor)
@@ -968,8 +995,10 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
 #'
 #' @description Updates a shape annotation to a Cytoscape network view. The 
 #' object will also be added to the Annotation Panel in the GUI.
-#' @param customShape (optional) Shape; default is RECTANGLE. See
-#'  getNodeShapes() for valid options.
+#' @param type (optional) The type of the shape, default is RECTANGLE.
+#'  See getNodeShapes() for valid options.
+#' @param customShape (optional) If a custom shape, this is the text of the 
+#' shape
 #' @param annotationName Name of annotation by UUID or Name
 #' @param x.pos (optional) X position in pixels from left; default is center 
 #' of current view
@@ -1006,7 +1035,7 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
 #'     40,name="S3", canvas="background",z=4)
 #' }
 #' @export
-updateAnnotationShape<-function(customShape = NULL, annotationName = NULL, x.pos = NULL, y.pos = NULL,
+updateAnnotationShape<-function(type = NULL, customShape = NULL, annotationName = NULL, x.pos = NULL, y.pos = NULL,
                              angle = NULL, fillColor = NULL, 
                              opacity = NULL, borderThickness = NULL,
                              borderColor = NULL, borderOpacity = NULL,
@@ -1022,17 +1051,25 @@ updateAnnotationShape<-function(customShape = NULL, annotationName = NULL, x.pos
   # add view
   cmd.string <- paste0(cmd.string,' view="SUID:',view.SUID,'"')
   
-  # add type
-  cmd.string <- paste0(cmd.string, ' type="org.cytoscape.view.presentation.annotations.ShapeAnnotation"')
-  
   # shape to add
-  if(!is.null(customShape)){
-    customShape <- toupper(customShape)
-    if(!customShape %in% getNodeShapes())
-      stop (simpleError(sprintf('%s is invalid. Choose a shape from getNodeShapes()',
-                                customShape)))
-    cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
+  if(!is.null(type)){
+      type <- toupper(type)
+      if(!type %in% getNodeShapes())
+          stop (simpleError(sprintf('%s is invalid. Choose a shape from getNodeShapes()',
+                                    type)))
+      if(type == "ROUND_RECTANGLE"){
+          type <- "Rounded Rectangle"
+      }
+      if(type == "VEE"){
+          type <- "V"
+      }
+      cmd.string <- paste0(cmd.string,' type="',type,'"')
   }
+  
+  if(!is.null(customShape)){
+      cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
+  }
+  
   if(is.null(annotationName))
     stop('Must provide the UUID (or list of UUIDs) to group')
   cmd.string <- paste0(cmd.string,' uuidOrName="',annotationName,'"')

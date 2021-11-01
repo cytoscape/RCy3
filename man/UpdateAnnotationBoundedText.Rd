@@ -14,6 +14,7 @@ UpdateAnnotationBoundedText(
   fontStyle = NULL,
   color = NULL,
   angle = NULL,
+  type = NULL,
   customShape = NULL,
   fillColor = NULL,
   opacity = NULL,
@@ -51,8 +52,11 @@ of current view}
 \item{angle}{(optional) Angle of text orientation; default is 0.0 
 (horizontal)}
 
-\item{customShape}{(optional) Bounding shape; default is RECTANGLE. See
-getNodeShapes() for valid options.}
+\item{type}{(optional) The type of the shape, default is RECTANGLE.
+See getNodeShapes() for valid options.}
+
+\item{customShape}{(optional) If a custom shape, this is the text of the 
+shape}
 
 \item{fillColor}{(optional) Hexidecimal color; default is #000000 (black)}
 

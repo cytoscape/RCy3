@@ -5,6 +5,7 @@
 \title{Update Shape Annotation}
 \usage{
 updateAnnotationShape(
+  type = NULL,
   customShape = NULL,
   annotationName = NULL,
   x.pos = NULL,
@@ -25,8 +26,11 @@ updateAnnotationShape(
 )
 }
 \arguments{
-\item{customShape}{(optional) Shape; default is RECTANGLE. See
-getNodeShapes() for valid options.}
+\item{type}{(optional) The type of the shape, default is RECTANGLE.
+See getNodeShapes() for valid options.}
+
+\item{customShape}{(optional) If a custom shape, this is the text of the 
+shape}
 
 \item{annotationName}{Name of annotation by UUID or Name}
 
