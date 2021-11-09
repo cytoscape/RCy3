@@ -1907,7 +1907,7 @@ test.annotations = function ()
 
     addAnnotationShape("rectangle")
     addAnnotationShape("rectangle", 1000, 1000, name="S2")
-    addAnnotationShape("rectangle", 1200, 1000, 30, "#990000", 40,name="S3", canvas="background",z=4)
+    addAnnotationShape(type="rectangle", x.pos =1200, y.pos =, angle=30, "#990000", 40,name="S3", canvas="background",z=4)
 
     ann.uuids <- sapply(getAnnotationList(), '[[', 'uuid')
     deleteAnnotation(ann.uuids)
@@ -1923,4 +1923,11 @@ test.annotations = function ()
     deleteAnnotation(ann.uuids)
     checkEqualsNumeric(length(getAnnotationList()),0)
     
+    
+    checkEquals(addAnnotationShape(type="ELLIPSE",name="ELLIPSE")$shapeType,"ELLIPSE")
+    checkEquals(updateAnnotationShape(type="VEE",annotationName="ELLIPSE")$shapeType,"V")
+    ann.uuids <- sapply(getAnnotationList(), '[[', 'uuid')
+    deleteAnnotation(ann.uuids)
+    checkEqualsNumeric(length(getAnnotationList()),0)
+
 }
