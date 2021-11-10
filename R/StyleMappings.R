@@ -338,7 +338,7 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
                                        network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values)){
+        if(is.null(table.column.values) && mapping.type == 'c'){
             auto.map<-.genColorMap('node',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -417,7 +417,7 @@ setNodeBorderOpacityMapping <- function(table.column, table.column.values=NULL,
             style.name, base.url)
     }
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -471,7 +471,7 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
         setNodeBorderWidthDefault(default.width, style.name, base.url=base.url)
     
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genDimMap('node',table.column,widths,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -526,7 +526,7 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
                                  network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values)){
+        if(is.null(table.column.values) && mapping.type == 'c'){
             auto.map<-.genColorMap('node',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -613,7 +613,7 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
             style.name, base.url)
     }
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -697,7 +697,7 @@ setNodeFillOpacityMapping <- function(table.column, table.column.values=NULL,
             style.name, base.url)
     }
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -804,7 +804,7 @@ setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, size
         setNodeFontSizeDefault(default.size, style.name, base.url=base.url)
     
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genDimMap('node',table.column,sizes,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -864,7 +864,7 @@ setNodeHeightMapping <- function (table.column, table.column.values=NULL, height
         setNodeHeightDefault(default.height, style.name, base.url=base.url)
     
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genDimMap('node',table.column,heights,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -945,7 +945,7 @@ setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, co
                                        network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values)){
+        if(is.null(table.column.values) && mapping.type == 'c'){
             auto.map<-.genColorMap('node',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -1024,7 +1024,7 @@ setNodeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
             style.name, base.url)
     }
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1128,7 +1128,7 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
         setNodeSizeDefault(default.size, style.name, base.url=base.url)
     
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genDimMap('node',table.column,sizes,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1213,7 +1213,7 @@ setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=
     if(!is.null(default.width))
         setNodeWidthDefault(default.width, style.name, base.url=base.url)
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genDimMap('node',table.column,widths,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1272,7 +1272,7 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
                                  network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values)){
+        if(is.null(table.column.values) && mapping.type == 'c'){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -1413,7 +1413,7 @@ setEdgeFontSizeMapping <- function (table.column, table.column.values=NULL, size
     if(!is.null(default.size))
         setEdgeFontSizeDefault(default.size, style.name, base.url=base.url)
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genDimMap('edge',table.column,sizes,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1492,7 +1492,7 @@ setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, co
                                       network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values)){
+        if(is.null(table.column.values) && mapping.type == 'c'){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -1573,7 +1573,7 @@ setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
             style.name, base.url)
     }
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genOpacityMap('edge',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1671,7 +1671,7 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
     if(!is.null(default.width))
         setEdgeLineWidthDefault(default.width, style.name, base.url=base.url)
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genDimMap('edge',table.column,widths,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1738,7 +1738,7 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
             style.name, base.url)
     }   
     # check table.column.values to map
-    if(is.null(table.column.values)){
+    if(is.null(table.column.values) && mapping.type == 'c'){
         auto.map<-.genOpacityMap('edge',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1859,7 +1859,7 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
                                             network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values)){
+        if(is.null(table.column.values) && mapping.type == 'c'){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -1928,7 +1928,7 @@ setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NU
                                             network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values)){
+        if(is.null(table.column.values) && mapping.type == 'c'){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
