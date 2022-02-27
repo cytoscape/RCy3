@@ -760,12 +760,11 @@ updateAnnotationText<-function(text = NULL, annotationName = NULL, x.pos = NULL,
   cmd.string <- paste0(cmd.string, ' type="org.cytoscape.view.presentation.annotations.TextAnnotation"')
   
   # text to add
-  if(is.null(text))
-    stop(simpleError("Must provide the text string to add."))
-  cmd.string <- paste0(cmd.string,' text="',text,'"')
+  if(!is.null(text))
+    cmd.string <- paste0(cmd.string,' text="',text,'"')
   
   if(is.null(annotationName))
-    stop('Must provide the UUID (or list of UUIDs) to group')
+    stop('Must provide the UUID or name')
   cmd.string <- paste0(cmd.string,' uuidOrName="',annotationName,'"')
   
   # x and y position
@@ -884,12 +883,11 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
   cmd.string <- paste0(cmd.string,' view="SUID:',view.SUID,'"')
   
   # text to add
-  if(is.null(text))
-    stop(simpleError("Must provide the text string to add."))
-  cmd.string <- paste0(cmd.string,' text="',text,'"')
+  if(!is.null(text))
+    cmd.string <- paste0(cmd.string,' text="',text,'"')
   
   if(is.null(annotationName))
-    stop('Must provide the UUID (or list of UUIDs) to group')
+    stop('Must provide the UUID or name')
   cmd.string <- paste0(cmd.string,' uuidOrName="',annotationName,'"')
   
   # x and y position
@@ -1071,7 +1069,7 @@ updateAnnotationShape<-function(type = NULL, customShape = NULL, annotationName 
   }
   
   if(is.null(annotationName))
-    stop('Must provide the UUID (or list of UUIDs) to group')
+    stop('Must provide the UUID or name')
   cmd.string <- paste0(cmd.string,' uuidOrName="',annotationName,'"')
   # x and y position
   if(is.null(x.pos))
@@ -1207,13 +1205,14 @@ updateAnnotationImage<-function(url = NULL, annotationName = NULL, x.pos = NULL,
   
   # Image to add
   if(!is.null(url)){
-    if(!grepl("^http[s]*://", url))
-      url = paste0("file:",getAbsSandboxPath(url))
+      if(!grepl("^http[s]*://", url)){
+          url = paste0("file:",getAbsSandboxPath(url))
+      }
+      cmd.string <- paste0(cmd.string,' url="',url,'"')
   }
-  cmd.string <- paste0(cmd.string,' url="',url,'"')
   
   if(is.null(annotationName))
-    stop('Must provide the UUID (or list of UUIDs) to group')
+    stop('Must provide the UUID or name')
   cmd.string <- paste0(cmd.string,' uuidOrName="',annotationName,'"')
   
   # x and y position
@@ -1325,7 +1324,7 @@ updateGroupAnnotation<-function(name = NULL, annotationName= NULL, x.pos = NULL,
   cmd.string <- paste0(cmd.string,' view="SUID:',view.SUID,'"')
   
   if(is.null(annotationName))
-    stop('Must provide the UUID (or list of UUIDs) to group')
+    stop('Must provide the UUID or name of group')
   cmd.string <- paste0(cmd.string,' uuidOrName="',annotationName,'"')
   
   # x and y position
