@@ -372,7 +372,16 @@ addAnnotationImage<-function(url = NULL, x.pos = NULL, y.pos = NULL,
     cmd.string <- paste0(cmd.string,' opacity="',opacity,'"')
   }
   if(!is.null(brightness)){
-    .checkBrightnessContrast(brightness)
+      if(is.numeric(brightness)){
+          if(brightness%%1 != 0){
+              stop(simpleError('Value must be an integer between 0 and 100'))
+          }
+      } else {
+          stop(simpleError('Value must be an integer between 0 and 100.'))
+      }
+      if (brightness < 0 || brightness > 100){
+          stop (simpleError(sprintf ('%i is invalid. Value must be between 0 and 100.', brightness)))
+      } 
     cmd.string <- paste0(cmd.string,' brightness="',brightness,'"')
   }
   if(!is.null(contrast)){
