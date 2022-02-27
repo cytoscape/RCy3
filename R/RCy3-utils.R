@@ -69,16 +69,16 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
 
 # ------------------------------------------------------------------------------
 # Validate and provide user feedback when opacity value is outside of range.
-.checkOpacity <- function(opacity){
+.checkOpacity <- function(opacity,max=255){
     if(is.numeric(opacity)){
         if(opacity%%1 != 0){
-            stop(simpleError('Opacity must be an integer between 0 and 255.'))
+            stop(simpleError(sprintf ('Opacity must be an integer between 0 and %i.', max)))
         }
     } else {
-        stop(simpleError('Opacity must be an integer between 0 and 255.'))
+        stop(simpleError(sprintf ('Opacity must be an integer between 0 and %i.', max)))
     }
-    if (opacity < 0 || opacity > 255){
-        stop (simpleError(sprintf ('%i is invalid. Opacity must be between 0 and 255.', opacity)))
+    if (opacity < 0 || opacity > max){
+        stop (simpleError(sprintf ('%i is invalid. Opacity must be between 0 and %i', opacity, max)))
     } 
 }
 
