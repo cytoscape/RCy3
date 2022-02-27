@@ -234,7 +234,7 @@ addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
     cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
   }
   if(!is.null(opacity)){
-    .checkOpacity(opacity)
+    .checkOpacity(opacity, 100)
     cmd.string <- paste0(cmd.string,' opacity="',opacity,'"')
   }
   if(!is.null(borderThickness)){
@@ -252,7 +252,7 @@ addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
     cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
-    .checkOpacity(borderOpacity)
+    .checkOpacity(borderOpacity, 100)
     cmd.string <- paste0(cmd.string,' borderOpacity="',borderOpacity,'"')
   }
   if(!is.null(height)){
@@ -368,7 +368,7 @@ addAnnotationImage<-function(url = NULL, x.pos = NULL, y.pos = NULL,
     cmd.string <- paste0(cmd.string,' angle="',rotation,'"')
   }
   if(!is.null(opacity)){
-    .checkOpacity(opacity)
+    .checkOpacity(opacity, 100)
     cmd.string <- paste0(cmd.string,' opacity="',opacity,'"')
   }
   if(!is.null(brightness)){
@@ -403,7 +403,7 @@ addAnnotationImage<-function(url = NULL, x.pos = NULL, y.pos = NULL,
     cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
-    .checkOpacity(borderOpacity)
+    .checkOpacity(borderOpacity, 100)
     cmd.string <- paste0(cmd.string,' borderOpacity="',borderOpacity,'"')
   }
   if(!is.null(height)){
@@ -529,7 +529,7 @@ addAnnotationShape<-function(type = NULL, customShape = NULL, x.pos = NULL, y.po
     cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
   }
   if(!is.null(opacity)){
-    .checkOpacity(opacity)
+    .checkOpacity(opacity, 100)
     cmd.string <- paste0(cmd.string,' opacity="',opacity,'"')
   }
   if(!is.null(borderThickness)){
@@ -547,7 +547,7 @@ addAnnotationShape<-function(type = NULL, customShape = NULL, x.pos = NULL, y.po
     cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
-    .checkOpacity(borderOpacity)
+    .checkOpacity(borderOpacity, 100)
     cmd.string <- paste0(cmd.string,' borderOpacity="',borderOpacity,'"')
   }
   if(!is.null(height)){
@@ -948,7 +948,7 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
     cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
   }
   if(!is.null(opacity)){
-    .checkOpacity(opacity)
+    .checkOpacity(opacity, 100)
     cmd.string <- paste0(cmd.string,' opacity="',opacity,'"')
   }
   if(!is.null(borderThickness)){
@@ -966,7 +966,7 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
     cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
-    .checkOpacity(borderOpacity)
+    .checkOpacity(borderOpacity, 100)
     cmd.string <- paste0(cmd.string,' borderOpacity="',borderOpacity,'"')
   }
   if(!is.null(height)){
@@ -1097,7 +1097,7 @@ updateAnnotationShape<-function(type = NULL, customShape = NULL, annotationName 
     cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
   }
   if(!is.null(opacity)){
-    .checkOpacity(opacity)
+    .checkOpacity(opacity, 100)
     cmd.string <- paste0(cmd.string,' opacity="',opacity,'"')
   }
   if(!is.null(borderThickness)){
@@ -1115,7 +1115,7 @@ updateAnnotationShape<-function(type = NULL, customShape = NULL, annotationName 
     cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
-    .checkOpacity(borderOpacity)
+    .checkOpacity(borderOpacity, 100)
     cmd.string <- paste0(cmd.string,' borderOpacity="',borderOpacity,'"')
   }
   if(!is.null(height)){
@@ -1237,11 +1237,20 @@ updateAnnotationImage<-function(url = NULL, annotationName = NULL, x.pos = NULL,
     cmd.string <- paste0(cmd.string,' angle="',rotation,'"')
   }
   if(!is.null(opacity)){
-    .checkOpacity(opacity)
+    .checkOpacity(opacity, 100)
     cmd.string <- paste0(cmd.string,' opacity="',opacity,'"')
   }
   if(!is.null(brightness)){
-    .checkBrightnessContrast(brightness)
+      if(is.numeric(brightness)){
+          if(brightness%%1 != 0){
+              stop(simpleError('Value must be an integer between 0 and 100'))
+          }
+      } else {
+          stop(simpleError('Value must be an integer between 0 and 100.'))
+      }
+      if (brightness < 0 || brightness > 100){
+          stop (simpleError(sprintf ('%i is invalid. Value must be between 0 and 100.', brightness)))
+      } 
     cmd.string <- paste0(cmd.string,' brightness="',brightness,'"')
   }
   if(!is.null(contrast)){
@@ -1263,7 +1272,7 @@ updateAnnotationImage<-function(url = NULL, annotationName = NULL, x.pos = NULL,
     cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
-    .checkOpacity(borderOpacity)
+    .checkOpacity(borderOpacity, 100)
     cmd.string <- paste0(cmd.string,' borderOpacity="',borderOpacity,'"')
   }
   if(!is.null(height)){
