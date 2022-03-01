@@ -1,9 +1,0 @@
-2021-11-10 12:02:33,582 [DEBUG] py4...: Calling cytoscape_ping()
-2021-11-10 12:02:33,582 [DEBUG] py4...: ǀCalling cytoscape_version_info(base_url='http://127.0.0.1:1234/v1')
-2021-11-10 12:02:33,583 [DEBUG] py4...: ǀǀCalling cyrest_get('version', base_url='http://127.0.0.1:1234/v1')
-2021-11-10 12:02:33,583 [DEBUG] py4...: ǀǀHTTP GET(http://127.0.0.1:1234/v1/version)
-2021-11-10 12:02:33,670 [DEBUG] py4...: ǀǀOK[200], content: {"apiVersion":"v1","cytoscapeVersion":"3.9.0"}
-2021-11-10 12:02:33,670 [DEBUG] py4...: ǀǀReturning 'cyrest_get': {'apiVersion': 'v1', 'cytoscapeVersion': '3.9.0'}
-2021-11-10 12:02:33,670 [DEBUG] py4...: ǀReturning 'cytoscape_version_info': {'apiVersion': 'v1', 'cytoscapeVersion': '3.9.0', 'automationAPIVersion': '1.2.0', 'py4cytoscapeVersion': '0.0.10'}
-2021-11-10 12:02:33,671 [DEBUG] py4...: Returning 'cytoscape_ping': 'You are connected to Cytoscape!'
-2021-11-10 12:02:33,671 [DEBUG] py4...: --------------------
