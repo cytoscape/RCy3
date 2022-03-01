@@ -176,8 +176,17 @@ getAppUpdates <- function (base.url=.defaultBaseUrl){
 #' @export
 openAppStore <- function (app, base.url=.defaultBaseUrl){
     .verifySupportedVersions(1,3.7,base.url)
+    allAppNames <- getAvailableApps(base.url=base.url)
+    appNames <- gsub(",","",allAppNames)
+    appNamesWithoutVersion <- sub(" version.*", "", appNames)
+    appNamesOnly <- sub(".*name: ", "", appNamesWithoutVersion) 
+    hasAvaiableApp <- app == appNamesOnly
+    if (any(hasAvaiableApp)){
     msg <- commandsGET(paste0('apps open appstore app="',app,'"'), base.url=base.url)
     message(msg)
+    } else {
+        stop(paste("name:", app, "is not found in the Cytoscape App Store."))
+    }
 }
 
 # ------------------------------------------------------------------------------
