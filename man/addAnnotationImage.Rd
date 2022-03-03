@@ -41,10 +41,10 @@ of current view}
 0 and 100; default is 100.}
 
 \item{brightness}{(optional) Image brightness. Must be an integer between 
-0 and 100; default is 100.}
+-100 and 100; default is 0}
 
 \item{contrast}{(optional) Image contrast. Must be an integer between 
-0 and 100; default is 100.}
+-100 and 100; default is 0}
 
 \item{borderThickness}{(optional) Integer}
 
