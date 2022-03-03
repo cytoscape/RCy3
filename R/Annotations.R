@@ -290,9 +290,9 @@ addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
 #' @param opacity (optional) Opacity of fill color. Must be an integer between 
 #' 0 and 100; default is 100.
 #' @param brightness (optional) Image brightness. Must be an integer between 
-#' 0 and 100; default is 100.
+#' -100 and 100; default is 0
 #' @param contrast (optional) Image contrast. Must be an integer between 
-#' 0 and 100; default is 100.
+#' -100 and 100; default is 0
 #' @param borderThickness (optional) Integer
 #' @param borderColor (optional) Hexidecimal color; default is #000000 (black)
 #' @param borderOpacity (optional) Integer between 0 and 100; default is 100.
@@ -363,16 +363,7 @@ addAnnotationImage<-function(url = NULL, x.pos = NULL, y.pos = NULL,
     cmd.string <- paste0(cmd.string,' opacity="',opacity,'"')
   }
   if(!is.null(brightness)){
-      if(is.numeric(brightness)){
-          if(brightness%%1 != 0){
-              stop(simpleError('Value must be an integer between 0 and 100'))
-          }
-      } else {
-          stop(simpleError('Value must be an integer between 0 and 100.'))
-      }
-      if (brightness < 0 || brightness > 100){
-          stop (simpleError(sprintf ('%i is invalid. Value must be between 0 and 100.', brightness)))
-      } 
+      .checkBrightnessContrast(brightness)
     cmd.string <- paste0(cmd.string,' brightness="',brightness,'"')
   }
   if(!is.null(contrast)){
@@ -1126,9 +1117,9 @@ updateAnnotationShape<-function(customShape = NULL, annotationName = NULL, x.pos
 #' @param opacity (optional) Opacity of fill color. Must be an integer between 
 #' 0 and 100; default is 100.
 #' @param brightness (optional) Image brightness. Must be an integer between 
-#' 0 and 100; default is 100.
+#' -100 and 100; default is 0
 #' @param contrast (optional) Image contrast. Must be an integer between 
-#' 0 and 100; default is 100.
+#' -100 and 100; default is 0
 #' @param borderThickness (optional) Integer
 #' @param borderColor (optional) Hexidecimal color; default is #000000 (black)
 #' @param borderOpacity (optional) Integer between 0 and 100; default is 100.
@@ -1204,16 +1195,7 @@ updateAnnotationImage<-function(url = NULL, annotationName = NULL, x.pos = NULL,
     cmd.string <- paste0(cmd.string,' opacity="',opacity,'"')
   }
   if(!is.null(brightness)){
-      if(is.numeric(brightness)){
-          if(brightness%%1 != 0){
-              stop(simpleError('Value must be an integer between 0 and 100'))
-          }
-      } else {
-          stop(simpleError('Value must be an integer between 0 and 100.'))
-      }
-      if (brightness < 0 || brightness > 100){
-          stop (simpleError(sprintf ('%i is invalid. Value must be between 0 and 100.', brightness)))
-      } 
+      .checkBrightnessContrast(brightness)
     cmd.string <- paste0(cmd.string,' brightness="',brightness,'"')
   }
   if(!is.null(contrast)){
