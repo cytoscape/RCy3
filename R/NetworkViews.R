@@ -5,6 +5,38 @@
 # Dev Notes: refer to StyleValues.R, StyleDefaults.R and StyleBypasses.R for 
 # getting/setting node, edge and network visual properties via VIEW operations.
 # ------------------------------------------------------------------------------
+#' @title Create Network View
+#'
+#' @description Create a network view if one does not already exist
+#' @param layout (optional) If TRUE (default), the preferred layout will be 
+#' applied to the new view. If FALSE, no layout will be applied.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @details For networks larger than the view creation threashold, a network 
+#' view is not created by default.  This function creates a network view if 
+#' one does not already exist.
+#' @return Network view SUID
+#' @examples \donttest{
+#' getNetworkViews()
+#' }
+#' @export
+createView <- function(layout = TRUE, network=NULL, base.url =.defaultBaseUrl) {
+    net.SUID <- getNetworkSuid(network,base.url)
+    netview.SUID <- getNetworkViewSuid(network,base.url)
+    
+    if (!is.null(netview.SUID))
+        return (netview.SUID)
+    
+    res <- commandsPOST(paste0('view create network=SUID:',net.SUID,
+                        ' layout=', tolower(layout)), 
+                 base.url = base.url)
+    return(unname(res[[1]]["view"]))
+    
+}
+# ------------------------------------------------------------------------------
 #' @title Get Network Views
 #'
 #' @description Retrieve list of network view SUIDs
@@ -20,7 +52,15 @@
 #' @export
 getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
     net.SUID <- getNetworkSuid(network,base.url)
-    res <- cyrestGET(paste("networks", net.SUID, "views", sep="/"),base.url = base.url)
+    
+    res <- NULL
+    tryCatch(
+        expr = {
+            res <- cyrestGET(paste("networks", net.SUID, "views", sep="/"),
+                         base.url = base.url)
+            },
+        error=function(e){}
+    )
     return(res)
 }
 
@@ -50,7 +90,7 @@ getNetworkViewSuid <- function(network = NULL, base.url = .defaultBaseUrl) {
     any.views <- getNetworkViews(net.SUID,base.url)
     
     if(is.null(any.views)){
-        stop(paste0("Network view does not exist for: ", getNetworkName(net.SUID)))
+        return(NULL)
     }
     else if(length(any.views)>1) {
         message("Warning: This network has multiple views. Returning last.")
