@@ -698,10 +698,10 @@ groupAnnotation<-function(names = NULL, network = NULL, base.url = .defaultBaseU
   
   if(is.vector(names) ){
     lapply(names, function(u){
-        commandsGET(paste0('annotation group annotationlist="',u,'"', ' view=SUID:"', view.SUID,'"'), base.url)
+        return(commandsPOST(paste0('annotation group annotationlist="',u,'"', ' view=SUID:"', view.SUID,'"'), base.url)['uuid'])
     })
   } else {
-      commandsGET(paste0('annotation group annotationlist="',names,'"', ' view=SUID:"',view.SUID,'"'), base.url)
+      return(commandsPOST(paste0('annotation group annotationlist="',names,'"', ' view=SUID:"',view.SUID,'"'), base.url)['uuid'])
   }
 }
 
