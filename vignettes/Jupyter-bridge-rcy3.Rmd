@@ -1,0 +1,100 @@
+---
+title: "Jupyter Bridge and RCy3"
+author: "by Yihang Xin and Alexander Pico"
+package: RCy3
+date: "`r Sys.Date()`"
+output: 
+  BiocStyle::html_document:
+    toc_float: true
+#  pdf_document:
+#    toc: true    
+vignette: >
+  %\VignetteIndexEntry{14. Jupyter Bridge and RCy3 ~10 min}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  eval=FALSE
+)
+```
+*The R markdown is available from the pulldown menu for* Code *at the upper-right, choose "Download Rmd", or [download the Rmd from GitHub](https://raw.githubusercontent.com/cytoscape/cytoscape-automation/master/for-scripters/R/notebooks/jupyter-bridge-rcy3.Rmd).*
+
+<hr />
+# Why use Jupyter Bridge
+* Users do not need to worry about dependencies and environment.
+* Easily share notebook-based workflows and data sets
+* Workflows can reside in the cloud, access cloud resources, and yet still use Cytoscape features.
+
+# How Jupyter Bridge works
+
+Jupyter-Bridge enables a workflow running on remote Jupyter to execute functions on a PC-local Cytoscape -- the remote Jupyter runs the request through Jupyter-Bridge, where it is picked up by Javascript code running on the Jupyter web page in the PC-local browser, which in turn calls Cytoscape. The Cytoscape response travels the reverse route.
+
+
+
+![Jupyter-Bridge allows a remote Jupyter Notebook to communicate with a workstation-based Cytoscape as if the Notebook were running on the Cytoscape workstation. A Jupyter Notebook passes a Cytoscape call to an independent Jupyter-Bridge server where it’s picked up by the Jupyter-Bridge browser component and is passed to Cytoscape. The Cytoscape response is returned via the opposite flow. As a result, workflows can reside in the cloud, access cloud resources, and yet still leverage Cytoscape features. Jupyter Bridge supports py4cytoscape (Python library for communicating with Cytoscape) first, and now RCy3 also support Jupyter-Bridge.](https://raw.githubusercontent.com/cytoscape/jupyter-bridge/master/docs/images/Figure%202.svg)
+
+
+Visit the [source code of Juputer Bridge](https://github.com/cytoscape/jupyter-bridge) for more information.
+
+# Sandbox
+
+A sandbox is a directory on the Cytoscape workstation that is guaranteed writeable and is guaranteed to be isolated from the whole file system. All file operations are carried out relative to the “current sandbox”. Generally, a Notebook-based workflow doesn’t have to do anything to set up a sandbox … the default sandbox is automatically set up as part of RCy3 startup. However, the workflow can set different sandboxes, and can even switch between them. A sandbox can contain both files and directories, and the user can transfer files between a sandbox and the workflow’s native file system (e.g., a remote Notebook’s server).
+
+If a sandbox is defined, all Cytoscape functions read and write files to it by default.
+
+Thus, is it possible to build workflows that don’t depend on the structure of the Cytoscape workstation’s file system. Such workflows can store workflow data files along with other workflow files on a remote Notebook server, then transfer them to a sandbox only when Cytoscape will need them. Conversely, when Cytoscape creates a file in a sandbox (e.g., exporting an image), the workflow can transfer the file to workflow storage.
+
+A special case is when RCy3 is running on the same workstation as Cytoscape. The default sandbox is considered to be directory that’s current for the Python kernel. Alternatively, the workflow could also define a sandbox, and then move files in and out of it just as a remote Notebook would.
+
+# Prerequisites (Local machine)
+RCy3 works by connecting with Cytoscape. You will need to install and launch Cytoscape in your local machine:
+
+* Download the latest Cytoscape from http://www.cytoscape.org/download.php
+* Complete installation wizard
+* Launch Cytoscape
+* Install the filetransfer app from https://apps.cytoscape.org/apps/filetransfer
+
+# Prerequisites (Cloud server)
+There are a lot of cloud computing services online, such as Google Colab, Amazon EMR Notebook, Microsoft Azure, CoCalc and your own JupyterHub. You can choose your favorite one.
+
+Here we use Google Colab to demonstrate. Visit this [link](https://colab.to/r) to create a new empty R Notebook, and make sure to run code below in the cloud.
+
+<span style="color:red">Copy codes below to build connection between Jupyter notebook (cloud) and Cytoscape (local).</span>
+
+<span style="color:red"> Make sure to run code below in the cloud!!!</span>
+
+# Installation
+Install the latest version of RCy3 from Bioconductor.
+```{r eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("RCy3")
+library(RCy3)
+```
+
+
+
+
+# Connect to local Cytoscape
+First, build connection between the jupyter notebook and local Cytoscape.
+
+```{r eval=FALSE}
+browserClientJs <- getBrowserClientJs()
+IRdisplay::display_javascript(browserClientJs)
+```
+
+# Check connection
+Then, launch Cytoscape and keep it running whenever using RCy3 and Jupyter Bridge. Confirm that you have everything installed and running:
+
+```{r eval=FALSE}
+cytoscapeVersionInfo()
+cytoscapePing()
+getCurrentSandbox()
+```
+
+Done! Now you can execute a workflow in a remote server-based Jupyter Notebook to leverage your workstation’s Cytoscape. You can also easily share notebook-based workflows and data sets.
+
+# Use case: Run differentially expressed genes network analysis in the cloud
+Visit the [Jupyter Bridge RCy3 and Differentially Expressed Genes Network Analysis](https://colab.research.google.com/drive/1iiYtjVrc0qFjzDAAdccgwByZWH1DPp2U?usp=sharing) for the detailed workflow.
+

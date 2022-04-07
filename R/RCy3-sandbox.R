@@ -30,7 +30,7 @@ sandboxInitializer <- function(newSandbox=NULL, ...){
 # ------------------------------------------------------------------------------
 #' @title setDefaultSandbox
 #'
-#' @description Set and return the sandbox properties to be used as a default, probably based on whether a Notebook is running.
+#' @description  Set and return the sandbox properties to be used as a default, probably based on whether running remote.
 #' @param newSandbox newSandbox
 #' @param ... ...
 #' @return default sandbox

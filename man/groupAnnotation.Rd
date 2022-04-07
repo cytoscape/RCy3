@@ -18,7 +18,7 @@ http://localhost:1234 and the latest version of the CyREST API supported by
 this version of RCy3.}
 }
 \value{
-None
+UUID of group annotation
 }
 \description{
 Group annotation from the network view in Cytoscape

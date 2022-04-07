@@ -680,7 +680,7 @@ ungroupAnnotation<-function(names = NULL, network = NULL, base.url = .defaultBas
 #' this version of RCy3.
 #' @details You can obtain a list of UUIDs by applying a subset function
 #' like so: sapply(getAnnotationList(), '[[', 'uuid')
-#' @return None
+#' @return UUID of group annotation
 #' @examples \donttest{
 #' groupAnnotation(c("29ac8349-7be4-404e-8363-9537cc39d1ad","3846e949-3130-4362-83de-d02f5368e3ad"))
 #' groupAnnotation(c("annotation1","annotation2", "annotation3"))
@@ -696,13 +696,8 @@ groupAnnotation<-function(names = NULL, network = NULL, base.url = .defaultBaseU
   view.SUID = getNetworkViewSuid(net.SUID, base.url)
   names <- paste(names, collapse=', ' )
   
-  if(is.vector(names) ){
-    lapply(names, function(u){
-        return(commandsPOST(paste0('annotation group annotationlist="',u,'"', ' view=SUID:"', view.SUID,'"'), base.url)['uuid'])
-    })
-  } else {
-      return(commandsPOST(paste0('annotation group annotationlist="',names,'"', ' view=SUID:"',view.SUID,'"'), base.url)['uuid'])
-  }
+  return(unname(commandsPOST(paste0('annotation group annotationlist="',names,'"', ' view=SUID:"',view.SUID,'"'), base.url)['uuid']))
+  
 }
 
 # ------------------------------------------------------------------------------
