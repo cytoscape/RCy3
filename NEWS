@@ -1,3 +1,16 @@
+Changes in version 2.16.0
++ Add a new vignette about cloud notebooks with RCy3
++ Doc fixes:
+  - Conflicting Brightness/Contrast documentation, #172
+  - Conflicting Opacity documentation, #173
+  - updateAnnotationText cleanup, #177
++ New functions:
+  - createView
++ Bug fixes:
+  - addAnnotationShape customShape can only add rectangle, #160
+  - setEdgeLineWidthMapping issue, #164
+  - openAppStore function opens the Cytoscape App Store 404 web page, #169
+  - groupAnnotation cleanup, #175
 Changes in version 2.14.0
 + Cleaned up dependencies, dramatically reducing RCy3 package installation time
 + New functions:
