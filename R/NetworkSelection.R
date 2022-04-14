@@ -58,6 +58,36 @@ clearSelection <-
         invisible(res)
     }
 
+# ------------------------------------------------------------------------------
+#' Select all nodes and edges
+#'
+#' @description Selects all nodes and edges in a Cytoscape Network
+#' @param network (optional) Name or SUID of the network into which you want to select; 
+#' default is "current" network
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Selects all nodes and edges in a specified network.
+#' @author Alexander Pico, Julia Gustavsen
+#' @seealso \code{\link{selectNodes}}
+#' @examples \donttest{
+#' selectAllNodes()
+#' }
+#' @export
+selectAll <- function(network = NULL, base.url = .defaultBaseUrl) {
+    suid <- getNetworkSuid(network,base.url)
+    res <-
+        commandsPOST(
+            paste0(
+                'network select network=SUID:"',
+                suid,
+                '" nodeList="all" edgeList="all"'
+            ),
+            base.url = base.url
+        )
+    invisible(res)
+}
+
 # ==============================================================================
 # II. Node selection functions
 # ------------------------------------------------------------------------------
@@ -165,23 +195,13 @@ selectNodes <-
 #' @export
 selectAllNodes <- function(network = NULL, base.url = .defaultBaseUrl) {
     suid <- getNetworkSuid(network,base.url)
-    all_node_SUIDs <-
-        cyrestGET(paste("networks", suid, "nodes", sep = "/"), base.url = base.url)
-    
-    # prepare selection values
-    SUID.value.pairs <- lapply(all_node_SUIDs,
-                               function(s) {
-                                   list('SUID' = s, 'value' = TRUE)
-                               })
     res <-
-        cyrestPUT(
-            paste(
-                "networks",
+        commandsPOST(
+            paste0(
+                'network select network=SUID:"',
                 suid,
-                "tables/defaultnode/columns/selected",
-                sep = "/"
+                '" nodeList="all"'
             ),
-            body = SUID.value.pairs,
             base.url = base.url
         )
     invisible(res)
@@ -410,21 +430,13 @@ selectEdges <-
 #' @export
 selectAllEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
     suid <- getNetworkSuid(network,base.url)
-    all_edge_SUIDs <-
-        cyrestGET(paste('networks', suid, 'edges', sep = "/"), base.url = base.url)
-    SUID.value.pairs <- lapply(all_edge_SUIDs,
-                               function(s) {
-                                   list('SUID' = s, 'value' = TRUE)
-                               })
     res <-
-        cyrestPUT(
-            paste(
-                'networks',
+        commandsPOST(
+            paste0(
+                'network select network=SUID:"',
                 suid,
-                'tables/defaultedge/columns/selected',
-                sep = "/"
+                '" edgeList="all"'
             ),
-            body = SUID.value.pairs,
             base.url = base.url
         )
     invisible(res)

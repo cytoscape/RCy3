@@ -1,4 +1,5 @@
 Changes in version 2.16.0
++ Faster selectAll* functions
 + Add a new vignette about cloud notebooks with RCy3
 + Doc fixes:
   - Conflicting Brightness/Contrast documentation, #172
@@ -6,6 +7,7 @@ Changes in version 2.16.0
   - updateAnnotationText cleanup, #177
 + New functions:
   - createView
+  - selectAll
 + Bug fixes:
   - addAnnotationShape customShape can only add rectangle, #160
   - setEdgeLineWidthMapping issue, #164

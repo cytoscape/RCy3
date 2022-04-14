@@ -1089,6 +1089,14 @@ test.selectNodes = function ()
     nodes.to.select = c (nodes.to.select, getAllNodes())
     selectNodes (nodes.to.select, 'name')
     checkEquals (getSelectedNodeCount (), 4)
+    
+    clearSelection ()
+    selectAllNodes()
+    checkEquals (getSelectedNodeCount (), 4)
+    clearSelection ()
+    selectAll()
+    checkEquals (getSelectedNodeCount (), 4)
+    
 }
 #-------------------------------------------------------------------------------
 test.nodeNeighborReportingAndSelection = function ()
@@ -1174,6 +1182,13 @@ test.selectEdges = function ()
     Sys.sleep (0.3)
     clearSelection ()
     checkEquals (getSelectedEdgeCount (), 0)
+    
+    clearSelection ()
+    selectAllEdges()
+    checkEquals (getSelectedEdgeCount (), 4)
+    clearSelection ()
+    selectAll()
+    checkEquals (getSelectedEdgeCount (), 4)
 }
 #-------------------------------------------------------------------------------
 test.setEdgeLineStyleMapping = function ()
