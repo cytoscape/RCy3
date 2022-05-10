@@ -380,3 +380,37 @@ mergeNetworks <- function(sources = NULL,
     else
         return(res.data)
 }
+
+# ------------------------------------------------------------------------------
+#' @title importFileFromUrl
+#'
+#' @description The source URL identifies a file to be transferred from a cloud resource to either the
+#' to the current Cytoscape directory (if executing on the Cytoscape workstation) or sandbox (if
+#' executing on a remote server or a sandbox was explicitly created). If the destination file already
+#' exists, it is overwritten. The 'destFile' can be an absolute path if the workflow is
+#' executing on the local Cytoscape workstation.  
+#' Supported URLs include:
+#' Raw URL: URL directly references the file to download (e.g., http://tpsoft.com/museum_images/IBM%20PC.JPG
+#'                                                           Dropbox: Use the standard Dropbox 'Get Link' feature to create the 'sourceUrl' link in the clipboard (e.g., https://www.dropbox.com/s/r15azh0xb53smu1/GDS112_full.soft?dl=0)
+#'                                                           GDrive: Use the standard Google Drive 'Get Link' feature to create the 'sourceUrl' link in the clipboard (e.g., https://drive.google.com/file/d/12sJaKQQbesF10xsrbgiNtUcqCQYY1YI3/view?usp=sharing)
+#'                                                           OneDrive: Use the OneDrive web site to right click on the file, choose the 'Embed' menu option, then copy the URL in the iframe's ``src`` parameter into the clipboard (e.g., https://onedrive.live.com/embed?cid=C357475E90DD89C4&resid=C357475E90DD89C4%217207&authkey=ACEU5LrVtI_jWTU)
+#'        GitHub: Use the GitHub web site to show the file or a link to it, and capture the URL in the clipboard (e.g., https://github.com/cytoscape/file-transfer-app/blob/master/test_data/GDS112_full.soft)
+#' Note that GitHub enforces a limit on the size of a file that can be stored there. We advise that you take this
+#' into account when choosing a cloud service for your files.
+#' When you capture a URL in the clipboard, you should copy it into your program for use with this function.
+#' This function is most useful for Notebooks running on the local Cytoscape workstation. For Notebooks
+#' that could run on a remote server, consider using sandboxUrlTo() and related sandbox functions.                                                                                  
+#' @param sourceURL URL addressing cloud file to download
+#' @param destFile Name of file in the R workflow's file system ... if None, use file name in source_file
+#' @param overwrite Name of sandbox containing file. None means "the current sandbox".
+#' @param base.url Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.
+#' @return dict: {'filePath': <new file's absolute path in Cytoscape workstation>, 'fileByteCount': number of bytes read}
+#' @examples \donttest{
+#' importFileFromUrl()
+#' }
+#' @import glue
+#' @import RCurl
+#' @export
+importFileFromUrl <- function(sourceURL, destFile, overwrite=TRUE, base.url=.defaultBaseUrl){
+    return(sandboxUrlTo(sourceURL, destFile, overwrite=overwrite, sandboxName=NULL, base.url=base.url))
+}
