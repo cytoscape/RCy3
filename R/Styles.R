@@ -344,5 +344,30 @@ getVisualPropertyNames <- function (base.url=.defaultBaseUrl) {
     return(visual.properties)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Get Visual Style JSON
+#'
+#' @description Get all defaults and mappings for a visual style
+#' @param styleName name of style
+#' @param css TRUE to create a CytoscapeJS CSS style, FALSE to create 
+#' a generic JSON version. Default is FALSE.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return List of visual style properties
+#' @examples \donttest{
+#' getVisualStyleJSON()
+#' }
+#' @export
+getVisualStyleJSON <- function (styleName, css=FALSE, base.url=.defaultBaseUrl) {
+    if(is.null(styleName) || (nchar(trimws(styleName)) == 0)) {
+        stop(simpleError("No style name provided."))
+    }
+    if(css) {
+        styleName <- paste(styleName, ".json", sep = "")
+    }
+    res <- cyrestGET(paste("styles", styleName, sep="/"), base.url=base.url)
+    return(res)
+}
 
 
