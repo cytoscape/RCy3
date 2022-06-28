@@ -1065,6 +1065,26 @@ importNetworkFromFile <- function(file=NULL, base.url=.defaultBaseUrl){
     return(res)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Create Cytoscapejs from Network
+#'
+#' @description Create a Cytoscape JS representation of a Cytoscape network
+#' @param network (SUID or str or NULL): Name or SUID of a network or view. Default is the
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return (list) The Cytoscape JS object
+#' @examples \donttest{
+#' createCytoscapejsFromNetwork()
+#' }
+#' @export
+createCytoscapejsFromNetwork <- function(network=NULL, base.url=.defaultBaseUrl){
+    netSUID <- getNetworkSuid(network, base.url=base.url)
+    res <- cyrestGET(paste("networks", netSUID, "views", "first", sep="/"), base.url=base.url)
+    return(res)
+}
+
 # ==============================================================================
 # V. Network extraction
 # ------------------------------------------------------------------------------
