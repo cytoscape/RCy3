@@ -4,7 +4,7 @@
 \alias{getNetworkList}
 \title{Get the list of Cytoscape networks}
 \usage{
-getNetworkList(base.url = .defaultBaseUrl)
+getNetworkList(getSUIDs = FALSE, base.url = .defaultBaseUrl)
 }
 \arguments{
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,

@@ -213,20 +213,26 @@ getNetworkSuid <- function(title = NULL, base.url = .defaultBaseUrl) {
 #' # 3
 #' }
 #' @export
-getNetworkList <- function(base.url = .defaultBaseUrl) {
+getNetworkList <- function(getSUIDs = FALSE, base.url = .defaultBaseUrl) {
     if (getNetworkCount(base.url) == 0) {
         return(c())
     }
     cy.networks.SUIDs <- cyrestGET('networks', base.url = base.url)
     cy.networks.names = c()
-    
+    cy.networks.namesWithSUIDs = list()
     for (suid in cy.networks.SUIDs){
         res <-
             cyrestGET(paste("networks", as.character(suid), sep = "/"), base.url = base.url)
         net.name <- res$data$name
+        net.SUID <- res$data$SUID
         cy.networks.names <- c(cy.networks.names, net.name)
+        cy.networks.namesWithSUIDs <- c(cy.networks.namesWithSUIDs, list(list("names"=net.name, "suid"=net.SUID)))
     }
-    return(cy.networks.names)
+    if (getSUIDs) {
+        return(cy.networks.namesWithSUIDs)
+    } else {
+        return(cy.networks.names)
+    }
 }
 
 # ------------------------------------------------------------------------------
