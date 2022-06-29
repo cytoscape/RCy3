@@ -1094,6 +1094,39 @@ createCytoscapejsFromNetwork <- function(network=NULL, base.url=.defaultBaseUrl)
     return(res)
 }
 
+# ------------------------------------------------------------------------------
+#' @title Create a Network from Cytoscapejs
+#'
+#' @description Create a network from CytoscapeJS JSON
+#' @param cytoscapejs network (nodes, edges, attributes, node positions and metadata) in CytoscapeJS format
+#' @param title network name (NULL means use the name in cytoscapejs)
+#' @param collection collection name (NULL means create an unnamed collection)
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return The SUID of the new network
+#' @examples \donttest{
+#' createNetworkFromCytoscapejs()
+#' }
+#' @export
+createNetworkFromCytoscapejs <- function(cytoscapejs, title=NULL, collection='My CytoscapeJS Network Collection', 
+                                         base.url=.defaultBaseUrl){
+    params <- list(format="json")
+    if (is.null(title)) {
+        if ("data" %in% names(cytoscapejs) && exists('name', where=cytoscapejs[['data']]) ) {
+            title <- cytoscapejs[['data']]$name
+        } else {
+            title <- "From cytoscapejs"
+        }
+    }
+    params['title'] <- title
+    if (!is.null(collection)) {
+        params['collection'] <- collection
+    }
+    res <- cyrestPOST('networks', parameters=params, body=cytoscapejs, base.url=base.url)
+    return(res)
+}
+
 # ==============================================================================
 # V. Network extraction
 # ------------------------------------------------------------------------------
