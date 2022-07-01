@@ -115,8 +115,12 @@ run.tests = function()
     test.setNodePosition () 
     test.getNodePosition ()
     test.getNodePosition.colonInNodeName ()
-    test.visualStyle ()
-    
+    test.visualStyle()
+    test.createCytoscapejsFromNetwork()
+    test.createNetworkFromCytoscapejs()
+    test.deleteAllVisualStyle()
+    test.getVisualStyleJSON()
+
     test.defaultColors ()
     test.fitContent ()
     test.zoom () 
@@ -1472,6 +1476,43 @@ test.visualStyle = function ()
     
     setVisualStyle('test.default')
 } 
+#-------------------------------------------------------------------------------
+test.getVisualStyleJSON = function ()
+{
+    title = 'test.getVisualStyleJSON'
+    net.suid = test.prep (title)
+    titleName = getVisualStyleJSON (styleName='default')
+    checkEquals (titleName$title, 'default')
+    formatVersion = getVisualStyleJSON (styleName='default', css=TRUE)
+    checkEquals (formatVersion[[1]]$format_version, "1.0")
+} 
+#-------------------------------------------------------------------------------
+test.deleteAllVisualStyle = function ()
+{
+    title = 'test.deleteAllVisualStyle'
+    net.suid = test.prep (title)
+    createVisualStyle("testDeleteAllVisualStyle")
+    deleteAllVisualStyle()
+    checkEquals (getVisualStyleNames(), "default")
+} 
+#-------------------------------------------------------------------------------
+test.createCytoscapejsFromNetwork = function ()
+{
+    title = 'test.createCytoscapejsFromNetwork'
+    net.suid = test.prep (title)
+    netName = createCytoscapejsFromNetwork()$data$name
+    checkEquals(title, netName)
+} 
+#-------------------------------------------------------------------------------
+test.createNetworkFromCytoscapejs = function ()
+{
+    title = 'test.createNetworkFromCytoscapejs'
+    net.suid = test.prep (title)
+    cytoscapejs = createCytoscapejsFromNetwork()
+    createNetworkFromCytoscapejs(cytoscapejs, title="New network from Cytoscapejs")
+    checkEquals(getNetworkName(), "New network from Cytoscapejs")
+    checkEquals(getNodeCount(), 4)
+    } 
 #-------------------------------------------------------------------------------
 test.defaultColors = function ()
 {
