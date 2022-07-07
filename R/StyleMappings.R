@@ -349,8 +349,9 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
     }
     
     # check if colors are formatted correctly
-    for (color in colors){
-        .checkHexColor(color)
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
     }
     
     # set default color
@@ -360,11 +361,11 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("NODE_BORDER_PAINT",table.column, 'c',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
         mvp <- mapVisualProperty("NODE_BORDER_PAINT",table.column, 'd',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
         mvp <- mapVisualProperty("NODE_BORDER_PAINT",table.column, 'p',
@@ -537,8 +538,9 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
     }
     
     # check if colors are formatted correctly
-    for (color in colors){
-        .checkHexColor(color)
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
     }
     
     # set default
@@ -548,11 +550,11 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("NODE_FILL_COLOR",table.column, 'c',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
         mvp <- mapVisualProperty("NODE_FILL_COLOR",table.column, 'd',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
         mvp <- mapVisualProperty("NODE_FILL_COLOR",table.column, 'p',
@@ -956,8 +958,9 @@ setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, co
     }
     
     # check if colors are formatted correctly
-    for (color in colors){
-        .checkHexColor(color)
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
     }
     
     # set default
@@ -967,11 +970,11 @@ setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, co
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("NODE_LABEL_COLOR",table.column, 'c',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
         mvp <- mapVisualProperty("NODE_LABEL_COLOR",table.column, 'd',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
         mvp <- mapVisualProperty("NODE_LABEL_COLOR",table.column, 'p',
@@ -1283,8 +1286,9 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
     }
     
     # check if colors are formatted correctly
-    for (color in colors){
-        .checkHexColor(color)
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
     }
     
     # set default
@@ -1294,11 +1298,11 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
     # perform mapping for COLOR (i.e., when arrowColorMatchesEdge=T)
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("EDGE_UNSELECTED_PAINT",table.column, 'c',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
         mvp <- mapVisualProperty("EDGE_UNSELECTED_PAINT",table.column, 'd',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
         mvp <- mapVisualProperty("EDGE_UNSELECTED_PAINT",table.column, 'p',
@@ -1503,8 +1507,9 @@ setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, co
     }
     
     # check if colors are formatted correctly
-    for (color in colors){
-        .checkHexColor(color)
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
     }
     
     # set default
@@ -1514,11 +1519,11 @@ setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, co
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("EDGE_LABEL_COLOR",table.column, 'c',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
         mvp <- mapVisualProperty("EDGE_LABEL_COLOR",table.column, 'd',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
         mvp <- mapVisualProperty("EDGE_LABEL_COLOR",table.column, 'p',
@@ -1869,8 +1874,9 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
         }
     }
     # check if colors are formatted correctly
-    for (color in colors){
-        .checkHexColor(color)
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
     }
     
     # set default
@@ -1880,11 +1886,11 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("EDGE_TARGET_ARROW_UNSELECTED_PAINT",table.column, 'c',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
         mvp <- mapVisualProperty("EDGE_TARGET_ARROW_UNSELECTED_PAINT",table.column, 'd',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
         mvp <- mapVisualProperty("EDGE_TARGET_ARROW_UNSELECTED_PAINT",table.column, 'p',
@@ -1938,8 +1944,9 @@ setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NU
         }
     }
     # check if colors are formatted correctly
-    for (color in colors){
-        .checkHexColor(color)
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
     }
     
     # set default
@@ -1949,11 +1956,11 @@ setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NU
     # perform mapping
     if (mapping.type %in% c('continuous','c','interpolate')) {
         mvp <- mapVisualProperty("EDGE_SOURCE_ARROW_UNSELECTED_PAINT",table.column, 'c',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('discrete','d','lookup')){
         mvp <- mapVisualProperty("EDGE_SOURCE_ARROW_UNSELECTED_PAINT",table.column, 'd',
-                                 table.column.values, colors, 
+                                 table.column.values, colors.checked, 
                                  network=network, base.url = base.url)
     } else if (mapping.type %in% c('passthrough','p')){
         mvp <- mapVisualProperty("EDGE_SOURCE_ARROW_UNSELECTED_PAINT",table.column, 'p',

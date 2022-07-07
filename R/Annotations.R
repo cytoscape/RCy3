@@ -86,7 +86,7 @@ addAnnotationText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
     cmd.string <- paste0(cmd.string,' fontStyle="',fontStyle,'"')
   }
   if(!is.null(color)){
-    .checkHexColor(color)
+    color <- .checkHexColor(color)
     cmd.string <- paste0(cmd.string,' color="',color,'"')
   }
   if(!is.null(angle)){
@@ -205,7 +205,7 @@ addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
     cmd.string <- paste0(cmd.string,' fontStyle="',fontStyle,'"')
   }
   if(!is.null(color)){
-    .checkHexColor(color)
+    color <- .checkHexColor(color)
     cmd.string <- paste0(cmd.string,' color="',color,'"')
   }
   if(!is.null(angle)){
@@ -230,8 +230,8 @@ addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
       cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
   }
   if(!is.null(fillColor)){
-    .checkHexColor(fillColor)
-    cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
+      fillColor <- .checkHexColor(fillColor)
+      cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
   }
   if(!is.null(opacity)){
     .checkOpacity(opacity, 100)
@@ -248,8 +248,8 @@ addAnnotationBoundedText<-function(text = NULL, x.pos = NULL, y.pos = NULL,
     cmd.string <- paste0(cmd.string,' borderThickness="',borderThickness,'"')
   }
   if(!is.null(borderColor)){
-    .checkHexColor(borderColor)
-    cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
+      borderColor <- .checkHexColor(borderColor)
+      cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
     .checkOpacity(borderOpacity, 100)
@@ -390,8 +390,8 @@ addAnnotationImage<-function(url = NULL, x.pos = NULL, y.pos = NULL,
     cmd.string <- paste0(cmd.string,' borderThickness="',borderThickness,'"')
   }
   if(!is.null(borderColor)){
-    .checkHexColor(borderColor)
-    cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
+      borderColor <- .checkHexColor(borderColor)
+      cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
     .checkOpacity(borderOpacity, 100)
@@ -516,8 +516,8 @@ addAnnotationShape<-function(type = NULL, customShape = NULL, x.pos = NULL, y.po
     cmd.string <- paste0(cmd.string,' angle="',rotation,'"')
   }
   if(!is.null(fillColor)){
-    .checkHexColor(fillColor)
-    cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
+      fillColor <- .checkHexColor(fillColor)
+      cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
   }
   if(!is.null(opacity)){
     .checkOpacity(opacity, 100)
@@ -534,8 +534,8 @@ addAnnotationShape<-function(type = NULL, customShape = NULL, x.pos = NULL, y.po
     cmd.string <- paste0(cmd.string,' borderThickness="',borderThickness,'"')
   }
   if(!is.null(borderColor)){
-    .checkHexColor(borderColor)
-    cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
+      borderColor <- .checkHexColor(borderColor)
+      cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
     .checkOpacity(borderOpacity, 100)
@@ -781,8 +781,8 @@ updateAnnotationText<-function(text = NULL, annotationName = NULL, x.pos = NULL,
     cmd.string <- paste0(cmd.string,' fontStyle="',fontStyle,'"')
   }
   if(!is.null(color)){
-    .checkHexColor(color)
-    cmd.string <- paste0(cmd.string,' color="',color,'"')
+      color <- .checkHexColor(color)
+      cmd.string <- paste0(cmd.string,' color="',color,'"')
   }
   if(!is.null(angle)){
     rotation <- .normalizeRotation(angle)
@@ -904,8 +904,8 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
     cmd.string <- paste0(cmd.string,' fontStyle="',fontStyle,'"')
   }
   if(!is.null(color)){
-    .checkHexColor(color)
-    cmd.string <- paste0(cmd.string,' color="',color,'"')
+      color <- .checkHexColor(color)
+      cmd.string <- paste0(cmd.string,' color="',color,'"')
   }
   if(!is.null(angle)){
     rotation <- .normalizeRotation(angle)
@@ -929,8 +929,8 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
       cmd.string <- paste0(cmd.string,' customShape="',customShape,'"')
   }
   if(!is.null(fillColor)){
-    .checkHexColor(fillColor)
-    cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
+      fillColor <- .checkHexColor(fillColor)
+      cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
   }
   if(!is.null(opacity)){
     .checkOpacity(opacity, 100)
@@ -947,8 +947,8 @@ UpdateAnnotationBoundedText<-function(text = NULL, annotationName= NULL, x.pos =
     cmd.string <- paste0(cmd.string,' borderThickness="',borderThickness,'"')
   }
   if(!is.null(borderColor)){
-    .checkHexColor(borderColor)
-    cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
+      borderColor <- .checkHexColor(borderColor)
+      cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
     .checkOpacity(borderOpacity, 100)
@@ -1078,8 +1078,8 @@ updateAnnotationShape<-function(type = NULL, customShape = NULL, annotationName 
     cmd.string <- paste0(cmd.string,' angle="',rotation,'"')
   }
   if(!is.null(fillColor)){
-    .checkHexColor(fillColor)
-    cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
+      fillColor <- .checkHexColor(fillColor)
+      cmd.string <- paste0(cmd.string,' fillColor="',fillColor,'"')
   }
   if(!is.null(opacity)){
     .checkOpacity(opacity, 100)
@@ -1096,8 +1096,8 @@ updateAnnotationShape<-function(type = NULL, customShape = NULL, annotationName 
     cmd.string <- paste0(cmd.string,' borderThickness="',borderThickness,'"')
   }
   if(!is.null(borderColor)){
-    .checkHexColor(borderColor)
-    cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
+      borderColor <- .checkHexColor(borderColor)
+      cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
     .checkOpacity(borderOpacity, 100)
@@ -1244,8 +1244,8 @@ updateAnnotationImage<-function(url = NULL, annotationName = NULL, x.pos = NULL,
     cmd.string <- paste0(cmd.string,' borderThickness="',borderThickness,'"')
   }
   if(!is.null(borderColor)){
-    .checkHexColor(borderColor)
-    cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
+      borderColor <- .checkHexColor(borderColor)
+      cmd.string <- paste0(cmd.string,' borderColor="',borderColor,'"')
   }
   if(!is.null(borderOpacity)){
     .checkOpacity(borderOpacity, 100)

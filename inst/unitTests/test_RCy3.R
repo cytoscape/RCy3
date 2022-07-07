@@ -1736,9 +1736,9 @@ test.createIgraphFromNetwork = function ()
     ig = createIgraphFromNetwork()
     
     vatts = get.vertex.attribute(ig)
-    checkEquals(sort(vatts$name), sort(c("node 1","node 3","node 2","node 0","ab::cdxyz::1234,funky!?" )) )
-    checkEqualsNumeric(sort(vatts$score),sort(c(10,5, 15, 20,  0)))
-    checkEquals(sort(vatts$group),sort(c("A","B","B","A","none")))
+    checkEquals(sort(vatts$name), sort(c("node 1","node 3","node 2","node 0" )) )
+    checkEqualsNumeric(sort(vatts$score),sort(c(10,5, 15, 20)))
+    checkEquals(sort(vatts$group),sort(c("A","B","B","A")))
     
     eatts = get.edge.attribute(ig)
     checkEquals(sort(eatts$name), sort(c("node 2 (interacts) node 3", "node 0 (inhibits) node 1",  "node 0 (interacts) node 2", "node 0 (activates) node 3")))
@@ -1755,7 +1755,7 @@ test.createGraphFromNetwork = function ()
     g3 = createGraphFromNetwork() 
     
     nlist = graph::nodes(g3)
-    checkEquals(sort(nlist), sort(c("node 1","node 3","node 2","node 0","ab::cdxyz::1234,funky!?" )))
+    checkEquals(sort(nlist), sort(c("node 1","node 3","node 2","node 0")))
     
     elist = graph::edges(g3)
     checkEquals(sort(elist$`node 0`),sort(c("node 1", "node 3", "node 2")))

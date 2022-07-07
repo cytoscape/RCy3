@@ -118,7 +118,7 @@ setVisualPropertyDefault <- function(style.string, style.name=NULL, base.url=.de
 #' }
 #' @export
 setNodeBorderColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
-    .checkHexColor(new.color)
+    new.color <- .checkHexColor(new.color)
     style = list(visualProperty = "NODE_BORDER_PAINT", value = new.color)
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -181,7 +181,7 @@ setNodeBorderOpacityDefault <- function(new.opacity, style.name=NULL,
 #' @export
 setNodeColorDefault <- function(new.color, style.name=NULL, 
                                 base.url=.defaultBaseUrl) {
-    .checkHexColor(new.color)
+    new.color <- .checkHexColor(new.color)
     style = list(visualProperty = "NODE_FILL_COLOR", value = new.color)
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -817,7 +817,7 @@ setNodeLabelDefault <- function(new.label, style.name=NULL,
 #' @export
 setNodeLabelColorDefault <- function(new.color, style.name=NULL, 
                                      base.url=.defaultBaseUrl) {
-    .checkHexColor(new.color)
+    new.color <- .checkHexColor(new.color)
     style = list(visualProperty = "NODE_LABEL_COLOR", value = new.color)
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -876,7 +876,7 @@ getNodeSelectionColorDefault <- function(style.name=NULL, base.url=.defaultBaseU
 #' }
 #' @export
 setNodeSelectionColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
-    .checkHexColor(new.color)
+    new.color <- .checkHexColor(new.color)
     style = list(visualProperty = "NODE_SELECTED_PAINT", value = new.color) 
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -986,7 +986,7 @@ setNodeTooltipDefault <- function(new.tooltip, style.name=NULL,
 #' @export
 setEdgeColorDefault <- function(new.color, style.name=NULL, 
                                 base.url=.defaultBaseUrl) {
-    .checkHexColor(new.color)
+    new.color <- .checkHexColor(new.color)
     style = list(visualProperty = "EDGE_UNSELECTED_PAINT", value = new.color) 
     setVisualPropertyDefault(style, style.name, base.url)
     style = list(visualProperty = "EDGE_STROKE_UNSELECTED_PAINT", value = new.color) 
@@ -1070,7 +1070,7 @@ setEdgeLabelDefault <- function(new.label, style.name=NULL,
 #' @export
 setEdgeLabelColorDefault <- function(new.color, style.name=NULL, 
                                      base.url=.defaultBaseUrl) {
-    .checkHexColor(new.color)
+    new.color <- .checkHexColor(new.color)
     style = list(visualProperty = "EDGE_LABEL_COLOR", value = new.color)
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -1192,7 +1192,7 @@ getEdgeSelectionColorDefault <- function(style.name=NULL, base.url=.defaultBaseU
 #' }
 #' @export
 setEdgeSelectionColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
-    .checkHexColor(new.color)
+    new.color <- .checkHexColor(new.color)
     style = list(visualProperty = "EDGE_SELECTED_PAINT", value = new.color) 
     setVisualPropertyDefault(style, style.name, base.url)
     style = list(visualProperty = "EDGE_STROKE_ELECTED_PAINT", value = new.color) 
@@ -1213,7 +1213,7 @@ setEdgeSelectionColorDefault <- function(new.color, style.name=NULL, base.url=.d
 #' }
 #' @export
 setEdgeSourceArrowColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
-    .checkHexColor(new.color)
+    new.color <- .checkHexColor(new.color)
     style = list(visualProperty = "EDGE_SOURCE_ARROW_UNSELECTED_PAINT", value = new.color) 
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -1233,7 +1233,7 @@ setEdgeSourceArrowColorDefault <- function(new.color, style.name=NULL, base.url=
 #' }
 #' @export
 setEdgeTargetArrowColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
-    .checkHexColor(new.color)
+    new.color <- .checkHexColor(new.color)
     style = list(visualProperty = "EDGE_TARGET_ARROW_UNSELECTED_PAINT", value = new.color) 
     setVisualPropertyDefault(style, style.name, base.url)
 }
@@ -1332,7 +1332,7 @@ getBackgroundColorDefault <- function(style.name=NULL, base.url=.defaultBaseUrl)
 #' }
 #' @export
 setBackgroundColorDefault <- function(new.color, style.name=NULL, base.url=.defaultBaseUrl) {
-    .checkHexColor(new.color)
+    new.color <- .checkHexColor(new.color)
     style = list(visualProperty = "NETWORK_BACKGROUND_PAINT", value = new.color) 
     setVisualPropertyDefault(style, style.name, base.url)
 }

@@ -419,15 +419,15 @@ setNodeColorBypass <-
               new.colors,
               network = NULL,
               base.url = .defaultBaseUrl) {
-        for (current.color in new.colors) {
-            # ensure the new color string is in correct hexadecimal format
-            .checkHexColor(current.color)
+        new.colors.checked = NULL
+        for (color in new.colors) {
+            new.colors.checked <- c(new.colors.checked, .checkHexColor(color))
         }
         # set the node color bypass
         return(
             setNodePropertyBypass(
                 node.names,
-                new.colors,
+                new.colors.checked,
                 "NODE_FILL_COLOR",
                 network=network,
                 base.url=base.url
@@ -771,15 +771,15 @@ setNodeLabelColorBypass <-
               new.colors,
               network = NULL,
               base.url = .defaultBaseUrl) {
-        for (current.color in new.colors) {
-            # ensure the color is formated in the correct hexadecimal style
-            .checkHexColor(current.color)
+        new.colors.checked = NULL
+        for (color in new.colors) {
+            new.colors.checked <- c(new.colors.checked, .checkHexColor(color))
         }
         # set the node property bypass
         return(
             setNodePropertyBypass(
                 node.names,
-                new.colors,
+                new.colors.checked,
                 "NODE_LABEL_COLOR",
                 network=network,
                 base.url=base.url
@@ -942,15 +942,16 @@ setNodeBorderColorBypass <-
               new.colors,
               network = NULL,
               base.url = .defaultBaseUrl) {
-        # ensure the color is formated in correct hexadecimal style
+        # ensure the color is formatted in correct hexadecimal style
+        new.colors.checked = NULL
         for (color in new.colors) {
-            .checkHexColor(color)
+            new.colors.checked <- c(new.colors.checked, .checkHexColor(color))
         }
         # set the node border color bypass
         return(
             setNodePropertyBypass(
                 node.names,
-                new.colors,
+                new.colors.checked,
                 "NODE_BORDER_PAINT",
                 network=network,
                 base.url=base.url
@@ -1360,15 +1361,16 @@ setEdgeColorBypass <-
               new.colors,
               network = NULL,
               base.url = .defaultBaseUrl) {
+        new.colors.checked = NULL
         for (color in new.colors) {
-            .checkHexColor(color)
+            new.colors.checked <- c(new.colors.checked, .checkHexColor(color))
         }
         setEdgePropertyBypass(edge.names,
-                              new.colors,
+                              new.colors.checked,
                               "EDGE_STROKE_UNSELECTED_PAINT",
                               network=network, base.url=base.url)
         setEdgePropertyBypass(edge.names,
-                              new.colors,
+                              new.colors.checked,
                               "EDGE_UNSELECTED_PAINT",
                               network=network, base.url=base.url)
     }
@@ -1519,15 +1521,15 @@ setEdgeLabelColorBypass <-
               new.colors,
               network = NULL,
               base.url = .defaultBaseUrl) {
-        for (current.color in new.colors) {
-            # ensure the color is formated in correct hexadecimal style
-            .checkHexColor(current.color)
+        new.colors.checked = NULL
+        for (color in new.colors) {
+            new.colors.checked <- c(new.colors.checked, .checkHexColor(color))
         }
         # set the edge property bypass
         return(
             setEdgePropertyBypass(
                 edge.names,
-                new.colors,
+                new.colors.checked,
                 "EDGE_LABEL_COLOR",
                 network=network,
                 base.url=base.url
@@ -1852,15 +1854,15 @@ setEdgeSourceArrowColorBypass <-
              new.colors,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        for (current.color in new.colors) {
-            # check the color is represented in hexadecimal format
-            .checkHexColor(current.color)
+        new.colors.checked = NULL
+        for (color in new.colors) {
+            new.colors.checked <- c(new.colors.checked, .checkHexColor(color))
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(
             setEdgePropertyBypass(
                 edge.names,
-                new.colors,
+                new.colors.checked,
                 "EDGE_SOURCE_ARROW_UNSELECTED_PAINT",
                 network=network,
                 base.url=base.url
@@ -1898,14 +1900,15 @@ setEdgeTargetArrowColorBypass <-
              new.colors,
              network = NULL,
              base.url = .defaultBaseUrl) {
-        for (current.color in new.colors) {
-            .checkHexColor(current.color)
+        new.colors.checked = NULL
+        for (color in new.colors) {
+            new.colors.checked <- c(new.colors.checked, .checkHexColor(color))
         }
         # returns TRUE or FALSE if issues have been found (like invalid edges, ...)
         return(
             setEdgePropertyBypass(
                 edge.names,
-                new.colors,
+                new.colors.checked,
                 "EDGE_TARGET_ARROW_UNSELECTED_PAINT",
                 network=network,
                 base.url=base.url

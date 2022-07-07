@@ -61,10 +61,16 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
 
 # ------------------------------------------------------------------------------
 # Validate and provide user feedback when hex color codes are required input.
+# Convert from supported R color names if applicable. Returns hex code.
+#' @importFrom gplots col2hex
 .checkHexColor <- function(color){
+    if (color %in% colors()){
+        color <- gplots::col2hex(color)
+    }
     if ((substring(color, 1, 1) != "#") || (nchar(color) !=7)) {
         stop (simpleError(sprintf ('%s is not a valid hexadecimal color, e.g. #FD39B8.', color)))
     }
+    return(color)
 }
 
 # ------------------------------------------------------------------------------
