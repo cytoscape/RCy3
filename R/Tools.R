@@ -408,7 +408,7 @@ mergeNetworks <- function(sources = NULL,
 #' @examples \donttest{
 #' importFileFromUrl()
 #' }
-#' @import glue
+#' @importFrom glue glue
 #' @import RCurl
 #' @export
 importFileFromUrl <- function(sourceURL, destFile, overwrite=TRUE, base.url=.defaultBaseUrl){

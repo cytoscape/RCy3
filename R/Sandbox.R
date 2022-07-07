@@ -138,7 +138,7 @@ sandboxGetFileInfo <- function(fileName, sandboxName=NULL, base.url=.defaultBase
 #' @examples \donttest{
 #' sandboxSendTo()
 #' }
-#' @import glue
+#' @importFrom glue glue
 #' @import RCurl
 #' @import base64enc
 #' @importFrom base64url base64_urlencode
@@ -189,7 +189,7 @@ sandboxSendTo <- function(sourceFile, destFile=NULL, overwrite=TRUE, sandboxName
 #' @examples \donttest{
 #' sandboxUrlTo()
 #' }
-#' @import glue
+#' @importFrom glue glue
 #' @import RCurl
 #' @export
 sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, base.url=.defaultBaseUrl){
@@ -220,7 +220,7 @@ sandboxUrlTo <- function(sourceURL, destFile, overwrite=TRUE, sandboxName=NULL, 
 #' @examples \donttest{
 #' sandboxGetFrom()
 #' }
-#' @import glue
+#' @importFrom glue glue
 #' @import RCurl
 #' @import base64enc
 #' @export

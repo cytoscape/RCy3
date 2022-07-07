@@ -82,7 +82,7 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
 #' saveSession('/fullpath/mySession')
 #' saveSession() 
 #' }
-#' @import glue
+#' @importFrom glue glue
 #' @export
 saveSession<-function(filename=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE){
     if(is.null(filename)){
