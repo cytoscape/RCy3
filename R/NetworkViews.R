@@ -226,10 +226,6 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
                     immediate. = TRUE)
         }
     }
-    print(paste0(cmd.string,
-                  ' OutputFile="',getAbsSandboxPath(filename),'"',
-                  ' options="',toupper(type),'"',
-                  ' view=SUID:"',view.SUID,'"'))
     commandsPOST(paste0(cmd.string,
                         ' OutputFile="',getAbsSandboxPath(filename),'"',
                         ' options="',toupper(type),'"',
