@@ -284,7 +284,7 @@ diffusionAdvanced <- function(heat.column.name=NULL, time=NULL, base.url = .defa
 #' 
 #' @description Combine networks via union, intersection, or difference 
 #' operations. Lots of optional parameters choose from!
-#' @param sources List of network names to be merged.
+#' @param sources List of network names (max:2) to be merged.
 #' @param title (optional) Title of the resulting merged network. Default is a
 #' concatentation of operation and source network titles.
 #' @param operation (optional) Type of merge: union (default), intersection or
@@ -336,6 +336,9 @@ mergeNetworks <- function(sources = NULL,
     # sources must be suppled
     if(is.null(sources)) {
         message("Missing sources!")
+        return(NULL)
+    } else if(lengths(strsplit(sources, ",")) > 2){
+        message("mergeNetworks function can only merge two networks!")
         return(NULL)
     } else {
         sources.str <- paste(sources, collapse = ",")
