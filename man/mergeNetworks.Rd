@@ -19,7 +19,7 @@ mergeNetworks(
 )
 }
 \arguments{
-\item{sources}{List of network names to be merged.}
+\item{sources}{List of network names (max:2) to be merged.}
 
 \item{title}{(optional) Title of the resulting merged network. Default is a
 concatentation of operation and source network titles.}
