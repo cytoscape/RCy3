@@ -79,9 +79,9 @@ selectAll <- function(network = NULL, base.url = .defaultBaseUrl) {
     res <-
         commandsPOST(
             paste0(
-                'network select network=SUID:"',
+                'network select network=SUID:',
                 suid,
-                '" nodeList="all" edgeList="all"'
+                ' nodeList=all edgeList=all'
             ),
             base.url = base.url
         )
@@ -116,11 +116,10 @@ selectFirstNeighbors <-
              base.url = .defaultBaseUrl) {
         suid = getNetworkSuid(network,base.url)
         cmd <-
-            paste0('network select firstNeighbors="',
+            paste0('network select firstNeighbors=',
                    direction,
-                   '" network=SUID:"',
-                   suid,
-                   '"')
+                   ' network=SUID:',
+                   suid)
         res <- commandsPOST(cmd, base.url = base.url)
         return(res)
     }
@@ -167,10 +166,11 @@ selectNodes <-
         res <-
             commandsPOST(
                 paste0(
-                    'network select network=SUID:"',
+                    'network select network=SUID:',
                     suid,
-                    '" nodeList="',
-                    node.list.str
+                    ' nodeList="',
+                    node.list.str,
+                    '"'
                 ),
                 base.url = base.url
             )
@@ -198,9 +198,9 @@ selectAllNodes <- function(network = NULL, base.url = .defaultBaseUrl) {
     res <-
         commandsPOST(
             paste0(
-                'network select network=SUID:"',
+                'network select network=SUID:',
                 suid,
-                '" nodeList="all"'
+                ' nodeList="all"'
             ),
             base.url = base.url
         )
@@ -319,8 +319,8 @@ invertNodeSelection <-
 #' @export
 deleteSelectedNodes <-
     function(network = NULL, base.url = .defaultBaseUrl) {
-        title = getNetworkName(network, base.url)
-        commandsPOST(paste0('network delete nodeList=selected network=', title),
+        suid <- getNetworkSuid(network,base.url)
+        commandsPOST(paste0('network delete nodeList=selected network=SUID:', suid),
                      base.url = base.url)
     }
 
@@ -346,9 +346,8 @@ selectNodesConnectedBySelectedEdges <-
         res <-
             commandsPOST(
                 paste0(
-                    'network select extendEdges="true" edgeList="selected network="',
-                    suid,
-                    '"'
+                    'network select extendEdges=true edgeList=selected network=SUID:',
+                    suid
                 )
             )
         return(res)
@@ -402,10 +401,11 @@ selectEdges <-
         res <-
             commandsPOST(
                 paste0(
-                    'network select network=SUID:"',
+                    'network select network=SUID:',
                     suid,
-                    '" edgeList="',
-                    edge.list.str
+                    ' edgeList="',
+                    edge.list.str,
+                    '"'
                 ),
                 base.url = base.url
             )
@@ -433,9 +433,9 @@ selectAllEdges <- function(network = NULL, base.url = .defaultBaseUrl) {
     res <-
         commandsPOST(
             paste0(
-                'network select network=SUID:"',
+                'network select network=SUID:',
                 suid,
-                '" edgeList="all"'
+                ' edgeList="all"'
             ),
             base.url = base.url
         )
@@ -618,9 +618,8 @@ selectEdgesAdjacentToSelectedNodes <-
         res <-
             commandsPOST(
                 paste0(
-                    'network select adjacentEdges="true" nodeList="selected network="',
-                    suid,
-                    '"'
+                    'network select adjacentEdges=true nodeList=selected network=SUID:',
+                    suid
                 )
             )
         return(res)

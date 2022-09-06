@@ -203,6 +203,7 @@ getNetworkSuid <- function(title = NULL, base.url = .defaultBaseUrl) {
 #' @title Get the list of Cytoscape networks
 #'
 #' @description Returns the list of Cytoscape network names in the current Cytoscape session
+#' @param getSUIDs (optional) Whether to return SUIDs instead of titles; default is FALSE.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -217,24 +218,11 @@ getNetworkList <- function(getSUIDs = FALSE, base.url = .defaultBaseUrl) {
     if (getNetworkCount(base.url) == 0) {
         return(c())
     }
-    cy.networks.SUIDs <- cyrestGET('networks', base.url = base.url)
-    cy.networks.names = c()
-    cy.networks.namesWithSUIDs = list()
-    for (suid in cy.networks.SUIDs){
-        res <-
-            cyrestGET(paste("networks", as.character(suid), sep = "/"), base.url = base.url)
-        net.name <- res$data$name
-        net.SUID <- res$data$SUID
-        if (getSUIDs) {
-            cy.networks.namesWithSUIDs <- c(cy.networks.namesWithSUIDs, list(list("names"=net.name, "suid"=net.SUID)))
-        } else {
-            cy.networks.names <- c(cy.networks.names, net.name)
-        }
-    }
+    
     if (getSUIDs) {
-        return(cy.networks.namesWithSUIDs)
+        return(commandsPOST('network list', base.url = base.url)$networks)
     } else {
-        return(cy.networks.names)
+        return(commandsGET('network list', base.url = base.url))
     }
 }
 
