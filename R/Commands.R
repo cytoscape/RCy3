@@ -74,8 +74,8 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         )
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
+            if (RJSONIO::isValidJSON(res.char, asText = TRUE)){
+                return(RJSONIO::fromJSON(res.char))
             } else {
                 return(res.char)
             }
@@ -90,8 +90,8 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
         res <- doRequestRemote("DELETE", URLencode(q.url))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
+            if (RJSONIO::isValidJSON(res.char, asText = TRUE)){
+                return(RJSONIO::fromJSON(res.char))
             } else {
                 return(res.char)
             }
@@ -137,8 +137,8 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         )
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
+            if (RJSONIO::isValidJSON(res.char, asText = TRUE)){
+                return(RJSONIO::fromJSON(res.char))
             } else {
                 return(res.char)
             }
@@ -158,8 +158,8 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
         res <- doRequestRemote("GET", URLencode(q.url))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(fromJSON(res.char)$text))
+            if (RJSONIO::isValidJSON(res.char, asText = TRUE)){
+                return(RJSONIO::fromJSON(RJSONIO::fromJSON(res.char)$text))
             } else {
                 return(res.char)
             }
@@ -207,8 +207,8 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         )
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
+            if (RJSONIO::isValidJSON(res.char, asText = TRUE)){
+                return(RJSONIO::fromJSON(res.char))
             } else {
                 return(res.char)
             }
@@ -224,8 +224,8 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
         res <- doRequestRemote("POST", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
+            if (RJSONIO::isValidJSON(res.char, asText = TRUE)){
+                return(RJSONIO::fromJSON(res.char))
             } else {
                 return(res.char)
             }
@@ -273,8 +273,8 @@ cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBa
         )
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char))
+            if (RJSONIO::isValidJSON(res.char, asText = TRUE)){
+                return(RJSONIO::fromJSON(res.char))
             } else {
                 return(res.char)
             }
@@ -290,8 +290,8 @@ cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBa
         res <- doRequestRemote("PUT", URLencode(q.url), q.body, headers=list("Content-Type" = "application/json"))
         if(length(res$content)>0){
             res.char <- rawToChar(res$content)
-            if (isValidJSON(res.char, asText = TRUE)){
-                return(fromJSON(res.char)$text)
+            if (RJSONIO::isValidJSON(res.char, asText = TRUE)){
+                return(RJSONIO::fromJSON(res.char)$text)
             } else {
                 return(res.char)
             }
@@ -384,7 +384,7 @@ commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
             res.list = res.list[!(res.list=="Finished")]
         }
         if(length(res.list)>0){
-            unlist(strsplit(fromJSON(res.list)$text,"\n"))
+            unlist(strsplit(RJSONIO::fromJSON(res.list)$text,"\n"))
         } else {
             invisible(res.list)
         }
@@ -440,7 +440,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
         res <- doRequestRemote("GET", URLencode(q.url), headers=list("Accept" = "text/plain"))
         res.html = htmlParse(rawToChar(res$content), asText=TRUE)
         res.elem = xpathSApply(res.html, "//p", xmlValue)
-        res.elem = (fromJSON(res.elem))$text
+        res.elem = (RJSONIO::fromJSON(res.elem))$text
         res.list = res.elem
         if (length(res.elem)==1){
             res.list = unlist(strsplit(res.elem[1],"\n\\s*"))
@@ -484,7 +484,7 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
             finally=.cyFinally(res)
         )
         if(length(res$content)>0){
-            res.data = fromJSON(rawToChar(res$content))$data
+            res.data = RJSONIO::fromJSON(rawToChar(res$content))$data
             if(length(res.data)>0){
                 return(res.data)
             } else{
@@ -496,10 +496,10 @@ commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     } else {
         post.url = .command2postQueryUrl(cmd.string, base.url)
         post.body = .command2postQueryBody(cmd.string)
-        post.body = fromJSON(post.body)
+        post.body = RJSONIO::fromJSON(post.body)
         res <- doRequestRemote("POST", post.url, post.body, headers=list("Content-Type" = "application/json", "Accept" = "application/json"))
         if(length(res$content)>0){
-            res.data = fromJSON(fromJSON(rawToChar(res$content))$text)$data
+            res.data = RJSONIO::fromJSON(RJSONIO::fromJSON(rawToChar(res$content))$text)$data
             if(length(res.data)>0){
                 return(res.data)
             } else{
@@ -825,7 +825,7 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
                                 xpathSApply(htmlParse(rawToChar(res$content), asText=TRUE), "//pre", xmlValue))
                 stop(simpleError(errmsg))
             } else if (res[[3]]$`content-type` == "application/json"){
-                stop(simpleError(fromJSON(rawToChar(res$content))$errors[[1]]$message))
+                stop(simpleError(RJSONIO::fromJSON(rawToChar(res$content))$errors[[1]]$message))
             } else {
                 stop()
             }
@@ -914,15 +914,15 @@ doSetSandbox <- function(sandboxToSet, requester=NULL, base.url = .defaultBaseUr
             expr = {
                 if(!requester){
                     r <- POST(url=glue('{base.url}/commands/filetransfer/setSandbox'), body=sandboxToSet, encode="json", content_type_json())
-                    newSandbox <- setCurrentSandbox(sandboxName, fromJSON(rawToChar(r$content))$data[['sandboxPath']])
+                    newSandbox <- setCurrentSandbox(sandboxName, RJSONIO::fromJSON(rawToChar(r$content))$data[['sandboxPath']])
                 } else {
                     r <- doRequestRemote("POST", glue('{base.url}/commands/filetransfer/setSandbox'), qbody=sandboxToSet, headers=list("Content-Type" = "application/json"))
-                    newSandbox <- setCurrentSandbox(sandboxName, fromJSON(fromJSON(rawToChar(r$content))$text)$data[['sandboxPath']])
+                    newSandbox <- setCurrentSandbox(sandboxName, RJSONIO::fromJSON(RJSONIO::fromJSON(rawToChar(r$content))$text)$data[['sandboxPath']])
                 }
             },
             error = function(e){
                 caller <- deparse(sys.call())
-                message <- fromJSON(rawToChar(r$content))[['errors']]
+                message <- RJSONIO::fromJSON(rawToChar(r$content))[['errors']]
                 stop(message, caller)
             }
         )
@@ -934,10 +934,10 @@ doSetSandbox <- function(sandboxToSet, requester=NULL, base.url = .defaultBaseUr
                     expr = {
                         if(!requester){
                         r <- POST(url=glue('{base.url}/commands/filetransfer/getFileInfo'), body=list('sandboxName' = NULL,'fileName' = '.'), encode="json", content_type_json())
-                        defaultSandboxPath <- setDefaultSandboxPath(fromJSON(rawToChar(r$content))$data[['filePath']])
+                        defaultSandboxPath <- setDefaultSandboxPath(RJSONIO::fromJSON(rawToChar(r$content))$data[['filePath']])
                         } else {
                             r <- doRequestRemote("POST", glue('{base.url}/commands/filetransfer/getFileInfo'), qbody=list('sandboxName' = NULL,'fileName' = '.'), headers=list("Content-Type" = "application/json"))
-                            defaultSandboxPath <- setDefaultSandboxPath(fromJSON(fromJSON(rawToChar(r$content))$text)$data[['filePath']])
+                            defaultSandboxPath <- setDefaultSandboxPath(RJSONIO::fromJSON(RJSONIO::fromJSON(rawToChar(r$content))$text)$data[['filePath']])
                         }
                     },
                     error = function(e){
