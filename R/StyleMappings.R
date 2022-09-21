@@ -338,7 +338,7 @@ setNodeBorderColorMapping <- function (table.column, table.column.values=NULL, c
                                        network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values) && mapping.type == 'c'){
+        if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
             auto.map<-.genColorMap('node',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -418,7 +418,7 @@ setNodeBorderOpacityMapping <- function(table.column, table.column.values=NULL,
             style.name, base.url)
     }
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -472,7 +472,7 @@ setNodeBorderWidthMapping <- function (table.column, table.column.values=NULL, w
         setNodeBorderWidthDefault(default.width, style.name, base.url=base.url)
     
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genDimMap('node',table.column,widths,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -527,7 +527,7 @@ setNodeColorMapping <- function (table.column, table.column.values=NULL, colors=
                                  network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values) && mapping.type == 'c'){
+        if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
             auto.map<-.genColorMap('node',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -615,7 +615,7 @@ setNodeComboOpacityMapping <- function (table.column, table.column.values=NULL,
             style.name, base.url)
     }
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -699,7 +699,7 @@ setNodeFillOpacityMapping <- function(table.column, table.column.values=NULL,
             style.name, base.url)
     }
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -806,7 +806,7 @@ setNodeFontSizeMapping <- function (table.column, table.column.values=NULL, size
         setNodeFontSizeDefault(default.size, style.name, base.url=base.url)
     
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genDimMap('node',table.column,sizes,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -866,7 +866,7 @@ setNodeHeightMapping <- function (table.column, table.column.values=NULL, height
         setNodeHeightDefault(default.height, style.name, base.url=base.url)
     
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genDimMap('node',table.column,heights,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -947,7 +947,7 @@ setNodeLabelColorMapping <- function (table.column, table.column.values=NULL, co
                                        network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values) && mapping.type == 'c'){
+        if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
             auto.map<-.genColorMap('node',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -1027,7 +1027,7 @@ setNodeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
             style.name, base.url)
     }
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genOpacityMap('node',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1131,7 +1131,7 @@ setNodeSizeMapping <- function (table.column, table.column.values=NULL, sizes=NU
         setNodeSizeDefault(default.size, style.name, base.url=base.url)
     
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genDimMap('node',table.column,sizes,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1216,7 +1216,7 @@ setNodeWidthMapping <- function (table.column, table.column.values=NULL, widths=
     if(!is.null(default.width))
         setNodeWidthDefault(default.width, style.name, base.url=base.url)
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genDimMap('node',table.column,widths,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1275,7 +1275,7 @@ setEdgeColorMapping <- function (table.column, table.column.values=NULL, colors=
                                  network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values) && mapping.type == 'c'){
+        if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -1417,7 +1417,7 @@ setEdgeFontSizeMapping <- function (table.column, table.column.values=NULL, size
     if(!is.null(default.size))
         setEdgeFontSizeDefault(default.size, style.name, base.url=base.url)
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genDimMap('edge',table.column,sizes,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1496,7 +1496,7 @@ setEdgeLabelColorMapping <- function (table.column, table.column.values=NULL, co
                                       network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values) && mapping.type == 'c'){
+        if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -1578,7 +1578,7 @@ setEdgeLabelOpacityMapping <- function(table.column, table.column.values=NULL,
             style.name, base.url)
     }
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genOpacityMap('edge',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1676,7 +1676,7 @@ setEdgeLineWidthMapping <- function (table.column, table.column.values=NULL, wid
     if(!is.null(default.width))
         setEdgeLineWidthDefault(default.width, style.name, base.url=base.url)
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genDimMap('edge',table.column,widths,mapping.type,
                              network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1743,7 +1743,7 @@ setEdgeOpacityMapping <- function (table.column, table.column.values=NULL,
             style.name, base.url)
     }   
     # check table.column.values to map
-    if(is.null(table.column.values) && mapping.type == 'c'){
+    if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
         auto.map<-.genOpacityMap('edge',table.column,opacities,mapping.type,
                             network,base.url)
         table.column.values<-auto.map$table.column.values
@@ -1864,7 +1864,7 @@ setEdgeTargetArrowColorMapping <- function (table.column, table.column.values=NU
                                             network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values) && mapping.type == 'c'){
+        if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -1934,7 +1934,7 @@ setEdgeSourceArrowColorMapping <- function (table.column, table.column.values=NU
                                             network=NULL, base.url=.defaultBaseUrl) {
     # check for color palette use case
     if(typeof(colors) == "closure"){ #i.e., name of palette function
-        if(is.null(table.column.values) && mapping.type == 'c'){
+        if(is.null(table.column.values) && mapping.type %in% c('continuous','c','interpolate')){
             auto.map<-.genColorMap('edge',table.column,colors,mapping.type,
                               network,base.url)
             table.column.values<-auto.map$table.column.values
@@ -2625,14 +2625,14 @@ paletteColorBrewerBrBG<-function(value.count=3) {
     df.values = getTableColumns(table=table, columns=table.column, 
                                 network=network, base.url=base.url)
     
-    if(mapping.type == 'd'){
+    if(mapping.type %in% c('discrete','d','lookup')){
         # Find the frequency distribution, with most common elements first 
         # Note: not same ordering as Cytoscape
         df.freq = table(df.values[table.column])
         
         # Create the mapped values that correspond to the unique elements
         return(names(df.freq))
-    } else if (mapping.type == 'c'){
+    } else if (mapping.type %in% c('continuous','c','interpolate')){
         #Determine min and max
         max.value <- max(df.values,na.rm=TRUE)
         min.value <- min(df.values,na.rm=TRUE)
