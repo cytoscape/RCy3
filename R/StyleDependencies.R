@@ -85,7 +85,7 @@ setStyleDependencies <- function(style.name=NULL ,dependencies,base.url=.default
     }
     cyrestPUT(paste('styles', style.name, 'dependencies', sep = '/'),
               body=dep.list,base.url = base.url)
-    invisible(commandsPOST(paste0('vizmap apply styles="',style.name,'"')))
+    invisible(commandsPOST(paste0('vizmap apply styles="',style.name,'"'), base.url = base.url))
 }
 
 # ==============================================================================
