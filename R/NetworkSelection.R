@@ -624,7 +624,41 @@ selectEdgesAdjacentToSelectedNodes <-
             )
         return(res)
     }
-
+# ------------------------------------------------------------------------------
+#' @title Select Edges Adjacent To Nodes
+#'
+#' @description Takes currently selected nodes and adds to the selection all edges
+#' connected to those nodes, regardless of directionality.
+#' @param nodes List of node SUIDs, names or other column values
+#' @param by.col Node table column to lookup up provide node values. Default is 
+#' 'name'.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Lists of SUIDs for selected nodes and edges
+#' @examples \donttest{
+#' selectEdgesAdjacentToNodes()
+#' }
+#' @export
+selectEdgesAdjacentToNodes <-
+    function(nodes, by.col='name', network = NULL, base.url = .defaultBaseUrl) {
+        suid <- getNetworkSuid(network,base.url)
+        clearSelection(type = 'edges', suid, base.url)
+        for (n in nodes){
+            selectNodes(n, by.col=by.col, preserve.current.selection = TRUE,
+                        network = suid, base.url = base.url)
+        }
+        res <-
+            commandsPOST(
+                paste0(
+                    'network select adjacentEdges=true nodeList=selected network=SUID:',
+                    suid
+                )
+            )
+        return(res)
+    }
 # ------------------------------------------------------------------------------
 #' @title Delete Duplicate Edges
 #'
