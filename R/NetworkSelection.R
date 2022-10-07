@@ -646,8 +646,9 @@ selectEdgesAdjacentToNodes <-
     function(nodes, by.col='name', network = NULL, base.url = .defaultBaseUrl) {
         suid <- getNetworkSuid(network,base.url)
         clearSelection(type = 'edges', suid, base.url)
+        clearSelection(type = 'nodes', suid, base.url)
         for (n in nodes){
-            selectNodes(n, by.col=by.col, preserve.current.selection = FALSE,
+            selectNodes(n, by.col=by.col, preserve.current.selection = TRUE,
                         network = suid, base.url = base.url)
         }
         res <-
@@ -657,7 +658,6 @@ selectEdgesAdjacentToNodes <-
                     suid
                 )
             )
-        clearSelection(type = 'nodes', suid, base.url)
         return(res)
     }
 # ------------------------------------------------------------------------------
