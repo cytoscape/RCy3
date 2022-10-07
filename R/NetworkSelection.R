@@ -627,7 +627,7 @@ selectEdgesAdjacentToSelectedNodes <-
 # ------------------------------------------------------------------------------
 #' @title Select Edges Adjacent To Nodes
 #'
-#' @description Takes currently selected nodes and adds to the selection all edges
+#' @description Takes list of node SUIDs, names or other column values and adds to the selection all edges
 #' connected to those nodes, regardless of directionality.
 #' @param nodes List of node SUIDs, names or other column values
 #' @param by.col Node table column to lookup up provide node values. Default is 
@@ -647,7 +647,7 @@ selectEdgesAdjacentToNodes <-
         suid <- getNetworkSuid(network,base.url)
         clearSelection(type = 'edges', suid, base.url)
         for (n in nodes){
-            selectNodes(n, by.col=by.col, preserve.current.selection = TRUE,
+            selectNodes(n, by.col=by.col, preserve.current.selection = FALSE,
                         network = suid, base.url = base.url)
         }
         res <-
@@ -657,6 +657,7 @@ selectEdgesAdjacentToNodes <-
                     suid
                 )
             )
+        clearSelection(type = 'nodes', suid, base.url)
         return(res)
     }
 # ------------------------------------------------------------------------------
