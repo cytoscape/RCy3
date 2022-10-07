@@ -632,6 +632,7 @@ selectEdgesAdjacentToSelectedNodes <-
 #' @param nodes List of node SUIDs, names or other column values
 #' @param by.col Node table column to lookup up provide node values. Default is 
 #' 'name'.
+#' @param selectNodes The default is TRUE. If TRUE, nodes will also be selected.
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -643,7 +644,7 @@ selectEdgesAdjacentToSelectedNodes <-
 #' }
 #' @export
 selectEdgesAdjacentToNodes <-
-    function(nodes, by.col='name', network = NULL, base.url = .defaultBaseUrl) {
+    function(nodes, by.col='name', selectNodes = TRUE, network = NULL, base.url = .defaultBaseUrl) {
         suid <- getNetworkSuid(network,base.url)
         clearSelection(type = 'edges', suid, base.url)
         clearSelection(type = 'nodes', suid, base.url)
@@ -658,6 +659,9 @@ selectEdgesAdjacentToNodes <-
                     suid
                 )
             )
+        if (!selectNodes) {
+            clearSelection(type = 'nodes', suid, base.url)
+        }
         return(res)
     }
 # ------------------------------------------------------------------------------

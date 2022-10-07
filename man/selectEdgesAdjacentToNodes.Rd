@@ -7,6 +7,7 @@
 selectEdgesAdjacentToNodes(
   nodes,
   by.col = "name",
+  selectNodes = TRUE,
   network = NULL,
   base.url = .defaultBaseUrl
 )
@@ -16,6 +17,8 @@ selectEdgesAdjacentToNodes(
 
 \item{by.col}{Node table column to lookup up provide node values. Default is 
 'name'.}
+
+\item{selectNodes}{The default is TRUE. If TRUE, nodes will also be selected.}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
