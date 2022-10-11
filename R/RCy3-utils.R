@@ -232,7 +232,6 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
     cytoscape <- as.character(cytoscape)
     cy.a <- as.numeric(strsplit(cytoscape, "\\.")[[1]][[1]])
     cy.b <- as.numeric(strsplit(cytoscape, "\\.")[[1]][[2]])
-    
     nogo <- FALSE
     if(cyrest > vApiNum){
         message(sprintf("CyREST API version %d or greater is required. You are currently working with version %d.",

@@ -210,7 +210,6 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
         cmd.string <- paste0(cmd.string,' Width="',width,'"')
     if(!is.null(zoom))
         cmd.string <- paste0(cmd.string,' Zoom="',zoom,'"')
-    
     ext <- paste0(".",tolower(type),"$")
     if (!grepl(ext,filename))
         filename <- paste0(filename,".",tolower(type))
@@ -229,6 +228,362 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
     commandsPOST(paste0(cmd.string,
                         ' OutputFile="',getAbsSandboxPath(filename),'"',
                         ' options="',toupper(type),'"',
+                        ' view=SUID:"',view.SUID,'"'), 
+                 base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' Export PNG
+#' 
+#' @description Saves the current network view as an png file.
+#' @details Exports the current view to a graphics file and returns the path to 
+#' the saved file. To speed up image export for large networks use the option 'allGraphicsDetails=FALSE'.
+#' Available for Cytoscape v3.10 or later.
+#' @param filename (\code{character}) Full path or path relavtive to current 
+#' working directory, in addition to the name of the file. Extension is 
+#' automatically added based on the \code{type} argument. If blank, the current
+#' network name will be used.
+#' @param zoom (\code{numeric}) The zoom value to proportionally scale the image. The default 
+#' value is 100.0. Valid only for bitmap formats, such as PNG and JPEG
+#' @param network (optional) Name or SUID of a network or view. Default is the 
+#' "current" network active in Cytoscape. The first (presummably only) view 
+#' associated a network is used if a specific view SUID is not provided.
+#' @param allGraphicsDetails (optional): TRUE results in image with highest detail; False allows faster image
+#' generation. The default is TRUE.
+#' @param hideLabels (optional): TRUE makes node and edge labels invisible in image. False allows them to be
+#' drawn. The default is False.
+#' @param transparentBackground (optional): TRUE causes background to be transparent. The default is FALSE.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param overwriteFile (optional) FALSE allows Cytoscape show a message box before overwriting the file if the file already
+#' exists; TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.
+#' @return server response
+#' @examples
+#' \donttest{
+#' exportPNG('/fullpath/myNetwork')
+#' }
+#' @export
+exportPNG<-function(filename=NULL, allGraphicsDetails=TRUE, hideLabels=FALSE, transparentBackground=FALSE,
+                    zoom=NULL, network=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE){
+    .verifySupportedVersions(1, "3.10")
+    cmd.string <- 'view export png' # a good start
+    
+    # filename must be supplied
+    if(is.null(filename))
+        filename <- getNetworkName(network,base.url)
+    
+    # view must be supplied
+    view.SUID <- getNetworkViewSuid(network,base.url)
+    
+    # optional args
+    if(!is.null(allGraphicsDetails))
+        cmd.string <- paste0(cmd.string,' allGraphicsDetails="',allGraphicsDetails,'"')
+    if(!is.null(hideLabels))
+        cmd.string <- paste0(cmd.string,' hideLabels="',hideLabels,'"')
+    if(!is.null(transparentBackground))
+        cmd.string <- paste0(cmd.string,' transparentBackground="',transparentBackground,'"')
+    if(!is.null(zoom))
+        cmd.string <- paste0(cmd.string,' zoom="',zoom,'"')
+    ext <- paste0(".",tolower("PNG"),"$")
+    if (!grepl(ext,filename))
+        filename <- paste0(filename,".",tolower("PNG"))
+    fileInfo <- sandboxGetFileInfo(filename, base.url=base.url)
+    if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
+        if (overwriteFile){
+            sandboxRemoveFile(filename, base.url=base.url)
+        }
+        else {
+            warning("This file already exists. A Cytoscape popup will be 
+                    generated to confirm overwrite.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        }
+    }
+    commandsPOST(paste0(cmd.string,
+                        ' outputFile="',getAbsSandboxPath(filename),'"',
+                        ' view=SUID:"',view.SUID,'"'), 
+                 base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' Export JPG
+#'
+#' @description Saves the current network view as an jpg file.
+#' @details Exports the current view to a graphics file and returns the path to 
+#' the saved file. To speed up image export for large networks use the option 'allGraphicsDetails=FALSE'.
+#' Available for Cytoscape v3.10 or later.
+#' @param filename (\code{character}) Full path or path relavtive to current 
+#' working directory, in addition to the name of the file. Extension is 
+#' automatically added based on the \code{type} argument. If blank, the current
+#' network name will be used.
+#' @param zoom (\code{numeric}) The zoom value to proportionally scale the image. The default 
+#' value is 100.0. Valid only for bitmap formats, such as PNG and JPEG
+#' @param network (optional) Name or SUID of a network or view. Default is the 
+#' "current" network active in Cytoscape. The first (presummably only) view 
+#' associated a network is used if a specific view SUID is not provided.
+#' @param allGraphicsDetails (optional): TRUE results in image with highest detail; False allows faster image
+#' generation. The default is TRUE.
+#' @param hideLabels (optional): TRUE makes node and edge labels invisible in image. False allows them to be
+#' drawn. The default is False.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param overwriteFile (optional) FALSE allows Cytoscape show a message box before overwriting the file if the file already
+#' exists; TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.
+#' @return server response
+#' @examples
+#' \donttest{
+#' exportJPG('/fullpath/myNetwork')
+#' }
+#' @export
+exportJPG<-function(filename=NULL, allGraphicsDetails=TRUE, hideLabels=FALSE,
+                    zoom=NULL, network=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE){
+    .verifySupportedVersions(1, "3.10")
+    cmd.string <- 'view export jpg' # a good start
+    
+    # filename must be supplied
+    if(is.null(filename))
+        filename <- getNetworkName(network,base.url)
+    
+    # view must be supplied
+    view.SUID <- getNetworkViewSuid(network,base.url)
+    
+    # optional args
+    if(!is.null(allGraphicsDetails))
+        cmd.string <- paste0(cmd.string,' allGraphicsDetails="',allGraphicsDetails,'"')
+    if(!is.null(hideLabels))
+        cmd.string <- paste0(cmd.string,' hideLabels="',hideLabels,'"')
+    if(!is.null(zoom))
+        cmd.string <- paste0(cmd.string,' zoom="',zoom,'"')
+    ext <- paste0(".",tolower("JPG"),"$")
+    if (!grepl(ext,filename))
+        filename <- paste0(filename,".",tolower("JPG"))
+    fileInfo <- sandboxGetFileInfo(filename, base.url=base.url)
+    if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
+        if (overwriteFile){
+            sandboxRemoveFile(filename, base.url=base.url)
+        }
+        else {
+            warning("This file already exists. A Cytoscape popup will be 
+                    generated to confirm overwrite.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        }
+    }
+    commandsPOST(paste0(cmd.string,
+                        ' outputFile="',getAbsSandboxPath(filename),'"',
+                        ' view=SUID:"',view.SUID,'"'), 
+                 base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' Export PDF
+#'
+#' @description Saves the current network view as an pdf file.
+#' @details Exports the current view to a graphics file and returns the path to 
+#' the saved file. To speed up image export for large networks use the option 'allGraphicsDetails=FALSE'.
+#' Available for Cytoscape v3.10 or later.
+#' @param filename (\code{character}) Full path or path relavtive to current 
+#' working directory, in addition to the name of the file. Extension is 
+#' automatically added based on the \code{type} argument. If blank, the current
+#' network name will be used.
+#' @param network (optional) Name or SUID of a network or view. Default is the 
+#' "current" network active in Cytoscape. The first (presummably only) view 
+#' associated a network is used if a specific view SUID is not provided.
+#' @param hideLabels (optional): TRUE makes node and edge labels invisible in image. False allows them to be
+#' drawn. The default is False.
+#' @param exportTextAsFont (optional): If TRUE (the default value), texts will be exported as fonts.
+#' @param orientation (optional): Page orientation, portrait or landscape.
+#' @param pageSize (optional): (Auto|Letter|Legal|Tabloid|A0|A1|A2|A3|A4|A5)
+#' Predefined standard page size, or choose custom. Default is 'Letter'.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param overwriteFile (optional) FALSE allows Cytoscape show a message box before overwriting the file if the file already
+#' exists; TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.
+#' @return server response
+#' @examples
+#' \donttest{
+#' exportPDF('/fullpath/myNetwork')
+#' }
+#' @export
+exportPDF<-function(filename=NULL, exportTextAsFont=TRUE, hideLabels=FALSE, pageSize="Letter",
+                    orientation="Portrait", network=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE){
+    .verifySupportedVersions(1, "3.10")
+    cmd.string <- 'view export pdf' # a good start
+    
+    # filename must be supplied
+    if(is.null(filename))
+        filename <- getNetworkName(network,base.url)
+    
+    # view must be supplied
+    view.SUID <- getNetworkViewSuid(network,base.url)
+    
+    # optional args
+    if(!is.null(exportTextAsFont))
+        cmd.string <- paste0(cmd.string,' exportTextAsFont="',exportTextAsFont,'"')
+    if(!is.null(hideLabels))
+        cmd.string <- paste0(cmd.string,' hideLabels="',hideLabels,'"')
+    if(!is.null(pageSize))
+        cmd.string <- paste0(cmd.string,' pageSize="',pageSize,'"')
+    if(!is.null(orientation))
+        cmd.string <- paste0(cmd.string,' orientation="',orientation,'"')
+    ext <- paste0(".",tolower("PDF"),"$")
+    if (!grepl(ext,filename))
+        filename <- paste0(filename,".",tolower("PDF"))
+    fileInfo <- sandboxGetFileInfo(filename, base.url=base.url)
+    if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
+        if (overwriteFile){
+            sandboxRemoveFile(filename, base.url=base.url)
+        }
+        else {
+            warning("This file already exists. A Cytoscape popup will be 
+                    generated to confirm overwrite.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        }
+    }
+    commandsPOST(paste0(cmd.string,
+                        ' outputFile="',getAbsSandboxPath(filename),'"',
+                        ' view=SUID:"',view.SUID,'"'), 
+                 base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' Export PS
+#'
+#' @description Saves the current network view as an ps file.
+#' @details Exports the current view to a graphics file and returns the path to 
+#' the saved file. To speed up image export for large networks use the option 'allGraphicsDetails=FALSE'.
+#' Available for Cytoscape v3.10 or later.
+#' @param filename (\code{character}) Full path or path relavtive to current 
+#' working directory, in addition to the name of the file. Extension is 
+#' automatically added based on the \code{type} argument. If blank, the current
+#' network name will be used.
+#' @param network (optional) Name or SUID of a network or view. Default is the 
+#' "current" network active in Cytoscape. The first (presummably only) view 
+#' associated a network is used if a specific view SUID is not provided.
+#' @param hideLabels (optional): TRUE makes node and edge labels invisible in image. False allows them to be
+#' drawn. The default is False.
+#' @param exportTextAsFont (optional): If TRUE (the default value), texts will be exported as fonts.
+#' @param orientation (optional): Page orientation, portrait or landscape.
+#' @param pageSize (optional): (Auto|Letter|Legal|Tabloid|A0|A1|A2|A3|A4|A5)
+#' Predefined standard page size, or choose custom. Default is 'Letter'.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param overwriteFile (optional) FALSE allows Cytoscape show a message box before overwriting the file if the file already
+#' exists; TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.
+#' @return server response
+#' @examples
+#' \donttest{
+#' exportPS('/fullpath/myNetwork')
+#' }
+#' @export
+exportPS<-function(filename=NULL, exportTextAsFont=TRUE, hideLabels=FALSE,
+                    network=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE){
+    .verifySupportedVersions(1, "3.10")
+    cmd.string <- 'view export ps' # a good start
+    
+    # filename must be supplied
+    if(is.null(filename))
+        filename <- getNetworkName(network,base.url)
+    
+    # view must be supplied
+    view.SUID <- getNetworkViewSuid(network,base.url)
+    
+    # optional args
+    if(!is.null(exportTextAsFont))
+        cmd.string <- paste0(cmd.string,' exportTextAsFont="',exportTextAsFont,'"')
+    if(!is.null(hideLabels))
+        cmd.string <- paste0(cmd.string,' hideLabels="',hideLabels,'"')
+    ext <- paste0(".",tolower("PS"),"$")
+    if (!grepl(ext,filename))
+        filename <- paste0(filename,".",tolower("PS"))
+    fileInfo <- sandboxGetFileInfo(filename, base.url=base.url)
+    if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
+        if (overwriteFile){
+            sandboxRemoveFile(filename, base.url=base.url)
+        }
+        else {
+            warning("This file already exists. A Cytoscape popup will be 
+                    generated to confirm overwrite.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        }
+    }
+    commandsPOST(paste0(cmd.string,
+                        ' outputFile="',getAbsSandboxPath(filename),'"',
+                        ' view=SUID:"',view.SUID,'"'), 
+                 base.url = base.url)
+}
+
+# ------------------------------------------------------------------------------
+#' Export SVG
+#'
+#' @description Saves the current network view as an svg file.
+#' @details Exports the current view to a graphics file and returns the path to 
+#' the saved file. To speed up image export for large networks use the option 'allGraphicsDetails=FALSE'.
+#' Available for Cytoscape v3.10 or later.
+#' @param filename (\code{character}) Full path or path relavtive to current 
+#' working directory, in addition to the name of the file. Extension is 
+#' automatically added based on the \code{type} argument. If blank, the current
+#' network name will be used.
+#' @param network (optional) Name or SUID of a network or view. Default is the 
+#' "current" network active in Cytoscape. The first (presummably only) view 
+#' associated a network is used if a specific view SUID is not provided.
+#' @param hideLabels (optional): TRUE makes node and edge labels invisible in image. False allows them to be
+#' drawn. The default is False.
+#' @param exportTextAsFont (optional): If TRUE (the default value), texts will be exported as fonts.
+#' @param orientation (optional): Page orientation, portrait or landscape.
+#' @param pageSize (optional): (Auto|Letter|Legal|Tabloid|A0|A1|A2|A3|A4|A5)
+#' Predefined standard page size, or choose custom. Default is 'Letter'.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @param overwriteFile (optional) FALSE allows Cytoscape show a message box before overwriting the file if the file already
+#' exists; TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.
+#' @return server response
+#' @examples
+#' \donttest{
+#' exportSVG('/fullpath/myNetwork')
+#' }
+#' @export
+exportSVG<-function(filename=NULL, exportTextAsFont=TRUE, hideLabels=FALSE,
+                   network=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE){
+    .verifySupportedVersions(1, "3.10")
+    cmd.string <- 'view export svg' # a good start
+    
+    # filename must be supplied
+    if(is.null(filename))
+        filename <- getNetworkName(network,base.url)
+    
+    # view must be supplied
+    view.SUID <- getNetworkViewSuid(network,base.url)
+    
+    # optional args
+    if(!is.null(exportTextAsFont))
+        cmd.string <- paste0(cmd.string,' exportTextAsFont="',exportTextAsFont,'"')
+    if(!is.null(hideLabels))
+        cmd.string <- paste0(cmd.string,' hideLabels="',hideLabels,'"')
+    ext <- paste0(".",tolower("SVG"),"$")
+    if (!grepl(ext,filename))
+        filename <- paste0(filename,".",tolower("SVG"))
+    fileInfo <- sandboxGetFileInfo(filename, base.url=base.url)
+    if (length(fileInfo[['modifiedTime']] == 1) && fileInfo[['isFile']]){
+        if (overwriteFile){
+            sandboxRemoveFile(filename, base.url=base.url)
+        }
+        else {
+            warning("This file already exists. A Cytoscape popup will be 
+                    generated to confirm overwrite.",
+                    call. = FALSE,
+                    immediate. = TRUE)
+        }
+    }
+    commandsPOST(paste0(cmd.string,
+                        ' outputFile="',getAbsSandboxPath(filename),'"',
                         ' view=SUID:"',view.SUID,'"'), 
                  base.url = base.url)
 }
