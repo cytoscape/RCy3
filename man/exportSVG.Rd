@@ -34,11 +34,6 @@ and the latest version of the CyREST API supported by this version of RCy3.}
 
 \item{overwriteFile}{(optional) FALSE allows Cytoscape show a message box before overwriting the file if the file already
 exists; TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.}
-
-\item{orientation}{(optional): Page orientation, portrait or landscape.}
-
-\item{pageSize}{(optional): (Auto|Letter|Legal|Tabloid|A0|A1|A2|A3|A4|A5)
-Predefined standard page size, or choose custom. Default is 'Letter'.}
 }
 \value{
 server response

@@ -467,9 +467,6 @@ exportPDF<-function(filename=NULL, exportTextAsFont=TRUE, hideLabels=FALSE, page
 #' @param hideLabels (optional): TRUE makes node and edge labels invisible in image. False allows them to be
 #' drawn. The default is False.
 #' @param exportTextAsFont (optional): If TRUE (the default value), texts will be exported as fonts.
-#' @param orientation (optional): Page orientation, portrait or landscape.
-#' @param pageSize (optional): (Auto|Letter|Legal|Tabloid|A0|A1|A2|A3|A4|A5)
-#' Predefined standard page size, or choose custom. Default is 'Letter'.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -536,9 +533,6 @@ exportPS<-function(filename=NULL, exportTextAsFont=TRUE, hideLabels=FALSE,
 #' @param hideLabels (optional): TRUE makes node and edge labels invisible in image. False allows them to be
 #' drawn. The default is False.
 #' @param exportTextAsFont (optional): If TRUE (the default value), texts will be exported as fonts.
-#' @param orientation (optional): Page orientation, portrait or landscape.
-#' @param pageSize (optional): (Auto|Letter|Legal|Tabloid|A0|A1|A2|A3|A4|A5)
-#' Predefined standard page size, or choose custom. Default is 'Letter'.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
