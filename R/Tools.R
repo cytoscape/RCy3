@@ -377,7 +377,7 @@ mergeNetworks <- function(sources = NULL,
     }
     
     res.data <- commandsPOST(cmd.string, base.url = base.url)
-    
+    Sys.sleep(get(".CATCHUP_NETWORK_MERGE_SECS",envir = RCy3env)) ## NOTE: TEMPORARY SLEEP "FIX"
     if(!is.null(res.data$SUID))
         return(res.data$SUID)
     else
