@@ -940,10 +940,17 @@ createNetworkFromDataFrames <-
             nodes <- data.frame(nodes, stringsAsFactors = FALSE) #clear factors
         }
         
-        # Subset dataframe for initial network creation
-        if(!exists('node.id.list'))
-            node.id.list = 'id'
+        # Assign ellipsis as variables
+        ellipsisArgs <- list(...)
+        for(i in seq_along(ellipsisArgs)){
+            assign(names(ellipsisArgs[i]), unlist(unname(ellipsisArgs[i])))
+        }
+        if(exists('node.id.list'))
+            nodes['id'] <-  nodes[node.id.list]
+        node.id.list = 'id'
         
+        
+        # Subset dataframe for initial network creation
         json_nodes <- .nodeSet2JSON(nodes[node.id.list])
         # cleanup global environment variables (which can be quite large)
         remove(RCy3.CreateNetworkFromDataFrames.temp.global.counter,
@@ -958,12 +965,15 @@ createNetworkFromDataFrames <-
         if (!is.null(edges)) {
             edges <- data.frame(edges, stringsAsFactors = FALSE) #clear factors
             # Subset dataframe for initial network creation 
-            if(!exists('source.id.list'))
-                source.id.list = 'source'
-            if(!exists('target.id.list'))
-                target.id.list = 'target'
-            if(!exists('interaction.type.list'))
-                interaction.type.list = 'interaction'
+            if(exists('source.id.list'))
+                edges['source'] <- edges[source.id.list]
+            source.id.list = 'source'
+            if(exists('target.id.list'))
+                edges['target'] <- edges[target.id.list]
+            target.id.list = 'target'
+            if(exists('interaction.type.list'))
+                edges['interaction'] <- edges[interaction.type.list]
+            interaction.type.list = 'interaction'
             if (!(interaction.type.list %in% names(edges)))
                 edges[, interaction.type.list] = rep('interacts with')
             
@@ -998,7 +1008,7 @@ createNetworkFromDataFrames <-
         # Remove SUID columns if present
         if('SUID' %in% colnames(nodes))
             nodes <- subset(nodes, select = -c(SUID))
-        if(length(setdiff(colnames(nodes),"id")) > 0)
+        if(length(setdiff(colnames(nodes),node.id.list)) > 0)
             loadTableData(nodes,data.key.column = node.id.list,
                           table.key.column = node.id.list,
                           network = network.suid, base.url = base.url)
