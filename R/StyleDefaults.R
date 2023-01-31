@@ -324,7 +324,12 @@ setNodeCustomBoxChart<-function(columns, colors=NULL,
     if (is.null(colors))
         colors<-rep(.cyPalette('set1'),length.out=length(columns))
     
-    chart[['cy_colors']] <- colors
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
+    }
+    
+    chart[['cy_colors']] <- colors.checked
     chart[['cy_colorScheme']] <- "Custom"
     
     if (!is.null(range))
@@ -393,7 +398,12 @@ setNodeCustomHeatMapChart<-function(columns, colors=NULL,
     if (is.null(colors))
         colors<-c(.cyPalette('rdbu')[c(2,6,10)],"#888888")
     
-    chart[['cy_colors']] <- colors
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
+    }
+    
+    chart[['cy_colors']] <- colors.checked
     chart[['cy_colorScheme']] <- "Custom"
     
     if (!is.null(range))
@@ -462,7 +472,12 @@ setNodeCustomLineChart<-function(columns, colors=NULL,
     if (is.null(colors))
         colors<-rep(.cyPalette('set1'),length.out=length(columns))
     
-    chart[['cy_colors']] <- colors
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
+    }
+    
+    chart[['cy_colors']] <- colors.checked
     chart[['cy_colorScheme']] <- "Custom"
     
     if (!is.null(range))
@@ -514,7 +529,12 @@ setNodeCustomPieChart<-function(columns, colors=NULL,
     if (is.null(colors))
         colors<-rep(.cyPalette('set1'),length.out=length(columns))
     
-    chart[['cy_colors']] <- colors
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
+    }
+    
+    chart[['cy_colors']] <- colors.checked
     chart[['cy_colorScheme']] <- "Custom"
     
     style.string = list(visualProperty = vp, value = paste("org.cytoscape.PieChart",toJSON(chart),sep = ":"))
@@ -559,7 +579,12 @@ setNodeCustomRingChart<-function(columns, colors=NULL,
     if (is.null(colors))
         colors<-rep(.cyPalette('set1'),length.out=length(columns))
     
-    chart[['cy_colors']] <- colors
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
+    }
+    
+    chart[['cy_colors']] <- colors.checked
     chart[['cy_colorScheme']] <- "Custom"
     
     style.string = list(visualProperty = vp, value = paste("org.cytoscape.RingChart",toJSON(chart),sep = ":"))
@@ -591,8 +616,13 @@ setNodeCustomLinearGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0
     .checkSlot(slot)
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
+    }
+    
     chart <- list(cy_angle = angle,
-                  cy_gradientColors = colors,
+                  cy_gradientColors = colors.checked,
                   cy_gradientFractions = anchors)
     
     style.string = list(visualProperty = vp, value = paste("org.cytoscape.LinearGradient",toJSON(chart),sep = ":"))
@@ -628,7 +658,12 @@ setNodeCustomRadialGradient<-function(colors=c("#DDDDDD","#888888"), anchors=c(0
     .checkSlot(slot)
     vp<-paste('NODE_CUSTOMGRAPHICS',as.character(slot),sep='_')
     
-    chart <- list(cy_gradientColors = colors,
+    colors.checked = NULL
+    for (color in colors) {
+        colors.checked <- c(colors.checked, .checkHexColor(color))
+    }
+    
+    chart <- list(cy_gradientColors = colors.checked,
                   cy_gradientFractions = anchors,
                   cy_center = list(x = xCenter,
                                    y = yCenter))
