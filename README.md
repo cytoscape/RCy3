@@ -4,7 +4,7 @@
 
 [![BioC Dev Build Status](http://bioconductor.org/shields/build/devel/bioc/RCy3.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/RCy3/) - Bioconductor Dev Build
 
-[![Travis-CI Build Status](https://travis-ci.org/cytoscape/RCy3.svg?branch=master)](https://travis-ci.org/cytoscape/RCy3) - GitHub Dev Build by Travis
+[![Travis-CI Build Status](https://travis-ci.org/cytoscape/RCy3.svg?branch=devel)](https://travis-ci.org/cytoscape/RCy3) - GitHub Dev Build by Travis
 
 Building upon the phenominal success of RCytoscape and RCy3, Cytoscape is adopting 
 this project to provide a robust R package for the rapidly evolving Cytoscape 
@@ -14,7 +14,7 @@ ecosystem. We are beginning with a major refactor of RCy3 that includes:
 * harmonized function and argument names
 * support for Cytoscape commands
 * better support for Cytoscape apps
-* see [NEWS](https://github.com/cytoscape/RCy3/blob/master/NEWS) for the complete release notes
+* see [NEWS](https://github.com/cytoscape/RCy3/blob/devel/NEWS) for the complete release notes
 * coordinated development with CyREST and the Cytoscape service model
   * [New API](https://github.com/cytoscape/cyREST/issues?utf8=✓&q=milestone%3A*+label%3A%22new+API%22+is%3A*)
 * coordinated development with other scripting libraries, e.g., 
@@ -97,31 +97,31 @@ pkgdown::build_site(examples=FALSE)
 
 
 ### Bioconductor
-While this is the primary development repository for the RCy3 project, we also make regular pushes to official bioconductor repository ([devel](http://bioconductor.org/packages/devel/bioc/html/RCy3.html) & [release](http://bioconductor.org/packages/release/bioc/html/RCy3.html)) from which the official releases are generated. This is the correct repo for all coding and bug reporting interests. The tagged releases here correspond to the bioconductor releases via a manual syncing process. The `master` branch here corresponds to the latest code in development and not yet released. 
+While this is the primary development repository for the RCy3 project, we also make regular pushes to official bioconductor repository ([devel](http://bioconductor.org/packages/devel/bioc/html/RCy3.html) & [release](http://bioconductor.org/packages/release/bioc/html/RCy3.html)) from which the official releases are generated. This is the correct repo for all coding and bug reporting interests. The tagged releases here correspond to the bioconductor releases via a manual syncing process. The `devel` branch here corresponds to the latest code in development and not yet released. 
 
 ```
 git commit -m "informative commit message"
-git push origin master
-git push upstream master
+git push origin devel
+git push upstream devel
 ```
 http://bioconductor.org/developers/how-to/git/push-to-github-bioc/
 
-Following each bioconductor release, a `RELEASE_#_#` branch is created. The new branch is fetched and master is updated:
+Following each bioconductor release, a `RELEASE_#_#` branch is created. The new branch is fetched and devel is updated:
 
 ```
 git fetch upstream
 git checkout -b RELEASE_3_13 upstream/RELEASE_3_13
 git push origin RELEASE_3_13
-git checkout master
-git pull upstream master
-git push origin master
+git checkout devel
+git pull upstream devel
+git push origin devel
 ```
 
-Only bug fixes and documentation updates can be pushed to the official bioconductor release branch. After committing and pushing fixes to `master`, then:
+Only bug fixes and documentation updates can be pushed to the official bioconductor release branch. After committing and pushing fixes to `devel`, then:
 
 ```
 git checkout RELEASE_3_13
-git cherry-pick master #for lastest commit
+git cherry-pick devel #for lastest commit
 # or git cherry-pick 1abc234 #for specific commit
 # or git cherry-pick 1abc234^..5def678 #for an inclusive range
 # bump release version in DESCRIPTION
@@ -129,11 +129,11 @@ git commit -am 'version bump'
 git push origin RELEASE_3_13
 # double check changes, and then...
 git push upstream RELEASE_3_13
-git checkout master
+git checkout devel
 # bump dev version in DESCRIPTION
 git commit -am 'version bump'
-git push origin master
-git push upstream master
+git push origin devel
+git push upstream devel
 ```
 
 https://bioconductor.org/developers/how-to/git/bug-fix-in-release-and-devel/
