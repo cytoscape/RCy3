@@ -1,3 +1,9 @@
+Changes in version 2.20.0
++ Add a delay in mergeNetworks method
+ - Wait for Cytoscape to finish adding annotations column to Network table
++ Bug fixes:
+ - ellipsis args in createNetworkFromDataFrames, #195
+ - setNodeColorBypass: List of hex colors, #188
 Changes in version 2.18.0
 + New functions:
  - exportPNG
