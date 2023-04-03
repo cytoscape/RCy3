@@ -7,7 +7,7 @@
 saveSession(filename = NULL, base.url = .defaultBaseUrl, overwriteFile = TRUE)
 }
 \arguments{
-\item{filename}{Full path or path relavtive to current working directory, 
+\item{filename}{Full path or path relative to current working directory, 
 in addition to the name of the file. The \code{.cys} extension is 
 automatically added. Leave blank to update previously saved session file.}
 

@@ -230,7 +230,7 @@ getNetworkList <- function(getSUIDs = FALSE, base.url = .defaultBaseUrl) {
 #' @title Export Network 
 #'
 #' @description Export a network to one of mulitple file formats
-#' @param filename Full path or path relavtive to current working directory, 
+#' @param filename Full path or path relative to current working directory, 
 #' in addition to the name of the file. Extension is automatically added based
 #' on the \code{type} argument. If blank, then the current network name is used.
 #' @param type File type. SIF (default), CX, cyjs, graphML, NNF,  xGMML. 

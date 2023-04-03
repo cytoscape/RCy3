@@ -268,7 +268,7 @@ getFilterList<-function(base.url=.defaultBaseUrl){
 #' @title Export Filters
 #'
 #' @description Saves filters to file in JSON format.
-#' @param filename (char) Full path or path relavtive to current 
+#' @param filename (char) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Default is 
 #' "filters.json"
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,

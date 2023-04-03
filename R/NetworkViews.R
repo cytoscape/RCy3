@@ -15,7 +15,7 @@
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
-#' @details For networks larger than the view creation threashold, a network 
+#' @details For networks larger than the view creation threshold, a network 
 #' view is not created by default.  This function creates a network view if 
 #' one does not already exist.
 #' @return Network view SUID
@@ -157,7 +157,7 @@ setCurrentView <- function(network = NULL,
 #' @description Saves the current network view as an image file.
 #' @details The image is cropped per the current view in Cytoscape. Consider
 #' applying \code{\link{fitContent}} prior to export.
-#' @param filename (\code{character}) Full path or path relavtive to current 
+#' @param filename (\code{character}) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
@@ -239,7 +239,7 @@ exportImage<-function(filename=NULL, type="PNG", resolution=NULL, units=NULL, he
 #' @details Exports the current view to a graphics file and returns the path to 
 #' the saved file. To speed up image export for large networks use the option 'allGraphicsDetails=FALSE'.
 #' Available for Cytoscape v3.10 or later.
-#' @param filename (\code{character}) Full path or path relavtive to current 
+#' @param filename (\code{character}) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
@@ -313,7 +313,7 @@ exportPNG<-function(filename=NULL, allGraphicsDetails=TRUE, hideLabels=FALSE, tr
 #' @details Exports the current view to a graphics file and returns the path to 
 #' the saved file. To speed up image export for large networks use the option 'allGraphicsDetails=FALSE'.
 #' Available for Cytoscape v3.10 or later.
-#' @param filename (\code{character}) Full path or path relavtive to current 
+#' @param filename (\code{character}) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
@@ -384,7 +384,7 @@ exportJPG<-function(filename=NULL, allGraphicsDetails=TRUE, hideLabels=FALSE,
 #' @details Exports the current view to a graphics file and returns the path to 
 #' the saved file. To speed up image export for large networks use the option 'allGraphicsDetails=FALSE'.
 #' Available for Cytoscape v3.10 or later.
-#' @param filename (\code{character}) Full path or path relavtive to current 
+#' @param filename (\code{character}) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
@@ -457,7 +457,7 @@ exportPDF<-function(filename=NULL, exportTextAsFont=TRUE, hideLabels=FALSE, page
 #' @details Exports the current view to a graphics file and returns the path to 
 #' the saved file. To speed up image export for large networks use the option 'allGraphicsDetails=FALSE'.
 #' Available for Cytoscape v3.10 or later.
-#' @param filename (\code{character}) Full path or path relavtive to current 
+#' @param filename (\code{character}) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
@@ -523,7 +523,7 @@ exportPS<-function(filename=NULL, exportTextAsFont=TRUE, hideLabels=FALSE,
 #' @details Exports the current view to a graphics file and returns the path to 
 #' the saved file. To speed up image export for large networks use the option 'allGraphicsDetails=FALSE'.
 #' Available for Cytoscape v3.10 or later.
-#' @param filename (\code{character}) Full path or path relavtive to current 
+#' @param filename (\code{character}) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.

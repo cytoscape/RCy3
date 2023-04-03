@@ -22,7 +22,7 @@
 \arguments{
 \item{exportFirst}{FALSE for notebookShowImage, TRUE for notebookExportShowImage.}
 
-\item{filename}{(\code{character}) Full path or path relavtive to current 
+\item{filename}{(\code{character}) Full path or path relative to current 
 working directory, in addition to the name of the file. Extension is 
 automatically added based on the \code{type} argument. If blank, the current
 network name will be used.}

@@ -65,7 +65,7 @@ openSession<-function(file.location=NULL, base.url=.defaultBaseUrl){
 #' @details If no \code{filename} is provided, then it attempts to
 #' save to an existing CYS file associated with the session. If 
 #' \code{filename} already exists, then it is overwritten.
-#' @param filename Full path or path relavtive to current working directory, 
+#' @param filename Full path or path relative to current working directory, 
 #' in addition to the name of the file. The \code{.cys} extension is 
 #' automatically added. Leave blank to update previously saved session file. 
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
