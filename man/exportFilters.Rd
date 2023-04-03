@@ -11,7 +11,7 @@ exportFilters(
 )
 }
 \arguments{
-\item{filename}{(char) Full path or path relavtive to current 
+\item{filename}{(char) Full path or path relative to current 
 working directory, in addition to the name of the file. Default is 
 "filters.json"}
 

@@ -13,7 +13,7 @@ exportVisualStyles(
 )
 }
 \arguments{
-\item{filename}{(char) Full path or path relavtive to current 
+\item{filename}{(char) Full path or path relative to current 
 working directory, in addition to the name of the file. Extension is 
 automatically added based on the \code{type} argument. Default is 
 "styles.xml"}

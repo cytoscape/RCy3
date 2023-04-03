@@ -13,7 +13,7 @@ exportNetwork(
 )
 }
 \arguments{
-\item{filename}{Full path or path relavtive to current working directory, 
+\item{filename}{Full path or path relative to current working directory, 
 in addition to the name of the file. Extension is automatically added based
 on the \code{type} argument. If blank, then the current network name is used.}
 

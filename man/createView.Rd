@@ -24,7 +24,7 @@ Network view SUID
 Create a network view if one does not already exist
 }
 \details{
-For networks larger than the view creation threashold, a network 
+For networks larger than the view creation threshold, a network 
 view is not created by default.  This function creates a network view if 
 one does not already exist.
 }

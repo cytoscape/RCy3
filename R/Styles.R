@@ -138,7 +138,7 @@ deleteAllVisualStyle<-function(base.url=.defaultBaseUrl){
 #' Export Visual Styles
 #'
 #' @description Save one or more visual styles to file.
-#' @param filename (char) Full path or path relavtive to current 
+#' @param filename (char) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. Default is 
 #' "styles.xml"

@@ -3,7 +3,7 @@
 #'
 #' @description Show network view in notebook output.
 #' @details Show network view in notebook output.
-#' @param filename (\code{character}) Full path or path relavtive to current 
+#' @param filename (\code{character}) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
@@ -45,7 +45,7 @@ notebookExportShowImage <- function (filename='image', type="PNG", resolution=NU
 #'
 #' @description Show network view in notebook output.
 #' @details Show network view in notebook output.
-#' @param filename (\code{character}) Full path or path relavtive to current 
+#' @param filename (\code{character}) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
@@ -89,7 +89,7 @@ notebookShowImage <- function (filename='image', type="PNG", resolution=NULL, un
 #' @description Show network view in notebook output.
 #' @details Show network view in notebook output.
 #' @param exportFirst FALSE for notebookShowImage, TRUE for notebookExportShowImage.
-#' @param filename (\code{character}) Full path or path relavtive to current 
+#' @param filename (\code{character}) Full path or path relative to current 
 #' working directory, in addition to the name of the file. Extension is 
 #' automatically added based on the \code{type} argument. If blank, the current
 #' network name will be used.
