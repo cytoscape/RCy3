@@ -1024,7 +1024,7 @@ createNetworkFromDataFrames <-
             # Using SUIDs to support multigraphs: multiple edges with same name
             edges['data.key.column'] <- .edgeNameToEdgeSUID(edges$name,
                                                             network.suid,
-                                                            base.url)
+                                                            base.url, uniqueList = TRUE)
             if(length(setdiff(colnames(edges),c("source","target","interaction", 
                                                 "name","data.key.column"))) > 0)
                 loadTableData(edges,data.key.column = 'data.key.column', 
