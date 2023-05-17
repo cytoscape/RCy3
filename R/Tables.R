@@ -307,6 +307,7 @@ loadTableData <- function(data,
         # if key in row.names...
         data$row.names <-
         row.names(data)  # then copy to new "row.names" column :)
+
     
     ##ERROR if data.key.column not in data
     if (!data.key.column %in% colnames(data))

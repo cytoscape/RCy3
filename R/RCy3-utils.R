@@ -155,14 +155,31 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
         sorted.dict <- NULL
         if(length(node.names) == length(unique(node.names))){ #unique node names
             sorted.dict <- dict[match(node.names, dict$name), ] 
-        } else { 
-            if(uniqueList){
-                stop(glue('Invalid name in node name list: {list(node.names)} \n'))
-            } else {
-                sorted.dict <- dict[match(node.names, dict$name), ] 
-          } 
+        } else { #multiple nodes with the same name
+            message("Finding unique SUIDs for nodes with the same name...\n")
+            match_list <- list()
+            for(i in seq_along(node.names)){ #perform match with removal
+                name_match <- dict[match(node.names[[i]], dict$name),]
+                match_list[[i]] <- name_match
+                dict <- subset(dict, SUID != name_match$SUID)
+            }
+            sorted.dict <- do.call(rbind, match_list)
         }
-        node.SUIDs <- sorted.dict$SUID
+        
+        if (uniqueList){
+            node.SUIDs <- sorted.dict$SUID
+            if (any(is.na(node.SUIDs))) {
+                stop(glue('Invalid name in node name list: {list(node.names)} \n'))
+            }
+        } else {
+            if (length(node.names) == 1) {
+                node.SUIDs <- sorted.dict$SUID
+            } else {
+                sorted.dict <- na.omit(sorted.dict)
+                node.SUIDs <- replicate(length(node.names), sorted.dict$SUID, simplify = FALSE)
+            }
+        }
+        
         return(node.SUIDs)
 }
 # ------------------------------------------------------------------------------
@@ -188,13 +205,30 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
         if(length(edge.names) == length(unique(edge.names))){ #unique edge names
             sorted.dict <- dict[match(edge.names, dict$name), ] 
         } else { #multigraph: multiple edges with the same name
-            if(uniqueList){
-                stop(glue('Invalid name in edge name list: {list(edge.names)}'))
+            message("Finding unique SUIDs for edges with the same name...\n")
+            match_list <- list()
+            for(i in seq_along(edge.names)){ #perform match with removal
+                name_match <- dict[match(edge.names[[i]], dict$name),]
+                match_list[[i]] <- name_match
+                dict <- subset(dict, SUID != name_match$SUID)
+            }
+            sorted.dict <- do.call(rbind, match_list)
+        }
+        
+        if (uniqueList){
+        edge.SUIDs <- sorted.dict$SUID
+        if (any(is.na(edge.SUIDs))) {
+            stop(glue('Invalid name in edge name list: {edge.names}'))
+        }
+        } else {
+            if (length(edge.names) == 1) {
+                edge.SUIDs <- sorted.dict$SUID
             } else {
-                sorted.dict <- dict[match(edge.names, dict$name), ] 
+                sorted.dict <- na.omit(sorted.dict)
+                edge.SUIDs <- replicate(length(edge.names), sorted.dict$SUID, simplify = FALSE)
             }
         }
-        edge.SUIDs <- sorted.dict$SUID
+        
         return(edge.SUIDs)
 }
 
