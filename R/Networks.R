@@ -124,7 +124,7 @@ getNetworkName <- function(suid = NULL, base.url = .defaultBaseUrl) {
         network.suid = suid
     } else {
         #use current network
-        network.suid = getNetworkSuid()
+        network.suid = getNetworkSuid(base.url = base.url)
     }
     
     res <-
@@ -252,7 +252,7 @@ exportNetwork <- function (filename=NULL, type="SIF",
     
     # filename must be suppled
     if(is.null(filename))
-        filename <- getNetworkName(network) 
+        filename <- getNetworkName(network, base.url) 
     
     # optional args
     if(!is.null(network))

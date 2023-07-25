@@ -85,7 +85,7 @@ getNetworkViews <- function(network=NULL, base.url =.defaultBaseUrl) {
 #' }
 #' @export
 getNetworkViewSuid <- function(network = NULL, base.url = .defaultBaseUrl) {
-    net.SUID <- getNetworkSuid(network)
+    net.SUID <- getNetworkSuid(network, base.url)
 
     any.views <- getNetworkViews(net.SUID,base.url)
     
