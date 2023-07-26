@@ -482,6 +482,68 @@ setNodeSizeBypass <- function (node.names,
     setNodePropertyBypass(node.names, new.sizes, "NODE_SIZE", network=network, base.url=base.url)
 }
 
+#-------------------------------------------------------------------------------
+#' @title Set Node Position Bypass
+#'
+#' @description Sets the bypass value of node position for one or more nodes. Only 
+#' applicable if node dimensions are locked. See \code{lockNodeDimensions}.
+#' @param node.names List of node names or SUIDs
+#' @param new.x.locations List of x position values, or single value
+#' @param new.y.locations List of y position values, or single value
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @details This method permanently overrides any default values or mappings 
+#' defined for this visual property of the node or nodes specified. This method
+#' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
+#' can be used to set any visual property. To restore defaults and mappings, use
+#'  \link{clearNodePropertyBypass}, see examples.
+#' @return None
+#' @seealso {
+#' \link{setNodePropertyBypass},
+#' \link{clearNodePropertyBypass}
+#' }
+#' @examples \donttest{
+#' setNodePositionBypass('Node 1', 35)
+#' }
+#' @export
+setNodePositionBypass <- function (node.names,
+                               new.x.locations, 
+                               new.y.locations,
+                               network = NULL,
+                               base.url = .defaultBaseUrl) {
+    
+    for (current.size in new.x.locations) {
+        # ensure the sizes are numbers
+        if (!is.double(current.size)) {
+            stop (
+                sprintf (
+                    'Illegal size string "%s".
+                    It needs to be a number.',
+                    current.size)
+            )
+        }
+    }
+    
+    for (current.size in new.y.locations) {
+        # ensure the sizes are numbers
+        if (!is.double(current.size)) {
+            stop (
+                sprintf (
+                    'Illegal size string "%s".
+                    It needs to be a number.',
+                    current.size)
+            )
+        }
+    }
+    # set the node properties bypass
+    setNodePropertyBypass(node.names, new.x.locations, "NODE_X_LOCATION", network=network, base.url=base.url)
+    setNodePropertyBypass(node.names, new.y.locations, "NODE_Y_LOCATION", network=network, base.url=base.url)
+    
+}
+
 # ------------------------------------------------------------------------------
 #' @title Set Node Tooltip Bypass
 #'
