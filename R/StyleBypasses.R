@@ -488,8 +488,10 @@ setNodeSizeBypass <- function (node.names,
 #' @description Sets the bypass value of node position for one or more nodes. Only 
 #' applicable if node dimensions are locked. See \code{lockNodeDimensions}.
 #' @param node.names List of node names or SUIDs
-#' @param new.x.locations List of x position values, or single value
-#' @param new.y.locations List of y position values, or single value
+#' @param new.x.locations List of x position values, or single value, default is 
+#' current x position
+#' @param new.y.locations List of y position values, or single value, default is
+#' current y position
 #' @param network (optional) Name or SUID of the network. Default is the 
 #' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
@@ -510,8 +512,8 @@ setNodeSizeBypass <- function (node.names,
 #' }
 #' @export
 setNodePositionBypass <- function (node.names,
-                               new.x.locations, 
-                               new.y.locations,
+                               new.x.locations = NULL, 
+                               new.y.locations = NULL,
                                network = NULL,
                                base.url = .defaultBaseUrl) {
     
@@ -537,6 +539,13 @@ setNodePositionBypass <- function (node.names,
                     current.size)
             )
         }
+    }
+    if (is.null(new.x.locations)){
+        new.x.locations <- getNodePosition(node.names)$x_location
+    }
+    
+    if (is.null(new.y.locations)){
+        new.y.locations <- getNodePosition(node.names)$y_location
     }
     # set the node properties bypass
     setNodePropertyBypass(node.names, new.x.locations, "NODE_X_LOCATION", network=network, base.url=base.url)
