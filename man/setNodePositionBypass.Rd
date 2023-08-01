@@ -6,8 +6,8 @@
 \usage{
 setNodePositionBypass(
   node.names,
-  new.x.locations,
-  new.y.locations,
+  new.x.locations = NULL,
+  new.y.locations = NULL,
   network = NULL,
   base.url = .defaultBaseUrl
 )
@@ -15,9 +15,11 @@ setNodePositionBypass(
 \arguments{
 \item{node.names}{List of node names or SUIDs}
 
-\item{new.x.locations}{List of x position values, or single value}
+\item{new.x.locations}{List of x position values, or single value, default is 
+current x position}
 
-\item{new.y.locations}{List of y position values, or single value}
+\item{new.y.locations}{List of y position values, or single value, default is
+current y position}
 
 \item{network}{(optional) Name or SUID of the network. Default is the 
 "current" network active in Cytoscape.}
