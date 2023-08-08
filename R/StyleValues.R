@@ -266,6 +266,26 @@ getNodePosition <- function (node.names=NULL, network=NULL, base.url =.defaultBa
     row.names(node.pos) <- node.pos$Row.names
     node.pos[,-1]
 }
+
+# ------------------------------------------------------------------------------
+#' @title Get Node Label Position
+#'
+#' @description Retrieve the actual label position of specified nodes.
+#' @param node.names List of node names or SUIDs. Default is NULL for all nodes.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return Named list of property values
+#' @examples \donttest{
+#' getNodeLabelPosition('Node 1')
+#' }
+#' @export
+getNodeLabelPosition <- function (node.names=NULL, network=NULL, base.url =.defaultBaseUrl) {
+    getNodeProperty(node.names, "NODE_LABEL_POSITION", network=network, base.url = base.url)
+}
+
  
 # ==============================================================================
 # II.b. Edge Properties

@@ -728,6 +728,36 @@ setNodeLabelBypass <- function(node.names, new.labels,
                               network=network, base.url=base.url)
     }
 
+# ------------------------------------------------------------------------------
+#' @title Set Node Label Position Bypass
+#'
+#' @description Override the label position for particular nodes.
+#' @param node.names List of node names or SUIDs
+#' @param new.positions List of label positions, or single value
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @details This method permanently overrides any default values or mappings 
+#' defined for this visual property of the node or nodes specified. This method
+#' ultimately calls the generic function, \link{setNodePropertyBypass}, which 
+#' can be used to set any visual property. To restore defaults and mappings, use
+#'  \link{clearNodePropertyBypass}, see examples.
+#' @return None
+#' @seealso {
+#' \link{setNodePropertyBypass},
+#' \link{clearNodePropertyBypass}
+#' }
+#' @examples \donttest{
+#' setNodeLabelPositionBypass('Node 1','E,S,c,0.00,0.00')
+#' }
+#' @export
+setNodeLabelPositionBypass <- function(node.names, new.positions,
+                               network = NULL, base.url = .defaultBaseUrl) {
+    setNodePropertyBypass(node.names, new.positions, "NODE_LABEL_POSITION", 
+                          network=network, base.url=base.url)
+}
 
 # ------------------------------------------------------------------------------
 #' @title Set Node Font Face Bypass
