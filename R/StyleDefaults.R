@@ -897,6 +897,24 @@ getNodeSelectionColorDefault <- function(style.name=NULL, base.url=.defaultBaseU
 }
 
 # ------------------------------------------------------------------------------
+#' @title Get Node Label Position Default
+#'
+#' @description Retrieve the default selection node color.
+#' @param style.name Name of style; default is "default" style
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' getNodeLabelPositionDefault()
+#' }
+#' @export
+getNodeLabelPositionDefault <- function(style.name=NULL, base.url=.defaultBaseUrl) {
+    return(getVisualPropertyDefault('NODE_LABEL_POSITION', style.name, base.url))
+}
+
+
+# ------------------------------------------------------------------------------
 #' @title Set Node Selection Color Default
 #'
 #' @description Set the default selection node color.
@@ -980,6 +998,28 @@ setNodeWidthDefault <- function(new.width, style.name=NULL,
     lockNodeDimensions(FALSE, style.name, base.url)
     
     style <- list(visualProperty = "NODE_WIDTH", value = new.width)
+    setVisualPropertyDefault(style, style.name, base.url)
+}
+# ------------------------------------------------------------------------------
+#' @title Set Node Label Position Default
+#'
+#' @description Set the default node label position
+#' @param new.position value for position
+#' @param style.name Name of style; default is "default" style.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @examples \donttest{
+#' setNodeLabelPositionDefaultt("S","C","c",0.00,0.00)
+#' }
+#' @export
+setNodeLabelPositionDefault <- function(new.nodeAnchor, new.graphicAnchor, new.justification, 
+                                        new.xOffset, new.yOffset, style.name=NULL,
+                                base.url=.defaultBaseUrl) {
+    style <- list(visualProperty = "NODE_LABEL_POSITION", value = paste(new.nodeAnchor,new.graphicAnchor,
+                                                                        new.justification,new.xOffset,new.yOffset,
+                                                                        sep = ","))
     setVisualPropertyDefault(style, style.name, base.url)
 }
 # ------------------------------------------------------------------------------
