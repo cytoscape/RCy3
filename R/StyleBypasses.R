@@ -622,7 +622,8 @@ setNodeWidthBypass <-
               network = NULL,
               base.url = .defaultBaseUrl) {
         # unlock node dimensions
-        lockNodeDimensions (FALSE)
+        currentStyle <- getCurrentStyle(network=network, base.url=base.url)
+        lockNodeDimensions (FALSE, style.name=currentStyle, base.url=base.url)
         
         for (current.width in new.widths) {
             # ensure the width(s) are numbers
@@ -676,7 +677,8 @@ setNodeHeightBypass <-
               network = NULL,
               base.url = .defaultBaseUrl) {
         # unlock node dimensions
-        lockNodeDimensions (FALSE)
+        currentStyle <- getCurrentStyle(network=network, base.url=base.url)
+        lockNodeDimensions (FALSE, style.name=currentStyle, base.url=base.url)
         for (current.height in new.heights) {
             # ensure the height(s) are numbers
             if (!is.double(current.height)) {
