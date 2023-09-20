@@ -1004,14 +1004,18 @@ setNodeWidthDefault <- function(new.width, style.name=NULL,
 #' @title Set Node Label Position Default
 #'
 #' @description Set the default node label position
-#' @param new.position value for position
+#' @param new.nodeAnchor New position on node to place the graphic: NW,N,NE,E,SE,S,SW,W
+#' @param new.graphicAnchor New position on graphic to place on node: NW,N,NE,E,SE,S,SW,W 
+#' @param new.justification New positioning of content within graphic: l,r,c
+#' @param new.xOffset New additional offset in the x direction
+#' @param new.yOffset New additional offset in the y direction
 #' @param style.name Name of style; default is "default" style.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
-#' setNodeLabelPositionDefaultt("S","C","c",0.00,0.00)
+#' setNodeLabelPositionDefault("S","C","c",0.00,0.00)
 #' }
 #' @export
 setNodeLabelPositionDefault <- function(new.nodeAnchor, new.graphicAnchor, new.justification, 
