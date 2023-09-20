@@ -15,13 +15,21 @@ setNodeLabelPositionDefault(
 )
 }
 \arguments{
+\item{new.nodeAnchor}{New position on node to place the graphic: NW,N,NE,E,SE,S,SW,W}
+
+\item{new.graphicAnchor}{New position on graphic to place on node: NW,N,NE,E,SE,S,SW,W}
+
+\item{new.justification}{New positioning of content within graphic: l,r,c}
+
+\item{new.xOffset}{New additional offset in the x direction}
+
+\item{new.yOffset}{New additional offset in the y direction}
+
 \item{style.name}{Name of style; default is "default" style.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
 and the latest version of the CyREST API supported by this version of RCy3.}
-
-\item{new.position}{value for position}
 }
 \value{
 None
@@ -31,6 +39,6 @@ Set the default node label position
 }
 \examples{
 \donttest{
-setNodeLabelPositionDefaultt("S","C","c",0.00,0.00)
+setNodeLabelPositionDefault("S","C","c",0.00,0.00)
 }
 }
