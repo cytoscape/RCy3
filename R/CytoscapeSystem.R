@@ -31,7 +31,8 @@ base.url parameter is correct.",
                      stderr()))
         }
     } else {
-        res <- doRequestRemote("GET","http://127.0.0.1:1234/v1/version")
+        conn.str <- paste(base.url, 'version', sep="/")
+        res <- doRequestRemote("GET", conn.str)
         if(res$status_code == 200) {
             message("You are connected to Cytoscape!")
         } else {

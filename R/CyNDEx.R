@@ -169,7 +169,8 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
                      base.url = .CyndexBaseUrl(base.url))
     return(res$data$members[[1]]$uuid)
     } else {
-        q.url <- paste('http://127.0.0.1:1234/cyndex2/v1/networks/',suid, sep = '')
+        conn.str <- paste(.CyndexBaseUrl(base.url), 'networks', sep = '/')
+        q.url <- paste(conn.str, suid, sep = '')
         res <- doRequestRemote("GET", q.url)
         return(fromJSON(fromJSON(rawToChar(res$content))$text)$data$members[[1]]$uuid)
     }
@@ -189,7 +190,7 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
 # @description Transforms generic base.url into a specific cyndex.base.url
 .CyndexPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl)
 {
-    q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
+    q.url <- paste(.CyndexBaseUrl(base.url), .pathURLencode(operation), sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
@@ -214,7 +215,7 @@ getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
 # @description Transforms generic base.url into a specific cyndex.base.url
 .CyndexPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl)
 {
-    q.url <- paste('http://127.0.0.1:1234/cyndex2/v1', .pathURLencode(operation), sep="/")
+    q.url <- paste(.CyndexBaseUrl(base.url), .pathURLencode(operation), sep="/")
     if(!is.null(parameters)){
         q.params <- .prepGetQueryArgs(parameters)
         q.url <- paste(q.url, q.params, sep="?")
