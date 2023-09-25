@@ -211,14 +211,17 @@ checkNotebookIsRunning<-function(){
 # ------------------------------------------------------------------------------
 #' @title runningRmoteCheck
 #' @description runningRmoteCheck
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @param newState new state of running remote
 #' @return oldState
 #' @examples \donttest{
 #' runningRmoteCheck()
 #' }
 #' @export
-runningRemoteCheck<-function(newState=NULL){
-    checkRunningRemote()
+runningRemoteCheck<-function(base.url=.defaultBaseUrl, newState=NULL){
+    checkRunningRemote(base.url)
     oldState <- .GlobalEnv$runningRemote
     if(!is.null(newState)){
         .GlobalEnv$runningRemote <- newState
@@ -233,27 +236,30 @@ runningRemoteCheck<-function(newState=NULL){
 #' connect over Jupyter-Bridge. Either way, we can determine which by whether Cytoscape answers to a version
 #' check. If Cytoscape doesn't answer, we have no information ... and we have to wait until Cytoscape is
 #' started and becomes reachable before we can determine local vs remote.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples \donttest{
 #' checkRunningRemote()
 #' }
 #' @import httr
 #' @export
-checkRunningRemote<-function(){
+checkRunningRemote<-function(base.url=.defaultBaseUrl){
     tryCatch(
         expr={
     if(getNotebookIsRunning()){
         if(is.null(.GlobalEnv$runningRemote)){
             tryCatch(
                 expr = {
-                    r <- GET(url=.defaultBaseUrl)
+                    r <- GET(url=base.url)
                     status_code(r)
                     .GlobalEnv$runningRemote <- FALSE
                 },
                 error = function(e){
                     tryCatch(
                         expr = {
-                    doRequestRemote("GET", .defaultBaseUrl)
+                    doRequestRemote("GET", base.url)
                     .GlobalEnv$runningRemote <- TRUE},
                     error = function(e){
                         message('Error initially contacting Jupyter-bridge!')
@@ -270,7 +276,7 @@ checkRunningRemote<-function(){
         },
     error = function(e){
         checkNotebookIsRunning()
-        checkRunningRemote()
+        checkRunningRemote(base.url)
     })
     return(.GlobalEnv$runningRemote)
 }

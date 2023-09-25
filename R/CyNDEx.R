@@ -39,7 +39,7 @@ importNetworkFromNDEx <- function (ndex.id, username=NULL, password=NULL,
         ndex.body[['password']] <- password
     if(!is.null(accessKey))
         ndex.body[['accessKey']] <- accessKey
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
     res <- cyrestPOST('networks',
                        body = ndex.body,
                        base.url = .CyndexBaseUrl(base.url))
@@ -85,7 +85,7 @@ exportNetworkToNDEx <- function(username, password, isPublic,
     server.url <- paste(ndex.url,ndex.version, sep = "/")
 
     suid <- getNetworkSuid(network,base.url)
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
     res <- cyrestPOST(paste('networks',suid,sep = '/'),
                       body = list(serverUrl=server.url,
                                   username=username,
@@ -130,7 +130,7 @@ updateNetworkInNDEx <- function (username, password, isPublic, network = NULL, m
                                  base.url = .defaultBaseUrl) 
 {
     suid <- getNetworkSuid(network, base.url)
-    if (!findRemoteCytoscape()) {
+    if (!findRemoteCytoscape(base.url)) {
         res <- cyrestPUT(paste("networks", suid, sep = "/"), 
                          body = list(serverUrl = "http://ndexbio.org/v2", 
                                      username = username, password = password, metadata = metadata, 
@@ -164,7 +164,7 @@ updateNetworkInNDEx <- function (username, password, isPublic, network = NULL, m
 #' @export
 getNetworkNDExId <- function(network=NULL, base.url = .defaultBaseUrl) {
     suid <- getNetworkSuid(network,base.url)
-    if (!findRemoteCytoscape()) {
+    if (!findRemoteCytoscape(base.url)) {
     res <- cyrestGET(paste('networks', suid,sep = '/'),
                      base.url = .CyndexBaseUrl(base.url))
     return(res$data$members[[1]]$uuid)

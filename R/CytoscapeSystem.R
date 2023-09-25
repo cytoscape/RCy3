@@ -19,7 +19,7 @@
 #' @export
 cytoscapePing<-function(base.url=.defaultBaseUrl) {
     .verifySupportedVersions(1,3.6,base.url)
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
     conn.str <- paste(base.url, 'version', sep="/")
     res <- GET(conn.str)
     if(res$status_code == 200) {
@@ -86,7 +86,7 @@ cytoscapeVersionInfo<-function(base.url=.defaultBaseUrl) {
 #' @export
 cytoscapeApiVersions<-function(base.url=.defaultBaseUrl) {
     uri <- strsplit(base.url,'/v')[[1]][1]
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
         res <- GET(uri)
         available.api.versions <- fromJSON(rawToChar(res$content))$availableApiVersion
     } else {
@@ -153,7 +153,7 @@ cytoscapeMemoryStatus<-function(base.url=.defaultBaseUrl) {
 #' @export
 cytoscapeFreeMemory<-function(base.url=.defaultBaseUrl) {
               conn.str <- paste(base.url, 'gc', sep="/")
-              if(!findRemoteCytoscape()){
+              if(!findRemoteCytoscape(base.url)){
                 res <- GET(conn.str)
                 if(res$status_code == 204) {
                     return(message("Unused memory freed up."))

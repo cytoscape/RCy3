@@ -126,7 +126,7 @@ notebookShowImage <- function (filename='image', type="PNG", resolution=NULL, un
 .exportShowImage <- function (exportFirst, filename='image', type="PNG", resolution=NULL, units=NULL, height=NULL, 
                                width=NULL, zoom=NULL, sandboxName=NULL, network=NULL, base.url=.defaultBaseUrl, overwriteFile=TRUE) {
   checkNotebookIsRunning()
-  checkRunningRemote()
+  checkRunningRemote(base.url)
   if (getNotebookIsRunning()){
     if (length(grep(paste(".",tolower(type),"$", sep=""), filename)) != 1){
       filename = paste(filename, tolower(type), sep = ".") 

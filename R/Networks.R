@@ -429,7 +429,7 @@ addCyNodes <- function(node.names,
         body = node.names,
         base.url = base.url
     )
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
         return(res)
     } else {
         return(fromJSON(res$text))
@@ -558,7 +558,7 @@ source or target node name. No edges added.')
             body = edge.data,
             base.url = base.url
         )
-        if(!findRemoteCytoscape()){
+        if(!findRemoteCytoscape(base.url)){
             return(res)
         } else {
             return(fromJSON(res$text))
@@ -751,7 +751,7 @@ createSubnetwork <- function(nodes=NULL,
         'commands/network/create',
         body = as.list(json_sub),
         base.url = base.url)
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
         return(res$data['network'])
     } else {
         return(fromJSON(res$text)$data['network'])
@@ -1039,7 +1039,7 @@ createNetworkFromDataFrames <-
         
         message("Applying preferred layout...\n")
         layoutNetwork(network=network.suid, base.url = base.url)
-        if(!findRemoteCytoscape()){
+        if(!findRemoteCytoscape(base.url)){
             return(network.suid)
         } else {
             return(fromJSON(network.suid$text))

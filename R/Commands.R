@@ -31,7 +31,7 @@
 #' }
 #' @importFrom utils browseURL
 cyrestAPI<-function(base.url=.defaultBaseUrl){
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
     browseURL(paste(base.url,'/swaggerUI/swagger-ui/index.html?url=',base.url,'/swagger.json#/',sep=""))
     } else {
         doRequestRemote("webbrowser", paste(base.url, '/swaggerUI/swagger-ui/index.html?url=',base.url,'/swagger.json#/',sep=""))
@@ -60,7 +60,7 @@ cyrestAPI<-function(base.url=.defaultBaseUrl){
 cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
     requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
         q.url <- paste(base.url, operation, sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
@@ -123,7 +123,7 @@ cyrestDELETE <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseU
 cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl){
     requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
         q.url <- paste(base.url, operation, sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
@@ -192,7 +192,7 @@ cyrestGET <- function(operation=NULL, parameters=NULL, base.url=.defaultBaseUrl)
 cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
     requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
         q.url <- paste(base.url, operation, sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
@@ -258,7 +258,7 @@ cyrestPOST <- function(operation, parameters=NULL, body=NULL, base.url=.defaultB
 cyrestPUT <- function(operation, parameters=NULL, body=NULL, base.url=.defaultBaseUrl){
     requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
         q.url <- paste(base.url, operation, sep="/")
         if(!is.null(parameters)){
             q.params <- .prepGetQueryArgs(parameters)
@@ -347,7 +347,7 @@ commandsAPI<-function(base.url=.defaultBaseUrl){
 commandsGET<-function(cmd.string, base.url = .defaultBaseUrl){
     requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
         q.url <- .command2getQuery(cmd.string,base.url)
         tryCatch(
             res <- GET(q.url), 
@@ -419,7 +419,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
     requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
     s=sub('help *','',cmd.string)
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
         q.url <- .command2getQuery(s,base.url)
         tryCatch(
             res <- GET(q.url), 
@@ -474,7 +474,7 @@ commandsHelp<-function(cmd.string='help', base.url = .defaultBaseUrl){
 commandsPOST<-function(cmd.string, base.url = .defaultBaseUrl){
     requester <- NULL
     doInitializeSandbox(requester, base.url=base.url)
-    if(!findRemoteCytoscape()){
+    if(!findRemoteCytoscape(base.url)){
         post.url = .command2postQueryUrl(cmd.string,base.url)
         post.body = .command2postQueryBody(cmd.string)
         tryCatch(
@@ -848,21 +848,24 @@ Please check that Cytoscape is running, CyREST is installed and your base.url pa
 #' @title findRemoteCytoscape
 #' @description Figure out whether CyREST is local or remote. If remote, we'll 
 #' want to go through Jupyter-Bridge.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples
 #' \donttest{
 #' findRemoteCytoscape()
 #' }
 #' @export
-findRemoteCytoscape<-function(){
+findRemoteCytoscape<-function(base.url=.defaultBaseUrl){
     checkNotebookIsRunning()
-    checkRunningRemote()
+    checkRunningRemote(base.url)
     #doInitializeSandbox(requester, base.url=.defaultBaseUrl) 
     # make sure there's a sandbox before executing a command
-    if(is.null(checkRunningRemote())){
+    if(is.null(checkRunningRemote(base.url))){
         stop('Cannot find local or remote Cytoscape. Start Cytoscape and then proceed.')
     }
-    return(runningRemoteCheck())
+    return(runningRemoteCheck(base.url))
 }
 
 # ==============================================================================
@@ -882,7 +885,7 @@ findRemoteCytoscape<-function(){
 #' @export
 doInitializeSandbox <- function(requester=NULL, base.url = .defaultBaseUrl){
     if(getSandboxReinitialize()){
-        return(doSetSandbox(.getDefaultSandbox(), requester, base.url = base.url))
+        return(doSetSandbox(.getDefaultSandbox(base.url), requester, base.url = base.url))
     } else {
         return(getCurrentSandbox())
     }
@@ -904,7 +907,7 @@ doInitializeSandbox <- function(requester=NULL, base.url = .defaultBaseUrl){
 #' @importFrom glue glue
 #' @export
 doSetSandbox <- function(sandboxToSet, requester=NULL, base.url = .defaultBaseUrl){
-    requester <- .getRequester()
+    requester <- .getRequester(base.url)
     if(is.null(sandboxToSet[['sandboxName']])){
         sandboxToSet[['sandboxName']] <- getDefaultSandbox()[['sandboxName']]
     }
@@ -958,15 +961,18 @@ doSetSandbox <- function(sandboxToSet, requester=NULL, base.url = .defaultBaseUr
 # ------------------------------------------------------------------------------
 #' @title .getDefaultSandbox
 #' @description .getDefaultSandbox
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples
 #' \donttest{
 #' .getDefaultSandbox()
 #' }
-.getDefaultSandbox <- function(){
+.getDefaultSandbox <- function(base.url=.defaultBaseUrl){
     default <- getDefaultSandbox()
     if(length(default) == 0){
-        if(getNotebookIsRunning() || runningRemoteCheck()){
+        if(getNotebookIsRunning() || runningRemoteCheck(base.url)){
             default <- sandboxInitializer(list(sandboxName=RCy3env$.predefinedSandboxName))
         } else {
             default <- sandboxInitializer(list(sandboxName=NULL))
@@ -979,13 +985,16 @@ doSetSandbox <- function(sandboxToSet, requester=NULL, base.url = .defaultBaseUr
 # ------------------------------------------------------------------------------
 #' @title .getRequester
 #' @description .getRequester
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
 #' @return None
 #' @examples
 #' \donttest{
 #' .getRequester()
 #' }
-.getRequester <- function(){
-    if(findRemoteCytoscape()){
+.getRequester <- function(base.url=.defaultBaseUrl){
+    if(findRemoteCytoscape(base.url)){
         return(TRUE)
     } else {
         return(FALSE)
