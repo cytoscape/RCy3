@@ -5,6 +5,7 @@
 # I. Perform layout functions
 # II. Get layout properties
 # III. Set layout properties
+# IV. Edit layout
 #
 # ==============================================================================
 # I. Perform layout functions
@@ -287,5 +288,56 @@ setLayoutProperties <- function (layout.name, properties.list, base.url = .defau
                              base.url=base.url)
         }
     }
+}
+
+# ==============================================================================
+# IV. Edit layout
+#------------------------------------------------------------------------------------------------------------------------
+#' @title Rotate Layout
+#' 
+#' @description Rotate the layout.
+#' @param angle The angle (in degrees) to rotate the network. From -180 to 180
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param selected.only (Boolean) Whether to rotate only current selection. Default 
+#' is false.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @author Yihang Xin
+#' @examples \donttest{
+#' rotateLayout(90, 'current', selected.only=FALSE)
+#' }
+#' @export
+rotateLayout <- function (angle, network = NULL, selected.only = FALSE, base.url = .defaultBaseUrl) {
+    suid <- getNetworkSuid(network,base.url)
+    res <- commandsPOST(paste0('layout rotate angle=',angle,' network="SUID:',suid,'", selectedOnly=',selected.only,''),base.url=base.url)
+    invisible(res)
+}
+
+#------------------------------------------------------------------------------------------------------------------------
+#' @title Scale Layout
+#' 
+#' @description Scale the layout in either the X, Y, or both directions.
+#' @param axis The axis to scale. Options: "X Axis", "Y Axis", "Both Axes".
+#' @param scaleFactor The axis The scale factor to apply to the network.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
+#' @param selected.only (Boolean) Whether to rotate only current selection. Default 
+#' is false.
+#' @param base.url (optional) Ignore unless you need to specify a custom domain,
+#' port or version to connect to the CyREST API. Default is http://localhost:1234
+#' and the latest version of the CyREST API supported by this version of RCy3.
+#' @return None
+#' @author Yihang Xin
+#' @examples \donttest{
+#' scaleLayout('X Axis', 2, 'current', selected.only=FALSE)
+#' }
+#' @export
+scaleLayout <- function (axis, scaleFactor, network = NULL, selected.only = FALSE, base.url = .defaultBaseUrl) {
+    suid <- getNetworkSuid(network,base.url)
+    res <- commandsPOST(paste0('layout scale axis=',axis,' scaleFactor=',scaleFactor,' network="SUID:',suid,'", selectedOnly=',selected.only,''),base.url=base.url)
+    invisible(res)
 }
 
