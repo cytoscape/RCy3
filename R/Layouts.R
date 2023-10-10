@@ -313,7 +313,7 @@ setLayoutProperties <- function (layout.name, properties.list, base.url = .defau
 rotateLayout <- function (angle, network = NULL, selected.only = FALSE, base.url = .defaultBaseUrl) {
     .verifySupportedVersions(cytoscape=3.11, base.url=base.url)
     suid <- getNetworkSuid(network,base.url)
-    res <- commandsPOST(paste0('layout rotate angle=',angle,' network="SUID:',suid,'", selectedOnly=',selected.only,''),base.url=base.url)
+    res <- commandsPOST(paste0('layout rotate angle=',angle,' network="SUID:',suid,'" selectedOnly=',selected.only,''),base.url=base.url)
     invisible(res)
 }
 
@@ -339,7 +339,7 @@ rotateLayout <- function (angle, network = NULL, selected.only = FALSE, base.url
 scaleLayout <- function (axis, scaleFactor, network = NULL, selected.only = FALSE, base.url = .defaultBaseUrl) {
     .verifySupportedVersions(cytoscape=3.11, base.url=base.url)
     suid <- getNetworkSuid(network,base.url)
-    res <- commandsPOST(paste0('layout scale axis=',axis,' scaleFactor=',scaleFactor,' network="SUID:',suid,'", selectedOnly=',selected.only,''),base.url=base.url)
+    res <- commandsPOST(paste0('layout scale axis=',axis,' scaleFactor=',scaleFactor,' network="SUID:',suid,'" selectedOnly=',selected.only,''),base.url=base.url)
     invisible(res)
 }
 
