@@ -261,6 +261,7 @@ assign(".sandboxTemplate", list('sandboxName' = NULL,  'copySamples' = TRUE, 're
     vStr <- cytoscapeVersionInfo(base.url)
     vApiStr <- unname(vStr[1])
     vCyStr <- unname(vStr[2])
+    vCyStr <- sub("-SNAPSHOT", "", vCyStr)
     vApiNum <- as.numeric(gsub("v([0-9]+)$", "\\1", vApiStr))
     vCyNum <- gsub("([0-9]+\\.[0-9]+\\.[0-9])\\..*$", "\\1", vCyStr)
     vCyNum.a <- as.numeric(strsplit(vCyNum, "\\.")[[1]][[1]])
