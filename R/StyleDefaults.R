@@ -1004,8 +1004,8 @@ setNodeWidthDefault <- function(new.width, style.name=NULL,
 #' @title Set Node Label Position Default
 #'
 #' @description Set the default node label position
-#' @param new.nodeAnchor New position on node to place the graphic: NW,N,NE,E,SE,S,SW,W
-#' @param new.graphicAnchor New position on graphic to place on node: NW,N,NE,E,SE,S,SW,W 
+#' @param new.nodeAnchor New position on node to place the graphic: C,NW,N,NE,E,SE,S,SW,W
+#' @param new.graphicAnchor New position on graphic to place on node: C,NW,N,NE,E,SE,S,SW,W
 #' @param new.justification New positioning of content within graphic: l,r,c
 #' @param new.xOffset New additional offset in the x direction
 #' @param new.yOffset New additional offset in the y direction
