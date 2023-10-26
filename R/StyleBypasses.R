@@ -518,11 +518,11 @@ setNodePositionBypass <- function (node.names,
                                base.url = .defaultBaseUrl) {
     
     for (current.size in new.x.locations) {
-        # ensure the sizes are numbers
+        # ensure the locations are numbers
         if (!is.double(current.size)) {
             stop (
                 sprintf (
-                    'Illegal size string "%s".
+                    'Illegal location string "%s".
                     It needs to be a number.',
                     current.size)
             )
@@ -530,22 +530,29 @@ setNodePositionBypass <- function (node.names,
     }
     
     for (current.size in new.y.locations) {
-        # ensure the sizes are numbers
+        # ensure the locations are numbers
         if (!is.double(current.size)) {
             stop (
                 sprintf (
-                    'Illegal size string "%s".
+                    'Illegal location string "%s".
                     It needs to be a number.',
                     current.size)
             )
         }
     }
+    if (is.null(new.x.locations) & is.null(new.y.locations)){
+        stop (
+            sprintf (
+                'Please ensure that either the x location or y location is specified.')
+        )
+    }
+    
     if (is.null(new.x.locations)){
-        new.x.locations <- getNodePosition(node.names)$x_location
+        new.x.locations <- getNodePosition(node.names, network, base.url)$x_location
     }
     
     if (is.null(new.y.locations)){
-        new.y.locations <- getNodePosition(node.names)$y_location
+        new.y.locations <- getNodePosition(node.names, network, base.url)$y_location
     }
     # set the node properties bypass
     setNodePropertyBypass(node.names, new.x.locations, "NODE_X_LOCATION", network=network, base.url=base.url)
