@@ -297,10 +297,10 @@ setLayoutProperties <- function (layout.name, properties.list, base.url = .defau
 #' 
 #' @description Rotate the layout.
 #' @param angle The angle (in degrees) to rotate the network. From -180 to 180
-#' @param network (optional) Name or SUID of the network. Default is the 
-#' "current" network active in Cytoscape.
 #' @param selected.only (Boolean) Whether to rotate only current selection. Default 
 #' is false.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -310,7 +310,7 @@ setLayoutProperties <- function (layout.name, properties.list, base.url = .defau
 #' rotateLayout(90, 'current', selected.only=FALSE)
 #' }
 #' @export
-rotateLayout <- function (angle, network = NULL, selected.only = FALSE, base.url = .defaultBaseUrl) {
+rotateLayout <- function (angle, selected.only = FALSE, network = NULL, base.url = .defaultBaseUrl) {
     .verifySupportedVersions(cytoscape="3.10.2", base.url=base.url)
     suid <- getNetworkSuid(network,base.url)
     res <- commandsPOST(paste0('layout rotate angle=',angle,' network="SUID:',suid,'" selectedOnly=',selected.only,''),base.url=base.url)
@@ -323,10 +323,10 @@ rotateLayout <- function (angle, network = NULL, selected.only = FALSE, base.url
 #' @description Scale the layout in either the X, Y, or both directions.
 #' @param axis The axis to scale. Options: "X Axis", "Y Axis", "Both Axes".
 #' @param scaleFactor The axis The scale factor to apply to the network.
-#' @param network (optional) Name or SUID of the network. Default is the 
-#' "current" network active in Cytoscape.
 #' @param selected.only (Boolean) Whether to rotate only current selection. Default 
 #' is false.
+#' @param network (optional) Name or SUID of the network. Default is the 
+#' "current" network active in Cytoscape.
 #' @param base.url (optional) Ignore unless you need to specify a custom domain,
 #' port or version to connect to the CyREST API. Default is http://localhost:1234
 #' and the latest version of the CyREST API supported by this version of RCy3.
@@ -336,7 +336,7 @@ rotateLayout <- function (angle, network = NULL, selected.only = FALSE, base.url
 #' scaleLayout('X Axis', 2, 'current', selected.only=FALSE)
 #' }
 #' @export
-scaleLayout <- function (axis, scaleFactor, network = NULL, selected.only = FALSE, base.url = .defaultBaseUrl) {
+scaleLayout <- function (axis, scaleFactor, selected.only = FALSE, network = NULL, base.url = .defaultBaseUrl) {
     .verifySupportedVersions(cytoscape="3.10.2", base.url=base.url)
     suid <- getNetworkSuid(network,base.url)
     res <- commandsPOST(paste0('layout scale axis=',axis,' scaleFactor=',scaleFactor,' network="SUID:',suid,'" selectedOnly=',selected.only,''),base.url=base.url)
