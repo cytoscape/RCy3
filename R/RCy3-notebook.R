@@ -109,7 +109,6 @@ getBrowserClientJs<-function(){
 #' doRequestRemote()
 #' }
 #' @import httr
-#' @import uchardet
 #' @importFrom RJSONIO fromJSON toJSON isValidJSON
 #' @export
 doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
