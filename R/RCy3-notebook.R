@@ -109,6 +109,7 @@ getBrowserClientJs<-function(){
 #' doRequestRemote()
 #' }
 #' @import httr
+#' @import stringi
 #' @importFrom RJSONIO fromJSON toJSON isValidJSON
 #' @export
 doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
@@ -140,7 +141,7 @@ doRequestRemote<-function(method, qurl, qbody=NULL, headers=NULL){
     tryCatch(
         expr = {
             rContent <- content(r, "text", encoding = "UTF-8")
-            encoding <- detect_str_enc(rContent)
+            encoding <- stri_enc_detect(rContent)[[1]]$Encoding[1]
             message <- toString((iconv(rContent, to=encoding)))
             cyReply <- fromJSON(message)
         },
