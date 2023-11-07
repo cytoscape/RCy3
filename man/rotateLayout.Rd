@@ -6,19 +6,19 @@
 \usage{
 rotateLayout(
   angle,
-  network = NULL,
   selected.only = FALSE,
+  network = NULL,
   base.url = .defaultBaseUrl
 )
 }
 \arguments{
 \item{angle}{The angle (in degrees) to rotate the network. From -180 to 180}
 
-\item{network}{(optional) Name or SUID of the network. Default is the 
-"current" network active in Cytoscape.}
-
 \item{selected.only}{(Boolean) Whether to rotate only current selection. Default 
 is false.}
+
+\item{network}{(optional) Name or SUID of the network. Default is the 
+"current" network active in Cytoscape.}
 
 \item{base.url}{(optional) Ignore unless you need to specify a custom domain,
 port or version to connect to the CyREST API. Default is http://localhost:1234
