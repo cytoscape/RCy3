@@ -40,6 +40,8 @@ run.tests = function()
     test.getLayoutPropertyNames ()
     test.getLayoutPropertyType ()
     test.getLayoutPropertyValue ()
+    test.rotateLayout()
+    test.scaleLayout()
     test.setLayoutProperties ()
     test.panelOperations ()
 
@@ -359,6 +361,27 @@ test.getLayoutPropertyValue = function ()
         print (prop.value.output)
     } 
 } 
+#-------------------------------------------------------------------------------
+test.rotateLayout = function ()
+{
+    title = 'test.rotateLayout'
+    test.prep(title,TRUE)
+    rotateLayout(90)
+    checkEquals (round(getNodePosition('node 1')$x_location, 3),  -91.794)
+    checkEquals (round(getNodePosition('node 2')$y_location, 3), 93.45)
+} 
+
+#-------------------------------------------------------------------------------
+test.scaleLayout = function ()
+{
+    title = 'test.scaleLayout'
+    test.prep(title,TRUE)
+    scaleLayout('X Axis', 2, 'current')
+    checkEquals (round(getNodePosition('node 1')$x_location, 3),  -191.883)
+    scaleLayout('Y Axis', 5, 'current')
+    checkEquals (round(getNodePosition('node 2')$y_location, 3), -51.208)
+} 
+
 #-------------------------------------------------------------------------------
 test.setLayoutProperties = function ()
 {
