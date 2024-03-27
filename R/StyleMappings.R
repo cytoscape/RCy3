@@ -2611,6 +2611,38 @@ paletteColorBrewerBrBG<-function(value.count=3) {
     return(rev(RColorBrewer::brewer.pal(value.count, 'BrBG')))
 }
 
+# ------------------------------------------------------------------------------
+#' @title paletteColorVirdis
+#'
+#' @description Generate a Virdis Brewer palette of a given size
+#' @param value.count Number of colors to generate; min is 3 (default); max is 9
+#' Get colors from https://cran.r-project.org/web/packages/viridis/index.html
+#' . See virdis::virdis()
+#' @return List of palette colors
+#' @examples
+#' paletteColorVirdis()
+
+#' @export
+paletteColorVirdis <- function(value.count = 3) {
+    if (value.count == 3) {
+        return(c("#440154", "#21908C", "#FDE725"))
+    } else if (value.count == 4) {
+        return(c("#440154", "#31688E", "#35B779", "#FDE725"))
+    } else if (value.count == 5) {
+        return(c("#440154", "#3B528B", "#21908C", "#5DC863", "#FDE725"))
+    } else if (value.count == 6) {
+        return(c("#440154", "#414487", "#2A788E", "#22A884", "#7AD151", "#FDE725"))
+    } else if (value.count == 7) {
+        return(c("#440154", "#443A83", "#31688E", "#21908C", "#35B779", "#8FD744", "#FDE725"))
+    } else if (value.count == 8) {
+        return(c("#440154", "#46337E", "#365C8D", "#277F8E", "#1FA187", "#4AC16D", "#9FDA3A", "#FDE725"))
+    } else if (value.count == 9) {
+        return(c("#440154", "#472D7B", "#3B528B", "#2C728E", "#21908C", "#27AD81", "#5DC863", "#AADC32", "#FDE725"))
+    } else {
+        stop("n too large, allowed maximum for palette Viridis is 9. Returning the palette you asked for with that many colors")
+    }
+}
+
 # ==============================================================================
 # III.a Internal mapping generators
 # ------------------------------------------------------------------------------
