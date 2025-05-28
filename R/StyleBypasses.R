@@ -108,7 +108,7 @@ clearNodePropertyBypass <-  function(node.names,
     net.SUID <- getNetworkSuid(network,base.url)
     net.views.SUIDs <- getNetworkViews(network=net.SUID, base.url=base.url)
     view.SUID <- as.character(net.views.SUIDs[[1]])
-    if (length(node.names) == 1 && node.names == "all") {
+    if (length(node.names) == 1 && node.names == 'all') {
         stop("This is not yet supported by CyREST. Please provide a valid node list.")
         res <- cyrestDELETE( paste("networks",
                                    net.SUID,
