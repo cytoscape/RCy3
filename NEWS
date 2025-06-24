@@ -1,3 +1,6 @@
+Changes in version 2.28.x
++ Bug fixes:
+ - clearNodePropertyBypass method doesn't work #229
 Changes in version 2.28.0
 + No changes since version 2.26.0.
 Changes in version 2.26.0
