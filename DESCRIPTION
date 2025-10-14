@@ -1,8 +1,8 @@
 Package: RCy3
 Type: Package
 Title: Functions to Access and Control Cytoscape
-Version: 2.29.1
-Date: 2025-06-11
+Version: 2.29.2
+Date: 2025-10-13
 Authors@R: c(person("Alex", "Pico", role = c("aut","cre"),
                      email = "alex.pico@gladstone.ucsf.edu",
                      comment = c(ORCID = "0000-0001-5706-2163")),
