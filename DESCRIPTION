@@ -3,7 +3,9 @@ Type: Package
 Title: Functions to Access and Control Cytoscape
 Version: 2.30.1
 Date: 2025-11-24
-Authors@R: c(person("Alex", "Pico", role = c("aut","cre"),
+Authors@R: c(person("Jing", "Chen", role = "cre",
+                     email = "jingjingbic@gmail.com"),
+             person("Alex", "Pico", role = "aut",
                      email = "alex.pico@gladstone.ucsf.edu",
                      comment = c(ORCID = "0000-0001-5706-2163")),
              person("Tanja", "Muetze", role = "aut",
